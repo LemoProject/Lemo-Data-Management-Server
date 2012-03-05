@@ -1,0 +1,32 @@
+package lemo.dms.service;
+
+import java.text.SimpleDateFormat;
+import javax.ws.rs.*;
+import lemo.dms.core.IServerConfiguration;
+import lemo.dms.core.ServerConfigurationHardCoded;
+
+/**
+ * REST Webservice für die Startzeit
+ * @author Boris Wenzlaff
+ *
+ */
+@Path("/starttime")
+public class ServiceStartTime {
+	private IServerConfiguration config = null;
+		
+	public ServiceStartTime() {
+		config = ServerConfigurationHardCoded.getInstance();
+	}
+	
+	@GET @Produces("text/plain")
+	public long startTime() {
+		return config.getStartTime();
+	}
+	
+	@GET @Produces("text/html")
+	public String startTimeHtml() {
+		SimpleDateFormat sd = new SimpleDateFormat("dd.MM.yyyy 'um' HH:mm:ss z");
+		String fdd = sd.format(config.getStartTime()).toString();
+		return "<html><title>Start Time</title><body><h2>Der Server wurde um "+ fdd + " gestartet.</h2></body></html>";
+	}
+}
