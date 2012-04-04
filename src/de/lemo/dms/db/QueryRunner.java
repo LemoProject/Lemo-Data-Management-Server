@@ -1,4 +1,4 @@
-package lemo.dms.db;
+package de.lemo.dms.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,8 +8,6 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import lemo.dms.core.ServerConfigurationHardCoded;
-import lemo.dms.processing.Query;
 
 import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
@@ -17,6 +15,9 @@ import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.dbcp.PoolingDriver;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
+
+import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.processing.Query;
 
 /**
  * 

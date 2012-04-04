@@ -1,4 +1,4 @@
-package lemo.dms.processing;
+package de.lemo.dms.processing;
 
 /**
  * Generic question based on a SQL query statement.

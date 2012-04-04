@@ -1,9 +1,10 @@
-package lemo.dms.service;
+package de.lemo.dms.service;
 
 import java.text.SimpleDateFormat;
 import javax.ws.rs.*;
-import lemo.dms.core.IServerConfiguration;
-import lemo.dms.core.ServerConfigurationHardCoded;
+
+import de.lemo.dms.core.IServerConfiguration;
+import de.lemo.dms.core.ServerConfigurationHardCoded;
 
 /**
  * REST Webservice für die Startzeit

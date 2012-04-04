@@ -1,4 +1,4 @@
-package lemo.dms.core;
+package de.lemo.dms.core;
 
 import org.apache.log4j.*;
 

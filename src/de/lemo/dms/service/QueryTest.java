@@ -1,4 +1,4 @@
-package lemo.dms.service;
+package de.lemo.dms.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,8 +7,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import lemo.dms.db.QueryRunner;
-import lemo.dms.processing.Query;
+import de.lemo.dms.db.QueryRunner;
+import de.lemo.dms.processing.Query;
+
 
 /**
  * A test service that should return some example data from a database.
