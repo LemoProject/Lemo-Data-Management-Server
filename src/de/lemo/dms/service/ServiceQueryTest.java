@@ -18,7 +18,7 @@ import de.lemo.dms.processing.Query;
  * 
  */
 @Path("/query")
-public class QueryTest {
+public class ServiceQueryTest {
 
 	@GET
 	@Produces("text/html")
