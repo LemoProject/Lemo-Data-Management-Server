@@ -52,7 +52,7 @@ public class QueryRunner {
         Connection connection = null;
         Statement statement = null;
         ResultSet result = null;
-
+/*
         try {
             connection = dataSource.getConnection();
             statement = connection.createStatement();
@@ -76,7 +76,7 @@ public class QueryRunner {
                 statement.close();
             if (connection != null)
                 connection.close();
-        }
+        }*/
         return result;
     }
 

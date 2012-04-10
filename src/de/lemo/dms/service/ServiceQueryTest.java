@@ -1,47 +1,47 @@
 package de.lemo.dms.service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
-import de.lemo.dms.db.QueryRunner;
-import de.lemo.dms.processing.Query;
-
+import de.lemo.dms.processing.TestQuestion1;
 
 /**
- * A test service that should return some example data from a database.
+ * A test service that run a test question.
  * 
  * @author Leonard Kappe
  * 
  */
-@Path("/query")
+@Path("/test1")
 public class ServiceQueryTest {
 
-	@GET
-	@Produces("text/html")
-	public String startTimeHtml() {
-		QueryRunner queryRunner = new QueryRunner();
+    @GET
+    @Produces("text/html")
+    public String startTimeHtml(
+            @QueryParam("min_age") int minAge,
+            @QueryParam("max_age") int maxAge,
+            @QueryParam("course_id") String courseId) {
 
-		ResultSet queryResult = null;
-		try {
-			queryResult = queryRunner.run(new Query("SELECT name FROM users"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+        // localhost:4443/test?min_age=20&max_age=40&course_id="c1"
+        
+        TestQuestion1 tq = new TestQuestion1();
 
-		String response = "<html><title>Query Test</title><body><ul>";
-		try {
-			while (queryResult.next()) {
-				response += "<li>" + queryResult.getNString("") + "</li>";
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		response += "</ul></body></html>";
+        List<Object> arguments = new LinkedList<Object>();
+        arguments.add(minAge);
+        arguments.add(maxAge);
+        arguments.add(courseId);
 
-		return response;
-	}
+        tq.execute(arguments);
+
+        String response = "<html><title>Query Test</title><body>";
+        response += "<h1>TestQuestion1</h1>";
+        response += "</body></html>";
+
+        return response;
+
+    }
 }
