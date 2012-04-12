@@ -1,6 +1,7 @@
 package de.lemo.dms.core;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import de.lemo.dms.db.DBConfigObject;
@@ -39,8 +40,12 @@ public class ConnectorManager {
 	 * 
 	 * @return a set with the names of the available connectors
 	 */
-	public Set<ESourcePlatform> getAvailableConnectors() {
-		return connectors.keySet();
+	public Set<String> getAvailableConnectors() {
+		Set<String> result = new HashSet<String>();
+		for(ESourcePlatform key : connectors.keySet()) {
+			result.add(key.name());
+		}
+		return result;
 	}
 	
 	/**
