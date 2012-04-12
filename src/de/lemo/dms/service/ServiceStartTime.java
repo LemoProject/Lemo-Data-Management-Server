@@ -20,8 +20,9 @@ public class ServiceStartTime {
 	}
 	
 	@GET @Produces("text/plain")
-	public long startTime() {
-		return config.getStartTime();
+	public String startTime() {
+		String result = String.valueOf(config.getStartTime());
+		return result;
 	}
 	
 	@GET @Produces("text/html")
