@@ -4,22 +4,24 @@ import java.util.HashMap;
 import java.util.Set;
 
 import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.ESourcePlatform;
 import de.lemo.dms.db.IConnector;
 
 public class ConnectorManager {
 	private static ConnectorManager instance = null;
-	private HashMap<String, IConnector> connectors;
+	private HashMap<ESourcePlatform, IConnector> connectors;
 	private IConnector selectedConnector;
 	
 	//constructor with singleton pattern
 	private ConnectorManager() {
 		selectedConnector = null;
 		//init the Connectors
-		connectors = new HashMap<String, IConnector>();
+		connectors = new HashMap<ESourcePlatform, IConnector>();
 		//add the connectors
-		connectors.put("moodle", null);
-		connectors.put("clix", null);
-		connectors.put("fiz", null);
+		connectors.put(ESourcePlatform.Moodle_1_9, null);
+		connectors.put(ESourcePlatform.Clix, null);
+		connectors.put(ESourcePlatform.Chemgaroo, null);
+		//TODO Setzen der Destination DB
 	}
 	
 	/**
@@ -37,7 +39,7 @@ public class ConnectorManager {
 	 * 
 	 * @return a set with the names of the available connectors
 	 */
-	public Set<String> getAvailableConnectors() {
+	public Set<ESourcePlatform> getAvailableConnectors() {
 		return connectors.keySet();
 	}
 	
@@ -100,7 +102,7 @@ public class ConnectorManager {
 	 * @param dbConf
 	 * @return true is an connector selected otherwise false
 	 */
-	public boolean setMiningDBConfig(DBConfigObject dbConf) {
+	private boolean setMiningDBConfig(DBConfigObject dbConf) {
 		//TODO schreiben der Konfiguration in eine config datei
 		if(selectedConnector == null) {
 			return false;
