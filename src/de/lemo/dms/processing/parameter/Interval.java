@@ -13,8 +13,12 @@ public class Interval<T extends Comparable<T>> extends Parameter<T> {
     private T min;
     private T max;
 
-    public Interval(String name, String description, T min, T max) {
-        super(name, description);
+    public Interval(String id, String name, String description, T min, T max) {
+        this(id, name, description, min, max, null);
+    }
+
+    public Interval(String id, String name, String description, T min, T max, T defaultValue) {
+        super(id, name, description, defaultValue);
         this.min = min;
         this.max = max;
     }

@@ -16,8 +16,12 @@ public abstract class Item<T> extends Parameter<T> {
 
     private List<T> validValues;
 
-    public Item(String name, String description) {
-        super(name, description);
+    public Item(String id, String name, String description) {
+        this(id, name, description, null);
+    }
+
+    public Item(String id, String name, String description, T defaultValue) {
+        super(id, name, description, defaultValue);
         validValues = getValidValues();
     }
 
