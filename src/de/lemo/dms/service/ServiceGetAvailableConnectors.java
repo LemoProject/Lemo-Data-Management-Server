@@ -30,7 +30,7 @@ public class ServiceGetAvailableConnectors extends ServiceBaseService{
 	public String getAvailableConnecttorsHtml() {
 		StringBuilder result = new StringBuilder();
 		ConnectorManager cm = ConnectorManager.getInstance();
-		result.append("<html><title>Start Time</title><body><h2>Available Connectors</h2><ul>");
+		result.append("<html><title>Available Connectors</title><body><h2>Available Connectors</h2><ul>");
 		for(String s : cm.getAvailableConnectors()) {
 			result.append("<li>" + s + "</li>");		
 		}
