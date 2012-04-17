@@ -16,13 +16,19 @@ import de.lemo.dms.processing.parameter.Parameter;
  */
 public class TestQuestion1 extends Question {
 
+    private List<Parameter<?>> parameters;
+
     public TestQuestion1() {
-        List<Parameter<?>> parameters = new LinkedList<Parameter<?>>();
+        parameters = new LinkedList<Parameter<?>>();
         Parameter<Integer> minAge = new Interval<Integer>("maxage", "Minimum age", "", 18, 99, 18);
         Parameter<Integer> maxAge = new Interval<Integer>("minage", "Maximum age", "", 18, 99, 99);
         Parameter<String> courseId = new Parameter<String>("cid", "Course ID", "The ID of a course");
         Collections.<Parameter<?>> addAll(parameters, minAge, maxAge, courseId);
-        setParameters(parameters);
+    }
+
+    @Override
+    public List<Parameter<?>> getParameters() {
+        return parameters;
     }
 
     @Override
@@ -41,4 +47,5 @@ public class TestQuestion1 extends Question {
         result.add("all arguments were valid");
         return result;
     }
+
 }

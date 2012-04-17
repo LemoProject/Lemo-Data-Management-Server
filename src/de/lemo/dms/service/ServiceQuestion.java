@@ -15,7 +15,8 @@ import de.lemo.dms.processing.TestQuestion1;
 import de.lemo.dms.processing.parameter.Parameters;
 
 /**
- * A test service that run a test question.
+ * Service for resources about particular questions and computing its results.
+ * Provides meta data about a question's parameters.
  * 
  * @author Leonard Kappe
  * 
@@ -32,6 +33,12 @@ public class ServiceQuestion {
         questions.put("q1", TestQuestion1.class);
     }
 
+    /**
+     * 
+     * @param questionId REST path parameter
+     * @param info Injected context info.
+     * @return
+     */
     @GET
     @Path("compute")
     @Produces(MediaType.APPLICATION_JSON)

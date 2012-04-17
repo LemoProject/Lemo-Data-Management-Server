@@ -13,17 +13,9 @@ import de.lemo.dms.processing.parameter.Parameter;
  */
 public abstract class Question {
 
-    private List<Parameter<?>> parameters;
-
     public abstract List<?> compute(MultivaluedMap<String, String> arguments);
 
-    protected void setParameters(List<Parameter<?>> parameters) {
-        this.parameters = parameters;
-    }
-
-    public List<Parameter<?>> getParameters() {
-        return parameters;
-    }
+    public abstract List<Parameter<?>> getParameters();
 
     protected boolean validateArguments(MultivaluedMap<String, String> arguments) {
 
@@ -32,7 +24,7 @@ public abstract class Question {
          * send back a list of invalid arguments
          */
 
-        for (Parameter<?> parameter : parameters) {
+        for (Parameter<?> parameter : getParameters()) {
             String argument = arguments.getFirst(parameter.getId());
             if (argument == null) {
                 return false;
