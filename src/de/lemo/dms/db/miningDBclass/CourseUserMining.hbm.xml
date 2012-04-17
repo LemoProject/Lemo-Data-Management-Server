@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class
+        name="de.lemo.dms.db.miningDBclass.CourseUserMining"
+        table="course_user">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+        </id>
+                          
+        <property
+            name="enrolstart"
+            column="enrolstart"
+            type="long"/>
+            
+        <property
+            name="enrolend"
+            column="enrolend"
+            type="long"/>
+            
+		<many-to-one 
+       		name="course" 
+       		class="de.lemo.dms.db.miningDBclass.CourseMining"
+       		cascade="save-update" 
+            column="course_id" />
+            
+       <many-to-one 
+       		name="user" 
+       		class="de.lemo.dms.db.miningDBclass.UserMining"
+       		cascade="save-update" 
+            column="user_id" />            
+
+       <many-to-one 
+       		name="role" 
+       		class="de.lemo.dms.db.miningDBclass.RoleMining"
+       		cascade="save-update" 
+            column="role_id" />
+                
+    </class>
+
+</hibernate-mapping>

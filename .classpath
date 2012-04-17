@@ -20,5 +20,8 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/hibernate-core.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/javassist.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/persistence-api-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

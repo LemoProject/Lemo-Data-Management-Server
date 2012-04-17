@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.moodle.moodleDBclass.Assignment_submissions_LMS"
+        table="assignment_submissions">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+            <generator class="native"/>
+        </id>
+
+        <property
+            name="assignment"
+            column="assignment"
+            type="long"/>
+
+        <property
+            name="userid"
+            column="userid"
+            type="string"/>
+
+        <property
+            name="grade"
+            column="grade"
+            type="long"/>
+
+        <property
+            name="timecreated"
+            column="timecreated"
+            type="long"/>
+            
+        <property
+            name="timemodified"
+            column="timemodified"
+            type="long"/>
+            
+        <property
+            name="teacher"
+            column="teacher"
+            type="long"/>                        
+
+        <property
+            name="timemarked"
+            column="timemarked"
+            type="long"/> 
+            
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class 
+    	name="de.lemo.dms.db.miningDBclass.QuizMining"
+        table="quiz">
+
+		<id	
+			name="id"
+			type="long"
+			column="id"/>
+		
+ 		<property 
+			name="type"
+			type="string" 
+			column="type"/>	
+				       
+        <property
+            name="title"
+            column="title"
+            type="string"/>
+            
+        <property
+            name="maxgrade"
+            column="maxgrade"
+            type="double"/>
+
+        <property
+            name="timeopen"
+            column="timeopen"
+            type="long"/>
+            
+        <property
+            name="timeclose"
+            column="timeclose"
+            type="long"/>
+            
+        <property
+            name="timecreated"
+            column="timecreated"
+            type="long"/>
+               
+        <property
+            name="timemodified"
+            column="timemodified"
+            type="long"/>        
+            
+		<set name="course_quiz" inverse="true" lazy="false">
+			<key>
+				<column name="id"/>
+			</key>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseQuizMining"/>
+		</set>
+
+		<set name="quiz_question" inverse="true" lazy="false">
+			<key>
+				<column name="id"/>
+			</key>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizQuestionMining"/>
+		</set>
+		
+        <set name="quiz_log" inverse="true" lazy="false">
+			<key>
+				<column name="id"/>
+			</key>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizLogMining"/>
+		</set>
+
+        <set name="quiz_user" inverse="true" lazy="false">
+			<key>
+				<column name="id"/>
+			</key>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizUserMining"/>
+		</set>
+
+		<set name="question_log" inverse="true" lazy="false">
+			<key>
+				<column name="id"/>
+			</key>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.QuestionLogMining"/>
+		</set>
+                
+    </class>
+
+</hibernate-mapping>
