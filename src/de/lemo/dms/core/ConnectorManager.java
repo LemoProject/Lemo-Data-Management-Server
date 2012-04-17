@@ -98,20 +98,6 @@ public class ConnectorManager {
 	}
 	
 	/**
-	 * set the configuration for the destination db
-	 * @param dbConf
-	 * @return true is an connector selected otherwise false
-	 */
-	private boolean setMiningDBConfig(DBConfigObject dbConf) {
-		//TODO schreiben der Konfiguration in eine config datei
-		if(selectedConnector == null) {
-			return false;
-		}
-		selectedConnector.setMiningDBConfig(dbConf);
-		return true;
-	}
-	
-	/**
 	 * 
 	 * @return true is the connection ok, otherwise false
 	 */

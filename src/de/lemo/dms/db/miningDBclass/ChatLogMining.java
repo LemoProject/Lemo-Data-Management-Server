@@ -1,15 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 public class ChatLogMining {
 

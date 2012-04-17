@@ -3,8 +3,6 @@ package de.lemo.dms.db.miningDBclass;
 
 //import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 /**This class represents the relationship between the courses and quiz.*/
 public class CourseQuizMining {

@@ -71,7 +71,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.*;
 
 import de.lemo.dms.connectors.moodle.HibernateUtil;
-import de.lemo.dms.core.IServerConfiguration;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 
 import java.util.*;

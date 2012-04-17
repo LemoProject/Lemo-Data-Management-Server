@@ -4,7 +4,6 @@ import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.hibernate.HibernateDBHandler;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
