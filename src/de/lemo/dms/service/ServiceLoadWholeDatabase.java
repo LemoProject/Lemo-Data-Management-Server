@@ -13,7 +13,7 @@ import de.lemo.dms.core.ConnectorManager;
  *
  */
 @Path("/loadwholedatabase")
-public class ServiceLoadWHoleDatabase extends ServiceBaseService {
+public class ServiceLoadWholeDatabase extends ServiceBaseService {
 	
 	@GET @Produces("application/json")
 	public JSONObject loadWholeDatabase() {
