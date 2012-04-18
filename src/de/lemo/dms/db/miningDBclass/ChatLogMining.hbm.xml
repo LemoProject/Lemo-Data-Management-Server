@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class
+        name="de.lemo.dms.db.miningDBclass.ChatLogMining"
+        table="chat_log">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+        </id>
+        
+        <property
+            name="timestamp"
+            column="timestamp"
+            type="long"/>
+ 
+        <property
+            name="message"
+            column="message"
+            type="string"/>
+               
+		<many-to-one 
+       		name="user" 
+       		class="de.lemo.dms.db.miningDBclass.UserMining"
+       		cascade="save-update"
+            column="user_id" />
+            
+		<many-to-one 
+			name="chat" 
+			class="de.lemo.dms.db.miningDBclass.ChatMining" 
+			cascade="save-update" 
+       		column="chat_id"/>
+       		
+    </class>
+
+</hibernate-mapping>

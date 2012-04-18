@@ -17,7 +17,7 @@ import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.processing.Query;
+import de.lemo.dms.processing.Question;
 
 /**
  * 
@@ -45,14 +45,14 @@ public class QueryRunner {
         driver.closePool("example");
     }
 
-    public ResultSet run(Query query) throws SQLException {
+    public ResultSet run(Question query) throws SQLException {
         log.info("Running query " + query);
 
         DataSource dataSource = new PoolingDataSource(connectionFactory.getPool());
         Connection connection = null;
         Statement statement = null;
         ResultSet result = null;
-
+/*
         try {
             connection = dataSource.getConnection();
             statement = connection.createStatement();
@@ -76,7 +76,7 @@ public class QueryRunner {
                 statement.close();
             if (connection != null)
                 connection.close();
-        }
+        }*/
         return result;
     }
 

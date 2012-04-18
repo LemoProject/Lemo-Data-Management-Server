@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class
+        name="de.lemo.dms.db.miningDBclass.DepartmentDegreeMining"
+        table="department_degree">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+        </id>
+                          
+
+		<many-to-one 
+       		name="department" 
+       		class="de.lemo.dms.db.miningDBclass.DepartmentMining"
+       		cascade="save-update" 
+            column="department_id" />
+            
+       <many-to-one 
+       		name="degree" 
+       		class="de.lemo.dms.db.miningDBclass.DegreeMining"
+       		cascade="save-update" 
+            column="degree_id" />            
+
+                
+    </class>
+
+</hibernate-mapping>

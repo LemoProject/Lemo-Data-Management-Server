@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class
+        name="de.lemo.dms.db.miningDBclass.ConfigMining"
+        table="config">
+
+        <id
+            name="lastmodified"
+            column="lastmodified"
+            type="timestamp">
+        </id>
+
+        <property
+            name="extractcycle"
+            column="extractcycle"
+            type="long"/>
+              
+        <property
+            name="elapsed_time"
+            column="elapsed_time"
+            type="long"/>   
+            
+        <property
+        	name="largestId"
+        	column="largest_id"
+        	type="long"/>           
+                
+    </class>
+
+</hibernate-mapping>

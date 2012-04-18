@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class
+        name="de.lemo.dms.db.miningDBclass.ForumMining"
+        table="forum">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+        </id>
+           
+        <property
+            name="title"
+            column="title"
+            type="string"/>
+            
+        <property
+            name="summary"
+            column="summary"
+            type="text"/>
+              
+        <property
+            name="timemodified"
+            column="timemodified"
+            type="long"/>
+            
+        <property
+            name="timecreated"
+            column="timecreated"
+            type="long"/>
+            
+		<set name="course_forum" inverse="true" lazy="false">
+			<key column="id"/>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseForumMining"/>
+		</set>             
+
+		<set name="forum_log" inverse="true" lazy="false">
+			<key column="id"/>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.ForumLogMining"/>
+		</set>
+                
+    </class>
+
+</hibernate-mapping>
