@@ -15,14 +15,15 @@ public class ServiceGetAvailableConnectors extends ServiceBaseService{
 	
 	@GET @Produces("application/json")
 	public SCConnectors getAvailableConnecttorsJson() {
+		super.logger.info("call for service: getAvailableConnecttorsJson");
 		SCConnectors rs = new SCConnectors();
 		rs.setConnectors(ConnectorManager.getInstance().getAvailableConnectorsList());
-		super.logger.info("call for service: getAvailableConnecttorsJson");
 		return rs;
 	}
 	
 	@GET @Produces("text/html")
 	public String getAvailableConnecttorsHtml() {
+		super.logger.info("call for service: getAvailableConnecttorsHtml");
 		StringBuilder result = new StringBuilder();
 		ConnectorManager cm = ConnectorManager.getInstance();
 		result.append("<html><title>Available Connectors</title><body><h2>Available Connectors</h2><ul>");
@@ -30,7 +31,6 @@ public class ServiceGetAvailableConnectors extends ServiceBaseService{
 			result.append("<li>" + s + "</li>");		
 		}
 		result.append("</ul></body></html>");
-		super.logger.info("call for service: getAvailableConnecttorsHtml");
 		return result.toString();
 	}
 }

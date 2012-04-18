@@ -24,6 +24,7 @@ public class ServiceSelectConnector extends ServiceBaseService {
 	 */
 	@GET @Produces("application/json")
 	public SCConnectors selectConnectorJson(@QueryParam("connector") String connector) {
+		super.logger.info("call for service: selectConnectorJson");
 		ESourcePlatform c;
 		SCConnectors scc = new SCConnectors();
 		List<String> rsl = new ArrayList<String>();
@@ -42,7 +43,6 @@ public class ServiceSelectConnector extends ServiceBaseService {
 			rsl.add("none");
 			scc.setConnectors(rsl);
 		}
-		super.logger.info("call for service: selectConnectorJson");
 		return scc;
 	}
 }

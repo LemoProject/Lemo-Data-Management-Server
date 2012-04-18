@@ -16,17 +16,17 @@ public class ServiceStartTime extends ServiceBaseService{
 	@GET
 	@Produces("application/json")
 	public SCTime startTimeJson() {
+		super.logger.info("call for service: startTimeJson");
 		SCTime rs = new SCTime();
 		rs.setTime(super.config.getStartTime());
-		super.logger.info("call for service: startTimeJson");
 		return rs;
 	}
 	
 	@GET @Produces("text/html")
 	public String startTimeHtml() {
+		super.logger.info("call for service: startTimeHtml");
 		SimpleDateFormat sd = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z");
 		String fdd = sd.format(super.config.getStartTime()).toString();
-		super.logger.info("call for service: startTimeHtml");
 		return "<html><title>Start Time</title><body><h2>The server was started on "+ fdd + "</h2></body></html>";
 	}
 }
