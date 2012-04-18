@@ -1,16 +1,11 @@
 package de.lemo.dms.service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Set;
-
 import javax.ws.rs.*;
-
 import de.lemo.dms.core.ConnectorManager;
 import de.lemo.dms.service.servicecontainer.SCConnectors;
 
 /**
- * REST Webservice for the available Connectors of the DMS
+ * REST Webservice for the available connectors of the DMS
  * @author Boris Wenzlaff
  *
  */
@@ -18,23 +13,11 @@ import de.lemo.dms.service.servicecontainer.SCConnectors;
 @Path("/getavailableconnectors")
 public class ServiceGetAvailableConnectors extends ServiceBaseService{
 	
-	public ServiceGetAvailableConnectors() {
-		super();
-	}
-	
-	/*@GET @Produces("application/json")
-	public ResultXmlList getAvailableConnecttors() {
-		ResultXmlList result = new ResultXmlList();
-		ConnectorManager cm = ConnectorManager.getInstance();
-		result.setResultList(cm.getAvailableConnectors());
-		return result;
-	}*/
-	
 	@GET @Produces("application/json")
-	public SCConnectors getAvailableConnecttors() {
-		//ArrayList<String> rl = new ArrayList<String>();
+	public SCConnectors getAvailableConnecttorsJson() {
 		SCConnectors rs = new SCConnectors();
 		rs.setConnectors(ConnectorManager.getInstance().getAvailableConnectorsList());
+		super.logger.info("call for service: getAvailableConnecttorsJson");
 		return rs;
 	}
 	
@@ -47,6 +30,7 @@ public class ServiceGetAvailableConnectors extends ServiceBaseService{
 			result.append("<li>" + s + "</li>");		
 		}
 		result.append("</ul></body></html>");
+		super.logger.info("call for service: getAvailableConnecttorsHtml");
 		return result.toString();
 	}
 }

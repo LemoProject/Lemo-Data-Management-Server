@@ -4,7 +4,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Container for the REST/JSON Communication to transfer the list of connectors
+ * container for the REST/JSON communication to transfer the list of connectors
  * @author Boris Wenzlaff
  *
  */
@@ -19,5 +19,4 @@ public class SCConnectors {
 	public void setConnectors(List<String> connectors) {
 		this.connectors = connectors;
 	}
-	
 }

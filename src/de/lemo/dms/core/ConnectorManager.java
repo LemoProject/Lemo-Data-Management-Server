@@ -6,14 +6,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.ESourcePlatform;
 import de.lemo.dms.db.IConnector;
 
 public class ConnectorManager {
 	private static ConnectorManager instance = null;
+	private IServerConfiguration config = ServerConfigurationHardCoded.getInstance();
 	private HashMap<ESourcePlatform, IConnector> connectors;
 	private IConnector selectedConnector;
+	private Logger logger = config.getLogger();
 	
 	//constructor with singleton pattern
 	private ConnectorManager() {
@@ -65,9 +69,10 @@ public class ConnectorManager {
 	 * @param connectorName
 	 * @return true is the parameter an correct selection otherwise false
 	 */
-	public boolean selectConnector(String connectorName) {
+	public boolean selectConnector(ESourcePlatform connectorName) {
 		if(connectors.containsKey(connectorName)) {
 			selectedConnector = connectors.get(connectorName);
+			logger.info("selected connector in dms: "+connectorName.name());
 			return true;
 		}
 		else {
