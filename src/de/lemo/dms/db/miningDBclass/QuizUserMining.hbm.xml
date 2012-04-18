@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class
+        name="de.lemo.dms.db.miningDBclass.QuizUserMining"
+        table="quiz_user">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+        </id>
+        
+		<many-to-one 
+       		name="course" 
+       		class="de.lemo.dms.db.miningDBclass.CourseMining"
+            column="course_id" />
+
+		<many-to-one 
+       		name="user" 
+       		class="de.lemo.dms.db.miningDBclass.UserMining"
+            column="user_id" />
+            
+		<many-to-one name="quiz" class="de.lemo.dms.db.miningDBclass.QuizMining"> 
+       		<column name="quiz_id"/>
+		</many-to-one>
+		              
+        <property
+            name="finalgrade"
+            column="finalgrade"
+            type="double"/>
+            
+        <property
+            name="rawgrade"
+            column="rawgrade"
+            type="double"/>  
+               
+        <property
+            name="timemodified"
+            column="timemodified"
+            type="long"/>
+            
+    </class>
+
+</hibernate-mapping>

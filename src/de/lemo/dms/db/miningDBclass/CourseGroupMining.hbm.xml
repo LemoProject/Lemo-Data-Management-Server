@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class
+        name="de.lemo.dms.db.miningDBclass.CourseGroupMining"
+        table="course_group">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+        </id>            
+            
+       <many-to-one 
+       		name="course" 
+       		class="de.lemo.dms.db.miningDBclass.CourseMining"
+       		cascade="save-update" 
+            column="course_id" />
+            
+      <many-to-one 
+       		name="group" 
+       		class="de.lemo.dms.db.miningDBclass.GroupMining"
+       		cascade="save-update" 
+            column="group_id" />
+               
+    </class>
+
+</hibernate-mapping>

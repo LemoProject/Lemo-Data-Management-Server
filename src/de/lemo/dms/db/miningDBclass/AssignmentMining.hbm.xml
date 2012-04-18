@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class
+        name="de.lemo.dms.db.miningDBclass.AssignmentMining"
+        table="assignment">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+        </id>
+        
+       <property
+            name="type"
+            column="type"
+            type="string"/>
+        
+        <property
+            name="title"
+            column="title"
+            type="string"/>
+            
+        <property
+            name="maxgrade"
+            column="maxgrade"
+            type="double"/>
+
+        <property
+            name="timeopen"
+            column="timeopen"
+            type="long"/>
+            
+        <property
+            name="timeclose"
+            column="timeclose"
+            type="long"/>
+            
+        <property
+            name="timecreated"
+            column="timecreated"
+            type="long"/>
+               
+        <property
+            name="timemodified"
+            column="timemodified"
+            type="long"/>
+            
+		<set name="assignment_log" inverse="true" lazy="false">
+			<key>
+				<column name="id"/>
+			</key>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.AssignmentLogMining"/>
+		</set>
+ 
+ 		<set name="course_assignment" inverse="true" lazy="false">
+			<key>
+				<column name="id"/>
+			</key>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseAssignmentMining"/>
+		</set>
+                
+    </class>
+
+</hibernate-mapping>

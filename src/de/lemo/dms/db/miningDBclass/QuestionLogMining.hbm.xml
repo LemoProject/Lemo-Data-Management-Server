@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class
+        name="de.lemo.dms.db.miningDBclass.QuestionLogMining"
+        table="question_log">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+        </id>
+  
+        <property
+            name="type"
+            column="type"
+            type="string"/>
+            
+        <property
+            name="penalty"
+            column="penalty"
+            type="double"/>
+            
+        <property
+            name="rawgrade"
+            column="rawgrade"
+            type="double"/>
+             
+        <property
+            name="finalgrade"
+            column="finalgrade"
+            type="double"/>
+            
+        <property
+            name="action"
+            column="action"
+            type="string"/>
+                         
+        <property
+            name="answers"
+            column="answers"
+            type="text"/>
+               
+        <property
+            name="timestamp"
+            column="timestamp"
+            type="long"/>
+            
+		<many-to-one 
+       		name="course" 
+       		class="de.lemo.dms.db.miningDBclass.CourseMining"
+       		cascade="save-update" 
+            column="course_id" />
+            
+		<many-to-one 
+       		name="question" 
+       		class="de.lemo.dms.db.miningDBclass.QuestionMining"
+       		cascade="save-update" 
+            column="question_id" />
+
+       <many-to-one 
+       		name="user" 
+       		class="de.lemo.dms.db.miningDBclass.UserMining"
+       		cascade="save-update" 
+            column="user_id" />
+            
+		<many-to-one name="quiz" class="de.lemo.dms.db.miningDBclass.QuizMining"> 
+       		<column name="quiz_id"/>                
+		</many-to-one>
+                
+    </class>
+
+</hibernate-mapping>
