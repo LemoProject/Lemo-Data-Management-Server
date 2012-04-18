@@ -6,9 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.TestQuestion1;
@@ -21,8 +19,9 @@ import de.lemo.dms.processing.parameter.Parameters;
  * @author Leonard Kappe
  * 
  */
-@Path("question/{qid}")
-public class ServiceQuestion {
+@Path("parameters/{qid}")
+@Produces(MediaType.APPLICATION_JSON)
+public class ServiceQuestionParameter {
 
     private static HashMap<String, Class<? extends Question>> questions;
     static {
@@ -33,25 +32,8 @@ public class ServiceQuestion {
         questions.put("q1", TestQuestion1.class);
     }
 
-    /**
-     * 
-     * @param questionId REST path parameter
-     * @param info Injected context info.
-     * @return
-     */
     @GET
-    @Path("compute")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String computeQuestion(@PathParam("qid") String questionId, @Context UriInfo info) {
-        Question question = getQuestion(questionId);
-        Object result = question.compute(info.getQueryParameters());
-        return result.toString();
-    }
-
-    @GET
-    @Path("parameters")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Parameters getParams(@PathParam("qid") String questionId) {
+    public Parameters getParameter(@PathParam("qid") String questionId) {
         Question question = getQuestion(questionId);
         return new Parameters(question.getParameters());
     }

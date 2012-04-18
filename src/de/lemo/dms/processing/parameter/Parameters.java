@@ -16,8 +16,8 @@ public class Parameters {
     @XmlElement
     private List<Parameter<?>> parameters;
 
-    /* JAXB required no-arg constructor */
     public Parameters() {
+        /* JAXB no-arg default constructor */
     }
 
     public Parameters(List<Parameter<?>> parameters) {

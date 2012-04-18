@@ -17,10 +17,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Parameter<T> {
 
-    /* JAXB required no-arg constructor */
-    public Parameter() {
-    }
-
     @XmlElement
     private String id;
     @XmlElement
@@ -29,6 +25,10 @@ public class Parameter<T> {
     private String description;
     @XmlElement
     private T defaultValue;
+
+    public Parameter() {
+        /* JAXB no-arg default constructor */
+    }
 
     public Parameter(String id, String name, String description, T defaultValue) {
         this.id = id;
