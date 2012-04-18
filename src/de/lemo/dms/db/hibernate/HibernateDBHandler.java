@@ -134,5 +134,4 @@ public class HibernateDBHandler implements IDBHandler{
 		}	
 		return l;
 	}
-
 }

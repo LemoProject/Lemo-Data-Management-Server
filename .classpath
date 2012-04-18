@@ -23,5 +23,20 @@
 	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/hibernate-core.jar"/>
 	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/javassist.jar"/>
 	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/persistence-api-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/log4j.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/slf4j-api.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/dom4j.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/slf4j-log4j12.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/jta.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/ant-contrib-1.0b2.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/ant-junit-1.6.5.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/antlr.jar"/>
+	<classpathentry kind="lib" path="C:/Moodle-DataMining/workspace/MoodleMining/lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
