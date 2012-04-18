@@ -22,7 +22,7 @@ import de.lemo.dms.processing.parameter.Parameter;
 public class TestQuestion1 extends Question {
 
     @Override
-    protected List<ParameterMetaData<?>> loadParamMetaData() {
+    protected List<ParameterMetaData<?>> createParamMetaData() {
         List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
         Collections.<ParameterMetaData<?>> addAll(parameters,
                 Interval.create(Integer.class, "maxage", "Maximum age", "", 18, 99, 99),

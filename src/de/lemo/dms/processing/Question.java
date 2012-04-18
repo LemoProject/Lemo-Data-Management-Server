@@ -11,13 +11,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.parameter.Parameters;
 
 /**
- * Base question, provides access to parameter type and meta information.
+ * Base question, provides access to parameter type and meta information of the
+ * subclass.
  * 
  * @author Leonard Kappe
  */
@@ -25,9 +25,25 @@ import de.lemo.dms.processing.parameter.Parameters;
 @Produces(MediaType.APPLICATION_JSON)
 public abstract class Question {
 
-    protected abstract List<ParameterMetaData<?>> loadParamMetaData();
+    /**
+     * Implementations must provides additional information about the parameters
+     * of the question. For each {@link QueryParam} annotated parameter of the
+     * question's REST-interface method, a meta data object with the same ID and
+     * type must be provided. A meta data object of the generic type
+     * {@link ParameterMetaData}<{@link Void}> indicates that the type of the
+     * method's parameter should (and will) be used.
+     * 
+     * 
+     * @return A list of parameter meta data objects
+     */
+    protected abstract List<ParameterMetaData<?>> createParamMetaData();
 
-    public Parameters loadParameters() {
+    /**
+     * Validates and retrieves parameter type information.
+     * 
+     * @return An XML/JSON convertible parameter object
+     */
+    public Parameters createParameters() {
         String questionName = getClass().getCanonicalName();
 
         /*
@@ -69,7 +85,7 @@ public abstract class Question {
 
         /* map of parameter meta data description: <id, meta data> */
         Map<String, ParameterMetaData<?>> metaDataMap = new HashMap<String, ParameterMetaData<?>>();
-        for (ParameterMetaData<?> paramMeta : loadParamMetaData()) {
+        for (ParameterMetaData<?> paramMeta : createParamMetaData()) {
             metaDataMap.put(paramMeta.getId(), paramMeta);
         }
 
@@ -95,24 +111,33 @@ public abstract class Question {
         return new Parameters(metaDataMap.values());
     }
 
-    protected boolean validateArguments(MultivaluedMap<String, String> arguments) {
-
-        /*
-         * XXX instead of returning false, we could throw an exception or even
-         * send back a list of invalid arguments
-         */
-
-        for (ParameterMetaData<?> parameter : loadParamMetaData()) {
-            String argument = arguments.getFirst(parameter.getId());
-            if (argument == null) {
-                return false;
-            }
-            // if (!parameter.validateArgument(argument)) {
-            // return false;
-            // }
-        }
-
-        return true;
-    }
+    // /**
+    // *
+    // *
+    // * @param arguments
+    // * A map of request arguments as provided by the parameter
+    // * <code>@{@link Context} {@link UriInfo}</code>.
+    // * @return
+    // */
+    // protected boolean validateArguments(MultivaluedMap<String, String>
+    // arguments) {
+    //
+    // /*
+    // * XXX instead of returning false, we could throw an exception or even
+    // * send back a list of invalid arguments
+    // */
+    //
+    // for (ParameterMetaData<?> parameter : createParamMetaData()) {
+    // String argument = arguments.getFirst(parameter.getId());
+    // if (argument == null) {
+    // return false;
+    // }
+    // // if (!parameter.validateArgument(argument)) {
+    // // return false;
+    // // }
+    // }
+    //
+    // return true;
+    // }
 
 }

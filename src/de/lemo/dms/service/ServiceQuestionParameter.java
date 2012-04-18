@@ -45,7 +45,7 @@ public class ServiceQuestionParameter {
         }
 
         try {
-            return questions.get(questionId).newInstance().loadParameters();
+            return questions.get(questionId).newInstance().createParameters();
         } catch (InstantiationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
