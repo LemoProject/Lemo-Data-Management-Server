@@ -8,13 +8,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
+
+import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.TestQuestion1;
 import de.lemo.dms.processing.parameter.Parameters;
 
 /**
- * Service for resources about particular questions and computing its results.
- * Provides meta data about a question's parameters.
+ * Service provides meta data about a question's parameters.
  * 
  * @author Leonard Kappe
  * 
@@ -22,6 +24,8 @@ import de.lemo.dms.processing.parameter.Parameters;
 @Path("parameters/{qid}")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceQuestionParameter {
+
+    private Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
 
     private static HashMap<String, Class<? extends Question>> questions;
     static {
@@ -34,20 +38,14 @@ public class ServiceQuestionParameter {
 
     @GET
     public Parameters getParameter(@PathParam("qid") String questionId) {
-        Question question = getQuestion(questionId);
-        return new Parameters(question.getParameters());
-    }
-
-    private Question getQuestion(String questionId) {
         if (!questions.containsKey(questionId)) {
+            logger.warn("question " + questionId + " not found");
             // throw web exception
             return null;
         }
 
         try {
-
-            return questions.get(questionId).newInstance();
-
+            return questions.get(questionId).newInstance().loadParameters();
         } catch (InstantiationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -57,4 +55,5 @@ public class ServiceQuestionParameter {
         }
         return null;
     }
+
 }

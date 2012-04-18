@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
 import de.lemo.dms.processing.parameter.Interval;
+import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.parameter.Parameter;
 
 /**
@@ -21,18 +22,18 @@ import de.lemo.dms.processing.parameter.Parameter;
 public class TestQuestion1 extends Question {
 
     @Override
-    protected List<Parameter<?>> getParameterDescription() {
-        List<Parameter<?>> parameters = new LinkedList<Parameter<?>>();
-        Parameter<Integer> minAge = new Interval<Integer>("minage", "Minimum age", "", 18, 99, 18);
-        Parameter<Integer> maxAge = new Interval<Integer>("maxage", "Maximum age", "", 18, 99, 99);
-        Parameter<String> courseId = new Parameter<String>("cid", "Course ID", "The ID of a course");
-        Collections.<Parameter<?>> addAll(parameters, minAge, maxAge, courseId);
+    protected List<ParameterMetaData<?>> loadParamMetaData() {
+        List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
+        Collections.<ParameterMetaData<?>> addAll(parameters,
+                Interval.create(Integer.class, "maxage", "Maximum age", "", 18, 99, 99),
+                Interval.create(Integer.class, "minage", "Minimum age", "", 18, 99, 18),
+                Parameter.create("cid", "Course ID", "The ID of a course"));
         return parameters;
     }
 
     @GET
-    public String compute(@QueryParam("maxage") String maxAge, @QueryParam("minage") String minAge,
-            @QueryParam("cid") int courseId) {
+    public String compute(@QueryParam("maxage") Integer maxAge, @QueryParam("minage") Integer minAge,
+            @QueryParam("cid") String courseId) {
 
         /*
          * Do a DB query here: Select users from the course where the age is

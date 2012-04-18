@@ -1,12 +1,14 @@
 package de.lemo.dms.processing.parameter;
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Wrapper class for a list of {@link Parameter} for JAXB list conversion.
+ * Jax-RS limitation don't allow a JSON response object to be a collection,
+ * instead a simple root element like this class is required.
  * 
  * @author Leonard Kappe
  */
@@ -14,17 +16,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Parameters {
 
     @XmlElement
-    private List<Parameter<?>> parameters;
+    private Collection<ParameterMetaData<?>> parameters;
 
     public Parameters() {
         /* JAXB no-arg default constructor */
     }
 
-    public Parameters(List<Parameter<?>> parameters) {
+    public Parameters(Collection<ParameterMetaData<?>> parameters) {
         this.parameters = parameters;
     }
 
-    public List<Parameter<?>> getParameters() {
+    public Collection<ParameterMetaData<?>> getParameters() {
         return parameters;
     }
 
