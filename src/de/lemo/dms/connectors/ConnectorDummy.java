@@ -12,7 +12,7 @@ import de.lemo.dms.db.IDBHandler;
  *
  */
 public class ConnectorDummy implements IConnector {
-	private final int SLEEP = (60*100);
+	private final int SLEEP = (60*1000);
 	private Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
 	
 	@Override
@@ -34,6 +34,7 @@ public class ConnectorDummy implements IConnector {
 	@Override
 	public void getData() {
 		try {
+			logger.info("connector dummy will load whole database");
 			Thread.sleep(SLEEP);
 		} catch (InterruptedException e) {
 
@@ -44,10 +45,10 @@ public class ConnectorDummy implements IConnector {
 	@Override
 	public void updateData(long fromTimestamp) {
 		try {
+			logger.info("connector dummy will update whole database");
 			Thread.sleep(SLEEP);
 		} catch (InterruptedException e) {
 			logger.warn("connector dummy throws exception at updateData()");
 		}
 	}
-
 }
