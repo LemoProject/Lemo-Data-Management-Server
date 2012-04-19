@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import de.lemo.dms.connectors.ConnectorDummy;
 import de.lemo.dms.connectors.EConnectorState;
 import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.moodle.ConnectorMoodle;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.ESourcePlatform;
 
@@ -28,9 +29,11 @@ public class ConnectorManager {
 		connectors = new HashMap<ESourcePlatform, IConnector>();
 		//add the connectors
 		connectors.put(ESourcePlatform.Dummy, new ConnectorDummy());
-		//connectors.put(ESourcePlatform.Clix, null);
-		//connectors.put(ESourcePlatform.Moodle_1_9, null);
-		//TODO Setzen der Destination DB
+		connectors.put(ESourcePlatform.Moodle_1_9, new ConnectorMoodle());
+		//TODO Manuelles setzen der DB Konfig
+		//TODO muss ausgelagert werden
+		//connectors.get(ESourcePlatform.Moodle_1_9).setMiningDBConfig(dbConf, dbHandler);
+		//connectors.get(ESourcePlatform.Moodle_1_9).setSourceDBConfig(dbConf);
 	}
 	
 	/**
