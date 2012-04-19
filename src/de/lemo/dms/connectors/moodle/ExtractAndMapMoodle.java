@@ -78,7 +78,7 @@ import java.util.*;
 /** The main class of the extraction process. 
  * Implementation of the abstract extract class for the LMS Moodle.
  */
-public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen einfügen
+public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen einfï¿½gen
 
 //LMS tables instances lists
 	private static List<Log_LMS> log_lms;
@@ -491,8 +491,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        	                insert.setCourse(loadedItem.getInstanceid(), course_mining, old_course_mining);
        	       			if(insert.getUser()!= null && insert.getCourse() != null && insert.getRole()!= null){       	       			
        	       				course_user_mining.put(insert.getId(), insert);
-       	       			}
-		    			break;       	       			
+       	       			}    	       			
        	       		}
        			}   			
        		}
