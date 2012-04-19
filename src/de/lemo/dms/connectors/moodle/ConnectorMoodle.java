@@ -2,7 +2,6 @@ package de.lemo.dms.connectors.moodle;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.hibernate.HibernateDBHandler;

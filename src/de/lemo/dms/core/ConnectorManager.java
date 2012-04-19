@@ -5,12 +5,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
-
+import de.lemo.dms.connectors.ConnectorDummy;
+import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.ESourcePlatform;
-import de.lemo.dms.db.IConnector;
 
 public class ConnectorManager {
 	private static ConnectorManager instance = null;
@@ -25,9 +24,9 @@ public class ConnectorManager {
 		//init the Connectors
 		connectors = new HashMap<ESourcePlatform, IConnector>();
 		//add the connectors
-		connectors.put(ESourcePlatform.Moodle_1_9, null);
-		connectors.put(ESourcePlatform.Clix, null);
-		connectors.put(ESourcePlatform.Chemgaroo, null);
+		connectors.put(ESourcePlatform.Dummy, new ConnectorDummy());
+		//connectors.put(ESourcePlatform.Clix, null);
+		//connectors.put(ESourcePlatform.Moodle_1_9, null);
 		//TODO Setzen der Destination DB
 	}
 	
