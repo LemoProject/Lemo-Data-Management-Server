@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
@@ -17,6 +18,7 @@ import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.resulttype.ResultList;
 
+@Path("courseactivity")
 public class QCourseActivity extends Question{
 
 	@Override
