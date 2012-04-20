@@ -2,6 +2,10 @@ package de.lemo.dms.core;
 
 import org.apache.log4j.*;
 
+import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.hibernate.HibernateDBHandler;
+
 /**
  * Implementierung der Server Konfiguration als Singleton, mit
  * Hard codierten Einstellungen.
@@ -14,10 +18,12 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	private Level level = null;
 	private Logger logger = null;
 	private long startTime = 0;
+	private DBConfigObject dbConfig = null;
+	private IDBHandler dbHandler = null;
 	//------------------------------------
 	//Hard codierte Konfiguration
 	private String loggerName = "lemo.dms";
-	private Level defaultLevel = Level.ALL;
+	private Level defaultLevel = Level.OFF;
 	private String logfileName = "./DatamanagementServer.log";
 	private int port = 4443;
 	//------------------------------------
@@ -36,10 +42,49 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 			FileAppender filapp = new FileAppender(layout, logfileName);
 			logger.addAppender(filapp);
 			logger.setLevel(defaultLevel);
+			
+
+			
+			//Setting up mining database
+			dbConfig = new DBConfigObject();
+			dbConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");		
+			dbConfig.addProperty("hibernate.connection.url", "jdbc:mysql://localhost/dmtest");
+			dbConfig.addProperty("hibernate.connection.username", "datamining");
+			dbConfig.addProperty("hibernate.connection.password", "LabDat1#");
+			
+			dbConfig.addProperty("hibernate.c3p0.min_size", "5");
+			dbConfig.addProperty("hibernate.c3po.max_size", "20");
+			dbConfig.addProperty("hibernate.c3p0.timeout", "300");
+			dbConfig.addProperty("hibernate.c3p0.max_statements", "50");
+			dbConfig.addProperty("hibernate.c3p0.idle_test_period", "3000");
+			
+			dbConfig.addProperty("hibernate.cache.use_second_level_cache", "false");
+			dbConfig.addProperty("hibernate.cache.use_query_level_cache", "false");		
+			
+			//miningConf.addProperty("hibernate.show_sql", "false");
+			//miningConf.addProperty("hibernate.format_sql", "false");
+			//miningConf.addProperty("hibernate.use_sql_comments", "true");					
+			dbConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+			//miningConf.addProperty("hibernate.hbm2ddl.auto","update");
+			
+			//Setting up dbHandler
+			dbHandler = new HibernateDBHandler();
+
+			
 		} catch (Exception ex) {
 			System.err.println("logger can't be initialize...");
 			System.err.println(ex.getMessage());
 		}		
+	}
+	
+	public IDBHandler getDBHandler()
+	{
+		return dbHandler;
+	}
+	
+	public DBConfigObject getMiningDBConfig()
+	{
+		return dbConfig;
 	}
 	
 	//Singleton Pattern

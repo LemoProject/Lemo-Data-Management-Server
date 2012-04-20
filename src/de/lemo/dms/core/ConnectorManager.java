@@ -30,6 +30,7 @@ public class ConnectorManager {
 		//add the connectors
 		connectors.put(ESourcePlatform.Dummy, new ConnectorDummy());
 		connectors.put(ESourcePlatform.Moodle_1_9, new ConnectorMoodle());
+		
 		//TODO Manuelles setzen der DB Konfig
 		//TODO muss ausgelagert werden
 		//connectors.get(ESourcePlatform.Moodle_1_9).setMiningDBConfig(dbConf, dbHandler);

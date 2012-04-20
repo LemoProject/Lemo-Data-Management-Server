@@ -20,10 +20,6 @@ public class ConnectorDummy implements IConnector {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
-	public void setMiningDBConfig(DBConfigObject dbConf, IDBHandler dbHandler) {
-		// TODO Auto-generated method stub
-	}
 
 	@Override
 	public boolean testConnections() {

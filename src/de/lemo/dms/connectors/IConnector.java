@@ -17,11 +17,6 @@ public interface IConnector {
 	public void setSourceDBConfig(DBConfigObject dbConf);
 	
 	/**
-	 * Sets the parameters for the mining database via a DBConfigobject.
-	 * @param dbConf
-	 */
-	public void setMiningDBConfig(DBConfigObject dbConf, IDBHandler dbHandler);
-	/**
 	 * Tests the configured connection.
 	 *
 	 * @param conf the database configuration object, holding connection settings

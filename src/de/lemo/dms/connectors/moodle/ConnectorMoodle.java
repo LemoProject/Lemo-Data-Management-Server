@@ -33,7 +33,7 @@ public class ConnectorMoodle implements IConnector{
 		ExtractAndMapMoodle extract = new ExtractAndMapMoodle();	
 		String[] s = new String[1];
 		s[0] = "ExtractAndMapMoodle";
-		extract.start(s, dbHandler, sourceDBConf,  miningDBConf);		
+		extract.start(s, sourceDBConf);		
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class ConnectorMoodle implements IConnector{
 		String[] s = new String[2];
 		s[0] = "ExtractAndMapMoodle";
 		s[1] = fromTimestamp+"";
-		extract.start(s, dbHandler, sourceDBConf, miningDBConf);
+		extract.start(s, sourceDBConf);
 		
 	}
 
@@ -51,12 +51,4 @@ public class ConnectorMoodle implements IConnector{
 		sourceDBConf = dbConf;
 		
 	}
-
-	@Override
-	public void setMiningDBConfig(DBConfigObject dbConf, IDBHandler idbh) {
-		miningDBConf = dbConf;
-		dbHandler = idbh;
-	}
-
-
 }

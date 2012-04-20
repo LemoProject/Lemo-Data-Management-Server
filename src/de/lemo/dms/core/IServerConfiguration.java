@@ -2,6 +2,9 @@ package de.lemo.dms.core;
 
 import org.apache.log4j.*;
 
+import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.IDBHandler;
+
 /**
  * Interface für die Konfiguration des Servers. Über
  * das Interface werden alle Einstellungen vorgenommen
@@ -13,6 +16,8 @@ import org.apache.log4j.*;
 public interface IServerConfiguration {
 	Logger getLogger();
 	Level getLoggingLevel();
+	IDBHandler getDBHandler();
+	DBConfigObject getMiningDBConfig();
 	void setLoggingLevel(Level level);
 	/**
 	 * @return Startzeit des Servers

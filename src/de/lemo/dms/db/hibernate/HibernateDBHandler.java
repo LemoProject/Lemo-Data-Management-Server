@@ -6,6 +6,7 @@ import java.util.List;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 
 import org.apache.log4j.Logger;
@@ -99,8 +100,8 @@ public class HibernateDBHandler implements IDBHandler{
 	public void getConnection(DBConfigObject dbConf) {
 		try
 		{			
-			this.currentConfig = dbConf;
-			mining_session = de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(dbConf).openSession();		
+			if(mining_session == null)
+				mining_session = de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(dbConf).openSession();	
 		}catch(HibernateException he)
 		{
 			System.out.println(he.getMessage());
@@ -122,15 +123,16 @@ public class HibernateDBHandler implements IDBHandler{
 	/**
 	 * Performs a Hibernate query.
 	 */
-	public List<?> performQuery(String query) {
+	public List<?> performQuery(EQueryType queryType, String query) {
 		List<?> l = null;
 		try {
-			
-			l = mining_session.createQuery(query).list();
-			
+			if(queryType == EQueryType.SQL)
+				l = mining_session.createSQLQuery(query).list();
+			else if(queryType == EQueryType.HQL)
+				l = mining_session.createQuery(query).list();
 		}catch(HibernateException he)
 		{	
-			System.out.println(he.getMessage());
+			System.out.println("Exception: "+ he.getMessage());
 		}	
 		return l;
 	}
