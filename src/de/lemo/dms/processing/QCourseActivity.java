@@ -92,8 +92,7 @@ public class QCourseActivity extends Question{
 					rol += ")";
 				String query ="from CourseUserMining where "+ cou +" "+rol;
 				users = (List<CourseUserMining>)dbHandler.performQuery(EQueryType.HQL, query);
-			}
-			
+			}			
 			
 			//Create WHERE clause for user_ids
 			String use = "";
@@ -104,9 +103,7 @@ public class QCourseActivity extends Question{
 				else
 					use += "," + users.get(i).getUser().getId();
 			if(use != "")
-				use += ") AND";
-			
-			
+				use += ") AND";			
 			
 			String query = "from ResourceLogMining x where "+ cou + " " + use + " x.timestamp between '" + starttime + "' AND '" + endtime +"' order by x.timestamp asc";
 			List<ResourceLogMining> resource_logs = (List<ResourceLogMining>)dbHandler.performQuery(EQueryType.HQL, query);

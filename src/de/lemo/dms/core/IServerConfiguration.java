@@ -18,6 +18,7 @@ public interface IServerConfiguration {
 	Level getLoggingLevel();
 	IDBHandler getDBHandler();
 	DBConfigObject getMiningDBConfig();
+	DBConfigObject getSourceDBConfig();
 	void setLoggingLevel(Level level);
 	/**
 	 * @return Startzeit des Servers
