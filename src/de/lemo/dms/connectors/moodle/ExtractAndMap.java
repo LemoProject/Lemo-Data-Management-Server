@@ -3,6 +3,7 @@ package de.lemo.dms.connectors.moodle;
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -198,12 +199,12 @@ public abstract class ExtractAndMap{
  * When no argument is given the program starts with the timestamp of the last run.
  * @param args Optional arguments for the process. Used for the selection of the ExtractAndMap Implementation and timestamp when the extraction should start.
  * **/	
-	public void start(String[] args, IDBHandler dbh, DBConfigObject sourceDBConf, DBConfigObject miningDBConf) {
+	public void start(String[] args, DBConfigObject sourceDBConf) {
 		
-		dbHandler = dbh;
+		dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		c = new Clock();
 		starttime = System.currentTimeMillis()/1000;
-		dbHandler.getConnection(miningDBConf);//mining_session = HibernateUtil.getSessionFactoryMining().openSession();
+		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());//mining_session = HibernateUtil.getSessionFactoryMining().openSession();
 		
 //get the status of the mining DB; load timestamp of last update and objects needed for associations		
 		long readingtimestamp = getMiningInitial();
@@ -290,9 +291,9 @@ public abstract class ExtractAndMap{
 		//mining_session.clear();
 		
 		
-		config_mining_timestamp = (List<Timestamp>) dbHandler.performQuery("select max(lastmodified) from ConfigMining x order by x.id asc");//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
+		config_mining_timestamp = (List<Timestamp>) dbHandler.performQuery(EQueryType.SQL, "select max(lastmodified) from ConfigMining x order by x.id asc");//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
 		
-		List<Long> l = (List<Long>) (dbHandler.performQuery("select largestId from ConfigMining x order by x.id asc"));
+		List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.SQL, "select largestId from ConfigMining x order by x.id asc"));
 		if(l != null && l.size() > 0)
 			largestId = l.get(l.size()-1);
 		else
@@ -308,106 +309,106 @@ public abstract class ExtractAndMap{
 //load objects which are already in Mining DB for associations
 		
 		List<?> t;
-		t = dbHandler.performQuery("from CourseMining x order by x.id asc");//mining_session.createQuery("from CourseMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from CourseMining x order by x.id asc");//mining_session.createQuery("from CourseMining x order by x.id asc").list();
 		old_course_mining = new HashMap<Long, CourseMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_course_mining.put(((CourseMining)(t.get(i))).getId(), (CourseMining)t.get(i));
 		System.out.println("Loaded " + old_course_mining.size() + " CourseMining objects from the mining database.");
 		
-		t = dbHandler.performQuery("from QuizMining x order by x.id asc");//mining_session.createQuery("from QuizMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from QuizMining x order by x.id asc");//mining_session.createQuery("from QuizMining x order by x.id asc").list();
 		old_quiz_mining = new HashMap<Long, QuizMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_quiz_mining.put(((QuizMining)(t.get(i))).getId(), (QuizMining)t.get(i));
 		System.out.println("Loaded " + old_quiz_mining.size() + " QuizMining objects from the mining database.");
 		
-		t = dbHandler.performQuery("from AssignmentMining x order by x.id asc");// mining_session.createQuery("from AssignmentMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from AssignmentMining x order by x.id asc");// mining_session.createQuery("from AssignmentMining x order by x.id asc").list();
 		old_assignment_mining = new HashMap<Long, AssignmentMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_assignment_mining.put(((AssignmentMining)(t.get(i))).getId(), (AssignmentMining)t.get(i));
 		System.out.println("Loaded " + old_assignment_mining.size() + " AssignmentMining objects from the mining database.");
 		
-		t = dbHandler.performQuery("from ScormMining x order by x.id asc");//mining_session.createQuery("from ScormMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from ScormMining x order by x.id asc");//mining_session.createQuery("from ScormMining x order by x.id asc").list();
 		old_scorm_mining = new HashMap<Long, ScormMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_scorm_mining.put(((ScormMining)(t.get(i))).getId(), (ScormMining)t.get(i));
 		System.out.println("Loaded " + old_scorm_mining.size() + " ScormMining objects from the mining database.");		
 		
-		t = dbHandler.performQuery("from ForumMining x order by x.id asc");//mining_session.createQuery("from ForumMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from ForumMining x order by x.id asc");//mining_session.createQuery("from ForumMining x order by x.id asc").list();
 		old_forum_mining = new HashMap<Long, ForumMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_forum_mining.put(((ForumMining)(t.get(i))).getId(), (ForumMining)t.get(i));
 		System.out.println("Loaded " + old_forum_mining.size() + " ForumMining objects from the mining database.");
 		
-		t = dbHandler.performQuery("from ResourceMining x order by x.id asc");//mining_session.createQuery("from ResourceMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from ResourceMining x order by x.id asc");//mining_session.createQuery("from ResourceMining x order by x.id asc").list();
 		old_resource_mining = new HashMap<Long, ResourceMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_resource_mining.put(((ResourceMining)(t.get(i))).getId(), (ResourceMining)t.get(i));
 		System.out.println("Loaded " + old_resource_mining.size() + " ResourceMining objects from the mining database.");
 		
-		t = dbHandler.performQuery("from UserMining x order by x.id asc");//mining_session.createQuery("from UserMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from UserMining x order by x.id asc");//mining_session.createQuery("from UserMining x order by x.id asc").list();
 		old_user_mining = new HashMap<Long, UserMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_user_mining.put(((UserMining)(t.get(i))).getId(), (UserMining)t.get(i));
 		System.out.println("Loaded " + old_user_mining.size() + " UserMining objects from the mining database.");
 		
 		
-		t = dbHandler.performQuery("from WikiMining x order by x.id asc");//mining_session.createQuery("from WikiMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from WikiMining x order by x.id asc");//mining_session.createQuery("from WikiMining x order by x.id asc").list();
 		old_wiki_mining = new HashMap<Long, WikiMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_wiki_mining.put(((WikiMining)(t.get(i))).getId(), (WikiMining)t.get(i));
 		System.out.println("Loaded " + old_wiki_mining.size() + " WikiMining objects from the mining database.");
 		
-		t =dbHandler.performQuery("from GroupMining x order by x.id asc");//mining_session.createQuery("from GroupMining x order by x.id asc").list();
+		t =dbHandler.performQuery(EQueryType.HQL, "from GroupMining x order by x.id asc");//mining_session.createQuery("from GroupMining x order by x.id asc").list();
 		old_group_mining = new HashMap<Long, GroupMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_group_mining.put(((GroupMining)(t.get(i))).getId(), (GroupMining)t.get(i));
 		System.out.println("Loaded " + old_group_mining.size() + " GroupMining objects from the mining database.");
 		
 		
-		t =  dbHandler.performQuery("from QuestionMining x order by x.id asc");//mining_session.createQuery("from QuestionMining x order by x.id asc").list();
+		t =  dbHandler.performQuery(EQueryType.HQL, "from QuestionMining x order by x.id asc");//mining_session.createQuery("from QuestionMining x order by x.id asc").list();
 		old_question_mining = new HashMap<Long, QuestionMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_question_mining.put(((QuestionMining)(t.get(i))).getId(), (QuestionMining)t.get(i));
 		System.out.println("Loaded " + old_quiz_mining.size() + " QuestionMining objects from the mining database.");
 		
-		t = dbHandler.performQuery("from RoleMining x order by x.id asc");//mining_session.createQuery("from RoleMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from RoleMining x order by x.id asc");//mining_session.createQuery("from RoleMining x order by x.id asc").list();
 		old_role_mining = new HashMap<Long, RoleMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_role_mining.put(((RoleMining)(t.get(i))).getId(), (RoleMining)t.get(i));
 		System.out.println("Loaded " + old_role_mining.size() + " RoleMining objects from the mining database.");
 		
-		t = dbHandler.performQuery("from QuizQuestionMining x order by x.id asc");//mining_session.createQuery("from QuizQuestionMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from QuizQuestionMining x order by x.id asc");//mining_session.createQuery("from QuizQuestionMining x order by x.id asc").list();
 		old_quiz_question_mining = new HashMap<Long, QuizQuestionMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_quiz_question_mining.put(((QuizQuestionMining)(t.get(i))).getId(), (QuizQuestionMining)t.get(i));
 		System.out.println("Loaded " + old_quiz_question_mining.size() + " QuizQuestionMining objects from the mining database.");
 		
-		t =  dbHandler.performQuery("from DepartmentMining x order by x.id asc");//mining_session.createQuery("from DepartmentMining x order by x.id asc").list();
+		t =  dbHandler.performQuery(EQueryType.HQL, "from DepartmentMining x order by x.id asc");//mining_session.createQuery("from DepartmentMining x order by x.id asc").list();
 		old_department_mining = new HashMap<Long, DepartmentMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_department_mining.put(((DepartmentMining)(t.get(i))).getId(), (DepartmentMining)t.get(i));
 		System.out.println("Loaded " + old_department_mining.size() + " DepartmentMining objects from the mining database.");
 		
-		t = dbHandler.performQuery("from DegreeMining x order by x.id asc");//mining_session.createQuery("from DegreeMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from DegreeMining x order by x.id asc");//mining_session.createQuery("from DegreeMining x order by x.id asc").list();
 		old_degree_mining = new HashMap<Long, DegreeMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_degree_mining.put(((DegreeMining)(t.get(i))).getId(), (DegreeMining)t.get(i));
 		System.out.println("Loaded " + old_degree_mining.size() + " DegreeMining objects from the mining database.");
 		
-		t = dbHandler.performQuery("from ChatMining x order by x.id asc");//mining_session.createQuery("from ChatMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from ChatMining x order by x.id asc");//mining_session.createQuery("from ChatMining x order by x.id asc").list();
 		old_chat_mining = new HashMap<Long, ChatMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_chat_mining.put(((ChatMining)(t.get(i))).getId(), (ChatMining)t.get(i));
 		System.out.println("Loaded " + old_chat_mining.size() + " ChatMining objects from the mining database.");
 		
-		t = dbHandler.performQuery("from ChatMining x order by x.id asc");//mining_session.createQuery("from ChatMining x order by x.id asc").list();
+		t = dbHandler.performQuery(EQueryType.HQL, "from ChatMining x order by x.id asc");//mining_session.createQuery("from ChatMining x order by x.id asc").list();
 		old_chat_mining = new HashMap<Long, ChatMining>();
 		for(int i = 0; i < t.size(); i++)
 			old_chat_mining.put(((ChatMining)(t.get(i))).getId(), (ChatMining)t.get(i));
 		System.out.println("Loaded " + old_chat_mining.size() + " ChatMining objects from the mining database.");
 		
 		
-		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery("from IDMappingMining x order by x.id asc");
+		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(EQueryType.HQL, "from IDMappingMining x order by x.id asc");
 		
 		old_id_mapping = new HashMap<String, IDMappingMining>();
 		for(int i = 0; i < ids.size(); i++)

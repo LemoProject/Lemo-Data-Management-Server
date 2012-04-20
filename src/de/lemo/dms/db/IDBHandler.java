@@ -46,6 +46,6 @@ public interface IDBHandler {
 	 * because the type of the query is database-specific.
 	 * @return	list, containing the results of the query 
 	 */
-	public List<?> performQuery(String query);
+	public List<?> performQuery(EQueryType queryType, String query);
 	
 }

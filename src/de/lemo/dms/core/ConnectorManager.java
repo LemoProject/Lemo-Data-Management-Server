@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
-
+import de.lemo.dms.connectors.ConnectorDummy;
+import de.lemo.dms.connectors.EConnectorState;
+import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.moodle.ConnectorMoodle;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.ESourcePlatform;
-import de.lemo.dms.db.IConnector;
 
 public class ConnectorManager {
 	private static ConnectorManager instance = null;
@@ -18,17 +19,22 @@ public class ConnectorManager {
 	private HashMap<ESourcePlatform, IConnector> connectors;
 	private IConnector selectedConnector;
 	private Logger logger = config.getLogger();
+	private ConnectorGetDataWorkerThread getDataThread = null;
 	
 	//constructor with singleton pattern
 	private ConnectorManager() {
 		selectedConnector = null;
+		getDataThread = new ConnectorGetDataWorkerThread(selectedConnector);
 		//init the Connectors
 		connectors = new HashMap<ESourcePlatform, IConnector>();
 		//add the connectors
-		connectors.put(ESourcePlatform.Moodle_1_9, null);
-		connectors.put(ESourcePlatform.Clix, null);
-		connectors.put(ESourcePlatform.Chemgaroo, null);
-		//TODO Setzen der Destination DB
+		connectors.put(ESourcePlatform.Dummy, new ConnectorDummy());
+		connectors.put(ESourcePlatform.Moodle_1_9, new ConnectorMoodle());
+		
+		//TODO Manuelles setzen der DB Konfig
+		//TODO muss ausgelagert werden
+		//connectors.get(ESourcePlatform.Moodle_1_9).setMiningDBConfig(dbConf, dbHandler);
+		//connectors.get(ESourcePlatform.Moodle_1_9).setSourceDBConfig(dbConf);
 	}
 	
 	/**
@@ -53,7 +59,6 @@ public class ConnectorManager {
 		}
 		return result;
 	}
-	
 	
 	/**
 	 * 
@@ -98,11 +103,19 @@ public class ConnectorManager {
 	 * @return true is an connector selected otherwise false
 	 */
 	public boolean getData() {
+		//no connector
 		if(selectedConnector == null) {
 			return false;
 		}
-		selectedConnector.getData();
-		return true;
+		//connector is loading data
+		if(!getDataThread.isAlive()) {
+			getDataThread = new ConnectorGetDataWorkerThread(selectedConnector);
+			getDataThread.start();
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	/**
@@ -134,5 +147,26 @@ public class ConnectorManager {
 	public boolean loadDefaultConfiguration() {
 		//TODO implementieren des speicherns und ladens aus konfigurationsdateien
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @return the state of the connector
+	 * ready = ready to load data
+	 * progress = load data is in progress
+	 * noconnector = no connector is selected
+	 * noconfiguration = something is wrong with the configuration 
+	 */
+	public EConnectorState connectorState() {
+		if(selectedConnector == null) {
+			return EConnectorState.noconnector;
+		}
+		if(testConnections() == false) {
+			return EConnectorState.noconfiguration;
+		}
+		if(getDataThread.isAlive()) {
+			return EConnectorState.progress;
+		}
+		return EConnectorState.ready;
 	}
 }
