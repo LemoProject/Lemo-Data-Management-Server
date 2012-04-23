@@ -11,8 +11,10 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.processing.QCourseActivity;
+import de.lemo.dms.processing.QUserInformation;
+import de.lemo.dms.processing.QUserRoles;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.TestQuestion1;
 import de.lemo.dms.processing.parameter.Parameters;
 
 /**
@@ -33,7 +35,9 @@ public class ServiceQuestionParameter {
          * TODO make this dynamic, using a question manager
          */
         questions = new HashMap<String, Class<? extends Question>>();
-        questions.put("q1", TestQuestion1.class);
+        questions.put("courseactivity", QCourseActivity.class);
+        questions.put("userinformation", QUserInformation.class);
+        questions.put("userroles", QUserRoles.class);
     }
 
     @GET
