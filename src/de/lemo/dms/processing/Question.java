@@ -44,7 +44,7 @@ public abstract class Question extends BaseService {
      * 
      * @return An XML/JSON convertible parameter object
      */
-    public Parameters createParameters() {
+    public final Parameters getParameters() {
         String questionName = getClass().getCanonicalName();
 
         /*
@@ -91,7 +91,8 @@ public abstract class Question extends BaseService {
         }
 
         /*
-         * Now check integrity of each method parameter and its related meta data.
+         * Now check integrity of each method parameter and its related meta
+         * data.
          */
 
         for (Entry<String, Class<?>> entry : paramTypes.entrySet()) {

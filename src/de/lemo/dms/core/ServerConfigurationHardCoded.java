@@ -6,8 +6,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
-import com.sun.jersey.api.core.ResourceConfig;
-
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.hibernate.HibernateDBHandler;
@@ -27,7 +25,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	private DBConfigObject dbConfig = null;
 	private IDBHandler dbHandler = null;
 	private DBConfigObject sourceDBConfig = null;
-    private ResourceConfig resourceConfig;
+    private DMSResourceConfig resourceConfig;
 	//------------------------------------
 	//Hard codierte Konfiguration
 	private String loggerName = "lemo.dms";
@@ -167,7 +165,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	}
 
     @Override
-    public ResourceConfig getResourceConfig() {
+    public DMSResourceConfig getResourceConfig() {
         return resourceConfig;
     }
 

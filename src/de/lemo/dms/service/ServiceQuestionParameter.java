@@ -1,6 +1,6 @@
 package de.lemo.dms.service;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,27 +19,17 @@ import de.lemo.dms.processing.parameter.Parameters;
  */
 @Path("parameters/{qid}")
 @Produces(MediaType.APPLICATION_JSON)
-public class ServiceQuestionParameter extends QuestionBaseService {
+public class ServiceQuestionParameter extends BaseService {
 
     @GET
     public Parameters getParameter(@PathParam("qid") String questionId) {
-        HashMap<String, Class<? extends Question>> questions = getQuestions();
+        Map<String, Question> questions = config.getResourceConfig().getQuestionSingletons();
         if (!questions.containsKey(questionId)) {
             logger.warn("question " + questionId + " not found");
             // throw web exception
             return null;
         }
-
-        try {
-            return questions.get(questionId).newInstance().createParameters();
-        } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
+        return questions.get(questionId).getParameters();
     }
 
 }
