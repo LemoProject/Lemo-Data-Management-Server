@@ -16,27 +16,31 @@ import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
+import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResultList;
 
 @Path("courseactivity")
 public class QCourseActivity extends Question{
 
 	@Override
-	protected List<Parameter<?>> getParameterDescription() {
-        List<Parameter<?>> parameters = new LinkedList<Parameter<?>>();
-        Parameter<List<Long>> course_ids = new Parameter<List<Long>>("course_ids","Courses","List of courses.");
+	protected List<ParameterMetaData<?>> createParamMetaData() {
+	    List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
+        
         IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
         dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
-        List latest = dbHandler.performQuery(EQueryType.SQL, "Select max(timestamp) from resource_log");
-        Long t = System.currentTimeMillis()/1000;
-        if(latest.size() > 0)
-        	t = (Long)latest.get(0);
-        Parameter<Long> resolution = new Parameter<Long>("resolution", "Resolution", "");
-        Parameter<Long> starttime = new Interval<Long>("starttime", "Start time", "", 0L, t, 0L);
-        Parameter<Long> endtime = new Interval<Long>("endtime", "End time", "", 0L, t, t);
-        Parameter<List<Long>> role_ids = new Parameter<List<Long>>("role_ids", "Roles","List of roles.");
-        Collections.<Parameter<?>> addAll(parameters, course_ids, role_ids, starttime, endtime, resolution);
+        List<?> latest = dbHandler.performQuery(EQueryType.SQL, "Select max(timestamp) from resource_log");
+        Long now = System.currentTimeMillis()/1000;
         
+        if(latest.size() > 0)
+        	now = (Long)latest.get(0);
+     
+        Collections.<ParameterMetaData<?>> addAll( parameters,
+                Parameter.create("course_ids","Courses","List of courses."),
+                Parameter.create("role_ids", "Roles","List of roles."),
+                Interval.create(Long.class, "starttime", "Start time", "", 0L, now, 0L), 
+                Interval.create(Long.class, "endtime", "End time", "", 0L, now, now), 
+                Parameter.create("resolution", "Resolution", "")
+                );
         return parameters;
 	}
 	

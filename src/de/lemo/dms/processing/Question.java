@@ -90,7 +90,7 @@ public abstract class Question {
         }
 
         /*
-         * Now check consistency of method parameter and meta data.
+         * Now check integrity of each method parameter and its related meta data.
          */
 
         for (Entry<String, Class<?>> entry : paramTypes.entrySet()) {

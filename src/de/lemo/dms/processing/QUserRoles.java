@@ -11,7 +11,7 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.RoleMining;
-import de.lemo.dms.processing.parameter.Parameter;
+import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResultList;
 import de.lemo.dms.processing.resulttype.RoleObject;
 
@@ -19,9 +19,8 @@ import de.lemo.dms.processing.resulttype.RoleObject;
 public class QUserRoles extends Question{
 
 	@Override
-	protected List<Parameter<?>> getParameterDescription() {
-		
-		List<Parameter<?>> parameters = new LinkedList<Parameter<?>>();        
+	protected List<ParameterMetaData<?>> createParamMetaData() {
+		List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();        
         return parameters;
 	}
 	

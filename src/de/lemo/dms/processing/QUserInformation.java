@@ -14,8 +14,8 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.processing.parameter.Parameter;
+import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultList;
 
@@ -23,13 +23,15 @@ import de.lemo.dms.processing.resulttype.ResultList;
 public class QUserInformation extends Question{
 
 	@Override
-	protected List<Parameter<?>> getParameterDescription() {
+	protected List<ParameterMetaData<?>> createParamMetaData() {
 		// TODO Auto-generated method stub
-		List<Parameter<?>> parameters = new LinkedList<Parameter<?>>();
-		Parameter<Long> id = new Parameter<Long>("user_id","User","ID of the user.");
-		Parameter<Long> count = new Parameter<Long>("course_count","Course count","Number of courses that should be displayed.");
-		Parameter<Long> offset = new Parameter<Long>("course_offset","Course offset","");
-        Collections.<Parameter<?>> addAll(parameters, id, count, offset);
+		List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
+		
+		Collections.<Parameter<?>> addAll( parameters,
+		    Parameter.create("user_id","User","ID of the user."),
+		    Parameter.create("course_count","Course count","Number of courses that should be displayed."),
+		    Parameter.create("course_offset","Course offset","")
+        );
         
         return parameters;
 	}

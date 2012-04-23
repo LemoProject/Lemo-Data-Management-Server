@@ -1,7 +1,6 @@
 package de.lemo.dms.processing.parameter;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
