@@ -33,8 +33,7 @@ public class ConnectorManager {
 		
 		//TODO Manuelles setzen der DB Konfig
 		//TODO muss ausgelagert werden
-		//connectors.get(ESourcePlatform.Moodle_1_9).setMiningDBConfig(dbConf, dbHandler);
-		//connectors.get(ESourcePlatform.Moodle_1_9).setSourceDBConfig(dbConf);
+		connectors.get(ESourcePlatform.Moodle_1_9).setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
 	}
 	
 	/**

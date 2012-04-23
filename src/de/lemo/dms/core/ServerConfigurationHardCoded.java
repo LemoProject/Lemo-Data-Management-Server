@@ -20,6 +20,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	private long startTime = 0;
 	private DBConfigObject dbConfig = null;
 	private IDBHandler dbHandler = null;
+	private DBConfigObject sourceDBConfig = null;
 	//------------------------------------
 	//Hard codierte Konfiguration
 	private String loggerName = "lemo.dms";
@@ -43,6 +44,27 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 			logger.addAppender(filapp);
 			logger.setLevel(defaultLevel);
 			
+			//Setting up source database
+			sourceDBConfig = new DBConfigObject();
+
+			sourceDBConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+			sourceDBConfig.addProperty("hibernate.connection.url", "jdbc:mysql://localhost/lmsmoodle");
+			sourceDBConfig.addProperty("hibernate.connection.username", "datamining");
+			sourceDBConfig.addProperty("hibernate.connection.password", "LabDat1#");
+			
+			sourceDBConfig.addProperty("hibernate.c3p0.min_size", "5");
+			sourceDBConfig.addProperty("hibernate.c3p0.max_size", "20");		
+			sourceDBConfig.addProperty("hibernate.c3p0.timeout", "300");
+			sourceDBConfig.addProperty("hibernate.c3p0.max_statements", "50");
+			sourceDBConfig.addProperty("hibernate.c3p0.idle_test_period", "3000");
+			
+			sourceDBConfig.addProperty("hibernate.cache.use_second_level_cache", "false");		
+			
+			//sourceConf.addProperty("hibernate.show_sql", "true");
+			//sourceConf.addProperty("hibernate.format_sql", "true");
+			//sourceConf.addProperty("hibernate.use_sql_comments", "true");
+			
+			sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 
 			
 			//Setting up mining database
@@ -128,6 +150,12 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	@Override
 	public void setRemotePort(int port) {
 		this.port = port;		
+	}
+
+	@Override
+	public DBConfigObject getSourceDBConfig() {
+		// TODO Auto-generated method stub
+		return sourceDBConfig;
 	}
 
 }

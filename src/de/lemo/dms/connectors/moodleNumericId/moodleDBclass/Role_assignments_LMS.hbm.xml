@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Role_assignments_LMS"
+        table="role_assignments">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+            <generator class="native"/>
+        </id>
+
+        <property
+            name="roleid"
+            column="roleid"
+            type="long"/>
+
+        <property
+            name="contextid"
+            column="contextid"
+            type="long"/>
+
+        <property
+            name="userid"
+            column="userid"
+            type="string"/>    
+
+        <property
+            name="timestart"
+            column="timestart"
+            type="long"/>
+            
+        <property
+            name="timeend"
+            column="timeend"
+            type="long"/>
+
+        <property
+            name="timemodified"
+            column="timemodified"
+            type="long"/>
+
+        <property
+            name="modifierid"
+            column="modifierid"
+            type="long"/>
+
+    </class>
+
+</hibernate-mapping>

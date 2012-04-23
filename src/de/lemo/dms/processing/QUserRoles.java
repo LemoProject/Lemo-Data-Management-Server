@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
@@ -13,6 +15,7 @@ import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.resulttype.ResultList;
 import de.lemo.dms.processing.resulttype.RoleObject;
 
+@Path("userroles")
 public class QUserRoles extends Question{
 
 	@Override

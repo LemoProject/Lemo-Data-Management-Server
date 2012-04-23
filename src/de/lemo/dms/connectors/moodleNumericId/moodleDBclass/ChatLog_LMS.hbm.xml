@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLog_LMS"
+        table="chat_messages">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+            <generator class="native"/>
+        </id>
+
+        <property
+            name="chat_id"
+            column="chatid"
+            type="long"/>
+            
+        <property
+            name="userid"
+            column="userid"
+            type="string"/>
+            
+        <property
+            name="message"
+            column="message"
+            type="string"/>
+  
+        <property
+            name="timestamp"
+            column="timestamp"
+            type="long"/>  
+                
+    </class>
+
+</hibernate-mapping>
