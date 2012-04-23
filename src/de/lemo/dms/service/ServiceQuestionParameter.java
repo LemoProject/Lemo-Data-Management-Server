@@ -1,6 +1,7 @@
 package de.lemo.dms.service;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -8,12 +9,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.Logger;
-
-import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.processing.QCourseActivity;
-import de.lemo.dms.processing.QUserInformation;
-import de.lemo.dms.processing.QUserRoles;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.parameter.Parameters;
 
@@ -25,23 +20,33 @@ import de.lemo.dms.processing.parameter.Parameters;
  */
 @Path("parameters/{qid}")
 @Produces(MediaType.APPLICATION_JSON)
-public class ServiceQuestionParameter {
+public class ServiceQuestionParameter extends ServiceBaseService {
 
-    private Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
-
-    private static HashMap<String, Class<? extends Question>> questions;
-    static {
-        /*
-         * TODO make this dynamic, using a question manager
-         */
-        questions = new HashMap<String, Class<? extends Question>>();
-        questions.put("courseactivity", QCourseActivity.class);
-        questions.put("userinformation", QUserInformation.class);
-        questions.put("userroles", QUserRoles.class);
+    /**
+     * Searches through the currently available root resources (REST services)
+     * and returns a map of paths and services that extend {@link Question}.
+     * 
+     * @return A map with the question id/path as key and the class type as
+     *         value.
+     */
+    @SuppressWarnings("unchecked")
+    private HashMap<String, Class<? extends Question>> getQuestions() {
+        HashMap<String, Class<? extends Question>> questions = new HashMap<String, Class<? extends Question>>();
+        Set<Class<?>> resources = config.getResourceConfig().getRootResourceClasses();
+        for (Class<?> resource : resources) {
+            if (Question.class.isAssignableFrom(resource)) {
+                String path = resource.getAnnotation(Path.class).value();
+                questions.put(path, (Class<Question>) resource);
+            }
+        }
+        logger.debug("Resources: " + resources);
+        logger.debug("Question Resources: " + questions);
+        return questions;
     }
 
     @GET
     public Parameters getParameter(@PathParam("qid") String questionId) {
+        HashMap<String, Class<? extends Question>> questions = getQuestions();
         if (!questions.containsKey(questionId)) {
             logger.warn("question " + questionId + " not found");
             // throw web exception
