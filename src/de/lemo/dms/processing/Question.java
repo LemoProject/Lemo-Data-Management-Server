@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.parameter.Parameters;
+import de.lemo.dms.service.BaseService;
 
 /**
  * Base question, provides access to parameter type and meta information of the
@@ -23,7 +24,7 @@ import de.lemo.dms.processing.parameter.Parameters;
  */
 
 @Produces(MediaType.APPLICATION_JSON)
-public abstract class Question {
+public abstract class Question extends BaseService {
 
     /**
      * Implementations must provides additional information about the parameters
