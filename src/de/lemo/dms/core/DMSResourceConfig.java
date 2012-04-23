@@ -3,7 +3,7 @@ package de.lemo.dms.core;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.service.ServiceBaseService;
+import de.lemo.dms.service.BaseService;
 
 /**
  * Resource config for the DMS, used to discover (and autoload) webservices in
@@ -15,7 +15,7 @@ import de.lemo.dms.service.ServiceBaseService;
 public class DMSResourceConfig extends PackagesResourceConfig {
 
     public DMSResourceConfig() {
-        super(ServiceBaseService.class.getPackage().getName(), Question.class.getPackage().getName());
+        super(BaseService.class.getPackage().getName(), Question.class.getPackage().getName());
     }
 
 }

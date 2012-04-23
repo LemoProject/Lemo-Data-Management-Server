@@ -3,6 +3,8 @@ package de.lemo.dms.service;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import de.lemo.dms.core.ConnectorManager;
@@ -13,9 +15,9 @@ import de.lemo.dms.core.ConnectorManager;
  *
  */
 @Path("/loadwholedatabase")
-public class ServiceLoadWholeDatabase extends ServiceBaseService {
+public class ServiceLoadWholeDatabase extends BaseService {
 	
-	@GET @Produces("application/json")
+	@GET @Produces(MediaType.APPLICATION_JSON)
 	public JSONObject loadWholeDatabase() {
 		super.logger.info("call for service: loadWholeDatabase");
 		JSONObject rs = new JSONObject();

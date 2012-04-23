@@ -2,6 +2,7 @@ package de.lemo.dms.service;
 
 import java.text.SimpleDateFormat;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 import de.lemo.dms.service.servicecontainer.SCTime;
 
@@ -11,10 +12,10 @@ import de.lemo.dms.service.servicecontainer.SCTime;
  *
  */
 @Path("/starttime")
-public class ServiceStartTime extends ServiceBaseService{
+public class ServiceStartTime extends BaseService{
 	
 	@GET
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public SCTime startTimeJson() {
 		super.logger.info("call for service: startTimeJson");
 		SCTime rs = new SCTime();
@@ -22,7 +23,7 @@ public class ServiceStartTime extends ServiceBaseService{
 		return rs;
 	}
 	
-	@GET @Produces("text/html")
+	@GET @Produces(MediaType.TEXT_HTML)
 	public String startTimeHtml() {
 		super.logger.info("call for service: startTimeHtml");
 		SimpleDateFormat sd = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z");

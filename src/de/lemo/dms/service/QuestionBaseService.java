@@ -7,7 +7,12 @@ import javax.ws.rs.Path;
 
 import de.lemo.dms.processing.Question;
 
-public class QuestionBaseService extends ServiceBaseService {
+/**
+ * Used by services that need to operate with a collection of all questions.
+ * 
+ * @author Leonard Kappe
+ */
+public class QuestionBaseService extends BaseService {
 
     /**
      * Searches through the currently available root resources (REST services)

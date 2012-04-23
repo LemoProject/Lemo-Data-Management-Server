@@ -3,6 +3,8 @@ package de.lemo.dms.service;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import de.lemo.dms.connectors.EConnectorState;
@@ -19,9 +21,9 @@ import de.lemo.dms.core.ConnectorManager;
  * 
  */
 @Path("/getconnectorstate")
-public class ServiceGetConnectorState extends ServiceBaseService {
+public class ServiceGetConnectorState extends BaseService {
 	
-	@GET @Produces("application/json")
+	@GET @Produces(MediaType.APPLICATION_JSON)
 	public JSONObject getConnectrorStateJson() {
 		super.logger.info("call for service: getConnectrorStateJson");
 		ConnectorManager cm = ConnectorManager.getInstance();

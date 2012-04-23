@@ -10,11 +10,11 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
  * @author Boris Wenzlaff
  *
  */
-public abstract class ServiceBaseService {
+public abstract class BaseService {
 	protected IServerConfiguration config = null;
 	protected Logger logger = null;
 	
-	public ServiceBaseService() {
+	public BaseService() {
 		config = ServerConfigurationHardCoded.getInstance();
 		logger = config.getLogger();
 	}

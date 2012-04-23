@@ -6,6 +6,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
 import de.lemo.dms.core.ConnectorManager;
 import de.lemo.dms.db.ESourcePlatform;
 import de.lemo.dms.service.servicecontainer.SCConnectors;
@@ -16,13 +18,13 @@ import de.lemo.dms.service.servicecontainer.SCConnectors;
  *
  */
 @Path("/selectconnector")
-public class ServiceSelectConnector extends ServiceBaseService {
+public class ServiceSelectConnector extends BaseService {
 	
 	/**
 	 * @param connector name of the collector for the data import
 	 * @return name of the collector is the selection correct, otherwise returns "none"
 	 */
-	@GET @Produces("application/json")
+	@GET @Produces(MediaType.APPLICATION_JSON)
 	public SCConnectors selectConnectorJson(@QueryParam("connector") String connector) {
 		super.logger.info("call for service: selectConnectorJson");
 		ESourcePlatform c;

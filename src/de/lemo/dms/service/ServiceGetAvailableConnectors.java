@@ -1,6 +1,8 @@
 package de.lemo.dms.service;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+
 import de.lemo.dms.core.ConnectorManager;
 import de.lemo.dms.service.servicecontainer.SCConnectors;
 
@@ -11,9 +13,9 @@ import de.lemo.dms.service.servicecontainer.SCConnectors;
  */
 
 @Path("/getavailableconnectors")
-public class ServiceGetAvailableConnectors extends ServiceBaseService{
+public class ServiceGetAvailableConnectors extends BaseService{
 	
-	@GET @Produces("application/json")
+	@GET @Produces(MediaType.APPLICATION_JSON)
 	public SCConnectors getAvailableConnecttorsJson() {
 		super.logger.info("call for service: getAvailableConnecttorsJson");
 		SCConnectors rs = new SCConnectors();
@@ -21,7 +23,7 @@ public class ServiceGetAvailableConnectors extends ServiceBaseService{
 		return rs;
 	}
 	
-	@GET @Produces("text/html")
+	@GET @Produces(MediaType.TEXT_HTML)
 	public String getAvailableConnecttorsHtml() {
 		super.logger.info("call for service: getAvailableConnecttorsHtml");
 		StringBuilder result = new StringBuilder();
