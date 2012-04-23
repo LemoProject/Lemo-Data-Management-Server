@@ -1,9 +1,9 @@
 package de.lemo.dms.core;
 
 import java.io.IOException;
-import java.util.Date;
 
 import org.apache.log4j.Logger;
+
 import com.sun.grizzly.http.SelectorThread;
 import com.sun.jersey.api.container.grizzly.GrizzlyServerFactory;
 
@@ -20,6 +20,7 @@ public class DMSRemoteServer {
 	private IServerConfiguration config = null;
 	private SelectorThread server = null;
 	private Logger logger = null;
+
 	
 	/**
 	 * Singleton Pattern
@@ -74,7 +75,7 @@ public class DMSRemoteServer {
 	protected void start() throws IllegalArgumentException, IOException {
 		port = config.getRemotePort();
 		if (server == null) {
-			server = GrizzlyServerFactory.create("http://"+host+":"+ port);
+			server = GrizzlyServerFactory.create("http://"+host+":"+ port, config.getResourceConfig());
 			logger.info("remote server start... host: " + host + " on port " + port);
 		}
 		else {

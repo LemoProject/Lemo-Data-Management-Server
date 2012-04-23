@@ -1,6 +1,12 @@
 package de.lemo.dms.core;
 
-import org.apache.log4j.*;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+
+import com.sun.jersey.api.core.ResourceConfig;
 
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
@@ -21,10 +27,11 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	private DBConfigObject dbConfig = null;
 	private IDBHandler dbHandler = null;
 	private DBConfigObject sourceDBConfig = null;
+    private ResourceConfig resourceConfig;
 	//------------------------------------
 	//Hard codierte Konfiguration
 	private String loggerName = "lemo.dms";
-	private Level defaultLevel = Level.OFF;
+	private Level defaultLevel = Level.DEBUG;
 	private String logfileName = "./DatamanagementServer.log";
 	private int port = 4443;
 	//------------------------------------
@@ -92,6 +99,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 			//Setting up dbHandler
 			dbHandler = new HibernateDBHandler();
 
+			resourceConfig = new DMSResourceConfig();
 			
 		} catch (Exception ex) {
 			System.err.println("logger can't be initialize...");
@@ -157,5 +165,10 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 		// TODO Auto-generated method stub
 		return sourceDBConfig;
 	}
+
+    @Override
+    public ResourceConfig getResourceConfig() {
+        return resourceConfig;
+    }
 
 }

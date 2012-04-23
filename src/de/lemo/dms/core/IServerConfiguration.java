@@ -2,6 +2,8 @@ package de.lemo.dms.core;
 
 import org.apache.log4j.*;
 
+import com.sun.jersey.api.core.ResourceConfig;
+
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 
@@ -19,6 +21,7 @@ public interface IServerConfiguration {
 	IDBHandler getDBHandler();
 	DBConfigObject getMiningDBConfig();
 	DBConfigObject getSourceDBConfig();
+	ResourceConfig getResourceConfig();
 	void setLoggingLevel(Level level);
 	/**
 	 * @return Startzeit des Servers
