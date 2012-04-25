@@ -59,15 +59,17 @@ public class QUserInformation extends Question{
 				query += ")";
 		}
 		
-		
-		ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(EQueryType.HQL, "from CourseMining where id in " + query);
-		for(int i = 0; i < ci.size(); i++)
+		if(cu.size() > 0 )
 		{
-			ArrayList<?> parti = (ArrayList<?>) dbHandler.performQuery(EQueryType.SQL, "Select count(DISTINCT user_id) from course_user where course_id="+ci.get(i).getId());
-			ArrayList<?> latest = (ArrayList<?>) dbHandler.performQuery(EQueryType.SQL, "Select max(timestamp) from resource_log where course_id="+ci.get(i).getId());
-			CourseObject co = new CourseObject(ci.get(i).getId(), ci.get(i).getShortname(), ci.get(i).getTitle(), ((BigInteger)parti.get(0)).longValue(), ((BigInteger)latest.get(0)).longValue() );
-			courses.add(co);
-		}		
+			ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(EQueryType.HQL, "from CourseMining where id in " + query);
+			for(int i = 0; i < ci.size(); i++)
+			{
+				ArrayList<?> parti = (ArrayList<?>) dbHandler.performQuery(EQueryType.SQL, "Select count(DISTINCT user_id) from course_user where course_id="+ci.get(i).getId());
+				ArrayList<?> latest = (ArrayList<?>) dbHandler.performQuery(EQueryType.SQL, "Select max(timestamp) from resource_log where course_id="+ci.get(i).getId());
+				CourseObject co = new CourseObject(ci.get(i).getId(), ci.get(i).getShortname(), ci.get(i).getTitle(), ((BigInteger)parti.get(0)).longValue(), ((BigInteger)latest.get(0)).longValue() );
+				courses.add(co);
+			}		
+		}
 		return new ResultList(courses);
 	}
 
