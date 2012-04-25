@@ -29,7 +29,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	//------------------------------------
 	//Hard codierte Konfiguration
 	private String loggerName = "lemo.dms";
-	private Level defaultLevel = Level.DEBUG;
+	private Level defaultLevel = Level.OFF;
 	private String logfileName = "./DatamanagementServer.log";
 	private int port = 4443;
 	//------------------------------------
@@ -75,9 +75,9 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 			//Setting up mining database
 			dbConfig = new DBConfigObject();
 			dbConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");		
-			dbConfig.addProperty("hibernate.connection.url", "jdbc:mysql://localhost/dmtest"); //hier db namen eintragen
-			dbConfig.addProperty("hibernate.connection.username", "datamining"); //db user
-			dbConfig.addProperty("hibernate.connection.password", "LabDat1#"); //user passwort
+			dbConfig.addProperty("hibernate.connection.url", "jdbc:mysql://localhost/lemo_destination_1"); //hier db namen eintragen
+			dbConfig.addProperty("hibernate.connection.username", "lemo"); //db user
+			dbConfig.addProperty("hibernate.connection.password", "123"); //user passwort
 			
 			dbConfig.addProperty("hibernate.c3p0.min_size", "5");
 			dbConfig.addProperty("hibernate.c3po.max_size", "20");

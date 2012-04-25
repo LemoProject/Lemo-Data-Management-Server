@@ -32,7 +32,7 @@ public class ServiceCatalog extends BaseService {
         sb.append("<table border = \"1\"> <thead>  <td><b>Question ID</b></td>  <td><b>Question Name</b></td>"
                 + "<td><b>Question Name</b></td>  </thead>\n");
         for (Entry<String, Question> entry : config.getResourceConfig().getQuestionSingletons().entrySet()) {
-            sb.append("<tr> <td>").append(entry.getKey()).append("</td> <td>").append(entry.getValue().getParameters())
+            sb.append("<tr> <td>").append(entry.getKey().toString()).append("</td> <td>").append(entry.getValue().getParameters().toString())
                     .append("</td> </tr>\n");
         }
         sb.append(" <table> </html> </body>");
