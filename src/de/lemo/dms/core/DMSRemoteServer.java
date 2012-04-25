@@ -77,6 +77,8 @@ public class DMSRemoteServer {
 		if (server == null) {
 			server = GrizzlyServerFactory.create("http://"+host+":"+ port, config.getResourceConfig());
 			logger.info("remote server start... host: " + host + " on port " + port);
+			server.setKeepAliveTimeoutInSeconds(config.getKeepAliveTimeoutInSec());
+			logger.info("Timeout: "+server.getKeepAliveTimeoutInSeconds()+" sec.");
 		}
 		else {
 			logger.info("remote server already started... host: " + host + " on port " + port);

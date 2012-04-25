@@ -32,6 +32,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	private Level defaultLevel = Level.OFF;
 	private String logfileName = "./DatamanagementServer.log";
 	private int port = 4443;
+	private int keepAlive = 180;
 	//------------------------------------
 		
 	// Singleton Pattern
@@ -160,7 +161,6 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 
 	@Override
 	public DBConfigObject getSourceDBConfig() {
-		// TODO Auto-generated method stub
 		return sourceDBConfig;
 	}
 
@@ -168,5 +168,10 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     public DMSResourceConfig getResourceConfig() {
         return resourceConfig;
     }
+
+	@Override
+	public int getKeepAliveTimeoutInSec() {
+		return keepAlive;
+	}
 
 }

@@ -33,6 +33,12 @@ public interface IServerConfiguration {
 	int getRemotePort();
 	
 	/**
+	 * 
+	 * @return the server timeout in seconds
+	 */
+	int getKeepAliveTimeoutInSec();
+	
+	/**
 	 * Setzt den Port fürt den Remote Server
 	 * @param port für Remote Server
 	 */
