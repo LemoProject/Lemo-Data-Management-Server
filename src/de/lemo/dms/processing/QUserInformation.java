@@ -1,15 +1,12 @@
 package de.lemo.dms.processing;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
-
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
@@ -18,8 +15,9 @@ import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultList;
+import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 
-@Path("userinformation")
+@Path("/userinformation")
 public class QUserInformation extends Question{
 
 	@Override
@@ -37,7 +35,7 @@ public class QUserInformation extends Question{
 	}
 	
 	@GET
-    public ResultList getCoursesByUser(@QueryParam("user_id") Long id, @QueryParam("course_count") Long count,
+    public ResultListCourseObject getCoursesByUser(@QueryParam("user_id") Long id, @QueryParam("course_count") Long count,
             @QueryParam("course_offset") Long offset) {
 		
 		ArrayList<CourseObject> courses = new ArrayList<CourseObject>();
@@ -76,7 +74,7 @@ public class QUserInformation extends Question{
 				courses.add(co);
 			}		
 		}
-		return new ResultList(courses);
+		return new ResultListCourseObject(courses);
 	}
 
 }
