@@ -9,6 +9,8 @@ import org.apache.log4j.PatternLayout;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.hibernate.HibernateDBHandler;
+import de.lemo.dms.processing.Question;
+import de.lemo.dms.service.BaseService;
 
 /**
  * Implementierung der Server Konfiguration als Singleton, mit
@@ -28,7 +30,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     private DMSResourceConfig resourceConfig;
 	//------------------------------------
 	//Hard codierte Konfiguration
-	private String loggerName = "lemo.dms";
+	// private String loggerName = "lemo.dms";
 	private Level defaultLevel = Level.OFF;
 	private String logfileName = "./DatamanagementServer.log";
 	private int port = 4443;
@@ -66,9 +68,9 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 			
 			sourceDBConfig.addProperty("hibernate.cache.use_second_level_cache", "false");		
 			
-			//sourceConf.addProperty("hibernate.show_sql", "true");
-			//sourceConf.addProperty("hibernate.format_sql", "true");
-			//sourceConf.addProperty("hibernate.use_sql_comments", "true");
+			//sourceDBConfig.addProperty("hibernate.show_sql", "true");
+			//sourceDBConfig.addProperty("hibernate.format_sql", "true");
+			//sourceDBConfig.addProperty("hibernate.use_sql_comments", "true");
 			
 			sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 
@@ -89,16 +91,16 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 			dbConfig.addProperty("hibernate.cache.use_second_level_cache", "false");
 			dbConfig.addProperty("hibernate.cache.use_query_level_cache", "false");		
 			
-			//miningConf.addProperty("hibernate.show_sql", "false");
-			//miningConf.addProperty("hibernate.format_sql", "false");
-			//miningConf.addProperty("hibernate.use_sql_comments", "true");					
+			//dbConfig.addProperty("hibernate.show_sql", "false");
+			//dbConfig.addProperty("hibernate.format_sql", "false");
+			//dbConfig.addProperty("hibernate.use_sql_comments", "true");					
 			dbConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-			//miningConf.addProperty("hibernate.hbm2ddl.auto","update");
+			//dbConfig.addProperty("hibernate.hbm2ddl.auto","update");
 			
 			//Setting up dbHandler
 			dbHandler = new HibernateDBHandler();
 
-			resourceConfig = new DMSResourceConfig();
+			resourceConfig = new DMSResourceConfig(BaseService.class.getPackage(), Question.class.getPackage());
 			
 		} catch (Exception ex) {
 			System.err.println("logger can't be initialize...");
