@@ -30,12 +30,5 @@ public static void main(String[] args) {
 		//Abbruch mit Exit Status 1
 		System.exit(1);
 	}
-
-	/**
-	 * Endlosschleife, stoppen des gesamten Servers über STRG + C
-	 */
-	while(true) {
-		
-	}
 }
 }
