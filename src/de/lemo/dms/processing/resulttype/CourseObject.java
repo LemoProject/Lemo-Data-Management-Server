@@ -1,21 +1,15 @@
 package de.lemo.dms.processing.resulttype;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
 @XmlRootElement
 public class CourseObject {
 
-	@XmlElement
 	private Long id;	
-	@XmlElement
 	private String title;
-	@XmlElement
 	private String description;
-	@XmlElement
 	private Long participants;
-	@XmlElement
 	private Long lastRequest;
 	
 	public CourseObject()
@@ -30,6 +24,26 @@ public class CourseObject {
 		this.lastRequest = lastRequest;
 	}
 	
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setParticipants(Long participants) {
+		this.participants = participants;
+	}
+
+	public void setLastRequest(Long lastRequest) {
+		this.lastRequest = lastRequest;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -45,6 +59,4 @@ public class CourseObject {
 	public Long getLastRequest() {
 		return lastRequest;
 	}
-	
-	
 }

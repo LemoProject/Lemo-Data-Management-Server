@@ -13,6 +13,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.RoleMining;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResultList;
+import de.lemo.dms.processing.resulttype.ResultListRoleObject;
 import de.lemo.dms.processing.resulttype.RoleObject;
 
 @Path("userroles")
@@ -26,9 +27,9 @@ public class QUserRoles extends Question{
 	
 	
 	@GET
-    public ResultList getUserRoles() {
+    public ResultListRoleObject getUserRoles() {
 	
-		ResultList res = null;
+		ResultListRoleObject res = null;
 		
 		//Set up db-connection
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
@@ -43,8 +44,7 @@ public class QUserRoles extends Question{
 			roles.add(ro);
 		}
 		
-		res = new ResultList(roles);
-		
+		res = new ResultListRoleObject(roles);
 		return res;
 		
 	}
