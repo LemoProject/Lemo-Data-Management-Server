@@ -132,7 +132,7 @@ public class HibernateDBHandler implements IDBHandler{
 				l = mining_session.createQuery(query).list();
 		}catch(HibernateException he)
 		{	
-			System.out.println("Exception: "+ he.getMessage());
+			he.printStackTrace();
 		}	
 		return l;
 	}

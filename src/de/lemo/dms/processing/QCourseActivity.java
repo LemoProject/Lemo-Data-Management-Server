@@ -1,5 +1,6 @@
 package de.lemo.dms.processing;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -32,7 +33,7 @@ public class QCourseActivity extends Question{
         Long now = System.currentTimeMillis()/1000;
         
         if(latest.size() > 0)
-        	now = (Long)latest.get(0);
+        	now = ((BigInteger)latest.get(0)).longValue();
      
         Collections.<ParameterMetaData<?>> addAll( parameters,
                 Parameter.create("course_ids","Courses","List of courses."),
