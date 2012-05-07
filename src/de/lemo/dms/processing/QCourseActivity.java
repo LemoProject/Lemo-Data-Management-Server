@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
@@ -20,10 +19,16 @@ import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResultList;
 
-@Path("courseactivity")
+@QuestionID("courseactivity")
 public class QCourseActivity extends Question{
 
-	@Override
+    private static final String COURSE_IDS = "course_ids";
+    private static final String ROLE_IDS = "role_ids";
+    private static final String STARTTIME = "starttime";
+    private static final String ENDTIME = "endtime";
+    private static final String RESOLUTION = "resolution";
+
+    @Override
 	protected List<ParameterMetaData<?>> createParamMetaData() {
 	    List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
         
@@ -36,28 +41,24 @@ public class QCourseActivity extends Question{
         	now = ((BigInteger)latest.get(0)).longValue();
      
         Collections.<ParameterMetaData<?>> addAll( parameters,
-                Parameter.create("course_ids","Courses","List of courses."),
-                Parameter.create("role_ids", "Roles","List of roles."),
-                Interval.create(Long.class, "starttime", "Start time", "", 0L, now, 0L), 
-                Interval.create(Long.class, "endtime", "End time", "", 0L, now, now), 
-                Parameter.create("resolution", "Resolution", "")
+                Parameter.create(COURSE_IDS,"Courses","List of courses."),
+                Parameter.create(ROLE_IDS, "Roles","List of roles."),
+                Interval.create(long.class, STARTTIME, "Start time", "", 0L, now, 0L), 
+                Interval.create(long.class, ENDTIME, "End time", "", 0L, now, now),
+                Parameter.create(RESOLUTION, "Resolution", "")
                 );
         return parameters;
 	}
 	
 	
 	@GET
-    public ResultList compute(@QueryParam("course_ids") List<Long> courses, @QueryParam("role_ids") List<Long> roles,
-            @QueryParam("starttime") Long starttime, @QueryParam("endtime") Long endtime, @QueryParam("resolution") int resolution) {
+    public ResultList compute(@QueryParam(COURSE_IDS) List<Long> courses, @QueryParam(ROLE_IDS) List<Long> roles,
+            @QueryParam(STARTTIME) long starttime, @QueryParam(ENDTIME) long endtime, @QueryParam(RESOLUTION) int resolution) {
 		
 		List<Long> list = new ArrayList<Long>();
 		//Check arguments
 		if(starttime < endtime && resolution > 0)
 		{
-			if(courses == null)
-				courses = new ArrayList<Long>();
-			if(roles == null)
-				roles = new ArrayList<Long>();
 			
 			//Set up db-connection
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
@@ -85,7 +86,8 @@ public class QCourseActivity extends Question{
 				cou += ") AND";
 			
 			String rol = "";
-			List<CourseUserMining> users = new ArrayList<CourseUserMining>();
+            String use = "";
+			
 			//Retrieve user-ids of users with specified roles in the courses
 			if(roles.size() > 0)
 			{
@@ -98,26 +100,27 @@ public class QCourseActivity extends Question{
 				if(rol != "")
 					rol += ")";
 				String query ="from CourseUserMining where "+ cou +" "+rol;
-				users = (List<CourseUserMining>)dbHandler.performQuery(EQueryType.HQL, query);
-			}			
-			
-			//Create WHERE clause for user_ids
-			String use = "";
-	
-			for(int i = 0; i < users.size(); i++)
-				if(i == 0)
-					use += "user in ("+users.get(i).getUser().getId();
-				else
-					use += "," + users.get(i).getUser().getId();
-			if(use != "")
-				use += ") AND";			
-			
+				
+				@SuppressWarnings("unchecked")
+                List<CourseUserMining> users = (List<CourseUserMining>)dbHandler.performQuery(EQueryType.HQL, query);
+				
+				//Create WHERE clause for user_ids
+    			for(int i = 0; i < users.size(); i++)
+    				if(i == 0)
+    					use += "user in ("+users.get(i).getUser().getId();
+    				else
+    					use += "," + users.get(i).getUser().getId();
+    			if(use != "")
+    				use += ") AND";			
+			}
 			String query = "from ResourceLogMining x where "+ cou + " " + use + " x.timestamp between '" + starttime + "' AND '" + endtime +"' order by x.timestamp asc";
-			List<ResourceLogMining> resource_logs = (List<ResourceLogMining>)dbHandler.performQuery(EQueryType.HQL, query);
+			
+			@SuppressWarnings("unchecked")
+            List<ResourceLogMining> resource_logs = (List<ResourceLogMining>)dbHandler.performQuery(EQueryType.HQL, query);
 			
 			for(int i = 0 ; i < resource_logs.size(); i++)
 			{
-				Integer pos =	new Double((resource_logs.get(i).getTimestamp() - starttime) / intervall).intValue();
+				Integer pos = new Double((resource_logs.get(i).getTimestamp() - starttime) / intervall).intValue();
 				if(pos>resolution-1)
 					pos = resolution-1;
 				else

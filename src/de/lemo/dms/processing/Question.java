@@ -25,7 +25,7 @@ import de.lemo.dms.service.BaseService;
 
 @Produces(MediaType.APPLICATION_JSON)
 public abstract class Question extends BaseService {
-
+    
     /**
      * Implementations must provides additional information about the parameters
      * of the question. For each {@link QueryParam} annotated parameter of the

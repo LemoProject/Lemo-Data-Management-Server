@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
@@ -14,10 +15,9 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.CourseObject;
-import de.lemo.dms.processing.resulttype.ResultList;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 
-@Path("/userinformation")
+@QuestionID("userinformation")
 public class QUserInformation extends Question{
 
 	@Override
@@ -44,7 +44,8 @@ public class QUserInformation extends Question{
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 		
-		ArrayList<Long> cu = (ArrayList<Long>)dbHandler.performQuery(EQueryType.SQL, "Select course_id from course_user where user_id=" + id);
+		@SuppressWarnings("unchecked")
+        ArrayList<Long> cu = (ArrayList<Long>)dbHandler.performQuery(EQueryType.SQL, "Select course_id from course_user where user_id=" + id);
 		
 		String query = "";
 		for(int i = 0; i < cu.size(); i++)
@@ -59,11 +60,14 @@ public class QUserInformation extends Question{
 		
 		if(cu.size() > 0 )
 		{
-			ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(EQueryType.HQL, "from CourseMining where id in " + query);
+			@SuppressWarnings("unchecked")
+            ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(EQueryType.HQL, "from CourseMining where id in " + query);
 			for(int i = 0; i < ci.size(); i++)
 			{
-				ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(EQueryType.HQL, "Select count(DISTINCT user) from CourseUserMining where course="+ci.get(i).getId());
-				ArrayList<Long> latest = (ArrayList<Long>) dbHandler.performQuery(EQueryType.HQL, "Select max(timestamp) FROM ResourceLogMining x WHERE x.course="+ci.get(i).getId());
+				@SuppressWarnings("unchecked")
+                ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(EQueryType.HQL, "Select count(DISTINCT user) from CourseUserMining where course="+ci.get(i).getId());
+				@SuppressWarnings("unchecked")
+                ArrayList<Long> latest = (ArrayList<Long>) dbHandler.performQuery(EQueryType.HQL, "Select max(timestamp) FROM ResourceLogMining x WHERE x.course="+ci.get(i).getId());
 				Long c_pa = 0L;
 				if(parti.size() > 0 && parti.get(0) != null)
 					c_pa = parti.get(0);

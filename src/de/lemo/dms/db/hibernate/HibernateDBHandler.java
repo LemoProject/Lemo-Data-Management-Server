@@ -28,7 +28,6 @@ import org.hibernate.Transaction;
 public class HibernateDBHandler implements IDBHandler{
 
 	static Session mining_session;
-	private DBConfigObject currentConfig;
 	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
 	
 	@Override

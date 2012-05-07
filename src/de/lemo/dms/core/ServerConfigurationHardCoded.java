@@ -55,11 +55,19 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
             System.err.println("logger can't be initialize...");
             System.err.println(ex.getMessage());
         }
-        resourceConfig = new DMSResourceConfig(BaseService.class.getPackage(), Question.class.getPackage());
+       
 	}
 	
-	protected void initDBConfig() {
-    	//Setting up source database
+    /*
+     * All classes that access the logger should be initialized in this method
+     * and not in the constructor to avoid duplication of this class' singleton
+     * (and thus duplicated log messages).
+     */
+    protected void initConfig() {
+	    
+	    resourceConfig = new DMSResourceConfig(BaseService.class.getPackage(), Question.class.getPackage());
+	    
+	    //Setting up source database
     	sourceDBConfig = new DBConfigObject();
     
     	sourceDBConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
@@ -124,7 +132,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
         if(instance == null) {
             ServerConfigurationHardCoded serverConfigurationHardCoded = new ServerConfigurationHardCoded();
             instance = serverConfigurationHardCoded;
-            serverConfigurationHardCoded.initDBConfig();
+            serverConfigurationHardCoded.initConfig();
         }
         return instance;
     }
