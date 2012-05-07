@@ -23,7 +23,7 @@ import de.lemo.dms.processing.QuestionID;
  */
 public class DMSResourceConfig extends DefaultResourceConfig {
 
-    private static final String QUESTION_BASE_PATH = "/questions";
+    public static final String QUESTION_BASE_PATH = "/questions/";
 
     private Map<String, Question> questionSingletons;
 
@@ -49,17 +49,6 @@ public class DMSResourceConfig extends DefaultResourceConfig {
     @Override
     public Map<String, Object> getExplicitRootResources() {
         return new HashMap<String, Object>(getQuestionSingletons());
-    }
-
-    // @Override
-    // public Set<Object> getRootResourceSingletons() {
-    // return new HashSet<Object>(getQuestionSingletons().values());
-    // }
-    //
-    @Override
-    public Set<Class<?>> getClasses() {
-        // TODO Auto-generated method stub
-        return super.getClasses();
     }
 
     /**
@@ -108,8 +97,8 @@ public class DMSResourceConfig extends DefaultResourceConfig {
         for(Class<?> resource : questionScanner.getClasses()) {
             if(Question.class.isAssignableFrom(resource)) {
                 Class<Question> question = (Class<Question>) resource;
-                String path = resource.getAnnotation(QuestionID.class).value().trim();
-                questions.put(QUESTION_BASE_PATH + (path.startsWith("/") ? "" : "/") + path, question);
+                String questionID = resource.getAnnotation(QuestionID.class).value().trim();
+                questions.put(QUESTION_BASE_PATH + questionID, question);
             }
         }
         return questions;

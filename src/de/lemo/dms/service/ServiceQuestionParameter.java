@@ -10,6 +10,8 @@ import javax.ws.rs.core.MediaType;
 
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.parameter.Parameters;
+import de.lemo.dms.service.responses.ResourceNotFoundException;
+import static de.lemo.dms.core.DMSResourceConfig.QUESTION_BASE_PATH;
 
 /**
  * Service provides meta data about a question's parameters.
@@ -17,19 +19,20 @@ import de.lemo.dms.processing.parameter.Parameters;
  * @author Leonard Kappe
  * 
  */
-@Path("parameters/{qid}")
+@Path(QUESTION_BASE_PATH + "parameters/{qid}")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceQuestionParameter extends BaseService {
 
     @GET
     public Parameters getParameter(@PathParam("qid") String questionId) {
         Map<String, Question> questions = config.getResourceConfig().getQuestionSingletons();
-        if (!questions.containsKey(questionId)) {
-            logger.warn("question " + questionId + " not found");
-            // throw web exception
-            return null;
+        String path = QUESTION_BASE_PATH + questionId;
+        if(!questions.containsKey(path)) {
+            logger.warn("Question '" + path + "' not found.");
+            throw new ResourceNotFoundException();
         }
-        return questions.get(questionId).getParameters();
+        logger.info("Getting parameters of'" + path + "'.");
+        return questions.get(path).getParameters();
     }
 
 }
