@@ -2,3 +2,4 @@
 .settings/
 *.log
 .project
+/src/de/lemo/dms/core/config.properties
