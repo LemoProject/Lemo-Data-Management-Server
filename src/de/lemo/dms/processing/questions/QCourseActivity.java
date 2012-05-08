@@ -1,4 +1,4 @@
-package de.lemo.dms.processing;
+package de.lemo.dms.processing.questions;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -7,8 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
@@ -16,14 +14,14 @@ import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
-import de.lemo.dms.processing.resulttype.ResultList;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 @QuestionID("courseactivity")
-@Path("/courseactivity")
 public class QCourseActivity extends Question{
 
     private static final String COURSE_IDS = "course_ids";
@@ -56,8 +54,6 @@ public class QCourseActivity extends Question{
 	
 	
     @GET
-	@Path("/compute")
-	@Produces("application/json")
     public ResultListLongObject compute(@QueryParam(COURSE_IDS) List<Long> courses, @QueryParam(ROLE_IDS) List<Long> roles,
             @QueryParam(STARTTIME) long starttime, @QueryParam(ENDTIME) long endtime, @QueryParam(RESOLUTION) int resolution) {
 		
