@@ -8,8 +8,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import de.lemo.dms.connectors.ESourcePlatform;
 import de.lemo.dms.core.ConnectorManager;
-import de.lemo.dms.db.ESourcePlatform;
 import de.lemo.dms.service.servicecontainer.SCConnectors;
 
 /**

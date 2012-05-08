@@ -8,10 +8,11 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import de.lemo.dms.connectors.ConnectorDummy;
 import de.lemo.dms.connectors.EConnectorState;
+import de.lemo.dms.connectors.ESourcePlatform;
 import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.moodle.ConnectorMoodle;
 import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.ESourcePlatform;
 
 public class ConnectorManager {
 	private static ConnectorManager instance = null;
@@ -30,6 +31,8 @@ public class ConnectorManager {
 		//add the connectors
 		connectors.put(ESourcePlatform.Dummy, new ConnectorDummy());
 		connectors.put(ESourcePlatform.Moodle_1_9, new ConnectorMoodle());
+		connectors.put(ESourcePlatform.Moodle_1_9_Numeric, new de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle());
+		connectors.put(ESourcePlatform.Chemgaroo, new ConnectorChemgapedia());
 		
 		//TODO Manuelles setzen der DB Konfig
 		//TODO muss ausgelagert werden
