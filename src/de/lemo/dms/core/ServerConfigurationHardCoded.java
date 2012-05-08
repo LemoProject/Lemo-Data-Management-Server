@@ -14,10 +14,10 @@ import de.lemo.dms.service.BaseService;
 
 /**
  * Implementierung der Server Konfiguration als Singleton, mit
- * Hard codierten Einstellungen.
+ * Hard codierten, sowie durch {@link Configuration} geladene Einstellungen.
  * 
  * @author Boris Wenzlaff
- *
+ * @author Leonard Kappe
  */
 public class ServerConfigurationHardCoded implements IServerConfiguration{
 	private static IServerConfiguration instance = null;
@@ -31,7 +31,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	//------------------------------------
 	//Hard codierte Konfiguration
 	// private String loggerName = "lemo.dms";
-	private Level defaultLevel = Level.INFO;
+	private Level defaultLevel = Level.toLevel(Configuration.getString("logger.level"), Level.INFO); //$NON-NLS-1$
 	private String logfileName = "./DatamanagementServer.log";
 	private int port = 4443;
 	private int keepAlive = 180;
@@ -45,14 +45,14 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
             logger = Logger.getRootLogger();
             // SimpleLayout layout = new SimpleLayout();
             PatternLayout layout = new PatternLayout();
-            layout.setConversionPattern("%p [%d{dd MMM yyyy HH:mm:ss,SSS}] [%C] [l:%L]- %m%n");
+            layout.setConversionPattern(Configuration.getString("logger.pattern")); //$NON-NLS-1$
             ConsoleAppender conapp = new ConsoleAppender(layout);
             logger.addAppender(conapp);
             FileAppender filapp = new FileAppender(layout, logfileName);
             logger.addAppender(filapp);
             logger.setLevel(defaultLevel);
         } catch (Exception ex) {
-            System.err.println("logger can't be initialize...");
+            System.err.println("logger can't be initialize..."); 
             System.err.println(ex.getMessage());
         }
        
@@ -71,17 +71,17 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     	sourceDBConfig = new DBConfigObject();
     
     	sourceDBConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-    	sourceDBConfig.addProperty("hibernate.connection.url", "jdbc:mysql://localhost/lmsmoodle");
-    	sourceDBConfig.addProperty("hibernate.connection.username", "datamining");
-    	sourceDBConfig.addProperty("hibernate.connection.password", "LabDat1#");
+    	sourceDBConfig.addProperty("hibernate.connection.url", Configuration.getString("source.hibernate.connection.url")); //$NON-NLS-1$ //$NON-NLS-2$
+    	sourceDBConfig.addProperty("hibernate.connection.username", Configuration.getString("source.hibernate.connection.username")); //$NON-NLS-1$ //$NON-NLS-2$
+    	sourceDBConfig.addProperty("hibernate.connection.password", Configuration.getString("source.hibernate.connection.password")); //$NON-NLS-1$ //$NON-NLS-2$
     	
     	sourceDBConfig.addProperty("hibernate.c3p0.min_size", "5");
-    	sourceDBConfig.addProperty("hibernate.c3p0.max_size", "20");		
+    	sourceDBConfig.addProperty("hibernate.c3p0.max_size", "20");
     	sourceDBConfig.addProperty("hibernate.c3p0.timeout", "300");
     	sourceDBConfig.addProperty("hibernate.c3p0.max_statements", "50");
     	sourceDBConfig.addProperty("hibernate.c3p0.idle_test_period", "3000");
     	
-    	sourceDBConfig.addProperty("hibernate.cache.use_second_level_cache", "false");		
+    	sourceDBConfig.addProperty("hibernate.cache.use_second_level_cache", "false");
     	
     	//sourceDBConfig.addProperty("hibernate.show_sql", "true");
     	//sourceDBConfig.addProperty("hibernate.format_sql", "true");
@@ -92,10 +92,10 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     	
     	//Setting up mining database
     	dbConfig = new DBConfigObject();
-    	dbConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");		
-    	dbConfig.addProperty("hibernate.connection.url", "jdbc:mysql://localhost:8889/datamining"); //hier db namen eintragen
-    	dbConfig.addProperty("hibernate.connection.username", "root"); //db user
-    	dbConfig.addProperty("hibernate.connection.password", "root"); //user passwort
+    	dbConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+    	dbConfig.addProperty("hibernate.connection.url", Configuration.getString("mining.hibernate.connection.url")); //hier db namen eintragen //$NON-NLS-1$ //$NON-NLS-2$
+    	dbConfig.addProperty("hibernate.connection.username", Configuration.getString("mining.hibernate.connection.username")); //db user //$NON-NLS-1$ //$NON-NLS-2$
+    	dbConfig.addProperty("hibernate.connection.password", Configuration.getString("mining.hibernate.connection.password")); //user passwort //$NON-NLS-1$ //$NON-NLS-2$
     	
     	dbConfig.addProperty("hibernate.c3p0.min_size", "5");
     	dbConfig.addProperty("hibernate.c3po.max_size", "20");
@@ -104,7 +104,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     	dbConfig.addProperty("hibernate.c3p0.idle_test_period", "3000");
     	
     	dbConfig.addProperty("hibernate.cache.use_second_level_cache", "false");
-    	dbConfig.addProperty("hibernate.cache.use_query_level_cache", "false");		
+    	dbConfig.addProperty("hibernate.cache.use_query_level_cache", "false");
     	
     	//dbConfig.addProperty("hibernate.show_sql", "false");
     	//dbConfig.addProperty("hibernate.format_sql", "false");
