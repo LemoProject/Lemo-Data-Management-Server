@@ -18,6 +18,11 @@
         <property
             name="hash"
             column="hash"
+            type="text"/>
+            
+		<property
+            name="platform"
+            column="platform"
             type="string"/>
                          
     </class>

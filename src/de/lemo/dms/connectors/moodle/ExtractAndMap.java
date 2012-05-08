@@ -268,6 +268,7 @@ public abstract class ExtractAndMap{
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (starttime));	
 	    config.setLargestId(largestId);
+	    config.setPlatform("Moodle19");
 	    dbHandler.saveToDB(config);
 	    //mining_session.saveOrUpdate(config);
 
@@ -291,9 +292,9 @@ public abstract class ExtractAndMap{
 		//mining_session.clear();
 		
 		
-		config_mining_timestamp = (List<Timestamp>) dbHandler.performQuery(EQueryType.SQL, "select max(lastmodified) from ConfigMining x order by x.id asc");//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
+		config_mining_timestamp = (List<Timestamp>) dbHandler.performQuery(EQueryType.HQL, "select max(lastmodified) from ConfigMining x order by x.id asc");//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
 		
-		List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.SQL, "select largestId from ConfigMining x order by x.id asc"));
+		List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.HQL, "select largestId from ConfigMining x order by x.id asc"));
 		if(l != null && l.size() > 0)
 			largestId = l.get(l.size()-1);
 		else
@@ -408,7 +409,7 @@ public abstract class ExtractAndMap{
 		System.out.println("Loaded " + old_chat_mining.size() + " ChatMining objects from the mining database.");
 		
 		
-		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(EQueryType.HQL, "from IDMappingMining x order by x.id asc");
+		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(EQueryType.HQL, "from IDMappingMining x WHERE x.platform='Moodle19' order by x.id asc");
 		
 		old_id_mapping = new HashMap<String, IDMappingMining>();
 		for(int i = 0; i < ids.size(); i++)

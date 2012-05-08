@@ -105,12 +105,6 @@ public abstract class ExtractAndMap{
 	/** The chat_log_mining. */
 	static HashMap<Long, ChatLogMining> chat_log_mining;
 	
-	/** The table that maps user-ids of the source database (string) onto numeric values.*/
-	static HashMap<String, IDMappingMining> id_mapping;
-	
-	/** The table that maps user-ids of the source database (string) onto numeric values.*/
-	static HashMap<String, IDMappingMining> old_id_mapping;
-	
 //lists of object tables which are already in the mining DB
 	/** A List of entries in the course table, needed for linking reasons in the process. */
 	static HashMap<Long, CourseMining> old_course_mining;
@@ -268,6 +262,7 @@ public abstract class ExtractAndMap{
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (starttime));	
 	    config.setLargestId(largestId);
+	    config.setPlatform("Moodle19_numeric");
 	    dbHandler.saveToDB(config);
 	    //mining_session.saveOrUpdate(config);
 
@@ -407,14 +402,6 @@ public abstract class ExtractAndMap{
 			old_chat_mining.put(((ChatMining)(t.get(i))).getId(), (ChatMining)t.get(i));
 		System.out.println("Loaded " + old_chat_mining.size() + " ChatMining objects from the mining database.");
 		
-		
-		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(EQueryType.HQL, "from IDMappingMining x order by x.id asc");
-		
-		old_id_mapping = new HashMap<String, IDMappingMining>();
-		for(int i = 0; i < ids.size(); i++)
-		{
-			old_id_mapping.put(ids.get(i).getHash(), ids.get(i));
-		}
 		//mining_session.clear();		
 
 	    return readingtimestamp;
@@ -479,7 +466,6 @@ public abstract class ExtractAndMap{
 		degree_mining.clear();
 		department_mining.clear();
 		chat_mining.clear();
-		id_mapping.clear();
 		chat_mining.clear();
 	}	
 	
@@ -503,7 +489,6 @@ public abstract class ExtractAndMap{
 		old_degree_mining.putAll(degree_mining);
 		old_department_mining.putAll(department_mining);
 		old_chat_mining.putAll(chat_mining);
-		old_id_mapping.putAll(id_mapping);
 	}
 	
 	/**
@@ -520,7 +505,6 @@ public abstract class ExtractAndMap{
 		//generate mining tables
 		if(user_mining == null){
 			
-			id_mapping = new HashMap<String, IDMappingMining>();
 			c.reset();
 			course_mining = generateCourseMining();
 			System.out.println("Generated " + course_mining.size() + " CourseMining entries in "+ c.getAndReset() +" s. ");
@@ -610,7 +594,6 @@ public abstract class ExtractAndMap{
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " DepartmentDegreeMining entries in "+ c.getAndReset() +" s. ");
 		updates.add(generateDegreeCourseMining().values());
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " DegreeCourseMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(id_mapping.values());
 		
 
 		//mining_session.clear();

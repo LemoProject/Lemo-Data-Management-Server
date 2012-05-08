@@ -4,7 +4,7 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 /**This class represents the log table for the resource object.*/
-public class ResourceLogMining {	
+public class ResourceLogMining implements Comparable<ResourceLogMining>{	
 	
 	private long id;
 	private ResourceMining resource;
@@ -13,6 +13,22 @@ public class ResourceLogMining {
 	private String action;
 	private long timestamp;
 	private long duration;
+	
+	@Override
+	public int compareTo(ResourceLogMining arg0) {
+		ResourceLogMining s;
+		try{
+			s = arg0;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.timestamp > s.getTimestamp())
+			return 1;
+		if(this.timestamp < s.getTimestamp())
+			return -1;
+		return 0;
+	}
 	
 	/**
 	 * Gets the duration of the access.
