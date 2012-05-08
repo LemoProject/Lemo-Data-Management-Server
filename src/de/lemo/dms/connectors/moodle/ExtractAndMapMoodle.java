@@ -480,7 +480,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       	       			{
 	       	       				id = largestId + 1;
 	       	       				largestId = id;
-	       	       				id_mapping.put(loadedItem2.getUserid(), new IDMappingMining(id, loadedItem2.getUserid()));
+	       	       				id_mapping.put(loadedItem2.getUserid(), new IDMappingMining(id, loadedItem2.getUserid(), "Moodle19"));
 	       	       				insert.setUser(id, user_mining, old_user_mining);
 	       	       			}
 	       	       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -665,7 +665,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
 	       				insert.setUser(id, user_mining, old_user_mining);
 	       			}
 	       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -729,7 +729,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
 	       				insert.setUser(id, user_mining, old_user_mining);
 	       			}
 	       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -824,7 +824,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        			{
        				id = largestId + 1;
        				largestId = id;
-       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
        				insert.setUser(id, user_mining, old_user_mining);
        			}
        			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -988,7 +988,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
 	       				insert.setUser(id, user_mining, old_user_mining);
 	       			}
 	       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -1025,7 +1025,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		       			{
     		       				id = largestId + 1;
     		       				largestId = id;
-    		       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+    		       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
     		       				insert.setUser(id, user_mining, old_user_mining);
     		       			}
     		       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -1083,7 +1083,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
 	       				insert.setUser(id, user_mining, old_user_mining);
 	       			}
 	       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -1141,7 +1141,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        			{
        				id = largestId + 1;
        				largestId = id;
-       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
        				insert.setUser(id, user_mining, old_user_mining);
        			}
        			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -1327,7 +1327,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        			{
        				id = largestId + 1;
        				largestId = id;
-       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
        				insert.setUser(id, user_mining, old_user_mining);
        			}
        			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -1437,7 +1437,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
 	       				insert.setUser(id, user_mining, old_user_mining);
 	       			}
 	       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -1495,7 +1495,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		{
 				long id = largestId + 1;
 	   			largestId = id;
-	   			id_mapping.put(loadedItem.getId(), new IDMappingMining(id, loadedItem.getId()));
+	   			id_mapping.put(loadedItem.getId(), new IDMappingMining(id, loadedItem.getId(), "Moodle19"));
 	   			insert.setId(id);
 	   				
 	   			if(insert.getId() > largestId)
@@ -1540,7 +1540,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
 	       				insert.setUser(id, user_mining, old_user_mining);
 	       			}
 	       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
@@ -1733,7 +1733,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        			{
        				id = largestId + 1;
        				largestId = id;
-       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid()));
+       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
        				insert.setUser(id, user_mining, old_user_mining);
        			}
        			if(insert.getUser() != null && insert.getUser().getId() > largestId)

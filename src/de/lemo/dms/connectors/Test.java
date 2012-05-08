@@ -1,6 +1,7 @@
 package de.lemo.dms.connectors;
 
 import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.moodle.ConnectorMoodle;
 
 
@@ -10,6 +11,7 @@ public class Test {
 	{
 		DBConfigObject sourceConf = new DBConfigObject();
 
+		/*
 		sourceConf.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
 		sourceConf.addProperty("hibernate.connection.url", "jdbc:mysql://localhost/lmsmoodle");
 		sourceConf.addProperty("hibernate.connection.username", "datamining");
@@ -28,9 +30,18 @@ public class Test {
 		//sourceConf.addProperty("hibernate.use_sql_comments", "true");
 		
 		sourceConf.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+		*/
 		
-		ConnectorMoodle cm = new ConnectorMoodle();
-				
+		sourceConf.addProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120416_lemo.log");
+		sourceConf.addProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
+		sourceConf.addProperty("filter_log_file", "false");
+		sourceConf.addProperty("process_metadata", "true");
+		sourceConf.addProperty("process_log_file", "false");
+		
+		ConnectorChemgapedia cm = new ConnectorChemgapedia();
+			
+		//ConnectorMoodle cm = new ConnectorMoodle();
+		
 		cm.setSourceDBConfig(sourceConf);
 		cm.getData();
 	}

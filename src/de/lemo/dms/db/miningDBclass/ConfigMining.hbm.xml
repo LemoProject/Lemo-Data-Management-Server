@@ -28,7 +28,12 @@
         <property
         	name="largestId"
         	column="largest_id"
-        	type="long"/>           
+        	type="long"/>   
+        	
+        <property
+        	name="platform"
+        	column="platform"
+        	type="string"/>           
                 
     </class>
 

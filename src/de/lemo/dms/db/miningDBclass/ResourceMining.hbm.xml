@@ -48,7 +48,7 @@
         <property
             name="url"
             column="url"
-            type="string"/>
+            type="text"/>
             
         <property
             name="position"

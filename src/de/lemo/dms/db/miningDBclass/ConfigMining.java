@@ -7,6 +7,15 @@ public class ConfigMining {
 	private long extractcycle;
 	private long elapsed_time;
 	private long largestId;
+	private String platform;
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
+	}
 
 	public long getLargestId() {
 		return largestId;

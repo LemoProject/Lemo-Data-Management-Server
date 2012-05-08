@@ -843,16 +843,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	for(Iterator<Log_LMS> iter = log_lms.iterator(); iter.hasNext(); ){
     		Log_LMS loadedItem = iter.next();
     		if(timestampIdMap.get(loadedItem.getTime()) != null && loadedItem.getModule().equals("quiz")){
-    			long uid = -1;
-    			if(id_mapping.get(loadedItem.getUserid()) != null)
-    				uid = id_mapping.get(loadedItem.getUserid()).getId();
-    			else if(old_id_mapping.get(loadedItem.getUserid()) != null)
-    				uid = old_id_mapping.get(loadedItem.getUserid()).getId();
-    			if(uid != -1)
-    			{
-    				question_log_mining.get(timestampIdMap.get(loadedItem.getTime())).setUser(uid, user_mining, old_user_mining);
-    				question_log_mining.get(timestampIdMap.get(loadedItem.getTime())).setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
-    			}
+
+    			question_log_mining.get(timestampIdMap.get(loadedItem.getTime())).setUser(loadedItem.getUserid(), user_mining, old_user_mining);
+    			question_log_mining.get(timestampIdMap.get(loadedItem.getTime())).setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
+    
     			if(question_log_mining.get(timestampIdMap.get(loadedItem.getTime())).getCourse() == null || question_log_mining.get(timestampIdMap.get(loadedItem.getTime())).getUser() == null)
     				question_log_mining.remove(timestampIdMap.get(loadedItem.getTime()));
     		}	
@@ -1161,30 +1155,23 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         {
             Log_LMS loadedItem = iter.next();
             
-            long uid = -1;
-            
-            if(id_mapping.get(loadedItem.getUserid()) != null)
-    			uid = id_mapping.get(loadedItem.getUserid()).getId();
-    		if(uid == -1 && old_id_mapping.get(loadedItem.getUserid()) != null)
-    			uid = old_id_mapping.get(loadedItem.getUserid()).getId();
-    		
     		//Creates a list of timestamps for every user indicating requests
     		//We later use this lists to determine the time a user accessed a resource
-            if(users.get(uid) == null)
+            if(users.get(loadedItem.getUserid()) == null)
         	{
             	//if the user isn't already listed, create a new key
         		ArrayList<Long> times = new ArrayList<Long>();
         		times.add(loadedItem.getTime());
-        		users.put(uid, times);
+        		users.put(loadedItem.getUserid(), times);
         	}
         	else
         	{
-        		ArrayList<Long> times = users.get(uid);
+        		ArrayList<Long> times = users.get(loadedItem.getUserid());
         		if(loadedItem.getAction() == "login")
         			times.add(0L);
         		if(!times.contains(loadedItem.getTime()))
         			times.add(loadedItem.getTime());
-        		users.put(uid, times);
+        		users.put(loadedItem.getUserid(), times);
         	}
             
             if(loadedItem.getModule().equals("resource")){

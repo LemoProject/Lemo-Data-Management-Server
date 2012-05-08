@@ -93,9 +93,9 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     	//Setting up mining database
     	dbConfig = new DBConfigObject();
     	dbConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");		
-    	dbConfig.addProperty("hibernate.connection.url", "jdbc:mysql://localhost:8889/datamining"); //hier db namen eintragen
-    	dbConfig.addProperty("hibernate.connection.username", "root"); //db user
-    	dbConfig.addProperty("hibernate.connection.password", "root"); //user passwort
+    	dbConfig.addProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/lemo_destination_1"); //hier db namen eintragen
+    	dbConfig.addProperty("hibernate.connection.username", "lemo"); //db user
+    	dbConfig.addProperty("hibernate.connection.password", "123"); //user passwort
     	
     	dbConfig.addProperty("hibernate.c3p0.min_size", "5");
     	dbConfig.addProperty("hibernate.c3po.max_size", "20");

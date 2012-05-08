@@ -1,6 +1,7 @@
 package de.lemo.dms.db.hibernate;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.ResourceMining;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -28,6 +30,7 @@ import org.hibernate.Transaction;
 public class HibernateDBHandler implements IDBHandler{
 
 	static Session mining_session;
+	private DBConfigObject currentConfig;
 	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
 	
 	@Override
@@ -57,21 +60,21 @@ public class HibernateDBHandler implements IDBHandler{
 		    			isNewTable = false;
 		    		}
 		    		
-		    		
 		    		mining_session.saveOrUpdate(o);
+		    		
 		    		i++;
 		    		
-		    	    if ( i % 60 == 0 ) {
+		    	    if ( i % 50 == 0 ) {
 		    	        //flush a batch of inserts and release memory:
 		    	    	mining_session.flush();
 		    	    	mining_session.clear();
 		    	    }    	    
 		    	}
 		    }
-	    	tx.commit();
+	    	tx.commit();	    	
 		    mining_session.clear();
 		    
-		}catch(Exception e)
+		}catch(HibernateException e)
 		{
 			System.out.println(e.getMessage());
 		}
@@ -131,7 +134,7 @@ public class HibernateDBHandler implements IDBHandler{
 				l = mining_session.createQuery(query).list();
 		}catch(HibernateException he)
 		{	
-			he.printStackTrace();
+			System.out.println("Exception: "+ he.getMessage());
 		}	
 		return l;
 	}

@@ -5,7 +5,16 @@ public class IDMappingMining {
 
 	private Long id;
 	private String hash;
+	private String platform;
 	
+	public String getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
+	}
+
 	public IDMappingMining()
 	{
 		
@@ -15,6 +24,14 @@ public class IDMappingMining {
 	{
 		this.id = id;
 		this.hash = hash;
+		this.platform = "Unknown";
+	}
+	
+	public IDMappingMining(long id, String hash, String platform)
+	{
+		this.id = id;
+		this.hash = hash;
+		this.platform = platform;
 	}
 	
 	public Long getId() {
