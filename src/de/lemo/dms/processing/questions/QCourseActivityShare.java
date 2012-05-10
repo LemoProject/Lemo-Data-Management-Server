@@ -9,19 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
 import de.lemo.dms.core.LongTupelHelper;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
-import de.lemo.dms.db.miningDBclass.ForumLogMining;
-import de.lemo.dms.db.miningDBclass.QuizLogMining;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-import de.lemo.dms.db.miningDBclass.ScormLogMining;
-import de.lemo.dms.db.miningDBclass.WikiLogMining;
+import de.lemo.dms.db.miningDBclass.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Parameter;
@@ -33,19 +27,18 @@ public class QCourseActivityShare extends Question{
 
 	@Override
 	protected List<ParameterMetaData<?>> createParamMetaData() {
-		// TODO Auto-generated method stub
 		List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
-		
 		Collections.<Parameter<?>> addAll( parameters,
 		    Parameter.create("course_id","course","Id of the course."),
 		    Parameter.create("starttime","Start time","Start time."),
 		    Parameter.create("endtime","End time","End time")
         );
-        
         return parameters;
 	}
 	
-	@GET
+	 
+    @SuppressWarnings("unchecked")
+    @GET
     public ResultList getCourseActivityShare(@QueryParam("course_id") Long course_id, @QueryParam("starttime") Long starttime,
             @QueryParam("endtime") Long endtime) {
 		
@@ -57,73 +50,29 @@ public class QCourseActivityShare extends Question{
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 
-			ArrayList<AssignmentLogMining> ass = (ArrayList<AssignmentLogMining>)dbHandler.performQuery(EQueryType.HQL, "from AssignmentLogMining where course=" + course_id +" and timestamp between "+ starttime + " AND " +endtime);
-			ArrayList<ResourceLogMining> res = (ArrayList<ResourceLogMining>)dbHandler.performQuery(EQueryType.HQL, "from ResourceLogMining where course=" + course_id +" and timestamp between "+ starttime + " AND " +endtime);
-			ArrayList<WikiLogMining> wik = (ArrayList<WikiLogMining>)dbHandler.performQuery(EQueryType.HQL, "from WikiLogMining where course=" + course_id +" and timestamp between "+ starttime + " AND " +endtime);
-			ArrayList<QuizLogMining> qui = (ArrayList<QuizLogMining>)dbHandler.performQuery(EQueryType.HQL, "from QuizLogMining where course=" + course_id +" and timestamp between "+ starttime + " AND " +endtime);
-			ArrayList<ForumLogMining> fom = (ArrayList<ForumLogMining>)dbHandler.performQuery(EQueryType.HQL, "from ForumLogMining where course=" + course_id +" and timestamp between "+ starttime + " AND " +endtime);
-			ArrayList<ScormLogMining> sco = (ArrayList<ScormLogMining>)dbHandler.performQuery(EQueryType.HQL, "from ScormLogMining where course=" + course_id +" and timestamp between "+ starttime + " AND " +endtime);
+			String constraints = " where course=" + course_id +" and timestamp between "+ starttime + " AND " +endtime;
 			
-			
-			for(int i = 0 ; i < ass.size(); i++)
-				if(user_a.get(ass.get(i).getUser().getId()) == null)
-					user_a.put(ass.get(i).getUser().getId(), new LongTupelHelper(ass.get(i).getUser().getId()));
-				else
-				{
-					Long l  = user_a.get(ass.get(i).getUser().getId()).getValue();
-					l++;
-					user_a.put(ass.get(i).getUser().getId(), new LongTupelHelper(ass.get(i).getUser().getId(), l));
-				}
-			
-			for(int i = 0 ; i < res.size(); i++)
-				if(user_a.get(res.get(i).getUser().getId()) == null)
-					user_a.put(res.get(i).getUser().getId(), new LongTupelHelper(res.get(i).getUser().getId()));
-				else
-				{
-					Long l  = user_a.get(res.get(i).getUser().getId()).getValue();
-					l++;
-					user_a.put(res.get(i).getUser().getId(), new LongTupelHelper(res.get(i).getUser().getId(), l));
-				}
-			
-			for(int i = 0 ; i < wik.size(); i++)
-				if(user_a.get(wik.get(i).getUser().getId()) == null)
-					user_a.put(wik.get(i).getUser().getId(), new LongTupelHelper(wik.get(i).getUser().getId()));
-				else
-				{
-					Long l  = user_a.get(wik.get(i).getUser().getId()).getValue();
-					l++;
-					user_a.put(wik.get(i).getUser().getId(), new LongTupelHelper(wik.get(i).getUser().getId(), l));
-				}
-			
-			for(int i = 0 ; i < fom.size(); i++)
-				if(user_a.get(fom.get(i).getUser().getId()) == null)
-					user_a.put(fom.get(i).getUser().getId(), new LongTupelHelper(fom.get(i).getUser().getId()));
-				else
-				{
-					Long l  = user_a.get(fom.get(i).getUser().getId()).getValue();
-					l++;
-					user_a.put(fom.get(i).getUser().getId(), new LongTupelHelper(fom.get(i).getUser().getId(), l));
-				}
-			
-			for(int i = 0 ; i < qui.size(); i++)
-				if(user_a.get(qui.get(i).getUser().getId()) == null)
-					user_a.put(qui.get(i).getUser().getId(), new LongTupelHelper(qui.get(i).getUser().getId()));
-				else
-				{
-					Long l  = user_a.get(qui.get(i).getUser().getId()).getValue();
-					l++;
-					user_a.put(qui.get(i).getUser().getId(), new LongTupelHelper(qui.get(i).getUser().getId(), l));
-				}
-			
-			for(int i = 0 ; i < sco.size(); i++)
-				if(user_a.get(sco.get(i).getUser().getId()) == null)
-					user_a.put(sco.get(i).getUser().getId(), new LongTupelHelper(sco.get(i).getUser().getId()));
-				else
-				{
-					Long l  = user_a.get(sco.get(i).getUser().getId()).getValue();
-					l++;
-					user_a.put(sco.get(i).getUser().getId(), new LongTupelHelper(sco.get(i).getUser().getId(), l));
-				}
+			List<ArrayList<ILogMining>> logs = new LinkedList<ArrayList<ILogMining>>();
+            Collections.addAll( logs,
+                (ArrayList<ILogMining>)dbHandler.performQuery(EQueryType.HQL, "from AssignmentLogMining" + constraints),
+                (ArrayList<ILogMining>)dbHandler.performQuery(EQueryType.HQL, "from ResourceLogMining" + constraints),
+                (ArrayList<ILogMining>)dbHandler.performQuery(EQueryType.HQL, "from WikiLogMining" + constraints),
+                (ArrayList<ILogMining>)dbHandler.performQuery(EQueryType.HQL, "from QuizLogMining" + constraints),
+                (ArrayList<ILogMining>)dbHandler.performQuery(EQueryType.HQL, "from ForumLogMining" + constraints),
+                (ArrayList<ILogMining>)dbHandler.performQuery(EQueryType.HQL, "from ScormLogMining" + constraints)
+            );
+
+            for(ArrayList<ILogMining> log : logs) {
+                for(int i = 0; i < log.size(); i++) {
+                    long id = log.get(i).getUser().getId();
+                    LongTupelHelper tuple = user_a.get(id);
+                    if(tuple == null)
+                        user_a.put(id, new LongTupelHelper(id));
+                    else
+                        tuple.incValue();
+                }
+            }
+            
 		}
 		
 		ArrayList<Long> result = new ArrayList<Long>();

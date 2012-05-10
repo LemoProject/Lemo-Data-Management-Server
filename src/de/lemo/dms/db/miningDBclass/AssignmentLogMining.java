@@ -3,7 +3,7 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 /**This class represents the log table for the assignment modules.*/
-public class AssignmentLogMining {
+public class AssignmentLogMining implements ILogMining{
 
 	private long id;
 	private UserMining user;

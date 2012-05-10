@@ -4,7 +4,7 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 /**This class represents the log table for the resource object.*/
-public class ResourceLogMining implements Comparable<ResourceLogMining>{	
+public class ResourceLogMining implements Comparable<ResourceLogMining>, ILogMining{	
 	
 	private long id;
 	private ResourceMining resource;
