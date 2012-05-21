@@ -3,6 +3,8 @@ package de.lemo.dms.db;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.Session;
+
 /**
  * Interface for the database connection and database specific operations.
  * 
@@ -10,6 +12,8 @@ import java.util.List;
  *
  */
 public interface IDBHandler {
+	
+	public Session getSession();
 
 	/**
 	 * Saves a collection of lists of mapped objects to the database.

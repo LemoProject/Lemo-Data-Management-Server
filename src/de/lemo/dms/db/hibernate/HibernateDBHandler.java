@@ -33,6 +33,11 @@ public class HibernateDBHandler implements IDBHandler{
 	private DBConfigObject currentConfig;
 	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
 	
+	
+	public Session getSession()
+	{
+		return mining_session;
+	}
 	@Override
 	/**
 	 * Saves a list of generic objects to the database.
@@ -103,7 +108,7 @@ public class HibernateDBHandler implements IDBHandler{
 		try
 		{			
 			if(mining_session == null)
-				mining_session = de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(dbConf).openSession();	
+				mining_session = de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(dbConf).openSession();
 		}catch(HibernateException he)
 		{
 			System.out.println(he.getMessage());

@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,10 +13,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
+import org.hibernate.proxy.HibernateProxy;
+
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
@@ -44,6 +50,8 @@ public class LogReader {
 	static HashMap<String, IDMappingMining> new_id_mapping;
 	
 	private HashMap<Long, ArrayList<LogObject>> userHistories = new HashMap<Long, ArrayList<LogObject>>();
+	
+	private HashMap<String, CourseMining> oldCourses = new HashMap<String, CourseMining>();
 	
 	ArrayList<ResourceLogMining> resourceLog = new ArrayList<ResourceLogMining>();
 	
@@ -79,10 +87,17 @@ public class LogReader {
 	    	for(int i = 0; i < rt.size(); i++)
 	    		this.oldResources.put(rt.get(i).getUrl(), rt.get(i));
 	    	System.out.println("Read "+rt.size() + " ResourceMinings from database.");
+	    	
+	    	List<CourseMining> cm  = (List<CourseMining>)dbHandler.performQuery(EQueryType.HQL, "FROM CourseMining");
+	    	for(int i = 0; i < cm.size(); i++)
+	    	{
+	    		this.oldCourses.put(cm.get(i).getTitle(), cm.get(i));
+	    	}
+	    	System.out.println("Read "+cm.size() + " CourseMinings from database.");
 	    
-	    	List<CourseResourceMining> courseResource = (List<CourseResourceMining>) dbHandler.performQuery(EQueryType.HQL, "FROM CourseResourceMining");
+	    	List<?> courseResource = (List<?>) dbHandler.performQuery(EQueryType.HQL, "FROM CourseResourceMining");
 	    	for(int i = 0; i < courseResource.size(); i++)
-	    		this.courseResources.put(courseResource.get(i).getResource().getUrl(), courseResource.get(i));
+	    		this.courseResources.put(((CourseResourceMining)courseResource.get(i)).getResource().getUrl(), ((CourseResourceMining)courseResource.get(i)));
 	    	System.out.println("Read "+courseResource.size() + " CourseResourceMinings from database.");
 	    	
 	    	
@@ -222,12 +237,22 @@ public class LogReader {
 	    					lo.setCourse(null);
 	    				}
 	    				else
-	    				{
-	    					CourseResourceMining cr = this.courseResources.get(lo.getUrl());
-	    					if(cr != null)
-	    						lo.setCourse(cr.getCourse());
-	    					else
-	    						lo.setCourse(null);	    					
+	    				{	    					
+	    					CourseResourceMining c = this.courseResources.get(lo.getUrl());
+	    					CourseMining co;
+	    					try{
+	    						HibernateProxy prox = (HibernateProxy)c.getCourse();
+	    						co = (CourseMining)prox.getHibernateLazyInitializer().getImplementation();
+	    					}catch(ClassCastException e)
+	    					{
+	    						co = c.getCourse();
+	    					}
+	    					catch(NullPointerException e)
+	    					{
+	    						co = null;
+	    					}
+	    					if(c != null)
+	    						lo.setCourse(co);   					
 	    				}
 
 	    				//Check if users is known
