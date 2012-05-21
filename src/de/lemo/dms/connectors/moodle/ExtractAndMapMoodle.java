@@ -251,11 +251,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	    	assignment_lms = assignments.list();		    	
 	        System.out.println("assignment_lms tables: " + assignment_lms.size());
 	    	
+	        
 	    	Query assignment_submission = session.createQuery("from Assignment_submissions_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	assignment_submission.setParameter("ceiling", ceiling);
 	    	assignment_submission.setParameter("readingtimestamp", readingfromtimestamp);
 	    	assignment_submission_lms = assignment_submission.list();		    	
 	        System.out.println("assignment_submission_lms tables: " + assignment_submission_lms.size());
+
 
 	    	Query quiz_grades = session.createQuery("from Quiz_grades_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	quiz_grades.setParameter("ceiling", ceiling);
@@ -399,10 +401,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	    	role_assignments.setParameter("readingtimestamp2", readingtotimestamp);
 	    	role_assignments_lms = role_assignments.list();		    	
 	    		    	
+	    
 	    	Query assignment_submission = session.createQuery("from Assignment_submissions_LMS x where x.timecreated>=:readingtimestamp and x.timecreated<=:readingtimestamp2 order by x.id asc");
 	    	assignment_submission.setParameter("readingtimestamp", readingfromtimestamp);
 	    	assignment_submission.setParameter("readingtimestamp2", readingtotimestamp);
 	    	assignment_submission_lms = assignment_submission.list();		    	
+
 
 	    	Query quiz_grades = session.createQuery("from Quiz_grades_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
 	    	quiz_grades.setParameter("readingtimestamp", readingfromtimestamp);
@@ -1012,24 +1016,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		       			if(id_mapping.get(loadedItem.getUserid()) != null)
     		       			{
     		       				id = id_mapping.get(loadedItem.getUserid()).getId();
-    		       				insert.setUser(id, user_mining, old_user_mining);
     		       			
     		       			}
     		       			if(id == -1 && old_id_mapping.get(loadedItem.getUserid()) != null)
     		       			{
     		       				id = old_id_mapping.get(loadedItem.getUserid()).getId();
-    		       				insert.setUser(id, user_mining, old_user_mining);
     		       			
     		       			}
-    		       			if(id == -1 )
-    		       			{
-    		       				id = largestId + 1;
-    		       				largestId = id;
-    		       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
-    		       				insert.setUser(id, user_mining, old_user_mining);
-    		       			}
-    		       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
-    		       				largestId = insert.getUser().getId();
     	    			}
     					if(loadedItem2.getQuiz() == insert.getQuiz().getId() && id == insert.getUser().getId() && loadedItem2.getTimemodified() == insert.getTimestamp()){
     						insert.setGrade(loadedItem2.getGrade());
@@ -1052,9 +1045,89 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return quiz_log_mining;
     }
 
-  public HashMap<Long, AssignmentLogMining> generateAssignmentLogMining(){
-	  HashMap<Long, AssignmentLogMining> assignment_log_mining = new HashMap<Long, AssignmentLogMining>();
-    	    	
+    public HashMap<Long, AssignmentLogMining> generateAssignmentLogMining(){
+	  
+    	HashMap<Long, AssignmentLogMining> assignment_log_mining = new HashMap<Long, AssignmentLogMining>();
+    	
+    	for(Iterator<Log_LMS> iter = log_lms.iterator(); iter.hasNext(); ) {
+    		Log_LMS loadedItem = iter.next();
+   	
+//insert assignments in assignment_log
+		if(loadedItem.getModule().equals("assignment")){
+			AssignmentLogMining insert = new AssignmentLogMining();
+		    insert.setId(loadedItem.getId());
+			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
+			
+			if(!numericUserId)
+			{
+    			long id = -1;
+       			if(id_mapping.get(loadedItem.getUserid()) != null)
+       			{
+       				id = id_mapping.get(loadedItem.getUserid()).getId();
+       				insert.setUser(id, user_mining, old_user_mining);	       			
+       			}
+       			if(id == -1 && old_id_mapping.get(loadedItem.getUserid()) != null)
+       			{
+       				id = old_id_mapping.get(loadedItem.getUserid()).getId();
+       				insert.setUser(id, user_mining, old_user_mining);	       		
+       			}
+       			if(id == -1 )
+       			{
+       				id = largestId + 1;
+       				largestId = id;
+       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
+       				insert.setUser(id, user_mining, old_user_mining);
+       			}
+       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
+       				largestId = insert.getUser().getId();
+			}    			
+			insert.setAction(loadedItem.getAction());
+			insert.setTimestamp(loadedItem.getTime());
+			insert.setAssignment(Long.valueOf(loadedItem.getInfo()), assignment_mining, old_assignment_mining);
+			
+			if(insert.getAssignment() != null && insert.getUser() != null && insert.getAction().equals("upload")){    
+				for (Iterator<Assignment_submissions_LMS> iter2 = assignment_submission_lms.iterator(); iter2.hasNext(); ) {
+					Assignment_submissions_LMS loadedItem2 = iter2.next();
+					
+					long id = -1;
+	    			if(!numericUserId)
+	    			{
+		       			if(id_mapping.get(loadedItem.getUserid()) != null)
+		       			{
+		       				id = id_mapping.get(loadedItem.getUserid()).getId();
+		       			}
+		       			if(id == -1 && old_id_mapping.get(loadedItem.getUserid()) != null)
+		       			{
+		       				id = old_id_mapping.get(loadedItem.getUserid()).getId();
+		       			}
+	    			}
+					if(loadedItem2.getAssignment() == insert.getAssignment().getId() && id == insert.getUser().getId() && loadedItem2.getTimemodified() == insert.getTimestamp()){
+						{
+							insert.setGrade(loadedItem2.getGrade());
+							insert.setFinalgrade(loadedItem2.getGrade());
+						}
+					}
+				}
+			}
+			
+			
+			if(insert.getAssignment()==null){
+	    		logger.info("In Assignment_log_mining, assignment not found for log: " + loadedItem.getId() + " and cmid: " + loadedItem.getCmid()+ " and info: " + loadedItem.getInfo());
+	    	}
+			if(insert.getCourse()==null){
+				logger.info("In Assignment_log_mining, course not found for log: " + loadedItem.getId() + " and course: " + loadedItem.getCourse());
+			}    			
+			if(insert.getUser()==null){
+				logger.info("In Assignment_log_mining, user not found for log: " + loadedItem.getId() +" and user: " + loadedItem.getUserid());
+			}    			
+			if(insert.getUser() != null && insert.getAssignment() != null && insert.getCourse() != null)
+				assignment_log_mining.put(insert.getId(), insert);
+		}
+		
+    }
+
+	  
+/*	  
     	for (Iterator<Log_LMS> iter = log_lms.iterator(); iter.hasNext(); ) {
     		Log_LMS loadedItem = iter.next();
        	
@@ -1070,14 +1143,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			if(id_mapping.get(loadedItem.getUserid()) != null)
 	       			{
 	       				id = id_mapping.get(loadedItem.getUserid()).getId();
-	       				insert.setUser(id, user_mining, old_user_mining);
-	       			
+	       				insert.setUser(id, user_mining, old_user_mining);	       			
 	       			}
 	       			if(id == -1 && old_id_mapping.get(loadedItem.getUserid()) != null)
 	       			{
 	       				id = old_id_mapping.get(loadedItem.getUserid()).getId();
-	       				insert.setUser(id, user_mining, old_user_mining);
-	       		
+	       				insert.setUser(id, user_mining, old_user_mining);	       		
 	       			}
 	       			if(id == -1 )
 	       			{
@@ -1088,11 +1159,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			}
 	       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
 	       				largestId = insert.getUser().getId();
-    			}
-    			
+    			}    			
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
 
+    			if(insert.getAction().equals("submit"))
+    				;
+    			
     			insert.setAssignment(Long.valueOf(loadedItem.getInfo()), assignment_mining, old_assignment_mining);
     			if(insert.getAssignment()==null){
     	    		logger.info("In Assignment_log_mining, assignment not found for log: " + loadedItem.getId() + " and cmid: " + loadedItem.getCmid()+ " and info: " + loadedItem.getInfo());
@@ -1108,6 +1181,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		}
     		
         }
+        */
 		return assignment_log_mining;
     }
 
