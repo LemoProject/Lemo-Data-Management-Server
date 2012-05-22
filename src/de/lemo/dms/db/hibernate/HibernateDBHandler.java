@@ -1,20 +1,18 @@
 package de.lemo.dms.db.hibernate;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.EQueryType;
-import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.ResourceMining;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.EQueryType;
+import de.lemo.dms.db.IDBHandler;
 
 
 
@@ -93,6 +91,11 @@ public class HibernateDBHandler implements IDBHandler{
 		// TODO Auto-generated method stub
 		
 	}
+	
+    public Session getSession(DBConfigObject dbConf){
+        getConnection(dbConf);
+        return mining_session;
+    }
 
 	@Override
 	/**

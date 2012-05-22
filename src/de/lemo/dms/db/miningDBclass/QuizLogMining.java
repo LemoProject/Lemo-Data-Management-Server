@@ -2,6 +2,9 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+
+
 /**This class represents the log table for the quiz modules.*/
 public class QuizLogMining implements ILogMining {
 

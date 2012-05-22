@@ -3,6 +3,8 @@ package de.lemo.dms.db;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.Session;
+
 /**
  * Interface for the database connection and database specific operations.
  * 
@@ -48,4 +50,9 @@ public interface IDBHandler {
 	 */
 	public List<?> performQuery(EQueryType queryType, String query);
 	
+	/**
+	 * 
+	 * @return the currrent session
+	 */
+	public Session getSession(DBConfigObject dbConf);
 }

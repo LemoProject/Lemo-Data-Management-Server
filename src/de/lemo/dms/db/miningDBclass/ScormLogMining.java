@@ -3,7 +3,7 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 /**This class represents the log table for the scorm modules.*/
-public class ScormLogMining implements ILogMining {
+public class ScormLogMining {
 
 	private long id;
 	private UserMining user;
