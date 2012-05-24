@@ -12,6 +12,8 @@ import org.hibernate.Session;
  *
  */
 public interface IDBHandler {
+	
+	public Session getSession();
 
 	/**
 	 * Saves a collection of lists of mapped objects to the database.

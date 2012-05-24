@@ -51,9 +51,7 @@ public class ConnectorChemgapedia implements IConnector{
 	public void getData() {
 		Long starttime = System.currentTimeMillis()/1000;
 		
-		Long largestId = 0L;
-		Clock c = new Clock();
-		
+		Long largestId = -1L;		
 		if(processVSC)
 		{
 			XMLPackageParser x = new XMLPackageParser();
@@ -62,7 +60,7 @@ public class ConnectorChemgapedia implements IConnector{
 		}
 		if(processLog)
 		{			
-			LogReader logR = new LogReader();
+			LogReader logR = new LogReader(largestId);
 			logR.loadServerLogData(logPath);
 			if(filter)
 				
@@ -83,8 +81,34 @@ public class ConnectorChemgapedia implements IConnector{
 
 	@Override
 	public void updateData(long fromTimestamp) {
+Long starttime = System.currentTimeMillis()/1000;
 		
+		Long largestId = -1L;		
+		if(processVSC)
+		{
+			XMLPackageParser x = new XMLPackageParser();
+			x.readAllVlus(vscPath);
+			largestId = x.saveAllToDB();
+		}
+		if(processLog)
+		{			
+			LogReader logR = new LogReader(largestId);
+			logR.loadServerLogData(logPath);
+			if(filter)
+				
+				logR.filterServerLogFile();
+			logR.usersToDB();
+			largestId = logR.resourceLogsToDB();
+		}
 		
+		Long endtime = System.currentTimeMillis()/1000;
+		ConfigMining config = new ConfigMining();
+	    config.setLastmodified(System.currentTimeMillis());
+	    config.setElapsed_time((endtime) - (starttime));	
+	    config.setLargestId(largestId);
+	    config.setPlatform("Chemgapedia");
+	    ServerConfigurationHardCoded.getInstance().getDBHandler().saveToDB(config);
+		ServerConfigurationHardCoded.getInstance().getDBHandler().closeConnection();
 	}
 
 	@Override

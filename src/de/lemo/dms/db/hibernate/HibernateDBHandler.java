@@ -1,21 +1,20 @@
 package de.lemo.dms.db.hibernate;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 
-
-
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 
 /**
@@ -28,9 +27,13 @@ import de.lemo.dms.db.IDBHandler;
 public class HibernateDBHandler implements IDBHandler{
 
 	static Session mining_session;
-	private DBConfigObject currentConfig;
 	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
 	
+	
+	public Session getSession()
+	{
+		return mining_session;
+	}
 	@Override
 	/**
 	 * Saves a list of generic objects to the database.
@@ -38,8 +41,46 @@ public class HibernateDBHandler implements IDBHandler{
 	 */
 	public void saveToDB(List<Collection<?>> data) {
 		 
-		try{
+		try{		
+			List<Object> objects = new ArrayList<Object>();
+			for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
+		    {
+				Collection<?> l = iter.next();
+		    	for ( Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
+	
+		    		Object o = iter2.next();
+		    				    		
+	    			objects.add(mining_session.merge(o));
+    		
+		    	}
+		    }
 			Transaction tx = mining_session.beginTransaction();
+			int classOb = 0;
+			String className = "";
+			for(int i = 0; i < objects.size(); i++)
+			{
+				
+				if(!className.equals("") && !className.equals(objects.get(i).getClass().getName()))
+				{
+					System.out.println("Wrote " + classOb +" objects of class "+className);
+					classOb = 0;
+				}
+				className = objects.get(i).getClass().getName();
+					
+				classOb++;
+				mining_session.saveOrUpdate(objects.get(i));
+				
+				if ( i % 50 == 0 ) {
+	    	        //flush a batch of inserts and release memory:
+	    	    	mining_session.flush();
+	    	    	mining_session.clear();
+	    	    }     
+			}
+			System.out.println("Wrote " + classOb +" objects of class " + className + " to database.");			
+			tx.commit();	    	
+		    mining_session.clear();
+			
+			/*
 			Long i = 0L;
 			boolean isNewTable = true;
 			//Iterate through all object-lists
@@ -59,19 +100,18 @@ public class HibernateDBHandler implements IDBHandler{
 		    		}
 		    		
 		    		mining_session.saveOrUpdate(o);
-		    		
-		    		i++;
-		    		
+
+
 		    	    if ( i % 50 == 0 ) {
 		    	        //flush a batch of inserts and release memory:
 		    	    	mining_session.flush();
 		    	    	mining_session.clear();
-		    	    }    	    
+		    	    }       
 		    	}
 		    }
 	    	tx.commit();	    	
 		    mining_session.clear();
-		    
+		    */
 		}catch(HibernateException e)
 		{
 			System.out.println(e.getMessage());
@@ -106,7 +146,7 @@ public class HibernateDBHandler implements IDBHandler{
 		try
 		{			
 			if(mining_session == null)
-				mining_session = de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(dbConf).openSession();	
+				mining_session = de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(dbConf).openSession();
 		}catch(HibernateException he)
 		{
 			System.out.println(he.getMessage());

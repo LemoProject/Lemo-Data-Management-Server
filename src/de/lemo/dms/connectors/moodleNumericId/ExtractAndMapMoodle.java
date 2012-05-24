@@ -896,35 +896,46 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 
   public HashMap<Long, AssignmentLogMining> generateAssignmentLogMining(){
 	  HashMap<Long, AssignmentLogMining> assignment_log_mining = new HashMap<Long, AssignmentLogMining>();
-    	    	
-    	for (Iterator<Log_LMS> iter = log_lms.iterator(); iter.hasNext(); ) {
-    		Log_LMS loadedItem = iter.next();
-       	
+  	
+  	for(Iterator<Log_LMS> iter = log_lms.iterator(); iter.hasNext(); ) {
+  		Log_LMS loadedItem = iter.next();
+ 	
 //insert assignments in assignment_log
-    		if(loadedItem.getInfo().matches("[0-9]+")){
-    			AssignmentLogMining insert = new AssignmentLogMining();
-    		    insert.setId(loadedItem.getId());
-    			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
-    			insert.setUser(loadedItem.getUserid(), user_mining, old_user_mining);
-    			
-    			insert.setAction(loadedItem.getAction());
-    			insert.setTimestamp(loadedItem.getTime());
-
-    			insert.setAssignment(Long.valueOf(loadedItem.getInfo()), assignment_mining, old_assignment_mining);
-    			if(insert.getAssignment()==null){
-    	    		logger.info("In Assignment_log_mining, assignment not found for log: " + loadedItem.getId() + " and cmid: " + loadedItem.getCmid()+ " and info: " + loadedItem.getInfo());
-    	    	}
-    			if(insert.getCourse()==null){
-    				logger.info("In Assignment_log_mining, course not found for log: " + loadedItem.getId() + " and course: " + loadedItem.getCourse());
-    			}    			
-    			if(insert.getUser()==null){
-    				logger.info("In Assignment_log_mining, user not found for log: " + loadedItem.getId() +" and user: " + loadedItem.getUserid());
-    			}    			
-    			if(insert.getUser() != null && insert.getAssignment() != null && insert.getCourse() != null)
-    				assignment_log_mining.put(insert.getId(), insert);
-    		}
-    		
-        }
+		if(loadedItem.getModule().equals("assignment") && loadedItem.getInfo().matches("[0-9]++")){
+			AssignmentLogMining insert = new AssignmentLogMining();
+		    insert.setId(loadedItem.getId());
+			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);			
+			insert.setUser(loadedItem.getUserid(), user_mining, old_user_mining);
+			insert.setAction(loadedItem.getAction());
+			insert.setTimestamp(loadedItem.getTime());
+			insert.setAssignment(Long.valueOf(loadedItem.getInfo()), assignment_mining, old_assignment_mining);
+			
+			if(insert.getAssignment() != null && insert.getUser() != null && insert.getAction().equals("upload")){    
+				for (Iterator<Assignment_submissions_LMS> iter2 = assignment_submission_lms.iterator(); iter2.hasNext(); ) {
+					Assignment_submissions_LMS loadedItem2 = iter2.next();
+					
+					long id = loadedItem2.getUserid();
+	    			if(loadedItem2.getAssignment() == insert.getAssignment().getId() && id == insert.getUser().getId() && loadedItem2.getTimemodified() == insert.getTimestamp()){
+					{
+							insert.setGrade(loadedItem2.getGrade());
+							insert.setFinalgrade(loadedItem2.getGrade());
+						}
+					}
+				}
+			}
+			if(insert.getAssignment()==null){
+	    		logger.info("In Assignment_log_mining, assignment not found for log: " + loadedItem.getId() + " and cmid: " + loadedItem.getCmid()+ " and info: " + loadedItem.getInfo());
+	    	}
+			if(insert.getCourse()==null){
+				logger.info("In Assignment_log_mining, course not found for log: " + loadedItem.getId() + " and course: " + loadedItem.getCourse());
+			}    			
+			if(insert.getUser()==null){
+				logger.info("In Assignment_log_mining, user not found for log: " + loadedItem.getId() +" and user: " + loadedItem.getUserid());
+			}    			
+			if(insert.getUser() != null && insert.getAssignment() != null && insert.getCourse() != null)
+				assignment_log_mining.put(insert.getId(), insert);
+		}
+  	}
 		return assignment_log_mining;
     }
 

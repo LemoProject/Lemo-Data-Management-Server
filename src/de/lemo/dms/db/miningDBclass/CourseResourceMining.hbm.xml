@@ -17,12 +17,14 @@
 
 		<many-to-one 
        		name="course" 
+       		lazy="false"
        		class="de.lemo.dms.db.miningDBclass.CourseMining"
        		cascade="save-update" 
             column="course_id" />
             
 		<many-to-one 
        		name="resource" 
+       		lazy="false"
        		class="de.lemo.dms.db.miningDBclass.ResourceMining"
        		cascade="save-update" 
             column="resource_id" />            

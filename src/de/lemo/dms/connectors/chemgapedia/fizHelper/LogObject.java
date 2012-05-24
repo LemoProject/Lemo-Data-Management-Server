@@ -11,7 +11,7 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 /**
  * The Class LogObject.
  */
-public class LogObject {
+public class LogObject implements Comparable{
 
 	/** The id. */
 	private long id;
@@ -34,7 +34,6 @@ public class LogObject {
 	
 	private UserMining user;
 	
-
 	public UserMining getUser() {
 		return user;
 	}
@@ -209,6 +208,22 @@ public class LogObject {
 	 */
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		LogObject s;
+		try{
+			s = (LogObject)o;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.time > s.getTime())
+			return 1;
+		if(this.time < s.getTime())
+			return -1;
+		return 0;
 	}
 	
 	

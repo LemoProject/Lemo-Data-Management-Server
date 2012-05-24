@@ -6,16 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -53,13 +48,13 @@ public class XMLPackageParser {
 	private HashMap<String, CourseMining> courseObj = new HashMap<String, CourseMining>();
 	
 	/** The list of department degree objects. */
-	private HashMap<String, DepartmentDegreeMining> departmentDegrees = new HashMap<String, DepartmentDegreeMining>();
+	private HashMap<Long, DepartmentDegreeMining> departmentDegrees = new HashMap<Long, DepartmentDegreeMining>();
 	
 	/** The list of degree courses objects. */
-	private HashMap<String, DegreeCourseMining> degreeCourses = new HashMap<String, DegreeCourseMining>();
+	private HashMap<Long, DegreeCourseMining> degreeCourses = new HashMap<Long, DegreeCourseMining>();
 	
 	/** The course resources objects. */
-	private HashMap<String, CourseResourceMining> courseResources = new HashMap<String, CourseResourceMining>();
+	private HashMap<Long, CourseResourceMining> courseResources = new HashMap<Long, CourseResourceMining>();
 	
 	/** The list of resource objects. */
 	private HashMap<String, ResourceMining> resourceObj = new HashMap<String, ResourceMining>();
@@ -122,19 +117,19 @@ public class XMLPackageParser {
     	if(depDeg.size() > 0)
     		resId = depDeg.get(depDeg.size()-1).getId();
 		for(int i = 0; i < depDeg.size(); i++)
-    		this.departmentDegrees.put(depDeg.get(i).getDepartment().getTitle() + "-"+ depDeg.get(i).getDegree().getTitle(), depDeg.get(i));
+    		this.departmentDegrees.put(depDeg.get(i).getDegree().getId(), depDeg.get(i));
 		
 		List<DegreeCourseMining> degCou = (List<DegreeCourseMining>) dbHandler.performQuery(EQueryType.HQL, "FROM DegreeCourseMining x order by x.id asc");
     	if(degCou.size() > 0)
     		degCouId = degCou.get(degCou.size()-1).getId();
 		for(int i = 0; i < degCou.size(); i++)
-    		this.degreeCourses.put(degCou.get(i).getDegree().getTitle() + "-" + degCou.get(i).getCourse().getTitle(), degCou.get(i));
+    		this.degreeCourses.put(degCou.get(i).getCourse().getId(), degCou.get(i));
 		
 		List<CourseResourceMining> couRes = (List<CourseResourceMining>) dbHandler.performQuery(EQueryType.HQL, "FROM CourseResourceMining x order by x.id asc");
     	if(couRes.size() > 0)
     		couResId = couRes.get(couRes.size()-1).getId();
 		for(int i = 0; i < couRes.size(); i++)
-    		this.courseResources.put(couRes.get(i).getCourse().getTitle() + "-" + couRes.get(i).getResource().getTitle(), couRes.get(i));
+    		this.courseResources.put(couRes.get(i).getResource().getId(), couRes.get(i));
 		
     	
 		List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.HQL, "Select largestId from ConfigMining x order by x.id asc"));
@@ -270,8 +265,9 @@ public class XMLPackageParser {
 		      r.setUrl(getUrlFromVlu(filename));
 		      r.setPosition(0);
 
-		      if(this.resourceObj.get(r.getUrl()) == null)
-		      {
+		      this.resourceObj.get(r.getUrl());
+		      //if(this.resourceObj.get(r.getUrl()) == null)
+		      //{
 				  	long r_id = -1;
  	       			if(id_mapping.get(r.getUrl()) != null)
  	       			{
@@ -283,40 +279,41 @@ public class XMLPackageParser {
  	       				r_id = resId + 1;
  	       				resId = r_id;
  	       				id_mapping.put(r.getUrl(), new IDMappingMining(r_id, r.getUrl(), "Chemgapedia"));
+ 	       				largestId = resId;
  	       				r.setId(r_id);
  	       			}
 		    	  
 		    	  this.resourceObj.put(r.getUrl(), r);
 		    	  this.fnames.add(filename);
 		    	  //Save department - degree relation locally
-			      if(this.departmentDegrees.get(dep.getTitle() + "-" + deg.getTitle()) == null)
+			      if(this.departmentDegrees.get(deg.getId()) == null)
 			      {			    	  
 			    	  DepartmentDegreeMining ddm = new DepartmentDegreeMining();
 			    	  ddm.setDegree(deg);
 			    	  ddm.setDepartment(dep);
 			    	  ddm.setId(depDegId + 1);
 			    	  depDegId++;
-			    	  this.departmentDegrees.put(dep.getTitle() + "-" + deg.getTitle() , ddm);			    	  
+			    	  this.departmentDegrees.put(deg.getId() , ddm);			    	  
 			      }
 			      
-			      if(this.degreeCourses.get(deg.getTitle() + "-" + cou.getTitle()) == null)
+			      if(this.degreeCourses.get(cou.getId()) == null)
 			      {			    	  
 			    	  DegreeCourseMining dcm = new DegreeCourseMining();
 			    	  dcm.setDegree(deg);
 			    	  dcm.setCourse(cou);
 			    	  dcm.setId(degCouId + 1);
 			    	  degCouId++;
-			    	  this.degreeCourses.put(deg.getTitle() + "-" + cou.getTitle() , dcm);			    	  
+			    	  this.degreeCourses.put(cou.getId() , dcm);			    	  
 			      }
 			      
-			      if(this.courseResources.get(cou.getId() + "-" + r.getId()) == null)
+			      if(this.courseResources.get(r.getId()) == null)
 			      {			    	  
 			    	  CourseResourceMining crm = new CourseResourceMining();
 			    	  crm.setResource(r);
 			    	  crm.setCourse(cou);
 			    	  crm.setId(couResId + 1);
 			    	  couResId++;
-			    	  this.courseResources.put(cou.getId() + "-" + r.getId(), crm);			    	  
+			    	  this.courseResources.put(r.getId(), crm);			    	  
 			      }
 			      
 			      int pos = 1;
@@ -352,29 +349,30 @@ public class XMLPackageParser {
 				       	       				resource_id = resId + 1;
 				       	       				resId = resource_id;
 				       	       				id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(), "Chemgapedia"));
+				       	       				largestId = resId;
 				       	       				r1.setId(resource_id);
 				       	       			}
 					    				  
 					    				  
 					    				  r1.setPosition(pos);
 					    				  
-				    				  if(this.resourceObj.get(r1.getUrl()) == null)
-				    				  {
+				    				 // if(this.resourceObj.get(r1.getUrl()) == null)
+				    				  //{
 				    					  tempRes.add(r1);
 				    					  this.resourceObj.put(r1.getUrl(), r1);
 				    					  //this.resourceObj.add(r1);
 				    					  this.fnames.add(filename + "*");
-				    					  if(this.courseResources.get(cou.getId()+ "-" + r1.getId()) == null)
+				    					  if(this.courseResources.get(r1.getId()) == null)
 				    					  {
 				    				    	  CourseResourceMining crm = new CourseResourceMining();
 				    				    	  crm.setResource(r1);
 				    				    	  crm.setCourse(cou);
 				    				    	  crm.setId(couResId + 1);
 				    				    	  couResId++;
-				    				    	  this.courseResources.put(cou.getId() + "-" + r1.getId(), crm);			    	  
+				    				    	  this.courseResources.put(r1.getId(), crm);			    	  
 				    					  }
 				    					  pos++;
-				    				  }
+				    				//  }
 					    				  
 					    			  }
 					    		  }
@@ -413,19 +411,17 @@ public class XMLPackageParser {
 					  if(this.resourceObj.get(r1.getUrl()) == null)
 					  {
 						  this.resourceObj.put(r1.getUrl(), r1);
+						  id_mapping.put(r1.getUrl(), new IDMappingMining(r1.getId(), r1.getUrl(), "Chemgapedia"));
+     	       			  largestId = resId;
 						  this.fnames.add(filename + "*");
-						  if(this.courseResources.get(cou.getId() + "-" + r1.getId()) == null)
-    					  {
-    				    	  CourseResourceMining crm = new CourseResourceMining();
-    				    	  crm.setResource(r);
-    				    	  crm.setCourse(cou);
-    				    	  crm.setId(couResId + 1);
-    				    	  couResId++;
-    				    	  this.courseResources.put(cou.getId() + "-" + r1.getId() , crm);	
-    					  }
+   				    	  CourseResourceMining crm = new CourseResourceMining();
+				    	  crm.setResource(r1);
+				    	  crm.setCourse(cou);
+				    	  crm.setId(couResId + 1);
+				    	  couResId++;
+				    	  this.courseResources.put(r1.getId() , crm);	
 					  }
 			      }
-		      }
 		      else
 		      {
 		    	  //String s = fnames.get(this.resourceObj.get(r.getId()));
@@ -438,9 +434,9 @@ public class XMLPackageParser {
 		    } catch( SAXException sxe ) {
 		    	 System.out.println( "\n** SAX error!");
 		    } catch( ParserConfigurationException pce ) {
-		       System.out.println(pce.getMessage());
+		       System.out.println("ParserConfigurationException: "+pce.getMessage());
 		    } catch( IOException ioe ) {
-		        ioe.printStackTrace();
+		    	System.out.println("IOException: " + ioe.getMessage());
 		    }
 	}
 	
@@ -477,7 +473,7 @@ public class XMLPackageParser {
 		}
 		catch(Exception e)
 		{
-			System.out.println(e.toString());
+			System.out.println("Exception @ getFilenames" + e.getMessage());
 		}
 		return all;
 	}
@@ -526,7 +522,7 @@ public class XMLPackageParser {
 			}
 		}catch(Exception e)
 		{
-			System.out.println(e.getMessage());
+			System.out.println("Exception @ readAllVLUs " + e.getMessage());
 		}
 	}
 }

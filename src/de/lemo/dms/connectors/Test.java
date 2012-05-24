@@ -34,9 +34,9 @@ public class Test {
 		
 		sourceConf.addProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120416_lemo.log");
 		sourceConf.addProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
-		sourceConf.addProperty("filter_log_file", "false");
+		sourceConf.addProperty("filter_log_file", "true");
 		sourceConf.addProperty("process_metadata", "true");
-		sourceConf.addProperty("process_log_file", "false");
+		sourceConf.addProperty("process_log_file", "true");
 		
 		ConnectorChemgapedia cm = new ConnectorChemgapedia();
 			
