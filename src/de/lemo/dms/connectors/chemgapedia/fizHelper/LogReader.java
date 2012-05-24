@@ -61,9 +61,12 @@ public class LogReader {
 	
 	Long largestId;
 	
-	public LogReader()
+	Long lastTimestamp = 0L;
+	
+	public LogReader(Long idcount)
 	{
 		try{
+			System.out.println("Engaged LogReader");
 			
 			new_id_mapping = new HashMap<String, IDMappingMining>();
 			
@@ -100,12 +103,21 @@ public class LogReader {
 	    		this.courseResources.put(((CourseResourceMining)courseResource.get(i)).getResource().getUrl(), ((CourseResourceMining)courseResource.get(i)));
 	    	System.out.println("Read "+courseResource.size() + " CourseResourceMinings from database.");
 	    	
-	    	
-			List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.HQL, "Select largestId from ConfigMining x order by x.id asc"));
-			if(l != null && l.size() > 0)
-				largestId = l.get(l.size()-1);
-			else
-				largestId = 0L;
+	    	if(idcount == -1)
+	    	{
+	    		List<Long> ts = (List<Long>)(dbHandler.performQuery(EQueryType.HQL, "Select max(timestamp) from ResourceLogMining"));
+				if(ts != null && ts.size() > 0)
+					lastTimestamp = ts.get(ts.size()-1);
+	    		
+	    		
+	    		List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.HQL, "Select largestId from ConfigMining x order by x.id asc"));
+				if(l != null && l.size() > 0)
+					largestId = l.get(l.size()-1);
+				else
+					largestId = 0L;
+			}
+	    	else
+	    		largestId = idcount;
 		}catch(Exception e)
 		{
 			System.out.println(e.getMessage());
@@ -121,12 +133,13 @@ public class LogReader {
 	 */
 	public void filterServerLogFile()
 	{
+		System.out.println("Filtering server log...");
 		clock.reset();
 		ArrayList<LogObject>  a;
 		Object[] user = this.users.values().toArray();
 		HashMap<Long, UserMining> tempUsers = new HashMap<Long, UserMining>();
 		int old = users.size();
-	
+		int linesDeleted = 0;
 		BotFinder bf = new BotFinder();
 		for(int i= 0; i < user.length; i++)
 		{
@@ -139,11 +152,13 @@ public class LogReader {
 				susp1 = bf.checkFastOnes(a, 1).size();
 				susp2 = bf.checkPeriods(a, 5);
 				susp3 = bf.checkForRepetitions(a, 10);
-				if(susp1 < 5 && susp2 == 0 && susp3 == 0)
+				if(susp1 < 0 && susp2 == 0 && susp3 == 0)
 					tempUsers.put(((UserMining)user[i]).getId(), (UserMining)user[i]);
+				else
+					linesDeleted += a.size();
 			}
 		}
-		System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users out of " + old + " in "+ clock.getAndReset());
+		System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users out of " + old + ", eliminating " + linesDeleted + " log lines in "+ clock.getAndReset());
 		this.users = tempUsers;
 	}
 	
@@ -187,16 +202,19 @@ public class LogReader {
 	{	    
 	    try
 	    {	    
+	    	System.out.println("Reading server log...");
 	    	BufferedReader input =  new BufferedReader(new FileReader(inFile));
+	    	int count = 0;
 	    	try 
 	    	{
 	    		String line = null;
 	    		clock.reset();
 	    		while (( line = input.readLine()) != null)
 	    		{
+	    			count++;
 	    			boolean newRes = false;
 	    			LogLine logLine = new LogLine(line);
-	    			if(logLine.isValid())
+	    			if(logLine.isValid() && logLine.getTimestamp() > lastTimestamp)
 	    			{
 	    				LogObject lo = new LogObject();
 	    				String name;
@@ -230,7 +248,7 @@ public class LogReader {
 	    				//Set duration to standard (will be calculated later on)
 	    				lo.setDuration(-1);
 	    				
-	    				//Check if resource is already known. If yes, set course
+	    				//Check if resource is already known. If yes, set course. Else create new resource later on.
 	    				if(this.oldResources.get(lo.getUrl()) == null && this.newResources.get(lo.getUrl()) == null)
 	    				{
 	    					newRes = true;
@@ -252,7 +270,7 @@ public class LogReader {
 	    						co = null;
 	    					}
 	    					if(c != null)
-	    						lo.setCourse(co);   					
+	    						lo.setCourse(co);				
 	    				}
 
 	    				//Check if users is known
@@ -335,6 +353,7 @@ public class LogReader {
 		    					  r.setPosition(-5);
 		    				  }
 		    				  
+		    				  //Construct resource title from URL
 		    				  String h = lo.getUrl().substring(lo.getUrl().lastIndexOf("/")+1, lo.getUrl().length());
 		    				  h = h.substring(0, h.indexOf("."));
 		    				  String f = "";
@@ -345,6 +364,7 @@ public class LogReader {
 		    				  else
 		    					  System.out.println("URL doesn't match pattern: " + lo.getUrl());
 		    				  r.setTitle(h);
+		    				  
 		    				  this.newResources.put(r.getUrl(), r);
 		    			  }
 		    			  
@@ -366,6 +386,7 @@ public class LogReader {
 		      }
 	      finally 
 	      {
+	    	  System.out.println("Read " + count + " lines.");
 	        input.close();
 	      }
 	    }
@@ -423,94 +444,10 @@ public class LogReader {
 	    */
 	}
 	
-	/**
-	 * Splits the log file into several files with the specified number of lines.
-	 *
-	 * @param filename the filename of the initial log file
-	 * @param newFilename suffix for the new split files (without file type)
-	 * @param linesPerLog the maximum number of lines per log file
-	 */
-	public void splitLogFile(String filename, String newFilename, int linesPerLog)
-	{
-		try
-	    {
-	      BufferedReader input =  new BufferedReader(new FileReader(filename));
-    	  String line = null;
-    	  int i = 0;
-    	  ArrayList<String> lines = new ArrayList<String>();
-    	  while (( line = input.readLine()) != null)
-    	  {
-			  String[] sarr = line.split(" ");
-			  //This is some kind of pre-filtering - some views, that are made by chemgapedia-bots are filetered
-    		  if(!line.contains("/vsengine/dummy.html") && !line.contains("/adsense.html") && (sarr.length < 6 || sarr[5].endsWith(".html")))
-    		  {
-
-    			  if(lines.size() < linesPerLog)
-	    			  lines.add(line);
-	    		  else
-	    		  {
-	    			  lines.add(line);
-	    	    	  FileWriter outFiles = new FileWriter(newFilename+i+".log");
-	    	    	  PrintWriter out = new PrintWriter(outFiles);
-	    			
-	    	    	  for(int j = 0; j < lines.size(); j++)
-	    	    	  {
-	    	    		  out.println(lines.get(j));
-	    	    	  }
-	    	    	  out.close();
-	    	    	  System.out.println("Wrote "+newFilename+i+".log");
-	    	    	  i++;
-	    	    	  lines.clear();
-	    		  }
-    		  }
-    	  }
-    	  if(lines.size() > 0)
-    	  {
-	    	  FileWriter outFiles = new FileWriter(newFilename+i+".log");
-	    	  PrintWriter out = new PrintWriter(outFiles);
-			
-	    	  for(int j = 0; j < lines.size(); j++)
-	    	  {
-	    		  out.println(lines.get(j));
-	    	  }
-	    	  out.close();
-	    	  System.out.println("Wrote "+newFilename+i+".log");
-    	  }
-
-		} 
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
+	
 	
 
-	/**
-	 * Creates and returns a list containing all LogObjects (Views) performed by the specified user in chronological order.
-	 *
-	 * @param user the user
-	 * @return the users history
-	 */
-	/*
-	private ArrayList<LogObject> getUserHistory(Long user)
-	{
-		ArrayList<LogObject> his = new ArrayList<LogObject>();
-		int l = 0;
-		while(l < this.logList.size())
-		{
-			int i  = this.logList.subList(l, this.logList.size()).indexOf(new LogObject(user));
-			if(i > -1)
-			{
-				l +=  i;
-				his.add(this.logList.get(l));
-				l++;
-			}
-			else
-				break;				
-		}
-		return his;
-	}
-	*/
+
 	
 	/**
 	 * Writes users to the database.
@@ -540,6 +477,8 @@ public class LogReader {
 	{
 		calculateDurations();
 		List<Collection<?>> l = new ArrayList<Collection<?>>();
+		
+		//HashMap<Long, ResourceLogMining> resourceLogMining = new HashMap<Long, ResourceLogMining>();
 		ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
 		try{	
 			long li = (Long)(dbHandler.performQuery(EQueryType.HQL, "Select count(*) from ResourceLogMining").get(0));
@@ -552,10 +491,14 @@ public class LogReader {
 				{
 					if(this.users.get(loadedItem.get(i).getUser().getId()) != null)
 					{
-						startIndex++;
+						//startIndex++;
 						ResourceLogMining rl = new ResourceLogMining();
-						rl.setId(startIndex);
-						rl.setResource(newResources.get(loadedItem.get(i).getUrl()));
+						//rl.setId(startIndex);
+						if(oldResources.get(loadedItem.get(i).getUrl()) == null)
+							rl.setResource(newResources.get(loadedItem.get(i).getUrl()));
+						else
+							rl.setResource(oldResources.get(loadedItem.get(i).getUrl()));
+
 						rl.setCourse(loadedItem.get(i).getCourse());
 						rl.setUser(loadedItem.get(i).getUser());
 						rl.setTimestamp(loadedItem.get(i).getTime());
@@ -566,25 +509,14 @@ public class LogReader {
 					}
 				}
 			}
-			/*
-			for(int i = 0; i < logList.size(); i++)
-			{
-				if(this.users.get(logList.get(i).getUser().getId()) != null)
-				{
-					startIndex++;
-					ResourceLogMining rl = new ResourceLogMining();
-					rl.setId(startIndex);
-					rl.setResource(newResources.get(logList.get(i).getUrl()));
-					rl.setCourse(logList.get(i).getCourse());
-					rl.setUser(logList.get(i).getUser());
-					rl.setTimestamp(logList.get(i).getTime());
-					rl.setDuration(logList.get(i).getDuration());
-					rl.setAction("View");
-					
-					resourceLogMining.add(rl);
-				}
-			}*/
+//			ArrayList<ResourceLogMining> rlm = new ArrayList<ResourceLogMining>(resourceLogMining.values());
 			Collections.sort(resourceLogMining);
+			for(int i = 0; i < resourceLogMining.size(); i++)
+			{
+				startIndex++;
+				resourceLogMining.get(i).setId(startIndex);
+			}
+			
 			l.add(this.newResources.values());
 			l.add(resourceLogMining);
 			

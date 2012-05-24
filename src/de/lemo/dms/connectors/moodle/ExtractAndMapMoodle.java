@@ -1053,7 +1053,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		Log_LMS loadedItem = iter.next();
    	
 //insert assignments in assignment_log
-		if(loadedItem.getModule().equals("assignment")){
+		if(loadedItem.getModule().equals("assignment") && loadedItem.getInfo().matches("[0-9]++")){
 			AssignmentLogMining insert = new AssignmentLogMining();
 		    insert.setId(loadedItem.getId());
 			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
@@ -1092,13 +1092,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 					long id = -1;
 	    			if(!numericUserId)
 	    			{
-		       			if(id_mapping.get(loadedItem.getUserid()) != null)
+		       			if(id_mapping.get(loadedItem2.getUserid()) != null)
 		       			{
-		       				id = id_mapping.get(loadedItem.getUserid()).getId();
+		       				id = id_mapping.get(loadedItem2.getUserid()).getId();
 		       			}
-		       			if(id == -1 && old_id_mapping.get(loadedItem.getUserid()) != null)
+		       			if(id == -1 && old_id_mapping.get(loadedItem2.getUserid()) != null)
 		       			{
-		       				id = old_id_mapping.get(loadedItem.getUserid()).getId();
+		       				id = old_id_mapping.get(loadedItem2.getUserid()).getId();
 		       			}
 	    			}
 					if(loadedItem2.getAssignment() == insert.getAssignment().getId() && id == insert.getUser().getId() && loadedItem2.getTimemodified() == insert.getTimestamp()){

@@ -51,7 +51,7 @@ public class ConnectorChemgapedia implements IConnector{
 	public void getData() {
 		Long starttime = System.currentTimeMillis()/1000;
 		
-		Long largestId = 0L;
+		Long largestId = -1L;
 		Clock c = new Clock();
 		
 		if(processVSC)
@@ -62,7 +62,7 @@ public class ConnectorChemgapedia implements IConnector{
 		}
 		if(processLog)
 		{			
-			LogReader logR = new LogReader();
+			LogReader logR = new LogReader(largestId);
 			logR.loadServerLogData(logPath);
 			if(filter)
 				

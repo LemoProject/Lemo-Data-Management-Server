@@ -1,5 +1,6 @@
 package de.lemo.dms.connectors.chemgapedia.fizHelper;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -16,13 +17,13 @@ public class BotFinder {
 	/**
 	 * 
 	 * @param log Logfile containing all views the user did.
-	 * @param chunkLimit Maximal number of views within the quarter of a second.
-	 * @return	List with all suspuicious chunks.
+	 * @param chunkLimit Maximal number of views within a second.
+	 * @return	List with all suspicious chunks.
 	 */
 	public ArrayList<Integer> checkFastOnes(ArrayList<LogObject> log, int chunkLimit)
 	{
 		ArrayList<Integer> chunks = new ArrayList<Integer>();
-		
+		Collections.sort(log);
 		long lastTime = 0;
 		int chunksize = 0;
 		for(int i = 0 ; i < log.size(); i++)
@@ -48,20 +49,21 @@ public class BotFinder {
 	/**
 	 * 
 	 * @param log Logfile containing all views the user did.
-	 * @param chunkLimit Maximal number of occurences of a sepcific timespan in relation to the total number of views by this user.
+	 * @param chunkLimit Maximal number of occurrences of a specific time span in relation to the total number of views by this user.
 	 * @return	List containing all suspicious chunks.
 	 */
 	public int checkPeriods(ArrayList<LogObject> log, int chunkLimit)
 	{
+		Collections.sort(log);
 		//Skip if there was just one view
 		if(log.size() < chunkLimit)
 			return 0;
 				
 		//Final List 
 		int chunks = 0;
-		//List of timespans that already occured
+		//List of time spans that already occurred
 		HashMap<Integer, Integer> span = new HashMap<Integer, Integer>();
-		//List of the number of occurences of known timespans
+		//List of the number of occurrences of known time spans
 		
 		
 		long lastT = 0;
