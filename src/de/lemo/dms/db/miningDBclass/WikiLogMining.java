@@ -3,8 +3,11 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+
+
 /**This class represents the log table for the wiki object.*/
-public class WikiLogMining {
+public class WikiLogMining implements ILogMining{
 
 	private long id;
 	private WikiMining wiki;

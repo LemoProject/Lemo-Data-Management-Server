@@ -52,4 +52,9 @@ public interface IDBHandler {
 	 */
 	public List<?> performQuery(EQueryType queryType, String query);
 	
+	/**
+	 * 
+	 * @return the currrent session
+	 */
+	public Session getSession(DBConfigObject dbConf);
 }
