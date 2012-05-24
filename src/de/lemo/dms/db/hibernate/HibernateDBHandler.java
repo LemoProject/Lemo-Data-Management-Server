@@ -41,11 +41,7 @@ public class HibernateDBHandler implements IDBHandler{
 	 */
 	public void saveToDB(List<Collection<?>> data) {
 		 
-		try{
-			System.out.println("Starting merge...");
-			Clock c = new Clock();
-			
-			
+		try{		
 			List<Object> objects = new ArrayList<Object>();
 			for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
 		    {
@@ -58,7 +54,6 @@ public class HibernateDBHandler implements IDBHandler{
     		
 		    	}
 		    }
-			System.out.println("Finished merging in " + c.getAndReset());
 			Transaction tx = mining_session.beginTransaction();
 			int classOb = 0;
 			String className = "";

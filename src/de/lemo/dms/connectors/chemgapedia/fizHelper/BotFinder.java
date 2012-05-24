@@ -35,11 +35,11 @@ public class BotFinder {
 					chunksize++;
 				}
 				else
+				{
 					if(chunksize > chunkLimit)
-					{
 						chunks.add(chunksize);
-						chunksize = 0;
-					}
+					chunksize = 0;		
+				}
 			}
 			lastTime = log.get(i).getTime();
 		}

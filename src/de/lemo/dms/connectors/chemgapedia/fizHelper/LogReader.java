@@ -2,6 +2,7 @@ package de.lemo.dms.connectors.chemgapedia.fizHelper;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -59,7 +60,6 @@ public class LogReader {
 	public LogReader(Long idcount)
 	{
 		try{
-			System.out.println("Engaged LogReader");
 			
 			new_id_mapping = new HashMap<String, IDMappingMining>();
 			
@@ -99,7 +99,7 @@ public class LogReader {
 	    	if(idcount == -1)
 	    	{
 	    		List<Long> ts = (List<Long>)(dbHandler.performQuery(EQueryType.HQL, "Select max(timestamp) from ResourceLogMining"));
-				if(ts != null && ts.size() > 0)
+				if(ts != null && ts.size() > 0 && ts.get(ts.size()-1) != null)
 					lastTimestamp = ts.get(ts.size()-1);
 	    		
 	    		
@@ -126,12 +126,12 @@ public class LogReader {
 	 */
 	public void filterServerLogFile()
 	{
-		System.out.println("Filtering server log...");
 		clock.reset();
 		ArrayList<LogObject>  a;
 		Object[] user = this.users.values().toArray();
 		HashMap<Long, UserMining> tempUsers = new HashMap<Long, UserMining>();
 		int old = users.size();
+		int totalLines = 0;
 		int linesDeleted = 0;
 		BotFinder bf = new BotFinder();
 		for(int i= 0; i < user.length; i++)
@@ -139,19 +139,22 @@ public class LogReader {
 			int susp1 = 0;
 			int susp2 = 0;
 			int susp3 = 0;
+			
 			a = userHistories.get(((UserMining)user[i]).getId());
+			
 			if(a != null && a.size() > 0)
 			{
+				totalLines += a.size();
 				susp1 = bf.checkFastOnes(a, 1).size();
 				susp2 = bf.checkPeriods(a, 5);
 				susp3 = bf.checkForRepetitions(a, 10);
-				if(susp1 < 0 && susp2 == 0 && susp3 == 0)
+				if(susp1 < 1 && susp2 == 0 && susp3 == 0)
 					tempUsers.put(((UserMining)user[i]).getId(), (UserMining)user[i]);
 				else
 					linesDeleted += a.size();
 			}
 		}
-		System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users out of " + old + ", eliminating " + linesDeleted + " log lines in "+ clock.getAndReset());
+		System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users  out of " + old + " (" + new DecimalFormat("0.00").format((double)(old-tempUsers.size())/(tempUsers.size()/100)) + "%), eliminating " + linesDeleted + " log lines (" + new DecimalFormat("0.00").format((double)(linesDeleted)/(totalLines/100)) + "%).");
 		this.users = tempUsers;
 	}
 	
@@ -327,7 +330,8 @@ public class LogReader {
 		    				  
 		    				  r.setId(resource_id);
 		    				  r.setUrl(lo.getUrl());
-		    				  if(newRes)
+		    				  //Regex used to prevent the inclusion of assignment-pages
+		    				  if(newRes && !r.getUrl().matches("[0-9a-z]{32}[-]{1}[0-9]++"))
 		    				  {
 		    					  if(lo.getUrl().endsWith("/index.html"))
 		    					  {
@@ -374,7 +378,10 @@ public class LogReader {
 		    			  }
 		    		  }
 		    		  else
-		    			  System.out.println("Line doesn't match pattern: " + line);
+		    			  if(!logLine.isValid())
+		    				  System.out.println("Line doesn't match pattern: " + line);
+		    			  else
+		    				  System.out.println("Line's timestamp is to old: " + line);
 		    	  }	   
 		      }
 	      finally 
@@ -509,11 +516,8 @@ public class LogReader {
 				startIndex++;
 				resourceLogMining.get(i).setId(startIndex);
 			}
-			
 			l.add(this.newResources.values());
-			l.add(resourceLogMining);
-			
-			
+			l.add(resourceLogMining);			
 			dbHandler.saveToDB(l);
 		}
 		catch (Exception e)
