@@ -2,19 +2,12 @@ package de.lemo.dms.connectors.chemgapedia.fizHelper;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import org.hibernate.Hibernate;
-import org.hibernate.Query;
 import org.hibernate.proxy.HibernateProxy;
 
 import de.lemo.dms.core.Clock;
