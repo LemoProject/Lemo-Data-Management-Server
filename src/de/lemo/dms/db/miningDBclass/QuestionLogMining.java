@@ -3,8 +3,10 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+
 /**This class represents the log table for the question object.*/
-public class QuestionLogMining {
+public class QuestionLogMining implements ILogMining{
 
 	private long id;
 	private	QuestionMining question;

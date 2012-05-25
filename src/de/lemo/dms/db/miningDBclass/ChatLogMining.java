@@ -2,7 +2,8 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
-public class ChatLogMining {
+
+public class ChatLogMining{
 
 	private long id;
 	private ChatMining chat;
