@@ -42,7 +42,7 @@ public class QActivityResourceType extends Question{
     private static final String COURSE_IDS = "course_ids";
     private static final String STARTTIME = "starttime";
     private static final String ENDTIME = "endtime";
-    private static final String TYPES = "resolution";
+    private static final String TYPES = "types";
 
     @Override
 	protected List<ParameterMetaData<?>> createParamMetaData() {
