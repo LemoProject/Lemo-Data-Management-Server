@@ -362,6 +362,10 @@ public class LogReader {
 		    					  System.out.println("URL doesn't match pattern: " + lo.getUrl());
 		    				  r.setTitle(h);
 		    				  
+		    				  //cutting out supplements
+		    				  if(!r.getUrl().contains("/vsengine/supplement/"))
+		    					  r.setType("Supplement");
+		    				  
 		    				  this.newResources.put(r.getUrl(), r);
 		    			  }
 		    			  

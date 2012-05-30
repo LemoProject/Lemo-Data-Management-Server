@@ -3,3 +3,4 @@
 *.log
 .project
 /src/de/lemo/dms/core/config.properties
+/src/de/lemo/dms/processing/Test.java

@@ -3,18 +3,28 @@ package de.lemo.dms.processing.questions;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.QueryParam;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import com.google.common.util.concurrent.AtomicLongMap;
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
@@ -26,7 +36,6 @@ import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
-import de.lemo.dms.processing.resulttype.ResultListLog;
 
 @QuestionID("userpath")
 public class QUserPath extends Question {
@@ -57,10 +66,10 @@ public class QUserPath extends Question {
     }
 
     @GET
-    public ResultListLog compute(
+    public JSONObject compute(
             @QueryParam(COURSE_IDS) List<Long> courseIds,
             @QueryParam(STARTTIME) Long startTime,
-            @QueryParam(ENDTIME) Long endTime) {
+            @QueryParam(ENDTIME) Long endTime) throws JSONException {
 
         /*
          * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to
@@ -74,6 +83,10 @@ public class QUserPath extends Question {
         if(startTime >= endTime || courseIds.isEmpty()) {
             return null;
         }
+
+        Stopwatch stopWatch = new Stopwatch();
+
+        stopWatch.start();
 
         /* A criteria is created from the session. */
         IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
@@ -97,28 +110,92 @@ public class QUserPath extends Question {
         /* Calling list() eventually performs the query */
         @SuppressWarnings("unchecked")
         List<ILogMining> logs = criteria.list();
-        logger.info("Result: " + logs.size() + " log entries.");
 
-        AtomicLongMap<Long> actionCounter = AtomicLongMap.create(); // AtomicLong is a mutable long
-
-        /* count entries and remove invalid */
-        int skipped = 0;
-        for(Iterator<ILogMining> iterator = logs.iterator(); iterator.hasNext();) {
-            ILogMining log = iterator.next();
+        Set<Long/* user id */> users = Sets.newHashSet();
+        for(ILogMining log : logs) {
             UserMining user = log.getUser();
-            if(user == null) {
-                // @TODO why do some entries don't have a user?
-                skipped++;
-                iterator.remove();
+            if(user == null)
                 continue;
-            }
-            actionCounter.getAndIncrement(user.getId());
+            users.add(user.getId());
         }
-        logger.info("Skipped " + skipped + " log entries with invalid users.");
+
+        logger.info("Found " + users.size() + " actions. " + +stopWatch.elapsedTime(TimeUnit.SECONDS));
+
+        Criteria exdendedCriteria = session.createCriteria(ILogMining.class, "log");
+        exdendedCriteria.add(Restrictions.in("log.user.id", users))
+                .add(Restrictions.between("log.timestamp", startTime, endTime))
+                .add(Restrictions.eq("log.action", "view"));
+
+        @SuppressWarnings("unchecked")
+        List<ILogMining> extendedLogs = exdendedCriteria.list();
+
+        Map<Long /* user id */, List<Long> /* course ids */> userPaths = Maps.newHashMap();
+
+        logger.info("Paths fetched: " + extendedLogs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
+
+        for(ILogMining log : extendedLogs) {
+            UserMining user = log.getUser();
+            if(user == null || log.getCourse() == null)
+                continue;
+            long userId = log.getUser().getId();
+
+            List<Long> courseIDs = userPaths.get(userId);
+            if(courseIDs == null) {
+                courseIDs = Lists.newArrayList();
+                userPaths.put(userId, courseIDs);
+            }
+            courseIDs.add(log.getCourse().getId());
+        }
+
+        logger.info("userPaths: " + userPaths.size());
+
+        Map<Long /* course id */, List<JSONObject> /* edge */> coursePaths = Maps.newHashMap();
+
+        for(Entry<Long, List<Long>> userEntry : userPaths.entrySet()) {
+
+            JSONObject lastPath = null;
+            Long userID = userEntry.getKey();
+
+            for(Long courseID : userEntry.getValue()) {
+                List<JSONObject> edge = coursePaths.get(courseID);
+                if(edge == null) {
+                    edge = Lists.newArrayList();
+                    coursePaths.put(courseID, edge);
+                }
+                JSONObject path = new JSONObject();
+
+                path.put("user", userID);
+
+                if(lastPath != null) {
+                    lastPath.put("to", courseID);
+                }
+                lastPath = path;
+            }
+        }
+        stopWatch.stop();
+        logger.info("coursePaths: " + coursePaths.size());
+        logger.info("Total Fetched log entries: " + (logs.size() + extendedLogs.size()) + " log entries."
+                + stopWatch.elapsedTime(TimeUnit.SECONDS));
 
         /*
-         * @TODO Shouldn't we close the session at some point?
+         * TODO Shouldn't we close the session at some point?
          */
-        return new ResultListLog(logs);
+
+        JSONObject result = new JSONObject();
+        JSONArray nodes = new JSONArray();
+        for(Entry<Long, List<JSONObject>> courseEntry : coursePaths.entrySet()) {
+            JSONObject node = new JSONObject();
+            node.put("id", courseEntry.getKey());
+            node.put("wheight", courseEntry.getValue().size());
+            node.put("edges", new JSONArray(courseEntry.getValue()));
+            if(courseIds.contains(courseEntry.getKey()))
+            	node.put("groupId", 0);
+            else
+            	node.put("groupId", 1);
+            nodes.put(node);
+        }
+
+        result.put("nodes", nodes);
+        return result;
     }
 }

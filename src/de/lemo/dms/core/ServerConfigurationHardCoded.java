@@ -106,8 +106,8 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     	dbConfig.addProperty("hibernate.cache.use_second_level_cache", "false");
     	dbConfig.addProperty("hibernate.cache.use_query_level_cache", "false");
     	
-    	//dbConfig.addProperty("hibernate.show_sql", "false");
-    	//dbConfig.addProperty("hibernate.format_sql", "false");
+    	//dbConfig.addProperty("hibernate.show_sql", "true");
+    	//dbConfig.addProperty("hibernate.format_sql", "true");
     	//dbConfig.addProperty("hibernate.use_sql_comments", "true");					
     	dbConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
     	//dbConfig.addProperty("hibernate.hbm2ddl.auto","update");

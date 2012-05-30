@@ -66,10 +66,11 @@ public class QActivityResourceType extends Question{
 	}
 	
     @GET
-    public ResultListResourceRequestInfo compute(@QueryParam(COURSE_IDS) List<Long> courses, @QueryParam(STARTTIME) long startTime, @QueryParam(ENDTIME) long endTime, @QueryParam(TYPES) List<EResourceType> resourceTypes) 
+    public ResultListResourceRequestInfo compute(@QueryParam(COURSE_IDS) List<Long> courses, @QueryParam(STARTTIME) long startTime, @QueryParam(ENDTIME) long endTime, @QueryParam(TYPES) List<String> resourceTypes) 
     {
 		boolean all = false;
 		ResultListResourceRequestInfo list = new ResultListResourceRequestInfo();
+		//List<EResourceType> resourceTypes = new ArrayList<EResourceType>();
 		if(resourceTypes.size() == 0)
 			all = true;
 		//Check arguments
@@ -82,7 +83,7 @@ public class QActivityResourceType extends Question{
 	        Session session = dbHandler.getSession(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
         
 			//Create and initialize array for results
-			if(resourceTypes.contains(EResourceType.ASSIGNMENT) || all)
+			if(resourceTypes.contains(EResourceType.ASSIGNMENT.toString().toLowerCase()) || all)
 			{
 				 Criteria criteria = session.createCriteria(AssignmentLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -91,14 +92,20 @@ public class QActivityResourceType extends Question{
 				 HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getAssignment() != null)
-						 if(rri.get(ilm.get(i)) == null)
+					 {
+						 System.out.println(ilm.get(i).getAssignment().getId());
+						 if(rri.get(ilm.get(i).getAssignment().getId()) == null)
 							 rri.put(ilm.get(i).getAssignment().getId(), new ResourceRequestInfo(ilm.get(i).getAssignment().getId(), EResourceType.ASSIGNMENT, 1L, ilm.get(i).getAssignment().getTitle()));
 						 else
-							 rri.get(ilm.get(i).getAssignment().getId()).incRequests();
+						 {
+							 
+							rri.get(ilm.get(i).getAssignment().getId()).incRequests();
+						 }
+					 }
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}        
-			if(resourceTypes.contains(EResourceType.FORUM) || all)
+			if(resourceTypes.contains(EResourceType.FORUM.toString().toLowerCase()) || all)
 			{
 				 Criteria criteria = session.createCriteria(ForumLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -107,14 +114,14 @@ public class QActivityResourceType extends Question{
 				 HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getForum() != null)
-						 if(rri.get(ilm.get(i)) == null)
+						 if(rri.get(ilm.get(i).getForum().getId()) == null)
 							 rri.put(ilm.get(i).getForum().getId(), new ResourceRequestInfo(ilm.get(i).getForum().getId(), EResourceType.FORUM, 1L, ilm.get(i).getForum().getTitle()));
 						 else
 							 rri.get(ilm.get(i).getForum().getId()).incRequests();
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}
-			if(resourceTypes.contains(EResourceType.QUESTION) || all)
+			if(resourceTypes.contains(EResourceType.QUESTION.toString().toLowerCase()) || all)
 			{
 				 Criteria criteria = session.createCriteria(QuestionLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -123,14 +130,14 @@ public class QActivityResourceType extends Question{
 				 HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getQuestion() != null)
-						 if(rri.get(ilm.get(i)) == null )
+						 if(rri.get(ilm.get(i).getQuestion().getId()) == null )
 							 rri.put(ilm.get(i).getQuestion().getId(), new ResourceRequestInfo(ilm.get(i).getQuestion().getId(), EResourceType.QUESTION, 1L, ilm.get(i).getQuestion().getTitle()));
 						 else
 							 rri.get(ilm.get(i).getQuestion().getId()).incRequests();
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}
-			if(resourceTypes.contains(EResourceType.QUIZ) || all)
+			if(resourceTypes.contains(EResourceType.QUIZ.toString().toLowerCase()) || all)
 			{
 				 Criteria criteria = session.createCriteria(QuizLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -139,14 +146,14 @@ public class QActivityResourceType extends Question{
 				 HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getQuiz() != null)
-						 if(rri.get(ilm.get(i)) == null)
+						 if(rri.get(ilm.get(i).getQuiz().getId()) == null)
 							 rri.put(ilm.get(i).getQuiz().getId(), new ResourceRequestInfo(ilm.get(i).getQuiz().getId(), EResourceType.QUIZ, 1L, ilm.get(i).getQuiz().getTitle()));
 						 else
 							 rri.get(ilm.get(i).getQuiz().getId()).incRequests();
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}
-			if(resourceTypes.contains(EResourceType.RESOURCE) || all)
+			if(resourceTypes.contains(EResourceType.RESOURCE.toString().toLowerCase()) || all)
 			{
 				 Criteria criteria = session.createCriteria(ResourceLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -155,39 +162,39 @@ public class QActivityResourceType extends Question{
 				 HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getResource() != null)
-						 if(rri.get(ilm.get(i)) == null)
+						 if(rri.get(ilm.get(i).getResource().getId()) == null)
 							 rri.put(ilm.get(i).getResource().getId(), new ResourceRequestInfo(ilm.get(i).getResource().getId(), EResourceType.RESOURCE, 1L, ilm.get(i).getResource().getTitle()));
 						 else
 							 rri.get(ilm.get(i).getResource().getId()).incRequests();
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}
-			if(resourceTypes.contains(EResourceType.SCORM) || all)
+			if(resourceTypes.contains(EResourceType.SCORM.toString().toLowerCase()) || all)
 			{
 				Criteria criteria = session.createCriteria(ScormLogMining.class, "log");
-				 criteria.add(Restrictions.in("log.course.id", courses))
+				criteria.add(Restrictions.in("log.course.id", courses))
 	                .add(Restrictions.between("log.timestamp", startTime, endTime));
 				 List<ScormLogMining> ilm = criteria.list();
 				 HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getScorm() != null)
-						 if(rri.get(ilm.get(i)) == null)
+						 if(rri.get(ilm.get(i).getScorm().getId()) == null)
 							 rri.put(ilm.get(i).getScorm().getId(), new ResourceRequestInfo(ilm.get(i).getScorm().getId(), EResourceType.SCORM, 1L, ilm.get(i).getScorm().getTitle()));
 						 else
 							 rri.get(ilm.get(i).getScorm().getId()).incRequests();
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}
-			if(resourceTypes.contains(EResourceType.WIKI) || all)
+			if(resourceTypes.contains(EResourceType.WIKI.toString().toLowerCase()) || all)
 			{
 				Criteria criteria = session.createCriteria(WikiLogMining.class, "log");
-				 criteria.add(Restrictions.in("log.course.id", courses))
+				criteria.add(Restrictions.in("log.course.id", courses))
 	                .add(Restrictions.between("log.timestamp", startTime, endTime));
 				 List<WikiLogMining> ilm = criteria.list();
 				 HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getWiki() != null)
-						 if(rri.get(ilm.get(i)) == null)
+						 if(rri.get(ilm.get(i).getWiki().getId()) == null)
 							 rri.put(ilm.get(i).getWiki().getId(), new ResourceRequestInfo(ilm.get(i).getWiki().getId(), EResourceType.WIKI, 1L, ilm.get(i).getWiki().getTitle()));
 						 else
 							 rri.get(ilm.get(i).getWiki().getId()).incRequests();

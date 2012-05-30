@@ -9,7 +9,8 @@ import de.lemo.dms.service.EResourceType;
 public class ResourceRequestInfo{
 
 	private Long id;
-	private EResourceType resourcetype;
+	//private EResourceType resourcetype;
+	private String resourcetype;
 	private Long requests;
 	private String title;
 	
@@ -21,12 +22,12 @@ public class ResourceRequestInfo{
 		this.id = id;
 	}
 
-	public EResourceType getResourcetype() {
+	public String getResourcetype() {
 		return resourcetype;
 	}
 
 	public void setResourcetype(EResourceType resourcetype) {
-		this.resourcetype = resourcetype;
+		this.resourcetype = resourcetype.toString();
 	}
 
 	public Long getRequests() {
@@ -57,7 +58,7 @@ public class ResourceRequestInfo{
 	public ResourceRequestInfo(Long id, EResourceType resourceType, Long requests, String title)
 	{
 		this.id = id;
-		this.resourcetype = resourceType;
+		this.resourcetype = resourceType.toString();
 		this.requests = requests;
 		this.title = title;
 	}
