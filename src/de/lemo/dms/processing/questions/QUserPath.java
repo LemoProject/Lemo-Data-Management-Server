@@ -1,8 +1,10 @@
 package de.lemo.dms.processing.questions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,7 @@ import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
+import de.lemo.dms.processing.resulttype.UserPathObject;
 
 @QuestionID("userpath")
 public class QUserPath extends Question {
@@ -43,6 +46,7 @@ public class QUserPath extends Question {
     private static final String COURSE_IDS = "course_ids";
     private static final String STARTTIME = "start_time";
     private static final String ENDTIME = "end_time";
+	private static final String USER_IDS = "user_ids";
 
     @Override
     protected List<ParameterMetaData<?>> createParamMetaData() {
@@ -60,6 +64,7 @@ public class QUserPath extends Question {
                 addAll(parameters,
                        Parameter.create(COURSE_IDS, "Courses", "List of courses."),
                        Interval.create(Long.class, STARTTIME, "Start time", "", 0L, now, 0L),
+                       Parameter.create(USER_IDS, "Users", "List of users-ids."),
                        Interval.create(Long.class, ENDTIME, "End time", "", 0L, now, now)
                 );
         return parameters;
@@ -68,6 +73,7 @@ public class QUserPath extends Question {
     @GET
     public JSONObject compute(
             @QueryParam(COURSE_IDS) List<Long> courseIds,
+            @QueryParam(USER_IDS) List<Long> userIds,
             @QueryParam(STARTTIME) Long startTime,
             @QueryParam(ENDTIME) Long endTime) throws JSONException {
 
@@ -103,19 +109,72 @@ public class QUserPath extends Question {
          * 
          * where course in ( ... ) and timestamp between " + startTime + " AND " + endTime;
          */
-        criteria.add(Restrictions.in("log.course.id", courseIds))
-                .add(Restrictions.between("log.timestamp", startTime, endTime))
-                .add(Restrictions.eq("log.action", "view"));
-
+        criteria.add(Restrictions.between("log.timestamp", startTime, endTime))
+                .add(Restrictions.eq("log.action", "view"))
+                .add(Restrictions.in("log.user.id", userIds));
+        
+        	
+        
         /* Calling list() eventually performs the query */
         @SuppressWarnings("unchecked")
         List<ILogMining> logs = criteria.list();
+        HashMap<String, UserPathObject> nodes = new HashMap<String, UserPathObject>();
+        
+        HashMap<String, List<ILogMining>> userpaths = new HashMap<String, List<ILogMining>>();
+        
+        for(int i = 0; i < logs.size(); i++)
+        {
+        	if(userpaths.get(logs.get(i).getUser().getId()) == null)
+        	{
+        		ArrayList<ILogMining> history = new ArrayList<ILogMining>();
+        		history.add(logs.get(i));
+        		userpaths.put(logs.get(i).getUser().getId()+"", history);
+        	}
+        	else
+        		userpaths.get(logs.get(i).getUser().getId()).add(logs.get(i));
+        }
+        
+        for(int i = 0; i < userIds.size(); i++)
+        {
+        	List<ILogMining> currentHistory = userpaths.get(userIds.get(i));
+    		UserPathObject last = null;
+        	for(int j = 0; j < currentHistory.size(); j++)
+        	{        		
+        		String cl = currentHistory.get(j).getClass().toString().substring(currentHistory.get(j).getClass().toString().lastIndexOf("."), currentHistory.get(j).getClass().toString().length() - 1);
+        		UserPathObject current;
+        		
+        		if(nodes.get(currentHistory.get(j).getId() + cl) == null )
+        		{
+	        		Long group;
+	        		if(courseIds.contains(currentHistory.get(j).getCourse().getId()))
+	        			group = 0L;
+	        		else
+	        			group = 1L;
+	        		current  = new UserPathObject(currentHistory.get(j).getId() + cl, "Unknown" , 1L, cl, group);
+	        		nodes.put(current.getId(), current);	        		
+        		}
+        		else
+        		{
+        			current = nodes.get(currentHistory.get(j).getId() + cl);
+        			nodes.get(currentHistory.get(j).getId() + cl).increaseWeight();
+        		}
+        		if(last != null)
+        			last.addEdge(current.getId());
+        		last = current;
+        	}
+        }
+        /*
 
-        Set<Long/* user id */> users = Sets.newHashSet();
+        int j = 0;
+        
+        Set<Long> users = Sets.newHashSet();
         for(ILogMining log : logs) {
             UserMining user = log.getUser();
             if(user == null)
+            {
+            	j++;
                 continue;
+            }
             users.add(user.getId());
         }
 
@@ -129,7 +188,7 @@ public class QUserPath extends Question {
         @SuppressWarnings("unchecked")
         List<ILogMining> extendedLogs = exdendedCriteria.list();
 
-        Map<Long /* user id */, List<Long> /* course ids */> userPaths = Maps.newHashMap();
+        Map<Long , List<Long>> userPaths = Maps.newHashMap();
 
         logger.info("Paths fetched: " + extendedLogs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
 
@@ -149,7 +208,9 @@ public class QUserPath extends Question {
 
         logger.info("userPaths: " + userPaths.size());
 
-        Map<Long /* course id */, List<JSONObject> /* edge */> coursePaths = Maps.newHashMap();
+
+
+        Map<Long , List<JSONObject> > coursePaths = Maps.newHashMap();
 
         for(Entry<Long, List<Long>> userEntry : userPaths.entrySet()) {
 
@@ -177,22 +238,19 @@ public class QUserPath extends Question {
         logger.info("Total Fetched log entries: " + (logs.size() + extendedLogs.size()) + " log entries."
                 + stopWatch.elapsedTime(TimeUnit.SECONDS));
 
-        /*
-         * TODO Shouldn't we close the session at some point?
-         */
 
+        */
         JSONObject result = new JSONObject();
-        JSONArray nodes = new JSONArray();
-        for(Entry<Long, List<JSONObject>> courseEntry : coursePaths.entrySet()) {
+        JSONArray jNodes = new JSONArray();
+        ArrayList<UserPathObject> values = new ArrayList<UserPathObject>(nodes.values());
+        for(int i = 0; i < values.size(); i++) {
             JSONObject node = new JSONObject();
-            node.put("id", courseEntry.getKey());
-            node.put("wheight", courseEntry.getValue().size());
-            node.put("edges", new JSONArray(courseEntry.getValue()));
-            if(courseIds.contains(courseEntry.getKey()))
-            	node.put("groupId", 0);
-            else
-            	node.put("groupId", 1);
-            nodes.put(node);
+            node.put("id", values.get(i).getId());
+            node.put("weight", values.get(i).getWeight());
+            node.put("edges", new JSONArray(values.get(i).getEdges()));
+            node.put("type", values.get(i).getType());
+            node.put("group", values.get(i).getGroup());
+            jNodes.put(node);
         }
 
         result.put("nodes", nodes);

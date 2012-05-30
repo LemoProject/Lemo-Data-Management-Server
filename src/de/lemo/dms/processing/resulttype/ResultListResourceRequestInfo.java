@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -20,6 +21,7 @@ public class ResultListResourceRequestInfo {
 		this.rri = resourceRequestInfos;
 	}
 	
+	@XmlElement
 	public List<ResourceRequestInfo> getResourceRequestInfos() {
 		return rri;
 	}
