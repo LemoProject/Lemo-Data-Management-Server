@@ -13,7 +13,20 @@ public class ResourceRequestInfo{
 	private String resourcetype;
 	private Long requests;
 	private String title;
+	private Long resolutionSlot;
 	
+	public Long getResolutionSlot() {
+		return resolutionSlot;
+	}
+
+	public void setResolutionSlot(Long resolutionSlot) {
+		this.resolutionSlot = resolutionSlot;
+	}
+
+	public void setResourcetype(String resourcetype) {
+		this.resourcetype = resourcetype;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -55,12 +68,13 @@ public class ResourceRequestInfo{
 		this.requests++;
 	}
 	
-	public ResourceRequestInfo(Long id, EResourceType resourceType, Long requests, String title)
+	public ResourceRequestInfo(Long id, EResourceType resourceType, Long requests, String title, Long resolutionSlot)
 	{
 		this.id = id;
 		this.resourcetype = resourceType.toString();
 		this.requests = requests;
 		this.title = title;
+		this.resolutionSlot = resolutionSlot;
 	}
 
 
