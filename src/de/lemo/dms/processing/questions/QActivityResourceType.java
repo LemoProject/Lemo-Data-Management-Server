@@ -79,7 +79,7 @@ public class QActivityResourceType extends Question{
 	        Session session = dbHandler.getSession(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
         
 			//Create and initialize array for results
-			if(resourceTypes.contains(EResourceType.ASSIGNMENT.toString().toLowerCase()) || all)
+			if(resourceTypes.contains(EResourceType.ASSIGNMENT.toString()) || all)
 			{
 				 Criteria criteria = session.createCriteria(AssignmentLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -101,7 +101,7 @@ public class QActivityResourceType extends Question{
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}        
-			if(resourceTypes.contains(EResourceType.FORUM.toString().toLowerCase()) || all)
+			if(resourceTypes.contains(EResourceType.FORUM.toString()) || all)
 			{
 				 Criteria criteria = session.createCriteria(ForumLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -117,7 +117,7 @@ public class QActivityResourceType extends Question{
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}
-			if(resourceTypes.contains(EResourceType.QUESTION.toString().toLowerCase()) || all)
+			if(resourceTypes.contains(EResourceType.QUESTION.toString()) || all)
 			{
 				 Criteria criteria = session.createCriteria(QuestionLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -133,7 +133,7 @@ public class QActivityResourceType extends Question{
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}
-			if(resourceTypes.contains(EResourceType.QUIZ.toString().toLowerCase()) || all)
+			if(resourceTypes.contains(EResourceType.QUIZ.toString()) || all)
 			{
 				 Criteria criteria = session.createCriteria(QuizLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -149,7 +149,7 @@ public class QActivityResourceType extends Question{
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}
-			if(resourceTypes.contains(EResourceType.RESOURCE.toString().toLowerCase()) || all)
+			if(resourceTypes.contains(EResourceType.RESOURCE.toString()) || all)
 			{
 				 Criteria criteria = session.createCriteria(ResourceLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -183,7 +183,7 @@ public class QActivityResourceType extends Question{
 //					 list.addAll(rri.values());
 //			}
 			
-			if(resourceTypes.contains(EResourceType.WIKI.toString().toLowerCase()) || all)
+			if(resourceTypes.contains(EResourceType.WIKI.toString()) || all)
 			{
 				Criteria criteria = session.createCriteria(WikiLogMining.class, "log");
 				criteria.add(Restrictions.in("log.course.id", courses))
