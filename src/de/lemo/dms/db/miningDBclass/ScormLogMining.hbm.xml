@@ -30,6 +30,8 @@
             column="timestamp"
             type="long"/>
             
+
+            
 		<many-to-one 
        		name="course" 
        		class="de.lemo.dms.db.miningDBclass.CourseMining"

@@ -20,13 +20,9 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
-import de.lemo.dms.db.miningDBclass.CourseLogMining;
 import de.lemo.dms.db.miningDBclass.QuizLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
-import de.lemo.dms.db.miningDBclass.ScormLogMining;
-import de.lemo.dms.db.miningDBclass.ChatLogMining;
-import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
@@ -93,7 +89,7 @@ public class QActivityResourceType extends Question{
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getAssignment() != null)
 					 {
-						 System.out.println(ilm.get(i).getAssignment().getId());
+						 //System.out.println(ilm.get(i).getAssignment().getId());
 						 if(rri.get(ilm.get(i).getAssignment().getId()) == null)
 							 rri.put(ilm.get(i).getAssignment().getId(), new ResourceRequestInfo(ilm.get(i).getAssignment().getId(), EResourceType.ASSIGNMENT, 1L, ilm.get(i).getAssignment().getTitle(), 0L));
 						 else
@@ -169,22 +165,24 @@ public class QActivityResourceType extends Question{
 				 if(rri.values() != null)
 					 list.addAll(rri.values());
 			}
-			if(resourceTypes.contains(EResourceType.SCORM.toString().toLowerCase()) || all)
-			{
-				Criteria criteria = session.createCriteria(ScormLogMining.class, "log");
-				criteria.add(Restrictions.in("log.course.id", courses))
-	                .add(Restrictions.between("log.timestamp", startTime, endTime));
-				 List<ScormLogMining> ilm = criteria.list();
-				 HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
-				 for(int i = 0 ; i < ilm.size(); i++)
-					 if(ilm.get(i).getScorm() != null)
-						 if(rri.get(ilm.get(i).getScorm().getId()) == null)
-							 rri.put(ilm.get(i).getScorm().getId(), new ResourceRequestInfo(ilm.get(i).getScorm().getId(), EResourceType.SCORM, 1L, ilm.get(i).getScorm().getTitle(), 0L));
-						 else
-							 rri.get(ilm.get(i).getScorm().getId()).incRequests();
-				 if(rri.values() != null)
-					 list.addAll(rri.values());
-			}
+			
+//			if(resourceTypes.contains(EResourceType.SCORM.toString().toLowerCase()) || all)
+//			{
+//				Criteria criteria = session.createCriteria(ScormLogMining.class, "log");
+//				criteria.add(Restrictions.in("log.course.id", courses))
+//	                .add(Restrictions.between("log.timestamp", startTime, endTime));
+//				 List<ScormLogMining> ilm = criteria.list();
+//				 HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
+//				 for(int i = 0 ; i < ilm.size(); i++)
+//					 if(ilm.get(i).getScorm() != null)
+//						 if(rri.get(ilm.get(i).getScorm().getId()) == null)
+//							 rri.put(ilm.get(i).getScorm().getId(), new ResourceRequestInfo(ilm.get(i).getScorm().getId(), EResourceType.SCORM, 1L, ilm.get(i).getScorm().getTitle(), 0L));
+//						 else
+//							 rri.get(ilm.get(i).getScorm().getId()).incRequests();
+//				 if(rri.values() != null)
+//					 list.addAll(rri.values());
+//			}
+			
 			if(resourceTypes.contains(EResourceType.WIKI.toString().toLowerCase()) || all)
 			{
 				Criteria criteria = session.createCriteria(WikiLogMining.class, "log");

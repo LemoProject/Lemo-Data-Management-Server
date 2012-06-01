@@ -3,6 +3,7 @@ package de.lemo.dms.processing.resulttype;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -61,41 +62,49 @@ public class ResultListRRITypes {
 		wikis = new ArrayList<ResourceRequestInfo>();		
 	}
 	
+	@XmlElement
 	public List<ResourceRequestInfo> getAssignmentRRI()
 	{
 		return assignments;
 	}
 	
+	@XmlElement
 	public List<ResourceRequestInfo> getForumRRI()
 	{
 		return forums;
 	}
 	
+	@XmlElement
 	public List<ResourceRequestInfo> getCoursesRRI()
 	{
 		return courses;
 	}
 	
+	@XmlElement
 	public List<ResourceRequestInfo> getQuestionsRRI()
 	{
 		return questions;
 	}
 	
+	@XmlElement
 	public List<ResourceRequestInfo> getQuizRRI()
 	{
 		return quiz;
 	}
 	
+	@XmlElement
 	public List<ResourceRequestInfo> getResourcesRRI()
 	{
 		return resources;
 	}
 	
+	@XmlElement
 	public List<ResourceRequestInfo> getScormRRI()
 	{
 		return scorms;
 	}
 	
+	@XmlElement
 	public List<ResourceRequestInfo> getWikiRRI()
 	{
 		return wikis;

@@ -39,10 +39,11 @@ public class ResourceRequestInfo{
 		return resourcetype;
 	}
 
-	public void setResourcetype(EResourceType resourcetype) {
-		this.resourcetype = resourcetype.toString();
-	}
+//	public void setResourcetype(EResourceType resourcetype) {
+//	this.resourcetype = resourcetype.toString();
+//}
 
+	
 	public Long getRequests() {
 		return requests;
 	}
