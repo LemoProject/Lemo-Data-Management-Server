@@ -38,6 +38,12 @@
 		<many-to-one name="scorm" class="de.lemo.dms.db.miningDBclass.ScormMining"> 
        		<column name="scorm_id"/>
 		</many-to-one>
+		
+		<many-to-one 
+       		name="user" 
+       		class="de.lemo.dms.db.miningDBclass.UserMining"
+       		cascade="save-update" 
+            column="user_id" />
             
     </class>
 
