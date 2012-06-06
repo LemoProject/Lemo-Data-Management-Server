@@ -681,7 +681,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
     			if(insert.getUser() != null && insert.getCourse() != null)
-    			course_log_mining.put(insert.getId(), insert);
+    				course_log_mining.put(insert.getId(), insert);
     			
     		}
         }

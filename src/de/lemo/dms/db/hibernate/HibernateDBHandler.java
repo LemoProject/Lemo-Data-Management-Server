@@ -43,17 +43,28 @@ public class HibernateDBHandler implements IDBHandler{
 		 
 		try{		
 			List<Object> objects = new ArrayList<Object>();
-			for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
-		    {
-				Collection<?> l = iter.next();
-		    	for ( Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
-	
-		    		Object o = iter2.next();
-		    				    		
-	    			objects.add(mining_session.merge(o));
-    		
-		    	}
-		    }
+			try{
+				for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
+			    {
+					Collection<?> l = iter.next();
+			    	for ( Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
+			    		Object o = iter2.next();
+		    			objects.add(mining_session.merge(o));
+			    	}
+			    }
+			}catch(org.hibernate.ObjectNotFoundException e)
+			{
+				objects = new ArrayList<Object>();
+				for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
+			    {
+					Collection<?> l = iter.next();
+			    	for ( Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
+			    		Object o = iter2.next();
+		    			objects.add(o);
+			    	}
+			    }
+			}
+			System.out.println("Merged");
 			Transaction tx = mining_session.beginTransaction();
 			int classOb = 0;
 			String className = "";
@@ -114,7 +125,7 @@ public class HibernateDBHandler implements IDBHandler{
 		    */
 		}catch(HibernateException e)
 		{
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		
 	}

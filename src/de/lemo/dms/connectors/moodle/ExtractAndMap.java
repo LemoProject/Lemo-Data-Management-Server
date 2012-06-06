@@ -617,7 +617,7 @@ public abstract class ExtractAndMap{
 		//mining_session.clear();
 		//transaction for saving		
 		//Transaction tx = dbHandler.getSession().beginTransaction();
-		
+		System.out.println("Writing to DB");
 		dbHandler.saveToDB(updates);
 		
 		/*

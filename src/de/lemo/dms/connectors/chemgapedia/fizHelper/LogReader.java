@@ -363,7 +363,7 @@ public class LogReader {
 		    				  r.setTitle(h);
 		    				  
 		    				  //cutting out supplements
-		    				  if(!r.getUrl().contains("/vsengine/supplement/"))
+		    				  if(r.getUrl().contains("/vsengine/supplement/"))
 		    					  r.setType("Supplement");
 		    				  
 		    				  this.newResources.put(r.getUrl(), r);
