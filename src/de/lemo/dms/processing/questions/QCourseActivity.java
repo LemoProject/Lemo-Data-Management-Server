@@ -9,11 +9,17 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.QueryParam;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
+import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
@@ -53,13 +59,24 @@ public class QCourseActivity extends Question{
 	}
 	
 	
-    @GET
+    /**
+     * Returns a list with the length of 'resolution'. Each entry holds the number of requests in the interval.
+     * 
+     * @param courses		(Mandatory) Course-identifiers of the courses that should be processed.
+     * @param roles			(Optional)	Role-identifiers 
+     * @param startTime		(Mandatory) 
+     * @param endTime		(Mandatory)
+     * @param resolution 	(Mandatory)
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	@GET
     public ResultListLongObject compute(@QueryParam(COURSE_IDS) List<Long> courses, @QueryParam(ROLE_IDS) List<Long> roles,
-            @QueryParam(STARTTIME) long starttime, @QueryParam(ENDTIME) long endtime, @QueryParam(RESOLUTION) int resolution) {
+            @QueryParam(STARTTIME) long startTime, @QueryParam(ENDTIME) long endTime, @QueryParam(RESOLUTION) int resolution) {
 		
 		List<Long> list = new ArrayList<Long>();
 		//Check arguments
-		if(starttime < endtime && resolution > 0)
+		if(startTime < endTime && resolution > 0)
 		{
 			
 			//Set up db-connection
@@ -67,62 +84,48 @@ public class QCourseActivity extends Question{
 			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 			
 			//Calculate size of time intervalls
-			double intervall = (endtime - starttime) / (resolution);
+			double intervall = (endTime - startTime) / (resolution);
 			
 			//Create and initialize array for results
 			Long[] resArr = new Long[resolution];
 			for(int i =  0; i < resArr.length; i++)
 				resArr[i] = 0L;
 			
-	
+			Session session = dbHandler.getSession();
 			
-			//Create WHERE clause for course_ids
-			String cou = "";
-	
-			for(int i = 0; i < courses.size(); i++)
-				if(i == 0)
-					cou += "course in ("+courses.get(i);
-				else
-					cou += "," + courses.get(i);
-			if(cou != "")
-				cou += ") AND";
-			
-			String rol = "";
-            String use = "";
-			
-			//Retrieve user-ids of users with specified roles in the courses
-			if(roles.size() > 0)
+			List<CourseUserMining> ilm = null;
+			if(roles != null && roles.size() > 0)
 			{
-				
-				for(int i = 0; i < roles.size(); i++)
-					if(i == 0)
-						rol += "role in ("+roles.get(i);
-					else
-						rol += "," + roles.get(i);
-				if(rol != "")
-					rol += ")";
-				String query ="from CourseUserMining where "+ cou +" "+rol;
-				
-				@SuppressWarnings("unchecked")
-                List<CourseUserMining> users = (List<CourseUserMining>)dbHandler.performQuery(EQueryType.HQL, query);
-				
-				//Create WHERE clause for user_ids
-    			for(int i = 0; i < users.size(); i++)
-    				if(i == 0)
-    					use += "user in ("+users.get(i).getUser().getId();
-    				else
-    					use += "," + users.get(i).getUser().getId();
-    			if(use != "")
-    				use += ") AND";			
+				Criteria criteria = session.createCriteria(CourseUserMining.class, "log");
+				 criteria.add(Restrictions.in("log.course.id", courses))
+				 	.add(Restrictions.in("log.role.id", roles));
+				  ilm = criteria.list();
 			}
-			String query = "from ResourceLogMining x where "+ cou + " " + use + " x.timestamp between '" + starttime + "' AND '" + endtime +"' order by x.timestamp asc";
+			 List<Long> users = new ArrayList<Long>();
+			 
+			 if(ilm != null)
+				 for(int i = 0; i < ilm.size(); i++)
+				 {
+					 if(ilm.get(i).getUser() != null)
+						 users.add(ilm.get(i).getUser().getId());
+				 }
+			 
+			 List<ILogMining> logs = null;
+
+			 Criteria criteria2 = session.createCriteria(ILogMining.class, "log");
+			 criteria2.add(Restrictions.in("log.course.id", courses));
+			 
+			 
+			 if(users.size() > 0)
+			 	criteria2.add(Restrictions.in("log.user.id", users));
+			 
+			 criteria2.add(Restrictions.between("log.timestamp", startTime, endTime));
 			
-			@SuppressWarnings("unchecked")
-            List<ResourceLogMining> resource_logs = (List<ResourceLogMining>)dbHandler.performQuery(EQueryType.HQL, query);
-			
-			for(int i = 0 ; i < resource_logs.size(); i++)
+            logs = criteria2.list();
+
+			for(int i = 0 ; i < logs.size(); i++)
 			{
-				Integer pos = new Double((resource_logs.get(i).getTimestamp() - starttime) / intervall).intValue();
+				Integer pos = new Double((logs.get(i).getTimestamp() - startTime) / intervall).intValue();
 				if(pos>resolution-1)
 					pos = resolution-1;
 				else
@@ -132,5 +135,4 @@ public class QCourseActivity extends Question{
 		}
         return new ResultListLongObject(list);
     }
-
 }

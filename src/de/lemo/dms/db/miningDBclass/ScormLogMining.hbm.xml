@@ -42,7 +42,6 @@
 		<many-to-one 
        		name="user" 
        		class="de.lemo.dms.db.miningDBclass.UserMining"
-       		cascade="save-update" 
             column="user_id" />
             
     </class>
