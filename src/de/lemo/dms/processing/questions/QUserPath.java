@@ -73,6 +73,15 @@ public class QUserPath extends Question {
         return parameters;
     }
 
+    /**
+     * Returns all logged events matching the requirements given by the parameters.
+     * 
+     * @param courseIds		List of course-identifiers
+     * @param userIds		List of user-identifiers
+     * @param startTime		LongInteger time stamp  
+     * @param endTime		LongInteger	time stamp 
+     * @return
+     */
     @GET
     public ResultListUserPathObject compute(
     		@QueryParam(COURSE_IDS) List<Long> courseIds,
@@ -93,9 +102,6 @@ public class QUserPath extends Question {
             return null;
         }
 
-        Stopwatch stopWatch = new Stopwatch();
-
-        stopWatch.start();
 
         /* A criteria is created from the session. */
         IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
@@ -121,14 +127,18 @@ public class QUserPath extends Question {
         @SuppressWarnings("unchecked")
         List<ILogMining> logs = criteria.list();
         
+      //HashMap for all user-histories
         HashMap<Long, List<UserPathObject>> userPaths = new HashMap<Long, List<UserPathObject>>();
         
+        //Iterate through all found log-items for saving log data into UserPathObjects
         for(int i = 0; i < logs.size(); i++)
         {
+        	
         	String title ="";
     		String type ="";
     		ILogMining ilm = null;
     		
+    		//the log entry has to be cast to its respective class to get its title
     		if(logs.get(i).getClass().equals(AssignmentLogMining.class) && ((AssignmentLogMining)logs.get(i)).getAssignment() != null)
     		{
     			ilm = (AssignmentLogMining)logs.get(i);
@@ -165,14 +175,11 @@ public class QUserPath extends Question {
     			type = "resource";
     			title = ((ResourceLogMining)ilm).getResource().getTitle();
     		}
-    		
     		if(logs.get(i).getClass().equals(WikiLogMining.class) && ((WikiLogMining)logs.get(i)).getWiki() != null)
     		{
-    			
     			ilm = (WikiLogMining)logs.get(i);
     			type = "wiki";
     			title = ((WikiLogMining)ilm).getWiki().getTitle();
- 
     		}
 
     		if(logs.get(i).getClass().equals(ScormLogMining.class) && ((ScormLogMining)logs.get(i)).getScorm() != null)
@@ -181,24 +188,27 @@ public class QUserPath extends Question {
     			type = "scorm";
     			title = ((ScormLogMining)ilm).getScorm().getTitle();
     		}
-    		
     		if(ilm != null)
 	        	if(userPaths.get(logs.get(i).getUser().getId()) == null)
 	        	{
 	        		ArrayList<UserPathObject> uP = new ArrayList<UserPathObject>();
+	        		//If the user isn't already in the map, create new entry and insert the UserPathObject
 	        		uP.add(new UserPathObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
 	        		userPaths.put(logs.get(i).getUser().getId(), uP);
 	        	}
 	        	else
+	        		//If the user is known, just add the UserPathObject to the user's history
 	        		userPaths.get(ilm.getUser().getId()).add(new UserPathObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
     		else
     			System.out.println();
         }
 
-        
+        //List for UserPathObjects
         List<UserPathObject> l = new ArrayList<UserPathObject>();
+        //Insert all entries of all user-histories to the list
         for(Iterator<List<UserPathObject>> iter = userPaths.values().iterator(); iter.hasNext();)
         	l.addAll(iter.next());
+        //Sort the list (first by user and time stamp)
         Collections.sort(l);
         for(int i = 0; i < l.size(); i++)
         	System.out.println(l.get(i).getType());
