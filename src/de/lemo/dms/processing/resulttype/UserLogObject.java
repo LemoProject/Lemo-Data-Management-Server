@@ -1,7 +1,7 @@
 package de.lemo.dms.processing.resulttype;
 
 
-public class UserPathObject implements Comparable{
+public class UserLogObject implements Comparable{
 	
 	private Long userId;
 	private Long timestamp;
@@ -36,12 +36,12 @@ public class UserPathObject implements Comparable{
 		this.group = group;
 	}
 
-	public UserPathObject()
+	public UserLogObject()
 	{
 		
 	}
 	
-	public UserPathObject(Long userId, long timestamp, String title, Long objectId, String type, Long group, String info)
+	public UserLogObject(Long userId, long timestamp, String title, Long objectId, String type, Long group, String info)
 	{
 		this.userId = userId;
 		this.timestamp = timestamp;
@@ -79,9 +79,9 @@ public class UserPathObject implements Comparable{
 
 	@Override
 	public int compareTo(Object arg0) {
-		UserPathObject s;
+		UserLogObject s;
 		try{
-			s = (UserPathObject)arg0;
+			s = (UserLogObject)arg0;
 		}catch(Exception e)
 		{
 			return 0;

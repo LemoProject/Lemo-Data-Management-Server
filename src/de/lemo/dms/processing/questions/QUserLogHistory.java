@@ -25,7 +25,7 @@ import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
-import de.lemo.dms.processing.resulttype.UserPathObject;
+import de.lemo.dms.processing.resulttype.UserLogObject;
 
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.CourseLogMining;
@@ -126,7 +126,7 @@ public class QUserLogHistory extends Question {
         List<ILogMining> logs = criteria.list();
         
       //HashMap for all user-histories
-        HashMap<Long, List<UserPathObject>> userPaths = new HashMap<Long, List<UserPathObject>>();
+        HashMap<Long, List<UserLogObject>> userPaths = new HashMap<Long, List<UserLogObject>>();
         
         //Iterate through all found log-items for saving log data into UserPathObjects
         for(int i = 0; i < logs.size(); i++)
@@ -189,22 +189,22 @@ public class QUserLogHistory extends Question {
     		if(ilm != null)
 	        	if(userPaths.get(logs.get(i).getUser().getId()) == null)
 	        	{
-	        		ArrayList<UserPathObject> uP = new ArrayList<UserPathObject>();
+	        		ArrayList<UserLogObject> uP = new ArrayList<UserLogObject>();
 	        		//If the user isn't already in the map, create new entry and insert the UserPathObject
-	        		uP.add(new UserPathObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
+	        		uP.add(new UserLogObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
 	        		userPaths.put(logs.get(i).getUser().getId(), uP);
 	        	}
 	        	else
 	        		//If the user is known, just add the UserPathObject to the user's history
-	        		userPaths.get(ilm.getUser().getId()).add(new UserPathObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
+	        		userPaths.get(ilm.getUser().getId()).add(new UserLogObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
     		else
     			System.out.println();
         }
 
         //List for UserPathObjects
-        List<UserPathObject> l = new ArrayList<UserPathObject>();
+        List<UserLogObject> l = new ArrayList<UserLogObject>();
         //Insert all entries of all user-histories to the list
-        for(Iterator<List<UserPathObject>> iter = userPaths.values().iterator(); iter.hasNext();)
+        for(Iterator<List<UserLogObject>> iter = userPaths.values().iterator(); iter.hasNext();)
         	l.addAll(iter.next());
         //Sort the list (first by user and time stamp)
         Collections.sort(l);
