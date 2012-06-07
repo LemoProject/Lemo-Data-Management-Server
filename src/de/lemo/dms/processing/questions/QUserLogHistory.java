@@ -16,8 +16,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import com.google.common.base.Stopwatch;
-
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
@@ -43,8 +41,8 @@ import de.lemo.dms.processing.resulttype.ResultListUserPathObject;
 
 
 
-@QuestionID("userpath")
-public class QUserPath extends Question {
+@QuestionID("userloghistory")
+public class QUserLogHistory extends Question {
 
     private static final String STARTTIME = "start_time";
     private static final String ENDTIME = "end_time";
