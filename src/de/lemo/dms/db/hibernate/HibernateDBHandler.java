@@ -160,7 +160,7 @@ public class HibernateDBHandler implements IDBHandler{
 				mining_session = de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(dbConf).openSession();
 		}catch(HibernateException he)
 		{
-			System.out.println(he.getMessage());
+			System.out.println("Get connection failed: " + he.getMessage());
 		}
 	}
 

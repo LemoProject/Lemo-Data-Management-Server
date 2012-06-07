@@ -1,16 +1,15 @@
 package de.lemo.dms.processing.resulttype;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class UserPathObject {
+public class UserPathObject implements Comparable{
 	
-	private String id;
+	private Long userId;
+	private Long timestamp;
 	private String title;
-	private Long weight;
-	private List<String> edges;
+	private Long objectId;
 	private Long group;
 	private String type;
+	private String info;
 	
 	
 	public String getType() {
@@ -21,36 +20,12 @@ public class UserPathObject {
 		this.type = type;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public Long getWeight() {
-		return weight;
-	}
-
-	public void setWeight(Long weight) {
-		this.weight = weight;
-	}
-
-	public List<String> getEdges() {
-		return edges;
-	}
-
-	public void setEdges(List<String> edges) {
-		this.edges = edges;
 	}
 
 	public Long getGroup() {
@@ -66,25 +41,71 @@ public class UserPathObject {
 		
 	}
 	
-	public UserPathObject(String id, String title, Long weight, String type, Long group)
+	public UserPathObject(Long userId, long timestamp, String title, Long objectId, String type, Long group, String info)
 	{
-		this.id = id;
+		this.userId = userId;
+		this.timestamp = timestamp;
+		this.objectId = objectId;
 		this.title = title;
-		this.weight = weight;
 		this.group = group;
-		this.edges = new ArrayList<String>();
 		this.type = type;
+		this.setInfo(info);
 		
 	}
 	
-	public void addEdge(String target)
-	{
-		this.edges.add(target);
+	public Long getTimestamp() {
+		return timestamp;
 	}
-	
-	public void increaseWeight()
-	{
-		this.weight++;
+
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public Long getObjectId() {
+		return objectId;
+	}
+
+	public void setObjectId(Long objectId) {
+		this.objectId = objectId;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		UserPathObject s;
+		try{
+			s = (UserPathObject)arg0;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.getUserId() > s.getUserId())
+			return 1;
+		if(this.getUserId() < s.getUserId())
+			return -1;
+		if(this.getUserId() == s.getUserId())
+		{
+			if(this.getTimestamp() > s.getTimestamp())
+				return 1;
+			if(this.getTimestamp() < s.getTimestamp())
+				return -1;
+		}
+		return 0;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	
 	

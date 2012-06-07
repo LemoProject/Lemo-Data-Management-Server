@@ -5,33 +5,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.QueryParam;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
@@ -40,13 +29,27 @@ import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.UserPathObject;
 
+import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
+import de.lemo.dms.db.miningDBclass.CourseLogMining;
+import de.lemo.dms.db.miningDBclass.ForumLogMining;
+import de.lemo.dms.db.miningDBclass.QuizLogMining;
+import de.lemo.dms.db.miningDBclass.QuestionLogMining;
+import de.lemo.dms.db.miningDBclass.WikiLogMining;
+import de.lemo.dms.db.miningDBclass.ScormLogMining;
+import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+
+import de.lemo.dms.processing.resulttype.ResultListUserPathObject;
+
+
+
+
 @QuestionID("userpath")
 public class QUserPath extends Question {
 
-    private static final String COURSE_IDS = "course_ids";
     private static final String STARTTIME = "start_time";
     private static final String ENDTIME = "end_time";
 	private static final String USER_IDS = "user_ids";
+	private static final String COURSE_IDS = "course_ids";
 
     @Override
     protected List<ParameterMetaData<?>> createParamMetaData() {
@@ -62,20 +65,20 @@ public class QUserPath extends Question {
 
         Collections.<ParameterMetaData<?>>
                 addAll(parameters,
-                       Parameter.create(COURSE_IDS, "Courses", "List of courses."),
                        Interval.create(Long.class, STARTTIME, "Start time", "", 0L, now, 0L),
                        Parameter.create(USER_IDS, "Users", "List of users-ids."),
+                       Parameter.create(COURSE_IDS, "Courses", "List of course-ids."),
                        Interval.create(Long.class, ENDTIME, "End time", "", 0L, now, now)
                 );
         return parameters;
     }
 
     @GET
-    public JSONObject compute(
-            @QueryParam(COURSE_IDS) List<Long> courseIds,
+    public ResultListUserPathObject compute(
+    		@QueryParam(COURSE_IDS) List<Long> courseIds,
             @QueryParam(USER_IDS) List<Long> userIds,
             @QueryParam(STARTTIME) Long startTime,
-            @QueryParam(ENDTIME) Long endTime) throws JSONException {
+            @QueryParam(ENDTIME) Long endTime){
 
         /*
          * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to
@@ -86,7 +89,7 @@ public class QUserPath extends Question {
             endTime = new Date().getTime();
         }
 
-        if(startTime >= endTime || courseIds.isEmpty()) {
+        if(startTime >= endTime || userIds.isEmpty()) {
             return null;
         }
 
@@ -109,15 +112,107 @@ public class QUserPath extends Question {
          * 
          * where course in ( ... ) and timestamp between " + startTime + " AND " + endTime;
          */
-        criteria.add(Restrictions.in("log.course.id", courseIds))
-                .add(Restrictions.between("log.timestamp", startTime, endTime))
-                .add(Restrictions.eq("log.action", "view"));
+        criteria.add(Restrictions.between("log.timestamp", startTime, endTime))
+                .add(Restrictions.in("log.user.id", userIds));
+        if(courseIds != null && courseIds.size() > 0)
+        	criteria.add(Restrictions.in("log.course.id", courseIds));
 
         /* Calling list() eventually performs the query */
         @SuppressWarnings("unchecked")
         List<ILogMining> logs = criteria.list();
+        
+        HashMap<Long, List<UserPathObject>> userPaths = new HashMap<Long, List<UserPathObject>>();
+        
+        for(int i = 0; i < logs.size(); i++)
+        {
+        	String title ="";
+    		String type ="";
+    		ILogMining ilm = null;
+    		
+    		if(logs.get(i).getClass().equals(AssignmentLogMining.class) && ((AssignmentLogMining)logs.get(i)).getAssignment() != null)
+    		{
+    			ilm = (AssignmentLogMining)logs.get(i);
+    			type = "assignment";
+    			title = ((AssignmentLogMining)ilm).getAssignment().getTitle();
+    		}
+    		if(logs.get(i).getClass().equals(ForumLogMining.class) && ((ForumLogMining)logs.get(i)).getForum() != null)
+    		{
+    			ilm = (ForumLogMining)logs.get(i);
+    			type = "forum";
+    			title = ((ForumLogMining)ilm).getForum().getTitle();
+    		}
+    		if(logs.get(i).getClass().equals(CourseLogMining.class) && ((CourseLogMining)logs.get(i)).getCourse() != null)
+    		{
+    			ilm = (CourseLogMining)logs.get(i);
+    			type = "course";
+    			title = ((CourseLogMining)ilm).getCourse().getTitle();
+    		}
+    		if(logs.get(i).getClass().equals(QuizLogMining.class) && ((QuizLogMining)logs.get(i)).getQuiz() != null)
+    		{
+    			ilm = (QuizLogMining)logs.get(i);
+    			type = "quiz";
+    			title = ((QuizLogMining)ilm).getQuiz().getTitle();
+    		}
+    		if(logs.get(i).getClass().equals(QuestionLogMining.class) && ((QuestionLogMining)logs.get(i)).getQuestion() != null)
+    		{
+    			ilm = (QuestionLogMining)logs.get(i);
+    			type = "question";
+    			title = ((QuestionLogMining)ilm).getQuestion().getTitle();
+    		}
+    		if(logs.get(i).getClass().equals(ResourceLogMining.class) && ((ResourceLogMining)logs.get(i)).getResource() != null)
+    		{
+    			ilm = (ResourceLogMining)logs.get(i);
+    			type = "resource";
+    			title = ((ResourceLogMining)ilm).getResource().getTitle();
+    		}
+    		
+    		if(logs.get(i).getClass().equals(WikiLogMining.class) && ((WikiLogMining)logs.get(i)).getWiki() != null)
+    		{
+    			
+    			ilm = (WikiLogMining)logs.get(i);
+    			type = "wiki";
+    			title = ((WikiLogMining)ilm).getWiki().getTitle();
+ 
+    		}
 
-        Set<Long/* user id */> users = Sets.newHashSet();
+    		if(logs.get(i).getClass().equals(ScormLogMining.class) && ((ScormLogMining)logs.get(i)).getScorm() != null)
+    		{
+    			ilm = (ScormLogMining)logs.get(i);
+    			type = "scorm";
+    			title = ((ScormLogMining)ilm).getScorm().getTitle();
+    		}
+    		
+    		if(ilm != null)
+	        	if(userPaths.get(logs.get(i).getUser().getId()) == null)
+	        	{
+	        		ArrayList<UserPathObject> uP = new ArrayList<UserPathObject>();
+	        		uP.add(new UserPathObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
+	        		userPaths.put(logs.get(i).getUser().getId(), uP);
+	        	}
+	        	else
+	        		userPaths.get(ilm.getUser().getId()).add(new UserPathObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
+    		else
+    			System.out.println();
+        }
+
+        
+        List<UserPathObject> l = new ArrayList<UserPathObject>();
+        for(Iterator<List<UserPathObject>> iter = userPaths.values().iterator(); iter.hasNext();)
+        	l.addAll(iter.next());
+        Collections.sort(l);
+        for(int i = 0; i < l.size(); i++)
+        	System.out.println(l.get(i).getType());
+
+        ResultListUserPathObject rlupo = new ResultListUserPathObject(l);
+        
+        return rlupo;
+    }
+}
+
+
+
+/*
+        Set<Long> users = Sets.newHashSet();
         for(ILogMining log : logs) {
             UserMining user = log.getUser();
             if(user == null)
@@ -135,7 +230,7 @@ public class QUserPath extends Question {
         @SuppressWarnings("unchecked")
         List<ILogMining> extendedLogs = exdendedCriteria.list();
 
-        Map<Long /* user id */, List<Long> /* course ids */> userPaths = Maps.newHashMap();
+        Map<Long, List<Long>> userPaths = Maps.newHashMap();
 
         logger.info("Paths fetched: " + extendedLogs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
 
@@ -155,7 +250,7 @@ public class QUserPath extends Question {
 
         logger.info("userPaths: " + userPaths.size());
 
-        Map<Long /* course id */, List<JSONObject> /* edge */> coursePaths = Maps.newHashMap();
+        Map<Long, List<JSONObject>> coursePaths = Maps.newHashMap();
 
         for(Entry<Long, List<Long>> userEntry : userPaths.entrySet()) {
 
@@ -183,9 +278,6 @@ public class QUserPath extends Question {
         logger.info("Total Fetched log entries: " + (logs.size() + extendedLogs.size()) + " log entries."
                 + stopWatch.elapsedTime(TimeUnit.SECONDS));
 
-        /*
-         * TODO Shouldn't we close the session at some point?
-         */
 
         JSONObject result = new JSONObject();
         JSONArray nodes = new JSONArray();
@@ -202,6 +294,4 @@ public class QUserPath extends Question {
         }
 
         result.put("nodes", nodes);
-        return result;
-    }
-}
+ */
