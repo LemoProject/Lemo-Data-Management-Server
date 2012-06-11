@@ -1,53 +1,47 @@
 package de.lemo.dms.processing.questions;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.QueryParam;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
-import de.lemo.dms.processing.resulttype.UserLogObject;
 
-import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
-import de.lemo.dms.db.miningDBclass.CourseLogMining;
-import de.lemo.dms.db.miningDBclass.ForumLogMining;
-import de.lemo.dms.db.miningDBclass.QuizLogMining;
-import de.lemo.dms.db.miningDBclass.QuestionLogMining;
-import de.lemo.dms.db.miningDBclass.WikiLogMining;
-import de.lemo.dms.db.miningDBclass.ScormLogMining;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+@QuestionID("courseuserpaths")
+public class QCourseUserPaths extends Question {
 
-import de.lemo.dms.processing.resulttype.ResultListUserPathObject;
-
-
-
-
-@QuestionID("userloghistory")
-public class QUserLogHistory extends Question {
-
+    private static final String COURSE_IDS = "course_ids";
     private static final String STARTTIME = "start_time";
     private static final String ENDTIME = "end_time";
-	private static final String USER_IDS = "user_ids";
-	private static final String COURSE_IDS = "course_ids";
 
     @Override
     protected List<ParameterMetaData<?>> createParamMetaData() {
@@ -63,29 +57,18 @@ public class QUserLogHistory extends Question {
 
         Collections.<ParameterMetaData<?>>
                 addAll(parameters,
+                       Parameter.create(COURSE_IDS, "Courses", "List of courses."),
                        Interval.create(Long.class, STARTTIME, "Start time", "", 0L, now, 0L),
-                       Parameter.create(USER_IDS, "Users", "List of users-ids."),
-                       Parameter.create(COURSE_IDS, "Courses", "List of course-ids."),
                        Interval.create(Long.class, ENDTIME, "End time", "", 0L, now, now)
                 );
         return parameters;
     }
 
-    /**
-     * Returns all logged events matching the requirements given by the parameters.
-     * 
-     * @param courseIds		List of course-identifiers
-     * @param userIds		List of user-identifiers
-     * @param startTime		LongInteger time stamp  
-     * @param endTime		LongInteger	time stamp 
-     * @return
-     */
     @GET
-    public ResultListUserPathObject compute(
-    		@QueryParam(COURSE_IDS) List<Long> courseIds,
-            @QueryParam(USER_IDS) List<Long> userIds,
+    public JSONObject compute(
+            @QueryParam(COURSE_IDS) List<Long> courseIds,
             @QueryParam(STARTTIME) Long startTime,
-            @QueryParam(ENDTIME) Long endTime){
+            @QueryParam(ENDTIME) Long endTime) throws JSONException {
 
         /*
          * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to
@@ -96,10 +79,13 @@ public class QUserLogHistory extends Question {
             endTime = new Date().getTime();
         }
 
-        if(startTime >= endTime || userIds.isEmpty()) {
+        if(startTime >= endTime || courseIds.isEmpty()) {
             return null;
         }
 
+        Stopwatch stopWatch = new Stopwatch();
+
+        stopWatch.start();
 
         /* A criteria is created from the session. */
         IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
@@ -116,111 +102,15 @@ public class QUserLogHistory extends Question {
          * 
          * where course in ( ... ) and timestamp between " + startTime + " AND " + endTime;
          */
-        criteria.add(Restrictions.between("log.timestamp", startTime, endTime))
-                .add(Restrictions.in("log.user.id", userIds));
-        if(courseIds != null && courseIds.size() > 0)
-        	criteria.add(Restrictions.in("log.course.id", courseIds));
+        criteria.add(Restrictions.in("log.course.id", courseIds))
+                .add(Restrictions.between("log.timestamp", startTime, endTime))
+                .add(Restrictions.eq("log.action", "view"));
 
         /* Calling list() eventually performs the query */
         @SuppressWarnings("unchecked")
         List<ILogMining> logs = criteria.list();
-        
-      //HashMap for all user-histories
-        HashMap<Long, List<UserLogObject>> userPaths = new HashMap<Long, List<UserLogObject>>();
-        
-        //Iterate through all found log-items for saving log data into UserPathObjects
-        for(int i = 0; i < logs.size(); i++)
-        {
-        	
-        	String title ="";
-    		String type ="";
-    		ILogMining ilm = null;
-    		
-    		//the log entry has to be cast to its respective class to get its title
-    		if(logs.get(i).getClass().equals(AssignmentLogMining.class) && ((AssignmentLogMining)logs.get(i)).getAssignment() != null)
-    		{
-    			ilm = (AssignmentLogMining)logs.get(i);
-    			type = "assignment";
-    			title = ((AssignmentLogMining)ilm).getAssignment().getTitle();
-    		}
-    		if(logs.get(i).getClass().equals(ForumLogMining.class) && ((ForumLogMining)logs.get(i)).getForum() != null)
-    		{
-    			ilm = (ForumLogMining)logs.get(i);
-    			type = "forum";
-    			title = ((ForumLogMining)ilm).getForum().getTitle();
-    		}
-    		if(logs.get(i).getClass().equals(CourseLogMining.class) && ((CourseLogMining)logs.get(i)).getCourse() != null)
-    		{
-    			ilm = (CourseLogMining)logs.get(i);
-    			type = "course";
-    			title = ((CourseLogMining)ilm).getCourse().getTitle();
-    		}
-    		if(logs.get(i).getClass().equals(QuizLogMining.class) && ((QuizLogMining)logs.get(i)).getQuiz() != null)
-    		{
-    			ilm = (QuizLogMining)logs.get(i);
-    			type = "quiz";
-    			title = ((QuizLogMining)ilm).getQuiz().getTitle();
-    		}
-    		if(logs.get(i).getClass().equals(QuestionLogMining.class) && ((QuestionLogMining)logs.get(i)).getQuestion() != null)
-    		{
-    			ilm = (QuestionLogMining)logs.get(i);
-    			type = "question";
-    			title = ((QuestionLogMining)ilm).getQuestion().getTitle();
-    		}
-    		if(logs.get(i).getClass().equals(ResourceLogMining.class) && ((ResourceLogMining)logs.get(i)).getResource() != null)
-    		{
-    			ilm = (ResourceLogMining)logs.get(i);
-    			type = "resource";
-    			title = ((ResourceLogMining)ilm).getResource().getTitle();
-    		}
-    		if(logs.get(i).getClass().equals(WikiLogMining.class) && ((WikiLogMining)logs.get(i)).getWiki() != null)
-    		{
-    			ilm = (WikiLogMining)logs.get(i);
-    			type = "wiki";
-    			title = ((WikiLogMining)ilm).getWiki().getTitle();
-    		}
 
-//    		if(logs.get(i).getClass().equals(ScormLogMining.class) && ((ScormLogMining)logs.get(i)).getScorm() != null)
-//    		{
-//    			ilm = (ScormLogMining)logs.get(i);
-//    			type = "scorm";
-//    			title = ((ScormLogMining)ilm).getScorm().getTitle();
-//    		}
-    		if(ilm != null)
-	        	if(userPaths.get(logs.get(i).getUser().getId()) == null)
-	        	{
-	        		ArrayList<UserLogObject> uP = new ArrayList<UserLogObject>();
-	        		//If the user isn't already in the map, create new entry and insert the UserPathObject
-	        		uP.add(new UserLogObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
-	        		userPaths.put(logs.get(i).getUser().getId(), uP);
-	        	}
-	        	else
-	        		//If the user is known, just add the UserPathObject to the user's history
-	        		userPaths.get(ilm.getUser().getId()).add(new UserLogObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
-    		else
-    			System.out.println();
-        }
-
-        //List for UserPathObjects
-        List<UserLogObject> l = new ArrayList<UserLogObject>();
-        //Insert all entries of all user-histories to the list
-        for(Iterator<List<UserLogObject>> iter = userPaths.values().iterator(); iter.hasNext();)
-        	l.addAll(iter.next());
-        //Sort the list (first by user and time stamp)
-        Collections.sort(l);
-        for(int i = 0; i < l.size(); i++)
-        	System.out.println(l.get(i).getType());
-
-        ResultListUserPathObject rlupo = new ResultListUserPathObject(l);
-        
-        return rlupo;
-    }
-}
-
-
-
-/*
-        Set<Long> users = Sets.newHashSet();
+        Set<Long/* user id */> users = Sets.newHashSet();
         for(ILogMining log : logs) {
             UserMining user = log.getUser();
             if(user == null)
@@ -238,7 +128,7 @@ public class QUserLogHistory extends Question {
         @SuppressWarnings("unchecked")
         List<ILogMining> extendedLogs = exdendedCriteria.list();
 
-        Map<Long, List<Long>> userPaths = Maps.newHashMap();
+        Map<Long /* user id */, List<Long> /* course ids */> userPaths = Maps.newHashMap();
 
         logger.info("Paths fetched: " + extendedLogs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
 
@@ -258,7 +148,7 @@ public class QUserLogHistory extends Question {
 
         logger.info("userPaths: " + userPaths.size());
 
-        Map<Long, List<JSONObject>> coursePaths = Maps.newHashMap();
+        Map<Long /* course id */, List<JSONObject> /* edge */> coursePaths = Maps.newHashMap();
 
         for(Entry<Long, List<Long>> userEntry : userPaths.entrySet()) {
 
@@ -286,6 +176,9 @@ public class QUserLogHistory extends Question {
         logger.info("Total Fetched log entries: " + (logs.size() + extendedLogs.size()) + " log entries."
                 + stopWatch.elapsedTime(TimeUnit.SECONDS));
 
+        /*
+         * TODO Shouldn't we close the session at some point?
+         */
 
         JSONObject result = new JSONObject();
         JSONArray nodes = new JSONArray();
@@ -302,4 +195,6 @@ public class QUserLogHistory extends Question {
         }
 
         result.put("nodes", nodes);
- */
+        return result;
+    }
+}

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 
 /**This class represents the log table for the scorm modules.*/
-public class ScormLogMining implements ILogMining{
+public class ScormLogMining {
 
 	private long id;
 	private UserMining user;
