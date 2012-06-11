@@ -4,9 +4,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**This class represents the log table for the question object.*/
-public class QuestionLogMining implements ILogMining{
+public class QuestionLogMining implements ILogMining , IMappingClass{
 
 	private long id;
 	private	QuestionMining question;
@@ -21,6 +22,15 @@ public class QuestionLogMining implements ILogMining{
 	private long timestamp;
 	private String action;
 	private long duration;
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof QuestionLogMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof QuestionLogMining))
+			return true;
+		return false;
+	}
 	
 	public long getDuration() {
 		return duration;

@@ -2,13 +2,24 @@ package de.lemo.dms.db.miningDBclass;
 
 
 import java.util.HashMap;
+
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 /**This class represents the relationship between courses and wikis.*/
-public class CourseWikiMining {
+public class CourseWikiMining implements IMappingClass {
 
 	private long id;
 	private CourseMining course;
 	private	WikiMining wiki;
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof CourseWikiMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof CourseWikiMining))
+			return true;
+		return false;
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier for the assoziation between course and wiki
 	 */

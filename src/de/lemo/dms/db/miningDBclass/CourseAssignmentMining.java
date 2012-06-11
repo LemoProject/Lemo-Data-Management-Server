@@ -3,8 +3,10 @@ package de.lemo.dms.db.miningDBclass;
 //import java.io.Serializable;
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the relationship between the courses and assignments.*/
-public class CourseAssignmentMining {
+public class CourseAssignmentMining  implements IMappingClass{
 
 //public class Course_assignment_mining implements Serializable{
 
@@ -13,6 +15,16 @@ public class CourseAssignmentMining {
 	private CourseMining course;
 	private	AssignmentMining assignment;
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof CourseAssignmentMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof CourseAssignmentMining))
+			return true;
+		return false;
+	}
+	
+	
 //	public boolean equals(Object obj) {
 //		if(!(obj instanceof Course_assignment_mining)){
 //			return false;			

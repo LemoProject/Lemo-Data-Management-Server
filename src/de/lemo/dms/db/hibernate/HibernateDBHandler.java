@@ -2,6 +2,7 @@ package de.lemo.dms.db.hibernate;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -39,33 +41,29 @@ public class HibernateDBHandler implements IDBHandler{
 	 * Saves a list of generic objects to the database.
 	 * 
 	 */
-	public void saveToDB(List<Collection<?>> data) {
-		 
+	public void saveCollectionToDB(List<Collection<?>> data) {
+
+		List<Object> objects = new ArrayList<Object>();
 		try{		
-			List<Object> objects = new ArrayList<Object>();
-			try{
-				//Merge objects into session (FIZConn crashes otherwise)
-				for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
-			    {
-					Collection<?> l = iter.next();
-			    	for ( Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
-			    		Object o = iter2.next();
-		    			objects.add(mining_session.merge(o));
-			    	}
-			    }
-			}catch(org.hibernate.ObjectNotFoundException e)
-			{
-				//If merging fails, try without
-				objects = new ArrayList<Object>();
-				for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
-			    {
-					Collection<?> l = iter.next();
-			    	for ( Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
-			    		Object o = iter2.next();
+			
+			
+			for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
+		    {
+				Collection<?> l = iter.next();
+				HashSet<IMappingClass> isIn = new HashSet<IMappingClass>();
+		    	for ( Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
+		    		Object o = iter2.next();
+		    		
+		    		if(isIn.contains((IMappingClass)o))
+		    			System.out.println("double" + o.getClass());
+		    		else
+		    		{
+		    			isIn.add((IMappingClass)o);
 		    			objects.add(o);
-			    	}
-			    }
-			}
+		    		}
+		    		
+		    	}
+		    }
 			Transaction tx = mining_session.beginTransaction();
 			int classOb = 0;
 			String className = "";
@@ -80,7 +78,8 @@ public class HibernateDBHandler implements IDBHandler{
 				className = objects.get(i).getClass().getName();
 					
 				classOb++;
-				mining_session.saveOrUpdate(objects.get(i));
+				//mining_session.saveOrUpdate(objects.get(i));
+				mining_session.merge(objects.get(i));
 				
 				if ( i % 50 == 0 ) {
 	    	        //flush a batch of inserts and release memory:
@@ -91,39 +90,6 @@ public class HibernateDBHandler implements IDBHandler{
 			System.out.println("Wrote " + classOb +" objects of class " + className + " to database.");			
 			tx.commit();	    	
 		    mining_session.clear();
-			
-			/*
-			Long i = 0L;
-			boolean isNewTable = true;
-			//Iterate through all object-lists
-		    for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
-		    {
-		    	//Iterate through all objects of a mapping-class
-		    	Collection<?> l = iter.next();
-		    	isNewTable = true;
-		    	for ( Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
-	
-		    		Object o = iter2.next();
-		    		
-		    		if(isNewTable)
-		    		{
-		    			System.out.println("Writing "+l.size()+" elements of "+o.getClass().getName()+" to the database.");
-		    			isNewTable = false;
-		    		}
-		    		
-		    		mining_session.saveOrUpdate(o);
-
-
-		    	    if ( i % 50 == 0 ) {
-		    	        //flush a batch of inserts and release memory:
-		    	    	mining_session.flush();
-		    	    	mining_session.clear();
-		    	    }       
-		    	}
-		    }
-	    	tx.commit();	    	
-		    mining_session.clear();
-		    */
 		}catch(HibernateException e)
 		{
 			e.printStackTrace();

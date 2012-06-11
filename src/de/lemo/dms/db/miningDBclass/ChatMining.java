@@ -3,9 +3,18 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ChatMining {
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-	
+public class ChatMining implements IMappingClass {
+
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof ChatMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof ChatMining))
+			return true;
+		return false;
+	}
 
 	private long id;
 	private String title;

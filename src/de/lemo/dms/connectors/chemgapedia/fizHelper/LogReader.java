@@ -22,6 +22,8 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 
+import de.lemo.dms.connectors.chemgapedia.fizHelper.LogLine;
+
 /**
  * The Class LogReader.
  */
@@ -440,7 +442,7 @@ public class LogReader {
 			Collection<IDMappingMining> idmap = (Collection<IDMappingMining>)new_id_mapping.values();
 			l.add(it);
 			l.add(idmap);
-			dbHandler.saveToDB(l);
+			dbHandler.saveCollectionToDB(l);
 			
 			
 			/*}
@@ -498,7 +500,7 @@ public class LogReader {
 			}
 			l.add(this.newResources.values());
 			l.add(resourceLogMining);			
-			dbHandler.saveToDB(l);
+			dbHandler.saveCollectionToDB(l);
 		}
 		catch (Exception e)
 		{

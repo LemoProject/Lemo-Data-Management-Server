@@ -500,7 +500,7 @@ public class XMLPackageParser {
 		li.add(this.degreeCourses.values());
 		li.add(this.courseResources.values());
 		li.add(this.id_mapping.values());
-		dbHandler.saveToDB(li);		
+		dbHandler.saveCollectionToDB(li);		
 		return largestId;
 	}
 	

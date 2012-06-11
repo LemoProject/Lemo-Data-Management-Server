@@ -4,10 +4,11 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 
 /**This class represents the log table for the wiki object.*/
-public class WikiLogMining implements ILogMining{
+public class WikiLogMining implements ILogMining, IMappingClass{
 
 	private long id;
 	private WikiMining wiki;
@@ -16,6 +17,15 @@ public class WikiLogMining implements ILogMining{
 	private String action;
 	private long timestamp;
 	private long duration;
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof WikiLogMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof WikiLogMining))
+			return true;
+		return false;
+	}
 	
 	public long getDuration() {
 		return duration;

@@ -3,7 +3,9 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DepartmentMining {
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
+public class DepartmentMining implements IMappingClass {
 
 	
 	private long id;
@@ -11,16 +13,14 @@ public class DepartmentMining {
 
 	private Set<DepartmentDegreeMining> department_degree = new HashSet<DepartmentDegreeMining>();
 	
-	public boolean equals(Object obj) {
-		if(!(obj instanceof DepartmentMining)){
-			return false;			
-		}
-		DepartmentMining r = (DepartmentMining)obj;
-		if(r.id == this.id){
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof DepartmentMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof DepartmentMining))
 			return true;
-		}		
 		return false;
-	}	
+	}
 	
 	public long getId() {
 		return id;

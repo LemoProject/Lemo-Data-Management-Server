@@ -3,10 +3,11 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 
 /**This class represents the log table for the quiz modules.*/
-public class QuizLogMining implements ILogMining {
+public class QuizLogMining implements ILogMining  , IMappingClass{
 
 	private long id;
 	private UserMining user;
@@ -17,6 +18,15 @@ public class QuizLogMining implements ILogMining {
 	private String action;
 	private long timestamp;	
 	private long duration;
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof QuizLogMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof QuizLogMining))
+			return true;
+		return false;
+	}
 	
 	public long getDuration() {
 		return duration;

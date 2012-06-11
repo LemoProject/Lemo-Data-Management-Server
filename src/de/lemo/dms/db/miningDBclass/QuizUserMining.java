@@ -2,8 +2,10 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /** This class represents the assoziation between the quiz and the user.*/
-public class QuizUserMining {
+public class QuizUserMining  implements IMappingClass{
 	private long id;
 	private UserMining user;
 	private CourseMining course;
@@ -11,6 +13,15 @@ public class QuizUserMining {
 	private double rawgrade;
 	private double finalgrade;
 	private long timemodified;
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof QuizUserMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof QuizUserMining))
+			return true;
+		return false;
+	}
 	
 	/** standard getter for the attribut id
 	 * @return the identifier for the assoziation between quiz and user

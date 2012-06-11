@@ -3,8 +3,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the forum table.*/
-public class ForumMining {
+public class ForumMining implements IMappingClass {
 
 	private long id;
 	private String title;
@@ -15,16 +17,14 @@ public class ForumMining {
 	private Set<CourseForumMining> course_forum = new HashSet<CourseForumMining>();
 	private Set<ForumLogMining> forum_log = new HashSet<ForumLogMining>();
 
-	public boolean equals(Object obj) {
-		if(!(obj instanceof ForumMining)){
-			return false;			
-		}
-		ForumMining f = (ForumMining)obj;
-		if(f.id == this.id && f.timemodified == this.timemodified){
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof ForumMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof ForumMining))
 			return true;
-		}		
 		return false;
-	}	
+	}
 
 	/** standard getter for the attribut id
 	 * @return the identifier of the forum

@@ -3,13 +3,24 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the relationship between courses and resources.*/
-public class CourseResourceMining {
+public class CourseResourceMining implements IMappingClass {
 
 	private long id;
 	private CourseMining course;
 	private	ResourceMining resource;
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof CourseResourceMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof CourseResourceMining))
+			return true;
+		return false;
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier for the assoziation between course and resource
 	 */	

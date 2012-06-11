@@ -1,11 +1,22 @@
 package de.lemo.dms.db.miningDBclass;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-public class IDMappingMining {
+
+public class IDMappingMining implements IMappingClass {
 
 	private Long id;
 	private String hash;
 	private String platform;
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof IDMappingMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof IDMappingMining))
+			return true;
+		return false;
+	}
 	
 	public String getPlatform() {
 		return platform;
@@ -34,7 +45,7 @@ public class IDMappingMining {
 		this.platform = platform;
 	}
 	
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	

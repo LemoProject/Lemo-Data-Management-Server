@@ -20,7 +20,7 @@ public interface IDBHandler {
 	 * 
 	 * @param data list containing collections, containing objects
 	 */
-	public void saveToDB(List<Collection<?>> data);
+	public void saveCollectionToDB(List<Collection<?>> data);
 	
 	/**
 	 * Writes a single object to the database.

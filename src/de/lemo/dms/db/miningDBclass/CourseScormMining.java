@@ -2,8 +2,10 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the relationship between the courses and scorm packages.*/
-public class CourseScormMining {
+public class CourseScormMining  implements IMappingClass{
 
 
 //public class Course_assignment_mining implements Serializable{
@@ -13,6 +15,14 @@ public class CourseScormMining {
 	private CourseMining course;
 	private	ScormMining scorm;
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof CourseScormMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof CourseScormMining))
+			return true;
+		return false;
+	}
 
 	/** standard getter for the attribut course
 	 * @return a course in which the quiz is used

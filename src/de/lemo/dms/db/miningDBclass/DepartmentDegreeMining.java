@@ -2,11 +2,23 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
-public class DepartmentDegreeMining {
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
+public class DepartmentDegreeMining implements IMappingClass {
 
 	private long id;
 	private DepartmentMining department;
 	private	DegreeMining degree;
+	
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof DepartmentDegreeMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof DepartmentDegreeMining))
+			return true;
+		return false;
+	}
 
 	/** standard getter for the attribut id
 	 * @return the identifier for the assoziation between department and resource

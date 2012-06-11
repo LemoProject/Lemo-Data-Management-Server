@@ -3,8 +3,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the table quiz.*/
-public class RoleMining {
+public class RoleMining implements IMappingClass {
 	private long id;
 	private String name;
 	private String shortname;
@@ -13,6 +15,16 @@ public class RoleMining {
 
 	private Set<CourseUserMining> course_user = new HashSet<CourseUserMining>();	
 
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof RoleMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof RoleMining))
+			return true;
+		return false;
+	}
+	
 	/** standard setter for the attribut id
 	 * @param id the identifier of the role
 	 */	
