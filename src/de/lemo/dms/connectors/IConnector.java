@@ -2,7 +2,6 @@ package de.lemo.dms.connectors;
 
 
 import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.IDBHandler;
 // TODO: Auto-generated Javadoc
 /**
  * The Interface IConnector.

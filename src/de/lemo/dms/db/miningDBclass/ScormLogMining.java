@@ -15,7 +15,26 @@ public class ScormLogMining implements ILogMining{
 	private double finalgrade;
 	private String action;
 	private long timestamp;
+	private long duration;
+	
+	public long getDuration() {
+		return duration;
+	}
 
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+
+	public String getTitle()
+	{
+		return this.scorm.getTitle();
+	}
+	
+	public Long getLearnObjId()
+	{
+		return this.scorm.getId();
+	}
+	
 	/** standard getter for the attribute finalgrade
 	 * @return the final grade of the user in this quiz
 	 */	

@@ -87,7 +87,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     	//sourceDBConfig.addProperty("hibernate.format_sql", "true");
     	//sourceDBConfig.addProperty("hibernate.use_sql_comments", "true");
     	
-    	sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+    	sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
     
     	
     	//Setting up mining database

@@ -17,6 +17,16 @@ public class ResourceLogMining implements Comparable<ResourceLogMining>, ILogMin
 	private long timestamp;
 	private long duration;
 	
+	public String getTitle()
+	{
+		return this.resource.getTitle();
+	}
+	
+	public Long getLearnObjId()
+	{
+		return this.resource.getId();
+	}
+	
 	@Override
 	public int compareTo(ResourceLogMining arg0) {
 		ResourceLogMining s;

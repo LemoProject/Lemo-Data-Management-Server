@@ -12,7 +12,26 @@ public class CourseLogMining implements ILogMining{
 	private	UserMining user;
 	private String action;
 	private long timestamp;
+	private long duration;
+	
+	public long getDuration() {
+		return duration;
+	}
 
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+	
+	public String getTitle()
+	{
+		return this.course.getTitle();
+	}
+
+	public Long getLearnObjId()
+	{
+		return this.course.getId();
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier of the log entry
 	 */	
@@ -107,4 +126,6 @@ public class CourseLogMining implements ILogMining{
 			oldUserMining.get(user).addCourse_log(this);
 		}
 	}
+
+
 }

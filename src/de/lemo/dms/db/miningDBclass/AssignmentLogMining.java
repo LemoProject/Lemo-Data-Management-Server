@@ -16,6 +16,17 @@ public class AssignmentLogMining implements ILogMining{
 	private double finalgrade;
 	private String action;
 	private long timestamp;	
+	private long duration; 
+	
+	public String getTitle()
+	{
+		return this.assignment.getTitle();
+	}
+	
+	public Long getLearnObjId()
+	{
+		return this.assignment.getId();
+	}
 
 	/** standard getter for the attribut finalgrade
 	 * @return the final grade of the user in this quiz
@@ -173,5 +184,13 @@ public class AssignmentLogMining implements ILogMining{
 	 */		
 	public AssignmentMining getAssignment() {
 		return assignment;
+	}
+
+	public long getDuration() {
+		return duration;
+	}
+
+	public void setDuration(long duration) {
+		this.duration = duration;
 	}
 }

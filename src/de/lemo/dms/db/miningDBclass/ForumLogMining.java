@@ -17,7 +17,26 @@ public class ForumLogMining implements ILogMining {
 	private String subject;
 	private String message;
 	private long timestamp;
+	private long duration;
+	
+	public long getDuration() {
+		return duration;
+	}
 
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+	
+	public String getTitle()
+	{
+		return this.forum.getTitle();
+	}
+
+	public Long getLearnObjId()
+	{
+		return this.forum.getId();
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier of the log entry
 	 */	

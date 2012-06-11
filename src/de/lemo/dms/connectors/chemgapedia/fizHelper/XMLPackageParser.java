@@ -263,9 +263,8 @@ public class XMLPackageParser {
 
 		      //Set URL (has to be done in another method - otherwise it isn't working)
 		      r.setUrl(getUrlFromVlu(filename));
-		      if(r.getUrl().contains("/0/"))
-		    	  System.out.println(r.getUrl());
-		      else{
+		      if(!r.getUrl().contains("/0/"))
+		      {		    	  
 			      r.setPosition(0);
 	
 			      this.resourceObj.get(r.getUrl());
@@ -522,8 +521,8 @@ public class XMLPackageParser {
 			for(int i= 0; i < all.size(); i++)
 			{
 				readVLU(all.get(i));	
-				if(i % 100 == 0)
-					System.out.println("Read " +i + " files in " + c.get());
+				if(i > 0 && i % (all.size()/10) == 0)
+					System.out.println("Read " + i / (all.size() / 10) + "0 % in " + c.get());
 			}
 		}catch(Exception e)
 		{

@@ -354,9 +354,9 @@ public class LogReader {
 		    				  String h = lo.getUrl().substring(lo.getUrl().lastIndexOf("/")+1, lo.getUrl().length());
 		    				  h = h.substring(0, h.indexOf("."));
 		    				  String f = "";
-		    				  if(h.length() > 1)
+		    				  if(h.length() > 0)
 		    					  f = Character.toUpperCase(h.charAt(0))+"";
-		    				  if(h.length() > 1)
+		    				  if(h.length() > 0)
 		    					  h = f + h.substring(1);
 		    				  else
 		    					  System.out.println("URL doesn't match pattern: " + lo.getUrl());
@@ -365,6 +365,9 @@ public class LogReader {
 		    				  //cutting out supplements
 		    				  if(r.getUrl().contains("/vsengine/supplement/"))
 		    					  r.setType("Supplement");
+		    				  
+		    				  if(r.getUrl().contains("/mindmap/"))
+		    					  r.setType("Mindmap");
 		    				  
 		    				  this.newResources.put(r.getUrl(), r);
 		    			  }
@@ -383,9 +386,9 @@ public class LogReader {
 		    		  }
 		    		  else
 		    			  if(!logLine.isValid())
-		    				  System.out.println("Line doesn't match pattern: " + line);
+		    				  System.out.println("Line doesn't match pattern.");
 		    			  else
-		    				  System.out.println("Line's timestamp is to old: " + line);
+		    				  System.out.println("Line's timestamp is to old.");
 		    	  }	   
 		      }
 	      finally 
@@ -405,53 +408,26 @@ public class LogReader {
 	/**
 	 * Calculates the duration of every view and saves the values to the global logList.
 	 * Keep in mind, that these values can be misleading as the duration of a view is calculated by 
-	 * the difference between a views timestamp and the the timestamp of the next view by the same user
+	 * the difference between a views time stamp and the the time stamp of the next view by the same user
 	 * with an internal referrer. If there is no view matching these criteria the value is set to -1.
 	 * 
 	 */
 	private void calculateDurations()
 	{
-
 		for(Iterator<ArrayList<LogObject>> iter = this.userHistories.values().iterator(); iter.hasNext();)
 		{
 			ArrayList<LogObject> loadedItem = iter.next();
 			for(int i = 0; i < loadedItem.size()-1; i++)
 			{
 				Long nextRequest = loadedItem.get(i+1).getTime();
-				loadedItem.get(i).setDuration(nextRequest - loadedItem.get(i).getTime());
+				Long dur = nextRequest - loadedItem.get(i).getTime();
+				if(dur > 3600L)
+					dur = 3600L;
+				loadedItem.get(i).setDuration(dur);
 			}
-			
 		}
-		
-		/*
-		for(int i = 0; i <  logList.size(); i++)
-	    {
-	    	if(i < logList.size()-1)
-	    	{
-	    		//Look if the same user has another view later on
-		    	int nextRequest = 1 + (logList.subList(i+1, logList.size()).indexOf(logList.get(i)));
-		    	//If one can be found, that has an internal referrer set the duration by calculating the difference between the timestamps
-		    	if( nextRequest > 0 && !logList.get(nextRequest + i).getReferrer().equals("-"))
-		    	{
-		    		logList.get(i).setDuration(logList.get(nextRequest + i).getTime() - logList.get(i).getTime());
-		    	}
-		    	else
-		    	{
-		    		logList.get(i).setDuration(-1);
-		    	}
-	    	}
-	    	else
-	    	{
-	    		logList.get(i).setDuration(-1);
-	    	}
-	    }
-	    */
 	}
 	
-	
-	
-
-
 	
 	/**
 	 * Writes users to the database.
@@ -530,18 +506,4 @@ public class LogReader {
 		}
 		return largestId;
 	}
-	
-	/**
-	 * Clears all list of the object.
-	 */
-	private void clearLogReader()
-	{
-		this.userHistories.clear();
-		this.newResources.clear();
-		this.oldResources.clear();
-		this.courseResources.clear();
-		this.users.clear();
-		//this.userSeq.clear();
-	}
-
 }

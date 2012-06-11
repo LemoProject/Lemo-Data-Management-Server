@@ -21,6 +21,11 @@
             type="string"/>
             
         <property
+            name="duration"
+            column="duration"
+            type="long"/>   
+            
+        <property
             name="penalty"
             column="penalty"
             type="double"/>

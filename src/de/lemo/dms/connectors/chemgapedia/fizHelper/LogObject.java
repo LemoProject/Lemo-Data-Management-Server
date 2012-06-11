@@ -11,7 +11,7 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 /**
  * The Class LogObject.
  */
-public class LogObject implements Comparable{
+public class LogObject implements Comparable<LogObject>{
 
 	/** The id. */
 	private long id;
@@ -50,8 +50,7 @@ public class LogObject implements Comparable{
 		this.course = course;
 	}
 
-	@Override
-	public boolean equals(Object log)
+	public boolean equals(LogObject log)
 	{
 		try{
 		if(log == null)
@@ -211,7 +210,7 @@ public class LogObject implements Comparable{
 	}
 
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(LogObject o) {
 		LogObject s;
 		try{
 			s = (LogObject)o;

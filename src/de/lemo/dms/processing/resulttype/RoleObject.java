@@ -1,5 +1,6 @@
 package de.lemo.dms.processing.resulttype;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -27,10 +28,12 @@ public class RoleObject {
     	this.name = name;
     }
     
-    
+    @XmlElement
 	public Long getId() {
 		return id;
 	}
+    
+    @XmlElement
 	public String getName() {
 		return name;
 	}

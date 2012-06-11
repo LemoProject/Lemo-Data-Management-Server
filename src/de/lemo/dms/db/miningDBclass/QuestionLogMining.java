@@ -20,6 +20,25 @@ public class QuestionLogMining implements ILogMining{
 	private String answers;
 	private long timestamp;
 	private String action;
+	private long duration;
+	
+	public long getDuration() {
+		return duration;
+	}
+
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+	
+	public String getTitle()
+	{
+		return this.question.getTitle();
+	}
+	
+	public Long getLearnObjId()
+	{
+		return this.question.getId();
+	}
 
 	/** standard getter for the attribut id
 	 * @return the identifier for the log entry

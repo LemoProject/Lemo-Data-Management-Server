@@ -44,6 +44,7 @@ public class HibernateDBHandler implements IDBHandler{
 		try{		
 			List<Object> objects = new ArrayList<Object>();
 			try{
+				//Merge objects into session (FIZConn crashes otherwise)
 				for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
 			    {
 					Collection<?> l = iter.next();
@@ -54,6 +55,7 @@ public class HibernateDBHandler implements IDBHandler{
 			    }
 			}catch(org.hibernate.ObjectNotFoundException e)
 			{
+				//If merging fails, try without
 				objects = new ArrayList<Object>();
 				for ( Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();) 
 			    {
@@ -64,7 +66,6 @@ public class HibernateDBHandler implements IDBHandler{
 			    	}
 			    }
 			}
-			System.out.println("Merged");
 			Transaction tx = mining_session.beginTransaction();
 			int classOb = 0;
 			String className = "";

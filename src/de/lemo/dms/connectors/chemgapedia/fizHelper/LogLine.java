@@ -44,7 +44,7 @@ public class LogLine {
 				id = Encoder.createMD5(lineArguments[3].trim())+"";		//use IP else
 			
 			//Set timestamp
-			timestamp = Long.parseLong(lineArguments[0])/1000;
+			timestamp = Long.parseLong(lineArguments[0]);
 			
 			//Set URL
 			if(!lineArguments[4].trim().startsWith("http://www.chemgapedia.de"))

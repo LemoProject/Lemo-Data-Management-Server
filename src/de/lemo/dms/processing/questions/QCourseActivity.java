@@ -17,8 +17,6 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
-import de.lemo.dms.db.miningDBclass.ForumLogMining;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;

@@ -16,6 +16,25 @@ public class QuizLogMining implements ILogMining {
 	private double finalgrade;
 	private String action;
 	private long timestamp;	
+	private long duration;
+	
+	public long getDuration() {
+		return duration;
+	}
+
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+	
+	public String getTitle()
+	{
+		return this.quiz.getTitle();
+	}
+	
+	public Long getLearnObjId()
+	{
+		return this.quiz.getId();
+	}
 
 	/** standard getter for the attribut finalgrade
 	 * @return the final grade of the user in this quiz

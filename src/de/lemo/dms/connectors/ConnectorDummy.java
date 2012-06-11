@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.IDBHandler;
 
 /**
  * dummy connector with sleep function for connector tests

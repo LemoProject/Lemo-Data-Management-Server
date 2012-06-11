@@ -1,7 +1,11 @@
 package de.lemo.dms.processing.resulttype;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-public class UserLogObject implements Comparable{
+
+@XmlRootElement
+public class UserLogObject implements Comparable<UserLogObject>{
 	
 	private Long userId;
 	private Long timestamp;
@@ -11,7 +15,7 @@ public class UserLogObject implements Comparable{
 	private String type;
 	private String info;
 	
-	
+	@XmlElement
 	public String getType() {
 		return type;
 	}
@@ -20,6 +24,7 @@ public class UserLogObject implements Comparable{
 		this.type = type;
 	}
 
+	@XmlElement
 	public String getTitle() {
 		return title;
 	}
@@ -28,6 +33,7 @@ public class UserLogObject implements Comparable{
 		this.title = title;
 	}
 
+	@XmlElement
 	public Long getGroup() {
 		return group;
 	}
@@ -53,6 +59,7 @@ public class UserLogObject implements Comparable{
 		
 	}
 	
+	@XmlElement
 	public Long getTimestamp() {
 		return timestamp;
 	}
@@ -61,6 +68,7 @@ public class UserLogObject implements Comparable{
 		this.timestamp = timestamp;
 	}
 
+	@XmlElement
 	public Long getObjectId() {
 		return objectId;
 	}
@@ -69,6 +77,7 @@ public class UserLogObject implements Comparable{
 		this.objectId = objectId;
 	}
 
+	@XmlElement
 	public String getInfo() {
 		return info;
 	}
@@ -78,7 +87,7 @@ public class UserLogObject implements Comparable{
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
+	public int compareTo(UserLogObject arg0) {
 		UserLogObject s;
 		try{
 			s = (UserLogObject)arg0;
@@ -100,6 +109,7 @@ public class UserLogObject implements Comparable{
 		return 0;
 	}
 
+	@XmlElement
 	public Long getUserId() {
 		return userId;
 	}

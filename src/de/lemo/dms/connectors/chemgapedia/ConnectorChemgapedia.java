@@ -10,7 +10,6 @@ import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.LogReader;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.XMLPackageParser;
-import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 
 public class ConnectorChemgapedia implements IConnector{

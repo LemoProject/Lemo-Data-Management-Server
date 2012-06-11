@@ -3,7 +3,6 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.lemo.dms.connectors.chemgapedia.fizHelper.SiteCounter;
 
 // TODO: Auto-generated Javadoc
 /**This class represents the table resource.*/

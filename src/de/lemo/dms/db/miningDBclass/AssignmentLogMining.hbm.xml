@@ -24,6 +24,11 @@
             name="action"
             column="action"
             type="string"/>
+            
+        <property
+            name="duration"
+            column="duration"
+            type="long"/>   
                
         <property
             name="timestamp"
