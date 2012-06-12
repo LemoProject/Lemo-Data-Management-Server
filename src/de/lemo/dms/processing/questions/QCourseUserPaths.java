@@ -21,6 +21,10 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -28,6 +32,7 @@ import com.google.common.collect.Sets;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
@@ -35,6 +40,7 @@ import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
+import de.lemo.dms.processing.resulttype.UserPathLink;
 
 @QuestionID("courseuserpaths")
 public class QCourseUserPaths extends Question {
@@ -79,7 +85,7 @@ public class QCourseUserPaths extends Question {
             endTime = new Date().getTime();
         }
 
-        if(startTime >= endTime || courseIds.isEmpty()) {
+        if(startTime >= endTime || courseIds == null || courseIds.isEmpty()) {
             return null;
         }
 
@@ -120,15 +126,28 @@ public class QCourseUserPaths extends Question {
 
         logger.info("Found " + users.size() + " actions. " + +stopWatch.elapsedTime(TimeUnit.SECONDS));
 
-        Criteria exdendedCriteria = session.createCriteria(ILogMining.class, "log");
-        exdendedCriteria.add(Restrictions.in("log.user.id", users))
-                .add(Restrictions.between("log.timestamp", startTime, endTime))
-                .add(Restrictions.eq("log.action", "view"));
+        if(users.isEmpty())
+            return new JSONObject();
 
-        @SuppressWarnings("unchecked")
-        List<ILogMining> extendedLogs = exdendedCriteria.list();
+        List<List<ILogMining>> userLogs = Lists.newArrayList();
+        for(Long userID : users) {
+            Criteria exdendedCriteria = session.createCriteria(ILogMining.class, "log");
+            exdendedCriteria.add(Restrictions.eq("log.user.id", userID))
+                    .add(Restrictions.between("log.timestamp", startTime, endTime))
+                    .add(Restrictions.eq("log.action", "view"));
+            @SuppressWarnings("unchecked")
+            List<ILogMining> extendedLogs = exdendedCriteria.list();
+            userLogs.add(extendedLogs);
+        }
 
-        Map<Long /* user id */, List<Long> /* course ids */> userPaths = Maps.newHashMap();
+        List<ILogMining> extendedLogs = Lists.newArrayList();
+        for(List<ILogMining> userLog : userLogs) {
+            Iterables.concat(extendedLogs, userLog);
+        }
+
+        long courseCount = 0;
+        BiMap<CourseMining, Long> courseNodePositions = HashBiMap.create();
+        Map<Long/* user id */, List<Long/* course id */>> userPaths = Maps.newHashMap();
 
         logger.info("Paths fetched: " + extendedLogs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
 
@@ -136,39 +155,46 @@ public class QCourseUserPaths extends Question {
             UserMining user = log.getUser();
             if(user == null || log.getCourse() == null)
                 continue;
+
+            CourseMining course = log.getCourse();
+            Long nodeID = courseNodePositions.get(course);
+            if(nodeID == null) {
+                nodeID = courseCount++;
+                courseNodePositions.put(course, nodeID);
+            }
+
             long userId = log.getUser().getId();
 
-            List<Long> courseIDs = userPaths.get(userId);
-            if(courseIDs == null) {
-                courseIDs = Lists.newArrayList();
-                userPaths.put(userId, courseIDs);
+            List<Long> nodeIDs = userPaths.get(userId);
+            if(nodeIDs == null) {
+                nodeIDs = Lists.newArrayList();
+                userPaths.put(userId, nodeIDs);
             }
-            courseIDs.add(log.getCourse().getId());
+            nodeIDs.add(nodeID);
         }
 
         logger.info("userPaths: " + userPaths.size());
 
-        Map<Long /* course id */, List<JSONObject> /* edge */> coursePaths = Maps.newHashMap();
+        Map<Long /* node id */, List<UserPathLink>> coursePaths = Maps.newHashMap();
 
         for(Entry<Long, List<Long>> userEntry : userPaths.entrySet()) {
 
-            JSONObject lastPath = null;
-            Long userID = userEntry.getKey();
+            UserPathLink lastLink = null;
+            // Long userID = userEntry.getKey();
 
-            for(Long courseID : userEntry.getValue()) {
-                List<JSONObject> edge = coursePaths.get(courseID);
-                if(edge == null) {
-                    edge = Lists.newArrayList();
-                    coursePaths.put(courseID, edge);
+            for(Long nodeID : userEntry.getValue()) {
+                List<UserPathLink> links = coursePaths.get(nodeID);
+                if(links == null) {
+                    links = Lists.newArrayList();
+                    coursePaths.put(nodeID, links);
                 }
-                JSONObject path = new JSONObject();
+                UserPathLink link = new UserPathLink(nodeID, 0);
+                links.add(link);
 
-                path.put("user", userID);
-
-                if(lastPath != null) {
-                    lastPath.put("to", courseID);
+                if(lastLink != null) {
+                    lastLink.setTarget(nodeID);
                 }
-                lastPath = path;
+                lastLink = link;
             }
         }
         stopWatch.stop();
@@ -180,21 +206,39 @@ public class QCourseUserPaths extends Question {
          * TODO Shouldn't we close the session at some point?
          */
 
+        Set<UserPathLink> links = Sets.newHashSet();
+
         JSONObject result = new JSONObject();
         JSONArray nodes = new JSONArray();
-        for(Entry<Long, List<JSONObject>> courseEntry : coursePaths.entrySet()) {
+        JSONArray edges = new JSONArray();
+
+        for(Entry<Long, List<UserPathLink>> courseEntry : coursePaths.entrySet()) {
             JSONObject node = new JSONObject();
-            node.put("id", courseEntry.getKey());
-            node.put("wheight", courseEntry.getValue().size());
-            node.put("edges", new JSONArray(courseEntry.getValue()));
-            if(courseIds.contains(courseEntry.getKey()))
-            	node.put("groupId", 0);
-            else
-            	node.put("groupId", 1);
+            // node.put("name", courseNodePositions.inverse().get(courseEntry.getKey()).getTitle());
+            node.put("name", "");
+            node.put("value", courseEntry.getValue().size());
+            node.put("group", courseIds.contains(courseNodePositions.inverse().get(courseEntry.getKey())) ? 1 : 2);
             nodes.put(node);
+
+            for(UserPathLink edge : courseEntry.getValue()) {
+                if(edge.getTarget() == 0 || edge.getSource() == 0 || edge.getTarget() == edge.getSource())
+                    continue;
+                links.add(edge);
+            }
         }
 
+        for(UserPathLink link : links) {
+            JSONObject edgeJSON = new JSONObject();
+            edgeJSON.put("target", link.getTarget());
+            edgeJSON.put("source", link.getSource());
+            edges.put(edgeJSON);
+        }
+
+        logger.info("Nodes: " + nodes.length() + ", Links: " + edges.length() + "   / time: "
+                + stopWatch.elapsedTime(TimeUnit.SECONDS));
+
         result.put("nodes", nodes);
+        result.put("links", edges);
         return result;
     }
 }
