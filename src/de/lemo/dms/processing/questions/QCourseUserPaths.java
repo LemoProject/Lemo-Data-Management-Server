@@ -129,22 +129,14 @@ public class QCourseUserPaths extends Question {
         if(users.isEmpty())
             return new JSONObject();
 
-        List<List<ILogMining>> userLogs = Lists.newArrayList();
-        for(Long userID : users) {
             Criteria exdendedCriteria = session.createCriteria(ILogMining.class, "log");
-            exdendedCriteria.add(Restrictions.eq("log.user.id", userID))
+            exdendedCriteria.add(Restrictions.in("log.user.id", users))
                     .add(Restrictions.between("log.timestamp", startTime, endTime))
                     .add(Restrictions.eq("log.action", "view"));
             @SuppressWarnings("unchecked")
             List<ILogMining> extendedLogs = exdendedCriteria.list();
-            userLogs.add(extendedLogs);
-        }
-
-        List<ILogMining> extendedLogs = Lists.newArrayList();
-        for(List<ILogMining> userLog : userLogs) {
-            Iterables.concat(extendedLogs, userLog);
-        }
-
+    
+      
         long courseCount = 0;
         BiMap<CourseMining, Long> courseNodePositions = HashBiMap.create();
         Map<Long/* user id */, List<Long/* course id */>> userPaths = Maps.newHashMap();
@@ -214,14 +206,14 @@ public class QCourseUserPaths extends Question {
 
         for(Entry<Long, List<UserPathLink>> courseEntry : coursePaths.entrySet()) {
             JSONObject node = new JSONObject();
-            // node.put("name", courseNodePositions.inverse().get(courseEntry.getKey()).getTitle());
-            node.put("name", "");
+            node.put("name", courseNodePositions.inverse().get(courseEntry.getKey()).getTitle());
+            //node.put("name", "");
             node.put("value", courseEntry.getValue().size());
             node.put("group", courseIds.contains(courseNodePositions.inverse().get(courseEntry.getKey())) ? 1 : 2);
             nodes.put(node);
 
             for(UserPathLink edge : courseEntry.getValue()) {
-                if(edge.getTarget() == 0 || edge.getSource() == 0 || edge.getTarget() == edge.getSource())
+                if(edge.getTarget() == edge.getSource())
                     continue;
                 links.add(edge);
             }
