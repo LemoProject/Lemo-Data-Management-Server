@@ -4,10 +4,11 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 
 /**This class represents the log table for the resource object.*/
-public class ResourceLogMining implements Comparable<ResourceLogMining>, ILogMining{	
+public class ResourceLogMining implements Comparable<ResourceLogMining>, ILogMining , IMappingClass{	
 	
 	private long id;
 	private ResourceMining resource;
@@ -16,6 +17,25 @@ public class ResourceLogMining implements Comparable<ResourceLogMining>, ILogMin
 	private String action;
 	private long timestamp;
 	private long duration;
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof ResourceLogMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof ResourceLogMining))
+			return true;
+		return false;
+	}
+	
+	public String getTitle()
+	{
+		return this.resource.getTitle();
+	}
+	
+	public Long getLearnObjId()
+	{
+		return this.resource.getId();
+	}
 	
 	@Override
 	public int compareTo(ResourceLogMining arg0) {

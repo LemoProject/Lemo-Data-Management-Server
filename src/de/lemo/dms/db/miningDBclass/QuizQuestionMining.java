@@ -3,13 +3,24 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the relationship between quiz and questions.*/
-public class QuizQuestionMining {
+public class QuizQuestionMining  implements IMappingClass{
 
 	private long id;
 	private QuizMining quiz;
 	private	QuestionMining question;
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof QuizQuestionMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof QuizQuestionMining))
+			return true;
+		return false;
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier for the assoziation between quiz and question
 	 */	

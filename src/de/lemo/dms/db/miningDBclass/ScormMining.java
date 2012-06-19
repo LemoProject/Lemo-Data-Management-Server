@@ -3,8 +3,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the table assignment.*/
-public class ScormMining {
+public class ScormMining implements IMappingClass {
 
 	private long id;
 	private String type;
@@ -18,6 +20,15 @@ public class ScormMining {
 	private Set<ScormLogMining> scorm_log = new HashSet<ScormLogMining>();
 	private Set<CourseScormMining> course_scorm = new HashSet<CourseScormMining>();
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof ScormMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof ScormMining))
+			return true;
+		return false;
+	}
+	
 	/** standard getter for the attribut timestamp
 	 * @return the timestamp the scorm package will be accessable after by students
 	 */

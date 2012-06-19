@@ -3,13 +3,24 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the relationship between courses and forums.*/
-public class CourseForumMining {
+public class CourseForumMining  implements IMappingClass{
 
 	private long id;
 	private CourseMining course;
 	private	ForumMining forum;
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof CourseForumMining))
+			return false;
+		if(o.getId() == this.getId()&& (o instanceof CourseForumMining))
+			return true;
+		return false;
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier for the assoziation between course and forum
 	 */	

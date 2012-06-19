@@ -1,7 +1,6 @@
 package de.lemo.dms.processing.questions;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -20,13 +19,10 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
-import de.lemo.dms.db.miningDBclass.CourseLogMining;
 import de.lemo.dms.db.miningDBclass.QuizLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.ScormLogMining;
-import de.lemo.dms.db.miningDBclass.ChatLogMining;
-import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;

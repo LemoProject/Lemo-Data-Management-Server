@@ -5,8 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the table resource.*/
-public class UserMining {
+public class UserMining  implements IMappingClass{
 
 	private long id;
 	private long lastlogin;
@@ -27,6 +29,14 @@ public class UserMining {
 	private Set<ResourceLogMining> resource_log = new HashSet<ResourceLogMining>();
 	private Set<ChatLogMining> chat_log = new HashSet<ChatLogMining>();
 	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof UserMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof UserMining))
+			return true;
+		return false;
+	}
 	
 	/** standard ge tter for the attribut id
 	 * @return the identifier of the user

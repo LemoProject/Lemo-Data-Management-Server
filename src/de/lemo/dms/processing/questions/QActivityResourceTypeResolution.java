@@ -30,7 +30,6 @@ import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListRRITypes;
-import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
 import de.lemo.dms.service.EResourceType;
 
 @QuestionID("activityresourcetyperesolution")
@@ -114,7 +113,7 @@ public class QActivityResourceTypeResolution {
 							 }
 					 }
 				 if(rri.values() != null)
-					 list.setAssignmentRRI(new ArrayList(rri.values()));
+					 list.setAssignmentRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}        
 			if(resourceTypes.contains(EResourceType.FORUM.toString()) || all)
 			{
@@ -145,7 +144,7 @@ public class QActivityResourceTypeResolution {
 						 }
 					 }
 				 if(rri.values() != null)
-					 list.setForumRRI(new ArrayList(rri.values()));
+					 list.setForumRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
 			if(resourceTypes.contains(EResourceType.QUESTION.toString()) || all)
 			{
@@ -178,7 +177,7 @@ public class QActivityResourceTypeResolution {
 						 
 					 }
 				 if(rri.values() != null)
-					 list.setQuestionRRI(new ArrayList(rri.values()));
+					 list.setQuestionRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
 			if(resourceTypes.contains(EResourceType.QUIZ.toString()) || all)
 			{
@@ -210,7 +209,7 @@ public class QActivityResourceTypeResolution {
 						 }
 					 }
 				 if(rri.values() != null)
-					 list.setQuizRRI(new ArrayList(rri.values()));
+					 list.setQuizRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
 			if(resourceTypes.contains(EResourceType.RESOURCE.toString()) || all)
 			{
@@ -242,7 +241,7 @@ public class QActivityResourceTypeResolution {
 						 }
 					 }
 				 if(rri.values() != null)
-					 list.setResourceRRI(new ArrayList(rri.values()));
+					 list.setResourceRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
 			if(resourceTypes.contains(EResourceType.SCORM.toString()) || all)
 			{
@@ -273,7 +272,7 @@ public class QActivityResourceTypeResolution {
 					 }
 				 }
 				 if(rri.values() != null)
-					 list.setScormRRI(new ArrayList(rri.values()));
+					 list.setScormRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
 			if(resourceTypes.contains(EResourceType.WIKI.toString()) || all)
 			{
@@ -305,7 +304,7 @@ public class QActivityResourceTypeResolution {
 						 }
 					 }
 				 if(rri.values() != null)
-					 list.setWikiRRI(new ArrayList(rri.values()));
+					 list.setWikiRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
 		}
 		return list;

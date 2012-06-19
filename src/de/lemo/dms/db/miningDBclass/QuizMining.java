@@ -4,9 +4,11 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the table quiz.*/
 @SuppressWarnings("serial")
-public class QuizMining implements Serializable {
+public class QuizMining implements Serializable , IMappingClass {
 
 	private long id;
 	private String type;	
@@ -14,6 +16,16 @@ public class QuizMining implements Serializable {
 	private double maxgrade;
 	private long timeopen;
 	private long timeclose;	
+	
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof QuizMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof QuizMining))
+			return true;
+		return false;
+	}
 	
 	public String getType() {
 		return type;

@@ -2,8 +2,10 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-public class ChatLogMining{
+
+public class ChatLogMining implements IMappingClass{
 
 	private long id;
 	private ChatMining chat;
@@ -11,7 +13,15 @@ public class ChatLogMining{
 	private String message;
 	private long timestamp;
 	
-	
+	@Override
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof ChatLogMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof ChatLogMining))
+			return true;
+		return false;
+	}
 	
 	public long getTimestamp() {
 		return timestamp;

@@ -4,14 +4,25 @@ package de.lemo.dms.db.miningDBclass;
 //import java.io.Serializable;
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the relationship between the courses and quiz.*/
-public class CourseQuizMining {
+public class CourseQuizMining  implements IMappingClass{
 //implements Serializable
 //	private static final long serialVersionUID = 1L;
 	private long id;
 	private CourseMining course;
 	private	QuizMining quiz;
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof CourseQuizMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof CourseQuizMining))
+			return true;
+		return false;
+	}
+	
 //	public boolean equals(Object obj) {
 //		if(!(obj instanceof Course_quiz_mining)){
 //			return false;			

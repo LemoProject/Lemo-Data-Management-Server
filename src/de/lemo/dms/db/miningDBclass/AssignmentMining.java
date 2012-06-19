@@ -3,8 +3,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the table assignment.*/
-public class AssignmentMining {
+public class AssignmentMining implements IMappingClass{
 
 	private long id;
 	private String type;
@@ -18,6 +20,15 @@ public class AssignmentMining {
 	private Set<AssignmentLogMining> assignment_log = new HashSet<AssignmentLogMining>();
 	private Set<CourseAssignmentMining> course_assignment = new HashSet<CourseAssignmentMining>();
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof AssignmentMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof AssignmentMining))
+			return true;
+		return false;
+	}
+	
 	/** standard getter for the attribute timestamp
 	 * @return the timestamp the assignment will be accessible after by students
 	 */

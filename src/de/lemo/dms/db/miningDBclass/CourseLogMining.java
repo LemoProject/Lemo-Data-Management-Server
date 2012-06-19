@@ -3,16 +3,45 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**This class represents the log table for the course object.*/
-public class CourseLogMining implements ILogMining{
+public class CourseLogMining implements ILogMining, IMappingClass{
 
 	private long id;
 	private CourseMining course;
 	private	UserMining user;
 	private String action;
 	private long timestamp;
+	private long duration;
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof CourseLogMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof CourseLogMining))
+			return true;
+		return false;
+	}
+	
+	public long getDuration() {
+		return duration;
+	}
 
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+	
+	public String getTitle()
+	{
+		return this.course.getTitle();
+	}
+
+	public Long getLearnObjId()
+	{
+		return this.course.getId();
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier of the log entry
 	 */	
@@ -107,4 +136,6 @@ public class CourseLogMining implements ILogMining{
 			oldUserMining.get(user).addCourse_log(this);
 		}
 	}
+
+
 }

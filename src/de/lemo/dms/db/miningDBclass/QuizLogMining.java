@@ -3,10 +3,11 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 
 /**This class represents the log table for the quiz modules.*/
-public class QuizLogMining implements ILogMining {
+public class QuizLogMining implements ILogMining  , IMappingClass{
 
 	private long id;
 	private UserMining user;
@@ -16,6 +17,34 @@ public class QuizLogMining implements ILogMining {
 	private double finalgrade;
 	private String action;
 	private long timestamp;	
+	private long duration;
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof QuizLogMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof QuizLogMining))
+			return true;
+		return false;
+	}
+	
+	public long getDuration() {
+		return duration;
+	}
+
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+	
+	public String getTitle()
+	{
+		return this.quiz.getTitle();
+	}
+	
+	public Long getLearnObjId()
+	{
+		return this.quiz.getId();
+	}
 
 	/** standard getter for the attribut finalgrade
 	 * @return the final grade of the user in this quiz

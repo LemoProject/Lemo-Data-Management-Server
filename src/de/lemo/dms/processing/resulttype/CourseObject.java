@@ -1,5 +1,6 @@
 package de.lemo.dms.processing.resulttype;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
@@ -50,22 +51,34 @@ public class CourseObject {
 		this.firstRequest = firstRequest;
 	}
 
+	@XmlElement
 	public Long getId() {
 		return id;
 	}
+	
+	@XmlElement
 	public String getTitle() {
 		return title;
 	}
+	
+	@XmlElement
 	public String getDescription() {
 		return description;
 	}
+	
+	@XmlElement
 	public Long getParticipants() {
 		return participants;
 	}
+	
+	@XmlElement
 	public Long getLastRequest() {
 		return lastRequest;
 		
-	}public Long getFirstRequest() {
+	}
+	
+	@XmlElement
+	public Long getFirstRequest() {
 		return firstRequest;
 	}
 }

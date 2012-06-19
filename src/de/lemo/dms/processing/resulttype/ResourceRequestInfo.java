@@ -2,7 +2,6 @@ package de.lemo.dms.processing.resulttype;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.service.EResourceType;
 
 @XmlRootElement

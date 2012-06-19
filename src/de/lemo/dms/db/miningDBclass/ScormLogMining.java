@@ -3,9 +3,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**This class represents the log table for the scorm modules.*/
-public class ScormLogMining {
+public class ScormLogMining implements ILogMining , IMappingClass{
 
 	private long id;
 	private UserMining user;
@@ -15,7 +16,35 @@ public class ScormLogMining {
 	private double finalgrade;
 	private String action;
 	private long timestamp;
+	private long duration;
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof ScormLogMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof ScormLogMining))
+			return true;
+		return false;
+	}
+	
+	public long getDuration() {
+		return duration;
+	}
 
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+
+	public String getTitle()
+	{
+		return this.scorm.getTitle();
+	}
+	
+	public Long getLearnObjId()
+	{
+		return this.scorm.getId();
+	}
+	
 	/** standard getter for the attribute finalgrade
 	 * @return the final grade of the user in this quiz
 	 */	

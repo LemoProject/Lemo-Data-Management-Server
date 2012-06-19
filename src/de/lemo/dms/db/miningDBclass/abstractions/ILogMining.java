@@ -14,5 +14,11 @@ public interface ILogMining {
     CourseMining getCourse();
 
     String getAction();
+    
+    String getTitle();
+    
+    Long getLearnObjId();
+	
+	public long getDuration();
 
 }

@@ -3,8 +3,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the table group.*/
-public class GroupMining {
+public class GroupMining implements IMappingClass {
 
 	private long id;
 	private long timecreated;
@@ -13,6 +15,15 @@ public class GroupMining {
 	private Set<CourseGroupMining> course_group = new HashSet<CourseGroupMining>();
 	private Set<GroupUserMining> group_user = new HashSet<GroupUserMining>();
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof GroupMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof GroupMining))
+			return true;
+		return false;
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier of the group
 	 */	

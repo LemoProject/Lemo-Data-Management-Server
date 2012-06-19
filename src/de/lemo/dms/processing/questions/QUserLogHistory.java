@@ -36,7 +36,7 @@ import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 
-import de.lemo.dms.processing.resulttype.ResultListUserPathObject;
+import de.lemo.dms.processing.resulttype.ResultListUserLogObject;
 
 
 
@@ -81,7 +81,7 @@ public class QUserLogHistory extends Question {
      * @return
      */
     @GET
-    public ResultListUserPathObject compute(
+    public ResultListUserLogObject compute(
     		@QueryParam(COURSE_IDS) List<Long> courseIds,
             @QueryParam(USER_IDS) List<Long> userIds,
             @QueryParam(STARTTIME) Long startTime,
@@ -180,12 +180,12 @@ public class QUserLogHistory extends Question {
     			title = ((WikiLogMining)ilm).getWiki().getTitle();
     		}
 
-//    		if(logs.get(i).getClass().equals(ScormLogMining.class) && ((ScormLogMining)logs.get(i)).getScorm() != null)
-//    		{
-//    			ilm = (ScormLogMining)logs.get(i);
-//    			type = "scorm";
-//    			title = ((ScormLogMining)ilm).getScorm().getTitle();
-//    		}
+    		if(logs.get(i).getClass().equals(ScormLogMining.class) && ((ScormLogMining)logs.get(i)).getScorm() != null)
+    		{
+    			ilm = (ScormLogMining)logs.get(i);
+    			type = "scorm";
+    			title = ((ScormLogMining)ilm).getScorm().getTitle();
+    		}
     		if(ilm != null)
 	        	if(userPaths.get(logs.get(i).getUser().getId()) == null)
 	        	{
@@ -211,7 +211,7 @@ public class QUserLogHistory extends Question {
         for(int i = 0; i < l.size(); i++)
         	System.out.println(l.get(i).getType());
 
-        ResultListUserPathObject rlupo = new ResultListUserPathObject(l);
+        ResultListUserLogObject rlupo = new ResultListUserLogObject(l);
         
         return rlupo;
     }

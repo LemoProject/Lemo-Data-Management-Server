@@ -3,14 +3,25 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the relationship between groups and user.*/
-public class GroupUserMining {
+public class GroupUserMining implements IMappingClass {
 
 	private long id;
 	private GroupMining group;
 	private	UserMining user;
 	private long timestamp;
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof GroupUserMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof GroupUserMining))
+			return true;
+		return false;
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier for the assoziation between groups and users
 	 */		

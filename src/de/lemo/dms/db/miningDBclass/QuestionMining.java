@@ -3,8 +3,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /**This class represents the table question.*/
-public class QuestionMining {
+public class QuestionMining  implements IMappingClass{
 
 	private long id;
 	private String title;
@@ -16,6 +18,15 @@ public class QuestionMining {
 	private Set<QuizQuestionMining> quiz_question = new HashSet<QuizQuestionMining>();
 	private Set<QuestionLogMining> question_log = new HashSet<QuestionLogMining>();
 
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof QuestionMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof QuestionMining))
+			return true;
+		return false;
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier of the question
 	 */	

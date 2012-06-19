@@ -4,10 +4,11 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashMap;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 
 /**This class represents the log table for the forum object.*/
-public class ForumLogMining implements ILogMining {
+public class ForumLogMining implements ILogMining , IMappingClass {
 	
 	private long id;
 	private ForumMining forum;
@@ -17,7 +18,35 @@ public class ForumLogMining implements ILogMining {
 	private String subject;
 	private String message;
 	private long timestamp;
+	private long duration;
+	
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof ForumLogMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof ForumLogMining))
+			return true;
+		return false;
+	}
+	
+	public long getDuration() {
+		return duration;
+	}
 
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+	
+	public String getTitle()
+	{
+		return this.forum.getTitle();
+	}
+
+	public Long getLearnObjId()
+	{
+		return this.forum.getId();
+	}
+	
 	/** standard getter for the attribut id
 	 * @return the identifier of the log entry
 	 */	
