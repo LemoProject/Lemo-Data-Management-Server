@@ -191,12 +191,12 @@ public class QUserLogHistory extends Question {
 	        	{
 	        		ArrayList<UserLogObject> uP = new ArrayList<UserLogObject>();
 	        		//If the user isn't already in the map, create new entry and insert the UserPathObject
-	        		uP.add(new UserLogObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
+	        		uP.add(new UserLogObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, ilm.getCourse().getId(), "" ));
 	        		userPaths.put(logs.get(i).getUser().getId(), uP);
 	        	}
 	        	else
 	        		//If the user is known, just add the UserPathObject to the user's history
-	        		userPaths.get(ilm.getUser().getId()).add(new UserLogObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, 0L, "" ));
+	        		userPaths.get(ilm.getUser().getId()).add(new UserLogObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, ilm.getCourse().getId(), "" ));
     		else
     			System.out.println();
         }

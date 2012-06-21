@@ -79,7 +79,7 @@ public class HibernateDBHandler implements IDBHandler{
 					
 				classOb++;
 				//mining_session.saveOrUpdate(objects.get(i));
-				mining_session.merge(objects.get(i));
+				mining_session.saveOrUpdate(objects.get(i));
 				
 				if ( i % 50 == 0 ) {
 	    	        //flush a batch of inserts and release memory:
@@ -123,7 +123,7 @@ public class HibernateDBHandler implements IDBHandler{
 	public void getConnection(DBConfigObject dbConf) {
 		try
 		{			
-			if(mining_session == null)
+			if(mining_session == null || !mining_session.isOpen())
 				mining_session = de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(dbConf).openSession();
 		}catch(HibernateException he)
 		{

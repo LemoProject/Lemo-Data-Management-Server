@@ -33,7 +33,9 @@ public class LogReader {
 	
 	long startIndex = 0;
 
-	private HashMap<Long, UserMining> users = new HashMap<Long, UserMining>();
+	private HashMap<Long, UserMining> oldUsers = new HashMap<Long, UserMining>();
+	
+	private HashMap<Long, UserMining> newUsers = new HashMap<Long, UserMining>();
 	/** The resources. */
 	private HashMap<String, ResourceMining> oldResources = new HashMap<String, ResourceMining>();
 	
@@ -59,6 +61,7 @@ public class LogReader {
 	
 	Long lastTimestamp = 0L;
 	
+	
 	public LogReader(Long idcount)
 	{
 		try{
@@ -75,10 +78,11 @@ public class LogReader {
 			{
 				id_mapping.put(ids.get(i).getHash(), ids.get(i));
 			}
+			System.out.println("Read "+ids.size() + " IDMappings from database.");
 			
 	    	List<UserMining> us  = (List<UserMining>) dbHandler.performQuery(EQueryType.HQL, "FROM UserMining");
 	    	for(int i = 0; i < us.size(); i++)
-	    		this.users.put(us.get(i).getId(), us.get(i));
+	    		this.oldUsers.put(us.get(i).getId(), us.get(i));
 	    	System.out.println("Read "+us.size() + " UserMinings from database.");
 	    	
 	    	List<ResourceMining> rt  = (List<ResourceMining>) dbHandler.performQuery(EQueryType.HQL, "FROM ResourceMining");
@@ -130,9 +134,9 @@ public class LogReader {
 	{
 		clock.reset();
 		ArrayList<LogObject>  a;
-		Object[] user = this.users.values().toArray();
+		Object[] user = this.newUsers.values().toArray();
 		HashMap<Long, UserMining> tempUsers = new HashMap<Long, UserMining>();
-		int old = users.size();
+		int old = newUsers.size();
 		int totalLines = 0;
 		int linesDeleted = 0;
 		BotFinder bf = new BotFinder();
@@ -156,8 +160,11 @@ public class LogReader {
 					linesDeleted += a.size();
 			}
 		}
-		System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users  out of " + old + " (" + new DecimalFormat("0.00").format((double)(old-tempUsers.size())/(tempUsers.size()/100)) + "%), eliminating " + linesDeleted + " log lines (" + new DecimalFormat("0.00").format((double)(linesDeleted)/(totalLines/100)) + "%).");
-		this.users = tempUsers;
+		
+		double cutUsePerc = (old - tempUsers.size()) / (old / 100);
+		double cutLinPerc = linesDeleted / (totalLines / 100);
+		System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users  out of " + old + " (" + new DecimalFormat("0.00").format(cutUsePerc) + "%), eliminating " + linesDeleted + " log lines (" + new DecimalFormat("0.00").format(cutLinPerc) + "%).");
+		this.newUsers = tempUsers;
 	}
 	
 	/*
@@ -272,9 +279,9 @@ public class LogReader {
 	    				}
 
 	    				//Check if users is known
-	    				if(this.users.get(lo.getId()) != null)
+	    				if(this.oldUsers.get(lo.getId()) != null)
 	    				{
-		    				  UserMining u = users.get(lo.getId());
+		    				  UserMining u = oldUsers.get(lo.getId());
 		    				  //Check if the user is known and if he has 'logged out' since last request
 		    				  if(!lo.getReferrer().equals("-") && !lo.getReferrer().contains("www.google."))
 		    				  {
@@ -291,7 +298,7 @@ public class LogReader {
 		    					  u.setCurrentlogin(lo.getTime());
 		    					  u.setLastaccess(lo.getTime());
 		    				  }
-		    				  users.put(u.getId(), u);
+		    				  newUsers.put(u.getId(), u);
 		    				  lo.setUser(u);
 		    			  }
 		    			  else
@@ -304,7 +311,8 @@ public class LogReader {
 			    				  u.setCurrentlogin(lo.getTime());
 			    			  else
 			    				  u.setCurrentlogin(0);  
-			    			  users.put(lo.getId(), u);
+			    			  newUsers.put(lo.getId(), u);
+			    			  oldUsers.put(u.getId(), u);
 			    			  lo.setUser(u);
 		    			  }
 		    			  
@@ -438,7 +446,7 @@ public class LogReader {
 	{
 		//try{	
 			List<Collection<?>> l = new ArrayList<Collection<?>>();
-			Collection<UserMining> it = (Collection<UserMining>)this.users.values();
+			Collection<UserMining> it = (Collection<UserMining>)this.newUsers.values();
 			Collection<IDMappingMining> idmap = (Collection<IDMappingMining>)new_id_mapping.values();
 			l.add(it);
 			l.add(idmap);
@@ -471,7 +479,7 @@ public class LogReader {
 				ArrayList<LogObject> loadedItem = iter.next();
 				for(int i =0; i < loadedItem.size(); i++)
 				{
-					if(this.users.get(loadedItem.get(i).getUser().getId()) != null)
+					if(this.newUsers.get(loadedItem.get(i).getUser().getId()) != null)
 					{
 						//startIndex++;
 						ResourceLogMining rl = new ResourceLogMining();

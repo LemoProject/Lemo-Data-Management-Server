@@ -1878,12 +1878,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         for (Iterator<Log_LMS> iter = log_lms.iterator(); iter.hasNext(); ) {
             Log_LMS loadedItem = iter.next();
             
- long uid = -1;
+            long uid = -1;
             
             if(id_mapping.get(loadedItem.getUserid()) != null)
     			uid = id_mapping.get(loadedItem.getUserid()).getId();
     		if(uid == -1 && old_id_mapping.get(loadedItem.getUserid()) != null)
     			uid = old_id_mapping.get(loadedItem.getUserid()).getId();
+    		
     		
     		//Creates a list of time stamps for every user indicating requests
     		//We later use this lists to determine the time a user accessed a resource
@@ -1904,7 +1905,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         		users.put(uid, times);
         	}
             
-    		if(loadedItem.getModule().equals("forum")){
+    		if(loadedItem.getModule().equals("wiki")){
     			WikiLogMining insert = new WikiLogMining();
     			insert.setId(loadedItem.getId());
     			insert.setWiki(loadedItem.getCmid(), wiki_mining, old_wiki_mining);

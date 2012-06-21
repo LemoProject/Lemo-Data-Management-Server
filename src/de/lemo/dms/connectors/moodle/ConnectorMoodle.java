@@ -6,6 +6,7 @@ import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.hibernate.HibernateDBHandler;
 import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.core.ServerConfigurationHardCoded;
 
 public class ConnectorMoodle implements IConnector{
 
@@ -16,7 +17,7 @@ public class ConnectorMoodle implements IConnector{
 	@Override
 	public boolean testConnections() {
 		try{
-	        Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle(sourceDBConf).openSession();
+	        Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
 	        session.close();
 	        HibernateDBHandler target= new HibernateDBHandler();
 	        target.getConnection(miningDBConf);

@@ -62,6 +62,11 @@ public class DBConfigObject {
 		return this.properties.get(property);
 	}	
 	
+	public void deleteProperty(String property)
+	{
+		this.properties.remove(property);
+	}
+	
 	/**
 	 * Returns the specified Connectortype.
 	 * 

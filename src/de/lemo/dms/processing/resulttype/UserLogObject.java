@@ -11,7 +11,7 @@ public class UserLogObject implements Comparable<UserLogObject>{
 	private Long timestamp;
 	private String title;
 	private Long objectId;
-	private Long group;
+	private Long course;
 	private String type;
 	private String info;
 	
@@ -35,11 +35,11 @@ public class UserLogObject implements Comparable<UserLogObject>{
 
 	@XmlElement
 	public Long getGroup() {
-		return group;
+		return course;
 	}
 
 	public void setGroup(Long group) {
-		this.group = group;
+		this.course = group;
 	}
 
 	public UserLogObject()
@@ -47,13 +47,13 @@ public class UserLogObject implements Comparable<UserLogObject>{
 		
 	}
 	
-	public UserLogObject(Long userId, long timestamp, String title, Long objectId, String type, Long group, String info)
+	public UserLogObject(Long userId, long timestamp, String title, Long objectId, String type, Long course, String info)
 	{
 		this.userId = userId;
 		this.timestamp = timestamp;
 		this.objectId = objectId;
 		this.title = title;
-		this.group = group;
+		this.course = course;
 		this.type = type;
 		this.setInfo(info);
 		

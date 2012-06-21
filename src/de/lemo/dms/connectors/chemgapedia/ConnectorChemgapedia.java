@@ -48,6 +48,7 @@ public class ConnectorChemgapedia implements IConnector{
 
 	@Override
 	public void getData() {
+		
 		Long starttime = System.currentTimeMillis()/1000;
 		
 		Long largestId = -1L;		
@@ -80,7 +81,7 @@ public class ConnectorChemgapedia implements IConnector{
 
 	@Override
 	public void updateData(long fromTimestamp) {
-Long starttime = System.currentTimeMillis()/1000;
+		Long starttime = System.currentTimeMillis()/1000;
 		
 		Long largestId = -1L;		
 		if(processVSC)

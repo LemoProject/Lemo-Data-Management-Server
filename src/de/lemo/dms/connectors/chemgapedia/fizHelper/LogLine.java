@@ -53,6 +53,8 @@ public class LogLine {
 				url = "http://www.chemgapedia.de"+lineArguments[4].trim();
 			else
 				url = lineArguments[4].trim();
+			if(this.url.contains("\\"))
+				isValid = false;
 			
 			//Set HTTP-status
 			httpStatus = lineArguments[1].trim();	
