@@ -29,12 +29,12 @@ public class T2Task {
 		this.questionText = questionText;
 	}
 
-	public long getTaskTypeId() {
+	public long getTaskType() {
 		return taskType;
 	}
 
-	public void setTaskTypeId(long taskTypeId) {
-		this.taskType = taskTypeId;
+	public void setTaskType(long taskType) {
+		this.taskType = taskType;
 	}
 
 	public long getTopicId() {
@@ -52,7 +52,7 @@ public class T2Task {
 	public void setInputType(long inputType) {
 		this.inputType = inputType;
 	}
-	
+
 	
 
 }

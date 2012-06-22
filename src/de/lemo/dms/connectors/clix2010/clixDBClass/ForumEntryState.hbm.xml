@@ -25,11 +25,15 @@
 
         <property
             name="user"
+            insert="false" 
+            update="false" 
             column="USER_ID"
             type="long"/>
             
         <property
             name="entry"
+            insert="false" 
+            update="false" 
             column="ENTRY_ID"
             type="long"/>     
             

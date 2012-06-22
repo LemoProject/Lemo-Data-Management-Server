@@ -20,11 +20,15 @@
 
         <property
             name="task"
+            insert="false" 
+            update="false" 
             column="TASK_ID"
             type="long"/>
 
         <property
             name="test"
+            insert="false" 
+            update="false" 
             column="TEST_ID"
             type="long"/>
             

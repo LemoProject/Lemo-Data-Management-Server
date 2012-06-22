@@ -23,21 +23,29 @@
        
         <property
             name="exercise"
+            insert="false" 
+            update="false" 
             column="EXERCISE_ID"
             type="long"/>
 
         <property
             name="user"
+            insert="false" 
+            update="false" 
             column="USER_ID"
             type="long"/>
             
                     <property
             name="community"
+            insert="false" 
+            update="false" 
             column="COMMUNITY_ID"
             type="long"/>
 
         <property
             name="exerciseSheet"
+            insert="false" 
+            update="false" 
             column="EXERCISESHEET_ID"
             type="long"/>
 

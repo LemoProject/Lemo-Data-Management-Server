@@ -21,11 +21,15 @@
 
         <property
             name="component"
+            insert="false" 
+            update="false" 
             column="COMPONENTTYPE_ID"
             type="long"/>
             
         <property
             name="language"
+            insert="false" 
+            update="false" 
             column="LANGUAGE_ID"
             type="long"/>          
 

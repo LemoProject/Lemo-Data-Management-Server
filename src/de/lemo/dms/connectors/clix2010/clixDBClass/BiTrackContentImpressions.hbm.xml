@@ -24,28 +24,38 @@
        
         <property
             name="content"
+            insert="false" 
+            update="false" 
             column="CONTENT_ID"
             type="long"/>
 
         <property
             name="characteristic"
+            insert="false" 
+            update="false" 
             column="CHARACTERISTIC_ID"
             type="long"/>      
 
         <property
             name="user"
+            insert="false" 
+            update="false" 
             column="USER_ID"
             type="long"/>
 
         <property
             name="container"
+            insert="false" 
+            update="false" 
             column="CONTAINER_ID"
             type="long"/>
             
         <property
             name="dayOfAccess"
+            insert="false" 
+            update="false" 
             column="DAY_OF_ACCESS"
-            type="string"/>,
+            type="string"/>
             
         <property
             name="totalImpressions"

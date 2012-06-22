@@ -66,14 +66,14 @@ public class PortfolioLog {
 
 
 
-	public String getLastupdated() {
+	public String getLastUpdated() {
 		return lastUpdated;
 	}
 
 
 
-	public void setLastupdated(String lastupdated) {
-		this.lastUpdated = lastupdated;
+	public void setLastUpdated(String lastUpdated) {
+		this.lastUpdated = lastUpdated;
 	}
 
 
@@ -88,7 +88,4 @@ public class PortfolioLog {
 		this.lastUpdater = lastUpdater;
 	}
 
-	
-	
-	
 }

@@ -6,7 +6,7 @@
 <hibernate-mapping>
 
     <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.TeamExecrciseComposingExt"
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseComposingExt"
         table="lemo_db.TEAM_EXERCISE_COMPOSING_EXT">
 
         <id

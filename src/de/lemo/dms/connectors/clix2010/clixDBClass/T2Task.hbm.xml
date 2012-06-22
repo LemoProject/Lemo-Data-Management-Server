@@ -10,7 +10,7 @@
         table="lemo_db.T2_TASK">
 
         <id
-            name="task"
+            name="id"
             column="TASK_ID"
             type="long"
    		/>
