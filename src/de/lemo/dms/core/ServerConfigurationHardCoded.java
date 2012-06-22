@@ -70,7 +70,8 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	    //Setting up source database
     	sourceDBConfig = new DBConfigObject();
     
-    	sourceDBConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+    	//sourceDBConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+    	sourceDBConfig.addProperty("hibernate.connection.driver_class", "oracle.jdbc.driver.OracleDriver");
     	sourceDBConfig.addProperty("hibernate.connection.url", Configuration.getString("source.hibernate.connection.url")); //$NON-NLS-1$ //$NON-NLS-2$
     	sourceDBConfig.addProperty("hibernate.connection.username", Configuration.getString("source.hibernate.connection.username")); //$NON-NLS-1$ //$NON-NLS-2$
     	sourceDBConfig.addProperty("hibernate.connection.password", Configuration.getString("source.hibernate.connection.password")); //$NON-NLS-1$ //$NON-NLS-2$

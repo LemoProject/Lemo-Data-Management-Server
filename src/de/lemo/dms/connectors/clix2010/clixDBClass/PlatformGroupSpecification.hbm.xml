@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.PlatformGroupSpecification"
+        table="lemo_db.PLATFORMGROUPSPECIFICATION">
+
+
+		<composite-id
+       	name="id"
+        class="de.lemo.dms.connectors.clix2010.clixDBClass.PlatformGroupSpecificationPK" >
+       
+        <key-property name="group" column="GROUP_ID" type="long" />
+        <key-property name="person" column="PERSON_ID" type="long"/>
+       
+       </composite-id> 
+       
+        <property
+            name="group"
+            column="GROUP_ID"
+            type="long"/>
+
+        <property
+            name="person"
+            column="PERSON_ID"
+            type="long"/>
+            
+    </class>
+
+</hibernate-mapping>

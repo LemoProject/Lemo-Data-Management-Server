@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPosition"
+        table="lemo_db.T_ANSWERPOSITION">
+
+		<composite-id
+       	name="id"
+        class="de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPositionPK" >
+       
+        <key-property name="person" column="PERSON_ID" type="long" />
+        <key-property name="test" column="TEST_ID" type="long"/>
+        <key-property name="question" column="QUESTION_ID" type="long" />
+        <key-property name="task" column="TASK_ID" type="long"/>
+       
+       </composite-id> 
+
+        <property
+            name="person"
+            column="PERSON_ID"
+            type="long"/>
+
+        <property
+            name="test"
+            column="TEST_ID"
+            type="long"/>
+            
+        <property
+            name="task"
+            column="TASK_ID"
+            type="long"/>    
+            
+        <property
+            name="question"
+            column="QUESTION_ID"
+            type="long"/>         
+            
+        <property
+            name="evaluated"
+            column="EVALUATED"
+            type="String"/>                             
+            
+    </class>
+
+</hibernate-mapping>

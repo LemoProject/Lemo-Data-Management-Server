@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalised"
+        table="lemo_db.EXERCISE_PERSONALISED">
+
+
+		<composite-id
+       	name="id"
+        class="de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalisedPK" >
+       
+        <key-property name="exercise" column="EXERCISE_ID" type="long" />
+        <key-property name="user" column="USER_ID" type="long"/>
+        <key-property name="community" column="COMMUNITY_ID" type="long" />
+        <key-property name="exerciseSheet" column="EXERCISESHEET_ID" type="long"/>
+       
+       </composite-id> 
+       
+        <property
+            name="exercise"
+            column="EXERCISE_ID"
+            type="long"/>
+
+        <property
+            name="user"
+            column="USER_ID"
+            type="long"/>
+            
+                    <property
+            name="community"
+            column="COMMUNITY_ID"
+            type="long"/>
+
+        <property
+            name="exerciseSheet"
+            column="EXERCISESHEET_ID"
+            type="long"/>
+
+        <property
+            name="points"
+            column="POINTS"
+            type="long"/>
+
+            
+        <property
+            name="uploadDate"
+            column="UPLOAD_DATE"
+            type="string"/>         
+
+    </class>
+
+</hibernate-mapping>

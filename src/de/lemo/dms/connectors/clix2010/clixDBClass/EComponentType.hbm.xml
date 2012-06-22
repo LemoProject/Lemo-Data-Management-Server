@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.EComponentType"
+        table="lemo_db.E_COMPONENTTYPE">
+
+
+       	<composite-id
+       	name="id"
+        class="de.lemo.dms.connectors.clix2010.clixDBClass.EComponentTypePK" >
+       
+        <key-property name="component" column="COMPONENTTYPE_ID" type="long" />
+        <key-property name="language" column="LANGUAGE_ID" type="long"/>
+       
+       </composite-id> 
+
+        <property
+            name="component"
+            column="COMPONENTTYPE_ID"
+            type="long"/>
+            
+        <property
+            name="language"
+            column="LANGUAGE_ID"
+            type="long"/>          
+
+        <property
+            name="characteristic"
+            column="CHARACTERISTIC_ID"
+            type="long"/>
+            
+    </class>
+
+</hibernate-mapping>

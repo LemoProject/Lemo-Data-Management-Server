@@ -33,6 +33,7 @@ public class QCourseActivity extends Question{
     private static final String STARTTIME = "starttime";
     private static final String ENDTIME = "endtime";
     private static final String RESOLUTION = "resolution";
+    private static final String TYPES = "types";
 
     @Override
 	protected List<ParameterMetaData<?>> createParamMetaData() {
@@ -49,6 +50,7 @@ public class QCourseActivity extends Question{
         Collections.<ParameterMetaData<?>> addAll( parameters,
                 Parameter.create(COURSE_IDS,"Courses","List of courses."),
                 Parameter.create(ROLE_IDS, "Roles","List of roles."),
+                Parameter.create(TYPES, "ResourceTypes","List of resource types."),
                 Interval.create(long.class, STARTTIME, "Start time", "", 0L, now, 0L), 
                 Interval.create(long.class, ENDTIME, "End time", "", 0L, now, now),
                 Parameter.create(RESOLUTION, "Resolution", "")
@@ -65,12 +67,13 @@ public class QCourseActivity extends Question{
      * @param startTime		(Mandatory) 
      * @param endTime		(Mandatory)
      * @param resolution 	(Mandatory)
+     * @param resourceTypes (Optional)
      * @return
      */
     @SuppressWarnings("unchecked")
 	@GET
     public ResultListLongObject compute(@QueryParam(COURSE_IDS) List<Long> courses, @QueryParam(ROLE_IDS) List<Long> roles,
-            @QueryParam(STARTTIME) long startTime, @QueryParam(ENDTIME) long endTime, @QueryParam(RESOLUTION) int resolution) {
+            @QueryParam(STARTTIME) long startTime, @QueryParam(ENDTIME) long endTime, @QueryParam(RESOLUTION) int resolution, @QueryParam(TYPES) List<String> resourceTypes) {
 		
 		List<Long> list = new ArrayList<Long>();
 		//Check arguments
@@ -123,11 +126,21 @@ public class QCourseActivity extends Question{
 
 			for(int i = 0 ; i < logs.size(); i++)
 			{
-				Integer pos = new Double((logs.get(i).getTimestamp() - startTime) / intervall).intValue();
-				if(pos>resolution-1)
-					pos = resolution-1;
-				else
+				boolean isInRT = false;
+				if(resourceTypes != null && resourceTypes.size() > 0)
+					for(int j = 0; j < resourceTypes.size(); j++)
+						if(logs.get(i).getClass().toString().toLowerCase().contains(resourceTypes.get(j)))
+						{
+							isInRT = true;
+							break;
+						}
+				if(resourceTypes == null || resourceTypes.size() == 0 || isInRT)
+				{
+					Integer pos = new Double((logs.get(i).getTimestamp() - startTime) / intervall).intValue();
+					if(pos > resolution - 1)
+						pos = resolution-1;
 					resArr[pos] = resArr[pos] + 1;
+				}
 			}			
 			Collections.addAll(list, resArr);
 		}

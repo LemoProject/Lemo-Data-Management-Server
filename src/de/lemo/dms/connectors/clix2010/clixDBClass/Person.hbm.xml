@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.Person"
+        table="lemo_db.PERSON">
+
+        <id
+            name="id"
+            column="PERSON_ID"
+            type="long">
+            <generator class="native"/>
+        </id>
+
+        <property
+            name="lastLoginTime"
+            column="LASTLOGINTIME"
+            type="string"/>
+
+        <property
+            name="firstLoginTime"
+            column="FIRSTLOGINTIME"
+            type="string"/>
+            
+    </class>
+
+</hibernate-mapping>

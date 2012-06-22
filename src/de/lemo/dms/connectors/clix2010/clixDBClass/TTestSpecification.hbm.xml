@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.TTestSpecification"
+        table="lemo_db.T_TESTSPECIFICATION">
+
+       <composite-id
+       	name="id"
+        class="de.lemo.dms.connectors.clix2010.clixDBClass.TTestSpecificationPK" >
+       
+        <key-property name="task" column="TASK_ID" type="long" />
+        <key-property name="test" column="TEST_ID" type="long"/>
+       
+       </composite-id> 
+
+        <property
+            name="task"
+            column="TASK_ID"
+            type="long"/>
+
+        <property
+            name="test"
+            column="TEST_ID"
+            type="long"/>
+            
+    </class>
+
+</hibernate-mapping>

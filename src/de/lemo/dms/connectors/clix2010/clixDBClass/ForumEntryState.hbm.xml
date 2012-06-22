@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntryState"
+        table="lemo_db.FORUM_ENTRY_STATE">
+
+		<composite-id
+       	name="id"
+        class="de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntryStatePK" >
+       
+        <key-property name="user" column="USER_ID" type="long" />
+        <key-property name="entry" column="ENTRY_ID" type="long"/>
+       
+       </composite-id> 
+       
+        <property
+            name="forum"
+            column="FORUM_ID"
+            type="long"/>
+
+        <property
+            name="user"
+            column="USER_ID"
+            type="long"/>
+            
+        <property
+            name="entry"
+            column="ENTRY_ID"
+            type="long"/>     
+            
+        <property
+            name="lastUpdated"
+            column="LASTUPDATED"
+            type="string"/>                   
+            
+    </class>
+
+</hibernate-mapping>
