@@ -12,10 +12,9 @@ import de.lemo.dms.processing.Question;
 public class QuestionBaseService extends BaseService {
 
     /**
-     * Gets a Map
+     * Gets a Map with the question's id/path as key and the question's singleton as value.
      * 
-     * @return A map with the questio's id/path as key and the question's
-     *         singleton as value.
+     * @return question id/path mapped to the questions singleton
      */
     protected Map<String, Question> getQuestions() {
         return config.getResourceConfig().getQuestionSingletons();
