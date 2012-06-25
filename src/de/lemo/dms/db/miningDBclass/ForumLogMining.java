@@ -44,7 +44,7 @@ public class ForumLogMining implements ILogMining , IMappingClass {
 
 	public Long getLearnObjId()
 	{
-		return this.forum.getId();
+		return this.forum == null ? null : this.forum.getId();
 	}
 	
 	/** standard getter for the attribut id

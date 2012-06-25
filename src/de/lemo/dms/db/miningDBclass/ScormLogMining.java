@@ -42,7 +42,7 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 	
 	public Long getLearnObjId()
 	{
-		return this.scorm.getId();
+		return this.scorm == null ? null : this.scorm.getId();
 	}
 	
 	/** standard getter for the attribute finalgrade

@@ -39,7 +39,7 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 
 	public Long getLearnObjId()
 	{
-		return this.course.getId();
+		return this.course == null ? null : this.course.getId();
 	}
 	
 	/** standard getter for the attribut id

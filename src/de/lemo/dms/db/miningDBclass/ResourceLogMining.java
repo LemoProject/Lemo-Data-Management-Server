@@ -34,7 +34,7 @@ public class ResourceLogMining implements Comparable<ResourceLogMining>, ILogMin
 	
 	public Long getLearnObjId()
 	{
-		return this.resource.getId();
+		return this.resource == null ? null : this.resource.getId();
 	}
 	
 	@Override

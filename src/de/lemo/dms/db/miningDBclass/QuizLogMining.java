@@ -43,7 +43,7 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 	
 	public Long getLearnObjId()
 	{
-		return this.quiz.getId();
+		return this.quiz == null ? null : this.quiz.getId();
 	}
 
 	/** standard getter for the attribut finalgrade

@@ -35,7 +35,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass{
 	
 	public Long getLearnObjId()
 	{
-		return this.assignment.getId();
+		return this.assignment == null ? null : this.assignment.getId();
 	}
 
 	/** standard getter for the attribut finalgrade

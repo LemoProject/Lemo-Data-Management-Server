@@ -42,7 +42,7 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 	
 	public Long getLearnObjId()
 	{
-		return this.wiki.getId();
+		return this.wiki == null ? null : this.wiki.getId();
 	}
 
 	/** standard getter for the attribute id

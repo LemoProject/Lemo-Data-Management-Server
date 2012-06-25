@@ -47,7 +47,7 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	
 	public Long getLearnObjId()
 	{
-		return this.question.getId();
+		return this.question == null ? null : this.question.getId();
 	}
 
 	/** standard getter for the attribut id
