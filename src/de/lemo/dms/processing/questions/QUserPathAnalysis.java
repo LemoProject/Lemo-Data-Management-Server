@@ -27,6 +27,7 @@ import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResultListUserPathObject;
 import de.lemo.dms.processing.resulttype.UserPathObject;
+import de.lemo.dms.service.ELearnObjType;
 
 @QuestionID("userpathanalysis")
 public class QUserPathAnalysis extends Question {
@@ -143,7 +144,7 @@ public class QUserPathAnalysis extends Question {
         int skipped = 0;
         // Generate paths from user histories
         for(List<ILogMining> l : userHis.values()) {
-            String predNode = "";
+            String predNode = null;
             for(int i = 0; i < l.size(); i++)
                 if(l.get(i) != null && l.get(i).getUser() != null)
                 {
@@ -154,15 +155,15 @@ public class QUserPathAnalysis extends Question {
                         skipped++;
                         continue;
                     }
-                        
-                    String cId = learnObjId + current.getClass().toString();
+                    String learnObjType = ELearnObjType.valueOf(current).toString();
+                    String cId = learnObjId + "-" + learnObjType;
                     // Determines whether it's a new path (no predecessor for current node) or not
-                    if(!predNode.equals(""))
+                    if(predNode!=null)
                         if(pathObjects.get(cId) == null)
                         {
                             // If the node is new create entry in hash map
-                            pathObjects.put(cId, new UserPathObject(cId, current.getTitle(), 1L, current.getClass()
-                                    .toString(), Double.valueOf(current.getDuration()), 1L));
+                            pathObjects.put(cId, new UserPathObject(cId, current.getTitle(), 1L, learnObjType,
+                                    Double.valueOf(current.getDuration()), 1L));
                             pathObjects.get(predNode).addEdge(cId);
                         }
                         else
@@ -179,7 +180,7 @@ public class QUserPathAnalysis extends Question {
                         pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
 
                     if(considerLogouts && current.getDuration() == -1L)
-                        predNode = "";
+                        predNode = null;
                     else
                         predNode = cId;
                 }
