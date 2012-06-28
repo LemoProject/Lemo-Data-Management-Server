@@ -12,6 +12,12 @@ import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 
+/**
+ * <em>Learn Object</em> types with corresponding {@link ILogMining} implementations.
+ * 
+ * @author Leonard Kappe
+ * 
+ */
 public enum ELearnObjType {
 
     ASSIGNMENT(AssignmentLogMining.class),
@@ -30,20 +36,42 @@ public enum ELearnObjType {
         this.type = type;
     }
 
+    public Class<? extends ILogMining> getType() {
+        return type;
+    }
+
     private final static EnumHashBiMap<ELearnObjType, Class<? extends ILogMining>> typeMap =
             EnumHashBiMap.create(ELearnObjType.class);
     static {
-        // static is called after enum constructor
+        // static block is called after enum initialization
         for(ELearnObjType enumValue : values())
             if(enumValue.type != null)
                 typeMap.put(enumValue, enumValue.type);
     }
 
+    /**
+     * Maps enum constants to ILogMining classes
+     * 
+     * @param log
+     *            an ILogMining implementation
+     * @return the corresponding enum constant
+     */
     public static ELearnObjType valueOf(ILogMining log) {
         ELearnObjType type = typeMap.inverse().get(log.getClass());
         if(type == null)
             type = UNKNOWN;
         return type;
+    }
+
+    /**
+     * 
+     * 
+     * @param log
+     * @param typeName
+     * @return
+     */
+    public static boolean validate(ILogMining log, String typeName) {
+        return valueOf(log).toString().equals(typeName);
     }
 
     @Override
