@@ -24,6 +24,7 @@ import de.lemo.dms.db.miningDBclass.QuizLogMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
+import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
@@ -33,7 +34,7 @@ import de.lemo.dms.processing.resulttype.ResultListRRITypes;
 import de.lemo.dms.service.ELearnObjType;
 
 @QuestionID("activityresourcetyperesolution")
-public class QActivityResourceTypeResolution {
+public class QActivityResourceTypeResolution extends Question {
 	private static final String COURSE_IDS = "course_ids";
     private static final String STARTTIME = "starttime";
     private static final String ENDTIME = "endtime";

@@ -8,9 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ResultListLongObject {
 
-    @XmlElement
-    private String type = getClass().getSimpleName();
-
     private List<Long> elements;
 
     public ResultListLongObject()

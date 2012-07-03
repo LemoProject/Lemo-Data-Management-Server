@@ -18,7 +18,6 @@ import org.hibernate.criterion.Restrictions;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
@@ -30,7 +29,6 @@ import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
-import de.lemo.dms.processing.resulttype.ResultListUserPathObject;
 import de.lemo.dms.processing.resulttype.UserPathEdge;
 import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;

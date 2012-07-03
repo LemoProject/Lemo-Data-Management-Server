@@ -9,8 +9,7 @@ import javax.ws.rs.Path;
 
 /**
  * Replaces {@link Path} annotation for questions to modify the resource URL. A
- * Path annotation would the cause explicit URL mapping for question to be
- * ignored.
+ * Path annotation would cause explicit URL mapping for questions to be ignored.
  * 
  * @author Leonard Kappe
  * 

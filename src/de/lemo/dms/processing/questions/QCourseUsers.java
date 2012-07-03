@@ -18,6 +18,7 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
@@ -25,7 +26,7 @@ import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 @QuestionID("activecourseusers")
-public class QCourseUsers {
+public class QCourseUsers extends Question {
 
 	private static final String STARTTIME = "startTime";
 	private static final String ENDTIME = "endTime";
@@ -72,7 +73,8 @@ public class QCourseUsers {
 	        criteria.add(Restrictions.in("log.course.id", courseIds))
             .add(Restrictions.between("log.timestamp", startTime, endTime));
 	        
-	        ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
+	        @SuppressWarnings("unchecked")
+            ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
 	
 	        for(int i = 0; i < logs.size() ; i++)
 	        {
