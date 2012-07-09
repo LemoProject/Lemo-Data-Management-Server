@@ -2,7 +2,7 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class Person {
 	
-	private long id;
+	private Long id;
 	private String lastLoginTime;
 	private String firstLoginTime;
 	
@@ -11,10 +11,10 @@ public class Person {
 		
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getLastLoginTime() {

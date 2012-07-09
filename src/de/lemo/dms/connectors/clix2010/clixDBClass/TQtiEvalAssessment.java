@@ -3,59 +3,59 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 public class TQtiEvalAssessment {
 
 	
-	private long id;
-	private long component;
-	private long candidate;
-	private long assessment;
-	private long evaluatedScore;
-	private long evalCount;
+	private Long id;
+	private Long component;
+	private Long candidate;
+	private Long assessment;
+	private Long evaluatedScore;
+	private Long evalCount;
 	private String lastInvocation;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getComponent() {
+	public Long getComponent() {
 		return component;
 	}
 
-	public void setComponent(long component) {
+	public void setComponent(Long component) {
 		this.component = component;
 	}
 
-	public long getCandidate() {
+	public Long getCandidate() {
 		return candidate;
 	}
 
-	public void setCandidate(long candidate) {
+	public void setCandidate(Long candidate) {
 		this.candidate = candidate;
 	}
 
-	public long getAssessment() {
+	public Long getAssessment() {
 		return assessment;
 	}
 
-	public void setAssessment(long assessment) {
+	public void setAssessment(Long assessment) {
 		this.assessment = assessment;
 	}
 
-	public long getEvaluatedScore() {
+	public Long getEvaluatedScore() {
 		return evaluatedScore;
 	}
 
-	public void setEvaluatedScore(long evaluatedScore) {
+	public void setEvaluatedScore(Long evaluatedScore) {
 		this.evaluatedScore = evaluatedScore;
 	}
 
-	public long getEvalCount() {
+	public Long getEvalCount() {
 		return evalCount;
 	}
 
-	public void setEvalCount(long evalCount) {
+	public void setEvalCount(Long evalCount) {
 		this.evalCount = evalCount;
 	}
 

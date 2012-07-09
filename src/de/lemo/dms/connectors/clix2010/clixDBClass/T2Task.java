@@ -2,22 +2,22 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class T2Task {
 	
-	private long id;
+	private Long id;
 	private String questionText;
-	private long taskType;
-	private long topicId;
-	private long inputType;
+	private Long taskType;
+	private Long topicId;
+	private Long inputType;
 	
 	public T2Task()
 	{
 		
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -29,27 +29,27 @@ public class T2Task {
 		this.questionText = questionText;
 	}
 
-	public long getTaskType() {
+	public Long getTaskType() {
 		return taskType;
 	}
 
-	public void setTaskType(long taskType) {
+	public void setTaskType(Long taskType) {
 		this.taskType = taskType;
 	}
 
-	public long getTopicId() {
+	public Long getTopicId() {
 		return topicId;
 	}
 
-	public void setTopicId(long topicId) {
+	public void setTopicId(Long topicId) {
 		this.topicId = topicId;
 	}
 
-	public long getInputType() {
+	public Long getInputType() {
 		return inputType;
 	}
 
-	public void setInputType(long inputType) {
+	public void setInputType(Long inputType) {
 		this.inputType = inputType;
 	}
 

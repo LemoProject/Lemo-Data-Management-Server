@@ -32,42 +32,42 @@ public class TAnswerPositionPK implements Serializable {
 		return person.hashCode() * 17 + question.hashCode() * 19 + task.hashCode() * 23 + test.hashCode() * 29;
 	}
 		
-	public long getPerson() {
+	public Long getPerson() {
 		return person;
 	}
 
 
-	public void setPerson(long person) {
+	public void setPerson(Long person) {
 		this.person = person;
 	}
 
 
-	public long getQuestion() {
+	public Long getQuestion() {
 		return question;
 	}
 
 
-	public void setQuestion(long question) {
+	public void setQuestion(Long question) {
 		this.question = question;
 	}
 
 
-	public long getTask() {
+	public Long getTask() {
 		return task;
 	}
 
 
-	public void setTask(long task) {
+	public void setTask(Long task) {
 		this.task = task;
 	}
 
 
-	public long getTest() {
+	public Long getTest() {
 		return test;
 	}
 
 
-	public void setTest(long test) {
+	public void setTest(Long test) {
 		this.test = test;
 	}
 

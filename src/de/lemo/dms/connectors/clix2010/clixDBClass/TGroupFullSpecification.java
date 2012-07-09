@@ -2,30 +2,30 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class TGroupFullSpecification {
 	
-	private long group;
-	private long person;
+	private Long group;
+	private Long person;
 	
 	
 	
-	public long getGroup() {
+	public Long getGroup() {
 		return group;
 	}
 
 
 
-	public void setGroup(long group) {
+	public void setGroup(Long group) {
 		this.group = group;
 	}
 
 
 
-	public long getPerson() {
+	public Long getPerson() {
 		return person;
 	}
 
 
 
-	public void setPerson(long person) {
+	public void setPerson(Long person) {
 		this.person = person;
 	}
 

@@ -4,10 +4,10 @@ public class ForumEntryState {
 	
 	private ForumEntryStatePK id;
 	
-	private long user;
-	private long forum;
+	private Long user;
+	private Long forum;
 	private String lastUpdated;
-	private long entry;
+	private Long entry;
 	
 
 	public ForumEntryStatePK getId() {
@@ -20,22 +20,22 @@ public class ForumEntryState {
 	}
 
 
-	public long getUser() {
+	public Long getUser() {
 		return user;
 	}
 
 
-	public void setUser(long user) {
+	public void setUser(Long user) {
 		this.user = user;
 	}
 
 
-	public long getForum() {
+	public Long getForum() {
 		return forum;
 	}
 
 
-	public void setForum(long forum) {
+	public void setForum(Long forum) {
 		this.forum = forum;
 	}
 
@@ -50,12 +50,12 @@ public class ForumEntryState {
 	}
 
 
-	public long getEntry() {
+	public Long getEntry() {
 		return entry;
 	}
 
 
-	public void setEntry(long entry) {
+	public void setEntry(Long entry) {
 		this.entry = entry;
 	}
 

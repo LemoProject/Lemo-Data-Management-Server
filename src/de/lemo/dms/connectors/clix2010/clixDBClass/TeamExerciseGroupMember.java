@@ -2,17 +2,17 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class TeamExerciseGroupMember {
 
-	private long id;
-	private long portfolio;
-	private long exerciseGroup;
+	private Long id;
+	private Long portfolio;
+	private Long exerciseGroup;
 	
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -22,7 +22,7 @@ public class TeamExerciseGroupMember {
 	}
 
 
-	public void setPortfolio(long portfolio) {
+	public void setPortfolio(Long portfolio) {
 		this.portfolio = portfolio;
 	}
 
@@ -32,7 +32,7 @@ public class TeamExerciseGroupMember {
 	}
 
 
-	public void setExerciseGroup(long exerciseGroup) {
+	public void setExerciseGroup(Long exerciseGroup) {
 		this.exerciseGroup = exerciseGroup;
 	}
 

@@ -17,7 +17,7 @@
         <key-property name="content" column="CONTENT_ID" type="long" />
         <key-property name="characteristic" column="CHARACTERISTIC_ID" type="long"/>
         <key-property name="user" column="USER_ID" type="long" />
-        <key-property name="dayOfAccess" column="DAY_OF_ACCESS" type="long"/>
+        <key-property name="dayOfAccess" column="DAY_OF_ACCESS" type="string"/>
         <key-property name="container" column="CONTAINER_ID" type="long"/>
        
        </composite-id> 

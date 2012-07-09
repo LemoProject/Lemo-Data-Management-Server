@@ -2,9 +2,9 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class ForumEntry {
 
-	private long id;
-	private long forum;
-	private long lastUpdater;
+	private Long id;
+	private Long forum;
+	private Long lastUpdater;
 	private String lastUpdated;
 	private String title;
 	private String content;
@@ -12,11 +12,11 @@ public class ForumEntry {
 	public ForumEntry()
 	{}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -24,15 +24,15 @@ public class ForumEntry {
 		return forum;
 	}
 
-	public void setForum(long forum) {
+	public void setForum(Long forum) {
 		this.forum = forum;
 	}
 
-	public long getLastUpdater() {
+	public Long getLastUpdater() {
 		return lastUpdater;
 	}
 
-	public void setLastUpdater(long lastUpdater) {
+	public void setLastUpdater(Long lastUpdater) {
 		this.lastUpdater = lastUpdater;
 	}
 

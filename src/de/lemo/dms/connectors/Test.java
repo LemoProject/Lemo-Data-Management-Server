@@ -22,7 +22,7 @@ public class Test {
 			
 		ConnectorClix cc = new ConnectorClix();
 		
-		cc.testConnections();
+		cc.getData();
 		
 		//ConnectorMoodle cm = new ConnectorMoodle();
 		

@@ -3,8 +3,8 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 public class TTestSpecification {
 	
 	private TTestSpecificationPK id;
-	private long task;
-	private long test;
+	private Long task;
+	private Long test;
 	
 	
 	
@@ -20,25 +20,25 @@ public class TTestSpecification {
 
 
 
-	public long getTask() {
+	public Long getTask() {
 		return task;
 	}
 
 
 
-	public void setTask(long task) {
+	public void setTask(Long task) {
 		this.task = task;
 	}
 
 
 
-	public long getTest() {
+	public Long getTest() {
 		return test;
 	}
 
 
 
-	public void setTest(long test) {
+	public void setTest(Long test) {
 		this.test = test;
 	}
 	

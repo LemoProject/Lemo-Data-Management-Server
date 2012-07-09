@@ -4,12 +4,12 @@ public class BiTrackContentImpressions {
 	
 	private BiTrackContentImpressionsPK id;
 
-	private long content;
+	private Long content;
 	private String dayOfAccess;
-	private long container;
-	private long user;
-	private long totalImpressions;
-	private long characteristic;
+	private Long container;
+	private Long user;
+	private Long totalImpressions;
+	private Long characteristic;
 	
 	
 	public BiTrackContentImpressionsPK getId() {
@@ -20,19 +20,19 @@ public class BiTrackContentImpressions {
 		this.id = id;
 	}
 
-	public long getContent() {
+	public Long getContent() {
 		return content;
 	}
 
-	public void setContent(long content) {
+	public void setContent(Long content) {
 		this.content = content;
 	}
 
-	public long getCharacteristic() {
+	public Long getCharacteristic() {
 		return characteristic;
 	}
 
-	public void setCharacteristic(long characteristic) {
+	public void setCharacteristic(Long characteristic) {
 		this.characteristic = characteristic;
 	}
 
@@ -53,19 +53,19 @@ public class BiTrackContentImpressions {
 		return container;
 	}
 
-	public void setContainer(long container) {
+	public void setContainer(Long container) {
 		this.container = container;
 	}
 
-	public long getUser() {
+	public Long getUser() {
 		return user;
 	}
 
-	public void setUser(long user) {
+	public void setUser(Long user) {
 		this.user = user;
 	}
 
-	public long getTotalImpressions() {
+	public Long getTotalImpressions() {
 		return totalImpressions;
 	}
 

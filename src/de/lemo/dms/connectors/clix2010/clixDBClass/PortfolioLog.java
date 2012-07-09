@@ -2,12 +2,12 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class PortfolioLog {
 	
-	private long id;
-	private long component;
-	private long person;
-	private long typeOfModification;
+	private Long id;
+	private Long component;
+	private Long person;
+	private Long typeOfModification;
 	private String lastUpdated;
-	private long lastUpdater;
+	private Long lastUpdater;
 	
 	
 	
@@ -18,49 +18,49 @@ public class PortfolioLog {
 
 
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 
 
-	public long getComponent() {
+	public Long getComponent() {
 		return component;
 	}
 
 
 
-	public void setComponent(long component) {
+	public void setComponent(Long component) {
 		this.component = component;
 	}
 
 
 
-	public long getPerson() {
+	public Long getPerson() {
 		return person;
 	}
 
 
 
-	public void setPerson(long person) {
+	public void setPerson(Long person) {
 		this.person = person;
 	}
 
 
 
-	public long getTypeOfModification() {
+	public Long getTypeOfModification() {
 		return typeOfModification;
 	}
 
 
 
-	public void setTypeOfModification(long typeOfModification) {
+	public void setTypeOfModification(Long typeOfModification) {
 		this.typeOfModification = typeOfModification;
 	}
 
@@ -78,13 +78,13 @@ public class PortfolioLog {
 
 
 
-	public long getLastUpdater() {
+	public Long getLastUpdater() {
 		return lastUpdater;
 	}
 
 
 
-	public void setLastUpdater(long lastUpdater) {
+	public void setLastUpdater(Long lastUpdater) {
 		this.lastUpdater = lastUpdater;
 	}
 

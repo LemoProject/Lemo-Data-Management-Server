@@ -2,36 +2,63 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class EComposing {
 	
-	private long id;
-	private long composing;
-	private long component;
+	private Long id;
+	private Long composing;
+	private Long component;
+	private String endDate;
+	private String startDate;
+	private Long composingType;
 	
+	public Long getComposingType() {
+		return composingType;
+	}
+
+	public void setComposingType(Long composingType) {
+		this.composingType = composingType;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
 	public EComposing()
 	{
 		
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getComposing() {
+	public Long getComposing() {
 		return composing;
 	}
 
-	public void setComposing(long composing) {
+	public void setComposing(Long composing) {
 		this.composing = composing;
 	}
 
-	public long getComponent() {
+	public Long getComponent() {
 		return component;
 	}
 
-	public void setComponent(long component) {
+	public void setComponent(Long component) {
 		this.component = component;
 	}
 	

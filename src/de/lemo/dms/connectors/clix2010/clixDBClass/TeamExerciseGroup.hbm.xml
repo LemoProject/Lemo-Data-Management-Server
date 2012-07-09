@@ -20,11 +20,6 @@
             name="component"
             column="COMPONENT_ID"
             type="long"/>
-
-        <property
-            name="composing"
-            column="COMPOSING_ID"
-            type="long"/>
             
     </class>
 

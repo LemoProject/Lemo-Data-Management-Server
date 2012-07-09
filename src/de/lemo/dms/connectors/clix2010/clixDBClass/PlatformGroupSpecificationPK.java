@@ -9,13 +9,13 @@ public class PlatformGroupSpecificationPK implements Serializable {
 	
 	
 	
-	public long getGroup() {
+	public Long getGroup() {
 		return group;
 	}
 
 
 
-	public void setGroup(long group) {
+	public void setGroup(Long group) {
 		this.group = group;
 	}
 
@@ -27,7 +27,7 @@ public class PlatformGroupSpecificationPK implements Serializable {
 
 
 
-	public void setPerson(long person) {
+	public void setPerson(Long person) {
 		this.person = person;
 	}
 

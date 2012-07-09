@@ -8,6 +8,7 @@ import org.hibernate.Session;
 
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponent;
+import de.lemo.dms.connectors.clix2010.clixHelper.TimeConverter;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
@@ -23,12 +24,22 @@ public class ConnectorClix implements IConnector{
 	@Override
 	public boolean testConnections() {
 		try{
+			
+			ClixImporter.getClixData();
+			/*
 	        Session session = HibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
 	        List<EComponent> ilm;
 	        Criteria criteria = session.createCriteria(EComponent.class, "log");
 			ilm = criteria.list();
-			System.out.println("!!!!!!!!!!!!!!!! - " + ilm.size());
-	        session.close();
+			for(int i = 0; i < ilm.size(); i++)
+			{
+				EComponent ec = ilm.get(i);
+				Long f = TimeConverter.getTimestamp(ec.getLastUpdated());
+				if(i==0)
+					System.out.println(f);
+			}
+			
+	        session.close();*/
 	        //HibernateDBHandler target= new HibernateDBHandler();
 	        //target.getConnection(miningDBConf);
 	        //target.closeConnection();
@@ -42,7 +53,12 @@ public class ConnectorClix implements IConnector{
 
 	@Override
 	public void getData() {
-		// TODO Auto-generated method stub
+		try{
+			ClixImporter.getClixData();
+		}catch(Exception e)
+		{
+			
+		}
 		
 	}
 

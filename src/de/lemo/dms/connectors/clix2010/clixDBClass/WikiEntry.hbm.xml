@@ -22,6 +22,11 @@
             type="string"/>
 
         <property
+            name="created"
+            column="CREATED"
+            type="string"/>
+
+        <property
             name="component"
             column="COMPONENT_ID"
             type="long"/>
@@ -43,7 +48,7 @@
             
         <property
             name="publishingDate"
-            column="PUBLICHINGDATE"
+            column="PUBLISHINGDATE"
             type="string"/>      
             
     </class>

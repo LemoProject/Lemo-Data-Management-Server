@@ -4,8 +4,8 @@ public class ScormSessionTimes {
 
 	private ScormSessionTimesPK id;
 
-	private long component;
-	private long person;
+	private Long component;
+	private Long person;
 	private String score;
 	private String lastUpdated;
 	private String status;
@@ -23,19 +23,19 @@ public class ScormSessionTimes {
 		
 	}
 
-	public long getComponent() {
+	public Long getComponent() {
 		return component;
 	}
 
-	public void setComponent(long component) {
+	public void setComponent(Long component) {
 		this.component = component;
 	}
 
-	public long getPerson() {
+	public Long getPerson() {
 		return person;
 	}
 
-	public void setPerson(long person) {
+	public void setPerson(Long person) {
 		this.person = person;
 	}
 

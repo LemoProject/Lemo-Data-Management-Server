@@ -2,56 +2,66 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class WikiEntry {
 	
-	private long id;
-	private long component;
-	private long creator;
-	private long lastProcessor;
-	private long publisher;
+	private Long id;
+	private Long component;
+	private Long creator;
+	private Long lastProcessor;
+	private Long publisher;
 	private String lastUpdated;
 	private String publishingDate;
+	private String created;
 	
+	
+	public String getCreated() {
+		return created;
+	}
+
+	public void setCreated(String created) {
+		this.created = created;
+	}
+
 	public WikiEntry()
 	{
 		
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getComponent() {
+	public Long getComponent() {
 		return component;
 	}
 
-	public void setComponent(long component) {
+	public void setComponent(Long component) {
 		this.component = component;
 	}
 
-	public long getCreator() {
+	public Long getCreator() {
 		return creator;
 	}
 
-	public void setCreator(long creator) {
+	public void setCreator(Long creator) {
 		this.creator = creator;
 	}
 
-	public long getLastProcessor() {
+	public Long getLastProcessor() {
 		return lastProcessor;
 	}
 
-	public void setLastProcessor(long lastProcessor) {
+	public void setLastProcessor(Long lastProcessor) {
 		this.lastProcessor = lastProcessor;
 	}
 
-	public long getPublisher() {
+	public Long getPublisher() {
 		return publisher;
 	}
 
-	public void setPublisher(long publisher) {
+	public void setPublisher(Long publisher) {
 		this.publisher = publisher;
 	}
 

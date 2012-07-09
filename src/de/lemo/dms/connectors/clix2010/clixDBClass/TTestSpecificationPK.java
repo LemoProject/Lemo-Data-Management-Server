@@ -10,26 +10,26 @@ public class TTestSpecificationPK implements Serializable {
 	public TTestSpecificationPK()
 	{}
 	
-	public TTestSpecificationPK(long task, long test)
+	public TTestSpecificationPK(Long task, Long test)
 	{
 		this.task = task;
 		this.test = test;
 		
 	}
 
-	public long getTask() {
+	public Long getTask() {
 		return task;
 	}
 
-	public void setTask(long task) {
+	public void setTask(Long task) {
 		this.task = task;
 	}
 
-	public long getTest() {
+	public Long getTest() {
 		return test;
 	}
 
-	public void setTest(long test) {
+	public void setTest(Long test) {
 		this.test = test;
 	}
 	

@@ -22,8 +22,18 @@
             type="long"/>
 
         <property
-            name="composing"
-            column="COMPOSING_ID"
+            name="composingType"
+            column="COMPOSINGTYPE_ID"
+            type="long"/>
+                        
+        <property
+            name="endDate"
+            column="ENDDATE"
+            type="long"/>
+            
+        <property
+            name="startDate"
+            column="STARTDATE"
             type="long"/>
             
     </class>

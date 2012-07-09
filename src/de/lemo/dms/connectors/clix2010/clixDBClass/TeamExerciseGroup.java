@@ -2,32 +2,23 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class TeamExerciseGroup {
 
-	private long id;
-	private long component;
-	private long composing;
+	private Long id;
+	private Long component;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
-	public long getComponent() {
+	public Long getComponent() {
 		return component;
 	}
 	
-	public void setComponent(long component) {
+	public void setComponent(Long component) {
 		this.component = component;
-	}
-	
-	public long getComposing() {
-		return composing;
-	}
-	
-	public void setComposing(long composing) {
-		this.composing = composing;
 	}
 	
 	public TeamExerciseGroup()

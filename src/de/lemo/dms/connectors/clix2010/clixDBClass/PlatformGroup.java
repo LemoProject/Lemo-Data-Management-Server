@@ -2,32 +2,32 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class PlatformGroup {
 	
-	private long id;
-	private long typeId;
+	private Long id;
+	private Long typeId;
 	private String lastUpdated;
 	private String created;
 	
 	
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 
 
-	public long getTypeId() {
+	public Long getTypeId() {
 		return typeId;
 	}
 
 
 
-	public void setTypeId(long typeId) {
+	public void setTypeId(Long typeId) {
 		this.typeId = typeId;
 	}
 

@@ -2,45 +2,45 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 public class ChatProtocol {
 
-	private long id;
-	private long chatroom;
-	private long person;
+	private Long id;
+	private Long chatroom;
+	private Long person;
 	private String chatSource;
 	private String lastUpdated;
 	
 	
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 
 
-	public long getChatroom() {
+	public Long getChatroom() {
 		return chatroom;
 	}
 
 
 
-	public void setChatroom(long chatroom) {
+	public void setChatroom(Long chatroom) {
 		this.chatroom = chatroom;
 	}
 
 
 
-	public long getPerson() {
+	public Long getPerson() {
 		return person;
 	}
 
 
 
-	public void setPerson(long person) {
+	public void setPerson(Long person) {
 		this.person = person;
 	}
 

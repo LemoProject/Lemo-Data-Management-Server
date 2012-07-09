@@ -4,12 +4,12 @@ public class ExercisePersonalised {
 	
 	private ExercisePersonalisedPK id;
 	
-	private long exercise;
-	private long user;
-	private long points;
+	private Long exercise;
+	private Long user;
+	private Long points;
 	private String uploadDate;
-	private long exerciseSheet;
-	private long community;
+	private Long exerciseSheet;
+	private Long community;
 	
 	public ExercisePersonalisedPK getId() {
 		return id;
@@ -19,43 +19,43 @@ public class ExercisePersonalised {
 		this.id = id;
 	}
 
-	public long getExerciseSheet() {
+	public Long getExerciseSheet() {
 		return exerciseSheet;
 	}
 
-	public void setExerciseSheet(long exerciseSheet) {
+	public void setExerciseSheet(Long exerciseSheet) {
 		this.exerciseSheet = exerciseSheet;
 	}
 
-	public long getCommunity() {
+	public Long getCommunity() {
 		return community;
 	}
 
-	public void setCommunity(long community) {
+	public void setCommunity(Long community) {
 		this.community = community;
 	}
 
-	public long getExercise() {
+	public Long getExercise() {
 		return exercise;
 	}
 
-	public void setExercise(long exercise) {
+	public void setExercise(Long exercise) {
 		this.exercise = exercise;
 	}
 
-	public long getUser() {
+	public Long getUser() {
 		return user;
 	}
 
-	public void setUser(long user) {
+	public void setUser(Long user) {
 		this.user = user;
 	}
 
-	public long getPoints() {
+	public Long getPoints() {
 		return points;
 	}
 
-	public void setPoints(long points) {
+	public void setPoints(Long points) {
 		this.points = points;
 	}
 

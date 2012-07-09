@@ -12,23 +12,32 @@ public class EComponentType {
 		this.id = id;
 	}
 
-	private long component;
-	private long characteristic;
-	private long language;
+	private Long component;
+	private Long characteristic;
+	private Long language;
+	private String uploadDir;
 	
-	public long getCharacteristic() {
+	public String getUploadDir() {
+		return uploadDir;
+	}
+
+	public void setUploadDir(String uploadDir) {
+		this.uploadDir = uploadDir;
+	}
+
+	public Long getCharacteristic() {
 		return characteristic;
 	}
 
-	public void setCharacteristic(long characteristic) {
+	public void setCharacteristic(Long characteristic) {
 		this.characteristic = characteristic;
 	}
 
-	public long getLanguage() {
+	public Long getLanguage() {
 		return language;
 	}
 
-	public void setLanguage(long language) {
+	public void setLanguage(Long language) {
 		this.language = language;
 	}
 
@@ -37,19 +46,19 @@ public class EComponentType {
 		
 	}
 
-	public long getComponent() {
+	public Long getComponent() {
 		return component;
 	}
 
-	public void setComponent(long component) {
+	public void setComponent(Long component) {
 		this.component = component;
 	}
 
-	public long getCharacteristicId() {
+	public Long getCharacteristicId() {
 		return characteristic;
 	}
 
-	public void setCharacteristicId(long characteristicId) {
+	public void setCharacteristicId(Long characteristicId) {
 		this.characteristic = characteristicId;
 	}
 	

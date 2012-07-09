@@ -36,7 +36,12 @@
         <property
             name="characteristic"
             column="CHARACTERISTIC_ID"
-            type="long"/>
+            type="long"/>          
+
+        <property
+            name="uploadDir"
+            column="UPLOADDIRECTORY"
+            type="string"/>
             
     </class>
 

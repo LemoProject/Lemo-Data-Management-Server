@@ -3,10 +3,10 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 public class TAnswerPosition {
 
 	private TAnswerPositionPK id;
-	private long person;
-	private long question;
-	private long task;
-	private long test;
+	private Long person;
+	private Long question;
+	private Long task;
+	private Long test;
 	
 	public TAnswerPositionPK getId() {
 		return id;
@@ -21,42 +21,42 @@ public class TAnswerPosition {
 	private String evaluated;
 	
 	
-	public long getPerson() {
+	public Long getPerson() {
 		return person;
 	}
 
 
-	public void setPerson(long person) {
+	public void setPerson(Long person) {
 		this.person = person;
 	}
 
 
-	public long getQuestion() {
+	public Long getQuestion() {
 		return question;
 	}
 
 
-	public void setQuestion(long question) {
+	public void setQuestion(Long question) {
 		this.question = question;
 	}
 
 
-	public long getTask() {
+	public Long getTask() {
 		return task;
 	}
 
 
-	public void setTask(long task) {
+	public void setTask(Long task) {
 		this.task = task;
 	}
 
 
-	public long getTest() {
+	public Long getTest() {
 		return test;
 	}
 
 
-	public void setTest(long test) {
+	public void setTest(Long test) {
 		this.test = test;
 	}
 
