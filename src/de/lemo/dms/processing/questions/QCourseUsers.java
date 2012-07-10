@@ -80,7 +80,7 @@ public class QCourseUsers extends Question {
             if(log.getUser() == null) {
                 continue;
             }
-            users.add(log.getId());
+            users.add(log.getUser().getId());
         }
 
         return new ResultListLongObject(new ArrayList<Long>(users));
