@@ -7,7 +7,12 @@ public class UserPathLink {
 
     private long source;
     private long target;
+    private long value;
 
+    public UserPathLink() {
+        // TODO Auto-generated constructor stub
+    }
+    
     public UserPathLink(long source, long target) {
         this.source = source;
         this.target = target;
@@ -52,6 +57,14 @@ public class UserPathLink {
         if(target != other.target)
             return false;
         return true;
+    }
+
+    public long getValue() {
+        return value;
+    }
+
+    public void setValue(long value) {
+        this.value = value;
     }
 
 }

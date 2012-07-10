@@ -11,6 +11,8 @@ public class UserPathNode {
 
     public UserPathNode(UserPathObject path) {
         this.name = path.getTitle();
+        if(name == null || name.isEmpty())
+            name = "?";
         this.value = path.getWeight();
         this.group = path.getGroup();
     }

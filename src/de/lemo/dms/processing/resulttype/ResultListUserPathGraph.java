@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ResultListUserPathGraph {
 
-    private ArrayList<UserPathEdge> edges;
+    private ArrayList<UserPathLink> links;
     private ArrayList<UserPathNode> nodes;
 
     @XmlElement
@@ -17,21 +17,21 @@ public class ResultListUserPathGraph {
     public ResultListUserPathGraph() {
     }
 
-    public ResultListUserPathGraph(ArrayList<UserPathNode> nodes, ArrayList<UserPathEdge> edges)
+    public ResultListUserPathGraph(ArrayList<UserPathNode> nodes, ArrayList<UserPathLink> links)
     {
         this.nodes = nodes;
-        this.edges = edges;
+        this.links = links;
     }
 
     @XmlElement
-    public ArrayList<UserPathEdge> getEdges()
+    public ArrayList<UserPathLink> getLinks()
     {
-        return this.edges;
+        return this.links;
     }
 
-    public void setEdges(ArrayList<UserPathEdge> edges)
+    public void setLinks(ArrayList<UserPathLink> links)
     {
-        this.edges = edges;
+        this.links = links;
     }
 
     @XmlElement
