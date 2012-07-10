@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *            Type of the argument.
  */
 @XmlRootElement
-public abstract class Item<T> extends ParameterMetaData<T> {
+public abstract class Item<T> extends MetaParam<T> {
 
     @XmlElement
     private List<T> validValues;

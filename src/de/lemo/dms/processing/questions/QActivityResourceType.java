@@ -1,4 +1,8 @@
 package de.lemo.dms.processing.questions;
+import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
+import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
+import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
+import static de.lemo.dms.processing.parameter.MetaParam.TYPES;
 
 import java.math.BigInteger;
 import java.util.Collections;
@@ -7,9 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.QueryParam;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -28,8 +30,8 @@ import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
+import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
-import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
 import de.lemo.dms.service.ELearnObjType;
@@ -37,14 +39,11 @@ import de.lemo.dms.service.ELearnObjType;
 @QuestionID("activityresourcetype")
 public class QActivityResourceType extends Question {
 
-    private static final String COURSE_IDS = "course_ids";
-    private static final String STARTTIME = "starttime";
-    private static final String ENDTIME = "endtime";
-    private static final String TYPES = "types";
+    
 
     @Override
-	protected List<ParameterMetaData<?>> createParamMetaData() {
-	    List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
+	protected List<MetaParam<?>> createParamMetaData() {
+	    List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
         
         IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
         dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
@@ -54,11 +53,11 @@ public class QActivityResourceType extends Question {
         if(latest.size() > 0)
         	now = ((BigInteger)latest.get(0)).longValue();
      
-        Collections.<ParameterMetaData<?>> addAll( parameters,
+        Collections.<MetaParam<?>> addAll( parameters,
                 Parameter.create(COURSE_IDS,"Courses","List of courses."),
                 Parameter.create(TYPES, "ResourceTypes","List of resource types."),
-                Interval.create(long.class, STARTTIME, "Start time", "", 0L, now, 0L), 
-                Interval.create(long.class, ENDTIME, "End time", "", 0L, now, now)
+                Interval.create(long.class, START_TIME, "Start time", "", 0L, now, 0L), 
+                Interval.create(long.class, END_TIME, "End time", "", 0L, now, now)
                 );
         return parameters;
 	}
@@ -66,8 +65,8 @@ public class QActivityResourceType extends Question {
     @POST
     public ResultListResourceRequestInfo compute(
             @FormParam(COURSE_IDS) List<Long> courses,
-            @FormParam(STARTTIME) long startTime,
-            @FormParam(ENDTIME) long endTime,
+            @FormParam(START_TIME) long startTime,
+            @FormParam(END_TIME) long endTime,
             @FormParam(TYPES) List<String> resourceTypes) 
     {
 		boolean all = false;

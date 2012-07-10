@@ -14,7 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import de.lemo.dms.processing.parameter.ParameterMetaData;
+import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameters;
 import de.lemo.dms.service.BaseService;
 
@@ -33,13 +33,13 @@ public abstract class Question extends BaseService {
      * of the question. For each {@link QueryParam} annotated parameter of the
      * question's REST-interface method, a meta data object with the same ID and
      * type must be provided. A meta data object of the generic type
-     * {@link ParameterMetaData}<{@link Void}> indicates that the type of the
+     * {@link MetaParam}<{@link Void}> indicates that the type of the
      * method's parameter should (and will) be used.
      * 
      * 
      * @return A list of parameter meta data objects
      */
-    protected abstract List<ParameterMetaData<?>> createParamMetaData();
+    protected abstract List<MetaParam<?>> createParamMetaData();
 
     /**
      * Validates and retrieves parameter type information.
@@ -90,8 +90,8 @@ public abstract class Question extends BaseService {
         }
 
         /* map of parameter meta data description: <id, meta data> */
-        Map<String, ParameterMetaData<?>> metaDataMap = new HashMap<String, ParameterMetaData<?>>();
-        for(ParameterMetaData<?> paramMeta : createParamMetaData()) {
+        Map<String, MetaParam<?>> metaDataMap = new HashMap<String, MetaParam<?>>();
+        for(MetaParam<?> paramMeta : createParamMetaData()) {
             metaDataMap.put(paramMeta.getId(), paramMeta);
         }
 
@@ -101,7 +101,7 @@ public abstract class Question extends BaseService {
          */
 
         for(Entry<String, Class<?>> entry : paramTypes.entrySet()) {
-            ParameterMetaData<?> paramMeta = metaDataMap.get(entry.getKey());
+            MetaParam<?> paramMeta = metaDataMap.get(entry.getKey());
             if(paramMeta == null) {
                 throw new RuntimeException("Missing meta data description for " + entry.getKey() + " in "
                         + questionName + ".");

@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *            Type of the argument. Must be comparable to {@link T}.
  */
 @XmlRootElement
-public class Interval<T extends Comparable<T>> extends ParameterMetaData<T> {
+public class Interval<T extends Comparable<T>> extends MetaParam<T> {
 
     @XmlElement
     private T min;

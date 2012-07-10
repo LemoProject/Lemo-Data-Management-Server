@@ -1,5 +1,10 @@
 package de.lemo.dms.processing.questions;
 
+import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
+import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
+import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
+import static de.lemo.dms.processing.parameter.MetaParam.USER_IDS;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,9 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.QueryParam;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -21,39 +24,32 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
+import de.lemo.dms.db.miningDBclass.CourseLogMining;
+import de.lemo.dms.db.miningDBclass.ForumLogMining;
+import de.lemo.dms.db.miningDBclass.QuestionLogMining;
+import de.lemo.dms.db.miningDBclass.QuizLogMining;
+import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.db.miningDBclass.ScormLogMining;
+import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
+import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
-import de.lemo.dms.processing.parameter.ParameterMetaData;
-import de.lemo.dms.processing.resulttype.UserLogObject;
-
-import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
-import de.lemo.dms.db.miningDBclass.CourseLogMining;
-import de.lemo.dms.db.miningDBclass.ForumLogMining;
-import de.lemo.dms.db.miningDBclass.QuizLogMining;
-import de.lemo.dms.db.miningDBclass.QuestionLogMining;
-import de.lemo.dms.db.miningDBclass.WikiLogMining;
-import de.lemo.dms.db.miningDBclass.ScormLogMining;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-
 import de.lemo.dms.processing.resulttype.ResultListUserLogObject;
-
+import de.lemo.dms.processing.resulttype.UserLogObject;
 
 
 
 @QuestionID("userloghistory")
 public class QUserLogHistory extends Question {
-
-    private static final String STARTTIME = "start_time";
-    private static final String ENDTIME = "end_time";
-	private static final String USER_IDS = "user_ids";
-	private static final String COURSE_IDS = "course_ids";
+ 
 
     @Override
-    protected List<ParameterMetaData<?>> createParamMetaData() {
-        List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
+    protected List<MetaParam<?>> createParamMetaData() {
+        List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
 
         IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
         dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
@@ -63,12 +59,12 @@ public class QUserLogHistory extends Question {
         if(latest.size() > 0)
             now = ((BigInteger) latest.get(0)).longValue();
 
-        Collections.<ParameterMetaData<?>>
+        Collections.<MetaParam<?>>
                 addAll(parameters,
-                       Interval.create(Long.class, STARTTIME, "Start time", "", 0L, now, 0L),
+                       Interval.create(Long.class, START_TIME, "Start time", "", 0L, now, 0L),
                        Parameter.create(USER_IDS, "Users", "List of users-ids."),
                        Parameter.create(COURSE_IDS, "Courses", "List of course-ids."),
-                       Interval.create(Long.class, ENDTIME, "End time", "", 0L, now, now)
+                       Interval.create(Long.class, END_TIME, "End time", "", 0L, now, now)
                 );
         return parameters;
     }
@@ -86,8 +82,8 @@ public class QUserLogHistory extends Question {
     public ResultListUserLogObject compute(
             @FormParam(COURSE_IDS) List<Long> courseIds,
             @FormParam(USER_IDS) List<Long> userIds,
-            @FormParam(STARTTIME) Long startTime,
-            @FormParam(ENDTIME) Long endTime){
+            @FormParam(START_TIME) Long startTime,
+            @FormParam(END_TIME) Long endTime){
 
         /*
          * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to

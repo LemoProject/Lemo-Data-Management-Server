@@ -1,4 +1,8 @@
 package de.lemo.dms.processing.questions;
+import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
+import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
+import static de.lemo.dms.processing.parameter.MetaParam.RESOLUTION;
+import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -7,9 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.QueryParam;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -23,22 +25,17 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
+import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
-import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
+import static  de.lemo.dms.processing.parameter.MetaParam.*;
 
 @QuestionID("courseactivity")
-public class QCourseActivity extends Question{
-
-    private static final String COURSE_IDS = "course_ids";
-    private static final String ROLE_IDS = "role_ids";
-    private static final String STARTTIME = "starttime";
-    private static final String ENDTIME = "endtime";
-    private static final String RESOLUTION = "resolution";
+public class QCourseActivity extends Question{ 
 
     @Override
-	protected List<ParameterMetaData<?>> createParamMetaData() {
-	    List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
+	protected List<MetaParam<?>> createParamMetaData() {
+	    List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
         
         IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
         dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
@@ -48,11 +45,11 @@ public class QCourseActivity extends Question{
         if(latest.size() > 0)
         	now = ((BigInteger)latest.get(0)).longValue();
      
-        Collections.<ParameterMetaData<?>> addAll( parameters,
+        Collections.<MetaParam<?>> addAll( parameters,
                 Parameter.create(COURSE_IDS,"Courses","List of courses."),
                 Parameter.create(ROLE_IDS, "Roles","List of roles."),
-                Interval.create(long.class, STARTTIME, "Start time", "", 0L, now, 0L), 
-                Interval.create(long.class, ENDTIME, "End time", "", 0L, now, now),
+                Interval.create(long.class, START_TIME, "Start time", "", 0L, now, 0L), 
+                Interval.create(long.class, END_TIME, "End time", "", 0L, now, now),
                 Parameter.create(RESOLUTION, "Resolution", "")
                 );
         return parameters;
@@ -74,8 +71,8 @@ public class QCourseActivity extends Question{
     public ResultListLongObject compute(
             @FormParam(COURSE_IDS) List<Long> courses,
             @FormParam(ROLE_IDS) List<Long> roles,
-            @FormParam(STARTTIME) long startTime,
-            @FormParam(ENDTIME) long endTime,
+            @FormParam(START_TIME) long startTime,
+            @FormParam(END_TIME) long endTime,
             @FormParam(RESOLUTION) int resolution) {
 		
 		List<Long> list = new ArrayList<Long>();

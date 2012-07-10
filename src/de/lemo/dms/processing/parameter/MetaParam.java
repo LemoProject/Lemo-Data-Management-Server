@@ -4,7 +4,17 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public abstract class ParameterMetaData<T> {
+public abstract class MetaParam<T> {
+
+    public static final String COURSE_IDS = "cid";
+    public static final String END_TIME = "end";
+    public static final String LOG_OBJECT_IDS = "oid";
+    public static final String LOGOUT_FLAG = "logout";
+    public static final String RESOLUTION = "resolution";
+    public static final String ROLE_IDS = "rid";
+    public static final String START_TIME = "start";
+    public static final String TYPES = "types";
+    public static final String USER_IDS = "uid";
 
     @XmlElement
     private String id;
@@ -19,11 +29,11 @@ public abstract class ParameterMetaData<T> {
 
     public abstract boolean validate(T argument);
 
-    protected ParameterMetaData() {
+    protected MetaParam() {
         /* JAXB no-arg default constructor */
     }
 
-    protected ParameterMetaData(Class<T> type, String id, String name, String description, T defaultValue) {
+    protected MetaParam(Class<T> type, String id, String name, String description, T defaultValue) {
         this.type = type;
         this.id = id;
         this.name = name;

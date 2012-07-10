@@ -1,5 +1,9 @@
 package de.lemo.dms.processing.questions;
 
+import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
+import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
+import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
+
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Date;
@@ -11,9 +15,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.QueryParam;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -38,20 +40,17 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
+import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
-import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 
 @QuestionID("courseuserpaths")
 public class QCourseUserPaths extends Question {
-
-    private static final String COURSE_IDS = "course_ids";
-    private static final String STARTTIME = "start_time";
-    private static final String ENDTIME = "end_time";
+ 
 
     @Override
-    protected List<ParameterMetaData<?>> createParamMetaData() {
-        List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
+    protected List<MetaParam<?>> createParamMetaData() {
+        List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
 
         IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
         dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
@@ -61,11 +60,11 @@ public class QCourseUserPaths extends Question {
         if(latest.size() > 0)
             now = ((BigInteger) latest.get(0)).longValue();
 
-        Collections.<ParameterMetaData<?>>
+        Collections.<MetaParam<?>>
                 addAll(parameters,
                        Parameter.create(COURSE_IDS, "Courses", "List of courses."),
-                       Interval.create(Long.class, STARTTIME, "Start time", "", 0L, now, 0L),
-                       Interval.create(Long.class, ENDTIME, "End time", "", 0L, now, now)
+                       Interval.create(Long.class, START_TIME, "Start time", "", 0L, now, 0L),
+                       Interval.create(Long.class, END_TIME, "End time", "", 0L, now, now)
                 );
         return parameters;
     }
@@ -73,8 +72,8 @@ public class QCourseUserPaths extends Question {
     @POST
     public JSONObject compute(
             @FormParam(COURSE_IDS) List<Long> courseIds,
-            @FormParam(STARTTIME) Long startTime,
-            @FormParam(ENDTIME) Long endTime) throws JSONException {
+            @FormParam(START_TIME) Long startTime,
+            @FormParam(END_TIME) Long endTime) throws JSONException {
 
         /*
          * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to

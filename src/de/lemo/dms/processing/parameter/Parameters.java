@@ -22,17 +22,17 @@ public class Parameters {
     public String _ = "";
 
     @XmlElement
-    private Collection<ParameterMetaData<?>> parameters;
+    private Collection<MetaParam<?>> parameters;
 
     public Parameters() {
         /* JAXB no-arg default constructor */
     }
 
-    public Parameters(Collection<ParameterMetaData<?>> parameters) {
+    public Parameters(Collection<MetaParam<?>> parameters) {
         this.parameters = parameters;
     }
 
-    public Collection<ParameterMetaData<?>> getParameters() {
+    public Collection<MetaParam<?>> getParameters() {
         return parameters;
     }
 

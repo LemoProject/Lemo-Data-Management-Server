@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement
-public class Parameter<T> extends ParameterMetaData<T> {
+public class Parameter<T> extends MetaParam<T> {
 
     /**
      * Creates a simple parameter, whose type and ID must match of
