@@ -9,8 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -29,7 +29,7 @@ import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
-import de.lemo.dms.processing.resulttype.UserPathEdge;
+import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;
 import de.lemo.dms.service.ELearnObjType;
@@ -68,8 +68,8 @@ public class QUserPathAnalysis extends Question {
     }
 
     /**
-     * Returns a list of Nodes and edges, representing the user-navigation matching the requirements given by the
-     * parameters.
+     * Returns a list of Nodes and edges, representing the user-navigation
+     * matching the requirements given by the parameters.
      * 
      * @see ELearnObjType
      * 
@@ -80,21 +80,22 @@ public class QUserPathAnalysis extends Question {
      * @param types
      *            List of learn object types (see ELearnObjType)
      * @param considerLogouts
-     *            If user-paths should be cut when a logout appears this must be set to "true".
+     *            If user-paths should be cut when a logout appears this must be
+     *            set to "true".
      * @param startTime
      *            LongInteger time stamp
      * @param endTime
      *            LongInteger time stamp
      * @return
      */
-    @GET
+    @POST
     public ResultListUserPathGraph compute(
-            @QueryParam(COURSE_IDS) List<Long> courseIds,
-            @QueryParam(USER_IDS) List<Long> userIds,
-            @QueryParam(TYPES) List<String> types,
-            @QueryParam(LOGOUT_FLAG) boolean considerLogouts,
-            @QueryParam(STARTTIME) Long startTime,
-            @QueryParam(ENDTIME) Long endTime) {
+            @FormParam(COURSE_IDS) List<Long> courseIds,
+            @FormParam(USER_IDS) List<Long> userIds,
+            @FormParam(TYPES) List<String> types,
+            @FormParam(LOGOUT_FLAG) boolean considerLogouts,
+            @FormParam(STARTTIME) Long startTime,
+            @FormParam(ENDTIME) Long endTime) {
 
         logger.info("Params: " + courseIds + "/" + userIds + "/" + types + "/" + considerLogouts + "/" + startTime
                 + "/" + endTime);
@@ -105,11 +106,19 @@ public class QUserPathAnalysis extends Question {
 
         // Create criteria for log-file-search
         Criteria criteria = session.createCriteria(ILogMining.class, "log");
+
+        if(startTime == null || endTime == null || startTime >= endTime) {
+            logger.info("Invalid time params.");
+            return null;
+        }
+
         criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
-        criteria.add(Restrictions.in("log.user.id", userIds));
 
         if(!courseIds.isEmpty())
             criteria.add(Restrictions.in("log.course.id", courseIds));
+
+        if(!userIds.isEmpty())
+            criteria.add(Restrictions.in("log.user.id", userIds));
 
         @SuppressWarnings("unchecked")
         List<ILogMining> list = criteria.list();
@@ -145,7 +154,8 @@ public class QUserPathAnalysis extends Question {
             if(typeOk)
                 if(userHis.get(log.getUser().getId()) == null)
                 {
-                    // If user is new create a new entry in the hash map and add log item
+                    // If user is new create a new entry in the hash map and add
+                    // log item
                     userHis.put(log.getUser().getId(), new ArrayList<ILogMining>());
                     userHis.get(log.getUser().getId()).add(log);
                 }
@@ -171,26 +181,29 @@ public class QUserPathAnalysis extends Question {
                     }
                     String learnObjType = ELearnObjType.valueOf(current).toString();
                     String cId = learnObjId + "-" + learnObjType;
-                    // Determines whether it's a new path (no predecessor for current node) or not
+                    // Determines whether it's a new path (no predecessor for
+                    // current node) or not
 
                     UserPathObject knownPath;
-                    if(predNode != null)
+                    if(predNode != null) {
+                        String cIdPos = null;
                         if((knownPath = pathObjects.get(cId)) == null)
                         {
                             // If the node is new create entry in hash map
-                            String cIdPos = String.valueOf(pathObjects.size());
+                            cIdPos = String.valueOf(pathObjects.size());
                             pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L, learnObjType,
                                     Double.valueOf(current.getDuration()), 1L));
-                            pathObjects.get(predNode).addEdge(cIdPos);
                         }
                         else
                         {
-                            // If the node is already known, just add edge to predecessor and increment weight of the
-                            // node
-                            pathObjects.get(predNode).addEdge(knownPath.getId());
+                            // If the node is already known, increment weight
                             pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
+                            cIdPos = knownPath.getId();
                         }
 
+                        // Increment or create predecessor edge
+                        pathObjects.get(predNode).addEdgeOrIncrement(cIdPos);
+                    }
                     else if(pathObjects.get(cId) == null)
                     {
                         String cIdPos = String.valueOf(pathObjects.size());
@@ -209,22 +222,24 @@ public class QUserPathAnalysis extends Question {
         logger.info("Skipped entries with missing learn object id: " + skippedLogs);
 
         ArrayList<UserPathNode> nodes = Lists.newArrayList();
-        ArrayList<UserPathEdge> edges = Lists.newArrayList();
+        ArrayList<UserPathLink> links = Lists.newArrayList();
 
-        for(Entry<String, UserPathObject> entry : pathObjects.entrySet()) {
+        for(Entry<String, UserPathObject> pathEntry : pathObjects.entrySet()) {
 
-            UserPathObject path = entry.getValue();
+            UserPathObject path = pathEntry.getValue();
             nodes.add(new UserPathNode(path));
             String sourcePos = path.getId();
 
-            for(String target : entry.getValue().getEdges()) {
-                UserPathEdge edge = new UserPathEdge();
-                edge.setSource(sourcePos);
-                edge.setTarget(target);
-                edges.add(edge);
+            for(Entry<String, Integer> linkEntry : pathEntry.getValue().getEdges().entrySet()) {
+                UserPathLink link = new UserPathLink();
+                link.setSource(Long.parseLong(sourcePos));
+                link.setTarget(Long.parseLong(linkEntry.getKey()));
+                link.setValue(linkEntry.getValue());
+                if(link.getSource() != link.getTarget())
+                    links.add(link);
             }
         }
-        return new ResultListUserPathGraph(nodes, edges);
+        return new ResultListUserPathGraph(nodes, links);
     }
 
 }
