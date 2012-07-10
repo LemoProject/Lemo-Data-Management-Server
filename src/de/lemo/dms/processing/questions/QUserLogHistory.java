@@ -9,7 +9,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.QueryParam;
 
 import org.hibernate.Criteria;
@@ -80,12 +82,12 @@ public class QUserLogHistory extends Question {
      * @param endTime		LongInteger	time stamp 
      * @return
      */
-    @GET
+    @POST
     public ResultListUserLogObject compute(
-    		@QueryParam(COURSE_IDS) List<Long> courseIds,
-            @QueryParam(USER_IDS) List<Long> userIds,
-            @QueryParam(STARTTIME) Long startTime,
-            @QueryParam(ENDTIME) Long endTime){
+            @FormParam(COURSE_IDS) List<Long> courseIds,
+            @FormParam(USER_IDS) List<Long> userIds,
+            @FormParam(STARTTIME) Long startTime,
+            @FormParam(ENDTIME) Long endTime){
 
         /*
          * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to

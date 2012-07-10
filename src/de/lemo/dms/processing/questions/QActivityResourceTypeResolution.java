@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.QueryParam;
 
 import org.hibernate.Criteria;
@@ -63,8 +65,13 @@ public class QActivityResourceTypeResolution extends Question {
         return parameters;
 	}
 	
-    @GET
-    public ResultListRRITypes compute(@QueryParam(COURSE_IDS) List<Long> courses, @QueryParam(STARTTIME) long startTime, @QueryParam(ENDTIME) long endTime, @QueryParam(RESOLUTION) long resolution, @QueryParam(TYPES) List<String> resourceTypes) 
+    @POST
+    public ResultListRRITypes compute(
+            @FormParam(COURSE_IDS) List<Long> courses,
+            @FormParam(STARTTIME) long startTime, 
+            @FormParam(ENDTIME) long endTime,
+            @FormParam(RESOLUTION) long resolution,
+            @FormParam(TYPES) List<String> resourceTypes) 
     {
 		boolean all = false;
 		ResultListRRITypes list = new ResultListRRITypes();

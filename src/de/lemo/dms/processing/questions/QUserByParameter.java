@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.QueryParam;
 
 import org.hibernate.Criteria;
@@ -79,9 +81,14 @@ public class QUserByParameter extends Question {
 	 * @param endTime	(Mandatory) Only users are returned, that performed actions before the given time.
 	 * @return
 	 */
-	@GET
-    public ResultListLongObject compute(@QueryParam(COURSE_IDS) List<Long> courses, @QueryParam(OBJECT_TYPES) List<String> types, 
-    		@QueryParam(LOG_OBJECTS) List<String> objects, @QueryParam(ROLES) List<Long> roles, @QueryParam(STARTTIME) long startTime, @QueryParam(ENDTIME) long endTime) {
+	@POST
+    public ResultListLongObject compute(
+            @FormParam(COURSE_IDS) List<Long> courses,
+            @FormParam(OBJECT_TYPES) List<String> types, 
+            @FormParam(LOG_OBJECTS) List<String> objects,
+            @FormParam(ROLES) List<Long> roles,
+            @FormParam(STARTTIME) long startTime,
+            @FormParam(ENDTIME) long endTime) {
 		
 		
 		ResultListLongObject user_ids = null;    

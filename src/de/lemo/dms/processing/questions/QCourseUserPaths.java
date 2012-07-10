@@ -10,7 +10,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.QueryParam;
 
 import org.codehaus.jettison.json.JSONArray;
@@ -68,11 +70,11 @@ public class QCourseUserPaths extends Question {
         return parameters;
     }
 
-    @GET
+    @POST
     public JSONObject compute(
-            @QueryParam(COURSE_IDS) List<Long> courseIds,
-            @QueryParam(STARTTIME) Long startTime,
-            @QueryParam(ENDTIME) Long endTime) throws JSONException {
+            @FormParam(COURSE_IDS) List<Long> courseIds,
+            @FormParam(STARTTIME) Long startTime,
+            @FormParam(ENDTIME) Long endTime) throws JSONException {
 
         /*
          * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to

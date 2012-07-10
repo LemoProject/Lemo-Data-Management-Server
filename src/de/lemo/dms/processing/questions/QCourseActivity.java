@@ -6,7 +6,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.QueryParam;
 
 import org.hibernate.Criteria;
@@ -68,9 +70,13 @@ public class QCourseActivity extends Question{
      * @return
      */
     @SuppressWarnings("unchecked")
-	@GET
-    public ResultListLongObject compute(@QueryParam(COURSE_IDS) List<Long> courses, @QueryParam(ROLE_IDS) List<Long> roles,
-            @QueryParam(STARTTIME) long startTime, @QueryParam(ENDTIME) long endTime, @QueryParam(RESOLUTION) int resolution) {
+	@POST
+    public ResultListLongObject compute(
+            @FormParam(COURSE_IDS) List<Long> courses,
+            @FormParam(ROLE_IDS) List<Long> roles,
+            @FormParam(STARTTIME) long startTime,
+            @FormParam(ENDTIME) long endTime,
+            @FormParam(RESOLUTION) int resolution) {
 		
 		List<Long> list = new ArrayList<Long>();
 		//Check arguments

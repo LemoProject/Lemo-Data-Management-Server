@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -25,7 +27,7 @@ import de.lemo.dms.service.BaseService;
 
 @Produces(MediaType.APPLICATION_JSON)
 public abstract class Question extends BaseService {
-    
+
     /**
      * Implementations must provides additional information about the parameters
      * of the question. For each {@link QueryParam} annotated parameter of the
@@ -48,22 +50,22 @@ public abstract class Question extends BaseService {
         String questionName = getClass().getCanonicalName();
 
         /*
-         * Search for a single @GET annotated method (a REST resource).
+         * Search for a single @GET/@POST annotated method (a REST resource).
          */
 
         Method compute = null;
-        for (Method method : this.getClass().getMethods()) {
-            if (method.getAnnotation(GET.class) != null) {
-                if (compute != null) {
-                    throw new RuntimeException("Duplicated @GET resource in question " + questionName + ". "
+        for(Method method : this.getClass().getMethods()) {
+            if(method.getAnnotation(GET.class) != null || method.getAnnotation(POST.class) != null) {
+                if(compute != null) {
+                    throw new RuntimeException("Duplicated @GET/@POST resource in question " + questionName + ". "
                             + "Questions must provide a single method annotated with " + GET.class.getCanonicalName()
                             + ".");
                 }
                 compute = method;
             }
         }
-        if (compute == null) {
-            throw new RuntimeException("No @GET resource found in " + questionName + ".");
+        if(compute == null) {
+            throw new RuntimeException("No @GET/@POST resource found in " + questionName + ".");
         }
 
         /*
@@ -75,10 +77,13 @@ public abstract class Question extends BaseService {
 
         Class<?>[] parameterTypes = compute.getParameterTypes();
         Annotation[][] parameterAnnotations = compute.getParameterAnnotations();
-        for (int i = 0; i < parameterTypes.length; i++) {
-            for (Annotation annotation : parameterAnnotations[i]) {
-                if (annotation.annotationType().equals(QueryParam.class)) {
+        for(int i = 0; i < parameterTypes.length; i++) {
+            for(Annotation annotation : parameterAnnotations[i]) {
+                if(annotation.annotationType().equals(QueryParam.class)) {
                     String parameterId = ((QueryParam) annotation).value();
+                    paramTypes.put(parameterId, parameterTypes[i]);
+                } else if(annotation.annotationType().equals(QueryParam.class)) {
+                    String parameterId = ((FormParam) annotation).value();
                     paramTypes.put(parameterId, parameterTypes[i]);
                 }
             }
@@ -86,7 +91,7 @@ public abstract class Question extends BaseService {
 
         /* map of parameter meta data description: <id, meta data> */
         Map<String, ParameterMetaData<?>> metaDataMap = new HashMap<String, ParameterMetaData<?>>();
-        for (ParameterMetaData<?> paramMeta : createParamMetaData()) {
+        for(ParameterMetaData<?> paramMeta : createParamMetaData()) {
             metaDataMap.put(paramMeta.getId(), paramMeta);
         }
 
@@ -95,16 +100,16 @@ public abstract class Question extends BaseService {
          * data.
          */
 
-        for (Entry<String, Class<?>> entry : paramTypes.entrySet()) {
+        for(Entry<String, Class<?>> entry : paramTypes.entrySet()) {
             ParameterMetaData<?> paramMeta = metaDataMap.get(entry.getKey());
-            if (paramMeta == null) {
+            if(paramMeta == null) {
                 throw new RuntimeException("Missing meta data description for " + entry.getKey() + " in "
                         + questionName + ".");
             }
-            if (paramMeta.getType().equals(Void.class)) {
+            if(paramMeta.getType().equals(Void.class)) {
                 // Void indicates that we should use the actual parameter's type
                 paramMeta.setType(entry.getValue());
-            } else if (!paramMeta.getType().equals(entry.getValue())) {
+            } else if(!paramMeta.getType().equals(entry.getValue())) {
                 throw new RuntimeException("Type mismatch for parameter " + entry.getKey() + " in " + questionName
                         + ".");
             }

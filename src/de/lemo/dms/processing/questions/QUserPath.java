@@ -1,10 +1,8 @@
 package de.lemo.dms.processing.questions;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +10,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.QueryParam;
 
 import org.codehaus.jettison.json.JSONArray;
@@ -37,7 +37,6 @@ import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
-import de.lemo.dms.processing.resulttype.UserPathObject;
 
 @QuestionID("userpath")
 public class QUserPath extends Question {
@@ -69,12 +68,12 @@ public class QUserPath extends Question {
         return parameters;
     }
 
-    @GET
+    @POST
     public JSONObject compute(
-            @QueryParam(COURSE_IDS) List<Long> courseIds,
-            @QueryParam(USER_IDS) List<Long> userIds,
-            @QueryParam(STARTTIME) Long startTime,
-            @QueryParam(ENDTIME) Long endTime) throws JSONException {
+            @FormParam(COURSE_IDS) List<Long> courseIds,
+            @FormParam(USER_IDS) List<Long> userIds,
+            @FormParam(STARTTIME) Long startTime,
+            @FormParam(ENDTIME) Long endTime) throws JSONException {
 
         /*
          * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to
