@@ -61,8 +61,8 @@ public class QUserByParameter extends Question {
                 Parameter.create(TYPES, "Object types","Type of the LogObjects."),
                 Parameter.create(LOG_OBJECT_IDS, "Log objects","Ids and types of specific log objects."),
                 Parameter.create(ROLE_IDS, "User roles","User roles."),
-                Interval.create(long.class, START_TIME, "Start time", "", 0L, now, 0L), 
-                Interval.create(long.class, END_TIME, "End time", "", 0L, now, now)
+                Interval.create(Long.class, START_TIME, "Start time", "", 0L, now, 0L), 
+                Interval.create(Long.class, END_TIME, "End time", "", 0L, now, now)
                 );
         return parameters;
 	}
@@ -86,8 +86,8 @@ public class QUserByParameter extends Question {
             @FormParam(TYPES) List<String> types, 
             @FormParam(LOG_OBJECT_IDS) List<String> objects,
             @FormParam(ROLE_IDS) List<Long> roles,
-            @FormParam(START_TIME) long startTime,
-            @FormParam(END_TIME) long endTime) {
+            @FormParam(START_TIME) Long startTime,
+            @FormParam(END_TIME) Long endTime) {
 		
 		
 		ResultListLongObject user_ids = null;    

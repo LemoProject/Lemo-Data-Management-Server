@@ -46,8 +46,8 @@ public class QCourseUsers extends Question {
 
         Collections.<MetaParam<?>> addAll( parameters,
                    Parameter.create(COURSE_IDS, "Courses", "List of courses."),
-                   Interval.create(long.class, START_TIME, "Start time", "", 0L, now, 0L),
-                   Interval.create(long.class, END_TIME, "End time", "", 0L, now, now)
+                   Interval.create(Long.class, START_TIME, "Start time", "", 0L, now, 0L),
+                   Interval.create(Long.class, END_TIME, "End time", "", 0L, now, now)
                 );
         return parameters;
     }
@@ -55,8 +55,8 @@ public class QCourseUsers extends Question {
     @POST
     public ResultListLongObject compute(
             @FormParam(COURSE_IDS) List<Long> courseIds,
-            @FormParam(START_TIME) long startTime,
-            @FormParam(END_TIME) long endTime) {
+            @FormParam(START_TIME) Long startTime,
+            @FormParam(END_TIME) Long endTime) {
 
         // Check arguments
         if(startTime >= endTime)

@@ -56,9 +56,9 @@ public class QActivityResourceTypeResolution extends Question {
         Collections.<MetaParam<?>> addAll( parameters,
                 Parameter.create(COURSE_IDS,"Courses","List of courses."),
                 Parameter.create(TYPES, "ResourceTypes","List of resource types."),
-                Interval.create(long.class, START_TIME, "Start time", "", 0L, now, 0L), 
-                Interval.create(long.class, END_TIME, "End time", "", 0L, now, now),
-                Interval.create(long.class, RESOLUTION, "Resolution", "", 1L, 300L, 100L)
+                Interval.create(Long.class, START_TIME, "Start time", "", 0L, now, 0L), 
+                Interval.create(Long.class, END_TIME, "End time", "", 0L, now, now),
+                Interval.create(Long.class, RESOLUTION, "Resolution", "", 1L, 300L, 100L)
                 );
         return parameters;
 	}
@@ -66,9 +66,9 @@ public class QActivityResourceTypeResolution extends Question {
     @POST
     public ResultListRRITypes compute(
             @FormParam(COURSE_IDS) List<Long> courses,
-            @FormParam(START_TIME) long startTime, 
-            @FormParam(END_TIME) long endTime,
-            @FormParam(RESOLUTION) long resolution,
+            @FormParam(START_TIME) Long startTime, 
+            @FormParam(END_TIME) Long endTime,
+            @FormParam(RESOLUTION) Long resolution,
             @FormParam(TYPES) List<String> resourceTypes) 
     {
 		boolean all = false;

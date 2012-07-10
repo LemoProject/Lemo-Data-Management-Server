@@ -48,8 +48,8 @@ public class QCourseActivity extends Question{
         Collections.<MetaParam<?>> addAll( parameters,
                 Parameter.create(COURSE_IDS,"Courses","List of courses."),
                 Parameter.create(ROLE_IDS, "Roles","List of roles."),
-                Interval.create(long.class, START_TIME, "Start time", "", 0L, now, 0L), 
-                Interval.create(long.class, END_TIME, "End time", "", 0L, now, now),
+                Interval.create(Long.class, START_TIME, "Start time", "", 0L, now, 0L), 
+                Interval.create(Long.class, END_TIME, "End time", "", 0L, now, now),
                 Parameter.create(RESOLUTION, "Resolution", "")
                 );
         return parameters;
@@ -71,9 +71,9 @@ public class QCourseActivity extends Question{
     public ResultListLongObject compute(
             @FormParam(COURSE_IDS) List<Long> courses,
             @FormParam(ROLE_IDS) List<Long> roles,
-            @FormParam(START_TIME) long startTime,
-            @FormParam(END_TIME) long endTime,
-            @FormParam(RESOLUTION) int resolution) {
+            @FormParam(START_TIME) Long startTime,
+            @FormParam(END_TIME) Long endTime,
+            @FormParam(RESOLUTION) Integer resolution) {
 		
 		List<Long> list = new ArrayList<Long>();
 		//Check arguments
