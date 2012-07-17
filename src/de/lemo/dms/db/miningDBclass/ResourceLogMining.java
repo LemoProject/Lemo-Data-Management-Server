@@ -8,7 +8,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 
 /**This class represents the log table for the resource object.*/
-public class ResourceLogMining implements Comparable<ResourceLogMining>, ILogMining , IMappingClass{	
+public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , IMappingClass{	
 	
 	private long id;
 	private ResourceMining resource;
@@ -34,12 +34,14 @@ public class ResourceLogMining implements Comparable<ResourceLogMining>, ILogMin
 	
 	public Long getLearnObjId()
 	{
+		if(this.resource == null)
+			return null;
 		return this.resource.getId();
 	}
 	
 	@Override
-	public int compareTo(ResourceLogMining arg0) {
-		ResourceLogMining s;
+	public int compareTo(ILogMining arg0) {
+		ILogMining s;
 		try{
 			s = arg0;
 		}catch(Exception e)
@@ -57,7 +59,7 @@ public class ResourceLogMining implements Comparable<ResourceLogMining>, ILogMin
 	 * Gets the duration of the access.
 	 * @return The duration of the access.
 	 */
-	public long getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 	public void setDuration(long duration) {
@@ -188,5 +190,10 @@ public class ResourceLogMining implements Comparable<ResourceLogMining>, ILogMin
 			this.user = oldUserMining.get(user);
 			oldUserMining.get(user).addResource_log(this);
 		}
+	}
+
+	@Override
+	public Long getPrefix() {
+		return 1006L;
 	}
 }

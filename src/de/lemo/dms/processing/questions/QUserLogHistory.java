@@ -149,12 +149,7 @@ public class QUserLogHistory extends Question {
     			type = "forum";
     			title = ((ForumLogMining)ilm).getForum().getTitle();
     		}
-    		if(logs.get(i).getClass().equals(CourseLogMining.class) && ((CourseLogMining)logs.get(i)).getCourse() != null)
-    		{
-    			ilm = (CourseLogMining)logs.get(i);
-    			type = "course";
-    			title = ((CourseLogMining)ilm).getCourse().getTitle();
-    		}
+    		
     		if(logs.get(i).getClass().equals(QuizLogMining.class) && ((QuizLogMining)logs.get(i)).getQuiz() != null)
     		{
     			ilm = (QuizLogMining)logs.get(i);

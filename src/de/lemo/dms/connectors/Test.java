@@ -4,6 +4,7 @@ import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.moodle.ConnectorMoodle;
+import de.lemo.dms.core.ServerConfigurationHardCoded;
 
 
 public class Test {
@@ -18,13 +19,17 @@ public class Test {
 		sourceConf.addProperty("process_metadata", "true");
 		sourceConf.addProperty("process_log_file", "true");
 		
-		ConnectorChemgapedia cm = new ConnectorChemgapedia();
+		//ConnectorChemgapedia cm = new ConnectorChemgapedia();
 			
-		ConnectorClix cc = new ConnectorClix();
+		//ConnectorClix cc = new ConnectorClix();
 		
-		cc.getData();
+		//cc.getData();
 		
-		//ConnectorMoodle cm = new ConnectorMoodle();
+		ConnectorMoodle cm = new ConnectorMoodle();
+		
+		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
+		
+		cm.getData();
 		
 		//cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
 		/*

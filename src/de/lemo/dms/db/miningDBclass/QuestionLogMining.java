@@ -23,6 +23,22 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	private String action;
 	private long duration;
 	
+	@Override
+	public int compareTo(ILogMining arg0) {
+		ILogMining s;
+		try{
+			s = arg0;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.timestamp > s.getTimestamp())
+			return 1;
+		if(this.timestamp < s.getTimestamp())
+			return -1;
+		return 0;
+	}
+	
 	public boolean equals(IMappingClass o)
 	{
 		if(o == null || !(o instanceof QuestionLogMining))
@@ -32,7 +48,7 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 		return false;
 	}
 	
-	public long getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 
@@ -47,6 +63,8 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	
 	public Long getLearnObjId()
 	{
+		if(this.question == null)
+			return null;
 		return this.question.getId();
 	}
 
@@ -263,5 +281,10 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	 */	
 	public String getAction() {
 		return action;
+	}
+
+	@Override
+	public Long getPrefix() {
+		return 1003L;
 	}	
 }

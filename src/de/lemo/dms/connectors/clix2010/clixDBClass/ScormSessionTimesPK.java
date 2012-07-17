@@ -29,9 +29,16 @@ public class ScormSessionTimesPK implements Serializable {
 		hc = 17 * hc + component.hashCode();
 		return hc;
 	}
+	
 	public ScormSessionTimesPK()
 	{
 		
+	}
+	
+	public ScormSessionTimesPK(Long component, long person)
+	{
+		this.component = component;
+		this.person = person;
 	}
 
 	public Long getComponent() {

@@ -50,6 +50,15 @@ public class BiTrackContentImpressionsPK implements Serializable{
 	public void setCharacteristic(long characteristic) {
 		this.characteristic = characteristic;
 	}
+	
+	public BiTrackContentImpressionsPK(long characteristic, long content, String dayOfAccess, long container, long user)
+	{
+		this.characteristic = characteristic;
+		this.content = content;
+		this.dayOfAccess = dayOfAccess;
+		this.container = container;
+		this.user = user;
+	}
 
 	public BiTrackContentImpressionsPK()
 	{

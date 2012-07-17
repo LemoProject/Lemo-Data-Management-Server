@@ -1,10 +1,8 @@
 package de.lemo.dms.processing.questions;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +35,6 @@ import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.parameter.ParameterMetaData;
-import de.lemo.dms.processing.resulttype.UserPathObject;
 
 @QuestionID("userpath")
 public class QUserPath extends Question {

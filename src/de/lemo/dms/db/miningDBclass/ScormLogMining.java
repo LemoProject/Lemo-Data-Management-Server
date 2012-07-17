@@ -18,6 +18,22 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 	private long timestamp;
 	private long duration;
 	
+	@Override
+	public int compareTo(ILogMining arg0) {
+		ILogMining s;
+		try{
+			s = arg0;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.timestamp > s.getTimestamp())
+			return 1;
+		if(this.timestamp < s.getTimestamp())
+			return -1;
+		return 0;
+	}
+	
 	public boolean equals(IMappingClass o)
 	{
 		if(o == null || !(o instanceof ScormLogMining))
@@ -27,7 +43,7 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 		return false;
 	}
 	
-	public long getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 
@@ -42,6 +58,8 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 	
 	public Long getLearnObjId()
 	{
+		if(this.scorm == null)
+			return null;
 		return this.scorm.getId();
 	}
 	
@@ -195,5 +213,10 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 	 */		
 	public ScormMining getScorm() {
 		return scorm;
+	}
+
+	@Override
+	public Long getPrefix() {
+		return 1007L;
 	}
 }

@@ -12,7 +12,16 @@ public class ChatLogMining implements IMappingClass{
 	private UserMining user;
 	private String message;
 	private long timestamp;
+	private CourseMining course;
 	
+	public CourseMining getCourse() {
+		return course;
+	}
+
+	public void setCourse(CourseMining course) {
+		this.course = course;
+	}
+
 	@Override
 	public boolean equals(IMappingClass o)
 	{
@@ -21,6 +30,20 @@ public class ChatLogMining implements IMappingClass{
 		if(o.getId() == this.getId() && (o instanceof ChatLogMining))
 			return true;
 		return false;
+	}
+	
+	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+		
+		if(courseMining.get(course) != null)
+		{
+			this.course = courseMining.get(course);
+			courseMining.get(course).addChat_log(this);
+		}
+		if(this.course == null && oldCourseMining.get(course) != null)
+		{
+			this.course = courseMining.get(course);
+			courseMining.get(course).addChat_log(this);
+		}
 	}
 	
 	public long getTimestamp() {

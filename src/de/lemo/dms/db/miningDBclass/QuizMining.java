@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**This class represents the table quiz.*/
 @SuppressWarnings("serial")
-public class QuizMining implements Serializable , IMappingClass {
+public class QuizMining implements Serializable , IMappingClass, ILearningObject {
 
 	private long id;
 	private String type;	

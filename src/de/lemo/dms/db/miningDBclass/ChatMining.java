@@ -1,5 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +21,28 @@ public class ChatMining implements IMappingClass {
 	private String title;
 	private String description;
 	private long chattime;
+	private CourseMining course;
+	
+	public CourseMining getCourse() {
+		return course;
+	}
+	public void setCourse(CourseMining course) {
+		this.course = course;
+	}
+
+	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+		
+		if(courseMining.get(course) != null)
+		{
+			this.course = courseMining.get(course);
+			courseMining.get(course).addChat(this);
+		}
+		if(this.course == null && oldCourseMining.get(course) != null)
+		{
+			this.course = courseMining.get(course);
+			courseMining.get(course).addChat(this);
+		}
+	}
 	
 	private Set<ChatLogMining> chat_log = new HashSet<ChatLogMining>();
 	

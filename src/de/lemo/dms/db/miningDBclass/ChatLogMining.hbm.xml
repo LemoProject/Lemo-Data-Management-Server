@@ -31,6 +31,12 @@
        		cascade="save-update"
             column="user_id" />
             
+        <many-to-one 
+       		name="course" 
+       		class="de.lemo.dms.db.miningDBclass.CourseMining"
+       		cascade="save-update"
+            column="course_id" />
+            
 		<many-to-one 
 			name="chat" 
 			class="de.lemo.dms.db.miningDBclass.ChatMining" 

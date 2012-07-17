@@ -98,11 +98,14 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     	dbConfig.addProperty("hibernate.connection.username", Configuration.getString("mining.hibernate.connection.username")); //db user //$NON-NLS-1$ //$NON-NLS-2$
     	dbConfig.addProperty("hibernate.connection.password", Configuration.getString("mining.hibernate.connection.password")); //user passwort //$NON-NLS-1$ //$NON-NLS-2$
     	
+    	
+    	//dbConfig.addProperty("hibernate.search.indexing_strategy", Configuration.getString("mining.hibernate.search.indexing_strategy"));
     	dbConfig.addProperty("hibernate.c3p0.min_size", "5");
     	dbConfig.addProperty("hibernate.c3po.max_size", "20");
     	dbConfig.addProperty("hibernate.c3p0.timeout", "300");
     	dbConfig.addProperty("hibernate.c3p0.max_statements", "50");
     	dbConfig.addProperty("hibernate.c3p0.idle_test_period", "3000");
+    	
     	
     	dbConfig.addProperty("hibernate.cache.use_second_level_cache", "false");
     	dbConfig.addProperty("hibernate.cache.use_query_level_cache", "false");

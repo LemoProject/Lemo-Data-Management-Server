@@ -3,12 +3,13 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 
 // TODO: Auto-generated Javadoc
 /**This class represents the table resource.*/
-public class ResourceMining implements IMappingClass{
+public class ResourceMining implements IMappingClass, ILearningObject{
 
 	/** The id. */
 	private long id;

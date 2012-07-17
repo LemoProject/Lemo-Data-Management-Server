@@ -3,10 +3,11 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**This class represents the table question.*/
-public class QuestionMining  implements IMappingClass{
+public class QuestionMining  implements IMappingClass, ILearningObject{
 
 	private long id;
 	private String title;

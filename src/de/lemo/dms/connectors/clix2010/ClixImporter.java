@@ -1,7 +1,6 @@
 package de.lemo.dms.connectors.clix2010;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressions;
+import de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressionsPK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ChatProtocol;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponentType;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComposing;
@@ -23,6 +23,7 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.PlatformGroup;
 import de.lemo.dms.connectors.clix2010.clixDBClass.PlatformGroupSpecification;
 import de.lemo.dms.connectors.clix2010.clixDBClass.PortfolioLog;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ScormSessionTimes;
+import de.lemo.dms.connectors.clix2010.clixDBClass.ScormSessionTimesPK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.T2Task;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPosition;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TGroupFullSpecification;
@@ -741,13 +742,11 @@ public class ClixImporter {
 		{
 			TTestSpecification loadedItem = iter.next();
 			QuizQuestionMining item = new QuizQuestionMining();
-			
-				
-				
-				item.setQuestion(loadedItem.getTest(), question_mining, old_question_mining);
-				item.setQuiz(loadedItem.getTask(), quiz_mining, old_quiz_mining);
-				item.setId(Long.valueOf(item.getQuestion().getId()  + "" + item.getQuiz().getId()));
-				quizQuestions.put(item.getId(), item);
+			item.setQuestion(loadedItem.getTest(), question_mining, old_question_mining);
+			item.setQuiz(loadedItem.getTask(), quiz_mining, old_quiz_mining);
+			//Id for QuizQuestion entry is a combination of the question-id and the quiz-id
+			item.setId(Long.valueOf(item.getQuestion().getId()  + "010" + item.getQuiz().getId()));
+			quizQuestions.put(item.getId(), item);
 		}
 		
 		return quizQuestions;
@@ -1064,6 +1063,8 @@ public class ClixImporter {
 			item.setGrade(Long.valueOf(loadedItem.getScore()));
 			item.setAction(loadedItem.getStatus());
 			item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+//			ScormSessionTimesPK id = new ScormSessionTimesPK(loadedItem.getComponent(), loadedItem.getPerson());
+	//		item.setId(id.hashCode());
 			
 			scormLogs.put(item.getId(), item);
 			
@@ -1086,6 +1087,10 @@ public class ClixImporter {
 			item.setCourse(loadedItem.getContainer(), course_mining, old_course_mining);
 			item.setAction("View");
 			item.setDuration(1L);
+			//BiTrackContentImpressionsPK id = new BiTrackContentImpressionsPK(loadedItem.getCharacteristic(), loadedItem.getContent(), loadedItem.getDayOfAccess(), loadedItem.getContainer(), loadedItem.getUser());
+			//item.setId(id.hashCode());
+			
+			resourceLogs.put(item.getId(), item);
 		}
 		
 		return resourceLogs;
