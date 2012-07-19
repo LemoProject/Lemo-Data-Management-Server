@@ -1,6 +1,7 @@
 package de.lemo.dms.connectors.clix2010;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.hibernate.Transaction;
 import de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressions;
 import de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressionsPK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ChatProtocol;
+import de.lemo.dms.connectors.clix2010.clixDBClass.Chatroom;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponentType;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComposing;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponent;
@@ -77,6 +79,7 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.AssignmentMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.WikiMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 public class ClixImporter {
 	
@@ -103,6 +106,7 @@ public class ClixImporter {
 	private static List<TQtiEvalAssessment> tQtiEvalAssessment;
 	private static List<TTestSpecification> tTestSpecification;
 	private static List<WikiEntry> wikiEntry;
+	private static List<Chatroom> chatroom;
 	
 	
 	private static HashMap<Long, EComponent> eComponentMap = new HashMap<Long, EComponent>();
@@ -152,6 +156,67 @@ public class ClixImporter {
 		
 		/** The chat_log_mining. */
 		static HashMap<Long, ChatLogMining> chat_log_mining;
+		
+		/** The quiz_question_mining. */
+		static HashMap<Long, QuizQuestionMining> quiz_question_mining;
+		
+		/** The course_quiz_mining. */
+		static HashMap<Long, CourseQuizMining> course_quiz_mining;
+		
+		/** The course_assignment_mining. */
+		static HashMap<Long, CourseAssignmentMining> course_assignment_mining;
+		
+		/** The course_scorm_mining. */
+		static HashMap<Long, CourseScormMining> course_scorm_mining;
+		
+		/** The course_user_mining. */
+		static HashMap<Long, CourseUserMining> course_user_mining;
+		
+		/** The course_forum_mining. */
+		static HashMap<Long, CourseForumMining> course_forum_mining;
+		
+		/** The course_group_mining. */
+		static HashMap<Long, CourseGroupMining> course_group_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, CourseResourceMining> course_resource_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, CourseWikiMining> course_wiki_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, GroupUserMining> group_user_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, QuizUserMining> quiz_user_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, AssignmentLogMining> assignment_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, CourseLogMining> course_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, ForumLogMining> forum_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, QuizLogMining> quiz_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, QuestionLogMining> question_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, ScormLogMining> scorm_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, ResourceLogMining> resource_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, WikiLogMining> wiki_log_mining;
+		
+		static HashMap<Long, DepartmentDegreeMining> department_degree_mining;
+		
+		static HashMap<Long, DegreeCourseMining> degree_course_mining;
 		
 		/** The table that maps user-ids of the source database (string) onto numeric values.*/
 		static HashMap<String, IDMappingMining> id_mapping;
@@ -211,6 +276,61 @@ public class ClixImporter {
 		/** The old_chat_log_mining. */
 		static HashMap<Long, ChatLogMining> old_chat_log_mining;
 		
+		/** The course_assignment_mining. */
+		static HashMap<Long, CourseAssignmentMining> old_course_assignment_mining;
+		
+		/** The course_scorm_mining. */
+		static HashMap<Long, CourseScormMining> old_course_scorm_mining;
+		
+		/** The course_user_mining. */
+		static HashMap<Long, CourseUserMining> old_course_user_mining;
+		
+		/** The course_forum_mining. */
+		static HashMap<Long, CourseForumMining> old_course_forum_mining;
+		
+		/** The course_group_mining. */
+		static HashMap<Long, CourseGroupMining> old_course_group_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, CourseResourceMining> old_course_resource_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, CourseWikiMining> old_course_wiki_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, GroupUserMining> old_group_user_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, QuizUserMining> old_quiz_user_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, AssignmentLogMining> old_assignment_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, CourseLogMining> old_course_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, ForumLogMining> old_forum_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, QuizLogMining> old_quiz_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, QuestionLogMining> old_question_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, ScormLogMining> old_scorm_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, ResourceLogMining> old_resource_log_mining;
+		
+		/** The chat_log_mining. */
+		static HashMap<Long, WikiLogMining> old_wiki_log_mining;
+		
+		static HashMap<Long, DepartmentDegreeMining> old_department_degree_mining;
+		
+		static HashMap<Long, DegreeCourseMining> old_degree_course_mining;
+		
 	
 	
 	public static void getClixData()
@@ -221,6 +341,7 @@ public class ClixImporter {
 
 		
 		//Do Import
+		initialize();
 		loadData();
 		saveData();
 		
@@ -257,134 +378,368 @@ public class ClixImporter {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static void saveData()
 	{
-		ArrayList updates = new ArrayList();
-		resource_mining = generateResourceMining();
-		updates.addAll(resource_mining.values());
-		course_mining = generateCourseMining();
-		updates.addAll(course_mining.values());
-		user_mining = generateUserMining();
-		updates.addAll(user_mining.values());
-		assignment_mining = generateAssignmentMining();
-		updates.addAll(assignment_mining.values());
-		forum_mining = generateForumMining();
-		updates.addAll(forum_mining.values());
-		group_mining = generateGroupMining();
-		updates.addAll(group_mining.values());
-		ServerConfigurationHardCoded.getInstance().getDBHandler().saveCollectionToDB(updates);
+		try{
+			List<Collection<?>> updates = new ArrayList<Collection<?>>();
+			
+			course_mining = generateCourseMining();
+			updates.add(course_mining.values());
+			
+			quiz_mining = generateQuizMining();
+			updates.add(quiz_mining.values());
+			
+			assignment_mining = generateAssignmentMining();
+			updates.add(assignment_mining.values());
+			
+			scorm_mining = generateScormMining();
+			updates.add(scorm_mining.values());
+	
+			forum_mining = generateForumMining();
+			updates.add(forum_mining.values());
+			
+			resource_mining = generateResourceMining();
+			updates.add(resource_mining.values());
+	
+			user_mining = generateUserMining();
+			updates.add(user_mining.values());
+			
+			wiki_mining = generateWikiMining();
+			updates.add(wiki_mining.values());
+			
+			group_mining = generateGroupMining();
+			updates.add(group_mining.values());
+			
+			question_mining = generateQuestionMining();
+			updates.add(question_mining.values());
+			
+			role_mining = generateRoleMining();
+			updates.add(role_mining.values());
+			
+			department_mining = generateDepartmentMining();
+			updates.add(department_mining.values());
+			
+			degree_mining = generateDegreeMining();
+			updates.add(degree_mining.values());
+			
+			chat_mining = generateChatMining();
+			updates.add(chat_mining.values());
+			
+			/*quiz_question_mining = generateQuizQuestionMining();
+			updates.add(quiz_question_mining.values());
+			
+			course_quiz_mining = generateCourseQuizMining();
+			updates.add(course_quiz_mining.values());
+			
+			course_assignment_mining = generateCourseAssignmentMining();
+			updates.add(course_assignment_mining.values());
+			
+			course_scorm_mining = generateCourseScormMining();
+			updates.add(course_scorm_mining.values());
+			
+			course_user_mining = generateCourseUserMining();
+			updates.add(course_user_mining.values());
+			
+			course_forum_mining = generateCourseForumMining();
+			updates.add(course_forum_mining.values());
+			
+			course_group_mining = generateCourseGroupMining();
+			updates.add(course_group_mining.values());
+			
+			course_resource_mining = generateCourseResourceMining();
+			updates.add(course_resource_mining.values());
+			*/
+			assignment_log_mining = generateAssignmentLogMining();
+			updates.add(assignment_log_mining.values());
+			/*
+			course_log_mining = generateCourseLogMining();
+			updates.add(course_log_mining.values());
+			
+			course_wiki_mining = generateCourseWikiMining();
+			updates.add(course_wiki_mining.values());
+			*/
+			forum_log_mining = generateForumLogMining();
+			updates.add(forum_log_mining.values());
+			/*
+			group_user_mining = generateGroupUserMining();
+			updates.add(group_user_mining.values());
+			*/
+			quiz_log_mining = generateQuizLogMining();
+			updates.add(quiz_log_mining.values());
+			
+			question_log_mining = generateQuestionLogMining();
+			updates.add(question_log_mining.values());
+			
+			scorm_log_mining = generateScormLogMining();
+			updates.add(scorm_log_mining.values());
+			/*
+			quiz_user_mining = generateQuizUserMining();
+			updates.add(quiz_user_mining.values());
+			*/
+			resource_log_mining = generateResourceLogMining();
+			updates.add(resource_log_mining.values());
+			
+			wiki_log_mining = generateWikiLogMining();
+			updates.add(wiki_log_mining.values());
+			
+			chat_log_mining = generateChatLogMining();
+			updates.add(chat_log_mining.values());
+			/*
+			department_degree_mining = generateDepartmentDegreeMining();
+			updates.add(department_degree_mining.values());
+			
+			degree_course_mining = generateDegreeCourseMining();
+			updates.add(degree_course_mining.values());
+			*/
+			ServerConfigurationHardCoded.getInstance().getDBHandler().saveCollectionToDB(updates);
+			
+	
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
+
+	@SuppressWarnings("unchecked")
+	private static void initialize()
+	{
+		try{
+			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+			
+			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
+			//accessing DB by creating a session and a transaction using HibernateUtil
+	        Session session = dbHandler.getSession();
+	        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
+	        session.clear();
+	        Transaction tx = session.beginTransaction();
+			
+			
+	        ArrayList<?> l;
+	        
+	        Query old_course = session.createQuery("from CourseMining x order by x.id asc");
+	        l = (ArrayList<CourseMining>) old_course.list();
+	        old_course_mining = new HashMap<Long, CourseMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_course_mining.put(Long.valueOf(((CourseMining)l.get(i)).getId()), (CourseMining)l.get(i));  
+	        System.out.println("Read " + old_course_mining.size() +" old CourseMinings."); 
+	        
+	        Query old_quiz = session.createQuery("from QuizMining x order by x.id asc");
+	        l = (ArrayList<QuizMining>) old_quiz.list();
+	        old_quiz_mining = new HashMap<Long, QuizMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_quiz_mining.put(Long.valueOf(((QuizMining)l.get(i)).getId()), (QuizMining)l.get(i));  
+	        System.out.println("Read " + old_quiz_mining.size() +" old QuizMinings."); 
 	
+	        Query old_assignment = session.createQuery("from AssignmentMining x order by x.id asc");
+	        l = (ArrayList<AssignmentMining>) old_assignment.list();
+	        old_assignment_mining = new HashMap<Long, AssignmentMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_assignment_mining.put(Long.valueOf(((AssignmentMining)l.get(i)).getId()), (AssignmentMining)l.get(i));  
+	        System.out.println("Read " + old_assignment_mining.size() +" old AssignmentMinings."); 
+			
+	        Query old_scorm = session.createQuery("from ScormMining x order by x.id asc");
+	        l = (ArrayList<ScormMining>) old_scorm.list();
+	        old_scorm_mining = new HashMap<Long, ScormMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_scorm_mining.put(Long.valueOf(((ScormMining)l.get(i)).getId()), (ScormMining)l.get(i));  
+	        System.out.println("Read " + old_scorm_mining.size() +" old ScormMinings."); 
+	        
+	        Query old_forum = session.createQuery("from ForumMining x order by x.id asc");
+	        l = (ArrayList<ForumMining>) old_forum.list();
+	        old_forum_mining = new HashMap<Long, ForumMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_forum_mining.put(Long.valueOf(((ForumMining)l.get(i)).getId()), (ForumMining)l.get(i));  
+	        System.out.println("Read " + old_forum_mining.size() +" old ForumMinings."); 
+			
+	        Query old_resource = session.createQuery("from ResourceMining x order by x.id asc");
+	        l = (ArrayList<ResourceMining>) old_resource.list();
+	        old_resource_mining = new HashMap<Long, ResourceMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_resource_mining.put(Long.valueOf(((ResourceMining)l.get(i)).getId()), (ResourceMining)l.get(i));  
+	        System.out.println("Read " + old_resource_mining.size() +" old ForumMinings."); 
+			
+	        Query old_user = session.createQuery("from UserMining x order by x.id asc");
+	        l = (ArrayList<UserMining>) old_user.list();
+	        old_user_mining = new HashMap<Long, UserMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_user_mining.put(Long.valueOf(((UserMining)l.get(i)).getId()), (UserMining)l.get(i));  
+	        System.out.println("Read " + old_user_mining.size() +" old UserMinings."); 
+			
+	        Query old_wiki = session.createQuery("from WikiMining x order by x.id asc");
+	        l = (ArrayList<WikiMining>) old_wiki.list();
+	        old_wiki_mining = new HashMap<Long, WikiMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_wiki_mining.put(Long.valueOf(((WikiMining)l.get(i)).getId()), (WikiMining)l.get(i));  
+	        System.out.println("Read " + old_wiki_mining.size() +" old WikiMinings."); 
 	
+	        Query old_group = session.createQuery("from GroupMining x order by x.id asc");
+	        l = (ArrayList<GroupMining>) old_group.list();
+	        old_group_mining = new HashMap<Long, GroupMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_group_mining.put(Long.valueOf(((GroupMining)l.get(i)).getId()), (GroupMining)l.get(i));  
+	        System.out.println("Read " + old_group_mining.size() +" old GroupMinings."); 
+			
+	        Query old_question = session.createQuery("from QuestionMining x order by x.id asc");
+	        l = (ArrayList<QuestionMining>) old_question.list();
+	        old_question_mining = new HashMap<Long, QuestionMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_question_mining.put(Long.valueOf(((QuestionMining)l.get(i)).getId()), (QuestionMining)l.get(i));  
+	        System.out.println("Read " + old_question_mining.size() +" old QuestionMinings."); 
+	        
+	        Query old_role = session.createQuery("from RoleMining x order by x.id asc");
+	        l = (ArrayList<RoleMining>) old_role.list();
+	        old_role_mining = new HashMap<Long, RoleMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_role_mining.put(Long.valueOf(((RoleMining)l.get(i)).getId()), (RoleMining)l.get(i));  
+	        System.out.println("Read " + old_role_mining.size() +" old RoleMinings."); 
+	        
+	        Query old_department = session.createQuery("from DepartmentMining x order by x.id asc");
+	        l = (ArrayList<DepartmentMining>) old_department.list();
+	        old_department_mining = new HashMap<Long, DepartmentMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_department_mining.put(Long.valueOf(((DepartmentMining)l.get(i)).getId()), (DepartmentMining)l.get(i));  
+	        System.out.println("Read " + old_department_mining.size() +" old DepartmentMinings."); 
+	        
+	        Query old_degree = session.createQuery("from DegreeMining x order by x.id asc");
+	        l = (ArrayList<DegreeMining>) old_degree.list();
+	        old_degree_mining = new HashMap<Long, DegreeMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_degree_mining.put(Long.valueOf(((DegreeMining)l.get(i)).getId()), (DegreeMining)l.get(i));  
+	        System.out.println("Read " + old_degree_mining.size() +" old DegreeMinings."); 
+			
+	        Query old_chat = session.createQuery("from ChatMining x order by x.id asc");
+	        l = (ArrayList<ChatMining>) old_chat.list();
+	        old_chat_mining = new HashMap<Long, ChatMining>();
+	        for(int i = 0; i < l.size() ; i++)
+	        	old_chat_mining.put(Long.valueOf(((ChatMining)l.get(i)).getId()), (ChatMining)l.get(i));  
+	        System.out.println("Read " + old_chat_mining.size() +" old ChatMinings."); 
+	        
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+
+
 	@SuppressWarnings("unchecked")
 	private static void loadData()
 	{
-		 IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-		//accessing DB by creating a session and a transaction using HibernateUtil
-        Session session = HibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
-        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
-        session.clear();
-        Transaction tx = session.beginTransaction();
-        
-        //List<Timestamp> ts = (List<Timestamp>) session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc");
-        Long readingFromTimestamp = 0L;
-        //if(ts != null && ts.size() > 0)
-        //	readingFromTimestamp = ts.get(ts.size()-1).getTime();
-    
-
-        Query biTrack = session.createQuery("from BiTrackContentImpressions x order by x.id asc");
-        biTrackContentImpressions = biTrack.list();	        
-        System.out.println("biTrackContentImpressions tables: " + biTrackContentImpressions.size());     
-        
-        Query chatProt = session.createQuery("from ChatProtocol x order by x.id asc");
-        chatProtocol = chatProt.list();	        
-        System.out.println("ChatProtocol tables: " + chatProtocol.size());   
-        
-        Query eCompTy = session.createQuery("from EComponentType x order by x.id asc");
-        eComponentType = eCompTy.list();	        
-        System.out.println("EComponentType tables: " + eComponentType.size());  
-                
-        Query eComp = session.createQuery("from EComponent x order by x.id asc");
-        eComponent = eComp.list();	     
-        for(int i = 0; i < eComponent.size(); i++)
-        {
-        	eComponentMap.put(eComponent.get(i).getId(), eComponent.get(i));
-        }
-        System.out.println("EComponent tables: " + eComponent.size());    
-        
-        Query eCompo = session.createQuery("from EComposing x order by x.id asc");
-        eComposing = eCompo.list();	        
-        System.out.println("EComposing tables: " + eComposing.size());  
-        
-        Query exPer = session.createQuery("from ExercisePersonalised x order by x.id asc");
-        exercisePersonalised = exPer.list();	        
-        System.out.println("ExercisePersonalised tables: " + exercisePersonalised.size()); 
-        
-        Query foEnt = session.createQuery("from ForumEntry x order by x.id asc");
-        forumEntry = foEnt.list();	        
-        System.out.println("ForumEntry tables: " + forumEntry.size()); 
-        
-        Query foEntS = session.createQuery("from ForumEntryState x order by x.id asc");
-        forumEntryState = foEntS.list();	        
-        System.out.println("ForumEntryState tables: " + forumEntryState.size()); 
-        
-        Query pers = session.createQuery("from Person x order by x.id asc");
-        person = pers.list();	        
-        System.out.println("Person tables: " + person.size()); 
-        
-        Query plGrSp = session.createQuery("from PlatformGroupSpecification x order by x.id asc");
-        platformGroupSpecification = plGrSp.list();	        
-        System.out.println("PlatformGroupSpecification tables: " + platformGroupSpecification.size()); 
-        
-        Query plGr = session.createQuery("from PlatformGroup x order by x.id asc");
-        platformGroup = plGr.list();	        
-        System.out.println("PlatformGroup tables: " + platformGroup.size()); 
+		try{
+			//accessing DB by creating a session and a transaction using HibernateUtil
+	        Session session = HibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
+	        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
+	        session.clear();
      
-        Query porLo = session.createQuery("from PortfolioLog x order by x.id asc");
-        portfolioLog = porLo.list();	        
-        System.out.println("PortfolioLog tables: " + portfolioLog.size()); 
-        
-        Query scoSes = session.createQuery("from ScormSessionTimes x order by x.id asc");
-        scormSessionTimes = scoSes.list();	        
-        System.out.println("ScormSession tables: " + scormSessionTimes.size()); 
-        
-        Query t2Ta = session.createQuery("from T2Task x order by x.id asc");
-        t2Task = t2Ta.list();	        
-        System.out.println("T2Task tables: " + t2Task.size()); 
-        
-        Query tAnPos = session.createQuery("from TAnswerPosition x order by x.id asc");
-        tAnswerPosition = tAnPos.list();	        
-        System.out.println("TAnswerPosition tables: " + tAnswerPosition.size()); 
+	        
+	    
+	        System.out.println("Starting data extraction.");  
+	        
+	        Query chatro = session.createQuery("from Chatroom x order by x.id asc");
+	        chatroom = chatro.list();	        
+	        System.out.println("Chatroom tables: " + chatroom.size());  
+	
+	        Query eCompo = session.createQuery("from EComposing x order by x.id asc");
+	        eComposing = eCompo.list();	        
+	        System.out.println("EComposing tables: " + eComposing.size());  
+	        
+	        Query biTrack = session.createQuery("from BiTrackContentImpressions x order by x.id asc");
+	        biTrackContentImpressions = biTrack.list();	        
+	        System.out.println("biTrackContentImpressions tables: " + biTrackContentImpressions.size());     
+	        
+	        Query chatProt = session.createQuery("from ChatProtocol x order by x.id asc");
+	        chatProtocol = chatProt.list();	        
+	        System.out.println("ChatProtocol tables: " + chatProtocol.size());   
+	        
 
-        Query tECEx = session.createQuery("from TeamExerciseComposingExt x order by x.id asc");
-        teamExerciseComposingExt = tECEx.list();	        
-        System.out.println("TeamExerciseComposingExt tables: " + teamExerciseComposingExt.size()); 
-
-        Query tEG = session.createQuery("from TeamExerciseGroup x order by x.id asc");
-        teamExerciseGroup = tEG.list();	        
-        System.out.println("TeamExerciseGroup tables: " + teamExerciseGroup.size()); 
-
-        Query tEGMem = session.createQuery("from TeamExerciseGroupMember x order by x.id asc");
-        teamExerciseGroupMember = tEGMem.list();	        
-        System.out.println("TeamExerciseGroupMember tables: " + teamExerciseGroupMember.size()); 
-
-        Query tGFSpec = session.createQuery("from TGroupFullSpecification x order by x.id asc");
-        tGroupFullSpecification = tGFSpec.list();	        
-        System.out.println("TGroupFullSpecification tables: " + tGroupFullSpecification.size()); 
-
-        Query tQC = session.createQuery("from TQtiContent x order by x.id asc");
-        tQtiContent = tQC.list();	        
-        System.out.println("TQtiContent tables: " + tQtiContent.size()); 
-
-        Query tQEA = session.createQuery("from TQtiEvalAssessment x order by x.id asc");
-        tQtiEvalAssessment = tQEA.list();	        
-        System.out.println("TQtiEvalAssessment tables: " + tQtiEvalAssessment.size()); 
-
-        Query tTS = session.createQuery("from TTestSpecification x order by x.id asc");
-        tTestSpecification = tTS.list();	        
-        System.out.println("TTestSpecification tables: " + tTestSpecification.size()); 
-
-        Query wE = session.createQuery("from WikiEntry x order by x.id asc");
-        wikiEntry = wE.list();	        
-        System.out.println("WikiEntry tables: " + wikiEntry.size()); 
+	        
+	        Query eCompTy = session.createQuery("from EComponentType x order by x.id asc");
+	        eComponentType = eCompTy.list();	        
+	        System.out.println("EComponentType tables: " + eComponentType.size());  
+	                
+	        Query eComp = session.createQuery("from EComponent x order by x.id asc");
+	        eComponent = eComp.list();	     
+	        for(int i = 0; i < eComponent.size(); i++)
+	        {
+	        	eComponentMap.put(eComponent.get(i).getId(), eComponent.get(i));
+	        }
+	        System.out.println("EComponent tables: " + eComponent.size());    
+	        
+	        Query exPer = session.createQuery("from ExercisePersonalised x order by x.id asc");
+	        exercisePersonalised = exPer.list();	        
+	        System.out.println("ExercisePersonalised tables: " + exercisePersonalised.size()); 
+	        
+	        Query foEnt = session.createQuery("from ForumEntry x order by x.id asc");
+	        forumEntry = foEnt.list();	        
+	        System.out.println("ForumEntry tables: " + forumEntry.size()); 
+	        
+	        Query foEntS = session.createQuery("from ForumEntryState x order by x.id asc");
+	        forumEntryState = foEntS.list();	        
+	        System.out.println("ForumEntryState tables: " + forumEntryState.size()); 
+	        
+	        Query pers = session.createQuery("from Person x order by x.id asc");
+	        person = pers.list();	        
+	        System.out.println("Person tables: " + person.size()); 
+	        
+	        Query plGrSp = session.createQuery("from PlatformGroupSpecification x order by x.id asc");
+	        platformGroupSpecification = plGrSp.list();	        
+	        System.out.println("PlatformGroupSpecification tables: " + platformGroupSpecification.size()); 
+	        
+	        Query plGr = session.createQuery("from PlatformGroup x order by x.id asc");
+	        platformGroup = plGr.list();	        
+	        System.out.println("PlatformGroup tables: " + platformGroup.size()); 
+	     
+	        Query porLo = session.createQuery("from PortfolioLog x order by x.id asc");
+	        portfolioLog = porLo.list();	        
+	        System.out.println("PortfolioLog tables: " + portfolioLog.size()); 
+	        
+	        Query scoSes = session.createQuery("from ScormSessionTimes x order by x.id asc");
+	        scormSessionTimes = scoSes.list();	        
+	        System.out.println("ScormSession tables: " + scormSessionTimes.size()); 
+	        
+	        Query t2Ta = session.createQuery("from T2Task x order by x.id asc");
+	        t2Task = t2Ta.list();	        
+	        System.out.println("T2Task tables: " + t2Task.size()); 
+	        
+	        Query tAnPos = session.createQuery("from TAnswerPosition x order by x.id asc");
+	        tAnswerPosition = tAnPos.list();	        
+	        System.out.println("TAnswerPosition tables: " + tAnswerPosition.size()); 
+	
+	        Query tECEx = session.createQuery("from TeamExerciseComposingExt x order by x.id asc");
+	        teamExerciseComposingExt = tECEx.list();	        
+	        System.out.println("TeamExerciseComposingExt tables: " + teamExerciseComposingExt.size()); 
+	
+	        Query tEG = session.createQuery("from TeamExerciseGroup x order by x.id asc");
+	        teamExerciseGroup = tEG.list();	        
+	        System.out.println("TeamExerciseGroup tables: " + teamExerciseGroup.size()); 
+	
+	        Query tEGMem = session.createQuery("from TeamExerciseGroupMember x order by x.id asc");
+	        teamExerciseGroupMember = tEGMem.list();	        
+	        System.out.println("TeamExerciseGroupMember tables: " + teamExerciseGroupMember.size()); 
+	
+	        Query tGFSpec = session.createQuery("from TGroupFullSpecification x order by x.id asc");
+	        tGroupFullSpecification = tGFSpec.list();	        
+	        System.out.println("TGroupFullSpecification tables: " + tGroupFullSpecification.size()); 
+	
+	        Query tQC = session.createQuery("from TQtiContent x order by x.id asc");
+	        tQtiContent = tQC.list();	        
+	        System.out.println("TQtiContent tables: " + tQtiContent.size()); 
+	
+	        Query tQEA = session.createQuery("from TQtiEvalAssessment x order by x.id asc");
+	        tQtiEvalAssessment = tQEA.list();	        
+	        System.out.println("TQtiEvalAssessment tables: " + tQtiEvalAssessment.size()); 
+	
+	        Query tTS = session.createQuery("from TTestSpecification x order by x.id asc");
+	        tTestSpecification = tTS.list();	        
+	        System.out.println("TTestSpecification tables: " + tTestSpecification.size()); 
+	
+	        Query wE = session.createQuery("from WikiEntry x order by x.id asc");
+	        wikiEntry = wE.list();	        
+	        System.out.println("WikiEntry tables: " + wikiEntry.size()); 
+	        
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 
     	
 	}
@@ -393,151 +748,199 @@ public class ClixImporter {
 	{
 		//accessing DB by creating a session and a transaction using HibernateUtil
         Session session = HibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
-        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
-        session.clear();
-        Transaction tx = session.beginTransaction();
+
         
         
 	}
 	
 	//Generators for objects
 	
+	
+	
+	public static HashMap<Long, ChatMining> generateChatMining() {
+		HashMap<Long, ChatMining> chats = new HashMap<Long, ChatMining>();
+		try{
+			for(Iterator<Chatroom> iter = chatroom.iterator(); iter.hasNext();)
+			{
+				Chatroom loadedItem = iter.next();
+				ChatMining item = new ChatMining();
+				item.setId(loadedItem.getId());
+				item.setTitle(loadedItem.getTitle());
+				item.setChattime(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+				
+				chats.put(item.getId(), item);
+			}
+			
+			
+			
+			System.out.println("Generated " + chats.size() + " ChatMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return chats;
+	}
+	
 	public static HashMap<Long, ResourceMining> generateResourceMining()
 	{
 		HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
-		for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
-		{
-			EComponentType loadedType = iter1.next();
-			if(loadedType.getCharacteristicId() == 1L)
-				eCTypes.put(iter1.next().getComponent(), loadedType);
-		}
 		HashMap<Long, ResourceMining> resources = new HashMap<Long, ResourceMining>();
-		for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
-		{
-			EComponent loadedItem = iter.next();
-			ResourceMining item = new ResourceMining();
-			if(eCTypes.get(loadedItem.getType()) != null)
+		try{
+			for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
 			{
-				item.setId(loadedItem.getId());
-				item.setTitle(loadedItem.getName());
-				item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
-				item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-				resources.put(item.getId(), item);
+				EComponentType loadedType = iter1.next();
+				if(loadedType.getCharacteristicId() == 1L)
+					eCTypes.put(iter1.next().getComponent(), loadedType);
 			}
 			
+			for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
+			{
+				EComponent loadedItem = iter.next();
+				ResourceMining item = new ResourceMining();
+				if(eCTypes.get(loadedItem.getType()) != null)
+				{
+					item.setId(loadedItem.getId());
+					item.setTitle(loadedItem.getName());
+					item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
+					item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+					resources.put(item.getId(), item);
+				}
+				
+			}
+			System.out.println("Generated " + resources.size() + " ResourceMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		System.out.println("Generated " + resources.size() + " ResourceMining.");
 		return resources;
 	}
 	
 	public static HashMap<Long, CourseMining> generateCourseMining()
 	{
 		HashMap<Long, CourseMining> courses = new HashMap<Long, CourseMining>();
-		HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
-		for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
-		{
-			EComponentType loadedType = iter1.next();
-			if(loadedType.getCharacteristicId() == 4L || loadedType.getCharacteristicId() == 5L || loadedType.getCharacteristicId() == 3L)
-				eCTypes.put(iter1.next().getComponent(), loadedType);
-		}
-		for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
-		{
-			EComponent loadedItem = iter.next();
-			CourseMining item = new CourseMining();
-			if(eCTypes.get(loadedItem.getType()) != null)
+		try{
+			HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
+			for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
 			{
-				item.setId(loadedItem.getId());
-				item.setTitle(loadedItem.getName());
-				item.setStartdate(TimeConverter.getTimestamp(loadedItem.getStartDate()));
-				item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-				item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
-				courses.put(item.getId(), item);
+				EComponentType loadedType = iter1.next();
+				if(loadedType.getCharacteristicId() == 4L || loadedType.getCharacteristicId() == 5L || loadedType.getCharacteristicId() == 3L)
+					eCTypes.put(iter1.next().getComponent(), loadedType);
 			}
+			for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
+			{
+				EComponent loadedItem = iter.next();
+				CourseMining item = new CourseMining();
+				if(eCTypes.get(loadedItem.getType()) != null)
+				{
+					item.setId(loadedItem.getId());
+					item.setTitle(loadedItem.getName());
+					item.setStartdate(TimeConverter.getTimestamp(loadedItem.getStartDate()));
+					item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+					item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
+					courses.put(item.getId(), item);
+				}
+			}
+			System.out.println("Generated " + courses.size() + " CourseMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		System.out.println("Generated " + courses.size() + " CourseMining.");
 		return courses;
 	}
 	
 	public static HashMap<Long, UserMining> generateUserMining()
 	{
 		HashMap<Long, UserMining> users = new HashMap<Long, UserMining>();
-		for(Iterator<Person> iter = person.iterator(); iter.hasNext();)
+		try{
+			for(Iterator<Person> iter = person.iterator(); iter.hasNext();)
+			{
+				Person loadedItem = iter.next();
+				UserMining item = new UserMining();
+				item.setId(loadedItem.getId());
+				item.setLastlogin(TimeConverter.getTimestamp(loadedItem.getLastLoginTime()));
+				item.setFirstaccess(TimeConverter.getTimestamp(loadedItem.getFirstLoginTime()));
+				
+				users.put(item.getId(), item);
+			}
+			System.out.println("Generated " + users.size() + " UserMining.");
+		}catch(Exception e)
 		{
-			Person loadedItem = iter.next();
-			UserMining item = new UserMining();
-			item.setId(loadedItem.getId());
-			item.setLastlogin(TimeConverter.getTimestamp(loadedItem.getLastLoginTime()));
-			item.setFirstaccess(TimeConverter.getTimestamp(loadedItem.getFirstLoginTime()));
-			
-			users.put(item.getId(), item);
+			e.printStackTrace();
 		}
-		System.out.println("Generated " + users.size() + " UserMining.");
 		return users;
 	}
 	
 	public static HashMap<Long, AssignmentMining> generateAssignmentMining()
 	{
 		HashMap<Long, AssignmentMining> assignments = new HashMap<Long, AssignmentMining>();
-		HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
-		for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
-		{
-			EComponentType loadedType = iter1.next();
-			if(loadedType.getCharacteristicId() == 8L)
-				eCTypes.put(iter1.next().getComponent(), loadedType);
-		}
-		for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
-		{
-			EComponent loadedItem = iter.next();
-			AssignmentMining item = new AssignmentMining();
-			if(eCTypes.get(loadedItem.getType()) != null)
+		try{
+			HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
+			for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
 			{
-				item.setId(loadedItem.getId());
-				item.setTitle(loadedItem.getName());
-				item.setTimeopen(TimeConverter.getTimestamp(loadedItem.getStartDate()));
-				item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-				item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
-				assignments.put(item.getId(), item);
+				EComponentType loadedType = iter1.next();
+				if(loadedType.getCharacteristicId() == 8L)
+					eCTypes.put(iter1.next().getComponent(), loadedType);
 			}
+			for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
+			{
+				EComponent loadedItem = iter.next();
+				AssignmentMining item = new AssignmentMining();
+				if(eCTypes.get(loadedItem.getType()) != null)
+				{
+					item.setId(loadedItem.getId());
+					item.setTitle(loadedItem.getName());
+					item.setTimeopen(TimeConverter.getTimestamp(loadedItem.getStartDate()));
+					item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+					item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
+					assignments.put(item.getId(), item);
+				}
+			}
+			System.out.println("Generated " + assignments.size() + " AssignmentMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		System.out.println("Generated " + assignments.size() + " AssignmentMining.");
 		return assignments;
 	}
 	
-	public HashMap<Long, QuizMining> generateQuizMining()
+	public static HashMap<Long, QuizMining> generateQuizMining()
 	{
 		HashMap<Long, QuizMining> quizzes = new HashMap<Long, QuizMining>();
-		
-		HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
-		HashMap<Long, EComposing> eCompo = new HashMap<Long, EComposing>();
-		for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
-		{
-			EComponentType loadedType = iter1.next();
-			if(loadedType.getCharacteristicId() == 14L)
-				eCTypes.put(iter1.next().getComponent(), loadedType);
-		}
-		for(Iterator<EComposing> iter2 = eComposing.iterator(); iter2.hasNext();)
-		{
-			EComposing loadedType = iter2.next();
-			eCompo.put(iter2.next().getComposing(), loadedType);
-		}
-		for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
-		{
-			EComponent loadedItem = iter.next();
-			QuizMining item = new QuizMining();
-			if(eCTypes.get(loadedItem.getType()) != null)
+		try{
+			HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
+			HashMap<Long, EComposing> eCompo = new HashMap<Long, EComposing>();
+			for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
 			{
-				item.setId(loadedItem.getId());
-				item.setTitle(loadedItem.getName());
-				item.setTimeopen(TimeConverter.getTimestamp(loadedItem.getStartDate()));
-				item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-				item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
-				if(eCompo.get(loadedItem.getId()) != null)
-					item.setTimeclose(TimeConverter.getTimestamp(eCompo.get(loadedItem.getId()).getEndDate()));
-				quizzes.put(item.getId(), item);
+				EComponentType loadedType = iter1.next();
+				if(loadedType.getCharacteristicId() == 14L)
+					eCTypes.put(iter1.next().getComponent(), loadedType);
 			}
+			for(Iterator<EComposing> iter2 = eComposing.iterator(); iter2.hasNext();)
+			{
+				EComposing loadedType = iter2.next();
+				eCompo.put(iter2.next().getComposing(), loadedType);
+			}
+			for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
+			{
+				EComponent loadedItem = iter.next();
+				QuizMining item = new QuizMining();
+				if(eCTypes.get(loadedItem.getType()) != null)
+				{
+					item.setId(loadedItem.getId());
+					item.setTitle(loadedItem.getName());
+					item.setTimeopen(TimeConverter.getTimestamp(loadedItem.getStartDate()));
+					item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+					item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
+					if(eCompo.get(loadedItem.getId()) != null)
+						item.setTimeclose(TimeConverter.getTimestamp(eCompo.get(loadedItem.getId()).getEndDate()));
+					quizzes.put(item.getId(), item);
+				}
+			}
+			System.out.println("Generated " + quizzes.size() + " QuizMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		System.out.println("Generated " + quizzes.size() + " QuizMining.");
-		
 		return quizzes;
 	}
 	
@@ -579,18 +982,43 @@ public class ClixImporter {
 	
 
 	
-	public HashMap<Long, RoleMining> generateRoleMining()
+	public static HashMap<Long, RoleMining> generateRoleMining()
 	{
 		HashMap<Long, RoleMining> roles = new HashMap<Long, RoleMining>();
-		
-		for(Iterator<PlatformGroup> iter = platformGroup.iterator(); iter.hasNext();)
+		try{
+			for(Iterator<PlatformGroup> iter = platformGroup.iterator(); iter.hasNext();)
+			{
+				PlatformGroup loadedItem = iter.next();
+				RoleMining item = new RoleMining();
+				item.setId(loadedItem.getTypeId());
+				switch(Integer.valueOf(item.getId()+""))
+				{
+				case 1:
+				{
+					item.setName("Standard");
+					item.setShortname("Standard");
+					item.setSortorder(1L);
+					break;
+				}
+				case 2:
+					item.setName("Admininstrator");
+					item.setShortname("Administrator");
+					item.setSortorder(0L);
+					break;
+				default:
+					item.setName("Portal (extern)");
+					item.setShortname("Portal");
+					item.setSortorder(2L);
+					break;
+				}
+				
+				roles.put(item.getId(), item);
+			}
+			System.out.println("Generated " + roles.size() + " RoleMining.");
+		}catch(Exception e)
 		{
-			PlatformGroup loadedItem = iter.next();
-			RoleMining item = new RoleMining();
-			item.setId(loadedItem.getTypeId());
-			
+			e.printStackTrace();
 		}
-		System.out.println("Generated " + roles.size() + " RoleMining.");
 		return roles;
 	}
 
@@ -598,16 +1026,23 @@ public class ClixImporter {
 	public static HashMap<Long, GroupMining> generateGroupMining()
 	{
 		HashMap<Long, GroupMining> groups = new HashMap<Long, GroupMining>();
-		for(Iterator<PlatformGroup> iter = platformGroup.iterator(); iter.hasNext();)
+		
+		try{
+			for(Iterator<PlatformGroup> iter = platformGroup.iterator(); iter.hasNext();)
+			{
+				PlatformGroup loadedItem = iter.next();
+				GroupMining item = new GroupMining();
+				item.setId(loadedItem.getId());
+				item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+				item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreated()));
+				
+				groups.put(item.getId(), item);
+			}
+			System.out.println("Generated " + groups.size() + " GroupMining.");
+		}catch(Exception e)
 		{
-			PlatformGroup loadedItem = iter.next();
-			GroupMining item = new GroupMining();
-			item.setId(loadedItem.getId());
-			item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-			item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreated()));
-			groups.put(item.getId(), item);
+			e.printStackTrace();
 		}
-		System.out.println("Generated " + groups.size() + " GroupMining.");
 		return groups;
 	}
 
@@ -615,304 +1050,402 @@ public class ClixImporter {
 	public static HashMap<Long, WikiMining> generateWikiMining()
 	{
 		HashMap<Long, WikiMining> wikis = new HashMap<Long, WikiMining>();
-		HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
-		for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
-		{
-			EComponentType loadedType = iter1.next();
-			if(loadedType.getCharacteristicId() == 2L)
-				eCTypes.put(iter1.next().getComponent(), loadedType);
-		}
-		for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
-		{
-			EComponent loadedItem = iter.next();
-			WikiMining item = new WikiMining();
-			if(eCTypes.get(loadedItem.getType()) != null && eCTypes.get(loadedItem.getType()).getUploadDir().toLowerCase().contains("wiki"))
+		
+		try{
+			HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
+			for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
 			{
-				item.setId(loadedItem.getId());
-				item.setTitle(loadedItem.getName());
-				item.setSummary(loadedItem.getDescription());
-				item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-				item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
-				wikis.put(item.getId(), item);
+				EComponentType loadedType = iter1.next();
+				if(loadedType.getCharacteristicId() == 2L)
+					eCTypes.put(iter1.next().getComponent(), loadedType);
 			}
+			for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
+			{
+				EComponent loadedItem = iter.next();
+				WikiMining item = new WikiMining();
+				if(eCTypes.get(loadedItem.getType()) != null && eCTypes.get(loadedItem.getType()).getUploadDir().toLowerCase().contains("wiki"))
+				{
+					item.setId(loadedItem.getId());
+					item.setTitle(loadedItem.getName());
+					item.setSummary(loadedItem.getDescription());
+					item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+					item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
+					
+					wikis.put(item.getId(), item);
+				}
+			}
+			System.out.println("Generated " + wikis.size() + " WikiMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		System.out.println("Generated " + wikis.size() + " WikiMining.");
 		return wikis;
 	}
 
 	
-	public HashMap<Long, DepartmentMining> generateDepartmentMining()
+	public static HashMap<Long, DepartmentMining> generateDepartmentMining()
 	{
 		HashMap<Long, DepartmentMining> departments = new HashMap<Long, DepartmentMining>();
+		try{
 		
-		
+			System.out.println("Generated " + departments.size() + " DepartmentMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return departments;
 	}
 
 	
-	public HashMap<Long, DegreeMining> generateDegreeMining()
+	public static HashMap<Long, DegreeMining> generateDegreeMining()
 	{
 		HashMap<Long, DegreeMining> degrees = new HashMap<Long, DegreeMining>();
+		try{
 		
-		
+			System.out.println("Generated " + degrees.size() + " DegreeMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return degrees;
 	}
 
 	
-	public HashMap<Long, QuestionMining> generateQuestionMining()
+	public static HashMap<Long, QuestionMining> generateQuestionMining()
 	{
 		HashMap<Long, QuestionMining> questions = new HashMap<Long, QuestionMining>();	
-		HashMap<Long, T2Task> t2t = new HashMap<Long, T2Task>();
-		for(Iterator<T2Task> iter1 = t2Task.iterator(); iter1.hasNext();)
-		{
-			T2Task loadedItem = iter1.next();
-			t2t.put(loadedItem.getTopicId(), loadedItem);
-		}
-
-		for(Iterator<TQtiContent> iter = tQtiContent.iterator(); iter.hasNext();)
-		{
-			TQtiContent loadedItem = iter.next();
-			QuestionMining item = new QuestionMining();
-
-				item.setId(loadedItem.getId());
-				item.setTitle(loadedItem.getName());
-				if(t2t.get(loadedItem.getId()) != null)
-				{
-					item.setText(t2t.get(loadedItem.getId()).getQuestionText());
-					item.setType(t2t.get(loadedItem.getId()).getTaskType() +"");
-				}
-				item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-				item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreated()));
-
-				questions.put(item.getId(), item);
-		}
-		System.out.println("Generated " + questions.size() + " QuestionMining.");
 		
-		
+		try{
+			HashMap<Long, T2Task> t2t = new HashMap<Long, T2Task>();
+			for(Iterator<T2Task> iter1 = t2Task.iterator(); iter1.hasNext();)
+			{
+				T2Task loadedItem = iter1.next();
+				t2t.put(loadedItem.getTopicId(), loadedItem);
+			}
+	
+			for(Iterator<TQtiContent> iter = tQtiContent.iterator(); iter.hasNext();)
+			{
+				TQtiContent loadedItem = iter.next();
+				QuestionMining item = new QuestionMining();
+	
+					item.setId(loadedItem.getId());
+					item.setTitle(loadedItem.getName());
+					if(t2t.get(loadedItem.getId()) != null)
+					{
+						item.setText(t2t.get(loadedItem.getId()).getQuestionText());
+						item.setType(t2t.get(loadedItem.getId()).getTaskType() +"");
+					}
+					item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+					item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreated()));
+	
+					questions.put(item.getId(), item);
+			}
+			System.out.println("Generated " + questions.size() + " QuestionMining.");
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return questions;
 	}
 
 	
-	public HashMap<Long, ScormMining> generateScormMining()
+	public static HashMap<Long, ScormMining> generateScormMining()
 	{
-		HashMap<Long, ScormMining> scorms = new HashMap<Long, ScormMining>();		
-		HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
-		HashMap<Long, EComposing> eCompo = new HashMap<Long, EComposing>();
+		HashMap<Long, ScormMining> scorms = new HashMap<Long, ScormMining>();	
 		
-		for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
-		{
-			EComponentType loadedType = iter1.next();
-			if(loadedType.getCharacteristicId() == 1L)
-				eCTypes.put(iter1.next().getComponent(), loadedType);
-		}
-		for(Iterator<EComposing> iter2 = eComposing.iterator(); iter2.hasNext();)
-		{
-			EComposing loadedType = iter2.next();
-			eCompo.put(iter2.next().getComposing(), loadedType);
-		}
-		for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
-		{
-			EComponent loadedItem = iter.next();
-			ScormMining item = new ScormMining();
-			if(eCTypes.get(loadedItem.getType()) != null && eCTypes.get(loadedItem.getType()).getUploadDir().toLowerCase().contains("scorm"))
+		try{
+			HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
+			HashMap<Long, EComposing> eCompo = new HashMap<Long, EComposing>();
+			
+			for(Iterator<EComponentType> iter1 = eComponentType.iterator(); iter1.hasNext();)
 			{
-				item.setId(loadedItem.getId());
-				item.setTitle(loadedItem.getName());
-				item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-				item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
-				if(eCompo.get(loadedItem.getId()) != null)
-				{
-					item.setTimeopen(TimeConverter.getTimestamp(eCompo.get(loadedItem.getId()).getStartDate()));
-					item.setTimeclose(TimeConverter.getTimestamp(eCompo.get(loadedItem.getId()).getEndDate()));
-				}
-				scorms.put(item.getId(), item);
+				EComponentType loadedType = iter1.next();
+				if(loadedType.getCharacteristicId() == 1L)
+					eCTypes.put(iter1.next().getComponent(), loadedType);
 			}
+			for(Iterator<EComposing> iter2 = eComposing.iterator(); iter2.hasNext();)
+			{
+				EComposing loadedType = iter2.next();
+				eCompo.put(iter2.next().getComposing(), loadedType);
+			}
+			for(Iterator<EComponent> iter = eComponent.iterator(); iter.hasNext();)
+			{
+				EComponent loadedItem = iter.next();
+				ScormMining item = new ScormMining();
+				if(eCTypes.get(loadedItem.getType()) != null && eCTypes.get(loadedItem.getType()).getUploadDir().toLowerCase().contains("scorm"))
+				{
+					item.setId(loadedItem.getId());
+					item.setTitle(loadedItem.getName());
+					item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+					item.setTimecreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
+					if(eCompo.get(loadedItem.getId()) != null)
+					{
+						item.setTimeopen(TimeConverter.getTimestamp(eCompo.get(loadedItem.getId()).getStartDate()));
+						item.setTimeclose(TimeConverter.getTimestamp(eCompo.get(loadedItem.getId()).getEndDate()));
+					}
+					scorms.put(item.getId(), item);
+				}
+			}
+			System.out.println("Generated " + scorms.size() + " ScormMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		System.out.println("Generated " + scorms.size() + " ScormMining.");
-		
 		return scorms;
 	}
 	
 	//Generators for relationships
 	
-	public HashMap<Long, QuizQuestionMining> generateQuizQuestionMining()
+	public static HashMap<Long, QuizQuestionMining> generateQuizQuestionMining()
 	{
 		HashMap<Long, QuizQuestionMining> quizQuestions = new HashMap<Long, QuizQuestionMining>();
-		for(Iterator<TTestSpecification> iter = tTestSpecification.iterator(); iter.hasNext();)
-		{
-			TTestSpecification loadedItem = iter.next();
-			QuizQuestionMining item = new QuizQuestionMining();
-			item.setQuestion(loadedItem.getTest(), question_mining, old_question_mining);
-			item.setQuiz(loadedItem.getTask(), quiz_mining, old_quiz_mining);
-			//Id for QuizQuestion entry is a combination of the question-id and the quiz-id
-			item.setId(Long.valueOf(item.getQuestion().getId()  + "010" + item.getQuiz().getId()));
-			quizQuestions.put(item.getId(), item);
-		}
 		
+		try{
+			for(Iterator<TTestSpecification> iter = tTestSpecification.iterator(); iter.hasNext();)
+			{
+				TTestSpecification loadedItem = iter.next();
+				QuizQuestionMining item = new QuizQuestionMining();
+				item.setQuestion(loadedItem.getTest(), question_mining, old_question_mining);
+				item.setQuiz(loadedItem.getTask(), quiz_mining, old_quiz_mining);
+				//Id for QuizQuestion entry is a combination of the question-id and the quiz-id
+				item.setId(Long.valueOf(item.getQuestion().getId()  + "010" + item.getQuiz().getId()));
+				quizQuestions.put(item.getId(), item);
+			}
+			
+			System.out.println("Generated " + quizQuestions.size() + " QuizQuestionMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return quizQuestions;
 	}
 	
-	public HashMap<Long, CourseScormMining> generateCourseScormMining()
+	public static HashMap<Long, CourseScormMining> generateCourseScormMining()
 	{
 		HashMap<Long, CourseScormMining> courseScorms = new HashMap<Long, CourseScormMining>();
 		
-		for(Iterator<EComposing> iter = eComposing.iterator(); iter.hasNext();)
-		{
-			EComposing loadedItem = iter.next();
-			if(loadedItem.getComposingType() == 1L && eComponentMap.get(loadedItem.getComponent()).getType() == 10L)
+		try{
+			for(Iterator<EComposing> iter = eComposing.iterator(); iter.hasNext();)
 			{
-				CourseScormMining item = new CourseScormMining();
-				item.setCourse(loadedItem.getComposing(), course_mining, old_course_mining);
-				item.setScorm(loadedItem.getComposing(), scorm_mining, old_scorm_mining);
-				item.setId(loadedItem.getId());
+				EComposing loadedItem = iter.next();
+				if(loadedItem.getComposingType() == 1L && eComponentMap.get(loadedItem.getComponent()).getType() == 10L)
+				{
+					CourseScormMining item = new CourseScormMining();
+					item.setCourse(loadedItem.getComposing(), course_mining, old_course_mining);
+					item.setScorm(loadedItem.getComposing(), scorm_mining, old_scorm_mining);
+					item.setId(loadedItem.getId());
+					
+					courseScorms.put(item.getId(), item);
+				}
 				
-				courseScorms.put(item.getId(), item);
 			}
 			
+			System.out.println("Generated " + courseScorms.size() + " CourseScormMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		
-		
 		return courseScorms;
 	}
 	
-	public HashMap<Long, CourseAssignmentMining> generateCourseAssignmentMining()
+	public static HashMap<Long, CourseAssignmentMining> generateCourseAssignmentMining()
 	{
 		HashMap<Long, CourseAssignmentMining> courseAssignments = new HashMap<Long, CourseAssignmentMining>();
-		
-		for(Iterator<EComposing> iter = eComposing.iterator(); iter.hasNext();)
-		{
-			EComposing loadedItem = iter.next();
-			if(loadedItem.getComposingType() == 4L)
+		try{
+			for(Iterator<EComposing> iter = eComposing.iterator(); iter.hasNext();)
 			{
-				CourseAssignmentMining item = new CourseAssignmentMining();
-				item.setCourse(loadedItem.getComposing(), course_mining, old_course_mining);
-				item.setAssignment(loadedItem.getComposing(), assignment_mining, old_assignment_mining);
-				item.setId(loadedItem.getId());
+				EComposing loadedItem = iter.next();
+				if(loadedItem.getComposingType() == 4L)
+				{
+					CourseAssignmentMining item = new CourseAssignmentMining();
+					item.setCourse(loadedItem.getComposing(), course_mining, old_course_mining);
+					item.setAssignment(loadedItem.getComposing(), assignment_mining, old_assignment_mining);
+					item.setId(loadedItem.getId());
+					
+					courseAssignments.put(item.getId(), item);
+				}
 				
-				courseAssignments.put(item.getId(), item);
 			}
+			System.out.println("Generated " + courseAssignments.size() + " CourseAssignmentMining.");
 			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		
 		return courseAssignments;
 	}
 	
-	public HashMap<Long, CourseResourceMining> generateCourseResourceMining()
+	public static HashMap<Long, CourseResourceMining> generateCourseResourceMining()
 	{
 		HashMap<Long, CourseResourceMining> courseResources = new HashMap<Long, CourseResourceMining>();
 		
-		for(Iterator<EComposing> iter = eComposing.iterator(); iter.hasNext();)
-		{
-			EComposing loadedItem = iter.next();
-			if(loadedItem.getComposingType() == 1L)
+		try{
+			for(Iterator<EComposing> iter = eComposing.iterator(); iter.hasNext();)
 			{
-				CourseResourceMining item = new CourseResourceMining();
-				item.setCourse(loadedItem.getComposing(), course_mining, old_course_mining);
-				item.setResource(loadedItem.getComposing(), resource_mining, old_resource_mining);
-				item.setId(loadedItem.getId());
+				EComposing loadedItem = iter.next();
+				if(loadedItem.getComposingType() == 1L)
+				{
+					CourseResourceMining item = new CourseResourceMining();
+					item.setCourse(loadedItem.getComposing(), course_mining, old_course_mining);
+					item.setResource(loadedItem.getComposing(), resource_mining, old_resource_mining);
+					item.setId(loadedItem.getId());
+					
+					courseResources.put(item.getId(), item);
+				}
 				
-				courseResources.put(item.getId(), item);
 			}
+			System.out.println("Generated " + courseResources.size() + " CourseResourceMining.");
 			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		
 		return courseResources;
 	}
 	
-	public HashMap<Long, CourseQuizMining> generateCourseQuizMining()
+	public static HashMap<Long, CourseQuizMining> generateCourseQuizMining()
 	{
 		HashMap<Long, CourseQuizMining> courseQuizzes = new HashMap<Long, CourseQuizMining>();
 		
-		for(Iterator<EComposing> iter = eComposing.iterator(); iter.hasNext();)
-		{
-			EComposing loadedItem = iter.next();
-			if(loadedItem.getComposingType() == 1L)
+		try{
+			for(Iterator<EComposing> iter = eComposing.iterator(); iter.hasNext();)
 			{
-				CourseQuizMining item = new CourseQuizMining();
-				item.setCourse(loadedItem.getComposing(), course_mining, old_course_mining);
-				item.setQuiz(loadedItem.getComponent(), quiz_mining, old_quiz_mining);
-				item.setId(loadedItem.getId());
+				EComposing loadedItem = iter.next();
+				if(loadedItem.getComposingType() == 1L)
+				{
+					CourseQuizMining item = new CourseQuizMining();
+					item.setCourse(loadedItem.getComposing(), course_mining, old_course_mining);
+					item.setQuiz(loadedItem.getComponent(), quiz_mining, old_quiz_mining);
+					item.setId(loadedItem.getId());
+					
+					courseQuizzes.put(item.getId(), item);
+				}
 				
-				courseQuizzes.put(item.getId(), item);
 			}
+			System.out.println("Generated " + courseQuizzes.size() + " CourseQuizMining.");
 			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		
 		return courseQuizzes;
 	}
 	
-	public HashMap<Long, QuizUserMining> generateQuizUserMining()
+	public static  HashMap<Long, QuizUserMining> generateQuizUserMining()
 	{
 		HashMap<Long, QuizUserMining> quizUsers = new HashMap<Long, QuizUserMining>();
-		
-		for(Iterator<TQtiEvalAssessment> iter = tQtiEvalAssessment.iterator(); iter.hasNext();)
+		try{
+			for(Iterator<TQtiEvalAssessment> iter = tQtiEvalAssessment.iterator(); iter.hasNext();)
+			{
+				TQtiEvalAssessment loadedItem = iter.next();
+				QuizUserMining item = new QuizUserMining();
+				item.setId(loadedItem.getId());
+				item.setCourse(loadedItem.getComponent(), course_mining, old_course_mining);
+				item.setUser(loadedItem.getCandidate(), user_mining, old_user_mining);
+				item.setQuiz(loadedItem.getAssessment(), quiz_mining, old_quiz_mining);
+				item.setFinalgrade(loadedItem.getEvaluatedScore());
+				item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastInvocation()));
+			}
+			System.out.println("Generated " + quizUsers.size() + " QuizUserMining.");
+		}catch(Exception e)
 		{
-			TQtiEvalAssessment loadedItem = iter.next();
-			QuizUserMining item = new QuizUserMining();
-			item.setId(loadedItem.getId());
-			item.setCourse(loadedItem.getComponent(), course_mining, old_course_mining);
-			item.setUser(loadedItem.getCandidate(), user_mining, old_user_mining);
-			item.setQuiz(loadedItem.getAssessment(), quiz_mining, old_quiz_mining);
-			item.setFinalgrade(loadedItem.getEvaluatedScore());
-			item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastInvocation()));
+			e.printStackTrace();
 		}
 		return quizUsers;
 	}
 	
-	public HashMap<Long, CourseUserMining> generateCourseUserMining()
+	public static HashMap<Long, CourseUserMining> generateCourseUserMining()
 	{
 		HashMap<Long, CourseUserMining> courseUsers = new HashMap<Long, CourseUserMining>();
+		try{
 		
+			System.out.println("Generated " + courseUsers.size() + " CourseUserMining.");
 		
-		
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return courseUsers;
 	}
 	
-	public HashMap<Long, CourseWikiMining> generateCourseWikiMining()
+	public static HashMap<Long, CourseWikiMining> generateCourseWikiMining()
 	{
 		HashMap<Long, CourseWikiMining> courseWikis = new HashMap<Long, CourseWikiMining>();
+		try{
 		
-		
-		
+			System.out.println("Generated " + courseWikis.size() + " CourseWikiMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return courseWikis;
 	}
 	
-	public HashMap<Long, DegreeCourseMining> generateDegreeCourseMining()
+	public static HashMap<Long, DegreeCourseMining> generateDegreeCourseMining()
 	{
 		HashMap<Long, DegreeCourseMining> degreeCourses = new HashMap<Long, DegreeCourseMining>();
 		
+		try{
+			System.out.println("Generated " + degreeCourses.size() + " DegreeCourseMining.");
 		
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return degreeCourses;
 	}
 	
-	public HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining()
+	public static HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining()
 	{
 		HashMap<Long, DepartmentDegreeMining> departmentDegrees = new HashMap<Long, DepartmentDegreeMining>();
+		try{
+			System.out.println("Generated " + departmentDegrees.size() + " DepartmentDegreeMining.");
 		
-		
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return departmentDegrees;
 	}
 	
-	public HashMap<Long, GroupUserMining> generateGroupUserMining()
+	public static HashMap<Long, GroupUserMining> generateGroupUserMining()
 	{
 		HashMap<Long, GroupUserMining> groupUsers = new HashMap<Long, GroupUserMining>();
 		
-		
+		try{
+			System.out.println("Generated " + groupUsers.size() + " GroupUserMining.");
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return groupUsers;
 	}
 	
-	public HashMap<Long, CourseGroupMining> generateCourseGroupMining()
+	public static HashMap<Long, CourseGroupMining> generateCourseGroupMining()
 	{
 		HashMap<Long, CourseGroupMining> courseGroups = new HashMap<Long, CourseGroupMining>();
-		
-		
+		try{
+			System.out.println("Generated " + courseGroups.size() + " CourseGroupMining.");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return courseGroups;
 	}
 	
-	public HashMap<Long, CourseForumMining> generateCourseForumMining()
+	public static HashMap<Long, CourseForumMining> generateCourseForumMining()
 	{
 		HashMap<Long, CourseForumMining> courseForum = new HashMap<Long, CourseForumMining>();
-		
+		try{
+			
+			System.out.println("Generated " + courseForum.size() + " CourseForumMining.");
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
 		return courseForum;
 	}
@@ -921,200 +1454,253 @@ public class ClixImporter {
 	
 
 	
-	public HashMap<Long, ForumLogMining> generateForumLogMining()
+	public static HashMap<Long, ForumLogMining> generateForumLogMining()
 	{
 		HashMap<Long, ForumLogMining> forumLogs = new HashMap<Long, ForumLogMining>();
 		
-		for(Iterator<ForumEntry> iter = forumEntry.iterator(); iter.hasNext();)
-		{
-			ForumEntry loadedItem = iter.next();
-			ForumLogMining item = new ForumLogMining();
-			item.setForum(loadedItem.getForum(), forum_mining, old_forum_mining);
-			item.setUser(loadedItem.getLastUpdater(), user_mining, old_user_mining);
-			item.setSubject(loadedItem.getTitle());
-			item.setMessage(loadedItem.getContent());
+		try{
+			for(Iterator<ForumEntry> iter = forumEntry.iterator(); iter.hasNext();)
+			{
+				ForumEntry loadedItem = iter.next();
+				ForumLogMining item = new ForumLogMining();
+				item.setId(loadedItem.getId());
+				item.setForum(loadedItem.getForum(), forum_mining, old_forum_mining);
+				item.setUser(loadedItem.getLastUpdater(), user_mining, old_user_mining);
+				item.setSubject(loadedItem.getTitle());
+				item.setMessage(loadedItem.getContent());
+				
+				forumLogs.put(item.getId(), item);
+			}
+			System.out.println("Generated " + forumLogs.size() + " ForumLogMining.");
 			
-			forumLogs.put(item.getId(), item);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		
 		return forumLogs;
 	}
 	
 	
-	public HashMap<Long, WikiLogMining> generateWikiLogMining()
+	public static HashMap<Long, WikiLogMining> generateWikiLogMining()
 	{
 		HashMap<Long, WikiLogMining> wikiLogs = new HashMap<Long, WikiLogMining>();
+		try{
+			for(Iterator<WikiEntry> iter = wikiEntry.iterator(); iter.hasNext();)
+			{
+				WikiEntry loadedItem = iter.next();
+				WikiLogMining item = new WikiLogMining();
+				item.setId(loadedItem.getId());
+				item.setWiki(loadedItem.getComponent(), wiki_mining, old_wiki_mining);
+				
+				wikiLogs.put(item.getId(), item);
+			}
+			System.out.println("Generated " + wikiLogs.size() + " WikiLogMining.");
 		
-		for(Iterator<WikiEntry> iter = wikiEntry.iterator(); iter.hasNext();)
+		}catch(Exception e)
 		{
-			WikiEntry loadedItem = iter.next();
-			WikiLogMining item = new WikiLogMining();
-			item.setId(loadedItem.getId());
-			item.setWiki(loadedItem.getComponent(), wiki_mining, old_wiki_mining);
-			
-			wikiLogs.put(item.getId(), item);
+			e.printStackTrace();
 		}
-		
 		return wikiLogs;
 	}
 	
 	
-	public HashMap<Long, CourseLogMining> generateCourseLogMining()
+	public static HashMap<Long, CourseLogMining> generateCourseLogMining()
 	{
 		HashMap<Long, CourseLogMining> courseLogs = new HashMap<Long, CourseLogMining>();
-		
-		for(Iterator<PortfolioLog> iter = portfolioLog.iterator(); iter.hasNext();)
-		{
-			PortfolioLog loadedItem = iter.next();
-			CourseLogMining item = new CourseLogMining();
-			item.setId(loadedItem.getId());
-			item.setCourse(loadedItem.getComponent(), course_mining, old_course_mining);
-			item.setUser(loadedItem.getPerson(), user_mining, old_user_mining);
-			item.setAction(loadedItem.getTypeOfModification()+"");
-			item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+		try{
+			for(Iterator<PortfolioLog> iter = portfolioLog.iterator(); iter.hasNext();)
+			{
+				PortfolioLog loadedItem = iter.next();
+				CourseLogMining item = new CourseLogMining();
+				item.setId(loadedItem.getId());
+				item.setCourse(loadedItem.getComponent(), course_mining, old_course_mining);
+				item.setUser(loadedItem.getPerson(), user_mining, old_user_mining);
+				item.setAction(loadedItem.getTypeOfModification()+"");
+				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+				
+				courseLogs.put(item.getId(), item);
+			}
+			System.out.println("Generated " + courseLogs.size() + " CourseLogMining.");
 			
-			courseLogs.put(item.getId(), item);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
-		
 		return courseLogs;
 	}
 	
 	
-	public HashMap<Long, QuestionLogMining> generateQuestionLogMining()
+	public static HashMap<Long, QuestionLogMining> generateQuestionLogMining()
 	{
 		HashMap<Long, QuestionLogMining> questionLogs = new HashMap<Long, QuestionLogMining>();
 		
-		for(Iterator<TAnswerPosition> iter = tAnswerPosition.iterator(); iter.hasNext();)
-		{
-			TAnswerPosition loadedItem = iter.next();
-			QuestionLogMining item = new QuestionLogMining();
-			
-			item.setUser(loadedItem.getPerson(), user_mining, old_user_mining);
-			item.setQuiz(loadedItem.getTest(), quiz_mining, old_quiz_mining);
-			item.setQuestion(loadedItem.getQuestion(), question_mining, old_question_mining);
-			item.setCourse(loadedItem.getTest(), course_mining, old_course_mining);
-			
-			questionLogs.put(item.getId(), item);
-		}
+		try{
+			for(Iterator<TAnswerPosition> iter = tAnswerPosition.iterator(); iter.hasNext();)
+			{
+				TAnswerPosition loadedItem = iter.next();
+				QuestionLogMining item = new QuestionLogMining();
+				
+				item.setUser(loadedItem.getPerson(), user_mining, old_user_mining);
+				item.setQuiz(loadedItem.getTest(), quiz_mining, old_quiz_mining);
+				item.setQuestion(loadedItem.getQuestion(), question_mining, old_question_mining);
+				item.setCourse(loadedItem.getTest(), course_mining, old_course_mining);
+				item.setId(loadedItem.getId().hashCode());
+				questionLogs.put(item.getId(), item);
+			}
+			System.out.println("Generated " + questionLogs.size() + " QuestionLogMining.");
 		
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return questionLogs;
 	}
 	
 	
-	public HashMap<Long, QuizLogMining> generateQuizLogMining()
+	public static HashMap<Long, QuizLogMining> generateQuizLogMining()
 	{
 		HashMap<Long, QuizLogMining> quizLogs = new HashMap<Long, QuizLogMining>();
+		try{
+			for(Iterator<TQtiEvalAssessment> iter = tQtiEvalAssessment.iterator(); iter.hasNext();)
+			{
+				TQtiEvalAssessment loadedItem = iter.next();
+				QuizLogMining item = new QuizLogMining();
+				
+				item.setId(loadedItem.getId());
+				item.setCourse(loadedItem.getComponent(), course_mining, old_course_mining);
+				item.setUser(loadedItem.getCandidate(), user_mining, old_user_mining);
+				item.setQuiz(loadedItem.getAssessment(), quiz_mining, old_quiz_mining);
+				item.setGrade(loadedItem.getEvaluatedScore());
+				if(loadedItem.getEvalCount() == 0L)
+					item.setAction("Try");
+				else
+					item.setAction("Submit");
+				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastInvocation()));
+				
+				quizLogs.put(item.getId(), item);
+				
+			}
+			System.out.println("Generated " + quizLogs.size() + " QuizLogMining.");
 		
-		for(Iterator<TQtiEvalAssessment> iter = tQtiEvalAssessment.iterator(); iter.hasNext();)
+		}catch(Exception e)
 		{
-			TQtiEvalAssessment loadedItem = iter.next();
-			QuizLogMining item = new QuizLogMining();
-			
-			item.setId(loadedItem.getId());
-			item.setCourse(loadedItem.getComponent(), course_mining, old_course_mining);
-			item.setUser(loadedItem.getCandidate(), user_mining, old_user_mining);
-			item.setQuiz(loadedItem.getAssessment(), quiz_mining, old_quiz_mining);
-			item.setGrade(loadedItem.getEvaluatedScore());
-			if(loadedItem.getEvalCount() == 0L)
-				item.setAction("Try");
-			else
-				item.setAction("Submit");
-			item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastInvocation()));
-			
-			quizLogs.put(item.getId(), item);
-			
+			e.printStackTrace();
 		}
-		
 		return quizLogs;
 	}
 	
 	
-	public HashMap<Long, AssignmentLogMining> generateAssignmentLogMining()
+	public static HashMap<Long, AssignmentLogMining> generateAssignmentLogMining()
 	{
 		HashMap<Long, AssignmentLogMining> assignmentLogs = new HashMap<Long, AssignmentLogMining>();
+		try{
+			for(Iterator<ExercisePersonalised> iter = exercisePersonalised.iterator(); iter.hasNext();)
+			{
+				ExercisePersonalised loadedItem = iter.next();
+				AssignmentLogMining item = new AssignmentLogMining();
+				
+				item.setAssignment(loadedItem.getExercise(), assignment_mining, old_assignment_mining);
+				item.setUser(loadedItem.getUser(), user_mining, old_user_mining);
+				item.setGrade(loadedItem.getPoints());
+				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getUploadDate()));
+				
+				assignmentLogs.put(item.getId(), item);
+			}
+			System.out.println("Generated " + assignmentLogs.size() + " AssignmentLogMining.");
 		
-		for(Iterator<ExercisePersonalised> iter = exercisePersonalised.iterator(); iter.hasNext();)
+		}catch(Exception e)
 		{
-			ExercisePersonalised loadedItem = iter.next();
-			AssignmentLogMining item = new AssignmentLogMining();
-			
-			item.setAssignment(loadedItem.getExercise(), assignment_mining, old_assignment_mining);
-			item.setUser(loadedItem.getUser(), user_mining, old_user_mining);
-			item.setGrade(loadedItem.getPoints());
-			item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getUploadDate()));
-			
-			assignmentLogs.put(item.getId(), item);
+			e.printStackTrace();
 		}
-		
 		return assignmentLogs;
 	}
 	
 	
-	public HashMap<Long, ScormLogMining> generateScormLogMining()
+	public static HashMap<Long, ScormLogMining> generateScormLogMining()
 	{
 		HashMap<Long, ScormLogMining> scormLogs = new HashMap<Long, ScormLogMining>();
+		try {
+			for(Iterator<ScormSessionTimes> iter = scormSessionTimes.iterator(); iter.hasNext();)
+			{
+				ScormSessionTimes loadedItem = iter.next();
+				ScormLogMining item = new ScormLogMining();
+				item.setUser(loadedItem.getPerson(), user_mining, old_user_mining);
+				try{
+					if(loadedItem.getScore() != null)
+						item.setGrade(Double.parseDouble(loadedItem.getScore()));
+					item.setScorm(loadedItem.getComponent(), scorm_mining, old_scorm_mining);
+					item.setAction(loadedItem.getStatus());
+					item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+					item.setId(loadedItem.getId().hashCode());
+					
+					scormLogs.put(item.getId(), item);
+				}catch(NullPointerException e)
+				{
+					System.out.println("Couldn't parse grade: "+ loadedItem.getScore());
+				}
+					
+			}
+			System.out.println("Generated " + scormLogs.size() + " ScormLogMining.");
 		
-		for(Iterator<ScormSessionTimes> iter = scormSessionTimes.iterator(); iter.hasNext();)
+		}catch(Exception e)
 		{
-			ScormSessionTimes loadedItem = iter.next();
-			ScormLogMining item = new ScormLogMining();
-			item.setUser(loadedItem.getPerson(), user_mining, old_user_mining);
-			item.setScorm(loadedItem.getComponent(), scorm_mining, old_scorm_mining);
-			item.setGrade(Long.valueOf(loadedItem.getScore()));
-			item.setAction(loadedItem.getStatus());
-			item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-//			ScormSessionTimesPK id = new ScormSessionTimesPK(loadedItem.getComponent(), loadedItem.getPerson());
-	//		item.setId(id.hashCode());
-			
-			scormLogs.put(item.getId(), item);
-			
+			e.printStackTrace();
 		}
-		
 		return scormLogs;
 	}
 	
 	
-	public HashMap<Long, ResourceLogMining> generateResourceLogMining()
+	public static HashMap<Long, ResourceLogMining> generateResourceLogMining()
 	{
 		HashMap<Long, ResourceLogMining> resourceLogs = new HashMap<Long, ResourceLogMining>();
+		try{
+			for(Iterator<BiTrackContentImpressions> iter = biTrackContentImpressions.iterator(); iter.hasNext();)
+			{
+				BiTrackContentImpressions loadedItem = iter.next();
+				ResourceLogMining item = new ResourceLogMining();
+				item.setResource(loadedItem.getContent(), resource_mining, old_resource_mining);
+				item.setUser(loadedItem.getUser(), user_mining, old_user_mining);
+				item.setCourse(loadedItem.getContainer(), course_mining, old_course_mining);
+				item.setAction("View");
+				item.setDuration(1L);
+				BiTrackContentImpressionsPK id = new BiTrackContentImpressionsPK(loadedItem.getCharacteristic(), loadedItem.getContent(), loadedItem.getDayOfAccess(), loadedItem.getContainer(), loadedItem.getUser());
+				item.setId(id.hashCode());
+				
+				resourceLogs.put(item.getId(), item);
+			}
+			System.out.println("Generated " + resourceLogs.size() + " ResourceLogMining.");
 		
-		for(Iterator<BiTrackContentImpressions> iter = biTrackContentImpressions.iterator(); iter.hasNext();)
+		}catch(Exception e)
 		{
-			BiTrackContentImpressions loadedItem = iter.next();
-			ResourceLogMining item = new ResourceLogMining();
-			item.setResource(loadedItem.getContent(), resource_mining, old_resource_mining);
-			item.setUser(loadedItem.getUser(), user_mining, old_user_mining);
-			item.setCourse(loadedItem.getContainer(), course_mining, old_course_mining);
-			item.setAction("View");
-			item.setDuration(1L);
-			//BiTrackContentImpressionsPK id = new BiTrackContentImpressionsPK(loadedItem.getCharacteristic(), loadedItem.getContent(), loadedItem.getDayOfAccess(), loadedItem.getContainer(), loadedItem.getUser());
-			//item.setId(id.hashCode());
-			
-			resourceLogs.put(item.getId(), item);
+			e.printStackTrace();
 		}
-		
 		return resourceLogs;
 	}
 	
 	
-	public HashMap<Long, ChatLogMining> generateChatLogMining()
+	public static HashMap<Long, ChatLogMining> generateChatLogMining()
 	{
 		HashMap<Long, ChatLogMining> chatLogs = new HashMap<Long, ChatLogMining>();
+		try{
+			for(Iterator<ChatProtocol> iter = chatProtocol.iterator(); iter.hasNext();)
+			{
+				ChatProtocol loadedItem = iter.next();
+				ChatLogMining item = new ChatLogMining();
+				
+				item.setId(loadedItem.getId());
+				item.setChat(loadedItem.getChatroom(), chat_mining, old_chat_mining);
+				item.setUser(loadedItem.getPerson(), user_mining, old_user_mining);
+				item.setMessage(loadedItem.getChatSource());
+				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+	
+				chatLogs.put(item.getId(), item);
+			}
+			System.out.println("Generated " + chatLogs.size() + " ChatLogMining.");
 		
-		for(Iterator<ChatProtocol> iter = chatProtocol.iterator(); iter.hasNext();)
+		}catch(Exception e)
 		{
-			ChatProtocol loadedItem = iter.next();
-			ChatLogMining item = new ChatLogMining();
-			
-			item.setId(loadedItem.getId());
-			item.setChat(loadedItem.getChatroom(), chat_mining, old_chat_mining);
-			item.setUser(loadedItem.getPerson(), user_mining, old_user_mining);
-			item.setMessage(loadedItem.getChatSource());
-			item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-
-			chatLogs.put(item.getId(), item);
+			e.printStackTrace();
 		}
-		
 		return chatLogs;
 	}
 	

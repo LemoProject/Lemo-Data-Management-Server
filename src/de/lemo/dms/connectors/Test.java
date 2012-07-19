@@ -21,15 +21,15 @@ public class Test {
 		
 		//ConnectorChemgapedia cm = new ConnectorChemgapedia();
 			
-		//ConnectorClix cc = new ConnectorClix();
+		ConnectorClix cc = new ConnectorClix();
 		
-		//cc.getData();
+		cc.getData();
 		
-		ConnectorMoodle cm = new ConnectorMoodle();
+		//ConnectorMoodle cm = new ConnectorMoodle();
 		
-		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
+		//cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
 		
-		cm.getData();
+		//cm.getData();
 		
 		//cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
 		/*

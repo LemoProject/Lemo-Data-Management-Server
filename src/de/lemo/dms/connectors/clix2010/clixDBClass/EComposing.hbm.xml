@@ -29,12 +29,12 @@
         <property
             name="endDate"
             column="ENDDATE"
-            type="long"/>
+            type="string"/>
             
         <property
             name="startDate"
             column="STARTDATE"
-            type="long"/>
+            type="string"/>
             
     </class>
 

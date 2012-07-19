@@ -28,6 +28,7 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentMining;
+import de.lemo.dms.db.miningDBclass.ChatMining;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
@@ -166,6 +167,11 @@ public class QFrequentPathsBIDE {
 						case 1008:
 						{
 							c =session.createCriteria(WikiMining.class, "learnO");
+							break;
+						}
+						case 1009:
+						{
+							c =session.createCriteria(ChatMining.class, "learnO");
 							break;
 						}
 						default:

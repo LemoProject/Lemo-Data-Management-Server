@@ -23,7 +23,7 @@
         <property
             name="message"
             column="message"
-            type="string"/>
+            type="text"/>
                
 		<many-to-one 
        		name="user" 

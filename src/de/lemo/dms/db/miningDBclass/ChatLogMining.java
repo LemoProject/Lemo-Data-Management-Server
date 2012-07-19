@@ -2,10 +2,11 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 
-public class ChatLogMining implements IMappingClass{
+public class ChatLogMining implements IMappingClass, ILogMining{
 
 	private long id;
 	private ChatMining chat;
@@ -108,6 +109,47 @@ public class ChatLogMining implements IMappingClass{
 			this.chat = oldChatMining.get(chat);
 			oldChatMining.get(chat).addChat_log(this);
 		}
+	}
+
+	@Override
+	public int compareTo(ILogMining o) {
+		ILogMining s;
+		try{
+			s = o;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.timestamp > s.getTimestamp())
+			return 1;
+		if(this.timestamp < s.getTimestamp())
+			return -1;
+		return 0;
+	}
+
+	@Override
+	public String getAction() {
+		return "chat";
+	}
+
+	@Override
+	public String getTitle() {
+		return this.chat.getTitle();
+	}
+
+	@Override
+	public Long getLearnObjId() {
+		return this.getChat().getId();
+	}
+
+	@Override
+	public Long getDuration() {
+		return 0L;
+	}
+
+	@Override
+	public Long getPrefix() {
+		return 1009L;
 	}
 	
 }
