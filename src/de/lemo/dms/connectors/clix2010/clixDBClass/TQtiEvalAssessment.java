@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class TQtiEvalAssessment {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class TQtiEvalAssessment  implements IClixMappingClass{
 
 	
 	private Long id;
@@ -13,6 +15,18 @@ public class TQtiEvalAssessment {
 	
 	public Long getId() {
 		return id;
+	}
+	
+	public String getString()
+	{
+		return "TQtiEvalAssessmentä$"
+				+this.id+"ä$"
+				+this.getLastInvocation()+"ä$"
+				+this.getAssessment()+"ä$"
+				+this.getCandidate()+"ä$"
+				+this.getComponent()+"ä$"
+				+this.getEvalCount()+"ä$"
+				+this.getEvaluatedScore();
 	}
 
 	public void setId(Long id) {

@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class T2Task {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class T2Task  implements IClixMappingClass{
 	
 	private Long id;
 	private String questionText;
@@ -15,6 +17,16 @@ public class T2Task {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public String getString()
+	{
+		return "T2Taskä$"
+				+this.getId()+"ä$"
+				+this.getQuestionText()+"ä$"
+				+this.getInputType()+"ä$"
+				+this.getTaskType()+"ä$"
+				+this.getTopicId();
 	}
 
 	public void setId(Long id) {

@@ -20,6 +20,16 @@
             name="lastLoginTime"
             column="LASTLOGINTIME"
             type="string"/>
+            
+        <property
+            name="login"
+            column="LOGIN"
+            type="string"/>
+            
+       	<property
+            name="sex"
+            column="SALUTATION_ID"
+            type="long"/>
 
         <property
             name="firstLoginTime"

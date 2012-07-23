@@ -85,8 +85,8 @@ public class QFrequentPathsBIDE {
     		@QueryParam(COURSE_IDS) List<Long> courseIds, 
     		@QueryParam(USER_IDS) List<Long> userIds, 
     		@QueryParam(MINSUP) double minSup, 
-    		@QueryParam(SESSIONWISE) boolean heedSessions, 
-    		@QueryParam(STARTTIME) long startTime, 
+    		@QueryParam(SESSIONWISE) boolean heedSessions,
+    		@QueryParam(STARTTIME) long startTime,
     		@QueryParam(ENDTIME) long endTime) {
 		
 		ResultListLongObject result = new ResultListLongObject();

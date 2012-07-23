@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class ChatProtocol {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class ChatProtocol  implements IClixMappingClass{
 
 	private Long id;
 	private Long chatroom;
@@ -8,7 +10,14 @@ public class ChatProtocol {
 	private String chatSource;
 	private String lastUpdated;
 	
-	
+	public String getString()
+	{
+		return "ChatProtocolä$"+this.id+"ä$"
+				+this.getChatSource()+"ä$"
+				+this.getLastUpdated()+"ä$"
+				+this.getChatroom()+"ä$"
+				+this.getPerson();
+	}
 	
 	public Long getId() {
 		return id;

@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class ExercisePersonalised {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class ExercisePersonalised  implements IClixMappingClass{
 	
 	private ExercisePersonalisedPK id;
 	
@@ -15,6 +17,18 @@ public class ExercisePersonalised {
 		return id;
 	}
 
+	public String getString()
+	{
+		return "ExercisePersonalizedä$"
+						+this.id+"ä$"
+						+this.getUploadDate()+"ä$"
+						+this.getCommunity()+"ä$"
+						+this.getExercise()+"ä$"
+						+this.getExerciseSheet()+"ä$"
+						+this.getPoints()+"ä$"
+						+this.getUser();
+	}
+	
 	public void setId(ExercisePersonalisedPK id) {
 		this.id = id;
 	}

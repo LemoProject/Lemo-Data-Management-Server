@@ -1,5 +1,10 @@
 package de.lemo.dms.connectors.clix2010;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,27 +20,34 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressionsPK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ChatProtocol;
 import de.lemo.dms.connectors.clix2010.clixDBClass.Chatroom;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponentType;
+import de.lemo.dms.connectors.clix2010.clixDBClass.EComponentTypePK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComposing;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponent;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalised;
+import de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalisedPK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntry;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntryState;
+import de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntryStatePK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.Person;
 import de.lemo.dms.connectors.clix2010.clixDBClass.PlatformGroup;
 import de.lemo.dms.connectors.clix2010.clixDBClass.PlatformGroupSpecification;
+import de.lemo.dms.connectors.clix2010.clixDBClass.PlatformGroupSpecificationPK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.PortfolioLog;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ScormSessionTimes;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ScormSessionTimesPK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.T2Task;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPosition;
+import de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPositionPK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TGroupFullSpecification;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContent;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiEvalAssessment;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TTestSpecification;
+import de.lemo.dms.connectors.clix2010.clixDBClass.TTestSpecificationPK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseComposingExt;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseGroup;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseGroupMember;
 import de.lemo.dms.connectors.clix2010.clixDBClass.WikiEntry;
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 import de.lemo.dms.connectors.clix2010.clixHelper.TimeConverter;
 
 
@@ -735,6 +747,7 @@ public class ClixImporter {
 	        Query wE = session.createQuery("from WikiEntry x order by x.id asc");
 	        wikiEntry = wE.list();	        
 	        System.out.println("WikiEntry tables: " + wikiEntry.size()); 
+	        
 	        
 		}catch(Exception e)
 		{
@@ -1459,6 +1472,12 @@ public class ClixImporter {
 		HashMap<Long, ForumLogMining> forumLogs = new HashMap<Long, ForumLogMining>();
 		
 		try{
+			HashMap<Long, EComposing> ecMap = new HashMap<Long, EComposing>();
+			for(Iterator<EComposing> iter = eComposing.iterator(); iter.hasNext();)
+			{
+				EComposing ec = iter.next();
+				ecMap.put(ec.getComponent(), ec);
+			}
 			for(Iterator<ForumEntry> iter = forumEntry.iterator(); iter.hasNext();)
 			{
 				ForumEntry loadedItem = iter.next();
@@ -1468,8 +1487,32 @@ public class ClixImporter {
 				item.setUser(loadedItem.getLastUpdater(), user_mining, old_user_mining);
 				item.setSubject(loadedItem.getTitle());
 				item.setMessage(loadedItem.getContent());
+				item.setAction("Post");
 				
-				forumLogs.put(item.getId(), item);
+				if(ecMap.get(loadedItem.getForum()) != null)
+					item.setCourse(ecMap.get(loadedItem.getForum()).getComponent(), course_mining, old_course_mining);
+				
+				if(item.getUser() != null && item.getForum() != null )
+					forumLogs.put(item.getId(), item);
+			}
+			
+			for(Iterator<ForumEntryState> iter = forumEntryState.iterator(); iter.hasNext();)
+			{
+				ForumEntryState loadedItem = iter.next();
+				ForumLogMining item = new ForumLogMining();
+				item.setId(loadedItem.getId().hashCode());
+				item.setForum(loadedItem.getForum(), forum_mining, old_forum_mining);
+				item.setUser(loadedItem.getUser(), user_mining, old_user_mining);
+				item.setAction("View");
+				if(forumLogs.get(loadedItem.getEntry()) != null)
+						item.setSubject(forumLogs.get(loadedItem.getEntry()).getSubject());
+				item.setMessage("");
+				
+				if(ecMap.get(loadedItem.getForum()) != null)
+					item.setCourse(ecMap.get(loadedItem.getForum()).getComponent(), course_mining, old_course_mining);
+				
+				if(item.getUser() != null && item.getForum() != null )
+					forumLogs.put(item.getId(), item);
 			}
 			System.out.println("Generated " + forumLogs.size() + " ForumLogMining.");
 			
@@ -1594,6 +1637,12 @@ public class ClixImporter {
 	{
 		HashMap<Long, AssignmentLogMining> assignmentLogs = new HashMap<Long, AssignmentLogMining>();
 		try{
+			HashMap<Long, EComposing> ecMap = new HashMap<Long, EComposing>();
+			for(Iterator<EComposing> iter = eComposing.iterator(); iter.hasNext();)
+			{
+				EComposing ec = iter.next();
+				ecMap.put(ec.getComponent(), ec);
+			}
 			for(Iterator<ExercisePersonalised> iter = exercisePersonalised.iterator(); iter.hasNext();)
 			{
 				ExercisePersonalised loadedItem = iter.next();
@@ -1603,8 +1652,13 @@ public class ClixImporter {
 				item.setUser(loadedItem.getUser(), user_mining, old_user_mining);
 				item.setGrade(loadedItem.getPoints());
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getUploadDate()));
+				if(ecMap.get(loadedItem.getExercise()) != null)
+					item.setCourse(ecMap.get(loadedItem.getExercise()).getId(), course_mining, old_course_mining);
 				
-				assignmentLogs.put(item.getId(), item);
+				item.setId(loadedItem.getId().hashCode());
+				
+				if(item.getCourse() != null && item.getAssignment() != null && item.getUser() != null)
+					assignmentLogs.put(item.getId(), item);
 			}
 			System.out.println("Generated " + assignmentLogs.size() + " AssignmentLogMining.");
 		
@@ -1705,6 +1759,521 @@ public class ClixImporter {
 	}
 	
 	
+	private static void loadFromFile()
+	{
+		try
+	    {	    
+			chatroom = new ArrayList<Chatroom>();	        
+	        eComposing = new ArrayList<EComposing>();
+	        biTrackContentImpressions = new ArrayList<BiTrackContentImpressions>();
+	        chatProtocol = new ArrayList<ChatProtocol>();
+	        eComponentType = new ArrayList<EComponentType>();
+	        eComponent= new ArrayList<EComponent>();	     
+	        exercisePersonalised= new ArrayList<ExercisePersonalised>();
+	        forumEntry = new ArrayList<ForumEntry>();
+	        forumEntryState = new ArrayList<ForumEntryState>();
+	        person = new ArrayList<Person>();
+	        platformGroupSpecification = new ArrayList<PlatformGroupSpecification>();
+	        platformGroup = new ArrayList<PlatformGroup>();
+	        portfolioLog = new ArrayList<PortfolioLog>();
+	        scormSessionTimes = new ArrayList<ScormSessionTimes>();
+	        t2Task = new ArrayList<T2Task>();
+	        tAnswerPosition = new ArrayList<TAnswerPosition>();
+	        teamExerciseComposingExt = new ArrayList<TeamExerciseComposingExt>();
+	        teamExerciseGroup = new ArrayList<TeamExerciseGroup>();
+	        teamExerciseGroupMember = new ArrayList<TeamExerciseGroupMember>();
+	        tGroupFullSpecification = new ArrayList<TGroupFullSpecification>();
+	        tQtiContent = new ArrayList<TQtiContent>();
+	        tQtiEvalAssessment = new ArrayList<TQtiEvalAssessment>();
+	        tTestSpecification = new ArrayList<TTestSpecification>();
+	        wikiEntry = new ArrayList<WikiEntry>();
+	    	System.out.println("Reading server log...");
+	    	BufferedReader input =  new BufferedReader(new FileReader("c://users//s.schwarzrock//desktop//clixDB.txt"));
+	    	String line = null;
+    		while (( line = input.readLine()) != null)
+	    	{
+    			String[] pre = new String[20];
+    			int pos = 0;
+    			while(line.indexOf("ä$") > -1)
+    				{
+    					
+    					pre[pos] = line.substring(0, line.indexOf("ä$"));
+    					line = line.substring(line.indexOf("ä$") +2);
+    					pos++;
+    				}
+    				pre[pos] = line;
+    			
+    			if(pre[0].equals("BiTrackContentImpressions"))
+    			{
+    				BiTrackContentImpressions item = new BiTrackContentImpressions();
+    				String[] sa = pre;
+    				BiTrackContentImpressionsPK id = new BiTrackContentImpressionsPK();
+    				if(!sa[1].equals("null"))
+    					item.setContainer(Long.parseLong(sa[1]));
+    				if(!sa[3].equals("null"))
+    					item.setCharacteristic(Long.parseLong(sa[3]));
+    				if(!sa[4].equals("null"))
+    					item.setContent(Long.parseLong(sa[4]));
+    				item.setDayOfAccess(sa[2]);
+    				if(!sa[5].equals("null"))
+    					item.setTotalImpressions(Long.parseLong(sa[5]));
+    				if(!sa[6].equals("null"))
+    					item.setUser(Long.parseLong(sa[6]));
+    				id.setCharacteristic(item.getCharacteristic());
+    				id.setContainer(item.getContainer());
+    				id.setContent(item.getContent());
+    				id.setDayOfAccess(item.getDayOfAccess());
+    				id.setUser(item.getUser());
+    				item.setId(id);
+    				
+    				biTrackContentImpressions.add(item);
+    			}
+    			else if(pre[0].equals("ChatProtocol"))
+    			{
+    				ChatProtocol item = new ChatProtocol();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				if(!sa[4].equals("null"))
+    					item.setChatroom(Long.parseLong(sa[4]));
+    				item.setChatSource(sa[2]);
+    				item.setLastUpdated(sa[3]);
+    				if(!sa[5].equals("null"))
+    					item.setPerson(Long.valueOf(sa[5]));
+    				
+    				chatProtocol.add(item);
+    			}
+    			else if(pre[0].equals("Chatroom"))
+    			{
+    				Chatroom item = new Chatroom();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				item.setLastUpdated(sa[2]);
+    				item.setTitle(sa[3]);
+    				
+    				chatroom.add(item);
+    			}
+    			else if(pre[0].equals("EComponent"))
+    			{
+    				EComponent item = new EComponent();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				item.setCreationDate(sa[2]);
+    				item.setDescription(sa[3]);
+    				item.setLastUpdated(sa[4]);
+    				item.setName(sa[5]);
+    				item.setStartDate(sa[6]);
+    				if(!sa[7].equals("null"))
+    					item.setType(Long.valueOf(sa[7]));
+    				
+    				eComponent.add(item);
+    			}
+    			else if(pre[0].equals("EComponentType"))
+    			{
+    				EComponentType item = new EComponentType();
+    				String[] sa = pre;
+    				if(!sa[2].equals("null"))
+    					item.setCharacteristic(Long.valueOf(sa[2]));
+    				if(!sa[3].equals("null"))
+    					item.setCharacteristicId(Long.valueOf(sa[3]));
+    				if(!sa[4].equals("null"))
+    					item.setComponent(Long.valueOf(sa[4]));
+    				if(!sa[5].equals("null"))
+    					item.setLanguage(Long.valueOf(sa[5]));
+    				item.setUploadDir(sa[1]);
+    				
+    				EComponentTypePK id = new EComponentTypePK();
+    				id.setComponent(item.getComponent());
+    				id.setLanguage(item.getLanguage());
+    				item.setId(id);
+    				
+    				eComponentType.add(item);
+    			}
+    			else if(pre[0].equals("EComposing"))
+    			{
+    				EComposing item = new EComposing();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				if(!sa[4].equals("null"))
+    					item.setComponent(Long.valueOf(sa[4]));
+    				if(!sa[5].equals("null"))
+    					item.setComposing(Long.valueOf(sa[5]));
+    				if(!sa[6].equals("null"))
+    					item.setComposingType(Long.valueOf(sa[6]));
+    				item.setEndDate(sa[2]);
+    				item.setStartDate(sa[3]);
+    				
+    				eComposing.add(item);
+    			}
+    			
+    			else if(pre[0].equals("ExercisePersonalised"))
+    			{
+    				ExercisePersonalised item = new ExercisePersonalised();
+    				String[] sa = pre;
+    				if(!sa[3].equals("null"))
+    					item.setCommunity(Long.valueOf(sa[3]));
+    				if(!sa[4].equals("null"))
+    					item.setExercise(Long.valueOf(sa[4]));
+    				if(!sa[5].equals("null"))
+    					item.setExerciseSheet(Long.valueOf(sa[5]));
+    				if(!sa[6].equals("null"))
+    					item.setPoints(Long.valueOf(sa[6]));
+    				
+    				item.setUploadDate(sa[2]);
+    				if(!sa[7].equals("null"))
+    					item.setUser(Long.valueOf(sa[7]));
+    				
+    				ExercisePersonalisedPK id = new ExercisePersonalisedPK();
+    				id.setCommunity(item.getCommunity());
+    				id.setExercise(item.getExercise());
+    				id.setExerciseSheet(item.getExerciseSheet());
+    				id.setUser(item.getUser());
+    				item.setId(id);
+    				
+    				exercisePersonalised.add(item);
+    			}
+    			else if(pre[0].equals("ForumEntry"))
+    			{
+    				ForumEntry item = new ForumEntry();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				item.setContent(sa[2]);
+    				if(!sa[3].equals("null"))
+    					item.setForum(Long.valueOf(sa[3]));
+    				item.setLastUpdated(sa[4]);
+    				if(!sa[6].equals("null"))
+    					item.setLastUpdater(Long.valueOf(sa[6]));
+    				item.setTitle(sa[5]);
+    				
+    				forumEntry.add(item);
+    			}
+    			else if(pre[0].equals("ForumEntryState"))
+    			{
+    				ForumEntryState item = new ForumEntryState();
+    				String[] sa = pre;
+    				if(!sa[2].equals("null"))
+    					item.setEntry(Long.valueOf(sa[2]));
+    				if(!sa[3].equals("null"))
+    					item.setForum(Long.valueOf(sa[3]));
+    				item.setLastUpdated(sa[1]);
+    				if(!sa[4].equals("null"))
+    					item.setUser(Long.valueOf(sa[4]));
+    				
+    				ForumEntryStatePK id = new ForumEntryStatePK();
+    				id.setEntry(item.getEntry());
+    				id.setUser(item.getUser());
+    				item.setId(id);
+    				
+    				forumEntryState.add(item);
+    			}
+    			else if(pre[0].equals("Person"))
+    			{
+    				Person item = new Person();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				if(!sa[2].equals("null"))
+    					item.setFirstLoginTime(sa[2]);
+    				if(!sa[3].equals("null"))
+    					item.setLastLoginTime(sa[3]);
+    				item.setLogin(sa[4]);
+    				if(!sa[5].equals("null"))
+    					item.setSex(Long.valueOf(sa[5]));
+    				
+    				person.add(item);
+    			}
+    			else if(pre[0].equals("PlatformGroup"))
+    			{
+    				PlatformGroup item = new PlatformGroup();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				item.setCreated(sa[2]);
+    				
+    				item.setLastUpdated(sa[3]);
+    				if(!sa[4].equals("null"))
+    					item.setTypeId(Long.valueOf(sa[4]));
+    				
+    				platformGroup.add(item);
+    			}
+    			else if(pre[0].equals("PlatformGroupSpecification"))
+    			{
+    				PlatformGroupSpecification item = new PlatformGroupSpecification();
+    				String[] sa = pre;
+    				if(!sa[1].equals("null"))
+    					item.setGroup(Long.valueOf(sa[1]));
+    				if(!sa[2].equals("null"))
+    					item.setPerson(Long.valueOf(sa[2]));
+    				
+    				PlatformGroupSpecificationPK id = new PlatformGroupSpecificationPK();
+    				id.setGroup(item.getGroup());
+    				id.setPerson(item.getPerson());
+    				item.setId(id);
+    				
+    				platformGroupSpecification.add(item);
+    			}
+    			else if(pre[0].equals("PortfolioLog"))
+    			{
+    				PortfolioLog item = new PortfolioLog();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				if(!sa[3].equals("null"))
+    					item.setComponent(Long.valueOf(sa[3]));
+    				item.setLastUpdated(sa[2]);
+    				if(!sa[4].equals("null"))
+    					item.setLastUpdater(Long.valueOf(sa[4]));
+    				if(!sa[5].equals("null"))
+    					item.setPerson(Long.valueOf(sa[5]));
+    				if(!sa[6].equals("null"))
+    					item.setTypeOfModification(Long.valueOf(sa[6]));
+    				
+    				portfolioLog.add(item);
+    			}
+    			else if(pre[0].equals("ScormSessionTimes"))
+    			{
+    				ScormSessionTimes item = new ScormSessionTimes();
+    				String[] sa = pre;
+    				if(!sa[4].equals("null"))
+    					item.setComponent(Long.valueOf(sa[4]));
+    				item.setLastUpdated(sa[1]);
+    				if(!sa[5].equals("null"))
+    					item.setPerson(Long.valueOf(sa[5]));
+    				item.setScore(sa[2]);
+    				item.setStatus(sa[3]);
+    				
+    				ScormSessionTimesPK id = new ScormSessionTimesPK();
+    				id.setComponent(item.getComponent());
+    				id.setPerson(item.getPerson());
+    				item.setId(id);
+    				
+    				scormSessionTimes.add(item);
+    			}
+    			else if(pre[0].equals("T2Task"))
+    			{
+    				T2Task item = new T2Task();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				if(!sa[3].equals("null"))
+    					item.setInputType(Long.valueOf(sa[3]));
+    				item.setQuestionText(sa[2]);
+    				if(!sa[4].equals("null"))
+    					item.setTaskType(Long.valueOf(sa[4]));
+    				if(!sa[5].equals("null"))
+    					item.setTopicId(Long.valueOf(sa[5]));
+    				
+    				t2Task.add(item);
+    			}
+    			else if(pre[0].equals("TAnswerPosition"))
+    			{
+     				TAnswerPosition item = new TAnswerPosition();
+    				String[] sa = pre;
+    				item.setEvaluated(sa[1]);
+    				if(!sa[2].equals("null"))
+    					item.setPerson(Long.valueOf(sa[2]));
+    				if(!sa[3].equals("null"))
+    					item.setQuestion(Long.valueOf(sa[3]));
+    				if(!sa[4].equals("null"))
+    					item.setTask(Long.valueOf(sa[4]));
+    				if(!sa[5].equals("null"))
+    					item.setTest(Long.valueOf(sa[5]));
+    				
+    				TAnswerPositionPK id = new TAnswerPositionPK();
+    				id.setPerson(item.getPerson());
+    				id.setQuestion(item.getQuestion());
+    				id.setTask(item.getTask());
+    				id.setTest(item.getTest());
+    				
+    				item.setId(id);
+    				
+    				tAnswerPosition.add(item);
+    			}
+    			else if(pre[0].equals("TeamExerciseComposingExt"))
+    			{
+    				TeamExerciseComposingExt item = new TeamExerciseComposingExt();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				if(!sa[3].equals("null"))
+    					item.seteComposingId(Long.valueOf(sa[3]));
+    				item.setSubmissionDeadline(sa[2]);
+    				
+    				teamExerciseComposingExt.add(item);
+    			}
+    			else if(pre[0].equals("TeamExerciseGroup"))
+    			{
+       				TeamExerciseGroup item = new TeamExerciseGroup();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				if(!sa[2].equals("null"))
+    					item.setComponent(Long.valueOf(sa[2]));
+    				
+    				teamExerciseGroup.add(item);
+    			}
+    			else if(pre[0].equals("TeamExerciseGroupMember"))
+    			{
+    				TeamExerciseGroupMember item = new TeamExerciseGroupMember();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				if(!sa[2].equals("null"))
+    					item.setExerciseGroup(Long.valueOf(sa[2]));
+    				if(!sa[3].equals("null"))
+    					item.setPortfolio(Long.valueOf(sa[3]));
+    				
+    				teamExerciseGroupMember.add(item);
+    			}
+    			else if(pre[0].equals("TGroupFullSpecification"))
+    			{
+    				TGroupFullSpecification item = new TGroupFullSpecification();
+    				String[] sa = pre;
+    				if(!sa[1].equals("null"))
+    					item.setGroup(Long.valueOf(sa[1]));
+    				if(!sa[2].equals("null"))
+    					item.setPerson(Long.valueOf(sa[2]));
+    				
+    				tGroupFullSpecification.add(item);
+    			}
+    			else if(pre[0].equals("TQtiContent"))
+    			{
+    				TQtiContent item = new TQtiContent();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				item.setCreated(sa[2]);
+    				item.setLastUpdated(sa[3]);
+    				item.setName(sa[4]);
+    				
+    				tQtiContent.add(item);
+    			}
+    			else if(pre[0].equals("TQtiEvalAssessment"))
+    			{
+      				TQtiEvalAssessment item = new TQtiEvalAssessment();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				if(!sa[3].equals("null"))
+    					item.setAssessment(Long.valueOf(sa[3]));
+    				if(!sa[4].equals("null"))
+    					item.setCandidate(Long.valueOf(sa[4]));
+    				if(!sa[5].equals("null"))
+    					item.setComponent(Long.valueOf(sa[5]));
+    				if(!sa[6].equals("null"))
+    					item.setEvalCount(Long.valueOf(sa[6]));
+    				if(!sa[7].equals("null"))
+    					item.setEvaluatedScore(Long.valueOf(sa[7]));
+    				item.setLastInvocation(sa[2]);
+    				
+    				tQtiEvalAssessment.add(item);
+    			}
+    			else if(pre[0].equals("TTestSpecification"))
+    			{
+     				TTestSpecification item = new TTestSpecification();
+    				String[] sa = pre;
+    				if(!sa[1].equals("null"))
+    					item.setTask(Long.valueOf(sa[1]));
+    				if(!sa[2].equals("null"))
+    					item.setTest(Long.valueOf(sa[2]));
+    				
+    				TTestSpecificationPK id = new TTestSpecificationPK();
+    				id.setTask(item.getTask());
+    				id.setTest(item.getTest());
+    				
+    				item.setId(id);
+    				
+    				tTestSpecification.add(item);
+    			}
+    			else if(pre[0].equals("WikiEntry"))
+    			{
+      				WikiEntry item = new WikiEntry();
+    				String[] sa = pre;
+    				item.setId(Long.valueOf(sa[1]));
+    				if(!sa[5].equals("null"))
+    					item.setComponent(Long.valueOf(sa[5]));
+    				item.setCreated(sa[2]);
+    				if(!sa[6].equals("null"))
+    					item.setCreator(Long.valueOf(sa[6]));
+    				if(!sa[7].equals("null"))
+    					item.setLastProcessor(Long.valueOf(sa[7]));
+    				item.setLastUpdated(sa[3]);
+    				if(!sa[8].equals("null"))
+    					item.setPublisher(Long.valueOf(sa[8]));
+    				item.setPublishingDate(sa[4]);
+    				
+    				wikiEntry.add(item);
+    			}
+	    	}
+    		
+	        for(int i = 0; i < eComponent.size(); i++)
+	        {
+	        	eComponentMap.put(eComponent.get(i).getId(), eComponent.get(i));
+	        }
+	        System.out.println("Loaded "+biTrackContentImpressions.size()+" biTrackContentImpressions");
+	        System.out.println("Loaded "+chatProtocol.size()+" chatProtocols");
+	        System.out.println("Loaded "+chatroom.size()+" chatroom");
+	        System.out.println("Loaded "+eComponent.size()+" eComponent");
+	        System.out.println("Loaded "+eComponentType.size()+" eComponentType");
+	        System.out.println("Loaded "+eComposing.size()+" eComposing");
+	        System.out.println("Loaded "+exercisePersonalised.size()+" exercisePersonalised");
+	        System.out.println("Loaded "+forumEntry.size()+" forumEntry");
+	        System.out.println("Loaded "+forumEntryState.size()+" forumEntryState");
+	        System.out.println("Loaded "+person.size()+" person");
+	        System.out.println("Loaded "+platformGroup.size()+" platformGroup");
+	        System.out.println("Loaded "+platformGroupSpecification.size()+" platformGroupSpecification");
+	        System.out.println("Loaded "+portfolioLog.size()+" portfolioLog");
+	        System.out.println("Loaded "+scormSessionTimes.size()+" scormSessionTimes");
+	        System.out.println("Loaded "+t2Task.size()+" t2Task");
+	        System.out.println("Loaded "+tAnswerPosition.size()+" tAnswerPosition");
+	        System.out.println("Loaded "+teamExerciseComposingExt.size()+" teamExerciseComposingExt");
+	        System.out.println("Loaded "+teamExerciseGroup.size()+" teamExerciseGroup");
+	        System.out.println("Loaded "+teamExerciseGroupMember.size()+" teamExerciseGroupMember");
+	        System.out.println("Loaded "+tGroupFullSpecification.size()+" tGroupFullSpecification");
+	        System.out.println("Loaded "+tQtiContent.size()+" tQtiContent");
+	        System.out.println("Loaded "+tQtiEvalAssessment.size()+" tQtiEvalAssessment");
+	        System.out.println("Loaded "+tTestSpecification.size()+" tTestSpecification");
+	        System.out.println("Loaded "+wikiEntry.size()+" wikiEntry");
+	    		
+	    }catch(Exception e)
+	    {
+	    	e.printStackTrace();
+	    }
+	}
+	
+	private static void writeToFile()
+	{
+		ArrayList<IClixMappingClass> al = new ArrayList<IClixMappingClass>();
+        al.addAll(chatroom);	        
+        al.addAll(eComposing);
+        al.addAll(biTrackContentImpressions);
+        al.addAll(chatProtocol);
+        al.addAll(eComponentType);
+        al.addAll(eComponent);	     
+        al.addAll(exercisePersonalised);
+        al.addAll(forumEntry);
+        al.addAll(forumEntryState);
+        al.addAll(person);
+        al.addAll(platformGroupSpecification);
+        al.addAll(platformGroup);
+        al.addAll(portfolioLog);
+        al.addAll(scormSessionTimes);
+        al.addAll(t2Task);
+        al.addAll(tAnswerPosition);
+        al.addAll(teamExerciseComposingExt);
+        al.addAll(teamExerciseGroup);
+        al.addAll(teamExerciseGroupMember);
+        al.addAll(tGroupFullSpecification);
+        al.addAll(tQtiContent);
+        al.addAll(tQtiEvalAssessment);
+        al.addAll(tTestSpecification);
+        al.addAll(wikiEntry);	        
+		try
+	    {	    
+	    	FileWriter out = new FileWriter("c://users//s.schwarzrock//desktop//clixDB.txt");
+	    	PrintWriter pout = new PrintWriter(out);
+    		for(int i = 0; i < al.size(); i++)
+    		{
+	    			pout.println(al.get(i).getString());
+    		}
+
+	    	pout.close();
+	    	System.out.println("Done...");
+	    }catch(Exception e)
+	    {
+	    	e.printStackTrace();
+	    }
+	}
 
 	
 

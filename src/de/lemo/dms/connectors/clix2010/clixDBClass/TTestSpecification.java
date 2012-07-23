@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class TTestSpecification {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class TTestSpecification  implements IClixMappingClass{
 	
 	private TTestSpecificationPK id;
 	private Long task;
@@ -10,6 +12,13 @@ public class TTestSpecification {
 	
 	public TTestSpecificationPK getId() {
 		return id;
+	}
+	
+	public String getString()
+	{
+		return "TTestSpecificationä$"
+				+this.getTask()+"ä$"
+				+this.getTest();
 	}
 
 

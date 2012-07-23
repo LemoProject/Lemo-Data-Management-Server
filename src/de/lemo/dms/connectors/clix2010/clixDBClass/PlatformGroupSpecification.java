@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class PlatformGroupSpecification {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class PlatformGroupSpecification  implements IClixMappingClass{
 	
 	private Long group;
 	private Long person;
@@ -10,6 +12,13 @@ public class PlatformGroupSpecification {
 	
 	public PlatformGroupSpecificationPK getId() {
 		return id;
+	}
+	
+	public String getString()
+	{
+		return "PlatformGroupSpecificationä$"
+				+this.getGroup()+"ä$"+
+				this.getPerson();
 	}
 
 

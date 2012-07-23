@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class TAnswerPosition {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class TAnswerPosition  implements IClixMappingClass{
 
 	private TAnswerPositionPK id;
 	private Long person;
@@ -10,6 +12,16 @@ public class TAnswerPosition {
 	
 	public TAnswerPositionPK getId() {
 		return id;
+	}
+	
+	public String getString()
+	{
+		return "TAnswerPositionä$"
+				+this.getEvaluated()+"ä$"
+				+this.getPerson()+"ä$"
+				+this.getQuestion()+"ä$"
+				+this.getTask()+"ä$"
+				+this.getTest();
 	}
 
 

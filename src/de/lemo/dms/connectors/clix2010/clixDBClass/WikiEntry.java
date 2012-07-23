@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class WikiEntry {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class WikiEntry  implements IClixMappingClass{
 	
 	private Long id;
 	private Long component;
@@ -14,6 +16,19 @@ public class WikiEntry {
 	
 	public String getCreated() {
 		return created;
+	}
+	
+	public String getString()
+	{
+		return "WikiEntryä$"
+				+this.id+"ä$"
+				+this.getCreated()+"ä$"
+				+this.getLastUpdated()+"ä$"
+				+this.getPublishingDate()+"ä$"
+				+this.getComponent()+"ä$"
+				+this.getCreator()+"ä$"
+				+this.getLastProcessor()+"ä$"
+				+this.getPublisher();
 	}
 
 	public void setCreated(String created) {

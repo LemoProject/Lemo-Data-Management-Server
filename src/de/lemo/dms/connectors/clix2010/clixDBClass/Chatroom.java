@@ -1,6 +1,7 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class Chatroom {
+public class Chatroom implements IClixMappingClass{
 
 	private long id;
 	private String title;
@@ -9,6 +10,14 @@ public class Chatroom {
 	public Chatroom()
 	{
 		
+	}
+	
+	public String getString()
+	{
+		return "Chatroomä$"
+				+this.id+"ä$"
+				+this.getLastUpdated()+"ä$"
+				+this.getTitle();
 	}
 	
 	public long getId() {

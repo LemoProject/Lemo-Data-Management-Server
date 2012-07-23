@@ -2127,7 +2127,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         	insert.setChat(loadedItem.getChat_id(), chat_mining, old_chat_mining);
         	insert.setMessage(loadedItem.getMessage());
         	insert.setTimestamp(loadedItem.getTimestamp());
-        	insert.setCourse(loadedItem.getChat_id(), course_mining, old_course_mining);
+        	insert.setCourse(insert.getChat().getCourse().getId(), course_mining, old_course_mining);
         	
         	
 			if(!numericUserId)

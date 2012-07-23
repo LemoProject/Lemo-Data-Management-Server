@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class TeamExerciseComposingExt {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class TeamExerciseComposingExt  implements IClixMappingClass{
 	
 	private Long id;
 	private Long eComposingId;
@@ -9,6 +11,14 @@ public class TeamExerciseComposingExt {
 	public TeamExerciseComposingExt()
 	{
 		
+	}
+	
+	public String getString()
+	{
+		return "TeamExerciseComposingExtä$"
+				+this.id+"ä$"
+				+this.getSubmissionDeadline()+"ä$"
+				+this.geteComposingId();
 	}
 	
 	public Long getId() {

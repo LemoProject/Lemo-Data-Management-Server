@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class EComponentType {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class EComponentType  implements IClixMappingClass{
 
 	private EComponentTypePK id;
 	
@@ -16,6 +18,17 @@ public class EComponentType {
 	private Long characteristic;
 	private Long language;
 	private String uploadDir;
+	
+	
+	public String getString()
+	{
+		return "EComponentTypeä$"
+				+this.getUploadDir()+"ä$"
+				+this.getCharacteristic()+"ä$"
+				+this.getCharacteristicId()+"ä$"
+				+this.getComponent()+"ä$"
+				+this.getLanguage();
+	}
 	
 	public String getUploadDir() {
 		return uploadDir;

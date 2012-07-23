@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class ForumEntry {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class ForumEntry  implements IClixMappingClass{
 
 	private Long id;
 	private Long forum;
@@ -11,6 +13,17 @@ public class ForumEntry {
 	
 	public ForumEntry()
 	{}
+	
+	public String getString()
+	{
+		return "ForumEntryä$"
+				+this.id+"ä$"
+				+this.getContent()+"ä$"
+				+this.getForum()+"ä$"
+				+this.getLastUpdated()+"ä$"
+				+this.getTitle()+"ä$"
+				+this.getLastUpdater();
+	}
 
 	public Long getId() {
 		return id;

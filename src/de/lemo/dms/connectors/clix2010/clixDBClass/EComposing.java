@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class EComposing {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class EComposing  implements IClixMappingClass{
 	
 	private Long id;
 	private Long composing;
@@ -8,6 +10,17 @@ public class EComposing {
 	private String endDate;
 	private String startDate;
 	private Long composingType;
+	
+	public String getString()
+	{
+		return "EComposingä$"
+				+this.id+"ä$"
+				+this.getEndDate()+"ä$"
+				+this.getStartDate()+"ä$"
+				+this.getComponent()+"ä$"
+				+this.getComposing()+"ä$"
+				+this.getComposingType();
+	}
 	
 	public Long getComposingType() {
 		return composingType;

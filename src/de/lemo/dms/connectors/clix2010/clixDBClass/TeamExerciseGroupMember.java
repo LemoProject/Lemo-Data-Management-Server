@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class TeamExerciseGroupMember {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class TeamExerciseGroupMember  implements IClixMappingClass{
 
 	private Long id;
 	private Long portfolio;
@@ -10,6 +12,15 @@ public class TeamExerciseGroupMember {
 	public Long getId() {
 		return id;
 	}
+	
+	public String getString()
+	{
+		return "TeamExerciseGroupMemberä$"
+				+this.id+"ä$"
+				+this.getExerciseGroup()+"ä$"
+				+this.getPortfolio();
+	}
+	
 
 
 	public void setId(Long id) {

@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class TGroupFullSpecification {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class TGroupFullSpecification  implements IClixMappingClass{
 	
 	private Long group;
 	private Long person;
@@ -11,7 +13,12 @@ public class TGroupFullSpecification {
 		return group;
 	}
 
-
+	public String getString()
+	{
+		return "TGroupFullSpecificationä$"
+				+this.getGroup()+"ä$"
+				+this.getPerson();
+	}
 
 	public void setGroup(Long group) {
 		this.group = group;

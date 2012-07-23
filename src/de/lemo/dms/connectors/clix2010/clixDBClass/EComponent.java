@@ -4,7 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class EComponent {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class EComponent  implements IClixMappingClass{
 
 	
 	private Long id;
@@ -18,6 +20,18 @@ public class EComponent {
 	public EComponent()
 	{
 		
+	}
+	
+	public String getString()
+	{
+		return "EComponentä$"
+				+this.id+"ä$"
+				+this.getCreationDate()+"ä$"
+				+this.getDescription()+"ä$"
+				+this.getLastUpdated()+"ä$"
+				+this.getName()+"ä$"
+				+this.getStartDate()+"ä$"
+				+this.getType();
 	}
 	
 	public Long getId() {

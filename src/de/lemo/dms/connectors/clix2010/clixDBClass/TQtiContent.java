@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class TQtiContent {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class TQtiContent  implements IClixMappingClass{
 	
 	private Long id;
 	private String created;
@@ -13,6 +15,15 @@ public class TQtiContent {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getString()
+	{
+		return "TQtiContentä$"
+				+this.id+"ä$"
+				+this.getCreated()+"ä$"
+				+this.getLastUpdated()+"ä$"
+				+this.getName();
 	}
 
 	public TQtiContent()

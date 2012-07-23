@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class BiTrackContentImpressions {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class BiTrackContentImpressions implements IClixMappingClass{
 	
 	private BiTrackContentImpressionsPK id;
 
@@ -14,6 +16,17 @@ public class BiTrackContentImpressions {
 	
 	public BiTrackContentImpressionsPK getId() {
 		return id;
+	}
+	
+	public String getString()
+	{
+		return "BiTrackContentImpressionsä$"
+				+this.getContainer()+"ä$"
+				+this.getDayOfAccess()+"ä$"
+				+this.getCharacteristic()+"ä$"
+				+this.getContent()+"ä$"
+				+this.getTotalImpressions()+"ä$"
+				+this.getUser();
 	}
 
 	public void setId(BiTrackContentImpressionsPK id) {

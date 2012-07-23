@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class PlatformGroup {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class PlatformGroup  implements IClixMappingClass{
 	
 	private Long id;
 	private Long typeId;
@@ -11,6 +13,15 @@ public class PlatformGroup {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public String getString()
+	{
+		return "PlatformGroupä$"
+				+this.id+"ä$"
+				+this.getCreated()+"ä$"
+				+this.getLastUpdated()+"ä$"
+				+this.getTypeId();
 	}
 
 

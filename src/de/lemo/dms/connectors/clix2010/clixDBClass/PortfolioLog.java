@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class PortfolioLog {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class PortfolioLog  implements IClixMappingClass{
 	
 	private Long id;
 	private Long component;
@@ -16,6 +18,16 @@ public class PortfolioLog {
 		
 	}
 
+	public String getString()
+	{
+		return "PortfolioLogä$"
+				+this.id+"ä$"
+					+this.getLastUpdated()+"ä$"
+					+this.getComponent()+"ä$"
+					+this.getLastUpdater()+"ä$"
+					+this.getPerson()+"ä$"
+					+this.getTypeOfModification();
+	}
 
 
 	public Long getId() {

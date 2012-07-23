@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class ScormSessionTimes {
+import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
+
+public class ScormSessionTimes  implements IClixMappingClass{
 
 	private ScormSessionTimesPK id;
 
@@ -12,6 +14,16 @@ public class ScormSessionTimes {
 	
 	public ScormSessionTimesPK getId() {
 		return id;
+	}
+	
+	public String getString()
+	{
+		return "ScormSessionTimesä$"
+				+this.getLastUpdated()+"ä$"
+				+this.getScore()+"ä$"
+				+this.getStatus()+"ä$"
+				+this.getComponent()+"ä$"
+				+this.getPerson();
 	}
 
 	public void setId(ScormSessionTimesPK id) {
