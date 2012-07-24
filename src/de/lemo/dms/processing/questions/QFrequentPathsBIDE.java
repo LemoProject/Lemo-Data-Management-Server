@@ -75,8 +75,7 @@ public class QFrequentPathsBIDE {
                 Parameter.create(SESSIONWISE,"Heed sessions","Choose if user histories shall be devided into sessions."),
                 Interval.create(double.class, MINSUP, "Start time", "", 0.0d, 1.0d, 1d), 
                 Interval.create(long.class, STARTTIME, "Start time", "", 0L, now, 0L), 
-                Interval.create(long.class, ENDTIME, "End time", "", 0L, now, now)
-                );
+                Interval.create(long.class, ENDTIME, "End time", "", 0L, now, now));
         return parameters;
 	}
 	

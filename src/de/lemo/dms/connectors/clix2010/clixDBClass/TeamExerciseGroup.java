@@ -13,7 +13,7 @@ public class TeamExerciseGroup  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "EComposingä$"
+		return "TeamExerciseGroupä$"
 				+this.id+"ä$"
 				+this.getComponent();
 	}

@@ -6,36 +6,31 @@
 <hibernate-mapping>
 
     <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.EComposing"
-        table="lemo_db.E_COMPOSING">
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.Portfolio"
+        table="lemo_db.PORTFOLIO">
 
         <id
             name="id"
-            column="ID"
+            column="PORTFOLIO_ID"
             type="long">
             <generator class="native"/>
         </id>
-        
+
         <property
-            name="composing"
-            column="COMPOSING_ID"
+            name="person"
+            column="PERSON_ID"
             type="long"/>
 
         <property
             name="component"
             column="COMPONENT_ID"
             type="long"/>
-
-        <property
-            name="composingType"
-            column="COMPOSINGTYPE_ID"
-            type="long"/>
-                        
+            
         <property
             name="endDate"
             column="ENDDATE"
             type="string"/>
-            
+
         <property
             name="startDate"
             column="STARTDATE"
