@@ -10,8 +10,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.QueryParam;
@@ -19,6 +21,9 @@ import javax.ws.rs.QueryParam;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import ca.pfv.spmf.sequentialpatterns.AlgoBIDEPlus;
 import ca.pfv.spmf.sequentialpatterns.SequenceDatabase;
@@ -42,9 +47,13 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
+import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
-import de.lemo.dms.processing.parameter.ParameterMetaData;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
+import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
+import de.lemo.dms.processing.resulttype.UserPathLink;
+import de.lemo.dms.processing.resulttype.UserPathNode;
+import de.lemo.dms.processing.resulttype.UserPathObject;
 
 @QuestionID("frequentPaths")
 public class QFrequentPathsBIDE {
@@ -58,8 +67,8 @@ public class QFrequentPathsBIDE {
 	
 	private static HashMap<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
 
-	protected List<ParameterMetaData<?>> createParamMetaData() {
-	    List<ParameterMetaData<?>> parameters = new LinkedList<ParameterMetaData<?>>();
+    protected List<MetaParam<?>> createParamMetaData() {
+        List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
         
         IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
         dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
@@ -69,7 +78,8 @@ public class QFrequentPathsBIDE {
         if(latest.size() > 0)
         	now = ((BigInteger)latest.get(0)).longValue();
      
-        Collections.<ParameterMetaData<?>> addAll( parameters,
+        Collections.<MetaParam<?>>
+        addAll(parameters,
                 Parameter.create(COURSE_IDS,"Courses","List of courses."),
                 Parameter.create(USER_IDS,"User","List of users."),
                 Parameter.create(SESSIONWISE,"Heed sessions","Choose if user histories shall be devided into sessions."),
@@ -81,7 +91,7 @@ public class QFrequentPathsBIDE {
 	}
 	
 	@GET
-    public ResultListLongObject compute(
+    public ResultListUserPathGraph compute(
     		@QueryParam(COURSE_IDS) List<Long> courseIds, 
     		@QueryParam(USER_IDS) List<Long> userIds, 
     		@QueryParam(MINSUP) double minSup, 
@@ -89,7 +99,9 @@ public class QFrequentPathsBIDE {
     		@QueryParam(STARTTIME) long startTime,
     		@QueryParam(ENDTIME) long endTime) {
 		
-		ResultListLongObject result = new ResultListLongObject();
+        ArrayList<UserPathNode> nodes = Lists.newArrayList();
+        ArrayList<UserPathLink> links = Lists.newArrayList();
+		
 		try{
 			
 		
@@ -112,70 +124,78 @@ public class QFrequentPathsBIDE {
 		Sequences res = algo.runAlgorithm(sequenceDatabase); 
 		
 		Criteria cou = session.createCriteria(CourseResourceMining.class);
-		
-		//Create FileWriter for output-file
-		FileWriter out = new FileWriter("./bide_res.txt");
-    	PrintWriter pout = new PrintWriter(out);
+		LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
     	
 		for(int i = 0; i < res.getLevelCount(); i++)
 		{
 			for(int j = 0; j < res.getLevel(i).size(); j++)
 			{
+				UserPathObject predecessor = null;
 				System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
-				pout.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
 				for(int k = 0; k < res.getLevel(i).get(j).size(); k++)
 				{
 					Criteria c;
 					String obId = res.getLevel(i).get(j).get(k).getItems().get(0).getId()+"";
+					String type ="";
 					switch(Integer.valueOf(obId.substring(0, 4)))
 					{
 						case 1001:
 						{
 							c =session.createCriteria(AssignmentMining.class, "learnO");
+							type = "assignment";
 							break;
 						}
 						case 1002:
 						{
 							c =session.createCriteria(CourseMining.class, "learnO");
+							type = "course";
 							break;
 						}
 						case 1005:
 						{
 							c =session.createCriteria(ForumMining.class, "learnO");
+							type = "forum";
 							break;
 						}
 						case 1003:
 						{
 							c =session.createCriteria(QuestionMining.class, "learnO");
+							type = "question";
 							break;
 						}
 						case 1004:
 						{
 							c =session.createCriteria(QuizMining.class, "learnO");
+							type = "quiz";
 							break;
 						}
 						case 1006:
 						{
 							c =session.createCriteria(ResourceMining.class, "learnO");
+							type = "resource";
 							break;
 						}
 						case 1007:
 						{
 							c =session.createCriteria(ScormMining.class, "learnO");
+							type = "scorm";
 							break;
 						}
 						case 1008:
 						{
 							c =session.createCriteria(WikiMining.class, "learnO");
+							type = "wiki";
 							break;
 						}
 						case 1009:
 						{
 							c =session.createCriteria(ChatMining.class, "learnO");
+							type = "chat";
 							break;
 						}
 						default:
 						{		c =session.createCriteria(ILearningObject.class, "learnO");
+								type = "unknown";
 								break;
 						}
 					}
@@ -187,28 +207,67 @@ public class QFrequentPathsBIDE {
 					if(ilo.getCourse() != null && ilo.getCourse().getTitle() != null)
 						courseTitle = ilo.getCourse().getTitle();
 					String url = "";
-					if(learnObj instanceof ResourceMining)
-						url = ((ResourceMining)learnObj).getUrl();
+					//if(learnObj instanceof ResourceMining)
+					//	url = ((ResourceMining)learnObj).getUrl();
+					
+					UserPathObject upo = new UserPathObject();
+					
+					//If the node is unknown, create a new entry in pathObjects
+					if(pathObjects.get(obId) == null)
+					{
+						upo.setTitle(ilo.getTitle());
+						upo.setId(obId);
+						upo.setType(type);
+						upo.setWeight(1L);
+						if(ilo.getDuration() != -1L)
+							upo.setDuration(Double.parseDouble(ilo.getDuration()+""));
+						
+					}
+					else
+					{
+						pathObjects.get(obId).increaseWeight(Double.parseDouble(ilo.getDuration()+""));
+					}
+					//If it isn't the first node of the Path add edge to predecessor
+					if(predecessor != null)
+					{
+						pathObjects.get(predecessor.getId()).addEdgeOrIncrement(obId);
+					}
+					predecessor = upo;
 					System.out.println(learnObj.getId() + "\t" + courseTitle + "\t" + ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf(".") + 1, ilo.getClass().toString().indexOf("LogMining")) + "\t" + learnObj.getTitle() +"\t" + url);
-					pout.println(learnObj.getId() + "\t" + courseTitle + "\t" + ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf(".") + 1, ilo.getClass().toString().indexOf("LogMining")) + "\t" + learnObj.getTitle() + "\t" + url );
+					
 				}
 				System.out.println("");
-				pout.println("");
 			}
 		}
 		
 		for(int i = 1; i < res.getLevelCount(); i++)
 		{
 			System.out.println("Number of sequences of length "+ i + ": "+res.getLevel(i).size());
-			pout.println("Number of sequences of length "+ i + ": "+res.getLevel(i).size());
 		}
 		//algo.printStatistics(sequenceDatabase.size());
-		pout.close();
+
+
+        for(Entry<String, UserPathObject> pathEntry : pathObjects.entrySet()) {
+
+            UserPathObject path = pathEntry.getValue();
+            nodes.add(new UserPathNode(path));
+            String sourcePos = path.getId();
+
+            for(Entry<String, Integer> linkEntry : pathEntry.getValue().getEdges().entrySet()) {
+                UserPathLink link = new UserPathLink();
+                link.setSource(Long.parseLong(sourcePos));
+                link.setTarget(Long.parseLong(linkEntry.getKey()));
+                link.setValue(linkEntry.getValue());
+                if(link.getSource() != link.getTarget())
+                    links.add(link);
+            }
+        }
+        
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return result;
+		return new ResultListUserPathGraph(nodes, links);
 	}
 	
 	/**

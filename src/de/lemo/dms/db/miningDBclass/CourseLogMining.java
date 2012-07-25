@@ -6,7 +6,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**This class represents the log table for the course object.*/
-public class CourseLogMining implements IMappingClass{
+public class CourseLogMining implements ILogMining, IMappingClass{
 
 	private long id;
 	private CourseMining course;

@@ -61,7 +61,21 @@ public class UserPathObject {
         this.edges = edges;
     }
 
-    @XmlElement
+    /**
+	 * @return the duration
+	 */
+	public Double getDuration() {
+		return duration;
+	}
+
+	/**
+	 * @param duration the duration to set
+	 */
+	public void setDuration(Double duration) {
+		this.duration = duration;
+	}
+
+	@XmlElement
     public Long getGroup() {
         return group;
     }
