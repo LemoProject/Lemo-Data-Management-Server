@@ -1,6 +1,8 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-public class PersonComponentAssignmentPK {
+import java.io.Serializable;
+
+public class PersonComponentAssignmentPK implements Serializable {
 
 	private Long person;
 	private Long component;

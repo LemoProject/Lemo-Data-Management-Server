@@ -13,17 +13,17 @@ public class Test {
 	{
 		DBConfigObject sourceConf = new DBConfigObject();
 
-		sourceConf.addProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120614\\120614_lemo_0.log");
+		sourceConf.addProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120614\\120614_lemo.log");
 		sourceConf.addProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
 		sourceConf.addProperty("filter_log_file", "true");
-		sourceConf.addProperty("process_metadata", "true");
+		sourceConf.addProperty("process_metadata", "false");
 		sourceConf.addProperty("process_log_file", "true");
 		
-		//ConnectorChemgapedia cm = new ConnectorChemgapedia();
+		ConnectorChemgapedia cm = new ConnectorChemgapedia();
 			
-		ConnectorClix cc = new ConnectorClix();
+		//ConnectorClix cc = new ConnectorClix();
 		
-		cc.getData();
+		//cc.getData();
 		
 		//ConnectorMoodle cm = new ConnectorMoodle();
 		
@@ -32,10 +32,10 @@ public class Test {
 		//cm.getData();
 		
 		//cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-		/*
+		
 		cm.setSourceDBConfig(sourceConf);
 		cm.getData();
-		sourceConf.addProperty("process_metadata", "false");
+		/*sourceConf.addProperty("process_metadata", "false");
 		sourceConf.addProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120614\\120614_lemo_1.log");
 		cm.setSourceDBConfig(sourceConf);
 		cm.getData();

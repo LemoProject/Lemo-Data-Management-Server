@@ -15,7 +15,7 @@
         class="de.lemo.dms.connectors.clix2010.clixDBClass.PersonComponentAssignmentPK" >
        
         <key-property name="component" column="COMPONENT_ID" type="long" />
-        <key-property name="context" column="CONTEXT_ID" type="long"/>
+        <key-property name="context" column="CONTEXT" type="long"/>
         <key-property name="person" column="PERSON_ID" type="long" />
        </composite-id> 
        
@@ -42,7 +42,7 @@
             name="context"
             insert="false" 
             update="false" 
-            column="CONTEXT_ID"
+            column="CONTEXT"
             type="long"/>
             
     </class>
