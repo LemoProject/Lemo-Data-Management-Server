@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressions"
+        table="lemo_db.BI_TRACKCONTENT_IMPRESSIONS">
+
+
+		<composite-id
+       	name="id"
+       	class="de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressionsPK" >
+       
+        <key-property name="content" column="CONTENT_ID" type="long" />
+        <key-property name="characteristic" column="CHARACTERISTIC_ID" type="long"/>
+        <key-property name="user" column="USER_ID" type="long" />
+        <key-property name="dayOfAccess" column="DAY_OF_ACCESS" type="string"/>
+        <key-property name="container" column="CONTAINER_ID" type="long"/>
+       
+       </composite-id> 
+       
+        <property
+            name="content"
+            insert="false" 
+            update="false" 
+            column="CONTENT_ID"
+            type="long"/>
+
+        <property
+            name="characteristic"
+            insert="false" 
+            update="false" 
+            column="CHARACTERISTIC_ID"
+            type="long"/>      
+
+        <property
+            name="user"
+            insert="false" 
+            update="false" 
+            column="USER_ID"
+            type="long"/>
+
+        <property
+            name="container"
+            insert="false" 
+            update="false" 
+            column="CONTAINER_ID"
+            type="long"/>
+            
+        <property
+            name="dayOfAccess"
+            insert="false" 
+            update="false" 
+            column="DAY_OF_ACCESS"
+            type="string"/>
+            
+        <property
+            name="totalImpressions"
+            column="TOTAL_IMPRESSIONS"
+            type="long"/>            
+            
+            
+    </class>
+
+</hibernate-mapping>

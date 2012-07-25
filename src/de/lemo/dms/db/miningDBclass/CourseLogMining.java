@@ -6,7 +6,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**This class represents the log table for the course object.*/
-public class CourseLogMining implements ILogMining, IMappingClass{
+public class CourseLogMining implements IMappingClass{
 
 	private long id;
 	private CourseMining course;
@@ -14,6 +14,21 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 	private String action;
 	private long timestamp;
 	private long duration;
+	
+	public int compareTo(ILogMining arg0) {
+		ILogMining s;
+		try{
+			s = arg0;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.timestamp > s.getTimestamp())
+			return 1;
+		if(this.timestamp < s.getTimestamp())
+			return -1;
+		return 0;
+	}
 	
 	public boolean equals(IMappingClass o)
 	{
@@ -24,7 +39,7 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 		return false;
 	}
 	
-	public long getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 
@@ -113,16 +128,16 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 	public UserMining getUser() {
 		return user;
 	}
-	/** standard setter for the attribut user
+	/** standard setter for the attribute user
 	 * @param user the user who interact with the course
 	 */	
 	public void setUser(UserMining user) {
 		this.user = user;
 	}
-	/** parameterized setter for the attribut user
+	/** parameterized setter for the attribute user
 	 * @param user the id of the user who interact with the resource
 	 * @param userMining a list of new added user, which is searched for the user with the id submitted in the user parameter
-	 * @param oldUserMining a list of user in the miningdatabase, which is searched for the user with the id submitted in the user parameter
+	 * @param oldUserMining a list of user in the mining database, which is searched for the user with the id submitted in the user parameter
 	 */	
 	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {			
 		if(userMining.get(user) != null)
@@ -135,6 +150,12 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 			this.user = oldUserMining.get(user);
 			oldUserMining.get(user).addCourse_log(this);
 		}
+	}
+
+
+	public Long getPrefix() {
+		// TODO Auto-generated method stub
+		return 1002L;
 	}
 
 

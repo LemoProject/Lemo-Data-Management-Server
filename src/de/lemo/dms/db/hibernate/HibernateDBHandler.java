@@ -11,9 +11,11 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.RoleMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 import org.apache.log4j.Logger;
+import org.hibernate.CacheMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -90,6 +92,7 @@ public class HibernateDBHandler implements IDBHandler{
 			System.out.println("Wrote " + classOb +" objects of class " + className + " to database.");			
 			tx.commit();	    	
 		    mining_session.clear();
+		    
 		}catch(HibernateException e)
 		{
 			e.printStackTrace();

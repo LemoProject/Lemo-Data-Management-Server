@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.EComposing"
+        table="lemo_db.E_COMPOSING">
+
+        <id
+            name="id"
+            column="ID"
+            type="long">
+            <generator class="native"/>
+        </id>
+
+        <property
+            name="component"
+            column="COMPONENT_ID"
+            type="long"/>
+
+        <property
+            name="composingType"
+            column="COMPOSINGTYPE_ID"
+            type="long"/>
+                        
+        <property
+            name="endDate"
+            column="ENDDATE"
+            type="string"/>
+            
+        <property
+            name="startDate"
+            column="STARTDATE"
+            type="string"/>
+            
+    </class>
+
+</hibernate-mapping>

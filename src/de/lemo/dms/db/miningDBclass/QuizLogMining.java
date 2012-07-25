@@ -19,6 +19,22 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 	private long timestamp;	
 	private long duration;
 	
+	@Override
+	public int compareTo(ILogMining arg0) {
+		ILogMining s;
+		try{
+			s = arg0;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.timestamp > s.getTimestamp())
+			return 1;
+		if(this.timestamp < s.getTimestamp())
+			return -1;
+		return 0;
+	}
+	
 	public boolean equals(IMappingClass o)
 	{
 		if(o == null || !(o instanceof QuizLogMining))
@@ -28,7 +44,7 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 		return false;
 	}
 	
-	public long getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 
@@ -198,5 +214,10 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 			oldQuizMining.get(quiz).addQuiz_log(this);
 		}
 		
+	}
+
+	@Override
+	public Long getPrefix() {
+		return 1004L;
 	}
 }

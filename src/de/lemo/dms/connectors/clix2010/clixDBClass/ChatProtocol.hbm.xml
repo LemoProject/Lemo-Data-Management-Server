@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.ChatProtocol"
+        table="lemo_db.CHATPROTOCOL">
+
+        <id
+            name="id"
+            column="CHATPROTOCOL_ID"
+            type="long">
+            <generator class="native"/>
+        </id>
+
+        <property
+            name="lastUpdated"
+            column="LASTUPDATED"
+            type="string"/>
+
+        <property
+            name="chatroom"
+            column="CHATROOM_ID"
+            type="long"/>
+            
+        <property
+            name="person"
+            column="PERSON_ID"
+            type="long"/>  
+            
+        <property
+            name="chatSource"
+            column="CHAT_SOURCE"
+            type="string"/>                      
+            
+    </class>
+
+</hibernate-mapping>

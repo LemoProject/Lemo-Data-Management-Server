@@ -3,7 +3,7 @@ package de.lemo.dms.db.miningDBclass.abstractions;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 
-public interface ILogMining {
+public interface ILogMining extends Comparable<ILogMining>{
 
     long getId();
 
@@ -19,6 +19,8 @@ public interface ILogMining {
     
     Long getLearnObjId();
 	
-	public long getDuration();
+	Long getDuration();
+	
+	Long getPrefix();
 
 }

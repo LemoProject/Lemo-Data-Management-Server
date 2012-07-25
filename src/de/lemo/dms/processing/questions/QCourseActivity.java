@@ -50,6 +50,7 @@ public class QCourseActivity extends Question{
                 Parameter.create(ROLE_IDS, "Roles","List of roles."),
                 Interval.create(Long.class, START_TIME, "Start time", "", 0L, now, 0L), 
                 Interval.create(Long.class, END_TIME, "End time", "", 0L, now, now),
+                Parameter.create(TYPES, "ResourceTypes","List of resource types."),
                 Parameter.create(RESOLUTION, "Resolution", "")
                 );
         return parameters;
@@ -64,6 +65,7 @@ public class QCourseActivity extends Question{
      * @param startTime		(Mandatory) 
      * @param endTime		(Mandatory)
      * @param resolution 	(Mandatory)
+     * @param resourceTypes (Optional)
      * @return
      */
     @SuppressWarnings("unchecked")
@@ -73,7 +75,8 @@ public class QCourseActivity extends Question{
             @FormParam(ROLE_IDS) List<Long> roles,
             @FormParam(START_TIME) Long startTime,
             @FormParam(END_TIME) Long endTime,
-            @FormParam(RESOLUTION) Integer resolution) {
+            @FormParam(RESOLUTION) Integer resolution,
+            @FormParam(TYPES) List<String> resourceTypes) {
 		
 		List<Long> list = new ArrayList<Long>();
 		//Check arguments
@@ -126,11 +129,21 @@ public class QCourseActivity extends Question{
 
 			for(int i = 0 ; i < logs.size(); i++)
 			{
-				Integer pos = new Double((logs.get(i).getTimestamp() - startTime) / intervall).intValue();
-				if(pos>resolution-1)
-					pos = resolution-1;
-				else
+				boolean isInRT = false;
+				if(resourceTypes != null && resourceTypes.size() > 0)
+					for(int j = 0; j < resourceTypes.size(); j++)
+						if(logs.get(i).getClass().toString().toLowerCase().contains(resourceTypes.get(j)))
+						{
+							isInRT = true;
+							break;
+						}
+				if(resourceTypes == null || resourceTypes.size() == 0 || isInRT)
+				{
+					Integer pos = new Double((logs.get(i).getTimestamp() - startTime) / intervall).intValue();
+					if(pos > resolution - 1)
+						pos = resolution-1;
 					resArr[pos] = resArr[pos] + 1;
+				}
 			}			
 			Collections.addAll(list, resArr);
 		}
