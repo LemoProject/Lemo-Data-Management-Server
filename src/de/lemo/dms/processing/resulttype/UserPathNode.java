@@ -3,6 +3,7 @@ package de.lemo.dms.processing.resulttype;
 public class UserPathNode {
 
     private String name;
+    private String title;
     private Long value;
     private Long group;
 
@@ -11,6 +12,15 @@ public class UserPathNode {
 
     public UserPathNode(UserPathObject path) {
         this.name = path.getTitle();
+        if(name == null || name.isEmpty())
+            name = "?";
+        this.value = path.getWeight();
+        this.group = path.getGroup();
+    }
+    
+    public UserPathNode(UserPathObject path, Boolean directedGraph) {
+        this.name = path.getId();
+        this.title = path.getTitle();
         if(name == null || name.isEmpty())
             name = "?";
         this.value = path.getWeight();
@@ -25,7 +35,21 @@ public class UserPathNode {
         this.name = name;
     }
 
-    public Long getValue() {
+    /**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Long getValue() {
         return value;
     }
 

@@ -40,9 +40,7 @@ import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
-import de.lemo.dms.processing.resulttype.ResultListUserPathGraphString;
 import de.lemo.dms.processing.resulttype.UserPathLink;
-import de.lemo.dms.processing.resulttype.UserPathLinkString;
 import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;
 
@@ -53,8 +51,8 @@ import static de.lemo.dms.processing.parameter.MetaParam.SESSION_WISE;
 import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
 import static de.lemo.dms.processing.parameter.MetaParam.USER_IDS;
 
-@QuestionID("frequentPaths")
-public class QFrequentPathsBIDE extends Question{
+@QuestionID("frequentPaths_")
+public class QFrequentPathsBIDE__Working extends Question{
 
 //	private static final String STARTTIME = "start";
 //	private static final String ENDTIME = "end";
@@ -89,7 +87,7 @@ public class QFrequentPathsBIDE extends Question{
 	}
 	
     @POST
-    public ResultListUserPathGraphString compute(
+    public ResultListUserPathGraph compute(
     		@FormParam(COURSE_IDS) List<Long> courseIds, 
     		@FormParam(USER_IDS) List<Long> userIds, 
     		@FormParam(MIN_SUP) double minSup, 
@@ -98,7 +96,7 @@ public class QFrequentPathsBIDE extends Question{
     		@FormParam(END_TIME) long endTime) {
 		
         ArrayList<UserPathNode> nodes = Lists.newArrayList();
-        ArrayList<UserPathLinkString> links = Lists.newArrayList();
+        ArrayList<UserPathLink> links = Lists.newArrayList();
 		
         if(courseIds!=null && courseIds.size()!=0)
         	System.out.println("Parameter list: Course Id: "+courseIds.get(0));
@@ -150,17 +148,22 @@ public class QFrequentPathsBIDE extends Question{
 						courseTitle = ilo.getCourse().getTitle();
 					String url = "";
 					
-					UserPathObject upo = new UserPathObject(obId, ilo.getTitle(), 1L, type, Double.valueOf(ilo.getDuration()), ilo.getPrefix());
+					String cIdPos = String.valueOf(pathObjects.size());
+					UserPathObject upo = new UserPathObject(cIdPos, ilo.getTitle(), 1L, type, Double.valueOf(ilo.getDuration()), ilo.getPrefix());
 					if(ilo.getDuration() != -1L)
 						upo.setDuration(Double.parseDouble(ilo.getDuration()+""));
 					
-					//If the node is unknown, create a new entry in pathObjects
-					if(pathObjects.get(obId) == null)
-						pathObjects.put(upo.getId(), upo);
 					
-					else
-						pathObjects.get(obId).increaseWeight(Double.parseDouble(ilo.getDuration()+""));
+					
+					//If the node is unknown, create a new entry in pathObjects
+					if(pathObjects.get(obId) == null){
 						
+						pathObjects.put(upo.getId(), upo);
+					}
+					else{
+						pathObjects.get(obId).increaseWeight(Double.parseDouble(ilo.getDuration()+""));
+					 	
+					}
 					//If it isn't the first node of the Path add edge to predecessor
 					if(predecessor != null)
 					{
@@ -183,17 +186,15 @@ public class QFrequentPathsBIDE extends Question{
 
             UserPathObject path = pathEntry.getValue();
             path.setWeight(path.getWeight()*10);
-            nodes.add(new UserPathNode(path,true));
-            //String sourcePos = pathEntry.getKey();
-            String sourcePos = path.getTitle();
+            nodes.add(new UserPathNode(path));
+            String sourcePos = pathEntry.getKey();
 
             for(Entry<String, Integer> linkEntry : pathEntry.getValue().getEdges().entrySet()) {
-                UserPathLinkString link = new UserPathLinkString();
-                link.setSource(sourcePos);
-                //link.setTarget(Long.parseLong(linkEntry.getKey()));
-                link.setTarget(pathObjects.get(linkEntry.getKey()).getTitle());
+                UserPathLink link = new UserPathLink();
+                link.setSource(Long.parseLong(sourcePos));
+                link.setTarget(Long.parseLong(linkEntry.getKey()));
                 link.setValue(linkEntry.getValue()+10);
-                //if(link.getSource() != link.getTarget())
+                if(link.getSource() != link.getTarget())
                     links.add(link);
             }
         }
@@ -202,7 +203,7 @@ public class QFrequentPathsBIDE extends Question{
 		{
 			e.printStackTrace();
 		}
-		return new ResultListUserPathGraphString(nodes, links);
+		return new ResultListUserPathGraph(nodes, links);
 	}
 	
 	/**
