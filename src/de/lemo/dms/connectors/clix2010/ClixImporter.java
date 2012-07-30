@@ -98,206 +98,148 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 public class ClixImporter {
 	
+	//List, holding the entries of the BI_TRACKCONTENT_IMPRESSIONS table of the source database
 	private static List<BiTrackContentImpressions> biTrackContentImpressions;
+	//List, holding the entries of the CHATPROTOCOL table of the source database
 	private static List<ChatProtocol> chatProtocol;
+	//List, holding the entries of the EXERCISE_GROUP table of the source database
 	private static List<ExerciseGroup> exerciseGroup;
+	//List, holding the entries of the E_COMPONENT table of the source database
 	private static List<EComponent> eComponent;
+	//List, holding the entries of the E_COMPONENTTYPE table of the source database
 	private static List<EComponentType> eComponentType;
+	//List, holding the entries of the E_COMPOSING table of the source database
 	private static List<EComposing> eComposing;
+	//List, holding the entries of the EXERCISE_PERSONALISED table of the source database
 	private static List<ExercisePersonalised> exercisePersonalised;
+	//List, holding the entries of the FORUM_ENTRY table of the source database
 	private static List<ForumEntry> forumEntry;
+	//List, holding the entries of the FORUM_ENTRY_STATE table of the source database
 	private static List<ForumEntryState> forumEntryState;
+	//List, holding the entries of the PERSON table of the source database
 	private static List<Person> person;
+	//List, holding the entries of the PERSON_COMPONENT_ASSIGNMENT table of the source database
 	private static List<PersonComponentAssignment> personComponentAssignment;
+	//List, holding the entries of the PLATFORMGROUP table of the source database
 	private static List<PlatformGroup> platformGroup;
+	//List, holding the entries of the PLATFORMGROUPSPECIFICATION table of the source database
 	private static List<PlatformGroupSpecification> platformGroupSpecification;
+	//List, holding the entries of the PORTFOLIO table of the source database
 	private static List<Portfolio> portfolio;
+	//List, holding the entries of the PORTFOLIO_LOG table of the source database
 	private static List<PortfolioLog> portfolioLog;
+	//List, holding the entries of the SCORM_SESSION_TIMES table of the source database
 	private static List<ScormSessionTimes> scormSessionTimes;
+	//List, holding the entries of the T2_TASK table of the source database
 	private static List<T2Task> t2Task;
+	//List, holding the entries of the T_ANSWERPOSITION table of the source database
 	private static List<TAnswerPosition> tAnswerPosition;
+	//List, holding the entries of the TEAM_EXERCISE_COMPOSING_EXT table of the source database
 	private static List<TeamExerciseComposingExt> teamExerciseComposingExt;
+	//List, holding the entries of the TEAM_EXERCISE_GOUP table of the source database
 	private static List<TeamExerciseGroup> teamExerciseGroup;
+	//List, holding the entries of the TEAM_EXERCISE_GROUP_MEMBER table of the source database
 	private static List<TeamExerciseGroupMember> teamExerciseGroupMember;
+	//List, holding the entries of the T_GROUPFULLSPECIFICATION table of the source database
 	private static List<TGroupFullSpecification> tGroupFullSpecification;
+	//List, holding the entries of the T_QTI_CONTENT table of the source database
 	private static List<TQtiContent> tQtiContent;
+	//List, holding the entries of the T_QTI_EVAL_ASSESSMENT table of the source database
 	private static List<TQtiEvalAssessment> tQtiEvalAssessment;
+	//List, holding the entries of the T_TESTSPECIFICATION table of the source database
 	private static List<TTestSpecification> tTestSpecification;
+	//List, holding the entries of the WIKI_ENTRY table of the source database
 	private static List<WikiEntry> wikiEntry;
+	//List, holding the entries of the CHATROOM table of the source database
 	private static List<Chatroom> chatroom;
+	private static HashMap<Long, EComposing> eComposingMap = new HashMap<Long, EComposing>();
+	
+	//Maps of new mining-objects, found on the Clix-platform
+	
+	//Map, holding the CourseMining objects, found in the current data extraction process
+	private	static HashMap<Long, CourseMining> course_mining;
+	//Map, holding the QuizMining objects, found in the current data extraction process
+	private	static HashMap<Long, QuizMining> quiz_mining;
+	//Map, holding the AssignmentMining objects, found in the current data extraction process
+	private static HashMap<Long, AssignmentMining> assignment_mining;
+	//Map, holding the ScormMining objects, found in the current data extraction process
+	private	static HashMap<Long, ScormMining> scorm_mining;
+	//Map, holding the ForumMining objects, found in the current data extraction process
+	private	static HashMap<Long, ForumMining> forum_mining;
+	//Map, holding the ResourceMining objects, found in the current data extraction process
+	private	static HashMap<Long, ResourceMining> resource_mining;
+	//Map, holding the UserMining objects, found in the current data extraction process
+	private static HashMap<Long, UserMining> user_mining;
+	//Map, holding the WikiMining objects, found in the current data extraction process
+	private static HashMap<Long, WikiMining> wiki_mining;
+	//Map, holding the GroupMining objects, found in the current data extraction process
+	private static HashMap<Long, GroupMining> group_mining;
+	//Map, holding the QuestionMining objects, found in the current data extraction process
+	private static HashMap<Long, QuestionMining> question_mining;
+	//Map, holding the RoleMining objects, found in the current data extraction process
+	private static HashMap<Long, RoleMining> role_mining;
+	//Map, holding the ChatMining objects, found in the current data extraction process
+	private static HashMap<Long, ChatMining> chat_mining;
+	//Map, holding the QuizQuestionMining objects, found in the current data extraction process
+	private static HashMap<Long, QuizQuestionMining> quiz_question_mining;
+	//Map, holding the CourseQuizMining objects, found in the current data extraction process
+	private static HashMap<Long, CourseQuizMining> course_quiz_mining;
+	//Map, holding the CourseAssignmentMining objects, found in the current data extraction process
+	private static HashMap<Long, CourseAssignmentMining> course_assignment_mining;
+	//Map, holding the CourseScormMining objects, found in the current data extraction process
+	private static HashMap<Long, CourseScormMining> course_scorm_mining;
+	//Map, holding the CourseUserMining objects, found in the current data extraction process
+	private static HashMap<Long, CourseUserMining> course_user_mining;
+	//Map, holding the CourseForumMining objects, found in the current data extraction process
+	private static HashMap<Long, CourseForumMining> course_forum_mining;
+	//Map, holding the CourseGroupMining objects, found in the current data extraction process
+	private static HashMap<Long, CourseGroupMining> course_group_mining;
+	//Map, holding the CourseResourceMining objects, found in the current data extraction process
+	private static HashMap<Long, CourseResourceMining> course_resource_mining;
+	//Map, holding the CourseWikiMining objects, found in the current data extraction process
+	private static HashMap<Long, CourseWikiMining> course_wiki_mining;
+	//Map, holding the GroupUserMining objects, found in the current data extraction process
+	private static HashMap<Long, GroupUserMining> group_user_mining;
+	//Map, holding the QuizUserMining objects, found in the current data extraction process
+	private static HashMap<Long, QuizUserMining> quiz_user_mining;
+		
+	//Maps of mining-objects that have been found in a previous extraction process
+	
+	//Map, holding the CourseMining objects, found in a previous data extraction process
+	private static HashMap<Long, CourseMining> old_course_mining;
+	//Map, holding the QuizMining objects, found in a previous data extraction process
+	private static HashMap<Long, QuizMining> old_quiz_mining;
+	//Map, holding the AssignmentMining objects, found in a previous data extraction process
+	private static HashMap<Long, AssignmentMining> old_assignment_mining;
+	//Map, holding the ScormMining objects, found in a previous data extraction process
+	private static HashMap<Long, ScormMining> old_scorm_mining;
+	//Map, holding the ForumMining objects, found in a previous data extraction process
+	private static HashMap<Long, ForumMining> old_forum_mining;
+	//Map, holding the ResourceMining objects, found in a previous data extraction process
+	private static HashMap<Long, ResourceMining> old_resource_mining;
+	//Map, holding the UserMining objects, found in a previous data extraction process
+	private static HashMap<Long, UserMining> old_user_mining;
+	//Map, holding the WikiMining objects, found in a previous data extraction process
+	private static HashMap<Long, WikiMining> old_wiki_mining;
+	//Map, holding the GroupMining objects, found in a previous data extraction process
+	private static HashMap<Long, GroupMining> old_group_mining;
+	//Map, holding the QuestionMining objects, found in a previous data extraction process
+	private static HashMap<Long, QuestionMining> old_question_mining;
+	//Map, holding the RoleMining objects, found in a previous data extraction process
+	private static HashMap<Long, RoleMining> old_role_mining;
+	//Map, holding the DepartmentMining objects, found in a previous data extraction process
+	private static HashMap<Long, DepartmentMining> old_department_mining;
+	//Map, holding the DegreeMining objects, found in a previous data extraction process
+	private static HashMap<Long, DegreeMining> old_degree_mining;
+	//Map, holding the ChatMining objects, found in a previous data extraction process
+	private static HashMap<Long, ChatMining> old_chat_mining;
+	
+	private static Long largestId;
 	
 	
-	private static HashMap<Long, EComponent> eComponentMap = new HashMap<Long, EComponent>();
-	
-	//lists of object tables which are new found in LMS DB
-		/** A List of new entries in the course table found in this run of the process. */
-		static HashMap<Long, CourseMining> course_mining;
-		
-		/** A List of new entries in the quiz table found in this run of the process. */
-		static HashMap<Long, QuizMining> quiz_mining;
-		
-		/** A List of new entries in the assignment table found in this run of the process. */
-		static HashMap<Long, AssignmentMining> assignment_mining;
-		
-		/** A List of new entries in the assignment table found in this run of the process. */
-		static HashMap<Long, ScormMining> scorm_mining;
-		
-		/** A List of new entries in the forum table found in this run of the process. */
-		static HashMap<Long, ForumMining> forum_mining;
-		
-		/** A List of new entries in the resource table found in this run of the process. */	
-		static HashMap<Long, ResourceMining> resource_mining;
-		
-		/** A List of new entries in the user table found in this run of the process. */	
-		static HashMap<Long, UserMining> user_mining;
-		
-		/** A List of new entries in the wiki table found in this run of the process. */	
-		static HashMap<Long, WikiMining> wiki_mining;
-		
-		/** A List of new entries in the group table found in this run of the process. */
-		static HashMap<Long, GroupMining> group_mining;
-		
-		/** A List of entries in the new question table found in this run of the process. */
-		static HashMap<Long, QuestionMining> question_mining;
-		
-		/** A List of entries in the new role table found in this run of the process. */
-		static HashMap<Long, RoleMining> role_mining;
-		
-		/** The department_mining. */
-		static HashMap<Long, DepartmentMining> department_mining;
-		
-		/** The degree_mining. */
-		static HashMap<Long, DegreeMining> degree_mining;
-		
-		/** The chat_mining. */
-		static HashMap<Long, ChatMining> chat_mining;
-		
-		/** The quiz_question_mining. */
-		static HashMap<Long, QuizQuestionMining> quiz_question_mining;
-		
-		/** The course_quiz_mining. */
-		static HashMap<Long, CourseQuizMining> course_quiz_mining;
-		
-		/** The course_assignment_mining. */
-		static HashMap<Long, CourseAssignmentMining> course_assignment_mining;
-		
-		/** The course_scorm_mining. */
-		static HashMap<Long, CourseScormMining> course_scorm_mining;
-		
-		/** The course_user_mining. */
-		static HashMap<Long, CourseUserMining> course_user_mining;
-		
-		/** The course_forum_mining. */
-		static HashMap<Long, CourseForumMining> course_forum_mining;
-		
-		/** The course_group_mining. */
-		static HashMap<Long, CourseGroupMining> course_group_mining;
-		
-		/** The chat_log_mining. */
-		static HashMap<Long, CourseResourceMining> course_resource_mining;
-		
-		/** The chat_log_mining. */
-		static HashMap<Long, CourseWikiMining> course_wiki_mining;
-		
-		/** The chat_log_mining. */
-		static HashMap<Long, GroupUserMining> group_user_mining;
-		
-		/** The chat_log_mining. */
-		static HashMap<Long, QuizUserMining> quiz_user_mining;
-		
-		static HashMap<Long, DepartmentDegreeMining> department_degree_mining;
-		
-		static HashMap<Long, DegreeCourseMining> degree_course_mining;
-		
-		/** The table that maps user-ids of the source database (string) onto numeric values.*/
-		static HashMap<String, IDMappingMining> id_mapping;
-		
-		/** The table that maps user-ids of the source database (string) onto numeric values.*/
-		static HashMap<String, IDMappingMining> old_id_mapping;
-		
-	//lists of object tables which are already in the mining DB
-		/** A List of entries in the course table, needed for linking reasons in the process. */
-		static HashMap<Long, CourseMining> old_course_mining;
-		
-		/** A List of entries in the quiz table, needed for linking reasons in the process. */
-		static HashMap<Long, QuizMining> old_quiz_mining;
-			
-		/** A List of entries in the assignment table, needed for linking reasons in the process. */
-		static HashMap<Long, AssignmentMining> old_assignment_mining;
-		
-		/** A List of entries in the scorm table, needed for linking reasons in the process. */
-		static HashMap<Long, ScormMining> old_scorm_mining;
-		
-		/** A List of entries in the forum table, needed for linking reasons in the process. */
-		static HashMap<Long, ForumMining> old_forum_mining;
-		
-		/** A List of entries in the resource table, needed for linking reasons in the process. */
-		static HashMap<Long, ResourceMining> old_resource_mining;
-		
-		/** A List of entries in the user table, needed for linking reasons in the process. */
-		static HashMap<Long, UserMining> old_user_mining;
-		
-		/** A List of entries in the wiki table, needed for linking reasons in the process. */
-		static HashMap<Long, WikiMining> old_wiki_mining;
-		
-		/** A List of entries in the group table, needed for linking reasons in the process. */
-		static HashMap<Long, GroupMining> old_group_mining;
-		
-		/** A List of entries in the question table, needed for linking reasons in the process. */
-		static HashMap<Long, QuestionMining> old_question_mining;
-		
-		/** A List of entries in the role table, needed for linking reasons in the process. */
-		static HashMap<Long, RoleMining> old_role_mining;
-		
-		/** A List of entries in the quiz_question table, needed for linking reasons in the process. */
-		static HashMap<Long, QuizQuestionMining> old_quiz_question_mining;
-		
-		/** A List of entries in the course_quiz table, needed for linking reasons in the process. */
-		static HashMap<Long, CourseQuizMining> old_course_quiz_mining;
-		
-		/** The old_department_mining. */
-		static HashMap<Long, DepartmentMining> old_department_mining;
-		
-		/** The old_degree_mining. */
-		static HashMap<Long, DegreeMining> old_degree_mining;
-		
-		/** The old_chat_mining. */
-		static HashMap<Long, ChatMining> old_chat_mining;
-				
-		/** The course_assignment_mining. */
-		static HashMap<Long, CourseAssignmentMining> old_course_assignment_mining;
-		
-		/** The course_scorm_mining. */
-		static HashMap<Long, CourseScormMining> old_course_scorm_mining;
-		
-		/** The course_user_mining. */
-		static HashMap<Long, CourseUserMining> old_course_user_mining;
-		
-		/** The course_forum_mining. */
-		static HashMap<Long, CourseForumMining> old_course_forum_mining;
-		
-		/** The course_group_mining. */
-		static HashMap<Long, CourseGroupMining> old_course_group_mining;
-		
-		/** The chat_log_mining. */
-		static HashMap<Long, CourseResourceMining> old_course_resource_mining;
-		
-		/** The chat_log_mining. */
-		static HashMap<Long, CourseWikiMining> old_course_wiki_mining;
-		
-		/** The chat_log_mining. */
-		static HashMap<Long, GroupUserMining> old_group_user_mining;
-		
-		/** The chat_log_mining. */
-		static HashMap<Long, QuizUserMining> old_quiz_user_mining;
-	
-		static HashMap<Long, DepartmentDegreeMining> old_department_degree_mining;
-		
-		static HashMap<Long, DegreeCourseMining> old_degree_course_mining;
-		
-		static Long largestId;
-	
-	
+	/**
+	 * Performs a extraction process for an entire Clix2010 database.
+	 */
 	public static void getClixData()
 	{
 		Long starttime = System.currentTimeMillis()/1000;
@@ -306,10 +248,12 @@ public class ClixImporter {
 
 		
 		//Do Import
+		
 		initialize();
 		loadData();
 		saveData();
 		
+		//Create and save config-object
 		Long endtime = System.currentTimeMillis()/1000;
 		ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
@@ -321,147 +265,224 @@ public class ClixImporter {
 	}
 	
 	
-	
-	public static void updateClixData()
+	/**
+	 * Performs a data-extraction for a Clix2010 database for all objects that are newer than the given time stamp. 
+	 */
+	public static void updateClixData(Long startTime)
 	{
-		Long starttime = System.currentTimeMillis()/1000;
+		Long currentSysTime = System.currentTimeMillis()/1000;
 		Long largestId = -1L;		
 
+		Long upperLimit = 0L;
 		
-		//Do Update
+		initialize();
+		while (startTime <= currentSysTime)
+		{
+			//increase upper limit successively
+			upperLimit = startTime + 604800L;
+			
+			//Do Update
+			loadData(startTime, upperLimit);
+			
+			saveData();
+			
+			startTime = upperLimit;
+		}
 		
 		Long endtime = System.currentTimeMillis()/1000;
 		ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
-	    config.setElapsed_time((endtime) - (starttime));	
+	    config.setElapsed_time((endtime) - (currentSysTime));	
 	    config.setLargestId(largestId);
 	    config.setPlatform("Clix2010");
 	    ServerConfigurationHardCoded.getInstance().getDBHandler().saveToDB(config);
 		ServerConfigurationHardCoded.getInstance().getDBHandler().closeConnection();
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
+	/**
+	 * Generates and saves all objects
+	 */
 	private static void saveData()
 	{
 		try{
 			List<Collection<?>> updates = new ArrayList<Collection<?>>();
 			
-			course_mining = generateCourseMining();
-			updates.add(course_mining.values());
-			
-			quiz_mining = generateQuizMining();
-			updates.add(quiz_mining.values());
-			
-			assignment_mining = generateAssignmentMining();
-			updates.add(assignment_mining.values());
-			
-			scorm_mining = generateScormMining();
-			updates.add(scorm_mining.values());
+			if(user_mining == null)
+			{
+				course_mining = generateCourseMining();
+				updates.add(course_mining.values());
+				
+				quiz_mining = generateQuizMining();
+				updates.add(quiz_mining.values());
+				
+				assignment_mining = generateAssignmentMining();
+				updates.add(assignment_mining.values());
+				
+				scorm_mining = generateScormMining();
+				updates.add(scorm_mining.values());
+		
+				forum_mining = generateForumMining();
+				updates.add(forum_mining.values());
+				
+				resource_mining = generateResourceMining();
+				updates.add(resource_mining.values());
+				
+				wiki_mining = generateWikiMining();
+				updates.add(wiki_mining.values());
+				
+				//Clearing source-data, that isn't longer needed
+				eComponent.clear();
+				eComponentType.clear();
+				
+				user_mining = generateUserMining();
+				updates.add(user_mining.values());
+				
+				person.clear();
+				
+				group_mining = generateGroupMining();
+				updates.add(group_mining.values());
+				
+				question_mining = generateQuestionMining();
+				updates.add(question_mining.values());
+				
+				t2Task.clear();
+				tQtiContent.clear();
+				
+				role_mining = generateRoleMining();
+				updates.add(role_mining.values());
+				
+				platformGroup.clear();
+				
+				chat_mining = generateChatMining();
+				updates.add(chat_mining.values());
+				
+				chatroom.clear();
+				
+				System.out.println("AssociationObjects: ");
+				
+				quiz_question_mining = generateQuizQuestionMining();
+				updates.add(quiz_question_mining.values());
+				
+				tTestSpecification.clear();
+				
+				course_quiz_mining = generateCourseQuizMining();
+				updates.add(course_quiz_mining.values());
+				
+				course_assignment_mining = generateCourseAssignmentMining();
+				updates.add(course_assignment_mining.values());
 	
-			forum_mining = generateForumMining();
-			updates.add(forum_mining.values());
-			
-			resource_mining = generateResourceMining();
-			updates.add(resource_mining.values());
+				course_scorm_mining = generateCourseScormMining();
+				updates.add(course_scorm_mining.values());
+				
+				course_user_mining = generateCourseUserMining();
+				updates.add(course_user_mining.values());
 	
-			user_mining = generateUserMining();
-			updates.add(user_mining.values());
+				personComponentAssignment.clear();
+				portfolio.clear();
+				
+				course_forum_mining = generateCourseForumMining();
+				updates.add(course_forum_mining.values());
+				
+				course_group_mining = generateCourseGroupMining();
+				updates.add(course_group_mining.values());
+				
+				teamExerciseGroup.clear();
+				
+				course_wiki_mining = generateCourseWikiMining();
+				updates.add(course_wiki_mining.values());
+	
+				
+				
+				course_resource_mining = generateCourseResourceMining();
+				updates.add(course_resource_mining.values());
+				
+				group_user_mining = generateGroupUserMining();
+				updates.add(group_user_mining.values());
+				
+				platformGroupSpecification.clear();
+				
+				quiz_user_mining = generateQuizUserMining();
+				updates.add(quiz_user_mining.values());
+	
+				
+				//Clearing source-data, that isn't longer needed
+				eComposing.clear();	
+			}
 			
-			wiki_mining = generateWikiMining();
-			updates.add(wiki_mining.values());
-			
-			group_mining = generateGroupMining();
-			updates.add(group_mining.values());
-			
-			question_mining = generateQuestionMining();
-			updates.add(question_mining.values());
-			
-			role_mining = generateRoleMining();
-			updates.add(role_mining.values());
-			
-			//Departments and Degrees currently not featured in Clix2010
-			/*
-			department_mining = generateDepartmentMining();
-			updates.add(department_mining.values());
-			
-			degree_mining = generateDegreeMining();
-			updates.add(degree_mining.values());
-			*/
-			
-			chat_mining = generateChatMining();
-			updates.add(chat_mining.values());
-			
-			quiz_question_mining = generateQuizQuestionMining();
-			updates.add(quiz_question_mining.values());
-			
-			course_quiz_mining = generateCourseQuizMining();
-			updates.add(course_quiz_mining.values());
-			
-			course_assignment_mining = generateCourseAssignmentMining();
-			updates.add(course_assignment_mining.values());
-
-			course_scorm_mining = generateCourseScormMining();
-			updates.add(course_scorm_mining.values());
-			
-			course_user_mining = generateCourseUserMining();
-			updates.add(course_user_mining.values());
-
-			course_forum_mining = generateCourseForumMining();
-			updates.add(course_forum_mining.values());
-			
-			course_group_mining = generateCourseGroupMining();
-			updates.add(course_group_mining.values());
-
-			course_resource_mining = generateCourseResourceMining();
-			updates.add(course_resource_mining.values());
+			System.out.println("LogObjects: ");
 			
 			updates.add(generateAssignmentLogMining().values());
-			
-			//course_log_mining = generateCourseLogMining();
-			//updates.add(course_log_mining.values());
-			
-			course_wiki_mining = generateCourseWikiMining();
-			updates.add(course_wiki_mining.values());
+
+			exerciseGroup.clear();
+			exercisePersonalised.clear();
 			
 			updates.add(generateForumLogMining().values());
 			
-			group_user_mining = generateGroupUserMining();
-			updates.add(group_user_mining.values());
+			forumEntry.clear();
+			forumEntryState.clear();
 			
 			updates.add(generateQuizLogMining().values());
 			
+			tQtiEvalAssessment.clear();
+			
 			updates.add(generateQuestionLogMining().values());
 			
-			updates.add(generateScormLogMining().values());
+			tAnswerPosition.clear();
 			
-			quiz_user_mining = generateQuizUserMining();
-			updates.add(quiz_user_mining.values());
+			updates.add(generateScormLogMining().values());
+
+			scormSessionTimes.clear();
 			
 			updates.add(generateResourceLogMining().values());
 
+			biTrackContentImpressions.clear();
 
 			updates.add(generateWikiLogMining().values());
-
+			
+			wikiEntry.clear();
+			
 			updates.add(generateChatLogMining().values());
 			
-			//Departments and Degrees currently not featured in Clix2010
-			/* 
-			department_degree_mining = generateDepartmentDegreeMining();
-			updates.add(department_degree_mining.values());
+			clearSourceData();
 			
-			degree_course_mining = generateDegreeCourseMining();
-			updates.add(degree_course_mining.values());
-			*/
-			
-			
-			//ServerConfigurationHardCoded.getInstance().getDBHandler().saveCollectionToDB(updates);
-			
-	
+			ServerConfigurationHardCoded.getInstance().getDBHandler().saveCollectionToDB(updates);
 			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	private static void clearSourceData()
+	{
+		biTrackContentImpressions.clear();
+		chatProtocol.clear();
+		exerciseGroup.clear();
+		eComponent.clear();
+		eComponentType.clear();
+		eComposing.clear();
+		exercisePersonalised.clear();
+		forumEntry.clear();
+		forumEntryState.clear();
+		person.clear();
+		personComponentAssignment.clear();
+		platformGroup.clear();
+		platformGroupSpecification.clear();
+		portfolio.clear();
+		portfolioLog.clear();
+		scormSessionTimes.clear();
+		t2Task.clear();
+		tAnswerPosition.clear();
+		teamExerciseComposingExt.clear();
+		teamExerciseGroup.clear();
+		teamExerciseGroupMember.clear();
+		tGroupFullSpecification.clear();
+		tQtiContent.clear();
+		tQtiEvalAssessment.clear();
+		tTestSpecification.clear();
+		wikiEntry.clear();
+		chatroom.clear();
 	}
 
 	/**
@@ -476,10 +497,7 @@ public class ClixImporter {
 			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 			//accessing DB by creating a session and a transaction using HibernateUtil
 	        Session session = dbHandler.getSession();
-	        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
-	        session.clear();
-	        Transaction tx = session.beginTransaction();
-			
+	        session.clear();			
 			
 	        ArrayList<?> l;
 	        
@@ -582,6 +600,7 @@ public class ClixImporter {
 	        	old_chat_mining.put(Long.valueOf(((ChatMining)l.get(i)).getId()), (ChatMining)l.get(i));  
 	        System.out.println("Read " + old_chat_mining.size() +" old ChatMinings."); 
 	        
+	        
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -589,7 +608,9 @@ public class ClixImporter {
 	}
 
 
-
+	/**
+	 * Loads all necessary tables from the Clix2010 database
+	 */
 	@SuppressWarnings("unchecked")
 	private static void loadData()
 	{
@@ -599,10 +620,8 @@ public class ClixImporter {
 	        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
 	        session.clear();
      
-	        
-	    
 	        System.out.println("Starting data extraction.");  
-/*
+
 	        Query chatro = session.createQuery("from Chatroom x order by x.id asc");
 	        chatroom = chatro.list();	        
 	        System.out.println("Chatroom tables: " + chatroom.size());  
@@ -610,6 +629,10 @@ public class ClixImporter {
 	        Query eCompo = session.createQuery("from EComposing x order by x.id asc");
 	        eComposing = eCompo.list();	        
 	        System.out.println("EComposing tables: " + eComposing.size()); 
+	        for(int i = 0; i < eComposing.size(); i++)
+	        {
+	        	eComposingMap.put(eComposing.get(i).getComponent(), eComposing.get(i));
+	        }
 	        
 	        Query portf = session.createQuery("from Portfolio x order by x.id asc");
 	        portfolio = portf.list();	        
@@ -633,10 +656,7 @@ public class ClixImporter {
 	                
 	        Query eComp = session.createQuery("from EComponent x order by x.id asc");
 	        eComponent = eComp.list();	     
-	        for(int i = 0; i < eComponent.size(); i++)
-	        {
-	        	eComponentMap.put(eComponent.get(i).getId(), eComponent.get(i));
-	        }
+
 	        System.out.println("EComponent tables: " + eComponent.size());    
 	        
 	        Query exPer = session.createQuery("from ExercisePersonalised x order by x.id asc");
@@ -715,8 +735,8 @@ public class ClixImporter {
 	        wikiEntry = wE.list();	        
 	        System.out.println("WikiEntry tables: " + wikiEntry.size()); 
 
-			writeToFile();*/
-	        loadFromFile();
+//			writeToFile();*/
+//	        loadFromFile();
 	        
 		}catch(Exception e)
 		{
@@ -726,132 +746,169 @@ public class ClixImporter {
     	
 	}
 	
-	private void loadData(Long start, Long end)
+	/**
+	 * Loads all tables needed for the data-extraction from the Clix database
+	 * 
+	 * 
+	 * @param start
+	 * @param end
+	 */
+	@SuppressWarnings("unchecked")
+	private static void loadData(Long start, Long end)
 	{
 		try{
 			//accessing DB by creating a session and a transaction using HibernateUtil
 	        Session session = HibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
-	        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
 	        session.clear();
-     
 	        
-	    
 	        System.out.println("Starting data extraction.");  
-/*
-	        Query chatro = session.createQuery("from Chatroom x order by x.id asc");
-	        chatroom = chatro.list();	        
-	        System.out.println("Chatroom tables: " + chatroom.size());  
+
+	        //Read the tables that don't refer to log-entries once
+	        if (user_mining == null)
+	        {
+		        Query chatro = session.createQuery("from Chatroom x order by x.id asc");
+		        chatroom = chatro.list();	        
+		        System.out.println("Chatroom tables: " + chatroom.size());  
+		        
+		        Query eCompo = session.createQuery("from EComposing x order by x.id asc");
+		        eComposing = eCompo.list();	        
+		        System.out.println("EComposing tables: " + eComposing.size()); 
+		        for(int i = 0; i < eComposing.size(); i++)
+		        {
+		        	eComposingMap.put(eComposing.get(i).getComponent(), eComposing.get(i));
+		        }
+		        
+		        Query portf = session.createQuery("from Portfolio x order by x.id asc");
+		        portfolio = portf.list();	        
+		        System.out.println("Portfolio tables: " + portfolio.size()); 
+		        
+		        Query perComAss = session.createQuery("from PersonComponentAssignment x order by x.id asc");
+		        personComponentAssignment = perComAss.list();	        
+		        System.out.println("PersonComponentAssignment tables: " + personComponentAssignment.size());   
+		        
+		        Query eCompTy = session.createQuery("from EComponentType x order by x.id asc");
+		        eComponentType = eCompTy.list();	        
+		        System.out.println("EComponentType tables: " + eComponentType.size());  
+		                
+		        Query eComp = session.createQuery("from EComponent x order by x.id asc");
+		        eComponent = eComp.list();	     
+		        System.out.println("EComponent tables: " + eComponent.size());    
+		        
+		        Query pers = session.createQuery("from Person x order by x.id asc");
+		        person = pers.list();	        
+		        System.out.println("Person tables: " + person.size()); 
+		        
+		        Query plGrSp = session.createQuery("from PlatformGroupSpecification x order by x.id asc");
+		        platformGroupSpecification = plGrSp.list();	        
+		        System.out.println("PlatformGroupSpecification tables: " + platformGroupSpecification.size()); 
+		        
+		        Query plGr = session.createQuery("from PlatformGroup x order by x.id asc");
+		        platformGroup = plGr.list();	        
+		        System.out.println("PlatformGroup tables: " + platformGroup.size()); 
+		     
+		        Query porLo = session.createQuery("from PortfolioLog x order by x.id asc");
+		        portfolioLog = porLo.list();	        
+		        System.out.println("PortfolioLog tables: " + portfolioLog.size()); 
+		        
+		        Query t2Ta = session.createQuery("from T2Task x order by x.id asc");
+		        t2Task = t2Ta.list();	        
+		        System.out.println("T2Task tables: " + t2Task.size()); 
+		
+		        Query tECEx = session.createQuery("from TeamExerciseComposingExt x order by x.id asc");
+		        teamExerciseComposingExt = tECEx.list();	        
+		        System.out.println("TeamExerciseComposingExt tables: " + teamExerciseComposingExt.size()); 
+		
+		        Query tEG = session.createQuery("from TeamExerciseGroup x order by x.id asc");
+		        teamExerciseGroup = tEG.list();	        
+		        System.out.println("TeamExerciseGroup tables: " + teamExerciseGroup.size()); 
+		
+		        Query tEGMem = session.createQuery("from TeamExerciseGroupMember x order by x.id asc");
+		        teamExerciseGroupMember = tEGMem.list();	        
+		        System.out.println("TeamExerciseGroupMember tables: " + teamExerciseGroupMember.size()); 
+		
+		        Query tGFSpec = session.createQuery("from TGroupFullSpecification x order by x.id asc");
+		        tGroupFullSpecification = tGFSpec.list();	        
+		        System.out.println("TGroupFullSpecification tables: " + tGroupFullSpecification.size()); 
+		
+		        Query tQC = session.createQuery("from TQtiContent x order by x.id asc");
+		        tQtiContent = tQC.list();	        
+		        System.out.println("TQtiContent tables: " + tQtiContent.size()); 
 	
-	        Query eCompo = session.createQuery("from EComposing x order by x.id asc");
-	        eComposing = eCompo.list();	        
-	        System.out.println("EComposing tables: " + eComposing.size()); 
+		        Query tTS = session.createQuery("from TTestSpecification x order by x.id asc");
+		        tTestSpecification = tTS.list();	        
+		        System.out.println("TTestSpecification tables: " + tTestSpecification.size()); 
+	
+			}
 	        
-	        Query portf = session.createQuery("from Portfolio x order by x.id asc");
-	        portfolio = portf.list();	        
-	        System.out.println("Portfolio tables: " + portfolio.size()); 
+	        //Read log-data successively, using the time stamps
 	        
-	        Query biTrack = session.createQuery("from BiTrackContentImpressions x order by x.id asc");
-	        biTrackContentImpressions = biTrack.list();	        
-	        System.out.println("biTrackContentImpressions tables: " + biTrackContentImpressions.size());     
+	        //The Clix database uses date representation of the type varchar, so the unix-timestamp has to be converted to a string
+	        String startStr = TimeConverter.getStringRepresentation(start);
+	        String endStr = TimeConverter.getStringRepresentation(end);
 	        
-	        Query chatProt = session.createQuery("from ChatProtocol x order by x.id asc");
+	        Query chatProt = session.createQuery("from ChatProtocol x where x.lastUpdated>=:start and x.lastUpdated<=:end order by x.id asc");
+	    	chatProt.setParameter("start", startStr);
+	    	chatProt.setParameter("end", endStr);
 	        chatProtocol = chatProt.list();	        
 	        System.out.println("ChatProtocol tables: " + chatProtocol.size());   
 	        
-	        Query perComAss = session.createQuery("from PersonComponentAssignment x order by x.id asc");
-	        personComponentAssignment = perComAss.list();	        
-	        System.out.println("PersonComponentAssignment tables: " + personComponentAssignment.size());   
+	        Query foEnt = session.createQuery("from ForumEntry x where x.lastUpdated>=:start and x.lastUpdated<=:end order by x.id asc");
+	        foEnt.setParameter("start", startStr);
+	        foEnt.setParameter("end", endStr);
+	        forumEntry = foEnt.list();	        
+	        System.out.println("ForumEntry tables: " + forumEntry.size()); 
 	        
-	        Query eCompTy = session.createQuery("from EComponentType x order by x.id asc");
-	        eComponentType = eCompTy.list();	        
-	        System.out.println("EComponentType tables: " + eComponentType.size());  
-	                
-	        Query eComp = session.createQuery("from EComponent x order by x.id asc");
-	        eComponent = eComp.list();	     
-	        for(int i = 0; i < eComponent.size(); i++)
-	        {
-	        	eComponentMap.put(eComponent.get(i).getId(), eComponent.get(i));
-	        }
-	        System.out.println("EComponent tables: " + eComponent.size());    
+	        Query foEntS = session.createQuery("from ForumEntryState x where x.lastUpdated>=:start and x.lastUpdated<=:end order by x.id asc");
+	        foEntS.setParameter("start", startStr);
+	        foEntS.setParameter("end", endStr);
+	        forumEntryState = foEntS.list();	        
+	        System.out.println("ForumEntryState tables: " + forumEntryState.size()); 
 	        
-	        Query exPer = session.createQuery("from ExercisePersonalised x order by x.id asc");
+	        Query tAnPos = session.createQuery("from TAnswerPosition x order by x.id asc");
+	        tAnswerPosition = tAnPos.list();	        
+	        System.out.println("TAnswerPosition tables: " + tAnswerPosition.size()); 
+	    	
+	        Query tQEA = session.createQuery("from TQtiEvalAssessment x where x.lastInvocation>=:start and x.lastInvocation<=:end order by x.id asc");
+	        tQEA.setParameter("start", startStr);
+	        tQEA.setParameter("end", endStr);
+	        tQtiEvalAssessment = tQEA.list();	        
+	        System.out.println("TQtiEvalAssessment tables: " + tQtiEvalAssessment.size()); 
+	        
+	        Query scoSes = session.createQuery("from ScormSessionTimes x where x.lastUpdated>=:start and x.lastUpdated<=:end order by x.id asc");
+	        scoSes.setParameter("start", startStr);
+	        scoSes.setParameter("end", endStr);
+	        scormSessionTimes = scoSes.list();	        
+	        System.out.println("ScormSession tables: " + scormSessionTimes.size()); 
+	    	
+	        Query wE = session.createQuery("from WikiEntry x where x.lastUpdated>=:start and x.lastUpdated<=:end order by x.id asc");
+	        wE.setParameter("start", startStr);
+	        wE.setParameter("end", endStr);
+	        wikiEntry = wE.list();	        
+	        System.out.println("WikiEntry tables: " + wikiEntry.size()); 
+	        
+	        Query exPer = session.createQuery("from ExercisePersonalised x  where x.uploadDate>=:start and x.uploadDate<=:end order by x.id asc");
+	        exPer.setParameter("start", startStr);
+	        exPer.setParameter("end", endStr);
 	        exercisePersonalised = exPer.list();	        
 	        System.out.println("ExercisePersonalised tables: " + exercisePersonalised.size()); 
+	        
 	        
 	       	Query exGro = session.createQuery("from ExerciseGroup x order by x.id asc");
 	        exerciseGroup = exGro.list();	        
 	        System.out.println("ExerciseGroup tables: " + exerciseGroup.size()); 
 	        
-	        Query foEnt = session.createQuery("from ForumEntry x order by x.id asc");
-	        forumEntry = foEnt.list();	        
-	        System.out.println("ForumEntry tables: " + forumEntry.size()); 
-	        
-	        Query foEntS = session.createQuery("from ForumEntryState x order by x.id asc");
-	        forumEntryState = foEntS.list();	        
-	        System.out.println("ForumEntryState tables: " + forumEntryState.size()); 
-	        
-	        Query pers = session.createQuery("from Person x order by x.id asc");
-	        person = pers.list();	        
-	        System.out.println("Person tables: " + person.size()); 
-	        
-	        Query plGrSp = session.createQuery("from PlatformGroupSpecification x order by x.id asc");
-	        platformGroupSpecification = plGrSp.list();	        
-	        System.out.println("PlatformGroupSpecification tables: " + platformGroupSpecification.size()); 
-	        
-	        Query plGr = session.createQuery("from PlatformGroup x order by x.id asc");
-	        platformGroup = plGr.list();	        
-	        System.out.println("PlatformGroup tables: " + platformGroup.size()); 
-	     
-	        Query porLo = session.createQuery("from PortfolioLog x order by x.id asc");
-	        portfolioLog = porLo.list();	        
-	        System.out.println("PortfolioLog tables: " + portfolioLog.size()); 
-	        
-	        Query scoSes = session.createQuery("from ScormSessionTimes x order by x.id asc");
-	        scormSessionTimes = scoSes.list();	        
-	        System.out.println("ScormSession tables: " + scormSessionTimes.size()); 
-	        
-	        Query t2Ta = session.createQuery("from T2Task x order by x.id asc");
-	        t2Task = t2Ta.list();	        
-	        System.out.println("T2Task tables: " + t2Task.size()); 
-	        
-	        Query tAnPos = session.createQuery("from TAnswerPosition x order by x.id asc");
-	        tAnswerPosition = tAnPos.list();	        
-	        System.out.println("TAnswerPosition tables: " + tAnswerPosition.size()); 
-	
-	        Query tECEx = session.createQuery("from TeamExerciseComposingExt x order by x.id asc");
-	        teamExerciseComposingExt = tECEx.list();	        
-	        System.out.println("TeamExerciseComposingExt tables: " + teamExerciseComposingExt.size()); 
-	
-	        Query tEG = session.createQuery("from TeamExerciseGroup x order by x.id asc");
-	        teamExerciseGroup = tEG.list();	        
-	        System.out.println("TeamExerciseGroup tables: " + teamExerciseGroup.size()); 
-	
-	        Query tEGMem = session.createQuery("from TeamExerciseGroupMember x order by x.id asc");
-	        teamExerciseGroupMember = tEGMem.list();	        
-	        System.out.println("TeamExerciseGroupMember tables: " + teamExerciseGroupMember.size()); 
-	
-	        Query tGFSpec = session.createQuery("from TGroupFullSpecification x order by x.id asc");
-	        tGroupFullSpecification = tGFSpec.list();	        
-	        System.out.println("TGroupFullSpecification tables: " + tGroupFullSpecification.size()); 
-	
-	        Query tQC = session.createQuery("from TQtiContent x order by x.id asc");
-	        tQtiContent = tQC.list();	        
-	        System.out.println("TQtiContent tables: " + tQtiContent.size()); 
-	
-	        Query tQEA = session.createQuery("from TQtiEvalAssessment x order by x.id asc");
-	        tQtiEvalAssessment = tQEA.list();	        
-	        System.out.println("TQtiEvalAssessment tables: " + tQtiEvalAssessment.size()); 
-	
-	        Query tTS = session.createQuery("from TTestSpecification x order by x.id asc");
-	        tTestSpecification = tTS.list();	        
-	        System.out.println("TTestSpecification tables: " + tTestSpecification.size()); 
-	
-	        Query wE = session.createQuery("from WikiEntry x order by x.id asc");
-	        wikiEntry = wE.list();	        
-	        System.out.println("WikiEntry tables: " + wikiEntry.size()); 
+	        //The date-strings have to be modified, because the date format of the table BiTrackContentImpressions is different
+	        startStr = startStr.substring(0, startStr.indexOf(" "));
+	        endStr = endStr.substring(0, endStr.indexOf(" "));
+	   
+	        Query biTrack = session.createQuery("from BiTrackContentImpressions x where x.dayOfAccess>=:start and x.dayOfAccess<=:end order by x.id asc");
+	        biTrack.setParameter("start", startStr);
+	        biTrack.setParameter("end", endStr);
+	        biTrackContentImpressions = biTrack.list();	        
+	        System.out.println("biTrackContentImpressions tables: " + biTrackContentImpressions.size()); 
 
-			writeToFile();*/
-	        loadFromFile();
+			//writeToFile();
+			//loadFromFile();
 	        
 		}catch(Exception e)
 		{
@@ -861,10 +918,13 @@ public class ClixImporter {
         
 	}
 	
-	//Generators for objects
+	//Generators for "static" objects
 	
-	
-	
+	/**
+	 * Generates ChatMining-objects from the given data
+	 * 
+	 * @return	HashMap with ChatMining-objects
+	 */
 	public static HashMap<Long, ChatMining> generateChatMining() {
 		HashMap<Long, ChatMining> chats = new HashMap<Long, ChatMining>();
 		try{
@@ -880,7 +940,7 @@ public class ClixImporter {
 			
 			
 			
-			System.out.println("Generated " + chats.size() + " ChatMining.");
+			System.out.println("Generated " + chats.size() + " ChatMining");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -888,6 +948,11 @@ public class ClixImporter {
 		return chats;
 	}
 	
+	/**
+	 * Generates ResourceMining-objects from the given data
+	 * 
+	 * @return	HashMap with ResourceMining-objects
+	 */
 	public static HashMap<Long, ResourceMining> generateResourceMining()
 	{
 		HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
@@ -920,6 +985,11 @@ public class ClixImporter {
 		return resources;
 	}
 	
+	/**
+	 * Generates CourseMining-objects from the given data
+	 * 
+	 * @return	HashMap with CourseMining-objects
+	 */
 	public static HashMap<Long, CourseMining> generateCourseMining()
 	{
 		HashMap<Long, CourseMining> courses = new HashMap<Long, CourseMining>();
@@ -952,6 +1022,11 @@ public class ClixImporter {
 		return courses;
 	}
 	
+	/**
+	 * Generates UserMining-objects from the given data
+	 * 
+	 * @return	HashMap with UserMining-objects
+	 */
 	public static HashMap<Long, UserMining> generateUserMining()
 	{
 		HashMap<Long, UserMining> users = new HashMap<Long, UserMining>();
@@ -973,6 +1048,11 @@ public class ClixImporter {
 		return users;
 	}
 	
+	/**
+	 * Generates AssignmentMining-objects from the given data
+	 * 
+	 * @return	HashMap with AssignmentMining-objects
+	 */
 	public static HashMap<Long, AssignmentMining> generateAssignmentMining()
 	{
 		HashMap<Long, AssignmentMining> assignments = new HashMap<Long, AssignmentMining>();
@@ -996,7 +1076,7 @@ public class ClixImporter {
 					assignments.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + assignments.size() + " AssignmentMining.");
+			System.out.println("Generated " + assignments.size() + " AssignmentMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1004,6 +1084,11 @@ public class ClixImporter {
 		return assignments;
 	}
 	
+	/**
+	 * Generates QuizMining-objects from the given data
+	 * 
+	 * @return	HashMap with QuizMining-objects
+	 */
 	public static HashMap<Long, QuizMining> generateQuizMining()
 	{
 		HashMap<Long, QuizMining> quizzes = new HashMap<Long, QuizMining>();
@@ -1034,7 +1119,7 @@ public class ClixImporter {
 					quizzes.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + quizzes.size() + " QuizMining.");
+			System.out.println("Generated " + quizzes.size() + " QuizMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1043,7 +1128,11 @@ public class ClixImporter {
 	}
 	
 
-	
+	/**
+	 * Generates ForumMining-objects from the given data
+	 * 
+	 * @return	HashMap with ForumMining-objects
+	 */
 	public static HashMap<Long, ForumMining> generateForumMining()
 	{
 		
@@ -1068,7 +1157,7 @@ public class ClixImporter {
 					forums.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + forums.size() + " ForumMining.");
+			System.out.println("Generated " + forums.size() + " ForumMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1077,7 +1166,11 @@ public class ClixImporter {
 	}
 	
 
-	
+	/**
+	 * Generates RoleMining-objects from the given data
+	 * 
+	 * @return	HashMap with RoleMining-objects
+	 */
 	public static HashMap<Long, RoleMining> generateRoleMining()
 	{
 		HashMap<Long, RoleMining> roles = new HashMap<Long, RoleMining>();
@@ -1109,7 +1202,7 @@ public class ClixImporter {
 				
 				roles.put(item.getId(), item);
 			}
-			System.out.println("Generated " + roles.size() + " RoleMining.");
+			System.out.println("Generated " + roles.size() + " RoleMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1117,7 +1210,11 @@ public class ClixImporter {
 		return roles;
 	}
 
-	
+	/**
+	 * Generates GroupMining-objects from the given data
+	 * 
+	 * @return	HashMap with GroupMining-objects
+	 */
 	public static HashMap<Long, GroupMining> generateGroupMining()
 	{
 		HashMap<Long, GroupMining> groups = new HashMap<Long, GroupMining>();
@@ -1132,7 +1229,7 @@ public class ClixImporter {
 				
 				groups.put(item.getId(), item);
 			}
-			System.out.println("Generated " + groups.size() + " GroupMining.");
+			System.out.println("Generated " + groups.size() + " GroupMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1140,7 +1237,11 @@ public class ClixImporter {
 		return groups;
 	}
 
-	
+	/**
+	 * Generates WikiMining-objects from the given data
+	 * 
+	 * @return	HashMap with WikiMining-objects
+	 */
 	public static HashMap<Long, WikiMining> generateWikiMining()
 	{
 		HashMap<Long, WikiMining> wikis = new HashMap<Long, WikiMining>();
@@ -1166,7 +1267,7 @@ public class ClixImporter {
 					wikis.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + wikis.size() + " WikiMining.");
+			System.out.println("Generated " + wikis.size() + " WikiMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1174,13 +1275,17 @@ public class ClixImporter {
 		return wikis;
 	}
 
-	
+	/**
+	 * Generates DepartmentMining-objects from the given data
+	 * 
+	 * @return	HashMap with DepartmentMining-objects
+	 */
 	public static HashMap<Long, DepartmentMining> generateDepartmentMining()
 	{
 		HashMap<Long, DepartmentMining> departments = new HashMap<Long, DepartmentMining>();
 		try{
 		
-			System.out.println("Generated " + departments.size() + " DepartmentMining.");
+			System.out.println("Generated " + departments.size() + " DepartmentMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1188,13 +1293,17 @@ public class ClixImporter {
 		return departments;
 	}
 
-	
+	/**
+	 * Generates DegreeMining-objects from the given data
+	 * 
+	 * @return	HashMap with DegreeMining-objects
+	 */
 	public static HashMap<Long, DegreeMining> generateDegreeMining()
 	{
 		HashMap<Long, DegreeMining> degrees = new HashMap<Long, DegreeMining>();
 		try{
 		
-			System.out.println("Generated " + degrees.size() + " DegreeMining.");
+			System.out.println("Generated " + degrees.size() + " DegreeMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1202,7 +1311,11 @@ public class ClixImporter {
 		return degrees;
 	}
 
-	
+	/**
+	 * Generates QuestionMining-objects from the given data
+	 * 
+	 * @return	HashMap with QuestionMining-objects
+	 */
 	public static HashMap<Long, QuestionMining> generateQuestionMining()
 	{
 		HashMap<Long, QuestionMining> questions = new HashMap<Long, QuestionMining>();	
@@ -1228,7 +1341,7 @@ public class ClixImporter {
 	
 					questions.put(item.getId(), item);
 			}
-			System.out.println("Generated " + questions.size() + " QuestionMining.");
+			System.out.println("Generated " + questions.size() + " QuestionMinings.");
 			
 		}catch(Exception e)
 		{
@@ -1237,7 +1350,11 @@ public class ClixImporter {
 		return questions;
 	}
 
-	
+	/**
+	 * Generates ScormMining-objects from the given data
+	 * 
+	 * @return	HashMap with ScormMining-objects
+	 */
 	public static HashMap<Long, ScormMining> generateScormMining()
 	{
 		HashMap<Long, ScormMining> scorms = new HashMap<Long, ScormMining>();	
@@ -1272,7 +1389,7 @@ public class ClixImporter {
 					scorms.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + scorms.size() + " ScormMining.");
+			System.out.println("Generated " + scorms.size() + " ScormMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1281,7 +1398,11 @@ public class ClixImporter {
 	}
 	
 	//Generators for relationships
-	
+	/**
+	 * Generates QuizQuestionMining-objects from the given data
+	 * 
+	 * @return	HashMap with QuizQuestionMining-objects
+	 */
 	public static HashMap<Long, QuizQuestionMining> generateQuizQuestionMining()
 	{
 		HashMap<Long, QuizQuestionMining> quizQuestions = new HashMap<Long, QuizQuestionMining>();
@@ -1299,7 +1420,7 @@ public class ClixImporter {
 					quizQuestions.put(item.getId(), item);
 			}
 			
-			System.out.println("Generated " + quizQuestions.size() + " QuizQuestionMining.");
+			System.out.println("Generated " + quizQuestions.size() + " QuizQuestionMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1307,6 +1428,11 @@ public class ClixImporter {
 		return quizQuestions;
 	}
 	
+	/**
+	 * Generates CourseScormMining-objects from the given data
+	 * 
+	 * @return	HashMap with CourseScormMining-objects
+	 */
 	public static HashMap<Long, CourseScormMining> generateCourseScormMining()
 	{
 		HashMap<Long, CourseScormMining> courseScorms = new HashMap<Long, CourseScormMining>();
@@ -1327,7 +1453,7 @@ public class ClixImporter {
 				
 			}
 			
-			System.out.println("Generated " + courseScorms.size() + " CourseScormMining.");
+			System.out.println("Generated " + courseScorms.size() + " CourseScormMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1335,6 +1461,11 @@ public class ClixImporter {
 		return courseScorms;
 	}
 	
+	/**
+	 * Generates CourseAssignmentMining-objects from the given data
+	 * 
+	 * @return	HashMap with CourseAssignmentMining-objects
+	 */
 	public static HashMap<Long, CourseAssignmentMining> generateCourseAssignmentMining()
 	{
 		HashMap<Long, CourseAssignmentMining> courseAssignments = new HashMap<Long, CourseAssignmentMining>();
@@ -1353,7 +1484,7 @@ public class ClixImporter {
 				}
 				
 			}
-			System.out.println("Generated " + courseAssignments.size() + " CourseAssignmentMining.");
+			System.out.println("Generated " + courseAssignments.size() + " CourseAssignmentMinings.");
 			
 		}catch(Exception e)
 		{
@@ -1362,6 +1493,11 @@ public class ClixImporter {
 		return courseAssignments;
 	}
 	
+	/**
+	 * Generates CourseResourceMining-objects from the given data
+	 * 
+	 * @return	HashMap with CourseResourceMining-objects
+	 */
 	public static HashMap<Long, CourseResourceMining> generateCourseResourceMining()
 	{
 		HashMap<Long, CourseResourceMining> courseResources = new HashMap<Long, CourseResourceMining>();
@@ -1381,7 +1517,7 @@ public class ClixImporter {
 				}
 				
 			}
-			System.out.println("Generated " + courseResources.size() + " CourseResourceMining.");
+			System.out.println("Generated " + courseResources.size() + " CourseResourceMinings.");
 			
 		}catch(Exception e)
 		{
@@ -1390,6 +1526,11 @@ public class ClixImporter {
 		return courseResources;
 	}
 	
+	/**
+	 * Generates CourseQuizMining-objects from the given data
+	 * 
+	 * @return	HashMap with CourseQuizMining-objects
+	 */
 	public static HashMap<Long, CourseQuizMining> generateCourseQuizMining()
 	{
 		HashMap<Long, CourseQuizMining> courseQuizzes = new HashMap<Long, CourseQuizMining>();
@@ -1409,7 +1550,7 @@ public class ClixImporter {
 				}
 				
 			}
-			System.out.println("Generated " + courseQuizzes.size() + " CourseQuizMining.");
+			System.out.println("Generated " + courseQuizzes.size() + " CourseQuizMinings.");
 			
 		}catch(Exception e)
 		{
@@ -1418,6 +1559,11 @@ public class ClixImporter {
 		return courseQuizzes;
 	}
 	
+	/**
+	 * Generates QuizUserMining-objects from the given data
+	 * 
+	 * @return	HashMap with QuizUserMining-objects
+	 */
 	public static  HashMap<Long, QuizUserMining> generateQuizUserMining()
 	{
 		HashMap<Long, QuizUserMining> quizUsers = new HashMap<Long, QuizUserMining>();
@@ -1435,7 +1581,7 @@ public class ClixImporter {
 				if(item.getCourse() != null && item.getQuiz() != null && item.getUser() != null)
 					quizUsers.put(item.getId(), item);
 			}
-			System.out.println("Generated " + quizUsers.size() + " QuizUserMining.");
+			System.out.println("Generated " + quizUsers.size() + " QuizUserMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1443,6 +1589,11 @@ public class ClixImporter {
 		return quizUsers;
 	}
 	
+	/**
+	 * Generates CourseUserMining-objects from the given data
+	 * 
+	 * @return	HashMap with CourseUserMining-objects
+	 */
 	public static HashMap<Long, CourseUserMining> generateCourseUserMining()
 	{
 		HashMap<Long, CourseUserMining> courseUsers = new HashMap<Long, CourseUserMining>();
@@ -1480,7 +1631,7 @@ public class ClixImporter {
 			}
 			
 			
-			System.out.println("Generated " + courseUsers.size() + " CourseUserMining.");
+			System.out.println("Generated " + courseUsers.size() + " CourseUserMinings.");
 		
 		}catch(Exception e)
 		{
@@ -1489,6 +1640,11 @@ public class ClixImporter {
 		return courseUsers;
 	}
 	
+	/**
+	 * Generates CourseWikiMining-objects from the given data
+	 * 
+	 * @return	HashMap with CourseWikiMining-objects
+	 */
 	public static HashMap<Long, CourseWikiMining> generateCourseWikiMining()
 	{
 		HashMap<Long, CourseWikiMining> courseWikis = new HashMap<Long, CourseWikiMining>();
@@ -1507,7 +1663,7 @@ public class ClixImporter {
 				}
 			}
 		
-			System.out.println("Generated " + courseWikis.size() + " CourseWikiMining.");
+			System.out.println("Generated " + courseWikis.size() + " CourseWikiMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1515,12 +1671,17 @@ public class ClixImporter {
 		return courseWikis;
 	}
 	
+	/**
+	 * Generates DegreeCourseMining-objects from the given data
+	 * 
+	 * @return	HashMap with DegreeCourseMining-objects
+	 */
 	public static HashMap<Long, DegreeCourseMining> generateDegreeCourseMining()
 	{
 		HashMap<Long, DegreeCourseMining> degreeCourses = new HashMap<Long, DegreeCourseMining>();
 		
 		try{
-			System.out.println("Generated " + degreeCourses.size() + " DegreeCourseMining.");
+			System.out.println("Generated " + degreeCourses.size() + " DegreeCourseMinings.");
 		
 		}catch(Exception e)
 		{
@@ -1529,11 +1690,16 @@ public class ClixImporter {
 		return degreeCourses;
 	}
 	
+	/**
+	 * Generates DepartmentDegreeMining-objects from the given data
+	 * 
+	 * @return	HashMap with DepartmentDegreeMining-objects
+	 */
 	public static HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining()
 	{
 		HashMap<Long, DepartmentDegreeMining> departmentDegrees = new HashMap<Long, DepartmentDegreeMining>();
 		try{
-			System.out.println("Generated " + departmentDegrees.size() + " DepartmentDegreeMining.");
+			System.out.println("Generated " + departmentDegrees.size() + " DepartmentDegreeMinings.");
 		
 		}catch(Exception e)
 		{
@@ -1542,6 +1708,11 @@ public class ClixImporter {
 		return departmentDegrees;
 	}
 	
+	/**
+	 * Generates GroupUserMining-objects from the given data
+	 * 
+	 * @return	HashMap with GroupUserMining-objects
+	 */
 	public static HashMap<Long, GroupUserMining> generateGroupUserMining()
 	{
 		HashMap<Long, GroupUserMining> groupUsers = new HashMap<Long, GroupUserMining>();
@@ -1562,7 +1733,7 @@ public class ClixImporter {
 			
 			
 			
-			System.out.println("Generated " + groupUsers.size() + " GroupUserMining.");
+			System.out.println("Generated " + groupUsers.size() + " GroupUserMinings.");
 			
 		}catch(Exception e)
 		{
@@ -1571,6 +1742,11 @@ public class ClixImporter {
 		return groupUsers;
 	}
 	
+	/**
+	 * Generates CourseGroupMining-objects from the given data
+	 * 
+	 * @return	HashMap with CourseGroupMining-objects
+	 */
 	public static HashMap<Long, CourseGroupMining> generateCourseGroupMining()
 	{
 		HashMap<Long, CourseGroupMining> courseGroups = new HashMap<Long, CourseGroupMining>();
@@ -1586,7 +1762,7 @@ public class ClixImporter {
 					courseGroups.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + courseGroups.size() + " CourseGroupMining.");
+			System.out.println("Generated " + courseGroups.size() + " CourseGroupMinings.");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1594,6 +1770,11 @@ public class ClixImporter {
 		return courseGroups;
 	}
 	
+	/**
+	 * Generates CourseForumMining-objects from the given data
+	 * 
+	 * @return	HashMap with CourseForumMining-objects
+	 */
 	public static HashMap<Long, CourseForumMining> generateCourseForumMining()
 	{
 		HashMap<Long, CourseForumMining> courseForum = new HashMap<Long, CourseForumMining>();
@@ -1615,7 +1796,7 @@ public class ClixImporter {
 				}
 			}
 			
-			System.out.println("Generated " + courseForum.size() + " CourseForumMining.");
+			System.out.println("Generated " + courseForum.size() + " CourseForumMinings.");
 			
 		}catch(Exception e)
 		{
@@ -1627,19 +1808,18 @@ public class ClixImporter {
 	
 	//Generators for logs
 	
-
-	
+	/**
+	 * Generates ForumLogMining-objects from the given data
+	 * 
+	 * @return	HashMap with ForumLogMining-objects
+	 */
 	public static HashMap<Long, ForumLogMining> generateForumLogMining()
 	{
 		HashMap<Long, ForumLogMining> forumLogs = new HashMap<Long, ForumLogMining>();
 		
 		try{
 			HashMap<Long, EComposing> ecMap = new HashMap<Long, EComposing>();
-			for(EComposing loadedItem : eComposing)
-			{
-				if(loadedItem.getComposing() != null)
-					ecMap.put(loadedItem.getComponent(), loadedItem);
-			}
+
 			for(ForumEntry loadedItem : forumEntry)
 			{
 				ForumLogMining item = new ForumLogMining();
@@ -1649,6 +1829,7 @@ public class ClixImporter {
 				item.setSubject(loadedItem.getTitle());
 				item.setMessage(loadedItem.getContent());
 				item.setAction("Post");
+				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				
 				if(ecMap.get(loadedItem.getForum()) != null)
 					item.setCourse(ecMap.get(loadedItem.getForum()).getComposing(), course_mining, old_course_mining);
@@ -1667,14 +1848,14 @@ public class ClixImporter {
 				if(forumLogs.get(loadedItem.getEntry()) != null)
 						item.setSubject(forumLogs.get(loadedItem.getEntry()).getSubject());
 				item.setMessage("");
-				
+				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));				
 				if(ecMap.get(loadedItem.getForum()) != null)
 					item.setCourse(ecMap.get(loadedItem.getForum()).getComposing(), course_mining, old_course_mining);
 				
 				if(item.getUser() != null && item.getForum() != null )
 					forumLogs.put(item.getId(), item);
 			}
-			System.out.println("Generated " + forumLogs.size() + " ForumLogMining.");
+			System.out.println("Generated " + forumLogs.size() + " ForumLogMinings.");
 			
 		}catch(Exception e)
 		{
@@ -1683,7 +1864,11 @@ public class ClixImporter {
 		return forumLogs;
 	}
 	
-	
+	/**
+	 * Generates WikiLogMining-objects from the given data
+	 * 
+	 * @return	HashMap with WikiLogMining-objects
+	 */
 	public static HashMap<Long, WikiLogMining> generateWikiLogMining()
 	{
 		HashMap<Long, WikiLogMining> wikiLogs = new HashMap<Long, WikiLogMining>();
@@ -1693,10 +1878,14 @@ public class ClixImporter {
 				WikiLogMining item = new WikiLogMining();
 				item.setId(loadedItem.getId());
 				item.setWiki(loadedItem.getComponent(), wiki_mining, old_wiki_mining);
-				
+				item.setUser(loadedItem.getCreator(), user_mining, old_user_mining);
+				if(item.getWiki() != null && eComposingMap.get(item.getWiki().getId()) != null)
+					item.setCourse(eComposingMap.get(item.getWiki().getId()).getComposing(), course_mining, old_course_mining);
+				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				wikiLogs.put(item.getId(), item);
+			
 			}
-			System.out.println("Generated " + wikiLogs.size() + " WikiLogMining.");
+			System.out.println("Generated " + wikiLogs.size() + " WikiLogMinings.");
 		
 		}catch(Exception e)
 		{
@@ -1705,7 +1894,11 @@ public class ClixImporter {
 		return wikiLogs;
 	}
 	
-	
+	/**
+	 * Generates CourseLogMining-objects from the given data
+	 * 
+	 * @return	HashMap with CourseLogMining-objects
+	 */
 	public static HashMap<Long, CourseLogMining> generateCourseLogMining()
 	{
 		HashMap<Long, CourseLogMining> courseLogs = new HashMap<Long, CourseLogMining>();
@@ -1722,7 +1915,7 @@ public class ClixImporter {
 				if(item.getCourse() != null && item.getUser() != null)
 					courseLogs.put(item.getId(), item);
 			}
-			System.out.println("Generated " + courseLogs.size() + " CourseLogMining.");
+			System.out.println("Generated " + courseLogs.size() + " CourseLogMinings.");
 			
 		}catch(Exception e)
 		{
@@ -1731,7 +1924,11 @@ public class ClixImporter {
 		return courseLogs;
 	}
 	
-	
+	/**
+	 * Generates QuestionLogMining-objects from the given data
+	 * 
+	 * @return	HashMap with QuestionLogMining-objects
+	 */
 	public static HashMap<Long, QuestionLogMining> generateQuestionLogMining()
 	{
 		HashMap<Long, QuestionLogMining> questionLogs = new HashMap<Long, QuestionLogMining>();
@@ -1746,9 +1943,10 @@ public class ClixImporter {
 				item.setQuestion(loadedItem.getQuestion(), question_mining, old_question_mining);
 				item.setCourse(loadedItem.getTest(), course_mining, old_course_mining);
 				item.setId(loadedItem.getId().hashCode());
+				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getEvaluated()));
 				questionLogs.put(item.getId(), item);
 			}
-			System.out.println("Generated " + questionLogs.size() + " QuestionLogMining.");
+			System.out.println("Generated " + questionLogs.size() + " QuestionLogMinings.");
 		
 		}catch(Exception e)
 		{
@@ -1757,7 +1955,11 @@ public class ClixImporter {
 		return questionLogs;
 	}
 	
-	
+	/**
+	 * Generates QuizLogMining-objects from the given data
+	 * 
+	 * @return	HashMap with QuizLogMining-objects
+	 */
 	public static HashMap<Long, QuizLogMining> generateQuizLogMining()
 	{
 		HashMap<Long, QuizLogMining> quizLogs = new HashMap<Long, QuizLogMining>();
@@ -1781,7 +1983,7 @@ public class ClixImporter {
 					quizLogs.put(item.getId(), item);
 				
 			}
-			System.out.println("Generated " + quizLogs.size() + " QuizLogMining.");
+			System.out.println("Generated " + quizLogs.size() + " QuizLogMinings.");
 		
 		}catch(Exception e)
 		{
@@ -1790,7 +1992,11 @@ public class ClixImporter {
 		return quizLogs;
 	}
 	
-	
+	/**
+	 * Generates AssignmentLogMining-objects from the given data
+	 * 
+	 * @return	HashMap with AssignmentLogMining-objects
+	 */
 	public static HashMap<Long, AssignmentLogMining> generateAssignmentLogMining()
 	{
 		HashMap<Long, AssignmentLogMining> assignmentLogs = new HashMap<Long, AssignmentLogMining>();
@@ -1819,7 +2025,7 @@ public class ClixImporter {
 				if(item.getCourse() != null && item.getAssignment() != null && item.getUser() != null)
 					assignmentLogs.put(item.getId(), item);
 			}
-			System.out.println("Generated " + assignmentLogs.size() + " AssignmentLogMining.");
+			System.out.println("Generated " + assignmentLogs.size() + " AssignmentLogMinings.");
 		
 		}catch(Exception e)
 		{
@@ -1828,7 +2034,11 @@ public class ClixImporter {
 		return assignmentLogs;
 	}
 	
-	
+	/**
+	 * Generates ScormLogMining-objects from the given data
+	 * 
+	 * @return	HashMap with ScormLogMining-objects
+	 */
 	public static HashMap<Long, ScormLogMining> generateScormLogMining()
 	{
 		HashMap<Long, ScormLogMining> scormLogs = new HashMap<Long, ScormLogMining>();
@@ -1852,7 +2062,7 @@ public class ClixImporter {
 				}
 					
 			}
-			System.out.println("Generated " + scormLogs.size() + " ScormLogMining.");
+			System.out.println("Generated " + scormLogs.size() + " ScormLogMinings.");
 		
 		}catch(Exception e)
 		{
@@ -1861,7 +2071,11 @@ public class ClixImporter {
 		return scormLogs;
 	}
 	
-	
+	/**
+	 * Generates ResourceLogMining-objects from the given data
+	 * 
+	 * @return	HashMap with ResourceLogMining-objects
+	 */
 	public static HashMap<Long, ResourceLogMining> generateResourceLogMining()
 	{
 		HashMap<Long, ResourceLogMining> resourceLogs = new HashMap<Long, ResourceLogMining>();
@@ -1876,11 +2090,12 @@ public class ClixImporter {
 				item.setDuration(1L);
 				BiTrackContentImpressionsPK id = new BiTrackContentImpressionsPK(loadedItem.getCharacteristic(), loadedItem.getContent(), loadedItem.getDayOfAccess(), loadedItem.getContainer(), loadedItem.getUser());
 				item.setId(id.hashCode());
-				
+				//Time stamp has different format (2009-07-31)
+					//item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getDayOfAccess()));
 				if(item.getResource() != null && item.getCourse() != null && item.getUser() != null)
 					resourceLogs.put(item.getId(), item);
 			}
-			System.out.println("Generated " + resourceLogs.size() + " ResourceLogMining.");
+			System.out.println("Generated " + resourceLogs.size() + " ResourceLogMinings.");
 		
 		}catch(Exception e)
 		{
@@ -1889,7 +2104,11 @@ public class ClixImporter {
 		return resourceLogs;
 	}
 	
-	
+	/**
+	 * Generates ChatLogMining-objects from the given data
+	 * 
+	 * @return	HashMap with ChatLogMining-objects
+	 */
 	public static HashMap<Long, ChatLogMining> generateChatLogMining()
 	{
 		HashMap<Long, ChatLogMining> chatLogs = new HashMap<Long, ChatLogMining>();
@@ -1907,7 +2126,7 @@ public class ClixImporter {
 				if(item.getChat() != null && item.getUser() != null)
 					chatLogs.put(item.getId(), item);
 			}
-			System.out.println("Generated " + chatLogs.size() + " ChatLogMining.");
+			System.out.println("Generated " + chatLogs.size() + " ChatLogMinings.");
 		
 		}catch(Exception e)
 		{
@@ -1916,7 +2135,7 @@ public class ClixImporter {
 		return chatLogs;
 	}
 	
-	
+
 	private static void loadFromFile()
 	{
 		try
@@ -1953,7 +2172,6 @@ public class ClixImporter {
 	    	String line = null;
     		while (( line = input.readLine()) != null)
 	    	{
-    			String t = line;
     			String[] pre = new String[20];
     			ArrayList<String> nPre = new ArrayList<String>();
     			int pos = 0;
@@ -2405,9 +2623,9 @@ public class ClixImporter {
     			}
 	    	}
     		
-	        for(int i = 0; i < eComponent.size(); i++)
+	        for(int i = 0; i < eComposing.size(); i++)
 	        {
-	        	eComponentMap.put(eComponent.get(i).getId(), eComponent.get(i));
+	        	eComposingMap.put(eComposing.get(i).getComponent(), eComposing.get(i));
 	        }
 	        input.close();
 	        System.out.println("Loaded "+biTrackContentImpressions.size()+" biTrackContentImpressions");

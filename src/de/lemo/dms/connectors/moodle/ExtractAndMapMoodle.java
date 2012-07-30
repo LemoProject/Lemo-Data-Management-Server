@@ -120,13 +120,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		   
 		   	//accessing DB by creating a session and a transaction using HibernateUtil
 	        Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
-	        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
 	        session.clear();
 	        Transaction tx = session.beginTransaction();
 
 	        //Just for testing. has to be set to Long.MaxValue if not longer needed.
 	        long ceiling = Long.MAX_VALUE;
-//reading the LMS Database, create tables as lists of instances of the DB-table classes
+	        //reading the LMS Database, create tables as lists of instances of the DB-table classes
 	        
 
 	        Query log = session.createQuery("from Log_LMS x where x.time>=:readingtimestamp and x.time<=:ceiling order by x.id asc");
@@ -1744,7 +1743,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     
     public HashMap<Long, ResourceLogMining> generateResourceLogMining() {
     	HashMap<Long, ResourceLogMining> resource_log_mining = new HashMap<Long, ResourceLogMining>();
-    	//A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her reqests times.
+    	//A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her requests times.
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
         
         for ( Iterator<Log_LMS> iter = log_lms.iterator(); iter.hasNext(); ) 
