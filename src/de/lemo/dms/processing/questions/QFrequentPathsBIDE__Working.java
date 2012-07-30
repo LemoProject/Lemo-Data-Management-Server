@@ -191,9 +191,9 @@ public class QFrequentPathsBIDE__Working extends Question{
 
             for(Entry<String, Integer> linkEntry : pathEntry.getValue().getEdges().entrySet()) {
                 UserPathLink link = new UserPathLink();
-                link.setSource(Long.parseLong(sourcePos));
-                link.setTarget(Long.parseLong(linkEntry.getKey()));
-                link.setValue(linkEntry.getValue()+10);
+                link.setSource(sourcePos);
+                link.setTarget(linkEntry.getKey());
+                link.setValue(String.valueOf(linkEntry.getValue()+10));
                 if(link.getSource() != link.getTarget())
                     links.add(link);
             }

@@ -40,9 +40,7 @@ import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
-import de.lemo.dms.processing.resulttype.ResultListUserPathGraphString;
 import de.lemo.dms.processing.resulttype.UserPathLink;
-import de.lemo.dms.processing.resulttype.UserPathLinkString;
 import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;
 
@@ -89,7 +87,7 @@ public class QFrequentPathsBIDE extends Question{
 	}
 	
     @POST
-    public ResultListUserPathGraphString compute(
+    public ResultListUserPathGraph compute(
     		@FormParam(COURSE_IDS) List<Long> courseIds, 
     		@FormParam(USER_IDS) List<Long> userIds, 
     		@FormParam(MIN_SUP) double minSup, 
@@ -98,7 +96,7 @@ public class QFrequentPathsBIDE extends Question{
     		@FormParam(END_TIME) long endTime) {
 		
         ArrayList<UserPathNode> nodes = Lists.newArrayList();
-        ArrayList<UserPathLinkString> links = Lists.newArrayList();
+        ArrayList<UserPathLink> links = Lists.newArrayList();
 		
         if(courseIds!=null && courseIds.size()!=0)
         	System.out.println("Parameter list: Course Id: "+courseIds.get(0));
@@ -188,11 +186,11 @@ public class QFrequentPathsBIDE extends Question{
             String sourcePos = path.getTitle();
 
             for(Entry<String, Integer> linkEntry : pathEntry.getValue().getEdges().entrySet()) {
-                UserPathLinkString link = new UserPathLinkString();
+                UserPathLink link = new UserPathLink();
                 link.setSource(sourcePos);
                 //link.setTarget(Long.parseLong(linkEntry.getKey()));
                 link.setTarget(pathObjects.get(linkEntry.getKey()).getTitle());
-                link.setValue(linkEntry.getValue()+10);
+                link.setValue(String.valueOf(linkEntry.getValue()+10));
                 //if(link.getSource() != link.getTarget())
                     links.add(link);
             }
@@ -202,7 +200,7 @@ public class QFrequentPathsBIDE extends Question{
 		{
 			e.printStackTrace();
 		}
-		return new ResultListUserPathGraphString(nodes, links);
+		return new ResultListUserPathGraph(nodes, links);
 	}
 	
 	/**
