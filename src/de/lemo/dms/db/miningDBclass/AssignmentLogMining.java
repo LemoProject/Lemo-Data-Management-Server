@@ -19,6 +19,23 @@ public class AssignmentLogMining implements ILogMining, IMappingClass{
 	private long timestamp;	
 	private long duration; 
 	
+	
+	@Override
+	public int compareTo(ILogMining arg0) {
+		ILogMining s;
+		try{
+			s = arg0;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.timestamp > s.getTimestamp())
+			return 1;
+		if(this.timestamp < s.getTimestamp())
+			return -1;
+		return 0;
+	}
+	
 	public boolean equals(IMappingClass o)
 	{
 		if(o == null || !(o instanceof AssignmentLogMining))
@@ -196,11 +213,16 @@ public class AssignmentLogMining implements ILogMining, IMappingClass{
 		return assignment;
 	}
 
-	public long getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 
 	public void setDuration(long duration) {
 		this.duration = duration;
+	}
+
+	@Override
+	public Long getPrefix() {
+		return 1001L;
 	}
 }

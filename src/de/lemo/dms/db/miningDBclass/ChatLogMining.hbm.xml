@@ -23,13 +23,19 @@
         <property
             name="message"
             column="message"
-            type="string"/>
+            type="text"/>
                
 		<many-to-one 
        		name="user" 
        		class="de.lemo.dms.db.miningDBclass.UserMining"
        		cascade="save-update"
             column="user_id" />
+            
+        <many-to-one 
+       		name="course" 
+       		class="de.lemo.dms.db.miningDBclass.CourseMining"
+       		cascade="save-update"
+            column="course_id" />
             
 		<many-to-one 
 			name="chat" 

@@ -3,10 +3,11 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**This class represents the table course.*/
-public class CourseMining implements IMappingClass {
+public class CourseMining implements IMappingClass, ILearningObject {
 
 	private long id;
 	private long startdate;	
@@ -18,6 +19,8 @@ public class CourseMining implements IMappingClass {
 	private String shortname;
 	
 	private Set<CourseGroupMining> course_group = new HashSet<CourseGroupMining>();
+	private Set<ChatMining> chat = new HashSet<ChatMining>();
+	private Set<ChatLogMining> chat_log = new HashSet<ChatLogMining>();
 	private Set<CourseForumMining> course_forum = new HashSet<CourseForumMining>();
 	private Set<CourseWikiMining> course_wiki = new HashSet<CourseWikiMining>();
 	private Set<CourseUserMining> course_user = new HashSet<CourseUserMining>();
@@ -213,6 +216,7 @@ public class CourseMining implements IMappingClass {
 	public void setCourse_resource(Set<CourseResourceMining> course_resource) {
 		this.course_resource = course_resource;
 	}
+	
 	/** standard getter for the attribut course_resource
 	 * @return a set of entrys in the course_resource table which shows the resources in this course
 	 */	
@@ -412,6 +416,30 @@ public class CourseMining implements IMappingClass {
 		course_assignment.add(course_assignment_add);	
 	}
 	
+	public void addChat(ChatMining chat_add){	
+		chat.add(chat_add);	
+	}
+	
+	public void addChat_log(ChatLogMining chat_log_add){	
+		chat_log.add(chat_log_add);	
+	}
+	
+	public Set<ChatMining> getChat() {
+		return chat;
+	}
+
+	public void setChat(Set<ChatMining> chat) {
+		this.chat = chat;
+	}
+
+	public Set<ChatLogMining> getChat_log() {
+		return chat_log;
+	}
+
+	public void setChat_log(Set<ChatLogMining> chat_log) {
+		this.chat_log = chat_log;
+	}
+
 	/** standard setter for the attribut scorm_log
 	 * @param scorm_log a set of entrys in the scorm_log table which are related to scorm packages in this course
 	 */		

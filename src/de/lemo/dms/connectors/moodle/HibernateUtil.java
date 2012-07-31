@@ -68,6 +68,32 @@ public class HibernateUtil {
 	  return sessionFactoryDynamic;
   }
   
+  public static SessionFactory getDynamicSourceDBFactoryClix(DBConfigObject dbconfig)
+  {
+	  if(sessionFactoryDynamic == null)
+	  {
+		  try{
+			  Configuration s = new Configuration();
+	
+			  //add dynamic db-properties
+			  for(Iterator<String> iter = dbconfig.getProperties().keySet().iterator(); iter.hasNext();)
+			  {
+				  String key = iter.next();
+				  s.setProperty(key, dbconfig.getPropertyValue(key));
+			  }
+			  
+				//Add mapping classes
+				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/EComponent.hbm.xml");
+				
+			  sessionFactoryDynamic = s.buildSessionFactory();
+	
+		  }catch (Throwable ex) {
+		       throw new ExceptionInInitializerError(ex);
+		  }
+	  }
+	  return sessionFactoryDynamic;
+  }
+  
   public static void shutdownFactoryDynamic()
   {
 	  sessionFactoryDynamic.close();

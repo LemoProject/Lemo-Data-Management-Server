@@ -2,17 +2,27 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 
-public class ChatLogMining implements IMappingClass{
+public class ChatLogMining implements IMappingClass, ILogMining{
 
 	private long id;
 	private ChatMining chat;
 	private UserMining user;
 	private String message;
 	private long timestamp;
+	private CourseMining course;
 	
+	public CourseMining getCourse() {
+		return course;
+	}
+
+	public void setCourse(CourseMining course) {
+		this.course = course;
+	}
+
 	@Override
 	public boolean equals(IMappingClass o)
 	{
@@ -21,6 +31,20 @@ public class ChatLogMining implements IMappingClass{
 		if(o.getId() == this.getId() && (o instanceof ChatLogMining))
 			return true;
 		return false;
+	}
+	
+	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+		
+		if(courseMining.get(course) != null)
+		{
+			this.course = courseMining.get(course);
+			courseMining.get(course).addChat_log(this);
+		}
+		if(this.course == null && oldCourseMining.get(course) != null)
+		{
+			this.course = courseMining.get(course);
+			courseMining.get(course).addChat_log(this);
+		}
 	}
 	
 	public long getTimestamp() {
@@ -85,6 +109,47 @@ public class ChatLogMining implements IMappingClass{
 			this.chat = oldChatMining.get(chat);
 			oldChatMining.get(chat).addChat_log(this);
 		}
+	}
+
+	@Override
+	public int compareTo(ILogMining o) {
+		ILogMining s;
+		try{
+			s = o;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.timestamp > s.getTimestamp())
+			return 1;
+		if(this.timestamp < s.getTimestamp())
+			return -1;
+		return 0;
+	}
+
+	@Override
+	public String getAction() {
+		return "chat";
+	}
+
+	@Override
+	public String getTitle() {
+		return this.chat.getTitle();
+	}
+
+	@Override
+	public Long getLearnObjId() {
+		return this.getChat().getId();
+	}
+
+	@Override
+	public Long getDuration() {
+		return 0L;
+	}
+
+	@Override
+	public Long getPrefix() {
+		return 1009L;
 	}
 	
 }

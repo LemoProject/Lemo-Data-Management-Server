@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiEvalAssessment"
+        table="lemo_db.T_QTI_EVAL_ASSESSMENT">
+
+        <id
+            name="id"
+            column="EVALASS_ID"
+            type="long">
+            <generator class="native"/>
+        </id>
+
+        <property
+            name="lastInvocation"
+            column="LASTINVOCATION"
+            type="string"/>
+
+        <property
+            name="component"
+            column="COMPONENT_ID"
+            type="long"/>
+
+        <property
+            name="candidate"
+            column="CANDIDATE_ID"
+            type="long"/>
+            
+        <property
+            name="assessment"
+            column="ASSESSMENT_ID"
+            type="long"/>         
+            
+        <property
+            name="evaluatedScore"
+            column="EVALUATED_SCORE"
+            type="long"/>
+
+        <property
+            name="evalCount"
+            column="EVAL_COUNT"
+            type="long"/>   
+            
+    </class>
+
+</hibernate-mapping>

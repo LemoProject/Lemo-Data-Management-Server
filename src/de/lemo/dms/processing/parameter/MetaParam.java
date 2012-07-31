@@ -15,6 +15,8 @@ public abstract class MetaParam<T> {
     public static final String START_TIME = "start";
     public static final String TYPES = "types";
     public static final String USER_IDS = "uid";
+    public static final String MIN_SUP = "min_sup";
+    public static final String SESSION_WISE = "session_wise";
 
     @XmlElement
     private String id;

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseComposingExt"
+        table="lemo_db.TEAM_EXERCISE_COMPOSING_EXT">
+
+        <id
+            name="id"
+            column="TEAM_EXERCISE_COMPOSING_EXT_ID"
+            type="long">
+            <generator class="native"/>
+        </id>
+
+        <property
+            name="eComposingId"
+            column="E_COMPOSING_ID"
+            type="long"/>
+            
+        <property
+            name="submissionDeadline"
+            column="SUBMISSION_DEADLINE"
+            type="string"/>            
+            
+    </class>
+
+</hibernate-mapping>

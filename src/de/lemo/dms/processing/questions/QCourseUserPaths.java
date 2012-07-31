@@ -179,11 +179,11 @@ public class QCourseUserPaths extends Question {
                     links = Lists.newArrayList();
                     coursePaths.put(nodeID, links);
                 }
-                UserPathLink link = new UserPathLink(nodeID, 0);
+                UserPathLink link = new UserPathLink(String.valueOf(nodeID), "0");
                 links.add(link);
 
                 if(lastLink != null) {
-                    lastLink.setTarget(nodeID);
+                    lastLink.setTarget(String.valueOf(nodeID));
                 }
                 lastLink = link;
             }

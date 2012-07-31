@@ -1210,7 +1210,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			if(insert.getCourse() == null){
     				logger.info("In Quiz_log_mining(quiz), course not found for log: " + loadedItem.getId() + " and course: " + loadedItem.getCourse());
     			}
-    			quiz_log_mining.put(insert.getId(), insert);
+    			if(insert.getCourse() != null && insert.getQuiz() != null && insert.getUser() != null)
+    				quiz_log_mining.put(insert.getId(), insert);
     			
     		}          	
        	}
@@ -1494,7 +1495,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
   			if(loadedItem.getInfo().matches("[0-9]+")){
   				insert.setScorm(Long.valueOf(loadedItem.getInfo()), scorm_mining, old_scorm_mining);
   			}
-  			scorm_log_mining.put(insert.getId(), insert);
+  			if(insert.getScorm() != null && insert.getCourse() != null && insert.getUser() != null)
+  				scorm_log_mining.put(insert.getId(), insert);
   			if(insert.getScorm()==null){
   	    		logger.info("In Scorm_log_mining, scorm package not found for log: " + loadedItem.getId() + " and cmid: " + loadedItem.getCmid()+ " and info: " + loadedItem.getInfo());
   	    	}
@@ -1816,7 +1818,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			if(insert.getResource()== null && !(loadedItem.getAction().equals("view all"))){
     				logger.info("In Resource_log_mining, resource not found for log: " + loadedItem.getId() + " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()+ " and action: " + loadedItem.getAction());
     			}
-    			resource_log_mining.put(insert.getId(), insert);
+    			if(insert.getCourse() != null && insert.getResource() != null && insert.getUser() != null)
+    				resource_log_mining.put(insert.getId(), insert);
     			
             }
         }
@@ -1908,6 +1911,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		if(loadedItem.getModule().equals("wiki")){
     			WikiLogMining insert = new WikiLogMining();
     			insert.setId(loadedItem.getId());
+    			//Cannot tell, how to extract the correct wiki-id - so it'll always be null
     			insert.setWiki(loadedItem.getCmid(), wiki_mining, old_wiki_mining);
     			
     			if(!numericUserId)
@@ -1939,7 +1943,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
-           	wiki_log_mining.put(insert.getId(), insert);
+    			
+    			if(insert.getUser() != null && insert.getCourse() != null && insert.getWiki() != null)
+    				wiki_log_mining.put(insert.getId(), insert);
     		}
         }
         
@@ -2102,6 +2108,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			insert.setChattime(loadedItem.getChattime());
 			insert.setDescription(loadedItem.getDescription());
 			insert.setTitle(loadedItem.getTitle());
+			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
 			chat_mining.put(insert.getId(), insert);
         }
 
@@ -2120,6 +2127,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         	insert.setChat(loadedItem.getChat_id(), chat_mining, old_chat_mining);
         	insert.setMessage(loadedItem.getMessage());
         	insert.setTimestamp(loadedItem.getTimestamp());
+        	insert.setCourse(insert.getChat().getCourse().getId(), course_mining, old_course_mining);
         	
         	
 			if(!numericUserId)
@@ -2144,7 +2152,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(id, loadedItem.getUserid(), "Moodle19"));
        				insert.setUser(id, user_mining, old_user_mining);
        			}
-       			if(insert.getUser() != null && insert.getUser().getId() > largestId)
+       			
+       			if(insert.getUser() != null && insert.getUser().getId() > largestId )
        				largestId = insert.getUser().getId();
 			}
   			if(insert.getUser()==null){
@@ -2153,7 +2162,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
   			if(insert.getChat()==null){
   				logger.info("In Chat_log_mining(chat part), chat not found for log: " + loadedItem.getId() +" and chat: " + loadedItem.getChat_id());
   			}
-  			if(insert.getChat() != null && insert.getUser() != null)
+  			if(insert.getChat() != null && insert.getUser() != null && insert.getCourse() != null)
   				chat_log_mining.put(insert.getId(), insert);
   			
         }

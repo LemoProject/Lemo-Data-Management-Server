@@ -5,32 +5,32 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class UserPathLink {
 
-    private long source;
-    private long target;
-    private long value;
+    private String source;
+    private String target;
+    private String value;
 
     public UserPathLink() {
         // TODO Auto-generated constructor stub
     }
     
-    public UserPathLink(long source, long target) {
+    public UserPathLink(String source, String target) {
         this.source = source;
         this.target = target;
     }
 
-    public long getSource() {
+    public String getSource() {
         return source;
     }
 
-    public void setSource(long source) {
+    public void setSource(String source) {
         this.source = source;
     }
 
-    public long getTarget() {
+    public String getTarget() {
         return target;
     }
 
-    public void setTarget(long target) {
+    public void setTarget(String target) {
         this.target = target;
     }
 
@@ -38,8 +38,8 @@ public class UserPathLink {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) (source ^ (source >>> 32));
-        result = prime * result + (int) (target ^ (target >>> 32));
+        result = prime * result + (int) (source.length() ^ (source.length() >>> 32));
+        result = prime * result + (int) (target.length() ^ (target.length() >>> 32));
         return result;
     }
 
@@ -59,11 +59,11 @@ public class UserPathLink {
         return true;
     }
 
-    public long getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(long value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
