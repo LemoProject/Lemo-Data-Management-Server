@@ -360,7 +360,7 @@ public class ClixImporter {
 				chatroom.clear();
 				
 				System.out.println("AssociationObjects: ");
-				
+				/*
 				quiz_question_mining = generateQuizQuestionMining();
 				updates.add(quiz_question_mining.values());
 				
@@ -408,6 +408,7 @@ public class ClixImporter {
 				
 				//Clearing source-data, that isn't longer needed
 				eComposing.clear();	
+				*/
 			}
 			
 			System.out.println("LogObjects: ");
