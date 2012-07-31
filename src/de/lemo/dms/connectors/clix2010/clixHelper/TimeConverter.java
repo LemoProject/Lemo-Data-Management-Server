@@ -18,4 +18,13 @@ public class TimeConverter {
 		}
 		return t;
 	}
+	
+	public static String getStringRepresentation(Long date)
+	{
+		String s="";
+		
+		s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date * 1000);
+		
+		return s;
+	}
 }

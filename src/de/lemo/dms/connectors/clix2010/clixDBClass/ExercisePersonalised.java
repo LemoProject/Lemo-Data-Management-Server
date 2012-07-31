@@ -19,8 +19,7 @@ public class ExercisePersonalised  implements IClixMappingClass{
 
 	public String getString()
 	{
-		return "ExercisePersonalizedä$"
-						+this.id+"ä$"
+		return "ExercisePersonalisedä$"
 						+this.getUploadDate()+"ä$"
 						+this.getCommunity()+"ä$"
 						+this.getExercise()+"ä$"

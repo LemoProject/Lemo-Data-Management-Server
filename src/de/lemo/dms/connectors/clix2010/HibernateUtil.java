@@ -39,6 +39,7 @@ public class HibernateUtil {
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/Person.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PlatformGroup.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PlatformGroupSpecification.hbm.xml");
+				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/Portfolio.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PortfolioLog.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/T2Task.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TAnswerPosition.hbm.xml");
@@ -51,7 +52,8 @@ public class HibernateUtil {
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TTestSpecification.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/WikiEntry.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/Chatroom.hbm.xml");
-				
+				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ExerciseGroup.hbm.xml");
+				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PersonComponentAssignment.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ScormSessionTimes.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/BiTrackContentImpressions.hbm.xml");
 				

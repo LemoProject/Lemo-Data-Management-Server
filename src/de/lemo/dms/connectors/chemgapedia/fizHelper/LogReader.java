@@ -448,6 +448,7 @@ public class LogReader {
 			List<Collection<?>> l = new ArrayList<Collection<?>>();
 			Collection<UserMining> it = (Collection<UserMining>)this.newUsers.values();
 			Collection<IDMappingMining> idmap = (Collection<IDMappingMining>)new_id_mapping.values();
+			System.out.println("Found " + it.size() + " users.");
 			l.add(it);
 			l.add(idmap);
 			dbHandler.saveCollectionToDB(l);

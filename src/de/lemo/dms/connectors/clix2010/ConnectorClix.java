@@ -57,14 +57,19 @@ public class ConnectorClix implements IConnector{
 			ClixImporter.getClixData();
 		}catch(Exception e)
 		{
-			
+			e.printStackTrace();
 		}
 		
 	}
 
 	@Override
 	public void updateData(long fromTimestamp) {
-		// TODO Auto-generated method stub
+		try{
+			ClixImporter.updateClixData(fromTimestamp);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
 	}
 
