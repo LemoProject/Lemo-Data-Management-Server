@@ -19,6 +19,11 @@
             name="timestamp"
             column="timestamp"
             type="long"/>
+            
+        <property
+            name="duration"
+            column="duration"
+            type="long"/>
  
         <property
             name="message"
