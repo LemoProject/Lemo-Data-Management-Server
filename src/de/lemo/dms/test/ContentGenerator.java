@@ -254,18 +254,34 @@ public class ContentGenerator {
 					
 					//Now create LearningObjects
 					//Create resources
+					int pt = (randy.nextInt(6)+ 1) * 15;
 					for(int l = 1; l < 11; l++)
 					{
 						ResourceMining r = new ResourceMining();
 						r.setId(resourceList.size() + 1);
 						r.setDifficulty("Level " + randy.nextInt(10));
 						r.setPosition(l);
-						r.setProcessingTime(randy.nextInt(3600));
 						r.setTimecreated(cou.getTimecreated() + randy.nextInt(week));
 						r.setTimemodified(r.getTimecreated() + randy.nextInt(year/2));
 						r.setTitle("Resource "+i+"."+j+"."+k+"."+l);
-						r.setType(EResourceType.values()[randy.nextInt(EResourceType.values().length-1)].toString());
-						r.setUrl("http://www.lemo-projekt.de/" + r.getTitle() + ".html");
+						if( l == 1)
+						{
+							r.setType("VLU");
+							r.setProcessingTime(pt);
+							r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/" + r.getTitle() +".vlu.html");
+						}
+						else if(l < 10)
+						{
+							r.setType("Page");
+							r.setProcessingTime(pt / 8);
+							r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/Resource "+i+"."+j+"."+k+".1.vlu/Page/vsc/" + r.getTitle() +".vscml.html");
+						}
+						else
+						{
+							r.setType("Summary");
+							r.setProcessingTime(pt);
+							r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/Resource "+i+"."+j+"."+k+".1.vlu/Page/summary.html");
+						}
 						
 						CourseResourceMining couRes = new CourseResourceMining();
 						couRes.setId(courseResourceList.size()+1);

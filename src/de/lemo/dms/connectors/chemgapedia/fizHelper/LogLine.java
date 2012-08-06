@@ -49,6 +49,8 @@ public class LogLine {
 			timestamp = Long.parseLong(lineArguments[0]);
 			
 			//Set URL
+			if(lineArguments[4].equals("-"))
+				System.out.println();
 			if(!lineArguments[4].trim().startsWith("http://www.chemgapedia.de"))
 				url = "http://www.chemgapedia.de"+lineArguments[4].trim();
 			else

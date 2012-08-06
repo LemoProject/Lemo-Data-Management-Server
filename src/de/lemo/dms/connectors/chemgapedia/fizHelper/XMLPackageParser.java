@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -179,7 +180,7 @@ public class XMLPackageParser {
 	 */
 	private void readVLU(String filename)
 	{
-		ResourceMining r = new ResourceMining();
+		ResourceMining resource = new ResourceMining();
 		try {
 		      // ---- Parse XML file ----
 		      DocumentBuilderFactory factory  = DocumentBuilderFactory.newInstance();
@@ -191,27 +192,27 @@ public class XMLPackageParser {
 
 		      NodeList content = document.getElementsByTagName("content");		      
 		      //Set resource type
-		      r.setType("VLU");
+		      resource.setType("VLU");
 		      
 		      //set resource title
 		      if(document.getElementsByTagName("title").getLength() > 0)
 		      {
-		    	  r.setTitle(document.getElementsByTagName("title").item(0).getTextContent());
+		    	  resource.setTitle(document.getElementsByTagName("title").item(0).getTextContent());
 		      }
 		      //Set resource difficulty
 		      if(document.getElementsByTagName("audience").getLength() > 0)
 		      {
-		    	  r.setDifficulty(((Element)document.getElementsByTagName("audience").item(0)).getAttribute("level"));
+		    	  resource.setDifficulty(((Element)document.getElementsByTagName("audience").item(0)).getAttribute("level"));
 		      }
 
 		      try{
 		    	  if(document.getElementsByTagName("time").getLength() > 0)
 		    	  {
-		    		  r.setProcessingTime( Long.valueOf(((Element)document.getElementsByTagName("time").item(0)).getAttribute("value")));
+		    		  resource.setProcessingTime( Long.valueOf(((Element)document.getElementsByTagName("time").item(0)).getAttribute("value")));
 		    	  }
 		      }catch(NumberFormatException e)
 		      {
-		    	  r.setProcessingTime(0L);
+		    	  resource.setProcessingTime(0L);
 		      }
 		      
 		      String department ="";
@@ -262,30 +263,30 @@ public class XMLPackageParser {
 		    	  cou = courseObj.get(course);
 
 		      //Set URL (has to be done in another method - otherwise it isn't working)
-		      r.setUrl(getUrlFromVlu(filename));
-		      if(!r.getUrl().contains("/0/"))
+		      resource.setUrl(getUrlFromVlu(filename));
+		      if(!resource.getUrl().contains("/0/"))
 		      {		    	  
-			      r.setPosition(0);
+			      resource.setPosition(0);
 	
-			      this.resourceObj.get(r.getUrl());
+			      this.resourceObj.get(resource.getUrl());
 			      //if(this.resourceObj.get(r.getUrl()) == null)
 			      //{
 					  	long r_id = -1;
-	 	       			if(id_mapping.get(r.getUrl()) != null)
+	 	       			if(id_mapping.get(resource.getUrl()) != null)
 	 	       			{
-	 	       				r_id = id_mapping.get(r.getUrl()).getId();
-	 	       				r.setId(r_id);
+	 	       				r_id = id_mapping.get(resource.getUrl()).getId();
+	 	       				resource.setId(r_id);
 	 	       			}
 	 	       			if(r_id == -1 )
 	 	       			{
 	 	       				r_id = resId + 1;
 	 	       				resId = r_id;
-	 	       				id_mapping.put(r.getUrl(), new IDMappingMining(r_id, r.getUrl(), "Chemgapedia"));
+	 	       				id_mapping.put(resource.getUrl(), new IDMappingMining(r_id, resource.getUrl(), "Chemgapedia"));
 	 	       				largestId = resId;
-	 	       				r.setId(r_id);
+	 	       				resource.setId(r_id);
 	 	       			}
 			    	  
-			    	  this.resourceObj.put(r.getUrl(), r);
+			    	  this.resourceObj.put(resource.getUrl(), resource);
 			    	  this.fnames.add(filename);
 			    	  //Save department - degree relation locally
 				      if(this.departmentDegrees.get(deg.getId()) == null)
@@ -308,14 +309,14 @@ public class XMLPackageParser {
 				    	  this.degreeCourses.put(cou.getId() , dcm);			    	  
 				      }
 				      
-				      if(this.courseResources.get(r.getId()) == null)
+				      if(this.courseResources.get(resource.getId()) == null)
 				      {			    	  
 				    	  CourseResourceMining crm = new CourseResourceMining();
-				    	  crm.setResource(r);
+				    	  crm.setResource(resource);
 				    	  crm.setCourse(cou);
 				    	  crm.setId(couResId + 1);
 				    	  couResId++;
-				    	  this.courseResources.put(r.getId(), crm);			    	  
+				    	  this.courseResources.put(resource.getId(), crm);			    	  
 				      }
 				      
 				      int pos = 1;
@@ -327,63 +328,73 @@ public class XMLPackageParser {
 						      {				    	  
 						    	  if(content.item(0).getChildNodes().item(i).hasAttributes())				      
 						    	  {
+						    		  ResourceMining r1 = new ResourceMining();
 						    		  t = content.item(0).getChildNodes().item(i).getAttributes();
 						    		  for(int j = 0; j < t.getLength(); j++)
 						    		  {
-						    			  if(t.item(j).getNodeName() == "xlink:href" && t.item(j).getTextContent() != null)
+						    			  Node node = t.item(j);
+						    			  int len = t.getLength();
+						    			  
+						    			  if(node.getTextContent() != null)
 						    			  {
-									    	  ResourceMining r1 = new ResourceMining();
-									    	  
-									    	  r1.setDifficulty(r.getDifficulty());
-								    		  r1.setTitle(r.getTitle());
-									    	  r1.setType("Page");
-						    				  r1.setUrl(r.getUrl().substring(0, r.getUrl().length()-5)+ "/Page" + t.item(j).getTextContent()+".html");
-						    				  
-			    						  
-				    						  long resource_id = -1;
-					       	       			if(id_mapping.get(r1.getUrl()) != null)
-					       	       			{
-					       	       				resource_id = id_mapping.get(r1.getUrl()).getId();
-					       	       				r1.setId(resource_id);
-					       	       			}
-					       	       			if(resource_id == -1 )
-					       	       			{
-					       	       				resource_id = resId + 1;
-					       	       				resId = resource_id;
-					       	       				id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(), "Chemgapedia"));
-					       	       				largestId = resId;
-					       	       				r1.setId(resource_id);
-					       	       			}
-						    				  
-						    				  
-						    				  r1.setPosition(pos);
-						    				  
-					    				 // if(this.resourceObj.get(r1.getUrl()) == null)
-					    				  //{
-					    					  tempRes.add(r1);
-					    					  this.resourceObj.put(r1.getUrl(), r1);
-					    					  //this.resourceObj.add(r1);
-					    					  this.fnames.add(filename + "*");
-					    					  if(this.courseResources.get(r1.getId()) == null)
-					    					  {
-					    				    	  CourseResourceMining crm = new CourseResourceMining();
-					    				    	  crm.setResource(r1);
-					    				    	  crm.setCourse(cou);
-					    				    	  crm.setId(couResId + 1);
-					    				    	  couResId++;
-					    				    	  this.courseResources.put(r1.getId(), crm);			    	  
-					    					  }
-					    					  pos++;
-					    				//  }
-						    				  
+							    			  
+							    			  
+							    			  if(node.getNodeName() == "xlink:href")
+							    			  {
+										    	  //ResourceMining r1 = new ResourceMining();
+										    	  
+										    	  r1.setDifficulty(resource.getDifficulty());
+									    		  
+										    	  r1.setType("Page");
+							    				  r1.setUrl(resource.getUrl().substring(0, resource.getUrl().length()-5)+ "/Page" + node.getTextContent()+".html");
+							    			  }
+							    			  
+							    			  if(node.getNodeName() == "xlink:title")
+							    			  {
+							    				  r1.setTitle(node.getTextContent());
+							    			  }
+				    						  
+
 						    			  }
 						    		  }
+		    						long resource_id = -1;
+			       	       			if(id_mapping.get(r1.getUrl()) != null)
+			       	       			{
+			       	       				resource_id = id_mapping.get(r1.getUrl()).getId();
+			       	       				r1.setId(resource_id);
+			       	       			}
+			       	       			if(resource_id == -1 )
+			       	       			{
+			       	       				resource_id = resId + 1;
+			       	       				resId = resource_id;
+			       	       				id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(), "Chemgapedia"));
+			       	       				largestId = resId;
+			       	       				r1.setId(resource_id);
+			       	       			}
+				    				  
+				    				  
+				    				  r1.setPosition(pos);
+				    				  
+			    					  tempRes.add(r1);
+			    					  this.resourceObj.put(r1.getUrl(), r1);
+			    					  //this.resourceObj.add(r1);
+			    					  this.fnames.add(filename + "*");
+			    					  if(this.courseResources.get(r1.getId()) == null)
+			    					  {
+			    				    	  CourseResourceMining crm = new CourseResourceMining();
+			    				    	  crm.setResource(r1);
+			    				    	  crm.setCourse(cou);
+			    				    	  crm.setId(couResId + 1);
+			    				    	  couResId++;
+			    				    	  this.courseResources.put(r1.getId(), crm);			    	  
+			    					  }
+			    					  pos++;///////////
 		
 						    	  }				      
 						      }
 						      long posT = 0;
 						      try{
-						    	  posT = r.getProcessingTime() / pos-1;
+						    	  posT = resource.getProcessingTime() / pos-1;
 						    	  
 						      }catch(NumberFormatException e)
 						      {}
@@ -395,11 +406,11 @@ public class XMLPackageParser {
 						      }
 			    		  //Add the unlisted summary for each vlu
 			    		  ResourceMining r1 = new ResourceMining();
-			    		  r1.setDifficulty(r.getDifficulty());
-			    		  r1.setTitle(r.getTitle());
+			    		  r1.setDifficulty(resource.getDifficulty());
+			    		  r1.setTitle(resource.getTitle());
 				    	  r1.setType("Summary");
-				    	  r1.setProcessingTime(r.getProcessingTime()/content.getLength());
-						  r1.setUrl(r.getUrl().substring(0, r.getUrl().length()-5)+ "/Page/summary.html");
+				    	  r1.setProcessingTime(resource.getProcessingTime()/content.getLength());
+						  r1.setUrl(resource.getUrl().substring(0, resource.getUrl().length()-5)+ "/Page/summary.html");
 						  
 						  if(resourceObj.get(r1.getUrl()) == null)
 						  {
@@ -500,7 +511,9 @@ public class XMLPackageParser {
 		li.add(this.degreeCourses.values());
 		li.add(this.courseResources.values());
 		li.add(this.id_mapping.values());
-		dbHandler.saveCollectionToDB(li);		
+		dbHandler.saveCollectionToDB(li);	
+		
+		dbHandler.closeConnection();
 		return largestId;
 	}
 	

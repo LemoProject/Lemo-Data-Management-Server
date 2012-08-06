@@ -9,12 +9,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.proxy.HibernateProxy;
 
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
@@ -71,7 +76,12 @@ public class LogReader {
 			this.dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 			this.dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 			
-			List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(EQueryType.HQL, "from IDMappingMining x Where platform='Chemgapedia' order by x.id asc");
+			Session session = dbHandler.getSession();
+	    	
+	    	Criteria c = session.createCriteria(IDMappingMining.class, "idmap");
+	    	c.add(Restrictions.eq("idmap.platform", "Chemgapedia"));
+			
+			List<IDMappingMining> ids = c.list();
 			
 			id_mapping = new HashMap<String, IDMappingMining>();
 			for(int i = 0; i < ids.size(); i++)
@@ -80,38 +90,45 @@ public class LogReader {
 			}
 			System.out.println("Read "+ids.size() + " IDMappings from database.");
 			
-	    	List<UserMining> us  = (List<UserMining>) dbHandler.performQuery(EQueryType.HQL, "FROM UserMining");
+			
+			c = session.createCriteria(UserMining.class);
+	    	List<UserMining> us  = c.list();
 	    	for(int i = 0; i < us.size(); i++)
 	    		this.oldUsers.put(us.get(i).getId(), us.get(i));
 	    	System.out.println("Read "+us.size() + " UserMinings from database.");
 	    	
-	    	List<ResourceMining> rt  = (List<ResourceMining>) dbHandler.performQuery(EQueryType.HQL, "FROM ResourceMining");
-	    	for(int i = 0; i < rt.size(); i++)
-	    		this.oldResources.put(rt.get(i).getUrl(), rt.get(i));
+	    	c = session.createCriteria(ResourceMining.class);
+	    	List<ResourceMining> rt  = c.list();
+	    	for(ResourceMining res : rt)
+	    		this.oldResources.put(res.getUrl(), res);
 	    	System.out.println("Read "+rt.size() + " ResourceMinings from database.");
 	    	
-	    	List<CourseMining> cm  = (List<CourseMining>)dbHandler.performQuery(EQueryType.HQL, "FROM CourseMining");
+	    	c = session.createCriteria(CourseMining.class);
+	    	List<CourseMining> cm  = c.list();
 	    	for(int i = 0; i < cm.size(); i++)
 	    	{
 	    		this.oldCourses.put(cm.get(i).getTitle(), cm.get(i));
 	    	}
 	    	System.out.println("Read "+cm.size() + " CourseMinings from database.");
 	    
-	    	List<?> courseResource = (List<?>) dbHandler.performQuery(EQueryType.HQL, "FROM CourseResourceMining");
+	    	c = session.createCriteria(CourseResourceMining.class);
+	    	List<CourseResourceMining> courseResource = c.list();
 	    	for(int i = 0; i < courseResource.size(); i++)
 	    		this.courseResources.put(((CourseResourceMining)courseResource.get(i)).getResource().getUrl(), ((CourseResourceMining)courseResource.get(i)));
 	    	System.out.println("Read "+courseResource.size() + " CourseResourceMinings from database.");
 	    	
 	    	if(idcount == -1)
 	    	{
-	    		List<Long> ts = (List<Long>)(dbHandler.performQuery(EQueryType.HQL, "Select max(timestamp) from ResourceLogMining"));
-				if(ts != null && ts.size() > 0 && ts.get(ts.size()-1) != null)
-					lastTimestamp = ts.get(ts.size()-1);
+	    		c = session.createCriteria(ResourceLogMining.class);
+	    		List<ResourceLogMining> l1 = c.list();
+				if(l1 != null && l1.size() > 0 && l1.get(l1.size()-1) != null)
+					lastTimestamp = l1.get(l1.size()-1).getTimestamp();
 	    		
 	    		
-	    		List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.HQL, "Select largestId from ConfigMining x order by x.id asc"));
+				c = session.createCriteria(ConfigMining.class);
+				List<ConfigMining>l = c.list();
 				if(l != null && l.size() > 0)
-					largestId = l.get(l.size()-1);
+					largestId = l.get(l.size()-1).getLargestId();
 				else
 					largestId = 0L;
 			}
@@ -136,7 +153,7 @@ public class LogReader {
 		ArrayList<LogObject>  a;
 		Object[] user = this.newUsers.values().toArray();
 		HashMap<Long, UserMining> tempUsers = new HashMap<Long, UserMining>();
-		int old = newUsers.size();
+		double old = Long.parseLong(newUsers.size() +"");
 		int totalLines = 0;
 		int linesDeleted = 0;
 		BotFinder bf = new BotFinder();
@@ -161,7 +178,7 @@ public class LogReader {
 			}
 		}
 		
-		double cutUsePerc = (old - tempUsers.size()) / (old / 100);
+		double cutUsePerc = (old - Long.valueOf(""+tempUsers.size())) / (old / 100);
 		double cutLinPerc = linesDeleted / (totalLines / 100);
 		System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users  out of " + old + " (" + new DecimalFormat("0.00").format(cutUsePerc) + "%), eliminating " + linesDeleted + " log lines (" + new DecimalFormat("0.00").format(cutLinPerc) + "%).");
 		this.newUsers = tempUsers;

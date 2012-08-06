@@ -8,7 +8,8 @@ import de.lemo.dms.db.IDBHandler;
 public class Test {
 
 	
-	public static void main(String[] args)
+	
+	public static void gen()
 	{
 		ContentGenerator conGen = new ContentGenerator();
 		
@@ -16,5 +17,20 @@ public class Test {
 		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 		
         dbHandler.saveCollectionToDB(conGen.generateMiningDB(5, 2, 2, 1293840000L, 1000));
+	}
+	
+	public static void write()
+	{
+		TestDataCreatorChemgapedia ch = new TestDataCreatorChemgapedia();
+		
+		ch.getDataFromDB();
+		ch.writeDataSource("c://users//s.schwarzrock//desktop//chemgaLog.log", "c://users//s.schwarzrock//desktop//VluGen");
+	}
+	
+	
+	public static void main(String[] args)
+	{
+		//gen();
+		write();
 	}
 }
