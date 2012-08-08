@@ -285,7 +285,7 @@ public abstract class ExtractAndMap{
 		//mining_session.clear();
 		
 		
-		config_mining_timestamp = (List<Timestamp>) dbHandler.performQuery(EQueryType.SQL, "select max(lastmodified) from ConfigMining x order by x.id asc");//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
+		config_mining_timestamp = (List<Timestamp>) dbHandler.getSession().createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
 		
 		List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.SQL, "select largestId from ConfigMining x order by x.id asc"));
 		if(l != null && l.size() > 0)
@@ -388,12 +388,6 @@ public abstract class ExtractAndMap{
 		for(int i = 0; i < t.size(); i++)
 			old_degree_mining.put(((DegreeMining)(t.get(i))).getId(), (DegreeMining)t.get(i));
 		System.out.println("Loaded " + old_degree_mining.size() + " DegreeMining objects from the mining database.");
-		
-		t = dbHandler.performQuery(EQueryType.HQL, "from ChatMining x order by x.id asc");//mining_session.createQuery("from ChatMining x order by x.id asc").list();
-		old_chat_mining = new HashMap<Long, ChatMining>();
-		for(int i = 0; i < t.size(); i++)
-			old_chat_mining.put(((ChatMining)(t.get(i))).getId(), (ChatMining)t.get(i));
-		System.out.println("Loaded " + old_chat_mining.size() + " ChatMining objects from the mining database.");
 		
 		t = dbHandler.performQuery(EQueryType.HQL, "from ChatMining x order by x.id asc");//mining_session.createQuery("from ChatMining x order by x.id asc").list();
 		old_chat_mining = new HashMap<Long, ChatMining>();

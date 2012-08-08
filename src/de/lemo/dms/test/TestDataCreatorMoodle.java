@@ -10,35 +10,36 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import de.lemo.dms.connectors.moodle.moodleDBclass.Assignment_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Assignment_submissions_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.ChatLog_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Chat_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Context_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.CourseCategories_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Course_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Forum_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Forum_discussions_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Forum_posts_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Grade_grades_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Grade_items_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Groups_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Groups_members_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Log_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Question_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Question_states_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_grades_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_question_instances_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Resource_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Role_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Role_assignments_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Scorm_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.User_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Wiki_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Assignment_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Assignment_submissions_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLog_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Chat_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Context_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.CourseCategories_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Course_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Forum_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Forum_discussions_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Forum_posts_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Grade_grades_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Grade_items_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Groups_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Groups_members_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Log_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Question_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Question_states_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Quiz_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Quiz_grades_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Quiz_question_instances_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Resource_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Role_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Role_assignments_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Scorm_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.User_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Wiki_LMS;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.*;
+import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 
 public class TestDataCreatorMoodle {
 
@@ -126,7 +127,7 @@ public class TestDataCreatorMoodle {
 		{
 			User_LMS lms = new User_LMS();
 			
-			lms.setId(item.getId()+"");
+			lms.setId(item.getId());
 			lms.setCurrentlogin(item.getCurrentlogin());
 			lms.setLastaccess(item.getLastaccess());
 			lms.setFirstaccess(item.getFirstaccess());
@@ -267,7 +268,7 @@ public class TestDataCreatorMoodle {
 			
 			lms2.setId(item.getId());
 			lms2.setRoleid(item.getRole().getId());
-			lms2.setUserid(item.getUser().getId()+"");
+			lms2.setUserid(item.getUser().getId());
 			lms2.setTimeend(item.getEnrolend());
 			lms2.setTimestart(item.getEnrolstart());
 			lms2.setContextid(couIdMap.get(item.getCourse().getId()).getId());
@@ -281,6 +282,23 @@ public class TestDataCreatorMoodle {
 	
 	private void generateLogLMS()
 	{
+		List<ILogMining> logs = new ArrayList<ILogMining>();
+		logs.addAll(resourceLogList);
+		logs.addAll(assignmentLogList);
+		logs.addAll(forumLogList);
+		logs.addAll(courseLogList);
+		logs.addAll(quizLogList);
+		logs.addAll(wikiLogList);
+		logs.addAll(scormLogList);
+		
+		Collections.sort(logs);
+		
+		for(int i = 0; i < logs.size(); i++)
+		{
+			logs.get(i).setId(i + 1);
+		}
+		
+		
 		for(ResourceLogMining item : resourceLogList)
 		{
 			Log_LMS lms = new Log_LMS();
@@ -291,7 +309,10 @@ public class TestDataCreatorMoodle {
 			lms.setTime(item.getTimestamp());
 			lms.setAction(item.getAction());
 			lms.setInfo(item.getResource().getId()+"");
-			lms.setUserid(item.getUser().getId()+"");
+			lms.setUserid(item.getUser().getId());
+			
+			if(lms.getId() == 5)
+				System.out.println();
 			
 			log_lms.add(lms);
 		}
@@ -303,7 +324,7 @@ public class TestDataCreatorMoodle {
 			lms2.setId(forum_posts_lms.size() + 1);
 			lms2.setMessage(item.getMessage());
 			lms2.setSubject(item.getSubject());
-			lms2.setUserid(item.getUser().getId()+"");
+			lms2.setUserid(item.getUser().getId());
 			lms2.setCreated(item.getTimestamp());
 			lms2.setModified(item.getTimestamp());
 			
@@ -324,7 +345,10 @@ public class TestDataCreatorMoodle {
 			lms.setInfo(item.getForum().getId()+"");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
-			lms.setUserid(item.getUser().getId()+"");
+			lms.setUserid(item.getUser().getId());
+			
+			if(lms.getId() == 5)
+				System.out.println();
 			
 			log_lms.add(lms);
 		}
@@ -338,7 +362,10 @@ public class TestDataCreatorMoodle {
 			lms.setInfo(item.getAssignment().getId()+"");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
-			lms.setUserid(item.getUser().getId()+"");
+			lms.setUserid(item.getUser().getId());
+			
+			if(lms.getId() == 5)
+				System.out.println();
 			
 			log_lms.add(lms);
 			
@@ -364,7 +391,7 @@ public class TestDataCreatorMoodle {
 			lms.setInfo(item.getQuiz().getId()+"");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
-			lms.setUserid(item.getUser().getId()+"");
+			lms.setUserid(item.getUser().getId());
 			
 			if(!item.getAction().equals("review"))
 			{
@@ -377,6 +404,9 @@ public class TestDataCreatorMoodle {
 				
 				quiz_grades_lms.add(lms2);
 			}
+			
+			if(lms.getId() == 5)
+				System.out.println();
 			
 			log_lms.add(lms);
 		}
@@ -402,7 +432,10 @@ public class TestDataCreatorMoodle {
 			lms.setInfo(item.getScorm().getId()+"");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
-			lms.setUserid(item.getUser().getId()+"");
+			lms.setUserid(item.getUser().getId());
+			
+			if(lms.getId() == 5)
+				System.out.println();
 			
 			log_lms.add(lms);
 		}
@@ -415,7 +448,10 @@ public class TestDataCreatorMoodle {
 			lms.setInfo(item.getWiki().getId()+"");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
-			lms.setUserid(item.getUser().getId()+"");
+			lms.setUserid(item.getUser().getId());
+			
+			if(lms.getId() == 5)
+				System.out.println();
 			
 			log_lms.add(lms);
 		}
@@ -427,10 +463,14 @@ public class TestDataCreatorMoodle {
 			lms.setModule("forum");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
-			lms.setUserid(item.getUser().getId()+"");
+			lms.setUserid(item.getUser().getId());
 			
+			
+			if(lms.getId() == 5)
+				System.out.println();
 			log_lms.add(lms);
 		}
+		
 		
 	}
 	
@@ -496,8 +536,8 @@ public class TestDataCreatorMoodle {
 			ChatLog_LMS lms = new ChatLog_LMS();
 			lms.setMessage(item.getMessage());
 			lms.setTimestamp(item.getTimestamp());
-			lms.setChat_id(item.getChat().getId());
-			lms.setUserid(item.getUser().getId()+"");
+			lms.setChatId(item.getChat().getId());
+			lms.setUserId(item.getUser().getId());
 			lms.setId(item.getId());
 			
 			couId.put(item.getChat().getId(), item.getCourse().getId());
@@ -737,7 +777,7 @@ public class TestDataCreatorMoodle {
 			
 			lms.setId(item.getId());
 			lms.setGroupid(item.getGroup().getId());
-			lms.setUserid(item.getUser().getId()+"");
+			lms.setUserid(item.getUser().getId());
 			lms.setTimeadded(item.getTimestamp());
 			
 			group_members_lms.add(lms);
@@ -795,6 +835,7 @@ public class TestDataCreatorMoodle {
 			lms.setId(item.getId());
 			lms.setQuestion(item.getQuestion().getId());
 			lms.setQuiz(item.getQuiz().getId());
+
 			
 			quiz_question_instances_lms.add(lms);
 		}
@@ -809,7 +850,7 @@ public class TestDataCreatorMoodle {
 			lms.setId(item.getId());
 			lms.setRawgrade(item.getRawgrade());
 			lms.setFinalgrade(item.getFinalgrade());
-			lms.setUserid(item.getUser().getId()+"");
+			lms.setUserid(item.getUser().getId());
 			lms.setTimemodified(item.getTimemodified());
 			lms.setItemid(grade_items_lms.size() + 1);
 			
@@ -857,13 +898,6 @@ public class TestDataCreatorMoodle {
 			else if(item.getAction().equals("MANUALGRADE"))
 				lms.setEvent((short) 9);
 			
-			Quiz_question_instances_LMS lms2 = new Quiz_question_instances_LMS();
-			
-			lms2.setQuiz(item.getQuiz().getId());
-			lms2.setQuestion(item.getQuestion().getId());
-			lms.setId(quiz_question_instances_lms.size() + 1);
-			
-			quiz_question_instances_lms.add(lms2);
 			question_states_lms.add(lms);
 		}
 	}

@@ -13,7 +13,6 @@
             name="id"
             column="id"
             type="long">
-            <generator class="native"/>
         </id>
 
         <property
@@ -29,7 +28,7 @@
         <property
             name="userid"
             column="userid"
-            type="string"/>    
+            type="long"/>    
 
         <property
             name="timestart"

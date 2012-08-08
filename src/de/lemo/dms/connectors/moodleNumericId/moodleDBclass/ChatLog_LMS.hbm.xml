@@ -13,18 +13,17 @@
             name="id"
             column="id"
             type="long">
-            <generator class="native"/>
         </id>
 
         <property
-            name="chat_id"
+            name="chatId"
             column="chatid"
             type="long"/>
             
         <property
-            name="userid"
+            name="userId"
             column="userid"
-            type="string"/>
+            type="long"/>
             
         <property
             name="message"

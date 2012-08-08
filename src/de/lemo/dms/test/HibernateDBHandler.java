@@ -126,7 +126,7 @@ public class HibernateDBHandler implements IDBHandler{
 		try
 		{			
 			if(session == null || !session.isOpen())
-				session = de.lemo.dms.connectors.moodle.HibernateUtil.getDynamicSourceDBFactoryMoodle(dbConf).openSession();
+				session = de.lemo.dms.connectors.moodleNumericId.HibernateUtil.getDynamicSourceDBFactoryMoodle(dbConf).openSession();
 		}catch(HibernateException he)
 		{
 			System.out.println("Get connection failed: " + he.getMessage());

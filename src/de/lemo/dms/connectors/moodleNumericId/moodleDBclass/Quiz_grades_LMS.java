@@ -3,7 +3,7 @@ package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 public class Quiz_grades_LMS {
 
 	private long id;
-	private long userid;
+	private String userid;
 	private long quiz;
 	private double grade;
 	private long timemodified;
@@ -14,10 +14,10 @@ public class Quiz_grades_LMS {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public long getUserid() {
+	public String getUserid() {
 		return userid;
 	}
-	public void setUserid(long userid) {
+	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 	public double getGrade() {

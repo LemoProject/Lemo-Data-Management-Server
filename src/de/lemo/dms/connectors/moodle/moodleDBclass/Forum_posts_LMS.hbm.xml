@@ -13,7 +13,6 @@
             name="id"
             column="id"
             type="long">
-            <generator class="native"/>
         </id>
         
         <property

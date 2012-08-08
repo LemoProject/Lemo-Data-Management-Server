@@ -12,9 +12,8 @@
         <id
             name="id"
             column="id"
-            type="string">
-            <generator class="native"/>
-        </id>
+            type="long">
+                 </id>
 
         <property
             name="firstaccess"
