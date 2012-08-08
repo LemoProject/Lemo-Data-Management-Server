@@ -30,11 +30,6 @@
             name="summary"
             column="summary"
             type="text"/>
-
-        <property
-            name="pagename"
-            column="pagename"
-            type="string"/>
  
          <property
             name="timemodified"

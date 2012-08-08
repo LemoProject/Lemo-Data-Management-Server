@@ -1,6 +1,5 @@
 package de.lemo.dms.test;
 
-import org.hibernate.Session;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
@@ -27,10 +26,18 @@ public class Test {
 		ch.writeDataSource("c://users//s.schwarzrock//desktop//chemgaLog.log", "c://users//s.schwarzrock//desktop//VluGen");
 	}
 	
+	public static void writeMoodle()
+	{
+		TestDataCreatorMoodle mod = new TestDataCreatorMoodle();
+		mod.getDataFromDB();
+		mod.writeSourceDB();
+	}
+	
 	
 	public static void main(String[] args)
 	{
 		//gen();
-		write();
+		//write();
+		writeMoodle();
 	}
 }

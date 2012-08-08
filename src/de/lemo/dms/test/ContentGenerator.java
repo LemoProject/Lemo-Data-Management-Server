@@ -13,6 +13,10 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 public class ContentGenerator {
 
+	
+	private ESystem system;
+	
+	
 	enum EResourceType{
 		File,
 		Directory,
@@ -29,19 +33,20 @@ public class ContentGenerator {
 		Sphinxesque		
 	}
 	
-	enum EAssignmentActionTeacher{
-		viewSubmission, 
-		updateGrades,
-	}
+
 	
-	enum EAssignmentActionStudent{
-		view,
-		upload,
+	enum ESystem{
+		fiz,
+		moodle,
+		clix
 	}
 	
 	
 	public  List<Collection<?>> generateMiningDB(Integer departments, Integer degreesPerDepartment, Integer coursesPerDegree, Long startdate, int logsPerLearnObject)
 	{
+		
+		system = ESystem.moodle;
+		
 		List<Collection<?>> all = new ArrayList<Collection<?>>();
 		
 		//Object-containers
@@ -89,6 +94,22 @@ public class ContentGenerator {
 		
 		ArrayList<ArrayList<ILogMining>> logList = new ArrayList<ArrayList<ILogMining>>();
 		
+		
+		String[] forumAction = new String[4];
+		forumAction[0] = "view forum";
+		forumAction[1] = "subscribe";
+		forumAction[2] = "add discussion";
+		forumAction[3] = "view discussion";
+		
+		String[] assignmentActionTeacher = new String[4];
+		assignmentActionTeacher[0] = "add";
+		assignmentActionTeacher[1] = "update";
+		assignmentActionTeacher[2] = "update grades";
+		assignmentActionTeacher[3] = "view submissions";
+		
+		String[] assignmentActionStudent = new String[2];
+		assignmentActionStudent[0] = "upload";
+		assignmentActionStudent[1] = "view";
 		
 		Random randy = new Random(15768000);
 		
@@ -264,25 +285,33 @@ public class ContentGenerator {
 						r.setTimecreated(cou.getTimecreated() + randy.nextInt(week));
 						r.setTimemodified(r.getTimecreated() + randy.nextInt(year/2));
 						r.setTitle("Resource "+i+"."+j+"."+k+"."+l);
-						if( l == 1)
+						if(system == ESystem.fiz)
 						{
-							r.setType("VLU");
-							r.setProcessingTime(pt);
-							r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/" + r.getTitle() +".vlu.html");
-						}
-						else if(l < 10)
-						{
-							r.setType("Page");
-							r.setProcessingTime(pt / 8);
-							r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/Resource "+i+"."+j+"."+k+".1.vlu/Page/vsc/" + r.getTitle() +".vscml.html");
+							if( l == 1)
+							{
+								r.setType("VLU");
+								r.setProcessingTime(pt);
+								r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/" + r.getTitle() +".vlu.html");
+							}
+							else if(l < 10)
+							{
+								r.setType("Page");
+								r.setProcessingTime(pt / 8);
+								r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/Resource "+i+"."+j+"."+k+".1.vlu/Page/vsc/" + r.getTitle() +".vscml.html");
+							}
+							else
+							{
+								r.setType("Summary");
+								r.setProcessingTime(pt);
+								r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/Resource "+i+"."+j+"."+k+".1.vlu/Page/summary.html");
+							}
 						}
 						else
 						{
-							r.setType("Summary");
+							r.setType(EResourceType.values()[randy.nextInt(EResourceType.values().length)].toString());
 							r.setProcessingTime(pt);
-							r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/Resource "+i+"."+j+"."+k+".1.vlu/Page/summary.html");
+							r.setUrl("http://www.lemo.com/" + r.getTitle() +".html");
 						}
-						
 						CourseResourceMining couRes = new CourseResourceMining();
 						couRes.setId(courseResourceList.size()+1);
 						couRes.setCourse(cou);
@@ -478,11 +507,11 @@ public class ContentGenerator {
 							{
 								aLog.setGrade(a.getMaxgrade() - randy.nextInt((int)a.getMaxgrade()));
 								aLog.setFinalgrade(aLog.getGrade() - randy.nextInt((int)aLog.getGrade()));
-								aLog.setAction(EAssignmentActionTeacher.values()[randy.nextInt(EAssignmentActionTeacher.values().length)].toString());
+								aLog.setAction(assignmentActionTeacher[randy.nextInt(assignmentActionTeacher.length)]);
 								
 							}
 						if(aLog.getAction() == null)
-							aLog.setAction(EAssignmentActionStudent.values()[randy.nextInt(EAssignmentActionStudent.values().length)].toString());
+							aLog.setAction(assignmentActionStudent[randy.nextInt(assignmentActionStudent.length)]);
 						
 						
 						assignmentLogList.add(aLog);		
@@ -541,7 +570,7 @@ public class ContentGenerator {
 						time = (int) forum.getTimecreated() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 						fLog.setTimestamp(time);
 
-						fLog.setAction("View");
+						fLog.setAction(forumAction[randy.nextInt(forumAction.length)]);
 						fLog.setSubject("Subject No." + randy.nextInt(5));
 						fLog.setMessage("Message in forum " + forum.getTitle() + " @"+fLog.getTimestamp());
 						
