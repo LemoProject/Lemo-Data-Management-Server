@@ -14,6 +14,7 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 	private String message;
 	private long timestamp;
 	private CourseMining course;
+	private long duration;
 	
 	public CourseMining getCourse() {
 		return course;
@@ -31,6 +32,11 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		if(o.getId() == this.getId() && (o instanceof ChatLogMining))
 			return true;
 		return false;
+	}
+	
+	public void setDuration(long duration)
+	{
+		this.duration = duration;
 	}
 	
 	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
@@ -144,7 +150,7 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 
 	@Override
 	public Long getDuration() {
-		return 0L;
+		return this.duration;
 	}
 
 	@Override

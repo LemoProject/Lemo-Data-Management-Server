@@ -13,7 +13,6 @@
             name="id"
             column="id"
             type="long">
-            <generator class="native"/>
         </id>
 
         <property
@@ -34,6 +33,11 @@
       <property
             name="timemodified"
             column="timemodified"
+            type="long"/> 
+            
+      <property
+            name="course"
+            column="course"
             type="long"/> 
     
     </class>

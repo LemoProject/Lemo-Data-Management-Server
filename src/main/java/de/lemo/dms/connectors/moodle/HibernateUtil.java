@@ -29,7 +29,6 @@ public class HibernateUtil {
 			  }
 			  
 				//Add mapping classes
-				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Course_display_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Course_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Forum_discussions_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Forum_posts_LMS.hbm.xml");
@@ -38,10 +37,8 @@ public class HibernateUtil {
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Groups_members_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Groups_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Log_LMS.hbm.xml");
-				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Question_answers_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Question_states_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Question_LMS.hbm.xml");
-				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Quiz_attempts_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Quiz_grades_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Quiz_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle/moodleDBclass/Quiz_question_instances_LMS.hbm.xml");

@@ -3,19 +3,19 @@ package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 public class ChatLog_LMS {
 
 	private long id;
-	private long chat_id;
-	private long userid;
+	private long chatId;
+	private long userId;
 	private String message;
 	private long timestamp;
 	
 	
 	
 	
-	public long getUserid() {
-		return userid;
+	public long getUserId() {
+		return userId;
 	}
-	public void setUserid(long userid) {
-		this.userid = userid;
+	public void setUserId(long userid) {
+		this.userId = userid;
 	}
 	public long getId() {
 		return id;
@@ -23,11 +23,11 @@ public class ChatLog_LMS {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public long getChat_id() {
-		return chat_id;
+	public long getChatId() {
+		return chatId;
 	}
-	public void setChat_id(long chat_id) {
-		this.chat_id = chat_id;
+	public void setChatId(long chat_id) {
+		this.chatId = chat_id;
 	}
 	public String getMessage() {
 		return message;

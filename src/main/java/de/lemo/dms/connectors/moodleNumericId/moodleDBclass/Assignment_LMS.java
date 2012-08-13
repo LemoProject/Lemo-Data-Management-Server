@@ -9,7 +9,14 @@ public class Assignment_LMS {
 	private long timemodified;
 	private long timeavailable;
 	private long timedue;
+	private String description;
 	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public long getId() {
 		return id;
 	}

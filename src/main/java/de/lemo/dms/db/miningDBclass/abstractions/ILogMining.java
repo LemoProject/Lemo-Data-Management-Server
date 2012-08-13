@@ -22,5 +22,9 @@ public interface ILogMining extends Comparable<ILogMining>{
 	Long getDuration();
 	
 	Long getPrefix();
+	
+	void setId(long id);
+	
+	void setDuration(long duration);
 
 }

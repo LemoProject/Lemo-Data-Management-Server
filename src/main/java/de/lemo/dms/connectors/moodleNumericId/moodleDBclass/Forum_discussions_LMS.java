@@ -4,7 +4,7 @@ public class Forum_discussions_LMS {
 
 	private long id;
 	private long forum;
-	private long userid;
+	private String userid;
 	private String name;
 	private long firstpost;
 	private long timemodified;
@@ -24,10 +24,10 @@ public class Forum_discussions_LMS {
 	public void setForum(long forum) {
 		this.forum = forum;
 	}
-	public long getUserid() {
+	public String getUserid() {
 		return userid;
 	}
-	public void setUserid(long userid) {
+	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 	public String getName() {

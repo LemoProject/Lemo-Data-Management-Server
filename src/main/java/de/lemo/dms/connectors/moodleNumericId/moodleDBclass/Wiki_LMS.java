@@ -6,7 +6,6 @@ public class Wiki_LMS {
 	private long course;
 	private String name;
 	private String summary;
-	private String pagename;
 //	private String wtype; //enum('teacher','group','student')
 	private long timemodified;
 	
@@ -33,12 +32,6 @@ public class Wiki_LMS {
 	}
 	public void setSummary(String summary) {
 		this.summary = summary;
-	}
-	public String getPagename() {
-		return pagename;
-	}
-	public void setPagename(String pagename) {
-		this.pagename = pagename;
 	}
 	public long getTimemodified() {
 		return timemodified;

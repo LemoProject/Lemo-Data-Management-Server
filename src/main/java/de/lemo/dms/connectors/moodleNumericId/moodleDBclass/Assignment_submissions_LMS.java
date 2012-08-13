@@ -4,7 +4,7 @@ public class Assignment_submissions_LMS {
 
 	private long id;
 	private long assignment;
-	private long userid;
+	private String userid;
 	private long grade;
 	private long timecreated;
 	private long timemodified;
@@ -23,10 +23,10 @@ public class Assignment_submissions_LMS {
 	public void setAssignment(long assignment) {
 		this.assignment = assignment;
 	}
-	public long getUserid() {
+	public String getUserid() {
 		return userid;
 	}
-	public void setUserid(long userid) {
+	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 	public long getTimecreated() {

@@ -13,7 +13,6 @@
             name="id"
             column="id"
             type="long">
-            <generator class="native"/>
         </id>
 
         <property
@@ -25,6 +24,11 @@
             name="name"
             column="name"
             type="string"/>
+            
+        <property
+            name="description"
+            column="description"
+            type="text"/>
 
         <property
             name="assignmenttype"

@@ -57,7 +57,6 @@ import de.lemo.dms.connectors.moodle.moodleDBclass.Log_LMS;
 import de.lemo.dms.connectors.moodle.moodleDBclass.Question_LMS;
 import de.lemo.dms.connectors.moodle.moodleDBclass.Question_states_LMS;
 import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_attempts_LMS;
 import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_grades_LMS;
 import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_question_instances_LMS;
 import de.lemo.dms.connectors.moodle.moodleDBclass.Resource_LMS;
@@ -88,7 +87,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	private static List<Wiki_LMS> wiki_lms;
 	private static List<User_LMS> user_lms;
 	private static List<Quiz_LMS> quiz_lms;
-	private static List<Quiz_attempts_LMS> quiz_attempts_lms;
 	private static List<Quiz_question_instances_LMS> quiz_question_instances_lms;
 	private static List<Question_LMS> question_lms;
 	private static List<Groups_LMS> group_lms;
@@ -218,12 +216,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	    	question_lms = question.list();		    	
 	        System.out.println("question_lms tables: " + question_lms.size());
 	    	
-	    	Query quiz_attempts = session.createQuery("from Quiz_attempts_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-	    	quiz_attempts.setParameter("ceiling", ceiling);
-	    	quiz_attempts.setParameter("readingtimestamp", readingfromtimestamp);
-	    	quiz_attempts_lms = quiz_attempts.list();		    	
-	        System.out.println("quiz_attempts_lms tables: " + quiz_attempts_lms.size());        
-	        
+  
 	    	Query user = session.createQuery("from User_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	user.setParameter("ceiling", ceiling);
 	    	user.setParameter("readingtimestamp", readingfromtimestamp);
@@ -390,10 +383,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	    	question_states.setParameter("readingtimestamp2", readingtotimestamp);
 	    	question_states_lms = question_states.list();	    	
 	    	
-	    	Query quiz_attempts = session.createQuery("from Quiz_attempts_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
-	    	quiz_attempts.setParameter("readingtimestamp", readingfromtimestamp);
-	    	quiz_attempts.setParameter("readingtimestamp2", readingtotimestamp);
-	    	quiz_attempts_lms = quiz_attempts.list();		    	
+ 	
 	    	
 	    	Query role_assignments = session.createQuery("from Role_assignments_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
 	    	role_assignments.setParameter("readingtimestamp", readingfromtimestamp);
@@ -440,7 +430,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		user_lms.clear();
 		quiz_lms.clear();
 		grade_grades_lms.clear();
-		quiz_attempts_lms.clear();
 		group_lms.clear();
 		group_members_lms.clear();
 		question_states_lms.clear();
@@ -835,7 +824,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			insert.setAction(loadedItem.getAction());
    				for (Iterator<Forum_posts_LMS> iter2 = forum_posts_lms.iterator(); iter2.hasNext(); ) {
     					Forum_posts_LMS loadedItem2 = iter2.next();
-    					if(loadedItem2.getUserid() == loadedItem.getUserid()&&(loadedItem2.getCreated() == loadedItem.getTime()||loadedItem2.getModified() == loadedItem.getTime())){
+    					if(loadedItem2.getUserid() == loadedItem.getUserid() && (loadedItem2.getCreated() == loadedItem.getTime()||loadedItem2.getModified() == loadedItem.getTime())){
     						insert.setMessage(loadedItem2.getMessage());
     						insert.setSubject(loadedItem2.getSubject());
     						break;
@@ -1607,6 +1596,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
            	insert.setTitle(loadedItem.getName());
            	insert.setTimemodified(loadedItem.getTimemodified());
     		insert.setMaxgrade(loadedItem.getMaxgrade());
+    		
     		scorm_mining.put(insert.getId(), insert);
         }  
 		return scorm_mining;    	
@@ -2005,6 +1995,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		insert.setShortname(loadedItem.getShortname());
     		insert.setDescription(loadedItem.getDescription());
     		insert.setSortorder(loadedItem.getSortorder());
+    		
     		role_mining.put(insert.getId(), insert);
     	}
 		return role_mining;
@@ -2053,7 +2044,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			if(loadedItem.getDepth() == 2)
 			{
 				String[] s = loadedItem.getPath().split("/");
-				if(s.length == 3)
+				if(s.length == 4)
 				{
 					DepartmentDegreeMining insert = new DepartmentDegreeMining();
 					insert.setId(loadedItem.getId());

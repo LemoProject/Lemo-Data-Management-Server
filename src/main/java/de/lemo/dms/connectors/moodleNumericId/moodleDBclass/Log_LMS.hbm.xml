@@ -24,7 +24,7 @@
         <property
             name="userid"
             column="userid"
-            type="string"/>
+            type="long"/>
             
         <property
             name="course"
