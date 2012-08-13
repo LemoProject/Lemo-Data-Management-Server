@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.moodle.moodleDBclass.Context_LMS"
+        table="context">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+            <generator class="native"/>
+        </id>
+
+        <property
+            name="contextlevel"
+            column="contextlevel"
+            type="long"/>
+
+        <property
+            name="instanceid"
+            column="instanceid"
+            type="long"/>
+            
+        <property
+            name="path"
+            column="path"
+            type="string"/>
+            
+        <property
+            name="depth"
+            column="depth"
+            type="long"/>
+
+    </class>
+
+</hibernate-mapping>
