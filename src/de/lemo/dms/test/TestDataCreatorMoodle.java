@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -229,7 +230,7 @@ public class TestDataCreatorMoodle {
 			lms2.setPath(depIdMap.get(dm.getId()).getPath() + "/" + lms2.getId());
 			
 			Context_LMS lms = new Context_LMS();
-			lms.setContextlevel(50);
+			lms.setContextlevel(40);
 			lms.setDepth(3);
 			lms.setInstanceid(lms2.getId());
 			lms.setId(context_lms.size() + 1);
@@ -311,11 +312,9 @@ public class TestDataCreatorMoodle {
 			lms.setInfo(item.getResource().getId()+"");
 			lms.setUserid(item.getUser().getId());
 			
-			if(lms.getId() == 5)
-				System.out.println();
-			
 			log_lms.add(lms);
 		}
+		HashMap<Long, Forum_discussions_LMS> forDisSet = new HashMap<Long, Forum_discussions_LMS>();
 		for(ForumLogMining item : forumLogList)
 		{
 			Log_LMS lms = new Log_LMS();
@@ -337,7 +336,8 @@ public class TestDataCreatorMoodle {
 				lms3.setId(item.getForum().getId());
 				lms3.setForum(item.getForum().getId());
 				
-				forum_discussions_lms.add(lms3);
+				forDisSet.put(lms3.getId(), lms3);
+				
 			}
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
@@ -347,25 +347,20 @@ public class TestDataCreatorMoodle {
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
 			
-			if(lms.getId() == 5)
-				System.out.println();
-			
 			log_lms.add(lms);
 		}
+		forum_discussions_lms.addAll(forDisSet.values());
 		for(AssignmentLogMining item : assignmentLogList)
 		{
 			Log_LMS lms = new Log_LMS();
 			
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
-			lms.setModule("forum");
+			lms.setModule("assignment");
 			lms.setInfo(item.getAssignment().getId()+"");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
-			
-			if(lms.getId() == 5)
-				System.out.println();
 			
 			log_lms.add(lms);
 			
@@ -377,7 +372,7 @@ public class TestDataCreatorMoodle {
 				lms2.setAssignment(item.getAssignment().getId());
 				lms2.setUserid(item.getUser().getId()+"");
 				lms2.setTimemodified(item.getTimestamp());			
-				lms.setId(assignment_submission_lms.size() + 1);
+				lms2.setId(assignment_submission_lms.size() + 1);
 				
 				assignment_submission_lms.add(lms2);
 			}
@@ -387,7 +382,7 @@ public class TestDataCreatorMoodle {
 			Log_LMS lms = new Log_LMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
-			lms.setModule("forum");
+			lms.setModule("quiz");
 			lms.setInfo(item.getQuiz().getId()+"");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
@@ -404,9 +399,6 @@ public class TestDataCreatorMoodle {
 				
 				quiz_grades_lms.add(lms2);
 			}
-			
-			if(lms.getId() == 5)
-				System.out.println();
 			
 			log_lms.add(lms);
 		}
@@ -428,14 +420,11 @@ public class TestDataCreatorMoodle {
 			Log_LMS lms = new Log_LMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
-			lms.setModule("forum");
+			lms.setModule("scorm");
 			lms.setInfo(item.getScorm().getId()+"");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
-			
-			if(lms.getId() == 5)
-				System.out.println();
 			
 			log_lms.add(lms);
 		}
@@ -449,9 +438,7 @@ public class TestDataCreatorMoodle {
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
-			
-			if(lms.getId() == 5)
-				System.out.println();
+			lms.setCmid(item.getWiki().getId());
 			
 			log_lms.add(lms);
 		}
@@ -460,18 +447,13 @@ public class TestDataCreatorMoodle {
 			Log_LMS lms = new Log_LMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
-			lms.setModule("forum");
+			lms.setModule("course");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
-			
-			
-			if(lms.getId() == 5)
-				System.out.println();
+
 			log_lms.add(lms);
 		}
-		
-		
 	}
 	
 	private void generateResourceLMS()
@@ -492,7 +474,12 @@ public class TestDataCreatorMoodle {
 	
 	private void generateForumLMS()
 	{
-		
+		HashMap<Long, Long> cFMap = new HashMap<Long, Long>();
+		for(Iterator<CourseForumMining> iter = courseForumList.iterator(); iter.hasNext();)
+		{
+			CourseForumMining item = iter.next();
+			cFMap.put(item.getForum().getId(), item.getCourse().getId());
+		}
 		for(ForumMining item : forumList)
 		{
 			Forum_LMS lms = new Forum_LMS();
@@ -500,6 +487,7 @@ public class TestDataCreatorMoodle {
 			lms.setTimemodified(item.getTimemodified());
 			lms.setName(item.getTitle());
 			lms.setIntro(item.getSummary());
+			lms.setCourse(cFMap.get(lms.getId()));
 			
 			forum_lms.add(lms);
 			
@@ -535,6 +523,7 @@ public class TestDataCreatorMoodle {
 		{
 			ChatLog_LMS lms = new ChatLog_LMS();
 			lms.setMessage(item.getMessage());
+			
 			lms.setTimestamp(item.getTimestamp());
 			lms.setChatId(item.getChat().getId());
 			lms.setUserId(item.getUser().getId());
@@ -786,18 +775,25 @@ public class TestDataCreatorMoodle {
 	
 	private void generateQuizLMS()
 	{
+		HashMap<Long, Long> qQMap = new HashMap<Long, Long>();
+		for(Iterator<CourseQuizMining> iter = courseQuizList.iterator(); iter.hasNext();)
+		{
+			CourseQuizMining item = iter.next();
+			qQMap.put(item.getQuiz().getId(), item.getCourse().getId());
+		}
 		for(QuizMining item : quizList)
 		{
 			Quiz_LMS lms = new Quiz_LMS();
 			Grade_items_LMS lms2 = new Grade_items_LMS();
 			
 			lms.setId(item.getId());
-		
+			lms.setCourse(qQMap.get(lms.getId()));
     		lms.setName(item.getTitle());
     		lms.setTimeopen(item.getTimeopen());
     		lms.setTimeclose(item.getTimeclose());
     		lms.setTimecreated(item.getTimecreated());
     		lms.setTimemodified(item.getTimemodified());
+    		
 
     		lms2.setId(grade_items_lms.size() + 1);
     		lms2.setGrademax(item.getMaxgrade());
@@ -828,6 +824,7 @@ public class TestDataCreatorMoodle {
 	
 	private void generateQuizQuestionInstancesLMS()
 	{
+		HashMap<Long, Quiz_question_instances_LMS> tempMap = new HashMap<Long, Quiz_question_instances_LMS>(); 
 		for(QuizQuestionMining item : quizQuestionList)
 		{
 			Quiz_question_instances_LMS lms = new Quiz_question_instances_LMS();
@@ -836,9 +833,12 @@ public class TestDataCreatorMoodle {
 			lms.setQuestion(item.getQuestion().getId());
 			lms.setQuiz(item.getQuiz().getId());
 
-			
+			//tempMap.put(lms.getId(), lms);
 			quiz_question_instances_lms.add(lms);
+			
+			
 		}
+		//quiz_question_instances_lms.addAll(tempMap.values());
 	}
 	
 	private void generateGradeGradesLMS()
@@ -955,7 +955,6 @@ public class TestDataCreatorMoodle {
 		all.add(grade_items_lms);
 		all.add(grade_grades_lms);
 		all.add(question_states_lms);
-		all.add(quiz_question_instances_lms);
 		all.add(quiz_grades_lms);
 		all.add(assignment_submission_lms);
 		

@@ -1721,7 +1721,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			if(loadedItem.getDepth() == 2)
 			{
 				String[] s = loadedItem.getPath().split("/");
-				if(s.length == 3)
+				if(s.length == 4)
 				{
 					DepartmentDegreeMining insert = new DepartmentDegreeMining();
 					insert.setId(loadedItem.getId());

@@ -593,7 +593,7 @@ public abstract class ExtractAndMap{
 		//transaction for saving		
 		//Transaction tx = dbHandler.getSession().beginTransaction();
 		
-		dbHandler.saveToDB(updates);
+		dbHandler.saveCollectionToDB(updates);
 		
 		/*
 		int i= new Integer(0);
