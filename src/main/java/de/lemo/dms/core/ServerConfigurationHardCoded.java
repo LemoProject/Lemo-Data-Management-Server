@@ -14,7 +14,7 @@ import de.lemo.dms.service.BaseService;
 
 /**
  * Implementierung der Server Konfiguration als Singleton, mit
- * Hard codierten, sowie durch {@link Configuration} geladene Einstellungen.
+ * Hard codierten, sowie durch {@link ConfigurationProperties} geladene Einstellungen.
  * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe
@@ -31,7 +31,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
 	//------------------------------------
 	//Hard codierte Konfiguration
 	// private String loggerName = "lemo.dms";
-	private Level defaultLevel = Level.toLevel(Configuration.getString("logger.level"), Level.INFO); //$NON-NLS-1$
+	private Level defaultLevel = Level.toLevel(ConfigurationProperties.getString("logger.level"), Level.INFO); //$NON-NLS-1$
 	private String logfileName = "./DatamanagementServer.log";
 	private int port = 4443;
 	private int keepAlive = 180;
@@ -45,7 +45,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
             logger = Logger.getRootLogger();
             // SimpleLayout layout = new SimpleLayout();
             PatternLayout layout = new PatternLayout();
-            layout.setConversionPattern(Configuration.getString("logger.pattern")); //$NON-NLS-1$
+            layout.setConversionPattern(ConfigurationProperties.getString("logger.pattern")); //$NON-NLS-1$
             ConsoleAppender conapp = new ConsoleAppender(layout);
             logger.addAppender(conapp);
             FileAppender filapp = new FileAppender(layout, logfileName);
@@ -72,9 +72,9 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     
     	//sourceDBConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
     	sourceDBConfig.addProperty("hibernate.connection.driver_class", "oracle.jdbc.driver.OracleDriver");
-    	sourceDBConfig.addProperty("hibernate.connection.url", Configuration.getString("source.hibernate.connection.url")); //$NON-NLS-1$ //$NON-NLS-2$
-    	sourceDBConfig.addProperty("hibernate.connection.username", Configuration.getString("source.hibernate.connection.username")); //$NON-NLS-1$ //$NON-NLS-2$
-    	sourceDBConfig.addProperty("hibernate.connection.password", Configuration.getString("source.hibernate.connection.password")); //$NON-NLS-1$ //$NON-NLS-2$
+    	sourceDBConfig.addProperty("hibernate.connection.url", ConfigurationProperties.getString("source.hibernate.connection.url")); //$NON-NLS-1$ //$NON-NLS-2$
+    	sourceDBConfig.addProperty("hibernate.connection.username", ConfigurationProperties.getString("source.hibernate.connection.username")); //$NON-NLS-1$ //$NON-NLS-2$
+    	sourceDBConfig.addProperty("hibernate.connection.password", ConfigurationProperties.getString("source.hibernate.connection.password")); //$NON-NLS-1$ //$NON-NLS-2$
     	
     	sourceDBConfig.addProperty("hibernate.c3p0.min_size", "5");
     	sourceDBConfig.addProperty("hibernate.c3p0.max_size", "20");
@@ -94,9 +94,9 @@ public class ServerConfigurationHardCoded implements IServerConfiguration{
     	//Setting up mining database
     	dbConfig = new DBConfigObject();
     	dbConfig.addProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-    	dbConfig.addProperty("hibernate.connection.url", Configuration.getString("mining.hibernate.connection.url")); //hier db namen eintragen //$NON-NLS-1$ //$NON-NLS-2$
-    	dbConfig.addProperty("hibernate.connection.username", Configuration.getString("mining.hibernate.connection.username")); //db user //$NON-NLS-1$ //$NON-NLS-2$
-    	dbConfig.addProperty("hibernate.connection.password", Configuration.getString("mining.hibernate.connection.password")); //user passwort //$NON-NLS-1$ //$NON-NLS-2$
+    	dbConfig.addProperty("hibernate.connection.url", ConfigurationProperties.getString("mining.hibernate.connection.url")); //hier db namen eintragen //$NON-NLS-1$ //$NON-NLS-2$
+    	dbConfig.addProperty("hibernate.connection.username", ConfigurationProperties.getString("mining.hibernate.connection.username")); //db user //$NON-NLS-1$ //$NON-NLS-2$
+    	dbConfig.addProperty("hibernate.connection.password", ConfigurationProperties.getString("mining.hibernate.connection.password")); //user passwort //$NON-NLS-1$ //$NON-NLS-2$
     	
     	
     	//dbConfig.addProperty("hibernate.search.indexing_strategy", Configuration.getString("mining.hibernate.search.indexing_strategy"));
