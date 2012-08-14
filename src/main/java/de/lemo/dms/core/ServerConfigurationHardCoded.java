@@ -82,7 +82,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
         sourceDBConfig.addProperty("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
         sourceDBConfig.addProperty("hibernate.cache.use_second_level_cache", "false");
         sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        sourceDBConfig.addProperty("hibernate.hbm2ddl.auto", "update");
+      //  sourceDBConfig.addProperty("hibernate.hbm2ddl.auto", "update");
 
         String sourcePrefix = "source";
 
@@ -109,7 +109,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
         miningDBConfig.addProperty("hibernate.cache.use_second_level_cache", "false");
         miningDBConfig.addProperty("hibernate.cache.use_query_level_cache", "false");
         miningDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        // dbConfig.addProperty("hibernate.hbm2ddl.auto","update");
+      //  miningDBConfig.addProperty("hibernate.hbm2ddl.auto", "update");
 
         String miningPrefix = "source";
 

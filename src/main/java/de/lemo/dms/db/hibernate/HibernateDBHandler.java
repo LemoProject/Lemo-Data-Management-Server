@@ -37,10 +37,10 @@ public class HibernateDBHandler implements IDBHandler {
             de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(
                     ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 
-     public Session getMiningSession() {
-         return miningSessionFactory.openSession();
-      }
- 
+    public Session getMiningSession() {
+        return miningSessionFactory.openSession();
+    }
+
     @Override
     /**
      * Saves a list of generic objects to the database.
@@ -59,7 +59,7 @@ public class HibernateDBHandler implements IDBHandler {
                     Object o = iter2.next();
 
                     if(isIn.contains((IMappingClass) o))
-                        System.out.println("double" + o.getClass());
+                        logger.info("double " + o.getClass());
                     else
                     {
                         isIn.add((IMappingClass) o);
@@ -76,7 +76,7 @@ public class HibernateDBHandler implements IDBHandler {
 
                 if(!className.equals("") && !className.equals(objects.get(i).getClass().getName()))
                 {
-                    System.out.println("Wrote " + classOb + " objects of class " + className);
+                    logger.info("Wrote " + classOb + " objects of class " + className);
                     classOb = 0;
                 }
                 className = objects.get(i).getClass().getName();
@@ -88,10 +88,10 @@ public class HibernateDBHandler implements IDBHandler {
                 if(i % 50 == 0) {
                     // flush a batch of inserts and release memory:
                     session.flush();
-                   session.clear();
+                    session.clear();
                 }
             }
-            System.out.println("Wrote " + classOb + " objects of class " + className + " to database.");
+            logger.info("Wrote " + classOb + " objects of class " + className + " to database.");
             tx.commit();
             session.clear();
 
@@ -113,7 +113,6 @@ public class HibernateDBHandler implements IDBHandler {
         session.clear();
     }
 
-
     /**
      * Closes the database connection.
      */
@@ -122,7 +121,7 @@ public class HibernateDBHandler implements IDBHandler {
             session.close();
         } catch (HibernateException he)
         {
-            logger.error(he.getMessage());
+            he.printStackTrace();
         }
     }
 
@@ -139,7 +138,7 @@ public class HibernateDBHandler implements IDBHandler {
                 l = session.createQuery(query).list();
         } catch (HibernateException he)
         {
-            System.out.println("Exception: " + he.getMessage());
+            he.printStackTrace();
         }
         return l;
     }
