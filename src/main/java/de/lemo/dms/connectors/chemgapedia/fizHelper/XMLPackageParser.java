@@ -11,6 +11,8 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.hibernate.Session;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -77,12 +79,13 @@ public class XMLPackageParser {
 	private static Long largestId;
 	
 	
-	public XMLPackageParser()
+	@SuppressWarnings("unchecked")
+    public XMLPackageParser()
 	{
-		dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
+		dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();	
+		Session session = dbHandler.getMiningSession();
 		
-		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(EQueryType.HQL, "from IDMappingMining x order by x.id asc");
+		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(session, EQueryType.HQL, "from IDMappingMining x order by x.id asc");
 		
 		id_mapping = new HashMap<String, IDMappingMining>();
 		for(int i = 0; i < ids.size(); i++)
@@ -90,54 +93,56 @@ public class XMLPackageParser {
 			id_mapping.put(ids.get(i).getHash(), ids.get(i));
 		}
 		
-		List<DepartmentMining> deps = (List<DepartmentMining>) dbHandler.performQuery(EQueryType.HQL, "FROM DepartmentMining x order by x.id asc");
+		List<DepartmentMining> deps = (List<DepartmentMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DepartmentMining x order by x.id asc");
     	if(deps.size() > 0)
     		depId = deps.get(deps.size()-1).getId();
 		for(int i = 0; i < deps.size(); i++)
     		this.departmentObj.put(deps.get(i).getTitle(), deps.get(i));
     	
-		List<DegreeMining> degs = (List<DegreeMining>) dbHandler.performQuery(EQueryType.HQL, "FROM DegreeMining x order by x.id asc");
+		List<DegreeMining> degs = (List<DegreeMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DegreeMining x order by x.id asc");
     	if(degs.size() > 0)
     		degId = degs.get(degs.size()-1).getId();
 		for(int i = 0; i < degs.size(); i++)
     		this.degreeObj.put(degs.get(i).getTitle(), degs.get(i));
     	
-		List<CourseMining> cous = (List<CourseMining>) dbHandler.performQuery(EQueryType.HQL, "FROM CourseMining x order by x.id asc");
+		List<CourseMining> cous = (List<CourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM CourseMining x order by x.id asc");
     	if(cous.size() > 0)
     		couId = cous.get(cous.size()-1).getId();
 		for(int i = 0; i < cous.size(); i++)
     		this.courseObj.put(cous.get(i).getTitle(), cous.get(i));
 		
-		List<ResourceMining> ress = (List<ResourceMining>) dbHandler.performQuery(EQueryType.HQL, "FROM ResourceMining x order by x.id asc");
+		List<ResourceMining> ress = (List<ResourceMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM ResourceMining x order by x.id asc");
     	if(ress.size() > 0)
     		resId = ress.get(ress.size()-1).getId();
 		for(int i = 0; i < ress.size(); i++)
     		this.resourceObj.put(ress.get(i).getUrl(), ress.get(i));
 		
-		List<DepartmentDegreeMining> depDeg = (List<DepartmentDegreeMining>) dbHandler.performQuery(EQueryType.HQL, "FROM DepartmentDegreeMining x order by x.id asc");
+		List<DepartmentDegreeMining> depDeg = (List<DepartmentDegreeMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DepartmentDegreeMining x order by x.id asc");
     	if(depDeg.size() > 0)
     		resId = depDeg.get(depDeg.size()-1).getId();
 		for(int i = 0; i < depDeg.size(); i++)
     		this.departmentDegrees.put(depDeg.get(i).getDegree().getId(), depDeg.get(i));
 		
-		List<DegreeCourseMining> degCou = (List<DegreeCourseMining>) dbHandler.performQuery(EQueryType.HQL, "FROM DegreeCourseMining x order by x.id asc");
+		List<DegreeCourseMining> degCou = (List<DegreeCourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DegreeCourseMining x order by x.id asc");
     	if(degCou.size() > 0)
     		degCouId = degCou.get(degCou.size()-1).getId();
 		for(int i = 0; i < degCou.size(); i++)
     		this.degreeCourses.put(degCou.get(i).getCourse().getId(), degCou.get(i));
 		
-		List<CourseResourceMining> couRes = (List<CourseResourceMining>) dbHandler.performQuery(EQueryType.HQL, "FROM CourseResourceMining x order by x.id asc");
+		List<CourseResourceMining> couRes = (List<CourseResourceMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM CourseResourceMining x order by x.id asc");
     	if(couRes.size() > 0)
     		couResId = couRes.get(couRes.size()-1).getId();
 		for(int i = 0; i < couRes.size(); i++)
     		this.courseResources.put(couRes.get(i).getResource().getId(), couRes.get(i));
 		
     	
-		List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.HQL, "Select largestId from ConfigMining x order by x.id asc"));
+		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "Select largestId from ConfigMining x order by x.id asc"));
 		if(l != null && l.size() > 0)
 			largestId = l.get(l.size()-1);
 		else
 			largestId = 0L;
+		
+	     dbHandler.closeSession(session);
 	}
 	/**
 	 * Returns the URL of a vlu-overview.
@@ -333,7 +338,7 @@ public class XMLPackageParser {
 						    		  for(int j = 0; j < t.getLength(); j++)
 						    		  {
 						    			  Node node = t.item(j);
-						    			  int len = t.getLength();
+						    			  //int len = t.getLength();
 						    			  
 						    			  if(node.getTextContent() != null)
 						    			  {
@@ -511,9 +516,10 @@ public class XMLPackageParser {
 		li.add(this.degreeCourses.values());
 		li.add(this.courseResources.values());
 		li.add(this.id_mapping.values());
-		dbHandler.saveCollectionToDB(li);	
 		
-		dbHandler.closeConnection();
+		Session session = dbHandler.getMiningSession();
+		dbHandler.saveCollectionToDB(session,li);	
+		dbHandler.closeSession(session);
 		return largestId;
 	}
 	

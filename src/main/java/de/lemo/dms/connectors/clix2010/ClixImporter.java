@@ -3,7 +3,6 @@ package de.lemo.dms.connectors.clix2010;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,16 +11,15 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressions;
 import de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressionsPK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ChatProtocol;
 import de.lemo.dms.connectors.clix2010.clixDBClass.Chatroom;
+import de.lemo.dms.connectors.clix2010.clixDBClass.EComponent;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponentType;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponentTypePK;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComposing;
-import de.lemo.dms.connectors.clix2010.clixDBClass.EComponent;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ExerciseGroup;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalised;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalisedPK;
@@ -52,11 +50,10 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseGroupMember;
 import de.lemo.dms.connectors.clix2010.clixDBClass.WikiEntry;
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 import de.lemo.dms.connectors.clix2010.clixHelper.TimeConverter;
-
-
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
+import de.lemo.dms.db.miningDBclass.AssignmentMining;
 import de.lemo.dms.db.miningDBclass.ChatLogMining;
 import de.lemo.dms.db.miningDBclass.ChatMining;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
@@ -78,7 +75,6 @@ import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
 import de.lemo.dms.db.miningDBclass.GroupUserMining;
-import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionMining;
 import de.lemo.dms.db.miningDBclass.QuizLogMining;
@@ -91,10 +87,8 @@ import de.lemo.dms.db.miningDBclass.RoleMining;
 import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.ScormMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
-import de.lemo.dms.db.miningDBclass.AssignmentMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.WikiMining;
-import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 public class ClixImporter {
 	
@@ -260,8 +254,11 @@ public class ClixImporter {
 	    config.setElapsed_time((endtime) - (starttime));	
 	    config.setLargestId(largestId);
 	    config.setPlatform("Clix2010");
-	    ServerConfigurationHardCoded.getInstance().getDBHandler().saveToDB(config);
-		ServerConfigurationHardCoded.getInstance().getDBHandler().closeConnection();
+	    
+        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+        Session session = dbHandler.getMiningSession();
+        dbHandler.saveToDB(session, config);
+        dbHandler.closeSession(session);
 	}
 	
 	
@@ -295,8 +292,11 @@ public class ClixImporter {
 	    config.setElapsed_time((endtime) - (currentSysTime));	
 	    config.setLargestId(largestId);
 	    config.setPlatform("Clix2010");
-	    ServerConfigurationHardCoded.getInstance().getDBHandler().saveToDB(config);
-		ServerConfigurationHardCoded.getInstance().getDBHandler().closeConnection();
+	    
+        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+        Session session = dbHandler.getMiningSession();
+        dbHandler.saveToDB(session, config);
+        dbHandler.closeSession(session);
 	}
 	
 
@@ -447,10 +447,12 @@ public class ClixImporter {
 			
 			clearSourceData();
 			
-			ServerConfigurationHardCoded.getInstance().getDBHandler().saveCollectionToDB(updates);
+	        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+	        Session session = dbHandler.getMiningSession();
+	        dbHandler.saveToDB(session, updates);
+	        dbHandler.closeSession(session);
 			
-		}catch(Exception e)
-		{
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -495,9 +497,8 @@ public class ClixImporter {
 		try{
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 			
-			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 			//accessing DB by creating a session and a transaction using HibernateUtil
-	        Session session = dbHandler.getSession();
+	        Session session = dbHandler.getMiningSession();
 	        session.clear();			
 			
 	        ArrayList<?> l;
@@ -2176,12 +2177,12 @@ public class ClixImporter {
     			String[] pre = new String[20];
     			ArrayList<String> nPre = new ArrayList<String>();
     			int pos = 0;
-    			while(line.indexOf("ä$") > -1)
+    			while(line.indexOf("ï¿½$") > -1)
     				{
     					
-    					pre[pos] = line.substring(0, line.indexOf("ä$"));
-    					nPre.add(line.substring(0, line.indexOf("ä$")));
-    					line = line.substring(line.indexOf("ä$") +2);
+    					pre[pos] = line.substring(0, line.indexOf("ï¿½$"));
+    					nPre.add(line.substring(0, line.indexOf("ï¿½$")));
+    					line = line.substring(line.indexOf("ï¿½$") +2);
     					pos++;
     				}
     				nPre.add(line);

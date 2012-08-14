@@ -17,9 +17,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
-import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
@@ -45,9 +43,10 @@ public class QActivityResourceType extends Question {
 	protected List<MetaParam<?>> createParamMetaData() {
 	    List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
         
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-        dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
-        List<?> latest = dbHandler.performQuery(EQueryType.SQL, "Select max(timestamp) from resource_log");
+        Session session = dbHandler.getMiningSession();
+        List<?> latest = dbHandler.performQuery(session,EQueryType.SQL, "Select max(timestamp) from resource_log");
+        dbHandler.closeSession(session); 
+        
         Long now = System.currentTimeMillis()/1000;
         
         if(latest.size() > 0)
@@ -61,7 +60,8 @@ public class QActivityResourceType extends Question {
                 );
         return parameters;
 	}
-	
+    
+	@SuppressWarnings("unchecked")
     @POST
     public ResultListResourceRequestInfo compute(
             @FormParam(COURSE_IDS) List<Long> courses,
@@ -77,11 +77,8 @@ public class QActivityResourceType extends Question {
 		//Check arguments
 		if(startTime < endTime)
 		{
-			
-			//Set up db-connection
-			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
-	        Session session = dbHandler.getSession(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
+
+	        Session session = dbHandler.getMiningSession();
         
 			//Create and initialize array for results
 			if(resourceTypes.contains(ELearnObjType.ASSIGNMENT.toString().toLowerCase()) || all)
@@ -89,7 +86,8 @@ public class QActivityResourceType extends Question {
 				 Criteria criteria = session.createCriteria(AssignmentLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
 	                .add(Restrictions.between("log.timestamp", startTime, endTime));
-				 List<AssignmentLogMining> ilm = criteria.list();
+				
+                List<AssignmentLogMining> ilm = criteria.list();
 				 HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getAssignment() != null)

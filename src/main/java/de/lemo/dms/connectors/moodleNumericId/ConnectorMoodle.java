@@ -2,25 +2,24 @@ package de.lemo.dms.connectors.moodleNumericId;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
+import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.hibernate.HibernateDBHandler;
-import de.lemo.dms.connectors.IConnector;
 
 public class ConnectorMoodle implements IConnector{
 
-	static DBConfigObject sourceDBConf;
-	static DBConfigObject miningDBConf;
-	static IDBHandler dbHandler;
+	private static DBConfigObject sourceDBConf;
 	
 	@Override
 	public boolean testConnections() {
 		try{
 	        Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle(sourceDBConf).openSession();
 	        session.close();
-	        HibernateDBHandler target= new HibernateDBHandler();
-	        target.getConnection(miningDBConf);
-	        target.closeConnection();
+	        
+            IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+            dbHandler.closeSession(dbHandler.getMiningSession());
 		}catch(HibernateException he)
 		{
 			return false;
@@ -49,6 +48,5 @@ public class ConnectorMoodle implements IConnector{
 	@Override
 	public void setSourceDBConfig(DBConfigObject dbConf) {
 		sourceDBConf = dbConf;
-		
 	}
 }

@@ -45,9 +45,10 @@ public class QActivityResourceTypeResolution extends Question {
     protected List<MetaParam<?>> createParamMetaData() {
 	    List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
         
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-        dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
-        List<?> latest = dbHandler.performQuery(EQueryType.SQL, "Select max(timestamp) from resource_log");
+        Session session = dbHandler.getMiningSession();
+        List<?> latest = dbHandler.performQuery(session,EQueryType.SQL, "Select max(timestamp) from resource_log");
+        dbHandler.closeSession(session); 
+
         Long now = System.currentTimeMillis()/1000;
         
         if(latest.size() > 0)
@@ -84,8 +85,8 @@ public class QActivityResourceTypeResolution extends Question {
 			
 			//Set up db-connection
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
-	        Session session = dbHandler.getSession(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
+
+	        Session session = dbHandler.getMiningSession();
         
 			//Create and initialize array for results
 			if(resourceTypes.contains(ELearnObjType.ASSIGNMENT.toString()) || all)

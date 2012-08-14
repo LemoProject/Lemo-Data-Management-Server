@@ -26,7 +26,7 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/hibernate-core.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-core.jar" sourcepath="C:/Users/lmk/.m2/repository/org/hibernate/hibernate-core/3.3.0.SP1/hibernate-core-3.3.0.SP1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/javassist.jar"/>
 	<classpathentry kind="lib" path="lib/persistence-api-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/log4j.jar"/>

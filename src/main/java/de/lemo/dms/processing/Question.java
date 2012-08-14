@@ -14,6 +14,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.hibernate.Session;
+
+import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameters;
 import de.lemo.dms.service.BaseService;
@@ -28,6 +32,9 @@ import de.lemo.dms.service.BaseService;
 @Produces(MediaType.APPLICATION_JSON)
 public abstract class Question extends BaseService {
 
+    protected final IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+
+    
     /**
      * Implementations must provides additional information about the parameters
      * of the question. For each {@link QueryParam} annotated parameter of the

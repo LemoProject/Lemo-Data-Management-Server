@@ -579,9 +579,8 @@ public class TestDataCreatorMoodle {
 	{
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		
-		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 		//accessing DB by creating a session and a transaction using HibernateUtil
-        Session session = dbHandler.getSession();
+        Session session = dbHandler.getMiningSession();
         session.clear();	
         
 
@@ -959,9 +958,8 @@ public class TestDataCreatorMoodle {
 		all.add(assignment_submission_lms);
 		
 		IDBHandler dbHandler = new HibernateDBHandler();
-		
-		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-		
-		dbHandler.saveCollectionToDB(all);
+		Session session = dbHandler.getMiningSession();
+		dbHandler.saveCollectionToDB(session, all);
+		dbHandler.closeSession(session);
 	}
 }

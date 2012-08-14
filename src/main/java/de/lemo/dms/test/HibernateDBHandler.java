@@ -6,17 +6,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-
-import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.EQueryType;
-import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
-
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.db.EQueryType;
+import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 
 /**
@@ -28,20 +26,20 @@ import org.hibernate.Transaction;
  */
 public class HibernateDBHandler implements IDBHandler{
 
-	static Session session;
 	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
 	
 	
-	public Session getSession()
-	{
-		return session;
-	}
+	public Session getMiningSession() {
+        return de.lemo.dms.connectors.moodleNumericId.HibernateUtil.getDynamicSourceDBFactoryMoodle(
+            ServerConfigurationHardCoded.getInstance().getMiningDBConfig()).openSession();
+    }
+	
 	@Override
 	/**
 	 * Saves a list of generic objects to the database.
 	 * 
 	 */
-	public void saveCollectionToDB(List<Collection<?>> data) {
+	public void saveCollectionToDB(Session session, List<Collection<?>> data) {
 
 		List<Object> objects = new ArrayList<Object>();
 		session.clear();
@@ -103,7 +101,7 @@ public class HibernateDBHandler implements IDBHandler{
 	/**
 	 * Save a single object to the database.
 	 */
-	public void saveToDB(Object data) {
+	public void saveToDB(Session session, Object data) {
 		Transaction tx = session.beginTransaction();
 		session.saveOrUpdate(data);
 		tx.commit();
@@ -111,33 +109,13 @@ public class HibernateDBHandler implements IDBHandler{
 		// TODO Auto-generated method stub
 		
 	}
-	
-    public Session getSession(DBConfigObject dbConf){
-        getConnection(dbConf);
-        return session;
-    }
 
-	@Override
-	/**
-	 * Opens a connection to the database.
-	 * 
-	 */
-	public void getConnection(DBConfigObject dbConf) {
-		try
-		{			
-			if(session == null || !session.isOpen())
-				session = de.lemo.dms.connectors.moodleNumericId.HibernateUtil.getDynamicSourceDBFactoryMoodle(dbConf).openSession();
-		}catch(HibernateException he)
-		{
-			System.out.println("Get connection failed: " + he.getMessage());
-		}
-	}
-
+ 
 	@Override
 	/**
 	 * Closes the database connection.
 	 */
-	public void closeConnection() {
+	public void closeSession(Session session) {
 		try{
 			session.close();
 		}catch(HibernateException he)
@@ -148,7 +126,7 @@ public class HibernateDBHandler implements IDBHandler{
 	/**
 	 * Performs a Hibernate query.
 	 */
-	public List<?> performQuery(EQueryType queryType, String query) {
+	public List<?> performQuery(Session session, EQueryType queryType, String query) {
 		List<?> l = null;
 		try {
 			if(queryType == EQueryType.SQL)

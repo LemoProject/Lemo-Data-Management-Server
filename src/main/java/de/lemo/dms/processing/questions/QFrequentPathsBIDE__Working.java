@@ -66,9 +66,10 @@ public class QFrequentPathsBIDE__Working extends Question{
     protected List<MetaParam<?>> createParamMetaData() {
         List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
         
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-        dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
-        List<?> latest = dbHandler.performQuery(EQueryType.SQL, "Select max(timestamp) from resource_log");
+        Session session = dbHandler.getMiningSession();
+        List<?> latest = dbHandler.performQuery(session,EQueryType.SQL, "Select max(timestamp) from resource_log");
+        dbHandler.closeSession(session); 
+        
         Long now = System.currentTimeMillis()/1000;
         
         if(latest.size() > 0)
@@ -109,10 +110,7 @@ public class QFrequentPathsBIDE__Working extends Question{
 		try{
 			
 		
-		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
-		
-		Session session =  dbHandler.getSession();
+		Session session =  dbHandler.getMiningSession();
 		SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
 		
 		if(!sessionWise)
@@ -221,9 +219,8 @@ public class QFrequentPathsBIDE__Working extends Question{
 		String output = "./"+System.currentTimeMillis()+"_BIDEInput.txt";
 		try{
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
-			
-			Session session =  dbHandler.getSession();
+		
+			Session session =  dbHandler.getMiningSession();
 			
 			
 			Criteria criteria = session.createCriteria(ILogMining.class, "log");
@@ -337,9 +334,8 @@ public class QFrequentPathsBIDE__Working extends Question{
 		String output = "./"+System.currentTimeMillis()+"_BIDEInput_sb.txt";
 		try{
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 			
-			Session session =  dbHandler.getSession();
+			Session session =  dbHandler.getMiningSession();
 			
 			Criteria criteria = session.createCriteria(ILogMining.class, "log");
 			if(courses.size() > 0)
@@ -468,9 +464,8 @@ public class QFrequentPathsBIDE__Working extends Question{
 		LinkedList<String> result = new LinkedList<String>();
 		try{
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 			
-			Session session =  dbHandler.getSession();
+			Session session =  dbHandler.getMiningSession();
 			
 			Criteria criteria = session.createCriteria(ILogMining.class, "log");
 			if(courses.size() > 0)
@@ -575,9 +570,8 @@ public class QFrequentPathsBIDE__Working extends Question{
 		LinkedList<String> result = new LinkedList<String>();
 		try{
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 			
-			Session session =  dbHandler.getSession();
+			Session session =  dbHandler.getMiningSession();
 			
 			Criteria criteria = session.createCriteria(ILogMining.class, "log");
 			if(courses.size() > 0)

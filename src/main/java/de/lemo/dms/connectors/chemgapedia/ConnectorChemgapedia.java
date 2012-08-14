@@ -4,8 +4,10 @@ import java.io.File;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.LogReader;
@@ -75,8 +77,11 @@ public class ConnectorChemgapedia implements IConnector{
 	    config.setElapsed_time((endtime) - (starttime));	
 	    config.setLargestId(largestId);
 	    config.setPlatform("Chemgapedia");
-	    ServerConfigurationHardCoded.getInstance().getDBHandler().saveToDB(config);
-		ServerConfigurationHardCoded.getInstance().getDBHandler().closeConnection();
+	    
+	    IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+	    Session session = dbHandler.getMiningSession();
+	    dbHandler.saveToDB(session, config);
+	    dbHandler.closeSession(session);
 	}
 
 	@Override
@@ -107,8 +112,11 @@ public class ConnectorChemgapedia implements IConnector{
 	    config.setElapsed_time((endtime) - (starttime));	
 	    config.setLargestId(largestId);
 	    config.setPlatform("Chemgapedia");
-	    ServerConfigurationHardCoded.getInstance().getDBHandler().saveToDB(config);
-		ServerConfigurationHardCoded.getInstance().getDBHandler().closeConnection();
+	    
+	    IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+	    Session session = dbHandler.getMiningSession();
+        dbHandler.saveToDB(session, config);
+        dbHandler.closeSession(session);
 	}
 
 	@Override

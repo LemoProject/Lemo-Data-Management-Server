@@ -10,6 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.hibernate.Session;
+
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
@@ -26,22 +28,21 @@ public class ServiceCourseDetails extends BaseService {
     public CourseObject getCourseDetails(@PathParam("cid") Long id) {
            
         // Set up db-connection
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-        dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
+        Session session = dbHandler.getMiningSession();
 
         @SuppressWarnings("unchecked")
-        ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(EQueryType.HQL,
+        ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(session, EQueryType.HQL,
                 "from CourseMining where id = " + id);
         CourseObject co = new CourseObject();
         if(ci != null && ci.size() >= 1) {
             @SuppressWarnings("unchecked")
-            ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(EQueryType.HQL,
+            ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
                     "Select count(DISTINCT user) from CourseUserMining where course=" + ci.get(0).getId());
             @SuppressWarnings("unchecked")
-            ArrayList<Long> latest = (ArrayList<Long>) dbHandler.performQuery(EQueryType.HQL,
+            ArrayList<Long> latest = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
                     "Select max(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(0).getId());
             @SuppressWarnings("unchecked")
-            ArrayList<Long> first = (ArrayList<Long>) dbHandler.performQuery(EQueryType.HQL,
+            ArrayList<Long> first = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
                     "Select min(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(0).getId());
             Long c_pa = 0L;
             if(parti.size() > 0 && parti.get(0) != null)
@@ -54,6 +55,7 @@ public class ServiceCourseDetails extends BaseService {
                 c_fi = first.get(0);
             co = new CourseObject(ci.get(0).getId(), ci.get(0).getShortname(), ci.get(0).getTitle(), c_pa, c_la, c_fi);
         }
+        dbHandler.closeSession(session);
         return co;
     }
 
@@ -66,8 +68,7 @@ public class ServiceCourseDetails extends BaseService {
             return new ResultListCourseObject(courses);
 
         // Set up db-connection
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-        dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
+        Session session = dbHandler.getMiningSession();
 
         String query = "";
         for(int i = 0; i < ids.size(); i++) {
@@ -80,18 +81,18 @@ public class ServiceCourseDetails extends BaseService {
         }
 
         @SuppressWarnings("unchecked")
-        ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(EQueryType.HQL,
+        ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(session, EQueryType.HQL,
                 "from CourseMining where id in " + query);
 
         for(int i = 0; i < ci.size(); i++) {
             @SuppressWarnings("unchecked")
-            ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(EQueryType.HQL,
+            ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
                     "Select count(DISTINCT user) from CourseUserMining where course=" + ci.get(i).getId());
             @SuppressWarnings("unchecked")
-            ArrayList<Long> latest = (ArrayList<Long>) dbHandler.performQuery(EQueryType.HQL,
+            ArrayList<Long> latest = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
                     "Select max(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(i).getId());
             @SuppressWarnings("unchecked")
-            ArrayList<Long> first = (ArrayList<Long>) dbHandler.performQuery(EQueryType.HQL,
+            ArrayList<Long> first = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
                     "Select min(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(i).getId());
             Long c_pa = 0L;
             if(parti.size() > 0 && parti.get(0) != null)

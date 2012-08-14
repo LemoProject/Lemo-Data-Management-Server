@@ -50,9 +50,8 @@ public class TestDataCreatorChemgapedia {
 	{
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		
-		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 		//accessing DB by creating a session and a transaction using HibernateUtil
-        Session session = dbHandler.getSession();
+        Session session = dbHandler.getMiningSession();
         session.clear();		
         
         Query resLogQuery = session.createQuery("from ResourceLogMining x order by x.id asc");

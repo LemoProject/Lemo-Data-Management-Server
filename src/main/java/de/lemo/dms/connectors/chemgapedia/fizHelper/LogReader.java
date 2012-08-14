@@ -60,23 +60,22 @@ public class LogReader {
 	
 	Clock clock = new Clock();
 	
-	IDBHandler dbHandler;
+	IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+	Session session;
 	
 	Long largestId;
 	
 	Long lastTimestamp = 0L;
 	
 	
-	public LogReader(Long idcount)
+	@SuppressWarnings("unchecked")
+    public LogReader(Long idcount)
 	{
 		try{
 			
 			new_id_mapping = new HashMap<String, IDMappingMining>();
-			
-			this.dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-			this.dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
-			
-			Session session = dbHandler.getSession();
+					
+			session = dbHandler.getMiningSession();
 	    	
 	    	Criteria c = session.createCriteria(IDMappingMining.class, "idmap");
 	    	c.add(Restrictions.eq("idmap.platform", "Chemgapedia"));
@@ -468,7 +467,10 @@ public class LogReader {
 			System.out.println("Found " + it.size() + " users.");
 			l.add(it);
 			l.add(idmap);
-			dbHandler.saveCollectionToDB(l);
+			
+			Session session = dbHandler.getMiningSession();
+			dbHandler.saveCollectionToDB(session, l);
+			dbHandler.closeSession(session);
 			
 			
 			/*}
@@ -489,7 +491,10 @@ public class LogReader {
 		//HashMap<Long, ResourceLogMining> resourceLogMining = new HashMap<Long, ResourceLogMining>();
 		ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
 		try{	
-			long li = (Long)(dbHandler.performQuery(EQueryType.HQL, "Select count(*) from ResourceLogMining").get(0));
+		    
+		    Session session = dbHandler.getMiningSession();
+	       
+			long li = (Long)(dbHandler.performQuery(session, EQueryType.HQL, "Select count(*) from ResourceLogMining").get(0));
 			if (li > 0)
 			startIndex = 1 + li;
 			for(Iterator<ArrayList<LogObject>> iter = this.userHistories.values().iterator(); iter.hasNext();)
@@ -526,12 +531,13 @@ public class LogReader {
 			}
 			l.add(this.newResources.values());
 			l.add(resourceLogMining);			
-			dbHandler.saveCollectionToDB(l);
+			dbHandler.saveCollectionToDB(session, l);
 		}
 		catch (Exception e)
 		{
 			System.out.println(e.getMessage());
 		}
+		dbHandler.closeSession(session);
 		return largestId;
 	}
 }

@@ -37,9 +37,10 @@ public class QCourseActivity extends Question{
 	protected List<MetaParam<?>> createParamMetaData() {
 	    List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
         
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-        dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
-        List<?> latest = dbHandler.performQuery(EQueryType.SQL, "Select max(timestamp) from resource_log");
+        Session session = dbHandler.getMiningSession();
+        List<?> latest = dbHandler.performQuery(session,EQueryType.SQL, "Select max(timestamp) from resource_log");
+        dbHandler.closeSession(session); 
+        
         Long now = System.currentTimeMillis()/1000;
         
         if(latest.size() > 0)
@@ -85,7 +86,7 @@ public class QCourseActivity extends Question{
 			
 			//Set up db-connection
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-			dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
+			Session session = dbHandler.getMiningSession();
 			
 			//Calculate size of time intervalls
 			double intervall = (endTime - startTime) / (resolution);
@@ -95,7 +96,6 @@ public class QCourseActivity extends Question{
 			for(int i =  0; i < resArr.length; i++)
 				resArr[i] = 0L;
 			
-			Session session = dbHandler.getSession();
 			
 			List<CourseUserMining> ilm = null;
 			if(roles != null && roles.size() > 0)
