@@ -115,20 +115,33 @@ public class ConnectorChemgapedia implements IConnector{
 	public void setSourceDBConfig(DBConfigObject dbConf) {
 		
 		HashMap<String, String> props = dbConf.getProperties();
+		
 		if(props.get("filter_log_file").equals("true"))
 			filter = true;
+		else
+			filter = false;
+		
 		if(props.get("path.log_file") == null)
 			logger.error("Connector Chemgapedia : No path for log file defined");
 		else
 			logPath = props.get("path.log_file");
-		if(props.get("path.resource_metadata") == null)
+		
+
+		
+		if(props.get("process_metadata") == "true")
+			processVSC = true;
+		else
+			processVSC = false;
+		
+		if(props.get("process_log_file") == "true")
+			processLog = true;
+		else
+			processLog = false;
+		
+		if(props.get("path.resource_metadata") == null && processVSC)
 			logger.error("Connector Chemgapedia : No path for resource metadata defined");
 		else
 			vscPath = props.get("path.resource_metadata");
-		if(props.get("process_metadata") == "true")
-			processVSC = true;
-		if(props.get("process_log_file") == "true")
-			processLog = true;
 			
 	}
 }

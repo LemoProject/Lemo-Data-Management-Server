@@ -224,7 +224,7 @@ public class LogReader {
 	{	    
 	    try
 	    {	    
-	    	System.out.println("Reading server log...");
+	    	System.out.println("Reading server log " + inFile);
 	    	BufferedReader input =  new BufferedReader(new FileReader(inFile));
 	    	int count = 0;
 	    	try 

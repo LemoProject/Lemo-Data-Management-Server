@@ -33,6 +33,7 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
+import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.QuestionID;
@@ -108,7 +109,12 @@ public class QFrequentPathsBIDE extends Question{
         System.out.println("Parameter list: End time: : "+endTime);
 		try{
 			
-		
+			FileWriter out = new FileWriter("./"+System.currentTimeMillis()+"_BIDEresults.txt");
+	    	PrintWriter pout = new PrintWriter(out);
+	    	
+	    	//Write header for the output file
+	    	pout.println("# LeMo - Sequential pattern data");
+			
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 		
@@ -129,13 +135,13 @@ public class QFrequentPathsBIDE extends Question{
 		
 		Criteria cou = session.createCriteria(CourseResourceMining.class);
 		LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
-    	
 		for(int i = 0; i < res.getLevelCount(); i++)
 		{
 			for(int j = 0; j < res.getLevel(i).size(); j++)
 			{
 				UserPathObject predecessor = null;
-				System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
+				if(i > 3)
+					System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
 				for(int k = 0; k < res.getLevel(i).get(j).size(); k++)
 				{
 					String obId = res.getLevel(i).get(j).get(k).getItems().get(0).getId()+"";
@@ -147,6 +153,12 @@ public class QFrequentPathsBIDE extends Question{
 					if(ilo.getCourse() != null && ilo.getCourse().getTitle() != null)
 						courseTitle = ilo.getCourse().getTitle();
 					String url = "";
+					String pos = "";
+					if(ilo instanceof ResourceLogMining)
+					{
+						url = ((ResourceLogMining) ilo).getResource().getUrl();
+						pos = ((ResourceLogMining) ilo).getResource().getPosition()+"";
+					}
 					
 					UserPathObject upo = new UserPathObject(obId, ilo.getTitle(), 1L, type, Double.valueOf(ilo.getDuration()), ilo.getPrefix());
 					if(ilo.getDuration() != -1L)
@@ -165,10 +177,12 @@ public class QFrequentPathsBIDE extends Question{
 						pathObjects.get(predecessor.getId()).addEdgeOrIncrement(obId);
 					}
 					predecessor = upo;
-					System.out.println(ilo.getId() + "\t" + courseTitle + "\t" + ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf(".") + 1, ilo.getClass().toString().indexOf("LogMining")) + "\t" + ilo.getTitle() +"\t" + url);
+					if(i > 3)
+						System.out.println(ilo.getId() + "\t" + courseTitle + "\t" + pos + "\t" + ilo.getTitle() +"\t" + url);
 					
 				}
-				System.out.println("");
+				if(i > 3)
+					System.out.println("");
 			}
 		}
 		
@@ -629,6 +643,8 @@ public class QFrequentPathsBIDE extends Question{
 			
 			for(int i = 0; i< uhis.size(); i++)
 			{
+				if(uhis.get(i).size() > 70)
+					System.out.println(uhis.get(i).size() + " User-Id " + uhis.get(i).get(0).getUser().getId());
 				lengths[uhis.get(i).size() / 10]++;				
 			}
 

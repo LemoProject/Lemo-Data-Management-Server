@@ -142,7 +142,7 @@ public class HibernateDBHandler implements IDBHandler{
 		try{
 			mining_session.close();
 		}catch(HibernateException he)
-		{logger.info(he.getMessage());}
+		{logger.info(he.getStackTrace());}
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class HibernateDBHandler implements IDBHandler{
 				l = mining_session.createQuery(query).list();
 		}catch(HibernateException he)
 		{	
-			System.out.println("Exception: "+ he.getMessage());
+			he.printStackTrace();
 		}	
 		return l;
 	}

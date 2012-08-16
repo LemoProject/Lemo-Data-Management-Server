@@ -30,7 +30,8 @@ public class HibernateUtil {
 			  String key = iter.next();
 			  s.setProperty(key, dbConf.getPropertyValue(key));
 		  }
-		  	  
+		  	 
+		
 		s.addResource("de/lemo/dms/db/miningDBclass/ConfigMining.hbm.xml");
 		s.addResource("de/lemo/dms/db/miningDBclass/IDMappingMining.hbm.xml");
 		
@@ -78,12 +79,7 @@ public class HibernateUtil {
 		s.addResource("de/lemo/dms/db/miningDBclass/QuestionLogMining.hbm.xml");
 		s.addResource("de/lemo/dms/db/miningDBclass/QuizLogMining.hbm.xml");
 		s.addResource("de/lemo/dms/db/miningDBclass/WikiLogMining.hbm.xml");
-		
-
-		
-	
-		//sessionFactoryMoodle = new Configuration().configure("de/lemo/dms/db/hibernate_MiningDB.cfg.xml").buildSessionFactory();
-		
+		  
 		sessionFactoryMining = s.buildSessionFactory();
 	 
 	//	sessionFactoryMining = new Configuration().configure("de/lemo/dms/db/hibernate/hibernate_MiningDB.cfg.xml").buildSessionFactory();
