@@ -29,10 +29,10 @@ import ca.pfv.spmf.sequentialpatterns.AlgoBIDEPlus;
 import ca.pfv.spmf.sequentialpatterns.SequenceDatabase;
 import ca.pfv.spmf.sequentialpatterns.Sequences;
 
+import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
@@ -103,10 +103,12 @@ public class QFrequentPathsBIDE extends Question{
         	System.out.println("Parameter list: Course Id: "+courseIds.get(0));
         if(userIds!=null && userIds.size()!=0)
         	System.out.println("Parameter list: User Id: "+userIds.get(0));
+        
         System.out.println("Parameter list: Minimum Support: : "+minSup);
         System.out.println("Parameter list: Session Wise: : "+sessionWise);
         System.out.println("Parameter list: Start time: : "+startTime);
         System.out.println("Parameter list: End time: : "+endTime);
+		
 		try{
 			
 			FileWriter out = new FileWriter("./"+System.currentTimeMillis()+"_BIDEresults.txt");
@@ -114,11 +116,7 @@ public class QFrequentPathsBIDE extends Question{
 	    	
 	    	//Write header for the output file
 	    	pout.println("# LeMo - Sequential pattern data");
-			
-		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 		
-		Session session =  dbHandler.getSession();
 		SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
 		
 		if(!sessionWise)
@@ -131,17 +129,20 @@ public class QFrequentPathsBIDE extends Question{
 		AlgoBIDEPlus algo  = new AlgoBIDEPlus(minSup);
 		
 		// execute the algorithm
+		Clock c = new Clock();
 		Sequences res = algo.runAlgorithm(sequenceDatabase); 
+		System.out.println("Time: " + c.get() );
 		
-		Criteria cou = session.createCriteria(CourseResourceMining.class);
 		LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 		for(int i = 0; i < res.getLevelCount(); i++)
 		{
+			if(i > 0)
+				System.out.print(res.getLevel(i).size()+"\t");
 			for(int j = 0; j < res.getLevel(i).size(); j++)
 			{
 				UserPathObject predecessor = null;
-				if(i > 3)
-					System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
+				
+				//System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
 				for(int k = 0; k < res.getLevel(i).get(j).size(); k++)
 				{
 					String obId = res.getLevel(i).get(j).get(k).getItems().get(0).getId()+"";
@@ -177,17 +178,17 @@ public class QFrequentPathsBIDE extends Question{
 						pathObjects.get(predecessor.getId()).addEdgeOrIncrement(obId);
 					}
 					predecessor = upo;
-					if(i > 3)
-						System.out.println(ilo.getId() + "\t" + courseTitle + "\t" + pos + "\t" + ilo.getTitle() +"\t" + url);
+					//if(i > 3)
+					//	System.out.println(ilo.getId() + "\t" + courseTitle + "\t" + pos + "\t" + ilo.getTitle() +"\t" + url);
 					
 				}
-				if(i > 3)
-					System.out.println("");
+				
 			}
 		}
+		System.out.println("\n");
 		
-		for(int i = 1; i < res.getLevelCount(); i++)
-			System.out.println("Number of sequences of length "+ i + ": "+res.getLevel(i).size());
+		/*for(int i = 1; i < res.getLevelCount(); i++)
+			System.out.println("Number of sequences of length "+ i + ": "+res.getLevel(i).size());*/
 		//algo.printStatistics(sequenceDatabase.size());
 
 
@@ -227,6 +228,7 @@ public class QFrequentPathsBIDE extends Question{
 	 * 
 	 * @return	The path to the generated file 
 	 */
+	@SuppressWarnings("unchecked")
 	private static String generateInputFile(List<Long> courses, List<Long> users, Long starttime, Long endtime)
 	{
 		String output = "./"+System.currentTimeMillis()+"_BIDEInput.txt";
@@ -343,6 +345,7 @@ public class QFrequentPathsBIDE extends Question{
 	 * 
 	 * @return	The path to the generated file 
 	 */
+	@SuppressWarnings("unchecked")
 	private static String generateInputFileSessionBound(List<Long> courses, List<Long> users, Long starttime, Long endtime)
 	{
 		String output = "./"+System.currentTimeMillis()+"_BIDEInput_sb.txt";
@@ -415,7 +418,6 @@ public class QFrequentPathsBIDE extends Question{
 	    	pout.println("# LeMo - Sequential pattern data");
 	    	
 	    	Date d = new Date(); 
-	        DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
 	        SimpleDateFormat sdf = new SimpleDateFormat("dd.MMMM.yyyy - HH:mm:ss");
 	        
 	    	pout.println("# Generated @ "+ sdf.format(d));
@@ -473,9 +475,9 @@ public class QFrequentPathsBIDE extends Question{
 	 * 
 	 * @return	The path to the generated file 
 	 */
+	@SuppressWarnings("unchecked")
 	private static LinkedList<String> generateLinkedListSessionBound(List<Long> courses, List<Long> users, Long starttime, Long endtime)
 	{
-		String output = "./"+System.currentTimeMillis()+"_BIDEInput_sb.txt";
 		LinkedList<String> result = new LinkedList<String>();
 		try{
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
@@ -581,6 +583,7 @@ public class QFrequentPathsBIDE extends Question{
 	 * 
 	 * @return	The path to the generated file 
 	 */
+	@SuppressWarnings("unchecked")
 	private static LinkedList<String> generateLinkedList(List<Long> courses, List<Long> users, Long starttime, Long endtime)
 	{
 		LinkedList<String> result = new LinkedList<String>();
@@ -603,6 +606,9 @@ public class QFrequentPathsBIDE extends Question{
 			int max=0;
 			
 			HashMap<Long, ArrayList<ILogMining>> logMap = new HashMap<Long, ArrayList<ILogMining>>();
+			
+			int pre = 1000;
+			
 			for(int i = 0; i < list.size(); i++)
 			{
 				if(list.get(i).getUser() != null && list.get(i).getLearnObjId() != null)
@@ -622,14 +628,29 @@ public class QFrequentPathsBIDE extends Question{
 					}
 					else
 					{
-						//Add current ILogMining-object to user-history
-						logMap.get(list.get(i).getUser().getId()).add(list.get(i));
-						//Sort the user's history (by time stamp)
-						Collections.sort(logMap.get(list.get(i).getUser().getId()));
-						
-						//If it is the longest user history, save its length
-						if(logMap.get(list.get(i).getUser().getId()).size() > max)
-							max = logMap.get(list.get(i).getUser().getId()).size();
+			//			if(logMap.get(list.get(i).getUser().getId()).size() < 26)
+				//		{
+							//Add current ILogMining-object to user-history
+							logMap.get(list.get(i).getUser().getId()).add(list.get(i));
+							//Sort the user's history (by time stamp)
+							Collections.sort(logMap.get(list.get(i).getUser().getId()));
+							
+							//If it is the longest user history, save its length
+							if(logMap.get(list.get(i).getUser().getId()).size() > max)
+								max = logMap.get(list.get(i).getUser().getId()).size();
+					/*	}
+						else
+						{
+							Long l = Long.valueOf(pre + "" + list.get(i).getUser().getId());
+							logMap.put(l , logMap.get(list.get(i).getUser().getId()));
+							pre++;
+							//User histories are saved in an ArrayList of ILogMining-objects
+							ArrayList<ILogMining> a = new ArrayList<ILogMining>();
+							//Add current ILogMining-object to user-history
+							a.add(list.get(i));
+							//Add user history to the user history map
+							logMap.put(list.get(i).getUser().getId(), a);
+						}*/
 					}	
 			}
 			
@@ -642,11 +663,8 @@ public class QFrequentPathsBIDE extends Question{
 				lengths[i] = 0;
 			
 			for(int i = 0; i< uhis.size(); i++)
-			{
-				if(uhis.get(i).size() > 70)
-					System.out.println(uhis.get(i).size() + " User-Id " + uhis.get(i).get(0).getUser().getId());
 				lengths[uhis.get(i).size() / 10]++;				
-			}
+
 
 			for(int i = 0 ; i < lengths.length; i++)
 				if(lengths[i] != 0)
@@ -659,23 +677,19 @@ public class QFrequentPathsBIDE extends Question{
 			int z = 0;
 			
 			//Convert all user histories or "paths" into the format, that is requested by the BIDE-algorithm-class
-	    	for(Iterator<ArrayList<ILogMining>> iter = uhis.iterator(); iter.hasNext();)
+	    	for(ArrayList<ILogMining> l : uhis)
 			{
-				ArrayList<ILogMining> l = iter.next();
-				if(l.size() > 5)
+    			String line = "";
+    			for(int i = 0; i < l.size(); i++)
 				{
-					String line = "";
-					for(int i = 0; i < l.size(); i++)
-					{
-						if(idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
-							idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), l.get(i));
-						//The id of the object gets the prefix, indicating it's class. This is important for distinction between objects of different ILogMining-classes but same ids
-						line += l.get(i).getPrefix() + "" + l.get(i).getLearnObjId() + " -1 ";
-					}
-					line += "-2";
-					result.add(line);
-					z++;
+					if(idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
+						idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), l.get(i));
+					//The id of the object gets the prefix, indicating it's class. This is important for distinction between objects of different ILogMining-classes but same ids
+					line += l.get(i).getPrefix() + "" + l.get(i).getLearnObjId() + " -1 ";
 				}
+				line += "-2";
+				result.add(line);
+				z++;
 			}
 	    	System.out.println("Wrote "+ z+" logs.");
 		}catch(Exception e)

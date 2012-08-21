@@ -15,7 +15,7 @@ public class Test {
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		dbHandler.getConnection(ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
 		
-        dbHandler.saveCollectionToDB(conGen.generateMiningDB(5, 2, 2, 1293840000L, 1000));
+        dbHandler.saveCollectionToDB(conGen.generateMiningDB(1, 1, 27, 1293840000L, 1000));
 	}
 	
 	public static void write()
@@ -36,8 +36,8 @@ public class Test {
 	
 	public static void main(String[] args)
 	{
-		//gen();
+		gen();
 		//write();
-		writeMoodle();
+		//writeMoodle();
 	}
 }

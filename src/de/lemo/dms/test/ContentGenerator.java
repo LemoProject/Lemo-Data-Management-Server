@@ -215,9 +215,6 @@ public class ContentGenerator {
 				for(int k = 1 ; k <= coursesPerDegree ; k++)
 				{
 					//Create courses
-
-					
-					
 					if(k % 2 == 0)
 						offset = 15768000;
 					else
@@ -247,7 +244,9 @@ public class ContentGenerator {
 					degreeCourseList.add(degCou);
 					
 					//Associate users with course
-					for(int l = 0; l < 10; l ++)
+					int userSwitch = 25 + ((k-1) % 3) * 25;
+					System.out.println(userSwitch);
+					for(int l = 0; l < userSwitch; l ++)
 					{
 						CourseUserMining cu = new CourseUserMining();
 						cu.setId(courseUserList.size() + 1);
@@ -276,7 +275,9 @@ public class ContentGenerator {
 					//Now create LearningObjects
 					//Create resources
 					int pt = (randy.nextInt(6)+ 1) * 15;
-					for(int l = 1; l < 11; l++)
+					int resSwitch = 15 + (((k-1) / 3) % 3) * 15;
+					System.out.println(resSwitch);
+					for(int l = 1; l < resSwitch; l++)
 					{
 						ResourceMining r = new ResourceMining();
 						r.setId(resourceList.size() + 1);
@@ -472,13 +473,16 @@ public class ContentGenerator {
 					
 					//Create log-entries
 					//Create AssignmentLogs
-					for(int log = 0; log < logsPerLearnObject; log++)
+					int logSwitch = 500 + (((k-1) / 9) % 3) * 500;
+					for(int log = 0; log < logSwitch; log++)
 					{
+						
+						//_________________ResourceLogs___________________________________________________
 						ResourceLogMining rLog = new ResourceLogMining();
 						//rLog.setId(resourceLogList.size() + 1);
 						rLog.setCourse(cou);
 						rLog.setResource(resourceList.get((resourceList.size() - 1) - randy.nextInt(10)));
-						rLog.setUser(userList.get(( (courseList.size() -1) * 5 + randy.nextInt(10)) % userList.size()));
+						rLog.setUser(userList.get(( (courseList.size() -1) * 5 + randy.nextInt(userSwitch)) % userList.size()));
 						ResourceMining r = rLog.getResource();
 						
 						int mult = (int)(startdate + year - r.getTimecreated()) / Integer.valueOf(cou.getShortname()) ;
@@ -514,7 +518,7 @@ public class ContentGenerator {
 							aLog.setAction(assignmentActionStudent[randy.nextInt(assignmentActionStudent.length)]);
 						
 						
-						assignmentLogList.add(aLog);		
+					//	assignmentLogList.add(aLog);		
 						
 						//_________________ChatLogs___________________________________________________
 						
@@ -529,7 +533,7 @@ public class ContentGenerator {
 						cLog.setTimestamp(time);
 						cLog.setMessage("Generated chat message for chat "+ cou.getShortname() + " @ " + cLog.getTimestamp());
 						
-						chatLogList.add(cLog);
+					//	chatLogList.add(cLog);
 						
 						//_________________CourseLogs___________________________________________________
 						
@@ -556,7 +560,7 @@ public class ContentGenerator {
 							couLog.setTimestamp(time);
 						}
 						
-						courseLogList.add(couLog);
+					//	courseLogList.add(couLog);
 						
 						//_________________ForumLogs___________________________________________________
 						
@@ -574,7 +578,7 @@ public class ContentGenerator {
 						fLog.setSubject("Subject No." + randy.nextInt(5));
 						fLog.setMessage("Message in forum " + forum.getTitle() + " @"+fLog.getTimestamp());
 						
-						forumLogList.add(fLog);
+					//	forumLogList.add(fLog);
 						
 						//_________________WikiLogs___________________________________________________
 						
@@ -590,7 +594,7 @@ public class ContentGenerator {
 						
 						wLog.setAction("view");
 						
-						wikiLogList.add(wLog);
+				//		wikiLogList.add(wLog);
 						
 						//_________________ScormLogs___________________________________________________
 						
@@ -615,7 +619,7 @@ public class ContentGenerator {
 						if(sLog.getAction() == null)
 							sLog.setAction("view");
 						
-						scormLogList.add(sLog);
+				//		scormLogList.add(sLog);
 						
 						//_________________QuizLogs___________________________________________________
 						
@@ -641,7 +645,7 @@ public class ContentGenerator {
 						if(qLog.getAction() == null)
 							qLog.setAction("attempt");
 						
-						quizLogList.add(qLog);
+			//			quizLogList.add(qLog);
 						
 						//_________________QuestionLogs___________________________________________________
 						
@@ -673,7 +677,7 @@ public class ContentGenerator {
 						queLog.setType("text");
 					
 						
-						questionLogList.add(queLog);
+			//			questionLogList.add(queLog);
 					}
 					
 				}

@@ -227,7 +227,7 @@ public class TestDataCreatorMoodle {
 			lms2.setId(course_categories_lms.size() + 1);
 			lms2.setTitle(item.getTitle());
 			lms2.setDepth(2);
-			lms2.setPath(depIdMap.get(dm.getId()).getPath() + "/" + lms2.getId());
+			lms2.setPath("/" + depIdMap.get(dm.getId()).getId() + "/" + lms2.getId());
 			
 			Context_LMS lms = new Context_LMS();
 			lms.setContextlevel(40);
@@ -239,8 +239,6 @@ public class TestDataCreatorMoodle {
 			
 			degIdMap.put(item.getId(), lms);
 			context_lms.add(lms);
-			
-			
 			
 			course_categories_lms.add(lms2);
 			

@@ -8,6 +8,13 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 public class ChatMining implements IMappingClass {
 
+	
+	private long id;
+	private String title;
+	private String description;
+	private long chattime;
+	private CourseMining course;
+	
 	public boolean equals(IMappingClass o)
 	{
 		if(o == null || !(o instanceof ChatMining))
@@ -17,11 +24,7 @@ public class ChatMining implements IMappingClass {
 		return false;
 	}
 
-	private long id;
-	private String title;
-	private String description;
-	private long chattime;
-	private CourseMining course;
+
 	
 	public CourseMining getCourse() {
 		return course;

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
 
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.AssignmentMining;
@@ -186,6 +187,24 @@ public abstract class ExtractAndMap{
 	
 	/**Logger **/
 	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
+
+	static Long questionLogMax;
+
+	static Long forumLogMax;
+
+	static Long courseLogMax;
+
+	static Long assignmentLogMax;
+
+	static Long quizLogMax;
+
+	static Long scormLogMax;
+
+	static Long wikiLogMax;
+
+	static Long chatLogMax;
+
+	static Long resourceLogMax;
 	
 	Clock c;
 
@@ -251,8 +270,6 @@ public abstract class ExtractAndMap{
 					readingtimestamp2 += 172800;
 					logger.info("currenttimestamp:" + currenttimestamp);
 					saveMiningTables();	
-					prepareMiningData();
-					clearMiningTables();
 				}
 			}
 			else{
@@ -303,6 +320,52 @@ public abstract class ExtractAndMap{
 		if(config_mining_timestamp.get(0) == null){
 			config_mining_timestamp.set(0, new Timestamp(0));
 		}
+		
+		Query logCount = dbHandler.getSession().createQuery("select max(log.id) from ResourceLogMining log");
+        resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(resourceLogMax == null)
+        	resourceLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from ChatLogMining log");
+        chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(chatLogMax == null)
+        	chatLogMax = 0L;
+        
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from AssignmentLogMining log");
+        assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(assignmentLogMax == null)
+        	assignmentLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from CourseLogMining log");
+        courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(courseLogMax == null)
+        	courseLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from ForumLogMining log");
+        forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(forumLogMax == null)
+        	forumLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from QuestionLogMining log");
+        questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(questionLogMax == null)
+        	questionLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from QuizLogMining log");
+        quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(quizLogMax == null)
+        	quizLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from ScormLogMining log");
+        scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(scormLogMax == null)
+        	scormLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from WikiLogMining log");
+        wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(wikiLogMax == null)
+        	wikiLogMax = 0L;
 		
 		long readingtimestamp = config_mining_timestamp.get(0).getTime();
 	
@@ -636,9 +699,8 @@ public abstract class ExtractAndMap{
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " ScormLogMining entries in "+ c.getAndReset() +" s. ");
 		updates.add(generateWikiLogMining().values());
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " WikiLogMining entries in "+ c.getAndReset() +" s. ");
-		//mining_session.clear();
-		//transaction for saving		
-		//Transaction tx = dbHandler.getSession().beginTransaction();
+
+		
 		System.out.println("Writing to DB");
 		dbHandler.saveCollectionToDB(updates);
 		
@@ -651,8 +713,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_user table.
 	 * This table describes which user is enrolled in which course in which timesspan.
-	 * The attributes are discribed in the dokumantation of the course_user_mining class.
-	 * Please use the getter and setter predifined in the course_user_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_user_mining class.
+	 * Please use the getter and setter predefined in the course_user_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_user table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseUserMining> generateCourseUserMining();
@@ -660,8 +722,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_forum table.
 	 * This table describes which forum is used in which course.
-	 * The attributes are discribed in the dokumantation of the course_forum_mining class.
-	 * Please use the getter and setter predifined in the course_forum_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_forum_mining class.
+	 * Please use the getter and setter predefined in the course_forum_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_forum table representing class.
 	 * **/	  
     abstract HashMap<Long, CourseForumMining> generateCourseForumMining();
@@ -669,8 +731,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course table.
 	 * This table describes the courses in the LMS.
-	 * The attributes are discribed in the dokumantation of the course_mining class.
-	 * Please use the getter and setter predifined in the course_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_mining class.
+	 * Please use the getter and setter predefined in the course_mining class to fill the tables within this method.
 	 * @return A list of instances of the course table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseMining> generateCourseMining();    
@@ -678,8 +740,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_group table.
 	 * This table describes which groups are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_group_mining class.
-	 * Please use the getter and setter predifined in the course_group_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_group_mining class.
+	 * Please use the getter and setter predefined in the course_group_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_group table representing class.
 	 * **/	    
 	abstract HashMap<Long, CourseGroupMining> generateCourseGroupMining();
@@ -687,8 +749,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_quiz table.
 	 * This table describes which quiz are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_quiz_mining class.
-	 * Please use the getter and setter predifined in the course_quiz_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_quiz_mining class.
+	 * Please use the getter and setter predefined in the course_quiz_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_quiz table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseQuizMining> generateCourseQuizMining();
@@ -696,8 +758,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_assignment table.
 	 * This table describes which assignment are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_assignment_mining class.
-	 * Please use the getter and setter predifined in the course_assignment_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_assignment_mining class.
+	 * Please use the getter and setter predefined in the course_assignment_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_assignment table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseAssignmentMining> generateCourseAssignmentMining();
@@ -705,8 +767,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_scorm table.
 	 * This table describes which scorm packages are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_scorm_mining class.
-	 * Please use the getter and setter predifined in the course_scorm_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_scorm_mining class.
+	 * Please use the getter and setter predefined in the course_scorm_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_scorm table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseScormMining> generateCourseScormMining();
@@ -714,8 +776,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_resource table.
 	 * This table describes which resources are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_resource_mining class.
-	 * Please use the getter and setter predifined in the course_resource_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_resource_mining class.
+	 * Please use the getter and setter predefined in the course_resource_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_resource table representing class.
 	 * **/	     
     abstract HashMap<Long, CourseResourceMining> generateCourseResourceMining();
@@ -723,8 +785,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_log table.
 	 * This table contains the actions which are done on courses.
-	 * The attributes are discribed in the dokumantation of the course_log_mining class.
-	 * Please use the getter and setter predifined in the course_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_log_mining class.
+	 * Please use the getter and setter predefined in the course_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_log table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseLogMining> generateCourseLogMining();
@@ -732,8 +794,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_wiki table.
 	 * This table describes which wikis are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_wiki_mining class.
-	 * Please use the getter and setter predifined in the course_wiki_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_wiki_mining class.
+	 * Please use the getter and setter predefined in the course_wiki_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_wiki table representing class.
 	 * **/	     
     abstract HashMap<Long, CourseWikiMining> generateCourseWikiMining();
@@ -741,8 +803,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the forum_log table.
 	 * This table contains the actions which are done on forums.
-	 * The attributes are discribed in the dokumantation of the forum_log_mining class.
-	 * Please use the getter and setter predifined in the forum_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the forum_log_mining class.
+	 * Please use the getter and setter predefined in the forum_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the forum_log table representing class.
 	 * **/    
     abstract HashMap<Long, ForumLogMining> generateForumLogMining(); 
@@ -750,8 +812,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the forum table.
 	 * This table describes the forums in the LMS.
-	 * The attributes are discribed in the dokumantation of the forum_mining class.
-	 * Please use the getter and setter predifined in the forum_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the forum_mining class.
+	 * Please use the getter and setter predefined in the forum_mining class to fill the tables within this method.
 	 * @return A list of instances of the forum table representing class.
 	 * **/	    
     abstract HashMap<Long, ForumMining> generateForumMining();
@@ -759,8 +821,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the group_user table.
 	 * This table describes which user are in which groups.
-	 * The attributes are discribed in the dokumantation of the group_user_mining class.
-	 * Please use the getter and setter predifined in the group_user_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the group_user_mining class.
+	 * Please use the getter and setter predefined in the group_user_mining class to fill the tables within this method.
 	 * @return A list of instances of the group_user table representing class.
 	 * **/	    
 	abstract HashMap<Long, GroupUserMining> generateGroupUserMining();
@@ -768,8 +830,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the group table.
 	 * This table describes the groups in the LMS.
-	 * The attributes are discribed in the dokumantation of the group_mining class.
-	 * Please use the getter and setter predifined in the group_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the group_mining class.
+	 * Please use the getter and setter predefined in the group_mining class to fill the tables within this method.
 	 * @return A list of instances of the group table representing class.
 	 * **/		
     abstract HashMap<Long, GroupMining> generateGroupMining();
@@ -777,8 +839,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the question_log table.
 	 * This table contains the actions which are done on questions.
-	 * The attributes are discribed in the dokumantation of the question_log_mining class.
-	 * Please use the getter and setter predifined in the question_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the question_log_mining class.
+	 * Please use the getter and setter predefined in the question_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the question_log table representing class.
 	 * **/     
     abstract HashMap<Long, QuestionLogMining> generateQuestionLogMining();
@@ -786,8 +848,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the quiz_log table.
 	 * This table contains the actions which are done on quiz.
-	 * The attributes are discribed in the dokumantation of the quiz_log_mining class.
-	 * Please use the getter and setter predifined in the quiz_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the quiz_log_mining class.
+	 * Please use the getter and setter predefined in the quiz_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz_log table representing class.
 	 * **/     
     abstract HashMap<Long, QuizLogMining> generateQuizLogMining();
@@ -795,8 +857,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the assignment_log table.
 	 * This table contains the actions which are done on assignment.
-	 * The attributes are discribed in the dokumantation of the assignment_log_mining class.
-	 * Please use the getter and setter predifined in the assignment_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the assignment_log_mining class.
+	 * Please use the getter and setter predefined in the assignment_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the assignment_log table representing class.
 	 * **/     
     abstract HashMap<Long, AssignmentLogMining> generateAssignmentLogMining();
@@ -804,8 +866,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the scorm_log table.
 	 * This table contains the actions which are done on scorm.
-	 * The attributes are discribed in the dokumantation of the scorm_log_mining class.
-	 * Please use the getter and setter predifined in the scorm_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the scorm_log_mining class.
+	 * Please use the getter and setter predefined in the scorm_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the scorm_log table representing class.
 	 * **/     
     abstract HashMap<Long, ScormLogMining> generateScormLogMining();
@@ -813,8 +875,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the quiz_user table.
 	 * This table describes which user gets which grade in which quiz.
-	 * The attributes are discribed in the dokumantation of the quiz_user_mining class.
-	 * Please use the getter and setter predifined in the quiz_user_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the quiz_user_mining class.
+	 * Please use the getter and setter predefined in the quiz_user_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz_user table representing class.
 	 * **/	 
     abstract HashMap<Long, QuizUserMining> generateQuizUserMining();
@@ -822,8 +884,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the quiz table.
 	 * This table describes the quiz in the LMS.
-	 * The attributes are discribed in the dokumantation of the quiz_mining class.
-	 * Please use the getter and setter predifined in the quiz_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the quiz_mining class.
+	 * Please use the getter and setter predefined in the quiz_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz table representing class.
 	 * **/    
     abstract HashMap<Long, QuizMining> generateQuizMining();
@@ -831,8 +893,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the assignment table.
 	 * This table describes the assignment in the LMS.
-	 * The attributes are discribed in the dokumantation of the assignment_mining class.
-	 * Please use the getter and setter predifined in the assignment_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the assignment_mining class.
+	 * Please use the getter and setter predefined in the assignment_mining class to fill the tables within this method.
 	 * @return A list of instances of the assignment table representing class.
 	 * **/    
     abstract HashMap<Long, AssignmentMining> generateAssignmentMining();
@@ -840,8 +902,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the scorm table.
 	 * This table describes the scorm packages in the LMS.
-	 * The attributes are discribed in the dokumantation of the scorm_mining class.
-	 * Please use the getter and setter predifined in the scorm_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the scorm_mining class.
+	 * Please use the getter and setter predefined in the scorm_mining class to fill the tables within this method.
 	 * @return A list of instances of the scorm table representing class.
 	 * **/    
     abstract HashMap<Long, ScormMining> generateScormMining();
@@ -849,8 +911,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the quiz_question table.
 	 * This table describes which question is used in which quiz.
-	 * The attributes are discribed in the dokumantation of the quiz_question_mining class.
-	 * Please use the getter and setter predifined in the quiz_question_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the quiz_question_mining class.
+	 * Please use the getter and setter predefined in the quiz_question_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz_question table representing class.
 	 * **/    
     abstract HashMap<Long, QuizQuestionMining> generateQuizQuestionMining(); 
@@ -858,8 +920,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the question table.
 	 * This table describes the question in the LMS.
-	 * The attributes are discribed in the dokumantation of the question_mining class.
-	 * Please use the getter and setter predifined in the question_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the question_mining class.
+	 * Please use the getter and setter predefined in the question_mining class to fill the tables within this method.
 	 * @return A list of instances of the question table representing class.
 	 * **/     
     abstract HashMap<Long, QuestionMining> generateQuestionMining();
@@ -867,8 +929,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the resource table.
 	 * This table describes the resource in the LMS.
-	 * The attributes are discribed in the dokumantation of the resource_mining class.
-	 * Please use the getter and setter predifined in the resource_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the resource_mining class.
+	 * Please use the getter and setter predefined in the resource_mining class to fill the tables within this method.
 	 * @return A list of instances of the resource table representing class.
 	 * **/    
     abstract HashMap<Long, ResourceMining> generateResourceMining();
@@ -876,8 +938,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the resource_log table.
 	 * This table contains the actions which are done on resource.
-	 * The attributes are discribed in the dokumentation of the resource_log_mining class.
-	 * Please use the getter and setter predifined in the resource_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the resource_log_mining class.
+	 * Please use the getter and setter predefined in the resource_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the resource_log table representing class.
 	 * **/
     abstract HashMap<Long, ResourceLogMining> generateResourceLogMining();
@@ -885,8 +947,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the user table.
 	 * This table describes the user in the LMS.
-	 * The attributes are discribed in the dokumantation of the user_mining class.
-	 * Please use the getter and setter predifined in the user_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the user_mining class.
+	 * Please use the getter and setter predefined in the user_mining class to fill the tables within this method.
 	 * @return A list of instances of the user table representing class.
 	 * **/
     abstract HashMap<Long, UserMining> generateUserMining();
@@ -894,8 +956,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the wiki_log table.
 	 * This table contains the actions which are done on wiki.
-	 * The attributes are discribed in the dokumantation of the wiki_log_mining class.
-	 * Please use the getter and setter predifined in the wiki_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the wiki_log_mining class.
+	 * Please use the getter and setter predefined in the wiki_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the wiki_log table representing class.
 	 * **/
     abstract HashMap<Long, WikiLogMining> generateWikiLogMining(); 
@@ -903,8 +965,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the wiki table.
 	 * This table describes the wiki in the LMS.
-	 * The attributes are discribed in the dokumantation of the wiki_mining class.
-	 * Please use the getter and setter predifined in the wiki_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the wiki_mining class.
+	 * Please use the getter and setter predefined in the wiki_mining class to fill the tables within this method.
 	 * @return A list of instances of the wiki table representing class.
 	 * **/
 	abstract HashMap<Long, WikiMining> generateWikiMining();
@@ -912,8 +974,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the role table.
 	 * This table describes the roles of users in the LMS.
-	 * The attributes are discribed in the dokumantation of the role_mining class.
-	 * Please use the getter and setter predifined in the role_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the role_mining class.
+	 * Please use the getter and setter predefined in the role_mining class to fill the tables within this method.
 	 * @return A list of instances of the role table representing class.
 	 * **/
 	abstract HashMap<Long, RoleMining> generateRoleMining();

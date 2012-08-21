@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
 
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.AssignmentMining;
@@ -161,7 +162,7 @@ public abstract class ExtractAndMap{
 //	@SuppressWarnings("unchecked")
 	/** A list of objects used for submitting them to the DB. */
 	static List<Collection<?>> updates;
-	/** A list of timestamps of the previous runs of the extractor. */	
+	/** A list of time stamps of the previous runs of the extractor. */	
 	static List<Timestamp> config_mining_timestamp;
 //output helper
 //	static String msg;
@@ -174,23 +175,33 @@ public abstract class ExtractAndMap{
 	/**Database-handler**/
 	static IDBHandler dbHandler;
 	
-	/** value of the highest user-id in the dataset. Used for creating new numeric ids **/
+	/** value of the highest user-id in the data set. Used for creating new numeric ids **/
 	static long largestId;
 	
 	/**Logger **/
 	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
 	
 	Clock c;
+	
+	static Long resourceLogMax;
+	static Long chatLogMax;
+	static Long assignmentLogMax;
+	static Long courseLogMax;
+	static Long forumLogMax;
+	static Long questionLogMax;
+	static Long quizLogMax;
+	static Long scormLogMax;
+	static Long wikiLogMax;
 
 	/** Session object for the mining DB access. */
 	//static Session mining_session;
 	
 /**
  * Starts the extraction process by calling getLMS_tables() and saveMining_tables(). 
- * A timestamp can be given as optional argument. 
- * When the argument is used the extraction begins after that timestamp. 
- * When no argument is given the program starts with the timestamp of the last run.
- * @param args Optional arguments for the process. Used for the selection of the ExtractAndMap Implementation and timestamp when the extraction should start.
+ * A time stamp can be given as optional argument. 
+ * When the argument is used the extraction begins after that time stamp. 
+ * When no argument is given the program starts with the time stamp of the last run.
+ * @param args Optional arguments for the process. Used for the selection of the ExtractAndMap Implementation and time stamp when the extraction should start.
  * **/	
 	public void start(String[] args, DBConfigObject sourceDBConf) {
 		
@@ -274,9 +285,9 @@ public abstract class ExtractAndMap{
 	/**
 	 * Reads the Mining Database.
 	 * Initial informations needed to start the process of updating are collected here.
-	 * The Timestamp of the last run of the extractor is read from the config table
+	 * The time stamp of the last run of the extractor is read from the config table
 	 * and the objects which might been needed to associate are read and saved here.
-	 * @return The timestamp of the last run of the extractor. If this is the first run it will be set 0.
+	 * @return The time stamp of the last run of the extractor. If this is the first run it will be set 0.
 	 * **/		
 	@SuppressWarnings("unchecked")
 	static public long getMiningInitial(){
@@ -287,8 +298,8 @@ public abstract class ExtractAndMap{
 		
 		config_mining_timestamp = (List<Timestamp>) dbHandler.getSession().createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
 		
-		List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.SQL, "select largestId from ConfigMining x order by x.id asc"));
-		if(l != null && l.size() > 0)
+		List<Long> l = (List<Long>) (dbHandler.performQuery(EQueryType.HQL, "select max(largestId) from ConfigMining x"));
+		if(l != null && l.get(0) != null)
 			largestId = l.get(l.size()-1);
 		else
 			largestId = 0;
@@ -301,6 +312,52 @@ public abstract class ExtractAndMap{
 	
 		
 //load objects which are already in Mining DB for associations
+		
+		Query logCount = dbHandler.getSession().createQuery("select max(log.id) from ResourceLogMining log");
+        resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(resourceLogMax == null)
+        	resourceLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from ChatLogMining log");
+        chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(chatLogMax == null)
+        	chatLogMax = 0L;
+        
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from AssignmentLogMining log");
+        assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(assignmentLogMax == null)
+        	assignmentLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from CourseLogMining log");
+        courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(courseLogMax == null)
+        	courseLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from ForumLogMining log");
+        forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(forumLogMax == null)
+        	forumLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from QuestionLogMining log");
+        questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(questionLogMax == null)
+        	questionLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from QuizLogMining log");
+        quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(quizLogMax == null)
+        	quizLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from ScormLogMining log");
+        scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(scormLogMax == null)
+        	scormLogMax = 0L;
+        
+        logCount = dbHandler.getSession().createQuery("select max(log.id) from WikiLogMining log");
+        wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+        if(wikiLogMax == null)
+        	wikiLogMax = 0L;
 		
 		List<?> t;
 		t = dbHandler.performQuery(EQueryType.HQL, "from CourseMining x order by x.id asc");//mining_session.createQuery("from CourseMining x order by x.id asc").list();
@@ -403,16 +460,16 @@ public abstract class ExtractAndMap{
 	
 	/**
 	 * Has to read the LMS Database.
-	 * It starts reading elements with timestamp readingtimestamp and higher.
+	 * It starts reading elements with time stamp readingtimestamp and higher.
 	 * It is supposed to be used for frequently and small updates.
 	 * For a greater Mass of Data it is suggested to use getLMS_tables(long, long);
 	 * If Hibernate is used to access the LMS DB too,
 	 * it is suggested to write the found tables into lists of
-	 * hibernate object model classes, which have to
+	 * Hibernate object model classes, which have to
 	 * be created as global variables in this class.
 	 * So they can be used in the generate methods of this class.
 	 *
-	 * @param readingfromtimestamp Only elements with timestamp readingtimestamp and higher are read here.
+	 * @param readingfromtimestamp Only elements with time stamp readingtimestamp and higher are read here.
 	 * *
 	 * @return the lM stables
 	 */
@@ -420,17 +477,17 @@ public abstract class ExtractAndMap{
 	
 	/**
 	 * Has to read the LMS Database.
-	 * It reads elements with timestamp between readingfromtimestamp and readingtotimestamp.
+	 * It reads elements with time stamp between readingfromtimestamp and readingtotimestamp.
 	 * This method is used to read great DB in a step by step procedure.
-	 * That is necessary for a great mass of Data when handeling an existing DB for example.
+	 * That is necessary for a great mass of Data when handling an existing DB for example.
 	 * If Hibernate is used to access the LMS DB too,
 	 * it is suggested to write the found tables into lists of
-	 * hibernate object model classes, which have to
+	 * Hibernate object model classes, which have to
 	 * be created as global variables in this class.
 	 * So they can be used in the generate methods of this class.
 	 *
-	 * @param readingfromtimestamp Only elements with timestamp readingfromtimestamp and higher are read here.
-	 * @param readingtotimestamp Only elements with timestamp readingtotimestamp and lower are read here.
+	 * @param readingfromtimestamp Only elements with time stamp readingfromtimestamp and higher are read here.
+	 * @param readingtotimestamp Only elements with time stamp readingtotimestamp and lower are read here.
 	 * *
 	 * @return the lM stables
 	 */
@@ -486,7 +543,7 @@ public abstract class ExtractAndMap{
 	
 	/**
 	 * Generates and save the new tables for the mining DB.
-	 * We call the genereate-methods for each mining table to get the new entries.
+	 * We call the generate-methods for each mining table to get the new entries.
 	 * At last we create a Transaction and save the new entries to the DB.
 	 * **/		
 	public void saveMiningTables() {
@@ -499,126 +556,119 @@ public abstract class ExtractAndMap{
 		if(user_mining == null){
 			
 			c.reset();
-			course_mining = generateCourseMining();
-			System.out.println("Generated " + course_mining.size() + " CourseMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(course_mining.values());
-			quiz_mining = generateQuizMining();
-			System.out.println("Generated " + quiz_mining.size() + " QuizMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(quiz_mining.values());
+			System.out.println("\nObject tables:\n");
+			
+
 			assignment_mining = generateAssignmentMining();
 			System.out.println("Generated " + assignment_mining.size() + " AssignmentMining entries in "+ c.getAndReset() +" s. ");
 			updates.add(assignment_mining.values());
-			scorm_mining = generateScormMining();
-			System.out.println("Generated " + scorm_mining.size() + " ScormMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(scorm_mining.values());
-			forum_mining = generateForumMining();
-			System.out.println("Generated " + forum_mining.size() + " ForumMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(forum_mining.values());
-			resource_mining = generateResourceMining();
-			System.out.println("Generated " + resource_mining.size() + " ResourceMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(resource_mining.values());
-			user_mining = generateUserMining();
-			System.out.println("Generated " + user_mining.size() + " UserMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(user_mining.values());
-			wiki_mining = generateWikiMining();
-			System.out.println("Generated " + wiki_mining.size() + " WikiMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(wiki_mining.values());
-			group_mining = generateGroupMining();
-			System.out.println("Generated " + group_mining.size() + " GroupMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(group_mining.values());
-			question_mining = generateQuestionMining();
-			System.out.println("Generated " + question_mining.size() + " QuestionMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(question_mining.values());
-			role_mining = generateRoleMining();
-			System.out.println("Generated " + role_mining.size() + " RoleMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(role_mining.values());
-			department_mining = generateDepartmentMining();
-			System.out.println("Generated " + department_mining.size() + " DepartmentMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(department_mining.values());
+			
+			//Screwing up the alphabetical order, CourseMinings have to be calculated BEFORE ChatMinings due to the temporal foreign key "course" in ChatMining
+			course_mining = generateCourseMining();
+			System.out.println("Generated " + course_mining.size() + " CourseMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(course_mining.values());
+			
+			chat_mining = generateChatMining();
+			updates.add(chat_mining.values());
+			System.out.println("Generated " + chat_mining.size() + " ChatMining entries in "+ c.getAndReset() +" s. ");
+			
 			degree_mining = generateDegreeMining();
 			System.out.println("Generated " + degree_mining.size() + " DegreeMining entries in "+ c.getAndReset() +" s. ");
 			updates.add(degree_mining.values());
-			chat_mining = generateChatMining();
-			System.out.println("Generated " + chat_mining.size() + " ChatMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(chat_mining.values());
 			
-			updates.add(generateQuizQuestionMining().values());
-			System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuizQuestionMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(generateCourseQuizMining().values());
-			System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseQuizMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(generateCourseAssignmentMining().values());
-			System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseAssignmentMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(generateCourseScormMining().values());
-			System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseScormMining entries in "+ c.getAndReset() +" s. ");
+			department_mining = generateDepartmentMining();
+			System.out.println("Generated " + department_mining.size() + " DepartmentMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(department_mining.values());
+			
+			forum_mining = generateForumMining();
+			System.out.println("Generated " + forum_mining.size() + " ForumMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(forum_mining.values());
+			
+			group_mining = generateGroupMining();
+			System.out.println("Generated " + group_mining.size() + " GroupMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(group_mining.values());
+			
+			question_mining = generateQuestionMining();
+			System.out.println("Generated " + question_mining.size() + " QuestionMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(question_mining.values());
+			
+			quiz_mining = generateQuizMining();
+			updates.add(quiz_mining.values());
+			System.out.println("Generated " + quiz_mining.size() + " QuizMining entries in "+ c.getAndReset() +" s. ");
+
+			resource_mining = generateResourceMining();
+			System.out.println("Generated " + resource_mining.size() + " ResourceMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(resource_mining.values());
+
+			role_mining = generateRoleMining();
+			System.out.println("Generated " + role_mining.size() + " RoleMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(role_mining.values());
+			
+			scorm_mining = generateScormMining();
+			System.out.println("Generated " + scorm_mining.size() + " ScormMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(scorm_mining.values());
+			
+			
+			user_mining = generateUserMining();
+			System.out.println("Generated " + user_mining.size() + " UserMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(user_mining.values());
+			
+			wiki_mining = generateWikiMining();
+			System.out.println("Generated " + wiki_mining.size() + " WikiMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(wiki_mining.values());
+			
 		}		
-		updates.add(generateCourseUserMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseUserMining entries in "+ c.getAndReset() +" s. ");
+		System.out.println("\nAssociation tables:\n");
+		
+		updates.add(generateCourseAssignmentMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseAssignmentMining entries in "+ c.getAndReset() +" s. ");
 		updates.add(generateCourseForumMining().values());
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseForumMining entries in "+ c.getAndReset() +" s. ");
 		updates.add(generateCourseGroupMining().values());
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseGroupMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateCourseQuizMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseQuizMining entries in "+ c.getAndReset() +" s. ");
 		updates.add(generateCourseResourceMining().values());
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseResourceMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateAssignmentLogMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " AssignmentLogMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateCourseLogMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseLogMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateCourseScormMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseScormMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateCourseUserMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseUserMining entries in "+ c.getAndReset() +" s. ");
 		updates.add(generateCourseWikiMining().values());
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseWikiMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateForumLogMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " ForumLogMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateGroupUserMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " GroupUserMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateQuizLogMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuizLogMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateQuestionLogMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuestionLogMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateScormLogMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " ScormLogMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateQuizUserMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuizUserMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateResourceLogMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " ResourceLogMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateWikiLogMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " WikiLogMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateChatLogMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " chatLogMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateDepartmentDegreeMining().values());
-		System.out.println("Generated " + updates.get(updates.size()-1).size() + " DepartmentDegreeMining entries in "+ c.getAndReset() +" s. ");
 		updates.add(generateDegreeCourseMining().values());
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " DegreeCourseMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateDepartmentDegreeMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " DepartmentDegreeMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateGroupUserMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " GroupUserMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateQuizQuestionMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuizQuestionMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateQuizUserMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuizUserMining entries in "+ c.getAndReset() +" s. ");
+	
+		System.out.println("\nLog tables:\n");
 		
-
-		//mining_session.clear();
-		//transaction for saving		
-		//Transaction tx = dbHandler.getSession().beginTransaction();
+		updates.add(generateAssignmentLogMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " AssignmentLogMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateChatLogMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " chatLogMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateCourseLogMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseLogMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateForumLogMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " ForumLogMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateQuestionLogMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuestionLogMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateQuizLogMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuizLogMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateResourceLogMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " ResourceLogMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateScormLogMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " ScormLogMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateWikiLogMining().values());
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " WikiLogMining entries in "+ c.getAndReset() +" s. ");
 		
 		dbHandler.saveCollectionToDB(updates);
-		
-		/*
-		int i= new Integer(0);
-		//save in the session
-	    for ( Iterator<List<?>> iter = updates.iterator(); iter.hasNext();) 
-	    {
-	    	List<?> l = iter.next();
-	    	for ( Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
-	    		Object o = iter2.next();
-	    		dbHandler.getSession().saveOrUpdate(o);
-	    		i++;
-	    		
-	    	    if ( i % 60 == 0 ) {
-	    	        //flush a batch of inserts and release memory:
-	    	    	dbHandler.getSession().flush();
-	    	    	dbHandler.getSession().clear();
-	    	    }
-	    	}
-	    }	    
-	    //hibernate session finish and close
-	    tx.commit();
-	    dbHandler.getSession().clear();
-	    */
-	    
-	    
 	    
 	    clearLMStables();
 		updates.clear();
@@ -628,9 +678,9 @@ public abstract class ExtractAndMap{
 //methods for create and fill the mining-table instances
 	/**
 	 * Has to create and fill the course_user table.
-	 * This table describes which user is enrolled in which course in which timesspan.
-	 * The attributes are discribed in the dokumantation of the course_user_mining class.
-	 * Please use the getter and setter predifined in the course_user_mining class to fill the tables within this method.
+	 * This table describes which user is enrolled in which course in which time span.
+	 * The attributes are described in the documentation of the course_user_mining class.
+	 * Please use the getter and setter predefined in the course_user_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_user table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseUserMining> generateCourseUserMining();
@@ -638,8 +688,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_forum table.
 	 * This table describes which forum is used in which course.
-	 * The attributes are discribed in the dokumantation of the course_forum_mining class.
-	 * Please use the getter and setter predifined in the course_forum_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_forum_mining class.
+	 * Please use the getter and setter predefined in the course_forum_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_forum table representing class.
 	 * **/	  
     abstract HashMap<Long, CourseForumMining> generateCourseForumMining();
@@ -647,8 +697,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course table.
 	 * This table describes the courses in the LMS.
-	 * The attributes are discribed in the dokumantation of the course_mining class.
-	 * Please use the getter and setter predifined in the course_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_mining class.
+	 * Please use the getter and setter predefined in the course_mining class to fill the tables within this method.
 	 * @return A list of instances of the course table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseMining> generateCourseMining();    
@@ -656,8 +706,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_group table.
 	 * This table describes which groups are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_group_mining class.
-	 * Please use the getter and setter predifined in the course_group_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_group_mining class.
+	 * Please use the getter and setter predefined in the course_group_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_group table representing class.
 	 * **/	    
 	abstract HashMap<Long, CourseGroupMining> generateCourseGroupMining();
@@ -665,8 +715,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_quiz table.
 	 * This table describes which quiz are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_quiz_mining class.
-	 * Please use the getter and setter predifined in the course_quiz_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_quiz_mining class.
+	 * Please use the getter and setter predefined in the course_quiz_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_quiz table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseQuizMining> generateCourseQuizMining();
@@ -674,8 +724,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_assignment table.
 	 * This table describes which assignment are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_assignment_mining class.
-	 * Please use the getter and setter predifined in the course_assignment_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_assignment_mining class.
+	 * Please use the getter and setter predefined in the course_assignment_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_assignment table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseAssignmentMining> generateCourseAssignmentMining();
@@ -683,8 +733,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_scorm table.
 	 * This table describes which scorm packages are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_scorm_mining class.
-	 * Please use the getter and setter predifined in the course_scorm_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_scorm_mining class.
+	 * Please use the getter and setter predefined in the course_scorm_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_scorm table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseScormMining> generateCourseScormMining();
@@ -692,8 +742,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_resource table.
 	 * This table describes which resources are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_resource_mining class.
-	 * Please use the getter and setter predifined in the course_resource_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_resource_mining class.
+	 * Please use the getter and setter predefined in the course_resource_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_resource table representing class.
 	 * **/	     
     abstract HashMap<Long, CourseResourceMining> generateCourseResourceMining();
@@ -701,8 +751,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_log table.
 	 * This table contains the actions which are done on courses.
-	 * The attributes are discribed in the dokumantation of the course_log_mining class.
-	 * Please use the getter and setter predifined in the course_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_log_mining class.
+	 * Please use the getter and setter predefined in the course_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_log table representing class.
 	 * **/	    
     abstract HashMap<Long, CourseLogMining> generateCourseLogMining();
@@ -710,8 +760,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the course_wiki table.
 	 * This table describes which wikis are used in which courses.
-	 * The attributes are discribed in the dokumantation of the course_wiki_mining class.
-	 * Please use the getter and setter predifined in the course_wiki_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the course_wiki_mining class.
+	 * Please use the getter and setter predefined in the course_wiki_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_wiki table representing class.
 	 * **/	     
     abstract HashMap<Long, CourseWikiMining> generateCourseWikiMining();
@@ -719,8 +769,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the forum_log table.
 	 * This table contains the actions which are done on forums.
-	 * The attributes are discribed in the dokumantation of the forum_log_mining class.
-	 * Please use the getter and setter predifined in the forum_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the forum_log_mining class.
+	 * Please use the getter and setter predefined in the forum_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the forum_log table representing class.
 	 * **/    
     abstract HashMap<Long, ForumLogMining> generateForumLogMining(); 
@@ -728,8 +778,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the forum table.
 	 * This table describes the forums in the LMS.
-	 * The attributes are discribed in the dokumantation of the forum_mining class.
-	 * Please use the getter and setter predifined in the forum_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the forum_mining class.
+	 * Please use the getter and setter predefined in the forum_mining class to fill the tables within this method.
 	 * @return A list of instances of the forum table representing class.
 	 * **/	    
     abstract HashMap<Long, ForumMining> generateForumMining();
@@ -737,8 +787,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the group_user table.
 	 * This table describes which user are in which groups.
-	 * The attributes are discribed in the dokumantation of the group_user_mining class.
-	 * Please use the getter and setter predifined in the group_user_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the group_user_mining class.
+	 * Please use the getter and setter predefined in the group_user_mining class to fill the tables within this method.
 	 * @return A list of instances of the group_user table representing class.
 	 * **/	    
 	abstract HashMap<Long, GroupUserMining> generateGroupUserMining();
@@ -746,8 +796,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the group table.
 	 * This table describes the groups in the LMS.
-	 * The attributes are discribed in the dokumantation of the group_mining class.
-	 * Please use the getter and setter predifined in the group_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the group_mining class.
+	 * Please use the getter and setter predefined in the group_mining class to fill the tables within this method.
 	 * @return A list of instances of the group table representing class.
 	 * **/		
     abstract HashMap<Long, GroupMining> generateGroupMining();
@@ -755,8 +805,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the question_log table.
 	 * This table contains the actions which are done on questions.
-	 * The attributes are discribed in the dokumantation of the question_log_mining class.
-	 * Please use the getter and setter predifined in the question_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the question_log_mining class.
+	 * Please use the getter and setter predefined in the question_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the question_log table representing class.
 	 * **/     
     abstract HashMap<Long, QuestionLogMining> generateQuestionLogMining();
@@ -764,8 +814,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the quiz_log table.
 	 * This table contains the actions which are done on quiz.
-	 * The attributes are discribed in the dokumantation of the quiz_log_mining class.
-	 * Please use the getter and setter predifined in the quiz_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the quiz_log_mining class.
+	 * Please use the getter and setter predefined in the quiz_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz_log table representing class.
 	 * **/     
     abstract HashMap<Long, QuizLogMining> generateQuizLogMining();
@@ -773,8 +823,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the assignment_log table.
 	 * This table contains the actions which are done on assignment.
-	 * The attributes are discribed in the dokumantation of the assignment_log_mining class.
-	 * Please use the getter and setter predifined in the assignment_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the assignment_log_mining class.
+	 * Please use the getter and setter predefined in the assignment_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the assignment_log table representing class.
 	 * **/     
     abstract HashMap<Long, AssignmentLogMining> generateAssignmentLogMining();
@@ -782,8 +832,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the scorm_log table.
 	 * This table contains the actions which are done on scorm.
-	 * The attributes are discribed in the dokumantation of the scorm_log_mining class.
-	 * Please use the getter and setter predifined in the scorm_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the scorm_log_mining class.
+	 * Please use the getter and setter predefined in the scorm_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the scorm_log table representing class.
 	 * **/     
     abstract HashMap<Long, ScormLogMining> generateScormLogMining();
@@ -791,8 +841,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the quiz_user table.
 	 * This table describes which user gets which grade in which quiz.
-	 * The attributes are discribed in the dokumantation of the quiz_user_mining class.
-	 * Please use the getter and setter predifined in the quiz_user_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the quiz_user_mining class.
+	 * Please use the getter and setter predefined in the quiz_user_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz_user table representing class.
 	 * **/	 
     abstract HashMap<Long, QuizUserMining> generateQuizUserMining();
@@ -800,8 +850,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the quiz table.
 	 * This table describes the quiz in the LMS.
-	 * The attributes are discribed in the dokumantation of the quiz_mining class.
-	 * Please use the getter and setter predifined in the quiz_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the quiz_mining class.
+	 * Please use the getter and setter predefined in the quiz_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz table representing class.
 	 * **/    
     abstract HashMap<Long, QuizMining> generateQuizMining();
@@ -809,8 +859,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the assignment table.
 	 * This table describes the assignment in the LMS.
-	 * The attributes are discribed in the dokumantation of the assignment_mining class.
-	 * Please use the getter and setter predifined in the assignment_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the assignment_mining class.
+	 * Please use the getter and setter predefined in the assignment_mining class to fill the tables within this method.
 	 * @return A list of instances of the assignment table representing class.
 	 * **/    
     abstract HashMap<Long, AssignmentMining> generateAssignmentMining();
@@ -818,8 +868,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the scorm table.
 	 * This table describes the scorm packages in the LMS.
-	 * The attributes are discribed in the dokumantation of the scorm_mining class.
-	 * Please use the getter and setter predifined in the scorm_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the scorm_mining class.
+	 * Please use the getter and setter predefined in the scorm_mining class to fill the tables within this method.
 	 * @return A list of instances of the scorm table representing class.
 	 * **/    
     abstract HashMap<Long, ScormMining> generateScormMining();
@@ -827,8 +877,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the quiz_question table.
 	 * This table describes which question is used in which quiz.
-	 * The attributes are discribed in the dokumantation of the quiz_question_mining class.
-	 * Please use the getter and setter predifined in the quiz_question_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the quiz_question_mining class.
+	 * Please use the getter and setter predefined in the quiz_question_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz_question table representing class.
 	 * **/    
     abstract HashMap<Long, QuizQuestionMining> generateQuizQuestionMining(); 
@@ -836,8 +886,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the question table.
 	 * This table describes the question in the LMS.
-	 * The attributes are discribed in the dokumantation of the question_mining class.
-	 * Please use the getter and setter predifined in the question_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the question_mining class.
+	 * Please use the getter and setter predefined in the question_mining class to fill the tables within this method.
 	 * @return A list of instances of the question table representing class.
 	 * **/     
     abstract HashMap<Long, QuestionMining> generateQuestionMining();
@@ -845,8 +895,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the resource table.
 	 * This table describes the resource in the LMS.
-	 * The attributes are discribed in the dokumantation of the resource_mining class.
-	 * Please use the getter and setter predifined in the resource_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the resource_mining class.
+	 * Please use the getter and setter predefined in the resource_mining class to fill the tables within this method.
 	 * @return A list of instances of the resource table representing class.
 	 * **/    
     abstract HashMap<Long, ResourceMining> generateResourceMining();
@@ -854,8 +904,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the resource_log table.
 	 * This table contains the actions which are done on resource.
-	 * The attributes are discribed in the dokumentation of the resource_log_mining class.
-	 * Please use the getter and setter predifined in the resource_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the resource_log_mining class.
+	 * Please use the getter and setter predefined in the resource_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the resource_log table representing class.
 	 * **/
     abstract HashMap<Long, ResourceLogMining> generateResourceLogMining();
@@ -863,8 +913,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the user table.
 	 * This table describes the user in the LMS.
-	 * The attributes are discribed in the dokumantation of the user_mining class.
-	 * Please use the getter and setter predifined in the user_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the user_mining class.
+	 * Please use the getter and setter predefined in the user_mining class to fill the tables within this method.
 	 * @return A list of instances of the user table representing class.
 	 * **/
     abstract HashMap<Long, UserMining> generateUserMining();
@@ -872,8 +922,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the wiki_log table.
 	 * This table contains the actions which are done on wiki.
-	 * The attributes are discribed in the dokumantation of the wiki_log_mining class.
-	 * Please use the getter and setter predifined in the wiki_log_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the wiki_log_mining class.
+	 * Please use the getter and setter predefined in the wiki_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the wiki_log table representing class.
 	 * **/
     abstract HashMap<Long, WikiLogMining> generateWikiLogMining(); 
@@ -881,8 +931,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the wiki table.
 	 * This table describes the wiki in the LMS.
-	 * The attributes are discribed in the dokumantation of the wiki_mining class.
-	 * Please use the getter and setter predifined in the wiki_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the wiki_mining class.
+	 * Please use the getter and setter predefined in the wiki_mining class to fill the tables within this method.
 	 * @return A list of instances of the wiki table representing class.
 	 * **/
 	abstract HashMap<Long, WikiMining> generateWikiMining();
@@ -890,8 +940,8 @@ public abstract class ExtractAndMap{
 	/**
 	 * Has to create and fill the role table.
 	 * This table describes the roles of users in the LMS.
-	 * The attributes are discribed in the dokumantation of the role_mining class.
-	 * Please use the getter and setter predifined in the role_mining class to fill the tables within this method.
+	 * The attributes are described in the documentation of the role_mining class.
+	 * Please use the getter and setter predefined in the role_mining class to fill the tables within this method.
 	 * @return A list of instances of the role table representing class.
 	 * **/
 	abstract HashMap<Long, RoleMining> generateRoleMining();

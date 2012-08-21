@@ -110,6 +110,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	
 	/**Logger**/
 	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
+
 	
 	@SuppressWarnings("unchecked")	
 	public void getLMStables(DBConfigObject dbConf, long readingfromtimestamp) {
@@ -122,6 +123,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	        //Just for testing. has to be set to Long.MaxValue if not longer needed.
 	        long ceiling = Long.MAX_VALUE;
 	        //reading the LMS Database, create tables as lists of instances of the DB-table classes
+	        
 	        
 
 	        Query log = session.createQuery("from Log_LMS x where x.time>=:readingtimestamp and x.time<=:ceiling order by x.id asc");
@@ -439,6 +441,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	
 //methods for create and fill the mining-table instances
     
+	
+	/**
+	 * Creates all CourseUserMining objects using the tables "context" and "role_assignments" from Moodle's database.
+	 * 
+	 * @return	A HashMap of CourseUserMining objects, using the object's id as the key and the object itself as the value
+	 */
     public HashMap<Long, CourseUserMining> generateCourseUserMining(){
     	
     	HashMap<Long, CourseUserMining> course_user_mining = new HashMap<Long, CourseUserMining>();
@@ -468,7 +476,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return course_user_mining;
     }
     
-    
+	/**
+	 * Creates all CourseForumMining objects using the tables "forum" from Moodle's database.
+	 * 
+	 * @return	A HashMap of CourseForumMining objects, using the object's id as the key and the object itself as the value
+	 */
     public HashMap<Long, CourseForumMining> generateCourseForumMining(){
     	
     	HashMap<Long, CourseForumMining> course_forum_mining = new HashMap<Long, CourseForumMining>();
@@ -489,6 +501,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     }
     
     
+	/**
+	 * Creates all CourseMining objects using the tables "course" from Moodle's database.
+	 * 
+	 * @return	A HashMap of CourseMining objects, using the object's id as the key and the object itself as the value
+	 */
     public HashMap<Long, CourseMining> generateCourseMining() {
     	
     	HashMap<Long, CourseMining> course_mining = new HashMap<Long, CourseMining>();
@@ -510,7 +527,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return course_mining;
     }    
     
-    
+	/**
+	 * Creates all CourseGroupMining objects using the tables "group" from Moodle's database.
+	 * 
+	 * @return	A HashMap of CourseGroupMining objects, using the object's id as the key and the object itself as the value
+	 */
 	public HashMap<Long, CourseGroupMining> generateCourseGroupMining(){
     	
 		HashMap<Long, CourseGroupMining> course_group_mining = new HashMap<Long, CourseGroupMining>();
@@ -531,6 +552,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     }
     
     
+	/**
+	 * Creates all CourseQuizMining objects using the tables "quiz" from Moodle's database.
+	 * 
+	 * @return	A HashMap of CourseQuizMining objects, using the object's id as the key and the object itself as the value
+	 */
     public HashMap<Long, CourseQuizMining> generateCourseQuizMining(){
     	
     	HashMap<Long, CourseQuizMining> course_quiz_mining = new HashMap<Long, CourseQuizMining>();
@@ -553,6 +579,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return course_quiz_mining;
     }
 
+	/**
+	 * Creates all CourseAssignmentMining objects using the tables "assignment" from Moodle's database.
+	 * 
+	 * @return	A HashMap of CourseAssignmentMining objects, using the object's id as the key and the object itself as the value
+	 */
    public HashMap<Long, CourseAssignmentMining> generateCourseAssignmentMining(){
     	
 	   HashMap<Long, CourseAssignmentMining> course_assignment_mining = new HashMap<Long, CourseAssignmentMining>();
@@ -577,6 +608,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return course_assignment_mining;
     }
    
+	/**
+	 * Creates all CourseScormMining objects using the tables "scorm" from Moodle's database.
+	 * 
+	 * @return	A HashMap of CourseScormMining objects, using the object's id as the key and the object itself as the value
+	 */
    public HashMap<Long, CourseScormMining> generateCourseScormMining(){
    	
 	   	HashMap<Long, CourseScormMining> course_scorm_mining = new HashMap<Long, CourseScormMining>();   	    	
@@ -599,6 +635,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			return course_scorm_mining;
    }
     
+   
+	/**
+	 * Creates all CourseResourceMining objects using the tables "resource" from Moodle's database.
+	 * 
+	 * @return	A HashMap of CourseResourceMining objects, using the object's id as the key and the object itself as the value
+	 */
     public HashMap<Long, CourseResourceMining> generateCourseResourceMining(){
     	
     	HashMap<Long, CourseResourceMining> course_resource_mining = new HashMap<Long, CourseResourceMining>();
@@ -619,8 +661,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     }
     
     
+
+	/**
+	 * Creates all CourseLogMining objects using the tables "log" from Moodle's database.
+	 * 
+	 * @return	A HashMap of CourseLogMining objects, using the object's id as the key and the object itself as the value
+	 */
     public HashMap<Long, CourseLogMining> generateCourseLogMining(){
-    	HashMap<Long, CourseLogMining> course_log_mining = new HashMap<Long, CourseLogMining>();
+    	HashMap<Long, CourseLogMining> courseLogMining = new HashMap<Long, CourseLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	
     	for (Log_LMS loadedItem : log_lms) 
@@ -649,7 +697,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		
     		if(loadedItem.getModule().equals("course")){    		
     			CourseLogMining insert = new CourseLogMining();
-    			insert.setId(loadedItem.getId());
+    			insert.setId(courseLogMining.size() + 1 + courseLogMax);
     			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
     			
     			insert.setUser(loadedItem.getUserid(), user_mining, old_user_mining);
@@ -659,12 +707,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
     			if(insert.getUser() != null && insert.getCourse() != null)
-    				course_log_mining.put(insert.getId(), insert);
+    				courseLogMining.put(insert.getId(), insert);
     			
     		}
         }
     	
-    	for( CourseLogMining r : course_log_mining.values())
+    	for( CourseLogMining r : courseLogMining.values())
         {
         	if(r.getUser() != null)
         	{	
@@ -682,10 +730,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         	}
         }
     	
-		return course_log_mining;
+		return courseLogMining;
     }
     
     
+	/**
+	 * Creates all CourseWikiMining objects using the tables "wiki" from Moodle's database.
+	 * 
+	 * @return	A HashMap of CourseWikiMining objects, using the object's id as the key and the object itself as the value
+	 */
     public HashMap<Long, CourseWikiMining> generateCourseWikiMining(){
     	
     	HashMap<Long, CourseWikiMining> course_wiki_mining = new HashMap<Long, CourseWikiMining>();
@@ -706,8 +759,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     }
 
     
+	/**
+	 * Creates all ForumLogMining objects using the tables "log","forum_discussions" and "forum_posts" from Moodle's database.
+	 * 
+	 * @return	A HashMap of ForumLogMining objects, using the object's id as the key and the object itself as the value
+	 */
     public HashMap<Long, ForumLogMining> generateForumLogMining() {
-    	HashMap<Long, ForumLogMining> forum_log_mining = new HashMap<Long, ForumLogMining>();
+    	HashMap<Long, ForumLogMining> forumLogMining = new HashMap<Long, ForumLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	    		
     	for ( Log_LMS loadedItem : log_lms) 
@@ -736,7 +794,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		
     		if(loadedItem.getModule().equals("forum")){
     			ForumLogMining insert = new ForumLogMining();
-    			insert.setId(loadedItem.getId());
+    			insert.setId(forumLogMining.size() + 1 + forumLogMax);
     			
     			insert.setUser(loadedItem.getUserid(), user_mining, old_user_mining);
     			if((loadedItem.getAction().equals("view forum") || loadedItem.getAction().equals("subscribe")) && loadedItem.getInfo().matches("[0-9]+")){
@@ -766,12 +824,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			}
     			insert.setTimestamp(loadedItem.getTime());
     			if(insert.getCourse() != null && insert.getForum() != null && insert.getUser() != null)
-    				forum_log_mining.put(insert.getId(), insert);
+    				forumLogMining.put(insert.getId(), insert);
     			
     		}
     	}
     	
-    	for( ForumLogMining r : forum_log_mining.values())
+    	for( ForumLogMining r : forumLogMining.values())
         {
         	if(r.getUser() != null)
         	{	
@@ -788,7 +846,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	        	r.setDuration(duration);
         	}
         }
-    	return forum_log_mining;    	
+    	return forumLogMining;    	
     } 
     
     
@@ -858,7 +916,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     
     
     public HashMap<Long, QuestionLogMining> generateQuestionLogMining(){
-    	HashMap<Long, QuestionLogMining> question_log_mining = new HashMap<Long, QuestionLogMining>();
+    	HashMap<Long, QuestionLogMining> questionLogMining = new HashMap<Long, QuestionLogMining>();
     	HashMap<Long, Long> timestampIdMap = new HashMap<Long,Long>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	    	
@@ -866,7 +924,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		QuestionLogMining insert = new QuestionLogMining();
     	
-    		insert.setId(loadedItem.getId()); //ID
+    		insert.setId(questionLogMining.size() + 1 + questionLogMax); //ID
+    		
 			insert.setQuestion(loadedItem.getQuestion(), question_mining, old_question_mining); //Question 
 			insert.setPenalty(loadedItem.getPenalty());	
 			insert.setAnswers(loadedItem.getAnswer());
@@ -938,7 +997,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			if(insert.getQuestion() != null && insert.getQuiz() != null)
 			{
 				timestampIdMap.put(insert.getTimestamp(), insert.getId());
-    			question_log_mining.put(insert.getId(), insert);
+    			questionLogMining.put(insert.getId(), insert);
 			}			
     	}	  
     	
@@ -968,14 +1027,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		
     		if(timestampIdMap.get(loadedItem.getTime()) != null && loadedItem.getModule().equals("quiz")){
     			long uid = loadedItem.getUserid();
-   				question_log_mining.get(timestampIdMap.get(loadedItem.getTime())).setUser(uid, user_mining, old_user_mining);
-   				question_log_mining.get(timestampIdMap.get(loadedItem.getTime())).setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
-    			if(question_log_mining.get(timestampIdMap.get(loadedItem.getTime())).getCourse() == null || question_log_mining.get(timestampIdMap.get(loadedItem.getTime())).getUser() == null)
-    				question_log_mining.remove(timestampIdMap.get(loadedItem.getTime()));
+   				questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).setUser(uid, user_mining, old_user_mining);
+   				questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
+    			if(questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).getCourse() == null || questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).getUser() == null)
+    				questionLogMining.remove(timestampIdMap.get(loadedItem.getTime()));
     		}	
 		}    	
     	
-    	for(QuestionLogMining r : question_log_mining.values())
+    	for(QuestionLogMining r : questionLogMining.values())
         {
     		if(r.getUser() != null)
         	{	
@@ -992,11 +1051,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	        	r.setDuration(duration);
         	}
         }
-		return question_log_mining;
+		return questionLogMining;
     }    
     
     public HashMap<Long, QuizLogMining> generateQuizLogMining(){
-    	HashMap<Long, QuizLogMining> quiz_log_mining = new HashMap<Long, QuizLogMining>();
+    	HashMap<Long, QuizLogMining> quizLogMining = new HashMap<Long, QuizLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	    	
     	for (Log_LMS loadedItem : log_lms) 
@@ -1026,7 +1085,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 //insert quiz in quiz_log
     		if(loadedItem.getModule().equals("quiz")){
     			QuizLogMining insert = new QuizLogMining();
-    		    insert.setId(loadedItem.getId());
+    		    insert.setId(quizLogMining.size() + 1 + quizLogMax);
     			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
     			
     			insert.setUser(loadedItem.getUserid(), user_mining, old_user_mining);
@@ -1054,12 +1113,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     				logger.info("In Quiz_log_mining(quiz), course not found for log: " + loadedItem.getId() + " and course: " + loadedItem.getCourse());
     			}
     			if(insert.getCourse() != null && insert.getQuiz() != null && insert.getUser() != null)
-    				quiz_log_mining.put(insert.getId(), insert);
+    				quizLogMining.put(insert.getId(), insert);
     			
     		}          	
        	}
     	
-    	for( QuizLogMining r : quiz_log_mining.values())
+    	for( QuizLogMining r : quizLogMining.values())
         {
         	if(r.getUser() != null)
         	{	
@@ -1076,12 +1135,18 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	        	r.setDuration(duration);
         	}
         }
-		return quiz_log_mining;
+		return quizLogMining;
     }
 
+    
+	/**
+	 * Creates all AssignmentLogMining objects using the tables "log" and "assignment_submissions" from Moodle's database.
+	 * 
+	 * @return	A HashMap of AssignmentLogMining, using the object's id as the key and the object itself as the value
+	 */
     public HashMap<Long, AssignmentLogMining> generateAssignmentLogMining(){
 	  
-    	HashMap<Long, AssignmentLogMining> assignment_log_mining = new HashMap<Long, AssignmentLogMining>();
+    	HashMap<Long, AssignmentLogMining> assignmentLogMining = new HashMap<Long, AssignmentLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	
     	for(Log_LMS loadedItem : log_lms) 
@@ -1111,7 +1176,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 //insert assignments in assignment_log
 		if(loadedItem.getModule().equals("assignment") && loadedItem.getInfo().matches("[0-9]++")){
 			AssignmentLogMining insert = new AssignmentLogMining();
-		    insert.setId(loadedItem.getId());
+		    
+			insert.setId(assignmentLogMining.size() + 1 + assignmentLogMax);
 			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
 			insert.setUser(loadedItem.getUserid(), user_mining, old_user_mining);
 			insert.setAction(loadedItem.getAction());
@@ -1142,7 +1208,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 				logger.info("In Assignment_log_mining, user not found for log: " + loadedItem.getId() +" and user: " + loadedItem.getUserid());
 			}    			
 			if(insert.getUser() != null && insert.getAssignment() != null && insert.getCourse() != null)
-				assignment_log_mining.put(insert.getId(), insert);
+				assignmentLogMining.put(insert.getId(), insert);
 		}
 		
     }
@@ -1205,7 +1271,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         */
     	
     	
-    	for( AssignmentLogMining r : assignment_log_mining.values())
+    	for( AssignmentLogMining r : assignmentLogMining.values())
         {
         	if(r.getUser() != null)
         	{	
@@ -1223,11 +1289,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         	}
         }
     	
-		return assignment_log_mining;
+		return assignmentLogMining;
     }
 
   public HashMap<Long, ScormLogMining> generateScormLogMining(){
-	  HashMap<Long, ScormLogMining> scorm_log_mining = new HashMap<Long, ScormLogMining>();
+	  HashMap<Long, ScormLogMining> scormLogMining = new HashMap<Long, ScormLogMining>();
 	  HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
   	    	
   	for (Log_LMS loadedItem : log_lms) 
@@ -1257,7 +1323,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 //insert scorm in scorm_log
   		if(loadedItem.getModule().equals("scorm")){
   			ScormLogMining insert = new ScormLogMining();
-  		    insert.setId(loadedItem.getId());
+  		    insert.setId(scormLogMining.size() + 1 + scormLogMax);
   			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
   			insert.setUser(loadedItem.getUserid(), user_mining, old_user_mining);
   			insert.setAction(loadedItem.getAction());
@@ -1266,7 +1332,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
   				insert.setScorm(Long.valueOf(loadedItem.getInfo()), scorm_mining, old_scorm_mining);
   			}
   			if(insert.getScorm() != null && insert.getCourse() != null && insert.getUser() != null)
-  				scorm_log_mining.put(insert.getId(), insert);
+  				scormLogMining.put(insert.getId(), insert);
   			if(insert.getScorm()==null){
   	    		logger.info("In Scorm_log_mining, scorm package not found for log: " + loadedItem.getId() + " and cmid: " + loadedItem.getCmid()+ " and info: " + loadedItem.getInfo());
   	    	}
@@ -1278,7 +1344,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
   			}     		
   		}
       }
-  	for( ScormLogMining r : scorm_log_mining.values())
+  	for( ScormLogMining r : scormLogMining.values())
     {
     	if(r.getUser() != null)
     	{	
@@ -1296,7 +1362,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	}
     }
   	
-		return scorm_log_mining;
+		return scormLogMining;
   }
   
     public HashMap<Long, QuizMining> generateQuizMining(){
@@ -1332,6 +1398,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return quiz_mining;    	
     }
  
+	/**
+	 * Creates all AssignmentMining objects using the tables "assignment" from Moodle's database.
+	 * 
+	 * @return	A HashMap of AssignmentMining, using the object's id as the key and the object itself as the value
+	 */
     public HashMap<Long, AssignmentMining> generateAssignmentMining(){
     	
     	HashMap<Long, AssignmentMining> assignment_mining = new HashMap<Long, AssignmentMining>();
@@ -1494,7 +1565,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     
     
     public HashMap<Long, ResourceLogMining> generateResourceLogMining() {
-    	HashMap<Long, ResourceLogMining> resource_log_mining = new HashMap<Long, ResourceLogMining>();
+    	HashMap<Long, ResourceLogMining> resourceLogMining = new HashMap<Long, ResourceLogMining>();
     	//A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her requests times.
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
         
@@ -1523,7 +1594,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
             
             if(loadedItem.getModule().equals("resource")){
             	ResourceLogMining insert = new ResourceLogMining();
-            	insert.setId(loadedItem.getId());
+            	insert.setId(resourceLogMining.size() + 1 + resourceLogMax);
             	insert.setUser(loadedItem.getUserid(), user_mining, old_user_mining);
             	insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
             	insert.setAction(loadedItem.getAction()); 
@@ -1538,12 +1609,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     				logger.info("In Resource_log_mining, resource not found for log: " + loadedItem.getId() + " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()+ " and action: " + loadedItem.getAction());
     			}
     			if(insert.getCourse() != null && insert.getResource() != null && insert.getUser() != null)
-    				resource_log_mining.put(insert.getId(), insert);
+    				resourceLogMining.put(insert.getId(), insert);
     			
             }
         }
         //For 
-        for( ResourceLogMining r : resource_log_mining.values())
+        for( ResourceLogMining r : resourceLogMining.values())
         {
         	if(r.getUser() != null)
         	{	
@@ -1560,7 +1631,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	        	r.setDuration(duration);
         	}
         }
-		return resource_log_mining;
+		return resourceLogMining;
     }
     
     
@@ -1584,7 +1655,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     
     
     public HashMap<Long, WikiLogMining> generateWikiLogMining(){
-    	HashMap<Long, WikiLogMining> wiki_log_mining = new HashMap<Long, WikiLogMining>();
+    	HashMap<Long, WikiLogMining> wikiLogMining = new HashMap<Long, WikiLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	
         for (Log_LMS loadedItem : log_lms) 
@@ -1613,7 +1684,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
             
     		if(loadedItem.getModule().equals("wiki")){
     			WikiLogMining insert = new WikiLogMining();
-    			insert.setId(loadedItem.getId());
+    			insert.setId(wikiLogMining.size() + 1 + wikiLogMax);
     			//Cannot tell, how to extract the correct wiki-id - so it'll always be null
     			insert.setWiki(loadedItem.getCmid(), wiki_mining, old_wiki_mining);
     			insert.setUser(loadedItem.getUserid(), user_mining, old_user_mining);    			
@@ -1622,11 +1693,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			insert.setTimestamp(loadedItem.getTime());
     			
     			if(insert.getUser() != null && insert.getCourse() != null && insert.getWiki() != null)
-    				wiki_log_mining.put(insert.getId(), insert);
+    				wikiLogMining.put(insert.getId(), insert);
     		}
         }
         
-        for( WikiLogMining r : wiki_log_mining.values())
+        for( WikiLogMining r : wikiLogMining.values())
         {
         	if(r.getUser() != null)
         	{	
@@ -1643,7 +1714,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	        	r.setDuration(duration);
         	}
         }
-    	return wiki_log_mining;
+    	return wikiLogMining;
     } 
     
     
@@ -1691,6 +1762,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return role_mining;
     }
 
+	
+	/**
+	 * Creates all DegreeMining objects using the tables "course_categories" from Moodle's database.
+	 * 
+	 * @return	A HashMap of DegreeMining objects, using the object's id as the key and the object itself as the value
+	 */
 	public HashMap<Long, DegreeMining> generateDegreeMining() {
 		HashMap<Long, DegreeMining> degree_mining = new HashMap<Long, DegreeMining>();
 		
@@ -1707,6 +1784,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return degree_mining;
 	}
 
+	/**
+	 * Creates all DepartmentMining objects using the tables "course_categories" from Moodle's database.
+	 * 
+	 * @return	A HashMap of DepartmentMining objects, using the object's id as the key and the object itself as the value
+	 */
 	public HashMap<Long, DepartmentMining> generateDepartmentMining() {
 		HashMap<Long, DepartmentMining> department_mining = new HashMap<Long, DepartmentMining>();
 		
@@ -1723,7 +1805,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return department_mining;
 	}
 
+	/**
+	 * Creates all DepartmentDegreeMining objects using the tables "course_categories" from Moodle's database.
+	 * 
+	 * @return	A HashMap of DepartmentDegreeMining objects, using the object's id as the key and the object itself as the value
+	 */
 	public HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining() {
+		
 		HashMap<Long, DepartmentDegreeMining> department_degree = new HashMap<Long, DepartmentDegreeMining>();
 		
 		for( CourseCategories_LMS loadedItem : course_categories_lms)
@@ -1731,7 +1819,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			if(loadedItem.getDepth() == 2)
 			{
 				String[] s = loadedItem.getPath().split("/");
-				if(s.length == 4)
+				if(s.length == 3)
 				{
 					DepartmentDegreeMining insert = new DepartmentDegreeMining();
 					insert.setId(loadedItem.getId());
@@ -1745,7 +1833,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return department_degree;
 	}
 
-	public HashMap<Long, DegreeCourseMining> generateDegreeCourseMining() {
+
+	/**
+	 * Creates all DegreeCourseMining objects using the table "context" from Moodle's database.
+	 * 
+	 * @return	A HashMap of DegreeCourseMinings, using the object's id as the key and the object itself as the value
+	 */
+	public HashMap<Long, DegreeCourseMining> generateDegreeCourseMining() 
+	{
 		
 		HashMap<Long, DegreeCourseMining> degree_course = new HashMap<Long, DegreeCourseMining>();
 		
@@ -1772,6 +1867,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return degree_course;
 	}
 
+	/**
+	 * Creates all ChatMining objects using the tables "chat" from Moodle's database.
+	 * 
+	 * @return	A HashMap of ChatMining, using the object's id as the key and the object itself as the value
+	 */
 	public HashMap<Long, ChatMining> generateChatMining() {
 		HashMap<Long, ChatMining> chat_mining = new HashMap<Long, ChatMining>();
 		
@@ -1792,15 +1892,19 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		return chat_mining;
 	}
 
-
+	/**
+	 * Creates all ChatLogMining objects using the tables "chat_log" from Moodle's database.
+	 * 
+	 * @return	A HashMap of ChatLogMining, using the object's id as the key and the object itself as the value
+	 */
 	public HashMap<Long, ChatLogMining> generateChatLogMining() {
-		HashMap<Long, ChatLogMining> chat_log_mining = new HashMap<Long, ChatLogMining>();
+		HashMap<Long, ChatLogMining> chatLogMining = new HashMap<Long, ChatLogMining>();
     	
         for ( ChatLog_LMS loadedItem : chat_log_lms) 
         {
         	ChatLogMining insert = new ChatLogMining();
         	
-        	insert.setId(loadedItem.getId());
+        	insert.setId(chatLogMining.size() + 1 + chatLogMax);
         	insert.setChat(loadedItem.getChatId(), chat_mining, old_chat_mining);
         	insert.setMessage(loadedItem.getMessage());
         	insert.setTimestamp(loadedItem.getTimestamp());
@@ -1814,10 +1918,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
   				logger.info("In Chat_log_mining(chat part), chat not found for log: " + loadedItem.getId() +" and chat: " + loadedItem.getChatId());
   			}
   			if(insert.getChat() != null && insert.getUser() != null && insert.getCourse() != null)
-  				chat_log_mining.put(insert.getId(), insert);
+  				chatLogMining.put(insert.getId(), insert);
   			
         }
-		return chat_log_mining;
+		return chatLogMining;
 	}
 	
 }

@@ -112,15 +112,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	
 	/**Logger**/
 	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
-	private Long resourceLogMax;
-	private Long chatLogMax;
-	private Long assignmentLogMax;
-	private Long courseLogMax;
-	private Long forumLogMax;
-	private Long questionLogMax;
-	private Long quizLogMax;
-	private Long scormLogMax;
-	private Long wikiLogMax;
 	
 	@SuppressWarnings("unchecked")	
 	public void getLMStables(DBConfigObject dbConf, long readingfromtimestamp) {
@@ -132,53 +123,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 
 	        //Just for testing. has to be set to Long.MaxValue if not longer needed.
 	        long ceiling = Long.MAX_VALUE;
-	        
-	        Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log");
-	        resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(resourceLogMax == null)
-	        	resourceLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from ChatLogMining log");
-	        chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(chatLogMax == null)
-	        	chatLogMax = 0L;
-	        
-	        
-	        logCount = session.createQuery("select max(log.id) from AssignmentLogMining log");
-	        assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(assignmentLogMax == null)
-	        	assignmentLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from CourseLogMining log");
-	        courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(courseLogMax == null)
-	        	courseLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from ForumLogMining log");
-	        forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(forumLogMax == null)
-	        	forumLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from QuestionLogMining log");
-	        questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(questionLogMax == null)
-	        	questionLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from QuizLogMining log");
-	        quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(quizLogMax == null)
-	        	quizLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from ScormLogMining log");
-	        scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(scormLogMax == null)
-	        	scormLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from WikiLogMining log");
-	        wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(wikiLogMax == null)
-	        	wikiLogMax = 0L;
-	        
 	        
 	        //reading the LMS Database, create tables as lists of instances of the DB-table classes
 	        
@@ -353,51 +297,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	        session.clear();
 	        Transaction tx = session.beginTransaction();
 	        
-	        Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log");
-	        resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(resourceLogMax == null)
-	        	resourceLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from ChatLogMining log");
-	        chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(chatLogMax == null)
-	        	chatLogMax = 0L;
-	        
-	        
-	        logCount = session.createQuery("select max(log.id) from AssignmentLogMining log");
-	        assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(assignmentLogMax == null)
-	        	assignmentLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from CourseLogMining log");
-	        courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(courseLogMax == null)
-	        	courseLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from ForumLogMining log");
-	        forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(forumLogMax == null)
-	        	forumLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from QuestionLogMining log");
-	        questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(questionLogMax == null)
-	        	questionLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from QuizLogMining log");
-	        quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(quizLogMax == null)
-	        	quizLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from ScormLogMining log");
-	        scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(scormLogMax == null)
-	        	scormLogMax = 0L;
-	        
-	        logCount = session.createQuery("select max(log.id) from WikiLogMining log");
-	        wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-	        if(wikiLogMax == null)
-	        	wikiLogMax = 0L;
+	       
 
 //reading the LMS Database, create tables as lists of instances of the DB-table classes
 
@@ -740,7 +640,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     
     
     public HashMap<Long, CourseLogMining> generateCourseLogMining(){
-    	HashMap<Long, CourseLogMining> course_log_mining = new HashMap<Long, CourseLogMining>();
+    	HashMap<Long, CourseLogMining> courseLogMining = new HashMap<Long, CourseLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	
     	for (Log_LMS loadedItem : log_lms ) {
@@ -771,9 +671,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
          		users.put(uid, times);
          	}
     		
-    		if(loadedItem.getModule().equals("course")){    		
+    		if(loadedItem.getModule().equals("course"))
+    		{    		
     			CourseLogMining insert = new CourseLogMining();
-    			insert.setId(course_log_mining.size() + 1 + courseLogMax);
+    			
+    			insert.setId(courseLogMining.size() + 1 + courseLogMax);
     			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
     			
     			if(!numericUserId)
@@ -806,12 +708,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
     			if(insert.getUser() != null && insert.getCourse() != null)
-    				course_log_mining.put(insert.getId(), insert);
+    				courseLogMining.put(insert.getId(), insert);
     			
     		}
         }
     	
-    	for( CourseLogMining r : course_log_mining.values())
+    	for( CourseLogMining r : courseLogMining.values())
         {
         	if(r.getUser() != null)
         	{	
@@ -829,7 +731,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         	}
         }
     	
-		return course_log_mining;
+		return courseLogMining;
     }
     
     
@@ -886,7 +788,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		
     		
     		if(loadedItem.getModule().equals("forum")){
+    			
     			ForumLogMining insert = new ForumLogMining();
+    			
     			insert.setId(forumLogMining.size() + 1 + forumLogMax);
     			
     			if(!numericUserId)
@@ -1237,6 +1141,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 //insert quiz in quiz_log
     		if(loadedItem.getModule().equals("quiz")){
     			QuizLogMining insert = new QuizLogMining();
+    			
     		    insert.setId(quizLogMining.size() + 1 + quizLogMax);
     			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
     			
@@ -1332,7 +1237,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 
     public HashMap<Long, AssignmentLogMining> generateAssignmentLogMining(){
 	  
-    	HashMap<Long, AssignmentLogMining> assignment_log_mining = new HashMap<Long, AssignmentLogMining>();
+    	HashMap<Long, AssignmentLogMining> assignmentLogMining = new HashMap<Long, AssignmentLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	
     	for(Log_LMS loadedItem : log_lms) {
@@ -1364,10 +1269,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
          	}
    	
 //insert assignments in assignment_log
-			if(loadedItem.getModule().equals("assignment") && loadedItem.getInfo().matches("[0-9]++")){
+			if(loadedItem.getModule().equals("assignment") && loadedItem.getInfo().matches("[0-9]++"))
+			{
 				AssignmentLogMining insert = new AssignmentLogMining();
-			    insert.setId(assignment_log_mining.size() + 1 + assignmentLogMax);
-			    System.out.print(insert.getId());
+			    insert.setId(assignmentLogMining.size() + 1 + assignmentLogMax);
 				insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
 				
 				if(!numericUserId)
@@ -1431,10 +1336,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 					logger.info("In Assignment_log_mining, user not found for log: " + loadedItem.getId() +" and user: " + loadedItem.getUserid());
 				}    			
 				if(insert.getUser() != null && insert.getAssignment() != null && insert.getCourse() != null)
-					assignment_log_mining.put(insert.getId(), insert);
+					assignmentLogMining.put(insert.getId(), insert);
 			}		
     	}
-    	for( AssignmentLogMining r : assignment_log_mining.values())
+    	for( AssignmentLogMining r : assignmentLogMining.values())
         {
         	if(r.getUser() != null)
         	{	
@@ -1452,7 +1357,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         	}
         }
     	
-		return assignment_log_mining;
+		return assignmentLogMining;
     }
 
   public HashMap<Long, ScormLogMining> generateScormLogMining(){
@@ -1491,6 +1396,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 //insert scorm in scorm_log
   		if(loadedItem.getModule().equals("scorm")){
   			ScormLogMining insert = new ScormLogMining();
+  			
   		    insert.setId(scormLogMining.size() + 1 + scormLogMax);
   			insert.setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
   			
@@ -1813,6 +1719,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
             
             if(loadedItem.getModule().equals("resource")){
             	ResourceLogMining insert = new ResourceLogMining();
+            	
             	insert.setId(resourceLogMining.size() + 1 + resourceLogMax);
             	
     			if(!numericUserId)
@@ -1945,6 +1852,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		if(loadedItem.getModule().equals("wiki"))
     		{
     			WikiLogMining insert = new WikiLogMining();
+    			
     			insert.setId(wikiLogMining.size() + 1 + wikiLogMax);
     			//Cannot tell, how to extract the correct wiki-id - so it'll always be null
     			insert.setWiki(loadedItem.getCmid(), wiki_mining, old_wiki_mining);
@@ -2158,12 +2066,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 
 
 	public HashMap<Long, ChatLogMining> generateChatLogMining() {
-		HashMap<Long, ChatLogMining> chat_log_mining = new HashMap<Long, ChatLogMining>();
+		HashMap<Long, ChatLogMining> chatLogMining = new HashMap<Long, ChatLogMining>();
     	
         for (ChatLog_LMS loadedItem : chat_log_lms) 
         {
         	ChatLogMining insert = new ChatLogMining();
-        	insert.setId(chat_log_mining.size() + 1 + chatLogMax);
+        	insert.setId(chatLogMining.size() + 1 + chatLogMax);
         	insert.setChat(loadedItem.getChat_id(), chat_mining, old_chat_mining);
         	insert.setMessage(loadedItem.getMessage());
         	insert.setTimestamp(loadedItem.getTimestamp());
@@ -2205,10 +2113,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
   				logger.info("In Chat_log_mining(chat part), chat not found for log: " + loadedItem.getId() +" and chat: " + loadedItem.getChat_id());
   			}
   			if(insert.getChat() != null && insert.getUser() != null && insert.getCourse() != null)
-  				chat_log_mining.put(insert.getId(), insert);
+  				chatLogMining.put(insert.getId(), insert);
   			
         }
-		return chat_log_mining;
+		return chatLogMining;
 	}
 	
 }
