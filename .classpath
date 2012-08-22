@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/resources"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="lib" path="lib/asm-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/grizzly-servlet-webserver-1.9.9.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-asl-1.1.1.jar"/>
@@ -16,12 +19,14 @@
 	<classpathentry kind="lib" path="lib/commons-pool-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/commons-pool-1.6-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/guava-12.0.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-c3p0-3.3.0.GA.jar"/>
+	<classpathentry kind="lib" path="lib/c3p0-0.9.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/hibernate-core.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-core.jar" sourcepath="C:/Users/lmk/.m2/repository/org/hibernate/hibernate-core/3.3.0.SP1/hibernate-core-3.3.0.SP1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/javassist.jar"/>
 	<classpathentry kind="lib" path="lib/persistence-api-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/log4j.jar"/>
@@ -41,5 +46,6 @@
 	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/ojdbc6.jar"/>
 	<classpathentry kind="lib" path="lib/mining.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
