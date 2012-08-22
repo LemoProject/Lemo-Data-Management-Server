@@ -60,7 +60,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , I
 	public Long getDuration() {
 		return duration;
 	}
-	public void setDuration(long duration) {
+	public void setDuration(Long duration) {
 		this.duration = duration;
 	}
 	

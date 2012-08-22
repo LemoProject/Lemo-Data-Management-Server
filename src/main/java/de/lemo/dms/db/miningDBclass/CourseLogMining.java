@@ -43,7 +43,7 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 		return duration;
 	}
 
-	public void setDuration(long duration) {
+	public void setDuration(Long duration) {
 		this.duration = duration;
 	}
 	
