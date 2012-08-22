@@ -320,48 +320,48 @@ public abstract class ExtractAndMap{
 			config_mining_timestamp.set(0, new Timestamp(0));
 		}
 		
-		Query logCount = dbHandler.getMiningSession().createQuery("select max(log.id) from ResourceLogMining log");
+		Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log");
         resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(resourceLogMax == null)
         	resourceLogMax = 0L;
         
-        logCount = dbHandler.getMiningSession().createQuery("select max(log.id) from ChatLogMining log");
+        logCount = session.createQuery("select max(log.id) from ChatLogMining log");
         chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(chatLogMax == null)
         	chatLogMax = 0L;
         
         
-        logCount = dbHandler.getMiningSession().createQuery("select max(log.id) from AssignmentLogMining log");
+        logCount = session.createQuery("select max(log.id) from AssignmentLogMining log");
         assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(assignmentLogMax == null)
         	assignmentLogMax = 0L;
         
-        logCount = dbHandler.getMiningSession().createQuery("select max(log.id) from CourseLogMining log");
+        logCount = session.createQuery("select max(log.id) from CourseLogMining log");
         courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(courseLogMax == null)
         	courseLogMax = 0L;
         
-        logCount = dbHandler.getMiningSession().createQuery("select max(log.id) from ForumLogMining log");
+        logCount = session.createQuery("select max(log.id) from ForumLogMining log");
         forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(forumLogMax == null)
         	forumLogMax = 0L;
         
-        logCount = dbHandler.getMiningSession().createQuery("select max(log.id) from QuestionLogMining log");
+        logCount = session.createQuery("select max(log.id) from QuestionLogMining log");
         questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(questionLogMax == null)
         	questionLogMax = 0L;
         
-        logCount = dbHandler.getMiningSession().createQuery("select max(log.id) from QuizLogMining log");
+        logCount = session.createQuery("select max(log.id) from QuizLogMining log");
         quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(quizLogMax == null)
         	quizLogMax = 0L;
         
-        logCount = dbHandler.getMiningSession().createQuery("select max(log.id) from ScormLogMining log");
+        logCount = session.createQuery("select max(log.id) from ScormLogMining log");
         scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(scormLogMax == null)
         	scormLogMax = 0L;
         
-        logCount = dbHandler.getMiningSession().createQuery("select max(log.id) from WikiLogMining log");
+        logCount = session.createQuery("select max(log.id) from WikiLogMining log");
         wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(wikiLogMax == null)
         	wikiLogMax = 0L;
@@ -472,6 +472,8 @@ public abstract class ExtractAndMap{
 		
 		
 		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(session, EQueryType.HQL, "from IDMappingMining x WHERE x.platform='Moodle19' order by x.id asc");
+		
+		dbHandler.closeSession(session);
 		
 		old_id_mapping = new HashMap<String, IDMappingMining>();
 		for(int i = 0; i < ids.size(); i++)
