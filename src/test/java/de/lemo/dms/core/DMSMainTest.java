@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -31,7 +30,7 @@ class TestUserThread extends Thread {
         } catch (Exception e) {
             exeption = e;
         } finally {
-          //  dbHandler.closeSession(session);
+            dbHandler.closeSession(session);
         }
     }
 
@@ -39,7 +38,7 @@ class TestUserThread extends Thread {
 
 public class DMSMainTest {
 
-    private static final int CONNECTIONS = 300;
+    private static final int CONNECTIONS = 1000;
 
     @Test
     public void concurrentMiningQueries() {
