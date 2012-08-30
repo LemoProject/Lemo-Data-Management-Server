@@ -20,7 +20,7 @@ public interface IServerConfiguration {
 	IDBHandler getDBHandler();
 	DBConfigObject getMiningDBConfig();
 	DBConfigObject getSourceDBConfig();
-	DMSResourceConfig getResourceConfig();
+//	DMSResourceConfig getResourceConfig();
 	void setLoggingLevel(Level level);
 	/**
 	 * @return Startzeit des Servers

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import com.sun.jersey.spi.container.servlet.ServletContainer;
+
 /**
  * Die Klasse mit der Main-Methode für den DataManagementServer.
  * Über sie wird der Server gestartet.

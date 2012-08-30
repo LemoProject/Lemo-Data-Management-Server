@@ -23,16 +23,16 @@ import static de.lemo.dms.core.DMSResourceConfig.QUESTION_BASE_PATH;
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceQuestionParameter extends BaseService {
 
-    @GET
-    public Parameters getParameter(@PathParam("qid") String questionId) {
-        Map<String, Question> questions = config.getResourceConfig().getQuestionSingletons();
-        String path = QUESTION_BASE_PATH + questionId;
-        if(!questions.containsKey(path)) {
-            logger.warn("Question '" + path + "' not found.");
-            throw new ResourceNotFoundException();
-        }
-        logger.info("Getting parameters of'" + path + "'.");
-        return questions.get(path).getParameters();
-    }
+//    @GET
+//    public Parameters getParameter(@PathParam("qid") String questionId) {
+//        Map<String, Question> questions = config.getResourceConfig().getQuestionSingletons();
+//        String path = QUESTION_BASE_PATH + questionId;
+//        if(!questions.containsKey(path)) {
+//            logger.warn("Question '" + path + "' not found.");
+//            throw new ResourceNotFoundException();
+//        }
+//        logger.info("Getting parameters of'" + path + "'.");
+//        return questions.get(path).getParameters();
+//    }
 
 }

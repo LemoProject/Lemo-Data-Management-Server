@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee">
+  <display-name>Lemo Data Management Server</display-name>
+  <servlet>
+    <servlet-name>DMSResourceConfig</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>de.lemo.dms.core.DMSResourceConfig</param-value>
+    </init-param>
+
+    <!--  <servlet-name>DMSResourceConfig</servlet-name>
+    <servlet-class>de.lemo.dms.core.DMSResourceConfig</servlet-class>-->
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DMSResourceConfig</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+</web-app>
+

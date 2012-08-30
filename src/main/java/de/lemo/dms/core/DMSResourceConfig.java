@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.ws.rs.ApplicationPath;
+
 import com.sun.jersey.api.core.DefaultResourceConfig;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 
@@ -28,13 +30,8 @@ public class DMSResourceConfig extends DefaultResourceConfig {
     private Map<String, Question> questionSingletons;
 
     // let delegates do the dirty work (scanning packages for resources)
-    private PackagesResourceConfig serviceScanner;
-    private PackagesResourceConfig questionScanner;
-
-    public DMSResourceConfig(Package services, Package questions) {
-        serviceScanner = new PackagesResourceConfig(services.getName());
-        questionScanner = new QuestionResourceConfig(questions.getName());
-    }
+    private PackagesResourceConfig serviceScanner = new PackagesResourceConfig("de.lemo.dms.service");
+    private PackagesResourceConfig questionScanner = new QuestionResourceConfig("de.lemo.dms.processing.questions");
 
     @Override
     public Set<Class<?>> getRootResourceClasses() {

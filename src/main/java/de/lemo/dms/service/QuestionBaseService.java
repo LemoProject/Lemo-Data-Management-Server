@@ -16,8 +16,8 @@ public class QuestionBaseService extends BaseService {
      * 
      * @return question id/path mapped to the questions singleton
      */
-    protected Map<String, Question> getQuestions() {
-        return config.getResourceConfig().getQuestionSingletons();
-    }
+//    protected Map<String, Question> getQuestions() {
+//        return config.getResourceConfig().getQuestionSingletons();
+//    }
 
 }

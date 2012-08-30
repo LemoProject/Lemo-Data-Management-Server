@@ -70,7 +70,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
      * (and thus duplicated log messages).
      */
     protected void initConfig() {
-        resourceConfig = new DMSResourceConfig(BaseService.class.getPackage(), Question.class.getPackage());
+        resourceConfig = new DMSResourceConfig();
         initDbConfig();
         dbHandler = new HibernateDBHandler();
     }
@@ -196,10 +196,10 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
         return sourceDBConfig;
     }
 
-    @Override
-    public DMSResourceConfig getResourceConfig() {
-        return resourceConfig;
-    }
+//    @Override
+//    public DMSResourceConfig getResourceConfig() {
+//        return resourceConfig;
+//    }
 
     @Override
     public int getKeepAliveTimeoutInSec() {
