@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.sun.grizzly.http.SelectorThread;
+import com.sun.jersey.api.container.grizzly.GrizzlyServerFactory;
 
 /**
  * Der Server der von außen erreichbar sein wird. Er stellt
@@ -74,7 +75,7 @@ public class DMSRemoteServer {
 	protected void start() throws IllegalArgumentException, IOException {
 		port = config.getRemotePort();
 		if (server == null) {
-		//	server = GrizzlyServerFactory.create("http://"+host+":"+ port, config.getResourceConfig());
+		    server = GrizzlyServerFactory.create("http://"+host+":"+ port, new DMSResourceConfig());
 			logger.info("remote server start... host: " + host + " on port " + port);
 			server.setKeepAliveTimeoutInSeconds(config.getKeepAliveTimeoutInSec());
 			logger.info("Timeout: "+server.getKeepAliveTimeoutInSeconds()+" sec.");

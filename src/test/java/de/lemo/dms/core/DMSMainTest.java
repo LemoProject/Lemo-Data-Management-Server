@@ -40,7 +40,7 @@ public class DMSMainTest {
 
     private static final int CONNECTIONS = 100;
 
-    //@Test
+    @Test
     public void concurrentMiningQueries() {
 
         ArrayList<TestUserThread> threads = Lists.newArrayList();
