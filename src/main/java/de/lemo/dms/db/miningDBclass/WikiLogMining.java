@@ -16,7 +16,7 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 	private CourseMining course;
 	private String action;
 	private long timestamp;
-	private long duration;
+	private Long duration;
 	
 	@Override
 	public int compareTo(ILogMining arg0) {

@@ -21,7 +21,7 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	private String answers;
 	private long timestamp;
 	private String action;
-	private long duration;
+	private Long duration;
 	
 	@Override
 	public int compareTo(ILogMining arg0) {

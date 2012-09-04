@@ -18,7 +18,7 @@ public class ForumLogMining implements ILogMining , IMappingClass {
 	private String subject;
 	private String message;
 	private long timestamp;
-	private long duration;
+	private Long duration;
 	
 	@Override
 	public int compareTo(ILogMining arg0) {

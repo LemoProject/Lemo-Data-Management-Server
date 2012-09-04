@@ -16,7 +16,7 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 	private double finalgrade;
 	private String action;
 	private long timestamp;
-	private long duration;
+	private Long duration;
 	
 	@Override
 	public int compareTo(ILogMining arg0) {

@@ -13,7 +13,7 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 	private	UserMining user;
 	private String action;
 	private long timestamp;
-	private long duration;
+	private Long duration;
 	
 	public int compareTo(ILogMining arg0) {
 		ILogMining s;

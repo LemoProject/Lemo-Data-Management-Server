@@ -16,7 +16,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , I
 	private CourseMining course;
 	private String action;
 	private long timestamp;
-	private long duration;
+	private Long duration;
 	
 	public boolean equals(IMappingClass o)
 	{

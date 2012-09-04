@@ -148,9 +148,9 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		return this.getChat().getId();
 	}
 
-	@Override
+	
 	public Long getDuration() {
-		return this.duration;
+		return duration;
 	}
 
 	@Override

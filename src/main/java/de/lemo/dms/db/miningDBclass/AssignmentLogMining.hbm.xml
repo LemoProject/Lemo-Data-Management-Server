@@ -21,15 +21,15 @@
             type="double"/>
              
         <property
+            name="duration"
+            column="duration"
+            type="long"/>   
+            
+        <property
             name="action"
             column="action"
             type="string"/>
             
-        <property
-            name="duration"
-            column="duration"
-            type="long"/>   
-               
         <property
             name="timestamp"
             column="timestamp"

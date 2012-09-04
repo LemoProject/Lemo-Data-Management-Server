@@ -17,7 +17,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass{
 	private double finalgrade;
 	private String action;
 	private long timestamp;	
-	private long duration; 
+	private Long duration; 
 	
 	
 	@Override
