@@ -9,20 +9,69 @@
 
 	<dependencies>
 
-		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>jsp-api</artifactId> 
-			<version>2.0</version> <scope>provided</scope> <exclusions> <exclusion> <groupId>javax.servlet</groupId> 
-			<artifactId>servlet-api</artifactId> </exclusion> </exclusions> </dependency> -->
+		<!-- local libraries -->
+		<dependency>
+			<groupId>ca.pfv</groupId>
+			<artifactId>sqpm</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/mining.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.3.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
+		</dependency>
+		<!-- / local libraries -->
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.21</version>
+			<!-- <scope>provided</scope> -->
+			<!--shared tomcat libraries, see tomcat-maven-plugin -->
+		</dependency>
+
+		<!-- main dependencies -->
+
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.6.10.Final</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>3.6.10.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.sun.grizzly</groupId>
 			<artifactId>grizzly-framework</artifactId>
 			<version>1.9.9</version>
-
 		</dependency>
 		<dependency>
 			<groupId>com.sun.grizzly</groupId>
 			<artifactId>grizzly-http</artifactId>
 			<version>1.9.9</version>
-
 		</dependency>
 		<dependency>
 			<groupId>com.sun.grizzly</groupId>
@@ -30,6 +79,7 @@
 			<version>1.9.9</version>
 			<exclusions>
 				<exclusion>
+					<!-- managed by tomcat -->
 					<groupId>javax.servlet</groupId>
 					<artifactId>servlet-api</artifactId>
 				</exclusion>
@@ -37,26 +87,12 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>3.3.0.GA</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-c3p0</artifactId>
-			<version>3.3.0.GA</version>
-		</dependency>
+
+
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.12.1.GA</version>
-		</dependency>
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.21</version>
 		</dependency>
 
 		<dependency>
@@ -94,6 +130,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>11.0.1</version>
@@ -120,27 +163,7 @@
 			<version>1.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>ca.pfv</groupId>
-			<artifactId>sqpm</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/mining.jar</systemPath>
-		</dependency>
 
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>jsr311-api</artifactId>
-			<version>1.1.1</version>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -148,10 +171,10 @@
 
 		<resources>
 			<resource>
-				<directory>src/main/resources</directory>
+				<directory>${project.basedir}/src/main/resources</directory>
 			</resource>
 			<resource>
-				<directory>src/main/java</directory>
+				<directory>${project.basedir}/src/main/java</directory>
 				<includes>
 					<include>**/*.xml</include>
 				</includes>
@@ -165,6 +188,7 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
+
 				<executions>
 					<execution>
 						<goals>
@@ -189,6 +213,17 @@
 					<username>lemo</username>
 					<password>#101111#</password>
 				</configuration>
+
+				<!-- tomcat-maven-plugin dependencies are managed by the tomcat server 
+					(in {$catalina_home}\lib) -->
+				<!-- <dependencies> -->
+				<!-- <dependency> -->
+				<!-- <groupId>mysql</groupId> -->
+				<!-- <artifactId>mysql-connector-java</artifactId> -->
+				<!-- <version>5.1.21</version> -->
+				<!-- </dependency> -->
+				<!-- </dependencies> -->
+
 			</plugin>
 
 			<!-- classpath config - http://maven.apache.org/shared/maven-archiver/examples/classpath.html#Repository -->
@@ -203,6 +238,14 @@
 							<classpathLayoutType>repository</classpathLayoutType>
 						</manifest>
 					</archive>
+					<resources>
+						<resource>
+							<directory>${project.basedir}/src/main/java</directory>
+							<includes>
+								<include>**/*.xml</include>
+							</includes>
+						</resource>
+					</resources>
 				</configuration>
 			</plugin>
 
@@ -210,8 +253,30 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+					<webXml>${project.basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<classpathLayoutType>repository</classpathLayoutType>
+						</manifest>
+					</archive>
+					<webResources>
+						<resource>
+							<directory>${project.basedir}/src/main/resources</directory>
+							<targetPath>WEB-INF/classes</targetPath>
+						</resource>
+						<resource>
+							<directory>${project.basedir}/src/main/java</directory>
+							<targetPath>WEB-INF/classes</targetPath>
+							<includes>
+								<include>**/*.xml</include>
+							</includes>
+						</resource>
+					</webResources>
 				</configuration>
+
+
 			</plugin>
 
 

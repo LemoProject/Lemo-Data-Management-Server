@@ -1,12 +1,14 @@
 package de.lemo.dms.core;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.hibernate.Session;
 
 import com.google.common.collect.Lists;
 
@@ -48,6 +50,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
     private ServerConfigurationHardCoded() {
         // logger konfiguration
         try {
+
             logger = Logger.getRootLogger();
             // SimpleLayout layout = new SimpleLayout();
             PatternLayout layout = new PatternLayout();
@@ -61,6 +64,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
             System.err.println("logger can't be initialize...");
             System.err.println(ex.getMessage());
         }
+        startTime = new Date().getTime();
 
     }
 
@@ -79,10 +83,12 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
         // Setting up source database
         sourceDBConfig = new DBConfigObject();
 
-        sourceDBConfig.addProperty("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
-        sourceDBConfig.addProperty("hibernate.cache.use_second_level_cache", "false");
+        // sourceDBConfig.addProperty("hibernate.connection.provider_class",
+        // "org.hibernate.connection.C3P0ConnectionProvider");
+        // sourceDBConfig.addProperty("hibernate.cache.use_second_level_cache",
+        // "false");
         sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-      //  sourceDBConfig.addProperty("hibernate.hbm2ddl.auto", "update");
+        sourceDBConfig.addProperty("hibernate.hbm2ddl.auto", "update");
 
         String sourcePrefix = "source";
 
@@ -91,38 +97,50 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.username");
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.password");
 
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.c3p0.min_size");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.c3p0.max_size");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.c3p0.timeout");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.c3p0.max_statements");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.c3p0.idle_test_period");
-        
+        // addDBProperty(sourceDBConfig, sourcePrefix,
+        // "hibernate.c3p0.min_size");
+        // addDBProperty(sourceDBConfig, sourcePrefix,
+        // "hibernate.c3p0.max_size");
+        // addDBProperty(sourceDBConfig, sourcePrefix,
+        // "hibernate.c3p0.timeout");
+        // addDBProperty(sourceDBConfig, sourcePrefix,
+        // "hibernate.c3p0.max_statements");
+        // addDBProperty(sourceDBConfig, sourcePrefix,
+        // "hibernate.c3p0.idle_test_period");
+
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.show_sql");
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.format_sql");
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.use_sql_comments");
         addDBProperty(sourceDBConfig, sourcePrefix, "log4j.logger.org.hibernate");
-        
+
         // Setting up mining database
         miningDBConfig = new DBConfigObject();
 
-        miningDBConfig.addProperty("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
+        miningDBConfig.addProperty("hibernate.connection.provider_class",
+            "org.hibernate.connection.C3P0ConnectionProvider");
+
         miningDBConfig.addProperty("hibernate.cache.use_second_level_cache", "false");
         miningDBConfig.addProperty("hibernate.cache.use_query_level_cache", "false");
         miningDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-      //  miningDBConfig.addProperty("hibernate.hbm2ddl.auto", "update");
+        // miningDBConfig.addProperty("hibernate.hbm2ddl.auto", "update");
 
-        String miningPrefix = "source";
+        String miningPrefix = "mining";
 
         addDBProperty(miningDBConfig, miningPrefix, "hibernate.connection.driver_class");
         addDBProperty(miningDBConfig, miningPrefix, "hibernate.connection.url");
         addDBProperty(miningDBConfig, miningPrefix, "hibernate.connection.username");
         addDBProperty(miningDBConfig, miningPrefix, "hibernate.connection.password");
 
-        addDBProperty(miningDBConfig, miningPrefix, "hibernate.c3p0.min_size");
-        addDBProperty(miningDBConfig, miningPrefix, "hibernate.c3p0.max_size");
-        addDBProperty(miningDBConfig, miningPrefix, "hibernate.c3p0.timeout");
-        addDBProperty(miningDBConfig, miningPrefix, "hibernate.c3p0.max_statements");
-        addDBProperty(miningDBConfig, miningPrefix, "hibernate.c3p0.idle_test_period");
+        addDBProperty(miningDBConfig, miningPrefix,
+            "hibernate.c3p0.min_size");
+        addDBProperty(miningDBConfig, miningPrefix,
+            "hibernate.c3p0.max_size");
+        addDBProperty(miningDBConfig, miningPrefix,
+            "hibernate.c3p0.timeout");
+        addDBProperty(miningDBConfig, miningPrefix,
+            "hibernate.c3p0.max_statements");
+        addDBProperty(miningDBConfig, miningPrefix,
+            "hibernate.c3p0.idle_test_period");
 
         addDBProperty(miningDBConfig, miningPrefix, "hibernate.show_sql");
         addDBProperty(miningDBConfig, miningPrefix, "hibernate.format_sql");
@@ -152,7 +170,19 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
             ServerConfigurationHardCoded serverConfigurationHardCoded = new ServerConfigurationHardCoded();
             instance = serverConfigurationHardCoded;
             serverConfigurationHardCoded.initConfig();
+
+            Logger logger = instance.getLogger();
+            System.out.println("DMS config at " + new Date(instance.getStartTime()));
+
+            // // session test
+            // IDBHandler dbh = instance.getDBHandler();
+            // System.out.println("DBHandler test: " + dbh);
+            // Session miningSession = dbh.getMiningSession();
+            // miningSession.createCriteria(Object.class).setMaxResults(1).list();
+            // System.out.println("Session test: " + miningSession);
+            // miningSession.close();
         }
+
         return instance;
     }
 
@@ -196,10 +226,10 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
         return sourceDBConfig;
     }
 
-//    @Override
-//    public DMSResourceConfig getResourceConfig() {
-//        return resourceConfig;
-//    }
+    // @Override
+    // public DMSResourceConfig getResourceConfig() {
+    // return resourceConfig;
+    // }
 
     @Override
     public int getKeepAliveTimeoutInSec() {

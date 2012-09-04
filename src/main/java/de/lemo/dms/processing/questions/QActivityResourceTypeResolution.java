@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -31,7 +32,6 @@ import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
@@ -39,7 +39,7 @@ import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListRRITypes;
 import de.lemo.dms.service.ELearnObjType;
 
-@QuestionID("activityresourcetyperesolution")
+@Path("activityresourcetyperesolution")
 public class QActivityResourceTypeResolution extends Question {
     
     protected List<MetaParam<?>> createParamMetaData() {

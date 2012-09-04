@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -31,7 +32,6 @@ import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
@@ -41,7 +41,7 @@ import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;
 import de.lemo.dms.service.ELearnObjType;
 
-@QuestionID("userpathanalysis")
+@Path("userpathanalysis")
 public class QUserPathAnalysis extends Question {
 
     protected List<MetaParam<?>> createParamMetaData() {

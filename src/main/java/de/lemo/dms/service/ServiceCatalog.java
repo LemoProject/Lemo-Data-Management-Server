@@ -9,6 +9,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.sun.grizzly.Context;
+
 import de.lemo.dms.processing.Question;
 
 /**
@@ -25,6 +27,7 @@ public class ServiceCatalog extends BaseService {
     public String getQuestionCatalog() {
         return "";
     }
+
 
 //    @GET
 //    @Produces(MediaType.TEXT_HTML)

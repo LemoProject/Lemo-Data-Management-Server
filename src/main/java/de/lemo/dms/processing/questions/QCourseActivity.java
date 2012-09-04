@@ -2,7 +2,9 @@ package de.lemo.dms.processing.questions;
 import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
 import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
 import static de.lemo.dms.processing.parameter.MetaParam.RESOLUTION;
+import static de.lemo.dms.processing.parameter.MetaParam.ROLE_IDS;
 import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
+import static de.lemo.dms.processing.parameter.MetaParam.TYPES;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -23,14 +26,12 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
-import static  de.lemo.dms.processing.parameter.MetaParam.*;
 
-@QuestionID("courseactivity")
+@Path("courseactivity")
 public class QCourseActivity extends Question{ 
 
     @Override

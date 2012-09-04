@@ -24,7 +24,7 @@ class TestUserThread extends Thread {
 
         Session session = dbHandler.getMiningSession();
         try {
-            List<?> result = session.createCriteria(ResourceLogMining.class, "log").setMaxResults(5000).list();
+            List<?> result = session.createCriteria(ResourceLogMining.class).setMaxResults(5000).list();
             assertNotNull(result);
             assertFalse(result.isEmpty());
         } catch (Exception e) {
@@ -38,9 +38,9 @@ class TestUserThread extends Thread {
 
 public class DMSMainTest {
 
-    private static final int CONNECTIONS = 100;
+    private static final int CONNECTIONS = 1;
 
-    @Test
+     @Test
     public void concurrentMiningQueries() {
 
         ArrayList<TestUserThread> threads = Lists.newArrayList();

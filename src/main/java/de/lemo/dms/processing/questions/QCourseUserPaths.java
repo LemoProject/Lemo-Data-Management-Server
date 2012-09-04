@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -38,13 +39,12 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 
-@QuestionID("courseuserpaths")
+@Path("courseuserpaths")
 public class QCourseUserPaths extends Question {
  
 

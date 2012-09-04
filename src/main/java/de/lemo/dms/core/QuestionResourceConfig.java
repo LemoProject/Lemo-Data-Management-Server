@@ -31,12 +31,13 @@ public class QuestionResourceConfig extends PackagesResourceConfig {
         getClasses().addAll(scannerListener.getAnnotatedClasses());
 
         Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
-        if(logger.isInfoEnabled() && !getClasses().isEmpty()) {
-            logger.info("Questions resource classes found:");
-            for(Class<?> question : getClasses()) {
-                logger.info("  " + question);
-            }
-        }
+
+        logger.info("Questions resource classes found:");
+        if(getClasses().isEmpty())
+            logger.info("  [none]");
+        for(Class<?> question : getClasses())
+            logger.info("  " + question);
+
     }
 
 }

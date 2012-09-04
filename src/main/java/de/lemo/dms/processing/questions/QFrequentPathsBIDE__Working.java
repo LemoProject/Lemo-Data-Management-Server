@@ -1,5 +1,12 @@
 package de.lemo.dms.processing.questions;
 
+import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
+import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
+import static de.lemo.dms.processing.parameter.MetaParam.MIN_SUP;
+import static de.lemo.dms.processing.parameter.MetaParam.SESSION_WISE;
+import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
+import static de.lemo.dms.processing.parameter.MetaParam.USER_IDS;
+
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.math.BigInteger;
@@ -17,17 +24,18 @@ import java.util.Map.Entry;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import ca.pfv.spmf.sequentialpatterns.AlgoBIDEPlus;
 import ca.pfv.spmf.sequentialpatterns.SequenceDatabase;
 import ca.pfv.spmf.sequentialpatterns.Sequences;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
@@ -35,7 +43,6 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.QuestionID;
 import de.lemo.dms.processing.parameter.Interval;
 import de.lemo.dms.processing.parameter.MetaParam;
 import de.lemo.dms.processing.parameter.Parameter;
@@ -44,14 +51,7 @@ import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;
 
-import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
-import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
-import static de.lemo.dms.processing.parameter.MetaParam.MIN_SUP;
-import static de.lemo.dms.processing.parameter.MetaParam.SESSION_WISE;
-import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
-import static de.lemo.dms.processing.parameter.MetaParam.USER_IDS;
-
-@QuestionID("frequentPaths_")
+@Path("frequentPaths_")
 public class QFrequentPathsBIDE__Working extends Question{
 
 //	private static final String STARTTIME = "start";

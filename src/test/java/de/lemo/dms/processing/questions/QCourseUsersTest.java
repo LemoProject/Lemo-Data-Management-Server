@@ -21,12 +21,12 @@ public class QCourseUsersTest {
     private Long startTime;
     private Long endTime;
 
-    //@Before
+    @Before
     public void setUp() {
         instance = new QCourseUsers();
     }
 
-    //@Test
+    @Test
     public void courseSize() {
 
         courses = Lists.newArrayList(1L);

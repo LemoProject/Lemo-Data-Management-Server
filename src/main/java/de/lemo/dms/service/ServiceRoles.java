@@ -32,10 +32,10 @@ public class ServiceRoles extends BaseService {
             "from RoleMining");
 
         ArrayList<RoleObject> roles = new ArrayList<RoleObject>();
-        for(int i = 0; i < roleMining.size(); i++) {
-            RoleObject ro = new RoleObject(roleMining.get(i).getId(), roleMining.get(i).getName());
-            roles.add(ro);
+        for(RoleMining role : roleMining) {
+            roles.add(new RoleObject(role.getId(), role.getName()));
         }
+
         dbHandler.closeSession(session);
         return new ResultListRoleObject(roles);
     }

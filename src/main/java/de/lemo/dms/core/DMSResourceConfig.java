@@ -23,6 +23,7 @@ import de.lemo.dms.processing.QuestionID;
  * @author Leonard Kappe
  * 
  */
+
 public class DMSResourceConfig extends DefaultResourceConfig {
 
     public static final String QUESTION_BASE_PATH = "/questions/";
