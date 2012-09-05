@@ -25,6 +25,7 @@ public class UserPathNode {
             name = "?";
         this.value = path.getWeight();
         this.group = path.getGroup();
+        this.pathId = path.getPathId();
     }
     
     public UserPathNode(UserPathObject path, Boolean directedGraph) {

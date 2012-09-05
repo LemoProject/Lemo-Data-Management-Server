@@ -112,12 +112,15 @@ public class QFrequentPathsBIDE extends Question{
 		
 		try{
 			
-		Session session =  dbHandler.getMiningSession();
-			FileWriter out = new FileWriter("./"+System.currentTimeMillis()+"_BIDEresults.txt");
+		//Session session =  dbHandler.getMiningSession();
+			
+		/**
+		FileWriter out = new FileWriter("./"+System.currentTimeMillis()+"_BIDEresults.txt");
 	    	PrintWriter pout = new PrintWriter(out);
 	    	
 	    	//Write header for the output file
 	    	pout.println("# LeMo - Sequential pattern data");
+	    	**/
 		
 		SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
 		

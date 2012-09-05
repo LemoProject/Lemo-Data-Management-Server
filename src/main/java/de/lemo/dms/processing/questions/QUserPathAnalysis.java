@@ -169,6 +169,7 @@ public class QUserPathAnalysis extends Question {
         // Generate paths from user histories
         for(List<ILogMining> l : userHis.values()) {
             String predNode = null;
+            Long pathId = 0L;
             for(int i = 0; i < l.size(); i++)
                 if(l.get(i) != null && l.get(i).getUser() != null)
                 {
@@ -187,31 +188,31 @@ public class QUserPathAnalysis extends Question {
                     UserPathObject knownPath;
                     if(predNode != null) {
                         String cIdPos = null;
-                        if((knownPath = pathObjects.get(cId)) == null)
+                        if((knownPath = pathObjects.get(pathId + "_" + cId)) == null)
                         {
                             // If the node is new create entry in hash map
                             cIdPos = String.valueOf(pathObjects.size());
-                            pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L, learnObjType,
-                                    Double.valueOf(current.getDuration()), 1L, 0L));
+                            pathObjects.put(pathId + "_" + cId, new UserPathObject(cIdPos, current.getTitle(), 1L, learnObjType,
+                                    Double.valueOf(current.getDuration()), 1L, pathId));
                         }
                         else
                         {
                             // If the node is already known, increase weight
-                            pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
+                            pathObjects.get(pathId + "_" + cId).increaseWeight(Double.valueOf(current.getDuration()));
                             cIdPos = knownPath.getId();
                         }
 
                         // Increment or create predecessor edge
-                        pathObjects.get(predNode).addEdgeOrIncrement(cIdPos);
+                        pathObjects.get(pathId + "_" + predNode).addEdgeOrIncrement(cIdPos);
                     }
-                    else if(pathObjects.get(cId) == null)
+                    else if(pathObjects.get(pathId + "_" + cId) == null)
                     {
                         String cIdPos = String.valueOf(pathObjects.size());
-                        pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L,
-                                current.getClass().toString(), Double.valueOf(current.getDuration()), 1L, 0L));
+                        pathObjects.put(pathId + "_" + cId, new UserPathObject(cIdPos, current.getTitle(), 1L,
+                                current.getClass().toString(), Double.valueOf(current.getDuration()), 1L, pathId));
                     }
                     else
-                        pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
+                        pathObjects.get(pathId + "_" + cId).increaseWeight(Double.valueOf(current.getDuration()));
 
                     if(considerLogouts && current.getDuration() == -1L)
                         predNode = null;
@@ -227,12 +228,14 @@ public class QUserPathAnalysis extends Question {
         for(Entry<String, UserPathObject> pathEntry : pathObjects.entrySet()) {
 
             UserPathObject path = pathEntry.getValue();
+            path.setPathId(pathEntry.getValue().getPathId());
             nodes.add(new UserPathNode(path));
             String sourcePos = path.getId();
 
             for(Entry<String, Integer> linkEntry : pathEntry.getValue().getEdges().entrySet()) {
                 UserPathLink link = new UserPathLink();
                 link.setSource(sourcePos);
+                link.setPathId(path.getPathId());
                 link.setTarget(linkEntry.getKey());
                 link.setValue(String.valueOf(linkEntry.getValue()));
                 if(link.getSource() != link.getTarget())

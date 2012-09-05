@@ -117,7 +117,8 @@ public class UserPathObject {
         if(edgeWeight == null) {
             edgeWeight = 0;
         }
-        edges.put(target, edgeWeight++);
+        edgeWeight++;
+        edges.put(target, edgeWeight);
     }
 
     public void increaseWeight(Double duration)
