@@ -12,7 +12,6 @@ import org.hibernate.Session;
 import de.lemo.dms.core.ConfigurationProperties;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
-import de.lemo.dms.db.miningDBclass.ChatLogMining;
 import de.lemo.dms.db.miningDBclass.CourseLogMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
@@ -45,43 +44,39 @@ public class ServiceDebug extends BaseService {
             html.append("<li>miningSession isOpen: ").append(miningSession.isOpen()).append("</li>");
 
             List<?> result = null;
-            // try {
-            result = miningSession.createCriteria(AssignmentLogMining.class, "log").setMaxResults(3).list();
-          
-            result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(3).list();
-          
-        
-            result = miningSession.createCriteria(CourseLogMining.class, "log").setMaxResults(3).list();
-           
-            result = miningSession.createCriteria(ForumLogMining.class, "log").setMaxResults(3).list();
-           
-            result = miningSession.createCriteria(QuestionLogMining.class, "log").setMaxResults(3).list();
-           
-            result = miningSession.createCriteria(QuizLogMining.class, "log").setMaxResults(3).list();
-           
-            result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(3).list();
-           
-            result = miningSession.createCriteria(ScormLogMining.class, "log").setMaxResults(3).list();
-           
-            result = miningSession.createCriteria(WikiLogMining.class, "log").setMaxResults(3).list();
-         
-            result = miningSession.createCriteria(ChatLogMining.class, "log").setMaxResults(3).list();
-            
-            
-            // } catch (Exception exeption) {
-            //
-            // Throwable e = exeption;
-            // while(e != null) {
-            // html.append("<li>").append(e.getClass() + ": " +
-            // e.getMessage()).append("<ul>");
-            // for(StackTraceElement ste : e.getStackTrace()) {
-            // html.append("<li>").append(ste.toString()).append("</li>");
-            //
-            // }
-            // html.append("</li></ul></li>");
-            // e = e.getCause();
-            // }
-            // }
+            try {
+                result = miningSession.createCriteria(AssignmentLogMining.class, "log").setMaxResults(3).list();
+
+                result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(3).list();
+
+                result = miningSession.createCriteria(CourseLogMining.class, "log").setMaxResults(3).list();
+
+                result = miningSession.createCriteria(ForumLogMining.class, "log").setMaxResults(3).list();
+
+                result = miningSession.createCriteria(QuestionLogMining.class, "log").setMaxResults(3).list();
+
+                result = miningSession.createCriteria(QuizLogMining.class, "log").setMaxResults(3).list();
+
+                result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(3).list();
+
+                result = miningSession.createCriteria(ScormLogMining.class, "log").setMaxResults(3).list();
+
+                result = miningSession.createCriteria(WikiLogMining.class, "log").setMaxResults(3).list();
+
+            } catch (Exception exeption) {
+
+                Throwable e = exeption;
+                while(e != null) {
+                    html.append("<li>").append(e.getClass() + ": " +
+                            e.getMessage()).append("<ul>");
+                    for(StackTraceElement ste : e.getStackTrace()) {
+                        html.append("<li>").append(ste.toString()).append("</li>");
+
+                    }
+                    html.append("</li></ul></li>");
+                    e = e.getCause();
+                }
+            }
             html.append("<li>ResourceLogMining result: ").append(result).append("</li>");
             if(result != null) {
                 html.append("<li>ResourceLogMining results: ").append(result.size()).append("</li>");

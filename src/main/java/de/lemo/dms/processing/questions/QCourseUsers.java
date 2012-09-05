@@ -53,7 +53,7 @@ public class QCourseUsers extends Question {
                 );
         return parameters;
     }
-
+    
     @POST
     public ResultListLongObject compute(
             @FormParam(COURSE_IDS) List<Long> courseIds,

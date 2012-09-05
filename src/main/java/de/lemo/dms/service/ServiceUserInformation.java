@@ -16,16 +16,14 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 
-@Path("users/{uid}")
+@Path("users")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceUserInformation extends BaseService {
 
-    @PathParam("uid")
-    private long id;
 
     @GET
-    @Path("courses")
-    public ResultListCourseObject getCoursesByUser(@QueryParam("course_count") Long count,
+    @Path("/{uid}/courses")
+    public ResultListCourseObject getCoursesByUser(@PathParam("uid") long id, @QueryParam("course_count") Long count,
             @QueryParam("course_offset") Long offset) {
         logger.info("## " + id);
         ArrayList<CourseObject> courses = new ArrayList<CourseObject>();

@@ -1,6 +1,5 @@
 package de.lemo.dms.core;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.log4j.ConsoleAppender;
@@ -8,16 +7,10 @@ import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
-import org.hibernate.Session;
-
-import com.google.common.collect.Lists;
 
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.hibernate.HibernateDBHandler;
-import de.lemo.dms.db.miningDBclass.WikiLogMining;
-import de.lemo.dms.processing.Question;
-import de.lemo.dms.service.BaseService;
 
 /**
  * Implementierung der Server Konfiguration als Singleton, mit Hard codierten,
