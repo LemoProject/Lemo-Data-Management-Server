@@ -7,8 +7,17 @@ public class UserPathNode {
     private Long value;
     private Long group;
     private Long pathId;
+    private String type;
 
-    public Long getPathId() {
+    public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Long getPathId() {
 		return pathId;
 	}
 
@@ -26,6 +35,7 @@ public class UserPathNode {
         this.value = path.getWeight();
         this.group = path.getGroup();
         this.pathId = path.getPathId();
+        this.type = path.getType();
     }
     
     public UserPathNode(UserPathObject path, Boolean directedGraph) {
@@ -36,6 +46,7 @@ public class UserPathNode {
         this.value = path.getWeight();
         this.group = path.getGroup();
         this.pathId = path.getPathId();
+        this.type = path.getType();
     }
 
     public String getName() {

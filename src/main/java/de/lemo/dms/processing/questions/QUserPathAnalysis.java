@@ -169,7 +169,6 @@ public class QUserPathAnalysis extends Question {
         // Generate paths from user histories
         for(List<ILogMining> l : userHis.values()) {
             String predNode = null;
-            Long pathId = 0L;
             for(int i = 0; i < l.size(); i++)
                 if(l.get(i) != null && l.get(i).getUser() != null)
                 {
@@ -181,6 +180,7 @@ public class QUserPathAnalysis extends Question {
                         continue;
                     }
                     String learnObjType = ELearnObjType.valueOf(current).toString();
+                    String type = current.getClass().toString().substring(current.getClass().toString().lastIndexOf(".")+1);
                     String cId = learnObjId + "-" + learnObjType;
                     // Determines whether it's a new path (no predecessor for
                     // current node) or not
@@ -188,31 +188,31 @@ public class QUserPathAnalysis extends Question {
                     UserPathObject knownPath;
                     if(predNode != null) {
                         String cIdPos = null;
-                        if((knownPath = pathObjects.get(pathId + "_" + cId)) == null)
+                        if((knownPath = pathObjects.get(cId)) == null)
                         {
                             // If the node is new create entry in hash map
                             cIdPos = String.valueOf(pathObjects.size());
-                            pathObjects.put(pathId + "_" + cId, new UserPathObject(cIdPos, current.getTitle(), 1L, learnObjType,
-                                    Double.valueOf(current.getDuration()), 1L, pathId));
+                            pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L, type,
+                                    Double.valueOf(current.getDuration()), 1L, 0L));
                         }
                         else
                         {
                             // If the node is already known, increase weight
-                            pathObjects.get(pathId + "_" + cId).increaseWeight(Double.valueOf(current.getDuration()));
+                            pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
                             cIdPos = knownPath.getId();
                         }
 
                         // Increment or create predecessor edge
-                        pathObjects.get(pathId + "_" + predNode).addEdgeOrIncrement(cIdPos);
+                        pathObjects.get(predNode).addEdgeOrIncrement(cIdPos);
                     }
-                    else if(pathObjects.get(pathId + "_" + cId) == null)
+                    else if(pathObjects.get(cId) == null)
                     {
                         String cIdPos = String.valueOf(pathObjects.size());
-                        pathObjects.put(pathId + "_" + cId, new UserPathObject(cIdPos, current.getTitle(), 1L,
-                                current.getClass().toString(), Double.valueOf(current.getDuration()), 1L, pathId));
+                        pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L,
+                                type, Double.valueOf(current.getDuration()), 1L, 0L));
                     }
                     else
-                        pathObjects.get(pathId + "_" + cId).increaseWeight(Double.valueOf(current.getDuration()));
+                        pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
 
                     if(considerLogouts && current.getDuration() == -1L)
                         predNode = null;
