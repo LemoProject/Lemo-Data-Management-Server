@@ -10,8 +10,9 @@ public class Test {
 	{
 		QFrequentPathsBIDE bide = new QFrequentPathsBIDE();
 		ArrayList<Long> courseIds = new ArrayList<Long>();
+		courseIds.add(1L);
 		ArrayList<Long> userIds = new ArrayList<Long>();
-		Double minSup = 1.0;
+		Double minSup = 0.6;
 		boolean sessionWise = false;
 		Long startTime = 0L;
 		Long endTime =1500000000L;

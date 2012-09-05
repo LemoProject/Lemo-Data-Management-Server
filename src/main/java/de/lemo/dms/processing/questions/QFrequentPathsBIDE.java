@@ -136,6 +136,7 @@ public class QFrequentPathsBIDE extends Question{
 		System.out.println("Time: " + c.get() );
 		
 		LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
+		Long pathId = 0L;
 		for(int i = 0; i < res.getLevelCount(); i++)
 		{
 			if(i > 0)
@@ -143,12 +144,12 @@ public class QFrequentPathsBIDE extends Question{
 			for(int j = 0; j < res.getLevel(i).size(); j++)
 			{
 				UserPathObject predecessor = null;
-				Long pathId = 0L;
-				
-				//System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
+				Long absSup = Long.valueOf(res.getLevel(i).get(j).getAbsoluteSupport());
+				pathId++;
+				System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
 				for(int k = 0; k < res.getLevel(i).get(j).size(); k++)
 				{
-					pathId++;
+					
 					String obId = res.getLevel(i).get(j).get(k).getItems().get(0).getId() + "";
 					
 					ILogMining ilo = idToLogM.get(obId.substring(0, 4) + " " + obId.substring(4));
@@ -165,16 +166,16 @@ public class QFrequentPathsBIDE extends Question{
 						pos = ((ResourceLogMining) ilo).getResource().getPosition()+"";
 					}
 					
-					UserPathObject upo = new UserPathObject(obId, ilo.getTitle(), 1L, type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId);
+					UserPathObject upo = new UserPathObject(obId, ilo.getTitle(), absSup, type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId);
 					if(ilo.getDuration() != -1L)
 						upo.setDuration(Double.parseDouble(ilo.getDuration()+""));
 					
 					//If the node is unknown, create a new entry in pathObjects
-					if(pathObjects.get(pathId + "_" + obId) == null)
+					if(pathObjects.get(pathId + "_" + upo.getId()) == null)
 						pathObjects.put(pathId + "_" + upo.getId(), upo);
 					
 					else
-						pathObjects.get(pathId + "_" + obId).increaseWeight(Double.parseDouble(ilo.getDuration()+""));
+						pathObjects.get(pathId + "_" + upo.getId()).increaseWeight(Double.parseDouble(ilo.getDuration()+""));
 						
 					//If it isn't the first node of the Path add edge to predecessor
 					if(predecessor != null)
@@ -199,8 +200,8 @@ public class QFrequentPathsBIDE extends Question{
         for(Entry<String, UserPathObject> pathEntry : pathObjects.entrySet()) {
 
             UserPathObject path = pathEntry.getValue();
-            path.setWeight(path.getWeight() * 10);
-            path.setPathId(path.getPathId());
+            path.setWeight(path.getWeight());
+            path.setPathId(pathEntry.getValue().getPathId());
             nodes.add(new UserPathNode(path,true));
             //String sourcePos = pathEntry.getKey();
             String sourcePos = path.getTitle();
@@ -210,7 +211,7 @@ public class QFrequentPathsBIDE extends Question{
                 link.setSource(sourcePos);
                 link.setPathId(path.getPathId());
                 //link.setTarget(Long.parseLong(linkEntry.getKey()));
-                link.setTarget(pathObjects.get(linkEntry.getKey()).getTitle());
+                link.setTarget(pathObjects.get(path.getPathId() + "_" + linkEntry.getKey()).getTitle());
                 link.setValue(String.valueOf(linkEntry.getValue() + 10));
                 //if(link.getSource() != link.getTarget())
                     links.add(link);

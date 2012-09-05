@@ -192,11 +192,11 @@ public class QUserPathAnalysis extends Question {
                             // If the node is new create entry in hash map
                             cIdPos = String.valueOf(pathObjects.size());
                             pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L, learnObjType,
-                                    Double.valueOf(current.getDuration()), 1L));
+                                    Double.valueOf(current.getDuration()), 1L, 0L));
                         }
                         else
                         {
-                            // If the node is already known, increment weight
+                            // If the node is already known, increase weight
                             pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
                             cIdPos = knownPath.getId();
                         }
@@ -208,7 +208,7 @@ public class QUserPathAnalysis extends Question {
                     {
                         String cIdPos = String.valueOf(pathObjects.size());
                         pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L,
-                                current.getClass().toString(), Double.valueOf(current.getDuration()), 1L));
+                                current.getClass().toString(), Double.valueOf(current.getDuration()), 1L, 0L));
                     }
                     else
                         pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));

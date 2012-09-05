@@ -111,7 +111,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
         miningDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
       //  miningDBConfig.addProperty("hibernate.hbm2ddl.auto", "update");
 
-        String miningPrefix = "source";
+        String miningPrefix = "mining";
 
         addDBProperty(miningDBConfig, miningPrefix, "hibernate.connection.driver_class");
         addDBProperty(miningDBConfig, miningPrefix, "hibernate.connection.url");

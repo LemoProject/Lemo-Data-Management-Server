@@ -147,7 +147,7 @@ public class QFrequentPathsBIDE__Working extends Question{
 					String url = "";
 					
 					String cIdPos = String.valueOf(pathObjects.size());
-					UserPathObject upo = new UserPathObject(cIdPos, ilo.getTitle(), 1L, type, Double.valueOf(ilo.getDuration()), ilo.getPrefix());
+					UserPathObject upo = new UserPathObject(cIdPos, ilo.getTitle(), 1L, type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), 0L);
 					if(ilo.getDuration() != -1L)
 						upo.setDuration(Double.parseDouble(ilo.getDuration()+""));
 					
