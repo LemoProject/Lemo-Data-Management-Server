@@ -22,8 +22,8 @@ public class Test {
 		Long endTime =1500000000L;
 		
 		
-		analysis.compute(courseIds, userIds, types, considerLogouts, startTime, endTime);
-		//bide.compute(courseIds, userIds, minSup, sessionWise, startTime, endTime);
+		//analysis.compute(courseIds, userIds, types, considerLogouts, startTime, endTime);
+		bide.compute(courseIds, userIds, minSup, sessionWise, startTime, endTime);
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -63,7 +64,9 @@ public class QFrequentPathsBIDE extends Question{
 //	private static final String USER_IDS = "uid";
 //	
 	private static HashMap<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
-
+	private static HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
+	
+	
     protected List<MetaParam<?>> createParamMetaData() {
         List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
         
@@ -156,8 +159,9 @@ public class QFrequentPathsBIDE extends Question{
 					String obId = res.getLevel(i).get(j).get(k).getItems().get(0).getId() + "";
 					
 					ILogMining ilo = idToLogM.get(obId.substring(0, 4) + " " + obId.substring(4));
+					Long idi = ilo.getLearnObjId();
 					
-					String type = ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf("."));
+					String type = ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf(".")+1);
 					String courseTitle = "Unknown Course";
 					if(ilo.getCourse() != null && ilo.getCourse().getTitle() != null)
 						courseTitle = ilo.getCourse().getTitle();
@@ -169,7 +173,7 @@ public class QFrequentPathsBIDE extends Question{
 						pos = ((ResourceLogMining) ilo).getResource().getPosition()+"";
 					}
 					
-					UserPathObject upo = new UserPathObject(obId, ilo.getTitle(), absSup, type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId);
+					UserPathObject upo = new UserPathObject(obId, ilo.getTitle(), absSup, type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size()));
 					if(ilo.getDuration() != -1L)
 						upo.setDuration(Double.parseDouble(ilo.getDuration()+""));
 					
@@ -563,6 +567,16 @@ public class QFrequentPathsBIDE extends Question{
 					{
 						if(idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
 							idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), l.get(i));
+						
+						if(requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
+						{
+								ArrayList<Long> us = new ArrayList<Long>();
+								us.add(l.get(i).getUser().getId());
+								requests.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), us);
+						}
+						else
+							requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(l.get(i).getUser().getId());
+						
 						line += l.get(i).getPrefix() + "" + l.get(i).getLearnObjId() + " -1 ";
 					}
 					line += "-2";
@@ -627,6 +641,7 @@ public class QFrequentPathsBIDE extends Question{
 						a.add(list.get(i));
 						//Add user history to the user history map
 						logMap.put(list.get(i).getUser().getId(), a);
+				
 						
 						//If it is the longest user history, save its length
 						if(logMap.get(list.get(i).getUser().getId()).size() > max)
@@ -690,6 +705,16 @@ public class QFrequentPathsBIDE extends Question{
 				{
 					if(idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
 						idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), l.get(i));
+					
+					//Update request numbers
+					if(requests.get(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId()) == null)
+					{
+							ArrayList<Long> us = new ArrayList<Long>();
+							us.add(l.get(i).getUser().getId());
+							requests.put(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId(), us);
+					}
+					else
+						requests.get(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId()).add(l.get(i).getUser().getId());
 					//The id of the object gets the prefix, indicating it's class. This is important for distinction between objects of different ILogMining-classes but same ids
 					line += l.get(i).getPrefix() + "" + l.get(i).getLearnObjId() + " -1 ";
 				}

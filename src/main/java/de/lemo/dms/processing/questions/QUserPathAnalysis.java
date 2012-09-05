@@ -193,7 +193,7 @@ public class QUserPathAnalysis extends Question {
                             // If the node is new create entry in hash map
                             cIdPos = String.valueOf(pathObjects.size());
                             pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L, type,
-                                    Double.valueOf(current.getDuration()), 1L, 0L));
+                                    Double.valueOf(current.getDuration()), 1L, 0L, 0L, 0L));
                         }
                         else
                         {
@@ -209,7 +209,7 @@ public class QUserPathAnalysis extends Question {
                     {
                         String cIdPos = String.valueOf(pathObjects.size());
                         pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L,
-                                type, Double.valueOf(current.getDuration()), 1L, 0L));
+                                type, Double.valueOf(current.getDuration()), 1L, 0L, 0L, 0L));
                     }
                     else
                         pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));

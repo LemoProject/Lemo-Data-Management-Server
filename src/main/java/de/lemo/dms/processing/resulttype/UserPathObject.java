@@ -16,9 +16,27 @@ public class UserPathObject {
     private Long group;
     private String type;
     private Long pathId;
-
+    private Long totalUsers;
+    private Long totalRequests;
+//
     public Long getPathId() {
 		return pathId;
+	}
+
+	public Long getTotalUsers() {
+		return totalUsers;
+	}
+
+	public void setTotalUsers(Long totalUsers) {
+		this.totalUsers = totalUsers;
+	}
+
+	public Long getTotalRequests() {
+		return totalRequests;
+	}
+
+	public void setTotalRequests(Long totalRequests) {
+		this.totalRequests = totalRequests;
 	}
 
 	public void setPathId(Long pathId) {
@@ -98,7 +116,7 @@ public class UserPathObject {
 
     }
 
-    public UserPathObject(String id, String title, Long weight, String type, Double duration, Long group, Long pathId)
+    public UserPathObject(String id, String title, Long weight, String type, Double duration, Long group, Long pathId, Long totalRequests, Long totalUsers)
     {
         this.id = id;
         this.title = title;
@@ -108,6 +126,8 @@ public class UserPathObject {
         this.type = type;
         this.duration = duration / weight;
         this.pathId = pathId;
+        this.totalRequests = totalRequests;
+        this.totalUsers = totalUsers;
 
     }
 
