@@ -15,8 +15,17 @@ public class UserPathObject {
     private Double duration;
     private Long group;
     private String type;
+    private Long pathId;
 
-    @XmlElement
+    public Long getPathId() {
+		return pathId;
+	}
+
+	public void setPathId(Long pathId) {
+		this.pathId = pathId;
+	}
+
+	@XmlElement
     public String getType() {
         return type;
     }
@@ -89,7 +98,7 @@ public class UserPathObject {
 
     }
 
-    public UserPathObject(String id, String title, Long weight, String type, Double duration, Long group)
+    public UserPathObject(String id, String title, Long weight, String type, Double duration, Long group, Long pathId)
     {
         this.id = id;
         this.title = title;
@@ -98,6 +107,7 @@ public class UserPathObject {
         this.edges = new HashMap<String, Integer>();
         this.type = type;
         this.duration = duration / weight;
+        this.pathId = pathId;
 
     }
 

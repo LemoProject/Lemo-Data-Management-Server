@@ -9,7 +9,17 @@ public class UserPathLink {
     private String target;
     private String value;
 
-    public UserPathLink() {
+    private Long pathId;
+
+    public Long getPathId() {
+		return pathId;
+	}
+
+	public void setPathId(Long pathId) {
+		this.pathId = pathId;
+	}
+
+	public UserPathLink() {
         // TODO Auto-generated constructor stub
     }
     

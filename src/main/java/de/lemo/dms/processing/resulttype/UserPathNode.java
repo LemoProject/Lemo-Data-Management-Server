@@ -6,8 +6,17 @@ public class UserPathNode {
     private String title;
     private Long value;
     private Long group;
+    private Long pathId;
 
-    public UserPathNode() {
+    public Long getPathId() {
+		return pathId;
+	}
+
+	public void setPathId(Long pathId) {
+		this.pathId = pathId;
+	}
+
+	public UserPathNode() {
     }
 
     public UserPathNode(UserPathObject path) {
