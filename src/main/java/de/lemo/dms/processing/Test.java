@@ -12,18 +12,18 @@ public class Test {
 		QFrequentPathsBIDE bide = new QFrequentPathsBIDE();
 		QLearningObjectUsage analysis = new QLearningObjectUsage();
 		ArrayList<Long> courseIds = new ArrayList<Long>();
-		courseIds.add(85L);
+		courseIds.add(1L);
 		ArrayList<Long> userIds = new ArrayList<Long>();
 		ArrayList<String> types = new ArrayList<String>();
-		Double minSup = 0.1;
+		Double minSup = 0.5;
 		boolean sessionWise = false;
 		boolean considerLogouts = false;
-		Long startTime = 1318936569L;
+		Long startTime = 0L;
 		Long endTime =1400000000L;
 		
 		
-		analysis.compute(courseIds, userIds, types, startTime, endTime);
-		//bide.compute(courseIds, userIds, minSup, sessionWise, startTime, endTime);
+		//analysis.compute(courseIds, userIds, types, startTime, endTime);
+		bide.compute(courseIds, userIds, minSup, sessionWise, startTime, endTime);
 	}
 
 }

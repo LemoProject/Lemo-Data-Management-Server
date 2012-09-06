@@ -12,6 +12,10 @@ public class ResourceRequestInfo{
 	private String resourcetype;
 	private Long requests;
 	private Long users;
+	private String title;
+	private Long resolutionSlot;
+	
+	
 	public Long getUsers() {
 		return users;
 	}
@@ -20,8 +24,7 @@ public class ResourceRequestInfo{
 		this.users = users;
 	}
 
-	private String title;
-	private Long resolutionSlot;
+
 	
 	public Long getResolutionSlot() {
 		return resolutionSlot;

@@ -241,7 +241,7 @@ public class QUserPathAnalysis extends Question {
                 link.setTarget(linkEntry.getKey());
                 link.setValue(String.valueOf(linkEntry.getValue()));
                 if(link.getSource() != link.getTarget())
-                    links.add(link);
+                	links.add(link);
             }
         }
         return new ResultListUserPathGraph(nodes, links);

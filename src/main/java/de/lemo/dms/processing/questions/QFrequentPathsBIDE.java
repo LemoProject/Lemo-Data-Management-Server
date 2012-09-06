@@ -159,10 +159,18 @@ public class QFrequentPathsBIDE extends Question{
 					
 					String type = ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf(".") + 1, ilo.getClass().toString().lastIndexOf("Log"));
 			
-					UserPathObject knownPath;
+					String posId = String.valueOf(pathObjects.size());
+					
 					if(predecessor != null)
 					{
-						String posId = null;
+						pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup, type, 
+	                       		 Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, 
+	                       		 Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
+							
+						// Increment or create predecessor edge
+						pathObjects.get(predecessor).addEdgeOrIncrement(posId);
+						
+						/*
 						if((knownPath = pathObjects.get(obId + "_" + pathId)) == null)
 						{
 							 // If the node is new create entry in hash map
@@ -177,20 +185,28 @@ public class QFrequentPathsBIDE extends Question{
 							pathObjects.get(obId+"_" + pathId).increaseWeight(Double.parseDouble(ilo.getDuration()+""));
 							posId = knownPath.getId();
 						}
+						*/
 						
-						// Increment or create predecessor edge
-						pathObjects.get(predecessor).addEdgeOrIncrement(posId);
+						
 					}
+					else
+					{
+                        pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup,
+                                type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,  Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
+					}
+					
+					/*
 					else if(pathObjects.get(obId+"_" + pathId) == null)
                     {
                         String posId = String.valueOf(pathObjects.size());
-                        pathObjects.put(obId+"_" + pathId, new UserPathObject(posId, ilo.getTitle(), 1L,
-                                type, Double.valueOf(ilo.getDuration()), 1L, 0L, 0L, 0L));
+                        pathObjects.put(obId+"_" + pathId, new UserPathObject(posId, ilo.getTitle(), absSup,
+                                type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,  Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
                     }
                     else
                         pathObjects.get(obId+"_" + pathId).increaseWeight(Double.valueOf(ilo.getDuration()));
+					*/
 					
-					predecessor = obId+"_" + pathId;
+					predecessor = posId;
 				}
 				
 			}
