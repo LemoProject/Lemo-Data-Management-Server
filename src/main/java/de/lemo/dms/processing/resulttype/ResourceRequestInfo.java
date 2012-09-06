@@ -11,6 +11,15 @@ public class ResourceRequestInfo{
 	//private EResourceType resourcetype;
 	private String resourcetype;
 	private Long requests;
+	private Long users;
+	public Long getUsers() {
+		return users;
+	}
+
+	public void setUsers(Long users) {
+		this.users = users;
+	}
+
 	private String title;
 	private Long resolutionSlot;
 	
@@ -67,13 +76,14 @@ public class ResourceRequestInfo{
 		this.requests++;
 	}
 	
-	public ResourceRequestInfo(Long id, ELearnObjType resourceType, Long requests, String title, Long resolutionSlot)
+	public ResourceRequestInfo(Long id, ELearnObjType resourceType, Long requests, Long users, String title, Long resolutionSlot)
 	{
 		this.id = id;
 		this.resourcetype = resourceType.toString();
 		this.requests = requests;
 		this.title = title;
 		this.resolutionSlot = resolutionSlot;
+		this.users = users;
 	}
 
 

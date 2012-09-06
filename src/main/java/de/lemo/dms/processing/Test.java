@@ -3,23 +3,23 @@ package de.lemo.dms.processing;
 import java.util.ArrayList;
 
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
-import de.lemo.dms.processing.questions.QUserPathAnalysis;
+import de.lemo.dms.processing.questions.QLearningObjectUsage;
 
 public class Test {
 	
 	public static void main(String[] args)
 	{
 		QFrequentPathsBIDE bide = new QFrequentPathsBIDE();
-		QUserPathAnalysis analysis = new QUserPathAnalysis();
+		QLearningObjectUsage analysis = new QLearningObjectUsage();
 		ArrayList<Long> courseIds = new ArrayList<Long>();
-		courseIds.add(1L);
+		courseIds.add(85L);
 		ArrayList<Long> userIds = new ArrayList<Long>();
 		ArrayList<String> types = new ArrayList<String>();
-		Double minSup = 0.6;
+		Double minSup = 0.1;
 		boolean sessionWise = false;
 		boolean considerLogouts = false;
-		Long startTime = 0L;
-		Long endTime =1500000000L;
+		Long startTime = 1318936569L;
+		Long endTime =1400000000L;
 		
 		
 		//analysis.compute(courseIds, userIds, types, considerLogouts, startTime, endTime);

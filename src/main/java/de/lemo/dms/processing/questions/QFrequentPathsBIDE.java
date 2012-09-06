@@ -139,89 +139,79 @@ public class QFrequentPathsBIDE extends Question{
 		// execute the algorithm
 		Clock c = new Clock();
 		Sequences res = algo.runAlgorithm(sequenceDatabase); 
-		System.out.println("Time: " + c.get() );
+		System.out.println("Time for BIDE-calculation: " + c.get() );
 		
 		LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 		Long pathId = 0L;
 		for(int i = 0; i < res.getLevelCount(); i++)
 		{
-			if(i > 0)
-				System.out.print(res.getLevel(i).size()+"\t");
 			for(int j = 0; j < res.getLevel(i).size(); j++)
 			{
-				UserPathObject predecessor = null;
+				String predecessor = null;
 				Long absSup = Long.valueOf(res.getLevel(i).get(j).getAbsoluteSupport());
 				pathId++;
 				System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
 				for(int k = 0; k < res.getLevel(i).get(j).size(); k++)
 				{
 					
-					String obId = res.getLevel(i).get(j).get(k).getItems().get(0).getId() + "";
-					
+					String obId = String.valueOf(res.getLevel(i).get(j).get(k).getItems().get(0).getId());
 					ILogMining ilo = idToLogM.get(obId.substring(0, 4) + " " + obId.substring(4));
-					Long idi = ilo.getLearnObjId();
 					
-					String type = ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf(".")+1);
-					String courseTitle = "Unknown Course";
-					if(ilo.getCourse() != null && ilo.getCourse().getTitle() != null)
-						courseTitle = ilo.getCourse().getTitle();
-					String url = "";
-					String pos = "";
-					if(ilo instanceof ResourceLogMining)
-					{
-						url = ((ResourceLogMining) ilo).getResource().getUrl();
-						pos = ((ResourceLogMining) ilo).getResource().getPosition()+"";
-					}
-					
-					UserPathObject upo = new UserPathObject(obId, ilo.getTitle(), absSup, type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size()));
-					if(ilo.getDuration() != -1L)
-						upo.setDuration(Double.parseDouble(ilo.getDuration()+""));
-					
-					//If the node is unknown, create a new entry in pathObjects
-					if(pathObjects.get(pathId + "_" + upo.getId()) == null)
-						pathObjects.put(pathId + "_" + upo.getId(), upo);
-					
-					else
-						pathObjects.get(pathId + "_" + upo.getId()).increaseWeight(Double.parseDouble(ilo.getDuration()+""));
-						
-					//If it isn't the first node of the Path add edge to predecessor
+					String type = ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf(".") + 1, ilo.getClass().toString().lastIndexOf("Log"));
+			
+					UserPathObject knownPath;
 					if(predecessor != null)
 					{
-						pathObjects.get(pathId + "_" + predecessor.getId()).addEdgeOrIncrement(obId);
+						String posId = null;
+						if((knownPath = pathObjects.get(obId + "_" + pathId)) == null)
+						{
+							 // If the node is new create entry in hash map
+							 posId = String.valueOf(pathObjects.size());
+	                         pathObjects.put(obId+"_" + pathId, new UserPathObject(posId, ilo.getTitle(), absSup, type, 
+	                        		 Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, 
+	                        		 Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
+						}
+						else
+						{
+							 // If the node is already known, increase weight
+							pathObjects.get(obId+"_" + pathId).increaseWeight(Double.parseDouble(ilo.getDuration()+""));
+							posId = knownPath.getId();
+						}
+						
+						// Increment or create predecessor edge
+						pathObjects.get(predecessor).addEdgeOrIncrement(posId);
 					}
-					predecessor = upo;
-					//if(i > 3)
-					//	System.out.println(ilo.getId() + "\t" + courseTitle + "\t" + pos + "\t" + ilo.getTitle() +"\t" + url);
+					else if(pathObjects.get(obId+"_" + pathId) == null)
+                    {
+                        String posId = String.valueOf(pathObjects.size());
+                        pathObjects.put(obId+"_" + pathId, new UserPathObject(posId, ilo.getTitle(), 1L,
+                                type, Double.valueOf(ilo.getDuration()), 1L, 0L, 0L, 0L));
+                    }
+                    else
+                        pathObjects.get(obId+"_" + pathId).increaseWeight(Double.valueOf(ilo.getDuration()));
 					
+					predecessor = obId+"_" + pathId;
 				}
 				
 			}
 		}
 		System.out.println("\n");
-		
-		/*for(int i = 1; i < res.getLevelCount(); i++)
-			System.out.println("Number of sequences of length "+ i + ": "+res.getLevel(i).size());*/
-		//algo.printStatistics(sequenceDatabase.size());
 
+		for(UserPathObject pathEntry : pathObjects.values()) {
 
-        for(Entry<String, UserPathObject> pathEntry : pathObjects.entrySet()) {
-
-            UserPathObject path = pathEntry.getValue();
+            UserPathObject path = pathEntry;
             path.setWeight(path.getWeight());
-            path.setPathId(pathEntry.getValue().getPathId());
+            path.setPathId(pathEntry.getPathId());
             nodes.add(new UserPathNode(path,true));
-            //String sourcePos = pathEntry.getKey();
-            String sourcePos = path.getTitle();
+            String sourcePos = path.getId();
 
-            for(Entry<String, Integer> linkEntry : pathEntry.getValue().getEdges().entrySet()) {
+            for(Entry<String, Integer> linkEntry : pathEntry.getEdges().entrySet()) {
                 UserPathLink link = new UserPathLink();
                 link.setSource(sourcePos);
                 link.setPathId(path.getPathId());
-                //link.setTarget(Long.parseLong(linkEntry.getKey()));
-                link.setTarget(pathObjects.get(path.getPathId() + "_" + linkEntry.getKey()).getTitle());
-                link.setValue(String.valueOf(linkEntry.getValue() + 10));
-                //if(link.getSource() != link.getTarget())
-                    links.add(link);
+                link.setTarget(linkEntry.getKey());
+                link.setValue(String.valueOf(linkEntry.getValue()));
+                links.add(link);
             }
         }
         

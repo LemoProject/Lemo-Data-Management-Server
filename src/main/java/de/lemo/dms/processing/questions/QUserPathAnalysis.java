@@ -180,13 +180,14 @@ public class QUserPathAnalysis extends Question {
                         continue;
                     }
                     String learnObjType = ELearnObjType.valueOf(current).toString();
-                    String type = current.getClass().toString().substring(current.getClass().toString().lastIndexOf(".")+1);
+                    String type = current.getClass().toString().substring(current.getClass().toString().lastIndexOf(".")+1, current.getClass().toString().lastIndexOf("Log"));
                     String cId = learnObjId + "-" + learnObjType;
                     // Determines whether it's a new path (no predecessor for
                     // current node) or not
 
                     UserPathObject knownPath;
-                    if(predNode != null) {
+                    if(predNode != null) 
+                    {
                         String cIdPos = null;
                         if((knownPath = pathObjects.get(cId)) == null)
                         {
@@ -225,14 +226,15 @@ public class QUserPathAnalysis extends Question {
         ArrayList<UserPathNode> nodes = Lists.newArrayList();
         ArrayList<UserPathLink> links = Lists.newArrayList();
 
-        for(Entry<String, UserPathObject> pathEntry : pathObjects.entrySet()) {
+        for(UserPathObject pathEntry : pathObjects.values()) {
 
-            UserPathObject path = pathEntry.getValue();
-            path.setPathId(pathEntry.getValue().getPathId());
+            UserPathObject path = pathEntry;
+            path.setPathId(pathEntry.getPathId());
             nodes.add(new UserPathNode(path));
             String sourcePos = path.getId();
 
-            for(Entry<String, Integer> linkEntry : pathEntry.getValue().getEdges().entrySet()) {
+            for(Entry<String, Integer> linkEntry : pathEntry.getEdges().entrySet()) 
+            {
                 UserPathLink link = new UserPathLink();
                 link.setSource(sourcePos);
                 link.setPathId(path.getPathId());
