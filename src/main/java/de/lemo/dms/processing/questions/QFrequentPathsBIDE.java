@@ -143,6 +143,7 @@ public class QFrequentPathsBIDE extends Question{
 		
 		LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 		Long pathId = 0L;
+		System.out.println();
 		for(int i = 0; i < res.getLevelCount(); i++)
 		{
 			for(int j = 0; j < res.getLevel(i).size(); j++)
@@ -234,6 +235,11 @@ public class QFrequentPathsBIDE extends Question{
 		}catch(Exception e)
 		{
 			e.printStackTrace();
+		}
+		finally
+		{
+			requests.clear();
+			idToLogM.clear();
 		}
 		return new ResultListUserPathGraph(nodes, links);
 	}
