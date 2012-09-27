@@ -11,6 +11,7 @@ public class CourseForumMining  implements IMappingClass{
 	private long id;
 	private CourseMining course;
 	private	ForumMining forum;
+	private Long platform;
 
 	public boolean equals(IMappingClass o)
 	{
@@ -92,5 +93,13 @@ public class CourseForumMining  implements IMappingClass{
 			this.forum = oldForumMining.get(forum);
 			oldForumMining.get(forum).addCourse_forum(this);
 		}
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}	
 }

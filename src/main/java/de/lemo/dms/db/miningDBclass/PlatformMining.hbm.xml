@@ -6,24 +6,30 @@
 <hibernate-mapping>
     
     <class
-        name="de.lemo.dms.db.miningDBclass.IDMappingMining"
-        table="id_mapping">
+        name="de.lemo.dms.db.miningDBclass.PlatformMining"
+        table="platform">
 
         <id
             name="id"
             column="id"
             type="long">
         </id>
+        
+       <property
+            name="name"
+            column="name"
+            type="string"/>
+            
+        <property
+            name="prefix"
+            column="prefix"
+            type="long"/>
+        
+        <property
+            name="type"
+            column="type"
+            type="string"/>
  
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-                         
-        <property
-            name="hash"
-            column="hash"
-            type="text"/>
     </class>
 
 </hibernate-mapping>

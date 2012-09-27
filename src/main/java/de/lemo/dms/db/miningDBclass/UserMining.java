@@ -11,10 +11,13 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 public class UserMining  implements IMappingClass{
 
 	private long id;
+	private String login;
+	private Boolean gender;
 	private long lastlogin;
 	private long firstaccess;
 	private long lastaccess;
 	private long currentlogin;
+	private Long platform;
 	
 	private Set<CourseUserMining> course_user = new HashSet<CourseUserMining>();
 	private Set<GroupUserMining> group_user = new HashSet<GroupUserMining>();
@@ -45,7 +48,21 @@ public class UserMining  implements IMappingClass{
 		return id;
 	}
 	
-	
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public Boolean getGender() {
+		return gender;
+	}
+
+	public void setGender(Boolean gender) {
+		this.gender = gender;
+	}
 
 	/** standard setter for the attribut id
 	 * @param id the identifier of the user
@@ -356,5 +373,13 @@ public class UserMining  implements IMappingClass{
 	 * */
 	public void addChat_log(ChatLogMining chat_log_add){	
 		chat_log.add(chat_log_add);
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

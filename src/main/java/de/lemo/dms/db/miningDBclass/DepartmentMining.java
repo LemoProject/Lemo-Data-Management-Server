@@ -10,6 +10,7 @@ public class DepartmentMining implements IMappingClass {
 	
 	private long id;
 	private String title;
+	private Long platform;
 
 	private Set<DepartmentDegreeMining> department_degree = new HashSet<DepartmentDegreeMining>();
 	
@@ -60,5 +61,13 @@ public class DepartmentMining implements IMappingClass {
 	 * */
 	public void addDepartment_degree(DepartmentDegreeMining department_degree_add){	
 		department_degree.add(department_degree_add);	
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

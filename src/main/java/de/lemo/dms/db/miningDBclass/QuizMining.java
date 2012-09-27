@@ -17,6 +17,7 @@ public class QuizMining implements Serializable , IMappingClass, ILearningObject
 	private double maxgrade;
 	private long timeopen;
 	private long timeclose;	
+	private Long platform;
 	
 	
 	public boolean equals(IMappingClass o)
@@ -252,5 +253,13 @@ public class QuizMining implements Serializable , IMappingClass, ILearningObject
 	 * */	
 	public void addQuiz_user(QuizUserMining quiz_user_add){	
 		quizUser.add(quiz_user_add);
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}	
 }

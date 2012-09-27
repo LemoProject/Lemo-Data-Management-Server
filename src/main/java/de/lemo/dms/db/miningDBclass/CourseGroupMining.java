@@ -11,6 +11,7 @@ public class CourseGroupMining  implements IMappingClass{
 	private long id;
 	private CourseMining course;
 	private	GroupMining group;
+	private Long platform;
 
 	public boolean equals(IMappingClass o)
 	{
@@ -90,6 +91,14 @@ public class CourseGroupMining  implements IMappingClass{
 	 */	
 	public GroupMining getGroup() {
 		return group;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 
 }

@@ -17,6 +17,7 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 	private String action;
 	private long timestamp;
 	private Long duration;
+	private Long platform;
 	
 	@Override
 	public int compareTo(ILogMining arg0) {
@@ -197,5 +198,13 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 	@Override
 	public Long getPrefix() {
 		return 1008L;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

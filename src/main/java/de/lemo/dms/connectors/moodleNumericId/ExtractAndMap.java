@@ -38,6 +38,7 @@ import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
 import de.lemo.dms.db.miningDBclass.GroupUserMining;
+import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionMining;
 import de.lemo.dms.db.miningDBclass.QuizLogMining;
@@ -63,6 +64,8 @@ public abstract class ExtractAndMap{
 //lists of object tables which are new found in LMS DB
 	/** A List of new entries in the course table found in this run of the process. */
 	static HashMap<Long, CourseMining> course_mining;
+	
+	static HashMap<Long, PlatformMining> platform_mining;
 	
 	/** A List of new entries in the quiz table found in this run of the process. */
 	static HashMap<Long, QuizMining> quiz_mining;
@@ -107,6 +110,8 @@ public abstract class ExtractAndMap{
 	static HashMap<Long, ChatLogMining> chat_log_mining;
 	
 //lists of object tables which are already in the mining DB
+	static HashMap<Long, PlatformMining> old_platform_mining;
+	
 	/** A List of entries in the course table, needed for linking reasons in the process. */
 	static HashMap<Long, CourseMining> old_course_mining;
 	
@@ -193,6 +198,8 @@ public abstract class ExtractAndMap{
 	static Long quizLogMax;
 	static Long scormLogMax;
 	static Long wikiLogMax;
+	
+	static PlatformMining platform;
 
 	/** Session object for the mining DB access. */
 	//static Session mining_session;
@@ -204,7 +211,7 @@ public abstract class ExtractAndMap{
  * When no argument is given the program starts with the time stamp of the last run.
  * @param args Optional arguments for the process. Used for the selection of the ExtractAndMap Implementation and time stamp when the extraction should start.
  * **/	
-	public void start(String[] args, DBConfigObject sourceDBConf) {
+	public void start(String[] args, String platformName, DBConfigObject sourceDBConf) {
 		
 		dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		c = new Clock();
@@ -214,6 +221,33 @@ public abstract class ExtractAndMap{
 		
 //get the status of the mining DB; load timestamp of last update and objects needed for associations		
 		long readingtimestamp = getMiningInitial();
+		
+		Long pid = 0L;
+		Long pref = 1000L;
+		
+		platform_mining = new HashMap<Long, PlatformMining>();
+		
+		for(PlatformMining p : old_platform_mining.values())
+		{
+			if( p.getId() > pid)
+        		pid = p.getId();
+			if( p.getPrefix() > pref)
+        		pref = p.getPrefix();
+        	
+        	if(p.getType().equals("Moodle_1.9_numeric") && p.getName().equals(platformName))
+        	{        		
+        		platform = p;
+        	}
+		}
+		if(platform == null)
+		{
+			platform = new PlatformMining();
+			platform.setId(pid + 1);
+			platform.setType("Moodle_1.9_numeric");
+			platform.setName(platformName);
+			platform.setPrefix(pref + 1);
+			platform_mining.put(platform.getId(), platform);
+		}
 		
 		System.out.println("Initialized database in " + c.getAndReset());
 //default call without parameter	        
@@ -274,7 +308,7 @@ public abstract class ExtractAndMap{
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (starttime));	
 	    config.setLargestId(largestId);
-	    config.setPlatform("Moodle19_numeric");
+	    config.setPlatform(platform.getId());
 	    dbHandler.saveToDB(session, config);
 	    //mining_session.saveOrUpdate(config);
 

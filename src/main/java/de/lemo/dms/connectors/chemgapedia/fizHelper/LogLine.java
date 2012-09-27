@@ -1,6 +1,7 @@
 package de.lemo.dms.connectors.chemgapedia.fizHelper;
 
-import de.lemo.dms.connectors.chemgapedia.fizHelper.Encoder;
+import de.lemo.dms.connectors.Encoder;
+
 
 // TODO: Auto-generated Javadoc
 /**

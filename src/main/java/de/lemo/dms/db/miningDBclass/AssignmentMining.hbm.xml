@@ -24,6 +24,12 @@
             name="title"
             column="title"
             type="string"/>
+ 
+        <property
+            name="platform"
+            column="platform"
+            type="long"/>  
+                       
             
         <property
             name="maxgrade"
@@ -52,14 +58,14 @@
             
 		<set name="assignment_log" inverse="true" lazy="false">
 			<key>
-				<column name="id"/>
+				<column name="assignment_id"/>
 			</key>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.AssignmentLogMining"/>
 		</set>
  
  		<set name="course_assignment" inverse="true" lazy="false">
 			<key>
-				<column name="id"/>
+				<column name="assignment_id"/>
 			</key>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseAssignmentMining"/>
 		</set>

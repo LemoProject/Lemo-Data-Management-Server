@@ -19,6 +19,7 @@ public class ForumLogMining implements ILogMining , IMappingClass {
 	private String message;
 	private long timestamp;
 	private Long duration;
+	private Long platform;
 	
 	@Override
 	public int compareTo(ILogMining arg0) {
@@ -218,5 +219,13 @@ public class ForumLogMining implements ILogMining , IMappingClass {
 	@Override
 	public Long getPrefix() {
 		return 1005L;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

@@ -37,6 +37,7 @@ public class ResourceMining implements IMappingClass, ILearningObject{
 	
 	/** The position. */
 	private long position;
+	private Long platform;
 	
 	
 	public boolean equals(IMappingClass o)
@@ -283,5 +284,13 @@ public class ResourceMining implements IMappingClass, ILearningObject{
 	 */
 	public void addResource_log(ResourceLogMining resource_log_add){	
 		resource_log.add(resource_log_add);	
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

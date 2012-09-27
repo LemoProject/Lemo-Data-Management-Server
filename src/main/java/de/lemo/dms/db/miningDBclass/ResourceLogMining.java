@@ -17,6 +17,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , I
 	private String action;
 	private long timestamp;
 	private Long duration;
+	private Long platform;
 	
 	public boolean equals(IMappingClass o)
 	{
@@ -193,5 +194,13 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , I
 	@Override
 	public Long getPrefix() {
 		return 1006L;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

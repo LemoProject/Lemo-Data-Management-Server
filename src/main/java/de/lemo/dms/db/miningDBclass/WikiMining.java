@@ -14,6 +14,7 @@ public class WikiMining  implements IMappingClass, ILearningObject{
 	private String summary;
 	private long timecreated;
 	private long timemodified;
+	private Long platform;
 	
 	private Set<CourseWikiMining> course_wiki = new HashSet<CourseWikiMining>();
 	private Set<WikiLogMining> wiki_log = new HashSet<WikiLogMining>();
@@ -128,5 +129,13 @@ public class WikiMining  implements IMappingClass, ILearningObject{
 	 * */
 	public void addWiki_log(WikiLogMining wiki_log_add){	
 		wiki_log.add(wiki_log_add);
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

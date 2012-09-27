@@ -14,6 +14,7 @@ public class CourseAssignmentMining  implements IMappingClass{
 	private long id;	
 	private CourseMining course;
 	private	AssignmentMining assignment;
+	private Long platform;
 
 	public boolean equals(IMappingClass o)
 	{
@@ -126,5 +127,15 @@ public class CourseAssignmentMining  implements IMappingClass{
 	 */	
 	public long getId() {
 		return id;
+	}
+
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

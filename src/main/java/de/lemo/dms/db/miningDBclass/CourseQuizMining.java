@@ -13,6 +13,7 @@ public class CourseQuizMining  implements IMappingClass{
 	private long id;
 	private CourseMining course;
 	private	QuizMining quiz;
+	private Long platform;
 
 	public boolean equals(IMappingClass o)
 	{
@@ -124,5 +125,13 @@ public class CourseQuizMining  implements IMappingClass{
 	 */
 	public long getId() {
 		return id;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

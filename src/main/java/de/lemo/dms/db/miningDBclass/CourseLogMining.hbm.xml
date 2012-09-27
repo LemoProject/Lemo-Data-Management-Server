@@ -14,7 +14,12 @@
             column="id"
             type="long">
         </id>
-            
+ 
+        <property
+            name="platform"
+            column="platform"
+            type="long"/>  
+                       
         <property
             name="duration"
             column="duration"

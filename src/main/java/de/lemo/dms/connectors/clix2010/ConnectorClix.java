@@ -25,24 +25,7 @@ public class ConnectorClix implements IConnector{
 	public boolean testConnections() {
 		try{
 			
-			ClixImporter.getClixData();
-			/*
-	        Session session = HibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
-	        List<EComponent> ilm;
-	        Criteria criteria = session.createCriteria(EComponent.class, "log");
-			ilm = criteria.list();
-			for(int i = 0; i < ilm.size(); i++)
-			{
-				EComponent ec = ilm.get(i);
-				Long f = TimeConverter.getTimestamp(ec.getLastUpdated());
-				if(i==0)
-					System.out.println(f);
-			}
-			
-	        session.close();*/
-	        //HibernateDBHandler target= new HibernateDBHandler();
-	        //target.getConnection(miningDBConf);
-	        //target.closeConnection();
+			//ToDo - TestImpl
 		}catch(HibernateException he)
 		{
 			he.printStackTrace();
@@ -52,9 +35,9 @@ public class ConnectorClix implements IConnector{
 	}
 
 	@Override
-	public void getData() {
+	public void getData(String platformName) {
 		try{
-			ClixImporter.getClixData();
+			ClixImporter.getClixData(platformName);
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -63,9 +46,9 @@ public class ConnectorClix implements IConnector{
 	}
 
 	@Override
-	public void updateData(long fromTimestamp) {
+	public void updateData(String platformName, long fromTimestamp) {
 		try{
-			ClixImporter.updateClixData(fromTimestamp);
+			ClixImporter.updateClixData(platformName, fromTimestamp);
 		}catch(Exception e)
 		{
 			e.printStackTrace();

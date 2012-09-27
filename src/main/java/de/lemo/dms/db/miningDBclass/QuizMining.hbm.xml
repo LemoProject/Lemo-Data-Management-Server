@@ -13,7 +13,12 @@
 			name="id"
 			type="long"
 			column="id"/>
-		
+ 
+        <property
+            name="platform"
+            column="platform"
+            type="long"/>  
+           		
  		<property 
 			name="type"
 			type="string" 
@@ -51,35 +56,35 @@
             
 		<set name="course_quiz" inverse="true" lazy="false">
 			<key>
-				<column name="id"/>
+				<column name="quiz_id"/>
 			</key>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseQuizMining"/>
 		</set>
 
 		<set name="quiz_question" inverse="true" lazy="false">
 			<key>
-				<column name="id"/>
+				<column name="quiz_id"/>
 			</key>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizQuestionMining"/>
 		</set>
 		
         <set name="quiz_log" inverse="true" lazy="false">
 			<key>
-				<column name="id"/>
+				<column name="quiz_id"/>
 			</key>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizLogMining"/>
 		</set>
 
         <set name="quiz_user" inverse="true" lazy="false">
 			<key>
-				<column name="id"/>
+				<column name="quiz_id"/>
 			</key>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizUserMining"/>
 		</set>
 
 		<set name="question_log" inverse="true" lazy="false">
 			<key>
-				<column name="id"/>
+				<column name="quiz_id"/>
 			</key>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.QuestionLogMining"/>
 		</set>

@@ -14,6 +14,7 @@ public class ChatMining implements IMappingClass {
 	private String description;
 	private long chattime;
 	private CourseMining course;
+	private Long platform;
 	
 	public boolean equals(IMappingClass o)
 	{
@@ -81,6 +82,18 @@ public class ChatMining implements IMappingClass {
 	}
 	public void addChat_log(ChatLogMining chat_log_add){	
 		chat_log.add(chat_log_add);
+	}
+
+
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 	
 }

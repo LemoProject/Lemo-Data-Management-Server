@@ -14,17 +14,22 @@
             column="id"
             type="long">
         </id>            
-            
+ 
+        <property
+            name="platform"
+            column="platform"
+            type="long"/>  
+                       
        <many-to-one 
        		name="course" 
        		class="de.lemo.dms.db.miningDBclass.CourseMining"
-       		cascade="save-update" 
+       		cascade="save-update,persist" 
             column="course_id" />
             
 		<many-to-one 
        		name="assignment" 
        		class="de.lemo.dms.db.miningDBclass.AssignmentMining"
-       		cascade="save-update" 
+       		cascade="save-update,persist" 
             column="assignment_id" />   
 				                          
     </class>

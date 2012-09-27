@@ -14,7 +14,12 @@
             column="id"
             type="long">
         </id>
-        
+ 
+        <property
+            name="platform"
+            column="platform"
+            type="long"/>  
+                   
        <property
             name="type"
             column="type"
@@ -52,14 +57,14 @@
             
 		<set name="scorm_log" inverse="true" lazy="false">
 			<key>
-				<column name="id"/>
+				<column name="scorm_id"/>
 			</key>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.ScormLogMining"/>
 		</set>
  
   		<set name="course_scorm" inverse="true" lazy="false">
 			<key>
-				<column name="id"/>
+				<column name="scorm_id"/>
 			</key>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseScormMining"/>
 		</set>

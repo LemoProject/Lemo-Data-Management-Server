@@ -28,20 +28,20 @@ public class ConnectorMoodle implements IConnector{
 	}
 
 	@Override
-	public void getData() {
+	public void getData(String platformName) {
 		ExtractAndMapMoodle extract = new ExtractAndMapMoodle();	
 		String[] s = new String[1];
 		s[0] = "ExtractAndMapMoodle";
-		extract.start(s, sourceDBConf);		
+		extract.start(s, platformName, sourceDBConf);		
 	}
 
 	@Override
-	public void updateData(long fromTimestamp) {
+	public void updateData(String platformName, long fromTimestamp) {
 		ExtractAndMapMoodle extract = new ExtractAndMapMoodle();	
 		String[] s = new String[2];
 		s[0] = "ExtractAndMapMoodle";
 		s[1] = fromTimestamp+"";
-		extract.start(s, sourceDBConf);
+		extract.start(s, platformName, sourceDBConf);
 		
 	}
 

@@ -17,6 +17,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject{
 	private long timeclose;	
 	private long timecreated;
 	private long timemodified;
+	private Long platform;
 	
 	private Set<AssignmentLogMining> assignment_log = new HashSet<AssignmentLogMining>();
 	private Set<CourseAssignmentMining> course_assignment = new HashSet<CourseAssignmentMining>();
@@ -162,5 +163,13 @@ public class AssignmentMining implements IMappingClass, ILearningObject{
 	 * */	
 	public void addCourse_assignment(CourseAssignmentMining course_assignment_add){	
 		course_assignment.add(course_assignment_add);
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

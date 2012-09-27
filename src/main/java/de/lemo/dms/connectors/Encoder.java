@@ -1,4 +1,4 @@
-package de.lemo.dms.connectors.chemgapedia.fizHelper;
+package de.lemo.dms.connectors;
 
 import java.security.MessageDigest;
 

@@ -13,6 +13,7 @@ public class QuizUserMining  implements IMappingClass{
 	private double rawgrade;
 	private double finalgrade;
 	private long timemodified;
+	private Long platform;
 	
 	public boolean equals(IMappingClass o)
 	{
@@ -161,5 +162,13 @@ public class QuizUserMining  implements IMappingClass{
 	 */	
 	public void setTimemodified(long timemodified) {
 		this.timemodified = timemodified;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}	
 }

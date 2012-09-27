@@ -27,7 +27,7 @@ public class ConnectorDummy implements IConnector {
 	}
 
 	@Override
-	public void getData() {
+	public void getData(String platformName) {
 		try {
 			logger.info("connector dummy will load whole database");
 			Thread.sleep(SLEEP);
@@ -38,7 +38,7 @@ public class ConnectorDummy implements IConnector {
 	}
 
 	@Override
-	public void updateData(long fromTimestamp) {
+	public void updateData(String platformName, long fromTimestamp) {
 		try {
 			logger.info("connector dummy will update whole database");
 			Thread.sleep(SLEEP);

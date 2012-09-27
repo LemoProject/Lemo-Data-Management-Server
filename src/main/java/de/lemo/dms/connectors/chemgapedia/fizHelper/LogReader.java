@@ -22,6 +22,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
+import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
@@ -67,10 +68,13 @@ public class LogReader {
 	
 	Long lastTimestamp = 0L;
 	
+	PlatformMining pf;
+	
 	
 	@SuppressWarnings("unchecked")
-    public LogReader(Long idcount)
+    public LogReader(PlatformMining platform, Long idcount)
 	{
+		pf = platform;
 		try{
 			
 			new_id_mapping = new HashMap<String, IDMappingMining>();
@@ -78,31 +82,36 @@ public class LogReader {
 			session = dbHandler.getMiningSession();
 	    	
 	    	Criteria c = session.createCriteria(IDMappingMining.class, "idmap");
-	    	c.add(Restrictions.eq("idmap.platform", "Chemgapedia"));
+	    	
+	    	c.add(Restrictions.eq("idmap.platform", platform.getId()));
 			
 			List<IDMappingMining> ids = c.list();
 			
 			id_mapping = new HashMap<String, IDMappingMining>();
 			for(int i = 0; i < ids.size(); i++)
 			{
+				ids.get(i).setPlatform(pf.getId());
 				id_mapping.put(ids.get(i).getHash(), ids.get(i));
 			}
 			System.out.println("Read "+ids.size() + " IDMappings from database.");
 			
 			
-			c = session.createCriteria(UserMining.class);
+			c = session.createCriteria(UserMining.class, "users");
+			c.add(Restrictions.eq("users.platform", platform.getId()));
 	    	List<UserMining> us  = c.list();
 	    	for(int i = 0; i < us.size(); i++)
 	    		this.oldUsers.put(us.get(i).getId(), us.get(i));
 	    	System.out.println("Read "+us.size() + " UserMinings from database.");
 	    	
-	    	c = session.createCriteria(ResourceMining.class);
+	    	c = session.createCriteria(ResourceMining.class, "resources");
+	    	c.add(Restrictions.eq("resources.platform", platform.getId()));
 	    	List<ResourceMining> rt  = c.list();
 	    	for(ResourceMining res : rt)
 	    		this.oldResources.put(res.getUrl(), res);
 	    	System.out.println("Read "+rt.size() + " ResourceMinings from database.");
 	    	
-	    	c = session.createCriteria(CourseMining.class);
+	    	c = session.createCriteria(CourseMining.class, "courses");
+	    	c.add(Restrictions.eq("courses.platform", platform.getId()));
 	    	List<CourseMining> cm  = c.list();
 	    	for(int i = 0; i < cm.size(); i++)
 	    	{
@@ -110,7 +119,8 @@ public class LogReader {
 	    	}
 	    	System.out.println("Read "+cm.size() + " CourseMinings from database.");
 	    
-	    	c = session.createCriteria(CourseResourceMining.class);
+	    	c = session.createCriteria(CourseResourceMining.class, "coursesResources");
+	    	c.add(Restrictions.eq("coursesResources.platform", platform.getId()));
 	    	List<CourseResourceMining> courseResource = c.list();
 	    	for(int i = 0; i < courseResource.size(); i++)
 	    		this.courseResources.put(((CourseResourceMining)courseResource.get(i)).getResource().getUrl(), ((CourseResourceMining)courseResource.get(i)));
@@ -118,13 +128,15 @@ public class LogReader {
 	    	
 	    	if(idcount == -1)
 	    	{
-	    		c = session.createCriteria(ResourceLogMining.class);
+	    		c = session.createCriteria(ResourceLogMining.class, "rLogs");
+		    	c.add(Restrictions.eq("rLogs.platform", platform.getId()));
 	    		List<ResourceLogMining> l1 = c.list();
 				if(l1 != null && l1.size() > 0 && l1.get(l1.size()-1) != null)
 					lastTimestamp = l1.get(l1.size()-1).getTimestamp();
 	    		
 	    		
-				c = session.createCriteria(ConfigMining.class);
+				c = session.createCriteria(ConfigMining.class, "conf");
+				c.add(Restrictions.eq("conf.platform", platform.getId()));
 				List<ConfigMining>l = c.list();
 				if(l != null && l.size() > 0)
 					largestId = l.get(l.size()-1).getLargestId();
@@ -253,8 +265,8 @@ public class LogReader {
        	       			{
        	       				id = largestId + 1;
        	       				largestId = id;
-       	       				id_mapping.put(name, new IDMappingMining(id, name, "Chemgapedia"));
-       	       				new_id_mapping.put(name, new IDMappingMining(id, name, "Chemgapedia"));
+       	       				id_mapping.put(name, new IDMappingMining(id, name, pf.getId()));
+       	       				new_id_mapping.put(name, new IDMappingMining(id, name, pf.getId()));
        	       				lo.setId(id);
        	       			}
        	       			
@@ -314,6 +326,7 @@ public class LogReader {
 		    					  u.setCurrentlogin(lo.getTime());
 		    					  u.setLastaccess(lo.getTime());
 		    				  }
+		    				  u.setPlatform(pf.getId());
 		    				  newUsers.put(u.getId(), u);
 		    				  lo.setUser(u);
 		    			  }
@@ -327,6 +340,7 @@ public class LogReader {
 			    				  u.setCurrentlogin(lo.getTime());
 			    			  else
 			    				  u.setCurrentlogin(0);  
+			    			  u.setPlatform(pf.getId());
 			    			  newUsers.put(lo.getId(), u);
 			    			  oldUsers.put(u.getId(), u);
 			    			  lo.setUser(u);
@@ -347,8 +361,8 @@ public class LogReader {
 		       	       			{
 		       	       				resource_id = largestId + 1;
 		       	       				largestId = resource_id;
-		       	       				id_mapping.put(lo.getUrl(), new IDMappingMining(resource_id, lo.getUrl(), "Chemgapedia"));
-		       	       				new_id_mapping.put(lo.getUrl(), new IDMappingMining(resource_id, lo.getUrl(), "Chemgapedia"));
+		       	       				id_mapping.put(lo.getUrl(), new IDMappingMining(resource_id, lo.getUrl(), pf.getId()));
+		       	       				new_id_mapping.put(lo.getUrl(), new IDMappingMining(resource_id, lo.getUrl(), pf.getId()));
 		       	       				lo.setId(resource_id);
 		       	       			}
 		       	       			if(lo.getId() > largestId)
@@ -395,6 +409,7 @@ public class LogReader {
 		    				  if(r.getUrl().contains("/mindmap/"))
 		    					  r.setType("Mindmap");
 		    				  
+		    				  r.setPlatform(pf.getId());
 		    				  this.newResources.put(r.getUrl(), r);
 		    			  }
 		    			  
@@ -470,7 +485,6 @@ public class LogReader {
 			
 			Session session = dbHandler.getMiningSession();
 			dbHandler.saveCollectionToDB(session, l);
-			dbHandler.closeSession(session);
 			
 			
 			/*}
@@ -537,7 +551,6 @@ public class LogReader {
 		{
 			System.out.println(e.getMessage());
 		}
-		dbHandler.closeSession(session);
 		return largestId;
 	}
 }

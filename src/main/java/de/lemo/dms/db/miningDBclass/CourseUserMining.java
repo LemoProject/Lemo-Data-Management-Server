@@ -14,6 +14,7 @@ public class CourseUserMining implements IMappingClass {
 	private RoleMining role;
 	private long enrolstart;
 	private long enrolend;
+	private Long platform;
 
 	public boolean equals(IMappingClass o)
 	{
@@ -148,5 +149,13 @@ public class CourseUserMining implements IMappingClass {
 			this.role = oldRoleMining.get(role);
 			oldRoleMining.get(role).addCourse_user(this);
 		}
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

@@ -12,6 +12,7 @@ public class GroupUserMining implements IMappingClass {
 	private GroupMining group;
 	private	UserMining user;
 	private long timestamp;
+	private Long platform;
 
 	public boolean equals(IMappingClass o)
 	{
@@ -106,5 +107,13 @@ public class GroupUserMining implements IMappingClass {
 			this.group = oldGroupMining.get(group);
 			oldGroupMining.get(group).addGroup_user(this);
 		}
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

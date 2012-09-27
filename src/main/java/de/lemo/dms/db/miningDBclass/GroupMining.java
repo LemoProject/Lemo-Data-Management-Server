@@ -11,6 +11,7 @@ public class GroupMining implements IMappingClass {
 	private long id;
 	private long timecreated;
 	private long timemodified;
+	private Long platform;
 
 	private Set<CourseGroupMining> course_group = new HashSet<CourseGroupMining>();
 	private Set<GroupUserMining> group_user = new HashSet<GroupUserMining>();
@@ -95,5 +96,13 @@ public class GroupMining implements IMappingClass {
 	 * */	
 	public void addGroup_user(GroupUserMining group_user_add){	
 		group_user.add(group_user_add);
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

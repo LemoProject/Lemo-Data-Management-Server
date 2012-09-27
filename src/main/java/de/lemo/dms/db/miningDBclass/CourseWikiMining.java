@@ -10,6 +10,7 @@ public class CourseWikiMining implements IMappingClass {
 	private long id;
 	private CourseMining course;
 	private	WikiMining wiki;
+	private Long platform;
 
 	public boolean equals(IMappingClass o)
 	{
@@ -91,5 +92,13 @@ public class CourseWikiMining implements IMappingClass {
 			this.wiki = oldWikiMining.get(wiki);
 			oldWikiMining.get(wiki).addCourse_wiki(this);
 		}
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

@@ -27,7 +27,7 @@
             type="string"/>
             
        	<property
-            name="sex"
+            name="gender"
             column="SALUTATION_ID"
             type="long"/>
 

@@ -14,6 +14,7 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 	private String action;
 	private long timestamp;
 	private Long duration;
+	private Long platform;
 	
 	public int compareTo(ILogMining arg0) {
 		ILogMining s;
@@ -156,6 +157,14 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 	public Long getPrefix() {
 		// TODO Auto-generated method stub
 		return 1002L;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 
 

@@ -14,7 +14,12 @@
             column="id"
             type="long">
         </id>
-
+ 
+        <property
+            name="platform"
+            column="platform"
+            type="long"/>  
+           
 		<many-to-one name="quiz" 
 		class="de.lemo.dms.db.miningDBclass.QuizMining" cascade="save-update"> 
        		<column name="quiz_id"/>           

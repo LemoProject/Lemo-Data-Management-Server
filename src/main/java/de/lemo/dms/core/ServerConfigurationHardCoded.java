@@ -35,6 +35,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
     private String logfileName = "./DatamanagementServer.log";
     private int port = 4443;
     private int keepAlive = 180;
+    private String platformName = "";
 
     // ------------------------------------
 
@@ -140,6 +141,8 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
         addDBProperty(miningDBConfig, miningPrefix, "hibernate.use_sql_comments");
         addDBProperty(miningDBConfig, miningPrefix, "log4j.logger.org.hibernate");
         // addDBProperty(miningDBConfig,miningPrefix,"hibernate.search.indexing_strategy");
+        
+        addDBProperty(miningDBConfig, miningPrefix, "mining.config.platform");
     }
 
     private void addDBProperty(DBConfigObject dbConfig, String propertyPrefix, String propertyName) {

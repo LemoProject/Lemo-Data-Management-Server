@@ -11,6 +11,7 @@ public class CourseResourceMining implements IMappingClass {
 	private long id;
 	private CourseMining course;
 	private	ResourceMining resource;
+	private Long platform;
 
 	public boolean equals(IMappingClass o)
 	{
@@ -90,5 +91,13 @@ public class CourseResourceMining implements IMappingClass {
 			this.resource = oldResourceMining.get(resource);
 			oldResourceMining.get(resource).addCourse_resource(this);
 		}		
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

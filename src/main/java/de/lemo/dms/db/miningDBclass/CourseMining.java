@@ -17,6 +17,7 @@ public class CourseMining implements IMappingClass, ILearningObject {
 	private long timemodified;
 	private String title;
 	private String shortname;
+	private Long platform;
 	
 	private Set<CourseGroupMining> course_group = new HashSet<CourseGroupMining>();
 	private Set<ChatMining> chat = new HashSet<ChatMining>();
@@ -493,5 +494,13 @@ public class CourseMining implements IMappingClass, ILearningObject {
 	 * */		
 	public void addDegree_course(DegreeCourseMining degree_course_add){	
 		degree_course.add(degree_course_add);	
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

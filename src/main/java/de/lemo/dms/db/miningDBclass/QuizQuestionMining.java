@@ -11,6 +11,7 @@ public class QuizQuestionMining  implements IMappingClass{
 	private long id;
 	private QuizMining quiz;
 	private	QuestionMining question;
+	private Long platform;
 
 	public boolean equals(IMappingClass o)
 	{
@@ -94,5 +95,13 @@ public class QuizQuestionMining  implements IMappingClass{
 			this.question = oldQuestionMining.get(question);
 			oldQuestionMining.get(question).addQuiz_question(this);
 		}
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

@@ -17,6 +17,7 @@ public class ScormMining implements IMappingClass, ILearningObject {
 	private long timeclose;	
 	private long timecreated;
 	private long timemodified;
+	private Long platform;
 	
 	private Set<ScormLogMining> scorm_log = new HashSet<ScormLogMining>();
 	private Set<CourseScormMining> course_scorm = new HashSet<CourseScormMining>();
@@ -164,5 +165,13 @@ public class ScormMining implements IMappingClass, ILearningObject {
 	 * */	
 	public void addCourse_scorm(CourseScormMining course_scorm_add){	
 		course_scorm.add(course_scorm_add);
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

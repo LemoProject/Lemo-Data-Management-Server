@@ -24,7 +24,12 @@
             name="duration"
             column="duration"
             type="long"/>   
-            
+ 
+        <property
+            name="platform"
+            column="platform"
+            type="long"/>  
+           
         <property
             name="action"
             column="action"

@@ -11,6 +11,7 @@ public class DegreeMining  implements IMappingClass{
 
 	private long id;
 	private String title;
+	private Long platform;
 
 	private Set<DepartmentDegreeMining> department_degree = new HashSet<DepartmentDegreeMining>();
 	private Set<DegreeCourseMining> degree_course = new HashSet<DegreeCourseMining>();
@@ -82,6 +83,16 @@ public class DegreeMining  implements IMappingClass{
 	 * */
 	public void addDegree_course(DegreeCourseMining degree_course_add){	
 		degree_course.add(degree_course_add);	
+	}
+
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 	
 }

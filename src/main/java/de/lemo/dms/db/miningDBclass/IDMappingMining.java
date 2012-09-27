@@ -7,7 +7,7 @@ public class IDMappingMining implements IMappingClass {
 
 	private Long id;
 	private String hash;
-	private String platform;
+	private Long platform;
 	
 	public boolean equals(IMappingClass o)
 	{
@@ -18,11 +18,11 @@ public class IDMappingMining implements IMappingClass {
 		return false;
 	}
 	
-	public String getPlatform() {
+	public Long getPlatform() {
 		return platform;
 	}
 
-	public void setPlatform(String platform) {
+	public void setPlatform(Long platform) {
 		this.platform = platform;
 	}
 
@@ -35,10 +35,10 @@ public class IDMappingMining implements IMappingClass {
 	{
 		this.id = id;
 		this.hash = hash;
-		this.platform = "Unknown";
+		this.platform = 0L;
 	}
 	
-	public IDMappingMining(long id, String hash, String platform)
+	public IDMappingMining(long id, String hash, Long platform)
 	{
 		this.id = id;
 		this.hash = hash;

@@ -22,6 +22,7 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	private long timestamp;
 	private String action;
 	private Long duration;
+	private Long platform;
 	
 	@Override
 	public int compareTo(ILogMining arg0) {
@@ -284,5 +285,13 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	@Override
 	public Long getPrefix() {
 		return 1003L;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}	
 }

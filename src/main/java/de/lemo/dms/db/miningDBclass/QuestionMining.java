@@ -15,6 +15,7 @@ public class QuestionMining  implements IMappingClass, ILearningObject{
 	private String type;
 	private long timecreated;
 	private long timemodified;
+	private Long platform;
 
 	private Set<QuizQuestionMining> quiz_question = new HashSet<QuizQuestionMining>();
 	private Set<QuestionLogMining> question_log = new HashSet<QuestionLogMining>();
@@ -137,5 +138,13 @@ public class QuestionMining  implements IMappingClass, ILearningObject{
 	 * */	
 	public void addQuestion_log(QuestionLogMining question_log_add){	
 		question_log.add(question_log_add);	
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

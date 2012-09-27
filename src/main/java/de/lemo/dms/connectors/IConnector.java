@@ -29,7 +29,7 @@ public interface IConnector {
 	 * @param conf the database configuration object, holding connection settings
 	 * @return the data
 	 */
-	public void getData();
+	public void getData(String platformName);
 	
 	/**
 	 * Update data.
@@ -37,6 +37,6 @@ public interface IConnector {
 	 * @param conf the database configuration object, holding connection settings
 	 * @param fromTimestamp the from timestamp
 	 */
-	public void updateData(long fromTimestamp);
+	public void updateData(String platformName, long fromTimestamp);
 
 }

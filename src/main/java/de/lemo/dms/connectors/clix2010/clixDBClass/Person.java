@@ -8,7 +8,7 @@ public class Person  implements IClixMappingClass{
 	private String lastLoginTime;
 	private String firstLoginTime;
 	private String login;
-	private long sex;
+	private Long gender;
 	
 
 
@@ -24,7 +24,7 @@ public class Person  implements IClixMappingClass{
 				+this.getFirstLoginTime()+"ä$"
 				+this.getLastLoginTime()+"ä$"
 				+this.getLogin()+"ä$"
-				+this.getSex();
+				+this.getGender();
 	}
 	
 	public Long getId() {
@@ -54,12 +54,12 @@ public class Person  implements IClixMappingClass{
 		this.login = login;
 	}
 
-	public long getSex() {
-		return sex;
+	public Long getGender() {
+		return gender;
 	}
 
-	public void setSex(long sex) {
-		this.sex = sex;
+	public void setGender(Long gender) {
+		this.gender = gender;
 	}
 	
 	

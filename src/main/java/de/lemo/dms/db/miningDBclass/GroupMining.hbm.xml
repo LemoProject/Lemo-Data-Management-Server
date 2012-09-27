@@ -14,7 +14,12 @@
             column="id"
             type="long">
         </id>
-               
+ 
+        <property
+            name="platform"
+            column="platform"
+            type="long"/>  
+                          
         <property
             name="timecreated"
             column="timecreated"
@@ -26,12 +31,12 @@
             type="long"/>
             
 		<set name="course_group" inverse="true" lazy="false">
-			<key column="id"/>
+			<key column="group_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseGroupMining"/>
 		</set>
 		
 		<set name="group_user" inverse="true" lazy="false">
-			<key column="id"/>
+			<key column="group_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.GroupUserMining"/>
 		</set>              
                             

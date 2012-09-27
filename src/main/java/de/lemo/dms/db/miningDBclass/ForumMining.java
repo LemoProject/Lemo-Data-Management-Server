@@ -14,6 +14,7 @@ public class ForumMining implements IMappingClass, ILearningObject {
 	private String summary;
 	private long timecreated;
 	private long timemodified;
+	private Long platform;
 	
 	private Set<CourseForumMining> course_forum = new HashSet<CourseForumMining>();
 	private Set<ForumLogMining> forum_log = new HashSet<ForumLogMining>();
@@ -127,5 +128,13 @@ public class ForumMining implements IMappingClass, ILearningObject {
 	 * */
 	public void addForum_log(ForumLogMining forum_log_add){	
 		forum_log.add(forum_log_add);	
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

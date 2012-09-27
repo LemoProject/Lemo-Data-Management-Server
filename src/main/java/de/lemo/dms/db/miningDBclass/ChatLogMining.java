@@ -15,6 +15,7 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 	private long timestamp;
 	private CourseMining course;
 	private Long duration;
+	private Long platform;
 	
 	public CourseMining getCourse() {
 		return course;
@@ -156,6 +157,14 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 	@Override
 	public Long getPrefix() {
 		return 1009L;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 	
 }

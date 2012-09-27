@@ -18,6 +18,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass{
 	private String action;
 	private long timestamp;	
 	private Long duration; 
+	private Long platform;
 	
 	
 	@Override
@@ -224,5 +225,13 @@ public class AssignmentLogMining implements ILogMining, IMappingClass{
 	@Override
 	public Long getPrefix() {
 		return 1001L;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }

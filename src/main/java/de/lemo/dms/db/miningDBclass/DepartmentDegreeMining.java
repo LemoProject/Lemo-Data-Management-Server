@@ -9,6 +9,7 @@ public class DepartmentDegreeMining implements IMappingClass {
 	private long id;
 	private DepartmentMining department;
 	private	DegreeMining degree;
+	private Long platform;
 	
 	
 	public boolean equals(IMappingClass o)
@@ -93,6 +94,14 @@ public class DepartmentDegreeMining implements IMappingClass {
 			this.degree = oldDegreeMining.get(degree);
 			oldDegreeMining.get(degree).addDepartment_degree(this);
 		}
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 	
 }

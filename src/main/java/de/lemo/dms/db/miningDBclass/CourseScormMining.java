@@ -14,6 +14,7 @@ public class CourseScormMining  implements IMappingClass{
 	private long id;	
 	private CourseMining course;
 	private	ScormMining scorm;
+	private Long platform;
 
 	public boolean equals(IMappingClass o)
 	{
@@ -94,5 +95,13 @@ public class CourseScormMining  implements IMappingClass{
 	 */
 	public long getId() {
 		return id;
+	}
+
+	public Long getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Long platform) {
+		this.platform = platform;
 	}
 }
