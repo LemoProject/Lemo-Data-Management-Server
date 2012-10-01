@@ -44,25 +44,26 @@ public class ServiceDebug extends BaseService {
             html.append("<li>miningSession isOpen: ").append(miningSession.isOpen()).append("</li>");
 
             List<?> result = null;
+            int resultCount = 0;
             try {
                 result = miningSession.createCriteria(AssignmentLogMining.class, "log").setMaxResults(3).list();
-
+                resultCount += result.size();
                 result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(3).list();
-
+                resultCount += result.size();
                 result = miningSession.createCriteria(CourseLogMining.class, "log").setMaxResults(3).list();
-
+                resultCount += result.size();
                 result = miningSession.createCriteria(ForumLogMining.class, "log").setMaxResults(3).list();
-
+                resultCount += result.size();
                 result = miningSession.createCriteria(QuestionLogMining.class, "log").setMaxResults(3).list();
-
+                resultCount += result.size();
                 result = miningSession.createCriteria(QuizLogMining.class, "log").setMaxResults(3).list();
-
+                resultCount += result.size();
                 result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(3).list();
-
+                resultCount += result.size();
                 result = miningSession.createCriteria(ScormLogMining.class, "log").setMaxResults(3).list();
-
+                resultCount += result.size();
                 result = miningSession.createCriteria(WikiLogMining.class, "log").setMaxResults(3).list();
-
+                resultCount += result.size();
             } catch (Exception exeption) {
 
                 Throwable e = exeption;
@@ -77,9 +78,9 @@ public class ServiceDebug extends BaseService {
                     e = e.getCause();
                 }
             }
-            html.append("<li>ResourceLogMining result: ").append(result).append("</li>");
+            html.append("<li>ResourceLogMining query successful</li>");
             if(result != null) {
-                html.append("<li>ResourceLogMining results: ").append(result.size()).append("</li>");
+                html.append("<li>ResourceLogMining results: ").append(resultCount).append("</li>");
             }
 
             miningSession.close();
