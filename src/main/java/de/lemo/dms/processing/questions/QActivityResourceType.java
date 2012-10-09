@@ -94,7 +94,7 @@ public class QActivityResourceType extends Question {
 					 {
 						 System.out.println(ilm.get(i).getAssignment().getId());
 						 if(rri.get(ilm.get(i).getAssignment().getId()) == null)
-							 rri.put(ilm.get(i).getAssignment().getId(), new ResourceRequestInfo(ilm.get(i).getAssignment().getId(), ELearnObjType.ASSIGNMENT, 1L, ilm.get(i).getAssignment().getTitle(), 0L));
+							 rri.put(ilm.get(i).getAssignment().getId(), new ResourceRequestInfo(ilm.get(i).getAssignment().getId(), ELearnObjType.ASSIGNMENT, 1L, 1L, ilm.get(i).getAssignment().getTitle(), 0L));
 						 else
 						 {
 							 
@@ -114,7 +114,7 @@ public class QActivityResourceType extends Question {
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getForum() != null)
 						 if(rri.get(ilm.get(i).getForum().getId()) == null)
-							 rri.put(ilm.get(i).getForum().getId(), new ResourceRequestInfo(ilm.get(i).getForum().getId(), ELearnObjType.FORUM, 1L, ilm.get(i).getForum().getTitle(), 0L));
+							 rri.put(ilm.get(i).getForum().getId(), new ResourceRequestInfo(ilm.get(i).getForum().getId(), ELearnObjType.FORUM, 1L, 1L, ilm.get(i).getForum().getTitle(), 0L));
 						 else
 							 rri.get(ilm.get(i).getForum().getId()).incRequests();
 				 if(rri.values() != null)
@@ -130,7 +130,7 @@ public class QActivityResourceType extends Question {
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getQuestion() != null)
 						 if(rri.get(ilm.get(i).getQuestion().getId()) == null )
-							 rri.put(ilm.get(i).getQuestion().getId(), new ResourceRequestInfo(ilm.get(i).getQuestion().getId(), ELearnObjType.QUESTION, 1L, ilm.get(i).getQuestion().getTitle(), 0L));
+							 rri.put(ilm.get(i).getQuestion().getId(), new ResourceRequestInfo(ilm.get(i).getQuestion().getId(), ELearnObjType.QUESTION, 1L, 1L, ilm.get(i).getQuestion().getTitle(), 0L));
 						 else
 							 rri.get(ilm.get(i).getQuestion().getId()).incRequests();
 				 if(rri.values() != null)
@@ -146,7 +146,7 @@ public class QActivityResourceType extends Question {
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getQuiz() != null)
 						 if(rri.get(ilm.get(i).getQuiz().getId()) == null)
-							 rri.put(ilm.get(i).getQuiz().getId(), new ResourceRequestInfo(ilm.get(i).getQuiz().getId(), ELearnObjType.QUIZ, 1L, ilm.get(i).getQuiz().getTitle(), 0L));
+							 rri.put(ilm.get(i).getQuiz().getId(), new ResourceRequestInfo(ilm.get(i).getQuiz().getId(), ELearnObjType.QUIZ, 1L, 1L, ilm.get(i).getQuiz().getTitle(), 0L));
 						 else
 							 rri.get(ilm.get(i).getQuiz().getId()).incRequests();
 				 if(rri.values() != null)
@@ -162,7 +162,7 @@ public class QActivityResourceType extends Question {
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getResource() != null)
 						 if(rri.get(ilm.get(i).getResource().getId()) == null)
-							 rri.put(ilm.get(i).getResource().getId(), new ResourceRequestInfo(ilm.get(i).getResource().getId(), ELearnObjType.RESOURCE, 1L, ilm.get(i).getResource().getTitle(), 0L));
+							 rri.put(ilm.get(i).getResource().getId(), new ResourceRequestInfo(ilm.get(i).getResource().getId(), ELearnObjType.RESOURCE, 1L, 1L, ilm.get(i).getResource().getTitle(), 0L));
 						 else
 							 rri.get(ilm.get(i).getResource().getId()).incRequests();
 				 if(rri.values() != null)
@@ -178,7 +178,7 @@ public class QActivityResourceType extends Question {
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getScorm() != null)
 						 if(rri.get(ilm.get(i).getScorm().getId()) == null)
-							 rri.put(ilm.get(i).getScorm().getId(), new ResourceRequestInfo(ilm.get(i).getScorm().getId(), ELearnObjType.SCORM, 1L, ilm.get(i).getScorm().getTitle(), 0L));
+							 rri.put(ilm.get(i).getScorm().getId(), new ResourceRequestInfo(ilm.get(i).getScorm().getId(), ELearnObjType.SCORM, 1L, 1L, ilm.get(i).getScorm().getTitle(), 0L));
 						 else
 							 rri.get(ilm.get(i).getScorm().getId()).incRequests();
 				 if(rri.values() != null)
@@ -194,7 +194,7 @@ public class QActivityResourceType extends Question {
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getWiki() != null)
 						 if(rri.get(ilm.get(i).getWiki().getId()) == null)
-							 rri.put(ilm.get(i).getWiki().getId(), new ResourceRequestInfo(ilm.get(i).getWiki().getId(), ELearnObjType.WIKI, 1L, ilm.get(i).getWiki().getTitle(), 0L));
+							 rri.put(ilm.get(i).getWiki().getId(), new ResourceRequestInfo(ilm.get(i).getWiki().getId(), ELearnObjType.WIKI, 1L, 1L, ilm.get(i).getWiki().getTitle(), 0L));
 						 else
 							 rri.get(ilm.get(i).getWiki().getId()).incRequests();
 				 if(rri.values() != null)

@@ -180,23 +180,25 @@ public class QUserPathAnalysis extends Question {
                         continue;
                     }
                     String learnObjType = ELearnObjType.valueOf(current).toString();
+                    String type = current.getClass().toString().substring(current.getClass().toString().lastIndexOf(".")+1, current.getClass().toString().lastIndexOf("Log"));
                     String cId = learnObjId + "-" + learnObjType;
                     // Determines whether it's a new path (no predecessor for
                     // current node) or not
 
                     UserPathObject knownPath;
-                    if(predNode != null) {
+                    if(predNode != null) 
+                    {
                         String cIdPos = null;
                         if((knownPath = pathObjects.get(cId)) == null)
                         {
                             // If the node is new create entry in hash map
                             cIdPos = String.valueOf(pathObjects.size());
-                            pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L, learnObjType,
-                                    Double.valueOf(current.getDuration()), 1L));
+                            pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L, type,
+                                    Double.valueOf(current.getDuration()), 1L, 0L, 0L, 0L));
                         }
                         else
                         {
-                            // If the node is already known, increment weight
+                            // If the node is already known, increase weight
                             pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
                             cIdPos = knownPath.getId();
                         }
@@ -208,7 +210,7 @@ public class QUserPathAnalysis extends Question {
                     {
                         String cIdPos = String.valueOf(pathObjects.size());
                         pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L,
-                                current.getClass().toString(), Double.valueOf(current.getDuration()), 1L));
+                                type, Double.valueOf(current.getDuration()), 1L, 0L, 0L, 0L));
                     }
                     else
                         pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
@@ -224,19 +226,22 @@ public class QUserPathAnalysis extends Question {
         ArrayList<UserPathNode> nodes = Lists.newArrayList();
         ArrayList<UserPathLink> links = Lists.newArrayList();
 
-        for(Entry<String, UserPathObject> pathEntry : pathObjects.entrySet()) {
+        for(UserPathObject pathEntry : pathObjects.values()) {
 
-            UserPathObject path = pathEntry.getValue();
+            UserPathObject path = pathEntry;
+            path.setPathId(pathEntry.getPathId());
             nodes.add(new UserPathNode(path));
             String sourcePos = path.getId();
 
-            for(Entry<String, Integer> linkEntry : pathEntry.getValue().getEdges().entrySet()) {
+            for(Entry<String, Integer> linkEntry : pathEntry.getEdges().entrySet()) 
+            {
                 UserPathLink link = new UserPathLink();
                 link.setSource(sourcePos);
+                link.setPathId(path.getPathId());
                 link.setTarget(linkEntry.getKey());
                 link.setValue(String.valueOf(linkEntry.getValue()));
                 if(link.getSource() != link.getTarget())
-                    links.add(link);
+                	links.add(link);
             }
         }
         return new ResultListUserPathGraph(nodes, links);

@@ -6,8 +6,44 @@ public class UserPathNode {
     private String title;
     private Long value;
     private Long group;
+    private Long pathId;
+    private String type;
+    private Long totalRequests;
+    private Long totalUsers;
 
-    public UserPathNode() {
+    public Long getTotalRequests() {
+		return totalRequests;
+	}
+
+	public void setTotalRequests(Long totalRequests) {
+		this.totalRequests = totalRequests;
+	}
+
+	public Long getTotalUsers() {
+		return totalUsers;
+	}
+
+	public void setTotalUsers(Long totalUsers) {
+		this.totalUsers = totalUsers;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Long getPathId() {
+		return pathId;
+	}
+
+	public void setPathId(Long pathId) {
+		this.pathId = pathId;
+	}
+
+	public UserPathNode() {
     }
 
     public UserPathNode(UserPathObject path) {
@@ -16,6 +52,10 @@ public class UserPathNode {
             name = "?";
         this.value = path.getWeight();
         this.group = path.getGroup();
+        this.pathId = path.getPathId();
+        this.type = path.getType();
+        this.totalRequests = path.getTotalRequests();
+        this.totalUsers = path.getTotalUsers();
     }
     
     public UserPathNode(UserPathObject path, Boolean directedGraph) {
@@ -25,6 +65,10 @@ public class UserPathNode {
             name = "?";
         this.value = path.getWeight();
         this.group = path.getGroup();
+        this.pathId = path.getPathId();
+        this.type = path.getType();
+        this.totalRequests = path.getTotalRequests();
+        this.totalUsers = path.getTotalUsers();
     }
 
     public String getName() {
