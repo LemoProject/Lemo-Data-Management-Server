@@ -16,7 +16,7 @@ public class Test {
 		Long startTime = 0L;
 		Long endTime = 1500000000L;
 		List<String> resourceTypes = new ArrayList<String>();
-		courses.add(2563L);
+		courses.add(2200L);
 		ResultListRRITypes r = qart.compute(courses, startTime, endTime, 200L, resourceTypes);
 		startTime++;
 
