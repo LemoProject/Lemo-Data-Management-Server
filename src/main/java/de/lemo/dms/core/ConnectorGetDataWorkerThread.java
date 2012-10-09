@@ -14,6 +14,6 @@ public class ConnectorGetDataWorkerThread extends Thread {
 	
 	public void run() {
 		logger.info("connector start to load whole database");
-		this.connector.getData(ServerConfigurationHardCoded.getInstance().getMiningDBConfig().getPropertyValue("mining.config.platform"));
+		this.connector.getData("Moodle_1_9"); // XXX 
 	}	
 }

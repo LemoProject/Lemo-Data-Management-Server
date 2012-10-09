@@ -29,8 +29,7 @@ public class HibernateDBHandler implements IDBHandler {
     private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
 
     private static SessionFactory miningSessionFactory =
-            de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(
-                    ServerConfigurationHardCoded.getInstance().getMiningDBConfig());
+            de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining();
 
     public Session getMiningSession() {
         return miningSessionFactory.openSession();

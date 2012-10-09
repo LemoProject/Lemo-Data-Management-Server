@@ -29,14 +29,12 @@ public class ServiceDebug extends BaseService {
 
         StringBuilder html = new StringBuilder("<html><head><title>DMS Debug</title></head><body><h1>Debug</h1><ul>");
 
-        IDBHandler dbHandler2 = config.getDBHandler();
-        html.append("<li>dbHandler2: ").append(dbHandler2).append("</li>");
-        html.append("<li>Config logger.level: ")
-                .append(ConfigurationProperties.getString("mining.hibernate.connection.url"))
-                .append("</li>");
+        IDBHandler dbHandler = config.getDBHandler();
+        html.append("<li>dbHandler: ").append(dbHandler).append("</li>");
+
         Session miningSession = null;
-        if(dbHandler2 != null) {
-            miningSession = dbHandler2.getMiningSession();
+        if(dbHandler != null) {
+            miningSession = dbHandler.getMiningSession();
             html.append("<li>miningSession: ").append(miningSession).append("</li>");
         }
         if(miningSession != null) {
@@ -46,23 +44,23 @@ public class ServiceDebug extends BaseService {
             List<?> result = null;
             int resultCount = 0;
             try {
-                result = miningSession.createCriteria(AssignmentLogMining.class, "log").setMaxResults(3).list();
+                result = miningSession.createCriteria(AssignmentLogMining.class, "log").setMaxResults(1).list();
                 resultCount += result.size();
-                result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(3).list();
+                result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(1).list();
                 resultCount += result.size();
-                result = miningSession.createCriteria(CourseLogMining.class, "log").setMaxResults(3).list();
+                result = miningSession.createCriteria(CourseLogMining.class, "log").setMaxResults(1).list();
                 resultCount += result.size();
-                result = miningSession.createCriteria(ForumLogMining.class, "log").setMaxResults(3).list();
+                result = miningSession.createCriteria(ForumLogMining.class, "log").setMaxResults(1).list();
                 resultCount += result.size();
-                result = miningSession.createCriteria(QuestionLogMining.class, "log").setMaxResults(3).list();
+                result = miningSession.createCriteria(QuestionLogMining.class, "log").setMaxResults(1).list();
                 resultCount += result.size();
-                result = miningSession.createCriteria(QuizLogMining.class, "log").setMaxResults(3).list();
+                result = miningSession.createCriteria(QuizLogMining.class, "log").setMaxResults(1).list();
                 resultCount += result.size();
-                result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(3).list();
+                result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(1).list();
                 resultCount += result.size();
-                result = miningSession.createCriteria(ScormLogMining.class, "log").setMaxResults(3).list();
+                result = miningSession.createCriteria(ScormLogMining.class, "log").setMaxResults(1).list();
                 resultCount += result.size();
-                result = miningSession.createCriteria(WikiLogMining.class, "log").setMaxResults(3).list();
+                result = miningSession.createCriteria(WikiLogMining.class, "log").setMaxResults(1).list();
                 resultCount += result.size();
             } catch (Exception exeption) {
 

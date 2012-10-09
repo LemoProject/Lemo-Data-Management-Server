@@ -7,9 +7,35 @@
 	<packaging>war</packaging>
 	<name>Lemo Data Management Server</name>
 
+	<properties>
+		<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+		<tomcat-url>http://141.45.146.174:8080/manager</tomcat-url>
+		<lemo-system-name>lemo</lemo-system-name>
+		<lemo-display-name>LeMo</lemo-display-name>
+	</properties>
+
+	<profiles>
+
+		<profile>
+			<id>deploy-beuth</id>
+			<properties>
+				<lemo-system-name>beuth</lemo-system-name>
+				<lemo-display-name>Beuth</lemo-display-name>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>deploy-chemgapedia</id>
+			<properties>
+				<lemo-system-name>chemgapedia</lemo-system-name>
+				<lemo-display-name>Chemgapedia</lemo-display-name>
+			</properties>
+		</profile>
+
+	</profiles>
+
 	<dependencies>
 
-		<!-- local libraries -->
 		<dependency>
 			<groupId>ca.pfv</groupId>
 			<artifactId>sqpm</artifactId>
@@ -25,7 +51,7 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
 		</dependency>
-		<!-- / local libraries -->
+
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -34,9 +60,6 @@
 			<!-- <scope>provided</scope> -->
 			<!--shared tomcat libraries, see tomcat-maven-plugin -->
 		</dependency>
-
-		<!-- main dependencies -->
-
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -62,37 +85,6 @@
 			<artifactId>jsr311-api</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.glassfish.grizzly</groupId> -->
-		<!-- <artifactId>grizzly-framework</artifactId> -->
-		<!-- <version>2.2.18</version> -->
-		<!-- </dependency> -->
-
-		<!-- <dependency> -->
-		<!-- <groupId>com.sun.grizzly</groupId> -->
-		<!-- <artifactId>grizzly-framework</artifactId> -->
-		<!-- <version>1.9.9</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>com.sun.grizzly</groupId> -->
-		<!-- <artifactId>grizzly-http</artifactId> -->
-		<!-- <version>1.9.9</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>com.sun.grizzly</groupId> -->
-		<!-- <artifactId>grizzly-http-servlet</artifactId> -->
-		<!-- <version>1.9.9</version> -->
-		<!-- <exclusions> -->
-		<!-- <exclusion> -->
-		<!-- managed by tomcat -->
-		<!-- <groupId>javax.servlet</groupId> -->
-		<!-- <artifactId>servlet-api</artifactId> -->
-		<!-- </exclusion> -->
-		<!-- </exclusions> -->
-		<!-- </dependency> -->
-
-
-
 
 		<dependency>
 			<groupId>javassist</groupId>
@@ -115,6 +107,12 @@
 			<artifactId>jersey-server</artifactId>
 			<version>1.14</version>
 		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-servlet</artifactId>
+			<version>1.14</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
@@ -178,28 +176,20 @@
 	</dependencies>
 
 	<build>
-		<finalName>dms</finalName>
-
-		<resources>
-			<resource>
-				<directory>${project.basedir}/src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>${project.basedir}/src/main/java</directory>
-				<includes>
-					<include>**/*.xml</include>
-				</includes>
-			</resource>
-		</resources>
-
+		<finalName>dms-${lemo-system-name}</finalName>
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
 
 			<!-- local execution -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
-
 				<executions>
 					<execution>
 						<goals>
@@ -220,14 +210,11 @@
 				<artifactId>tomcat6-maven-plugin</artifactId>
 				<version>2.0-beta-1</version>
 				<configuration>
-
-					<!-- remote tomcat manager server -->
-					<url>http://141.45.146.174:8080/manager</url>
-					<username>lemo</username>
-					<password>#101111#</password>
-
-					<!-- deployment (tomcat6:deploy) -->
-					<tag>${project.artifactId}-${project.version}</tag>
+					<!-- remote tomcat manager -->
+					<url>${tomcat-url}</url>
+					<server>${tomcat-server}</server>
+					<!-- deployed application (tomcat6:deploy) -->
+					<path>/${lemo-system-name}/${project.artifactId}</path>
 					<update>true</update>
 
 					<!-- local server (tomcat6:run-war) -->
@@ -246,34 +233,12 @@
 
 			</plugin>
 
-			<!-- classpath config - http://maven.apache.org/shared/maven-archiver/examples/classpath.html#Repository -->
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
-							<classpathLayoutType>repository</classpathLayoutType>
-						</manifest>
-					</archive>
-					<resources>
-						<resource>
-							<directory>${project.basedir}/src/main/java</directory>
-							<includes>
-								<include>**/*.xml</include>
-							</includes>
-						</resource>
-					</resources>
-				</configuration>
-			</plugin>
-
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<webXml>${project.basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+					<!-- don't set web.xml here - treat it as a resource to enable filtering -->
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
@@ -281,13 +246,20 @@
 							<classpathLayoutType>repository</classpathLayoutType>
 						</manifest>
 					</archive>
+					<!-- don't put local hibernate configuration in war -->
+					<packagingExcludes>**/hibernate.cfg.xml</packagingExcludes>
 					<webResources>
+						<webResource>
+							<directory>src/main/webapp/WEB-INF</directory>
+							<filtering>true</filtering>
+							<includes>
+								<include>web.xml</include>
+							</includes>
+							<targetPath>WEB-INF</targetPath>
+						</webResource>
 						<resource>
-							<directory>${project.basedir}/src/main/resources</directory>
-							<targetPath>WEB-INF/classes</targetPath>
-						</resource>
-						<resource>
-							<directory>${project.basedir}/src/main/java</directory>
+							<!-- include hibernate mapping files -->
+							<directory>src/main/java</directory>
 							<targetPath>WEB-INF/classes</targetPath>
 							<includes>
 								<include>**/*.xml</include>
@@ -312,6 +284,26 @@
 			</plugin>
 
 		</plugins>
+
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/hibernate.cfg.xml</include>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+
 	</build>
 
 </project>

@@ -96,7 +96,7 @@ public class ConnectorManager {
 		if(selectedConnector == null) {
 			return false;
 		}
-		selectedConnector.updateData(ServerConfigurationHardCoded.getInstance().getMiningDBConfig().getPropertyValue("mining.config.platform"), fromTimestamp);
+		selectedConnector.updateData("Moodle_1_9", fromTimestamp); //XXX
 		return true;
 	}
 	
