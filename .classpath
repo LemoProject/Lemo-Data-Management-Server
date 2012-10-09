@@ -1,64 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-<<<<<<< HEAD
 	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src/main/java"/>
 	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"/>
-=======
-	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/test/resources"/>
-	<classpathentry kind="src" path="src/main/resources"/>
-	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="lib" path="lib/asm-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/grizzly-servlet-webserver-1.9.9.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-core-asl-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/jersey-client-1.1.5.1.jar"/>
-	<classpathentry kind="lib" path="lib/jersey-core-1.1.5.1.jar"/>
-	<classpathentry kind="lib" path="lib/jersey-json-1.1.5.1.jar"/>
-	<classpathentry kind="lib" path="lib/jersey-server-1.1.5.1.jar"/>
-	<classpathentry kind="lib" path="lib/jettison-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/jsr311-api-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
-	<classpathentry kind="lib" path="lib/commons-dbcp-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/commons-dbcp-1.4-javadoc.jar"/>
-	<classpathentry kind="lib" path="lib/commons-pool-1.6.jar"/>
-	<classpathentry kind="lib" path="lib/commons-pool-1.6-javadoc.jar"/>
-	<classpathentry kind="lib" path="lib/guava-12.0.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate-c3p0-3.3.0.GA.jar"/>
-	<classpathentry kind="lib" path="lib/c3p0-0.9.1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
-		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/hibernate-core.jar" sourcepath="C:/Users/lmk/.m2/repository/org/hibernate/hibernate-core/3.3.0.SP1/hibernate-core-3.3.0.SP1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/javassist.jar"/>
-	<classpathentry kind="lib" path="lib/persistence-api-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/log4j.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api-1.5.8.jar"/>
-	<classpathentry kind="lib" path="lib/dom4j.jar"/>
-	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-log4j12.jar"/>
-	<classpathentry kind="lib" path="lib/commons-collections.jar"/>
-	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/jta.jar"/>
-	<classpathentry kind="lib" path="lib/jta-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/ant-contrib-1.0b2.jar"/>
-	<classpathentry kind="lib" path="lib/ant-junit-1.6.5.jar"/>
-	<classpathentry kind="lib" path="lib/antlr.jar"/>
-	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="lib/ojdbc6.jar"/>
-	<classpathentry kind="lib" path="lib/mining.jar" sourcepath="lib/mining.jar"/>
->>>>>>> refs/remotes/origin/feature_features_for_delfi
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-<<<<<<< HEAD
 	<classpathentry kind="output" path="target/classes"/>
-=======
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.0.8-bin.jar"/>
-	<classpathentry kind="output" path="bin"/>
->>>>>>> refs/remotes/origin/feature_features_for_delfi
 </classpath>
