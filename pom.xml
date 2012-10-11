@@ -208,8 +208,9 @@
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat6-maven-plugin</artifactId>
-				<version>2.0-beta-1</version>
+				<version>2.0</version>
 				<configuration>
+					<warDirectory>target/${project.build.finalName}.war</warDirectory>
 					<!-- remote tomcat manager -->
 					<url>${tomcat-url}</url>
 					<server>${tomcat-server}</server>
@@ -252,9 +253,6 @@
 						<webResource>
 							<directory>src/main/webapp/WEB-INF</directory>
 							<filtering>true</filtering>
-							<includes>
-								<include>web.xml</include>
-							</includes>
 							<targetPath>WEB-INF</targetPath>
 						</webResource>
 						<resource>
@@ -285,14 +283,13 @@
 
 		</plugins>
 
-
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>**/hibernate.cfg.xml</include>
 					<include>**/*.properties</include>
+					<include>**/hibernate.cfg.xml</include>
 				</includes>
 			</resource>
 			<resource>
