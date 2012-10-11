@@ -219,7 +219,7 @@
 					<update>true</update>
 
 					<!-- local server (tomcat6:run-war) -->
-					<port>4443</port>
+					<port>8081</port>
 				</configuration>
 
 				<!-- tomcat-maven-plugin dependencies are managed by the tomcat server 
