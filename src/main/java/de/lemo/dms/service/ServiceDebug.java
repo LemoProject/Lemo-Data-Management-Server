@@ -9,7 +9,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.hibernate.Session;
 
-import de.lemo.dms.core.ConfigurationProperties;
+import de.lemo.dms.core.IServerConfiguration;
+import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.CourseLogMining;
@@ -21,69 +22,113 @@ import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 
 @Path("/debug")
-public class ServiceDebug extends BaseService {
+public class ServiceDebug /* extends BaseService */{
+
+    private static final void appendItem(StringBuilder sb, String itemName, Object item) {
+        sb.append("<dt>");
+        if(item == null) {
+            sb.append("<i class='icon-exclamation-sign'></i> ")
+                    .append("<span class='label label-error'>").append(itemName).append("</span>");
+
+        } else {
+            sb.append("<i class='icon-ok-sign'></i> ")
+                    .append("<span class='label label-success'>").append(itemName).append("</span>");
+        }
+        sb.append("</dt><dd><code>").append(item).append("</code></dt>");
+    }
+
+    private static final void appendUnkownItem(StringBuilder sb, String itemName) {
+        sb.append("<dt>")
+                .append("<i class='icon-question-sign'></i> ")
+                .append("<span class='label'>").append(itemName).append("</span> ")
+                .append("</dt>")
+                .append("<dd> <code>?</code> </dd>");
+
+    }
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String debug() {
 
-        StringBuilder html = new StringBuilder("<html><head><title>DMS Debug</title></head><body><h1>Debug</h1><ul>");
+        StringBuilder content = new StringBuilder("<h1>DMS Server Info</h1><dl>");
+        IDBHandler dbHandler = null;
+        try {
+            dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+        } catch (ExceptionInInitializerError e) {
+            if(e.getCause().getMessage().contains("hibernate.cfg.xml")) {
+                content.append("<div class='alert-error'> <b>File <pre>hibernate.cfg.xml</pre> not found.</b><br></li>");
+            }
+        }
 
-        IDBHandler dbHandler = config.getDBHandler();
-        html.append("<li>dbHandler: ").append(dbHandler).append("</li>");
+        appendItem(content, "database handler", dbHandler);
 
         Session miningSession = null;
-        if(dbHandler != null) {
+        if(dbHandler == null) {
+            appendUnkownItem(content, "mining session");
+            appendUnkownItem(content, "session connected");
+            appendUnkownItem(content, "test query");
+        } else {
             miningSession = dbHandler.getMiningSession();
-            html.append("<li>miningSession: ").append(miningSession).append("</li>");
-        }
-        if(miningSession != null) {
-            html.append("<li>miningSession isConnected: ").append(miningSession.isConnected()).append("</li>");
-            html.append("<li>miningSession isOpen: ").append(miningSession.isOpen()).append("</li>");
+            appendItem(content, "mining session", miningSession);
+            if(miningSession == null) {
+                appendUnkownItem(content, "session connected");
+                appendUnkownItem(content, "test query");
+            } else {
+                appendItem(content, "session connected", miningSession.isConnected() ? Boolean.TRUE : null);
+                List<?> result = null;
+                int resultCount = 0;
+                try {
+                    result = miningSession.createCriteria(AssignmentLogMining.class, "log").setMaxResults(1).list();
+                    resultCount += result.size();
+                    result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(1).list();
+                    resultCount += result.size();
+                    result = miningSession.createCriteria(CourseLogMining.class, "log").setMaxResults(1).list();
+                    resultCount += result.size();
+                    result = miningSession.createCriteria(ForumLogMining.class, "log").setMaxResults(1).list();
+                    resultCount += result.size();
+                    result = miningSession.createCriteria(QuestionLogMining.class, "log").setMaxResults(1).list();
+                    resultCount += result.size();
+                    result = miningSession.createCriteria(QuizLogMining.class, "log").setMaxResults(1).list();
+                    resultCount += result.size();
+                    result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(1).list();
+                    resultCount += result.size();
+                    result = miningSession.createCriteria(ScormLogMining.class, "log").setMaxResults(1).list();
+                    resultCount += result.size();
+                    result = miningSession.createCriteria(WikiLogMining.class, "log").setMaxResults(1).list();
+                    resultCount += result.size();
+                } catch (Exception exeption) {
+                    Throwable e = exeption;
+                    appendItem(content, "test query", null);
+                    while(e != null) {
+                        content.append("<li>").append(e.getClass() + ": " +
+                                e.getMessage()).append("<ul>");
+                        for(StackTraceElement ste : e.getStackTrace()) {
+                            content.append("<li>").append(ste.toString()).append("</li>");
 
-            List<?> result = null;
-            int resultCount = 0;
-            try {
-                result = miningSession.createCriteria(AssignmentLogMining.class, "log").setMaxResults(1).list();
-                resultCount += result.size();
-                result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(1).list();
-                resultCount += result.size();
-                result = miningSession.createCriteria(CourseLogMining.class, "log").setMaxResults(1).list();
-                resultCount += result.size();
-                result = miningSession.createCriteria(ForumLogMining.class, "log").setMaxResults(1).list();
-                resultCount += result.size();
-                result = miningSession.createCriteria(QuestionLogMining.class, "log").setMaxResults(1).list();
-                resultCount += result.size();
-                result = miningSession.createCriteria(QuizLogMining.class, "log").setMaxResults(1).list();
-                resultCount += result.size();
-                result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(1).list();
-                resultCount += result.size();
-                result = miningSession.createCriteria(ScormLogMining.class, "log").setMaxResults(1).list();
-                resultCount += result.size();
-                result = miningSession.createCriteria(WikiLogMining.class, "log").setMaxResults(1).list();
-                resultCount += result.size();
-            } catch (Exception exeption) {
-
-                Throwable e = exeption;
-                while(e != null) {
-                    html.append("<li>").append(e.getClass() + ": " +
-                            e.getMessage()).append("<ul>");
-                    for(StackTraceElement ste : e.getStackTrace()) {
-                        html.append("<li>").append(ste.toString()).append("</li>");
-
+                        }
+                        content.append("</li></ul></li>");
+                        e = e.getCause();
                     }
-                    html.append("</li></ul></li>");
-                    e = e.getCause();
                 }
-            }
-            html.append("<li>ResourceLogMining query successful</li>");
-            if(result != null) {
-                html.append("<li>ResourceLogMining results: ").append(resultCount).append("</li>");
-            }
 
-            miningSession.close();
+                if(result != null) {
+                    appendItem(content, "test query", "results: " + resultCount);
+                } else {
+                    appendItem(content, "test query", result);
+                }
+
+                miningSession.close();
+            }
         }
+        content.append("</dl>");
 
-        return html.append("</ul></body></html>").toString();
+        StringBuilder html = new StringBuilder(
+                "<!DOCTYPE html> <html> <head>"
+                        + "<link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>"
+                        + "<title>DMS Debug</title>"
+                        + "</head>"
+                        + "<body> <div class='container'>").append(content).append("<div> </body> </html>");
+
+        return html.toString();
     }
 }
