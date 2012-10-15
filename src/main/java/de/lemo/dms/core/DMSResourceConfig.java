@@ -26,7 +26,8 @@ import com.sun.jersey.api.core.PackagesResourceConfig;
 
 public class DMSResourceConfig extends DefaultResourceConfig {
 
-    public static final String APPLICATION_BASE_URL = "/dms/";
+    public static final String SYSTEM_NAME = ApplicationProperties.getPropertyValue("lemo.system-name");
+    public static final String APPLICATION_BASE_URL = SYSTEM_NAME + "/dms/";
 
     public static final String SERVICE_BASE_URL = APPLICATION_BASE_URL + "services/";
     public static final String SERVICE_PACKAGE = "de.lemo.dms.service";

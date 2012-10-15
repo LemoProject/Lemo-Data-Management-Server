@@ -30,7 +30,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
 
     private Level defaultLevel = Level.toLevel(ConfigurationProperties.getPropertyValue("logger.level"), Level.INFO); //$NON-NLS-1$
     private String logfileName = "./DatamanagementServer.log";
-    private int port = 4443;
+    private int port = 8081;
     private int keepAlive = 180;
 
     // ------------------------------------
