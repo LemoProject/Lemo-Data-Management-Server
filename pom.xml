@@ -8,16 +8,17 @@
 	<name>Lemo Data Management Server</name>
 
 	<properties>
+		<!-- defaults, may be overridden by deployment profiles -->
 		<tomcat-server>lemo3-tomcat-manager</tomcat-server>
 		<tomcat-url>http://141.45.146.174:8080/manager</tomcat-url>
 		<lemo-system-name>lemo</lemo-system-name>
-		<lemo-display-name>LeMo</lemo-display-name>
+		<lemo-display-name>LeMo Debug</lemo-display-name>
 	</properties>
 
 	<profiles>
 
 		<profile>
-			<id>deploy-beuth</id>
+			<id>beuth</id>
 			<properties>
 				<lemo-system-name>beuth</lemo-system-name>
 				<lemo-display-name>Beuth</lemo-display-name>
@@ -25,7 +26,7 @@
 		</profile>
 
 		<profile>
-			<id>deploy-chemgapedia</id>
+			<id>chem</id>
 			<properties>
 				<lemo-system-name>chemgapedia</lemo-system-name>
 				<lemo-display-name>Chemgapedia</lemo-display-name>

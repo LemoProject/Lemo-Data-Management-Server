@@ -1,8 +1,13 @@
 package de.lemo.dms.db.hibernate;
 
+import javax.naming.NamingException;
+
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import de.lemo.dms.core.ApplicationProperties;
 
 /**
  * Startup Hibernate and provide access to the singleton SessionFactory
@@ -22,10 +27,13 @@ public class HibernateUtil {
 
         if(sessionFactoryMining == null) {
 
-            Configuration config = new Configuration();
+            Configuration config = null;
+            try {
+                config = loadHibernateConfig();
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
 
-            // load hibernate.cfg.file
-            config.configure("/hibernate.cfg.xml");
             logger.info("Using mining database: " + config.getProperty("hibernate.connection.url"));
 
             config.addResource("de/lemo/dms/db/miningDBclass/ConfigMining.hbm.xml");
@@ -77,6 +85,26 @@ public class HibernateUtil {
 
         }
         return sessionFactoryMining;
+    }
+
+    /**
+     * Loads a hibernate configuration file.
+     * 
+     * If no hibernate file is found in the class path (it won't get deployed), it uses the deployment profile name
+     * (specified in app.config.properties) to look up an environment variable (which may be defined in the servers
+     * context.xml) to get the config file's path.
+     * 
+     * @return
+     * @throws NamingException
+     */
+    private static Configuration loadHibernateConfig() throws NamingException {
+        try {
+            return new Configuration().configure();
+        } catch (HibernateException e) {
+            String systemName = ApplicationProperties.getPropertyValue("lemo.system-name");
+            String configPath = systemName + ".hibernate.cfg.xml";
+            return new Configuration().configure(configPath);
+        }
     }
 
     /**

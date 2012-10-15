@@ -28,7 +28,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
     private IDBHandler dbHandler;
     private DBConfigObject sourceDBConfig;
 
-    private Level defaultLevel = Level.toLevel(ConfigurationProperties.getString("logger.level"), Level.INFO); //$NON-NLS-1$
+    private Level defaultLevel = Level.toLevel(ConfigurationProperties.getPropertyValue("logger.level"), Level.INFO); //$NON-NLS-1$
     private String logfileName = "./DatamanagementServer.log";
     private int port = 4443;
     private int keepAlive = 180;
@@ -44,6 +44,9 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
 
             Logger logger = instance.getLogger();
             logger.info("DMS startet at " + new Date(instance.getStartTime()));
+            logger.info("Profile " +
+                    ApplicationProperties.getPropertyValue("lemo.display-name") +
+                    " [" + ApplicationProperties.getPropertyValue("lemo.system-name") + "]");
         }
         return instance;
     }
@@ -54,7 +57,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
         try {
             logger = Logger.getRootLogger();
             PatternLayout layout = new PatternLayout();
-            layout.setConversionPattern(ConfigurationProperties.getString("logger.pattern")); //$NON-NLS-1$
+            layout.setConversionPattern(ConfigurationProperties.getPropertyValue("logger.pattern")); //$NON-NLS-1$
             ConsoleAppender conapp = new ConsoleAppender(layout);
             logger.addAppender(conapp);
             FileAppender filapp = new FileAppender(layout, logfileName);
@@ -98,7 +101,7 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
 
     private void addDBProperty(DBConfigObject dbConfig, String propertyPrefix, String propertyName) {
         dbConfig.addProperty(propertyName,
-            ConfigurationProperties.getString(propertyPrefix + "." + propertyName));
+            ConfigurationProperties.getPropertyValue(propertyPrefix + "." + propertyName));
     }
 
     public IDBHandler getDBHandler()
@@ -145,11 +148,6 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
     public DBConfigObject getSourceDBConfig() {
         return sourceDBConfig;
     }
-
-    // @Override
-    // public DMSResourceConfig getResourceConfig() {
-    // return resourceConfig;
-    // }
 
     @Override
     public int getKeepAliveTimeoutInSec() {

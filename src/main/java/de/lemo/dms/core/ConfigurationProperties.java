@@ -1,6 +1,5 @@
 package de.lemo.dms.core;
 
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class ConfigurationProperties {
@@ -21,13 +20,10 @@ public class ConfigurationProperties {
     }
 
     private ConfigurationProperties() {
+        // no instance needed
     }
 
-    public static String getString(String key) {
-        try {
-            return resourceBundle.getString(key);
-        } catch (MissingResourceException e) {
-            return '!' + key + '!';
-        }
+    public static String getPropertyValue(String key) {
+        return resourceBundle.getString(key);
     }
 }

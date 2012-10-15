@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.hibernate.Session;
 
-import de.lemo.dms.core.IServerConfiguration;
+import de.lemo.dms.core.ApplicationProperties;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
@@ -51,13 +51,18 @@ public class ServiceDebug /* extends BaseService */{
     public String debug() {
 
         StringBuilder content = new StringBuilder("<h1>DMS Server Info</h1><dl>");
+        content.append("<div class='page-header'><h3>Profile: ")
+                .append(ApplicationProperties.getPropertyValue("lemo.display-name"))
+                .append(" <small>[")
+                .append(ApplicationProperties.getPropertyValue("lemo.system-name"))
+                .append("]</small></h2></div>");
         IDBHandler dbHandler = null;
         try {
             dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
         } catch (ExceptionInInitializerError e) {
-            if(e.getCause().getMessage().contains("hibernate.cfg.xml")) {
-                content.append("<div class='alert-error'> <b>File <pre>hibernate.cfg.xml</pre> not found.</b><br></li>");
-            }
+            content.append("<div class='alert alert-error'><b>ExceptionInInitializerError</b>");
+            printExceptionStack(content, e);
+            content.append("</div>");
         }
 
         appendItem(content, "database handler", dbHandler);
@@ -97,18 +102,9 @@ public class ServiceDebug /* extends BaseService */{
                     result = miningSession.createCriteria(WikiLogMining.class, "log").setMaxResults(1).list();
                     resultCount += result.size();
                 } catch (Exception exeption) {
-                    Throwable e = exeption;
-                    appendItem(content, "test query", null);
-                    while(e != null) {
-                        content.append("<li>").append(e.getClass() + ": " +
-                                e.getMessage()).append("<ul>");
-                        for(StackTraceElement ste : e.getStackTrace()) {
-                            content.append("<li>").append(ste.toString()).append("</li>");
 
-                        }
-                        content.append("</li></ul></li>");
-                        e = e.getCause();
-                    }
+                    appendItem(content, "test query", null);
+                    printExceptionStack(content, exeption);
                 }
 
                 if(result != null) {
@@ -130,5 +126,18 @@ public class ServiceDebug /* extends BaseService */{
                         + "<body> <div class='container'>").append(content).append("<div> </body> </html>");
 
         return html.toString();
+    }
+
+    private void printExceptionStack(StringBuilder content, Throwable throwable) {
+        while(throwable != null) {
+            content.append("<li>").append(throwable.getClass() + ": " +
+                    throwable.getMessage()).append("<ul>");
+            for(StackTraceElement ste : throwable.getStackTrace()) {
+                content.append("<li>").append(ste.toString()).append("</li>");
+
+            }
+            content.append("</li></ul></li>");
+            throwable = throwable.getCause();
+        }
     }
 }
