@@ -108,8 +108,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	private static List<CourseCategories_LMS> course_categories_lms;
 	
 	
-	/**Logger**/
-	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
+	private Logger logger = Logger.getLogger(getClass());
 
 	
 	@SuppressWarnings("unchecked")	

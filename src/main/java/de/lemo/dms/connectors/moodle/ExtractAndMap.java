@@ -191,8 +191,7 @@ public abstract class ExtractAndMap{
 	/** value of the highest user-id in the dataset. Used for creating new numeric ids **/
 	static long largestId;
 	
-	/**Logger **/
-	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
+	private Logger logger = Logger.getLogger(getClass());
 
 	static Long questionLogMax;
 

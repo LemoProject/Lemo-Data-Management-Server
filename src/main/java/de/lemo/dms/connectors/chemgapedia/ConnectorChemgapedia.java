@@ -25,7 +25,7 @@ public class ConnectorChemgapedia implements IConnector{
 	static boolean processLog = false;
 	static String logPath;
 	static String vscPath;
-	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
+	private Logger logger = Logger.getLogger(getClass());
 	
 	
 	@Override

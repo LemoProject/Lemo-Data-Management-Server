@@ -11,7 +11,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -25,7 +24,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
  */
 public class HibernateDBHandler implements IDBHandler {
 
-    private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
+    private Logger logger = Logger.getLogger(getClass());
 
     public Session getMiningSession() {
         return de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining().openSession();

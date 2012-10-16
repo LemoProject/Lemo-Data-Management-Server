@@ -13,11 +13,10 @@ import org.apache.log4j.Logger;
 public class DMSMain {
 
     public static void main(String[] args) {
-        DMSRemoteServer remoteServer = DMSRemoteServer.getInstance();
-        Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
+        Logger logger = Logger.getLogger(DMSMain.class);
 
         try {
-            remoteServer.start();
+            DMSRemoteServer.INSTANCE.start();
             System.in.read(); // TODO every example uses this to keep the server running but there may be a better way
         } catch (IOException e) {
             logger.error("remote server could not be started... " + e.getMessage());

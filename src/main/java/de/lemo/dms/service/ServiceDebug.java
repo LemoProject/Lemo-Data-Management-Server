@@ -22,7 +22,7 @@ import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 
 @Path("/debug")
-public class ServiceDebug /* extends BaseService */{
+public class ServiceDebug {
 
     private static final void appendItem(StringBuilder sb, String itemName, Object item) {
         sb.append("<dt>");

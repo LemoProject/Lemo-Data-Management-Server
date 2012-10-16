@@ -13,18 +13,18 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.hibernate.HibernateDBHandler;
 
 /**
- * Implementierung der Server Konfiguration als Singleton, mit Hard codierten, sowie durch {@link ConfigurationProperties}
- * geladene Einstellungen.
+ * Server configuration singleton. Some values are hard coded, some provided by {@link ConfigurationProperties}.
  * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  */
-public class ServerConfigurationHardCoded implements IServerConfiguration {
-    private static IServerConfiguration instance = null;
+public enum ServerConfigurationHardCoded implements IServerConfiguration {
+    
+    INSTANCE;
+    
     private Level level;
     private Logger logger;
     private long startTime;
-
     private IDBHandler dbHandler;
     private DBConfigObject sourceDBConfig;
 
@@ -33,29 +33,15 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
     private int port = 8081;
     private int keepAlive = 180;
 
-    // ------------------------------------
-
-    // Singleton Pattern
     public static IServerConfiguration getInstance() {
-        if(instance == null) {
-            ServerConfigurationHardCoded serverConfigurationHardCoded = new ServerConfigurationHardCoded();
-            instance = serverConfigurationHardCoded;
-            serverConfigurationHardCoded.initConfig();
-
-            Logger logger = instance.getLogger();
-            logger.info("DMS startet at " + new Date(instance.getStartTime()));
-            logger.info("Profile " +
-                    ApplicationProperties.getPropertyValue("lemo.display-name") +
-                    " [" + ApplicationProperties.getPropertyValue("lemo.system-name") + "]");
-        }
-        return instance;
+        return INSTANCE;
     }
 
     private ServerConfigurationHardCoded() {
         startTime = new Date().getTime();
         // logger configuration
         try {
-            logger = Logger.getRootLogger();
+            Logger logger = Logger.getRootLogger();
             PatternLayout layout = new PatternLayout();
             layout.setConversionPattern(ConfigurationProperties.getPropertyValue("logger.pattern")); //$NON-NLS-1$
             ConsoleAppender conapp = new ConsoleAppender(layout);
@@ -67,13 +53,12 @@ public class ServerConfigurationHardCoded implements IServerConfiguration {
             System.err.println("logger can't be initialized...");
             System.err.println(ex.getMessage());
         }
-    }
+        
+        logger = Logger.getLogger(ServerConfigurationHardCoded.class);
+        logger.info("DMS running | Profile " +
+                ApplicationProperties.getPropertyValue("lemo.display-name") +
+                " [" + ApplicationProperties.getPropertyValue("lemo.system-name") + "]");
 
-    /*
-     * All classes that access the logger should be initialized in this method and not in the constructor to avoid
-     * duplication of this class' singleton (and thus duplicated log messages).
-     */
-    protected void initConfig() {
         initDbConfig();
         dbHandler = new HibernateDBHandler();
     }

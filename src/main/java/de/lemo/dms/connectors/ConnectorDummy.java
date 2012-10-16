@@ -12,7 +12,7 @@ import de.lemo.dms.db.DBConfigObject;
  */
 public class ConnectorDummy implements IConnector {
 	private final int SLEEP = (60*1000);
-	private Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
+	private Logger logger = Logger.getLogger(getClass());
 	
 	@Override
 	public void setSourceDBConfig(DBConfigObject dbConf) {

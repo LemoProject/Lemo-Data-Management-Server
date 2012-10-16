@@ -110,8 +110,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	
 	private static boolean numericUserId = false;
 	
-	/**Logger**/
-	private static Logger logger = ServerConfigurationHardCoded.getInstance().getLogger();
+	private Logger logger = Logger.getLogger(getClass());
 	
 	@SuppressWarnings("unchecked")	
 	public void getLMStables(DBConfigObject dbConf, long readingfromtimestamp) {
