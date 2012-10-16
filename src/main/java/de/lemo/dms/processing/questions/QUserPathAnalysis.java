@@ -1,18 +1,15 @@
 package de.lemo.dms.processing.questions;
 
-import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
-import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
-import static de.lemo.dms.processing.parameter.MetaParam.LOGOUT_FLAG;
-import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
-import static de.lemo.dms.processing.parameter.MetaParam.TYPES;
-import static de.lemo.dms.processing.parameter.MetaParam.USER_IDS;
+import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
+import static de.lemo.dms.processing.MetaParam.END_TIME;
+import static de.lemo.dms.processing.MetaParam.LOGOUT_FLAG;
+import static de.lemo.dms.processing.MetaParam.START_TIME;
+import static de.lemo.dms.processing.MetaParam.TYPES;
+import static de.lemo.dms.processing.MetaParam.USER_IDS;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -28,13 +25,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.parameter.Interval;
-import de.lemo.dms.processing.parameter.MetaParam;
-import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
@@ -44,28 +37,6 @@ import de.lemo.dms.service.ELearnObjType;
 @Path("userpathanalysis")
 public class QUserPathAnalysis extends Question {
 
-    protected List<MetaParam<?>> createParamMetaData() {
-        List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
-
-        Session session = dbHandler.getMiningSession();
-        List<?> latest = dbHandler.performQuery(session,EQueryType.SQL, "Select max(timestamp) from resource_log");
-        dbHandler.closeSession(session); 
-        Long now = System.currentTimeMillis() / 1000;
-
-        if(latest.size() > 0)
-            now = ((BigInteger) latest.get(0)).longValue();
-
-        Collections.<MetaParam<?>>
-                addAll(parameters,
-                       Parameter.create(USER_IDS, "Users", "List of users-ids."),
-                       Parameter.create(COURSE_IDS, "Courses", "List of course-ids."),
-                       Parameter.create(TYPES, "Types", "Types of learning objects"),
-                       Parameter.create(LOGOUT_FLAG, "Logout flag", "Determines whether user-logouts cut user-paths"),
-                       Interval.create(Long.class, START_TIME, "Start time", "", 0L, now, 0L),
-                       Interval.create(Long.class, END_TIME, "End time", "", 0L, now, now)
-                );
-        return parameters;
-    }
 
     /**
      * Returns a list of Nodes and edges, representing the user-navigation

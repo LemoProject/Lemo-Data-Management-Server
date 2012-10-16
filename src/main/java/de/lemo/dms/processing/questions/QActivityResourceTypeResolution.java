@@ -1,16 +1,13 @@
 package de.lemo.dms.processing.questions;
 
-import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
-import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
-import static de.lemo.dms.processing.parameter.MetaParam.RESOLUTION;
-import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
-import static de.lemo.dms.processing.parameter.MetaParam.TYPES;
+import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
+import static de.lemo.dms.processing.MetaParam.END_TIME;
+import static de.lemo.dms.processing.MetaParam.RESOLUTION;
+import static de.lemo.dms.processing.MetaParam.START_TIME;
+import static de.lemo.dms.processing.MetaParam.TYPES;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -22,7 +19,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
@@ -32,37 +28,12 @@ import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.parameter.Interval;
-import de.lemo.dms.processing.parameter.MetaParam;
-import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListRRITypes;
 import de.lemo.dms.service.ELearnObjType;
 
 @Path("activityresourcetyperesolution")
 public class QActivityResourceTypeResolution extends Question {
-    
-    protected List<MetaParam<?>> createParamMetaData() {
-	    List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
-        
-        Session session = dbHandler.getMiningSession();
-        List<?> latest = dbHandler.performQuery(session,EQueryType.SQL, "Select max(timestamp) from resource_log");
-        dbHandler.closeSession(session); 
-
-        Long now = System.currentTimeMillis()/1000;
-        
-        if(latest.size() > 0)
-        	now = ((BigInteger)latest.get(0)).longValue();
-     
-        Collections.<MetaParam<?>> addAll( parameters,
-                Parameter.create(COURSE_IDS,"Courses","List of courses."),
-                Parameter.create(TYPES, "ResourceTypes","List of resource types."),
-                Interval.create(Long.class, START_TIME, "Start time", "", 0L, now, 0L), 
-                Interval.create(Long.class, END_TIME, "End time", "", 0L, now, now),
-                Interval.create(Long.class, RESOLUTION, "Resolution", "", 1L, 300L, 100L)
-                );
-        return parameters;
-	}
 	
     @POST
     public ResultListRRITypes compute(
@@ -94,7 +65,8 @@ public class QActivityResourceTypeResolution extends Question {
 				 Criteria criteria = session.createCriteria(AssignmentLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
 	                .add(Restrictions.between("log.timestamp", startTime, endTime));
-				 List<AssignmentLogMining> ilm = criteria.list();
+				 @SuppressWarnings("unchecked")
+                 List<AssignmentLogMining> ilm = criteria.list();
 				 HashMap<String, ResourceRequestInfo> rri = new HashMap<String, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getAssignment() != null)
@@ -127,6 +99,7 @@ public class QActivityResourceTypeResolution extends Question {
 				 Criteria criteria = session.createCriteria(ForumLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
 	                .add(Restrictions.between("log.timestamp", startTime, endTime));
+				 @SuppressWarnings("unchecked")
 				 List<ForumLogMining> ilm = criteria.list();
 				 HashMap<String, ResourceRequestInfo> rri = new HashMap<String, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
@@ -158,6 +131,7 @@ public class QActivityResourceTypeResolution extends Question {
 				 Criteria criteria = session.createCriteria(QuestionLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
 	                .add(Restrictions.between("log.timestamp", startTime, endTime));
+				 @SuppressWarnings("unchecked")
 				 List<QuestionLogMining> ilm = criteria.list();
 				 HashMap<String, ResourceRequestInfo> rri = new HashMap<String, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
@@ -191,6 +165,7 @@ public class QActivityResourceTypeResolution extends Question {
 				 Criteria criteria = session.createCriteria(QuizLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
 	                .add(Restrictions.between("log.timestamp", startTime, endTime));
+				 @SuppressWarnings("unchecked")
 				 List<QuizLogMining> ilm = criteria.list();
 				 HashMap<String, ResourceRequestInfo> rri = new HashMap<String, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
@@ -223,6 +198,7 @@ public class QActivityResourceTypeResolution extends Question {
 				 Criteria criteria = session.createCriteria(ResourceLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
 	                .add(Restrictions.between("log.timestamp", startTime, endTime));
+				 @SuppressWarnings("unchecked")
 				 List<ResourceLogMining> ilm = criteria.list();
 				 HashMap<String, ResourceRequestInfo> rri = new HashMap<String, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
@@ -255,6 +231,7 @@ public class QActivityResourceTypeResolution extends Question {
 				Criteria criteria = session.createCriteria(ScormLogMining.class, "log");
 				criteria.add(Restrictions.in("log.course.id", courses))
 	                .add(Restrictions.between("log.timestamp", startTime, endTime));
+				 @SuppressWarnings("unchecked") 
 				 List<ScormLogMining> ilm = criteria.list();
 				 HashMap<String, ResourceRequestInfo> rri = new HashMap<String, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
@@ -286,7 +263,8 @@ public class QActivityResourceTypeResolution extends Question {
 				Criteria criteria = session.createCriteria(WikiLogMining.class, "log");
 				criteria.add(Restrictions.in("log.course.id", courses))
 	                .add(Restrictions.between("log.timestamp", startTime, endTime));
-				 List<WikiLogMining> ilm = criteria.list();
+				@SuppressWarnings("unchecked") 
+				List<WikiLogMining> ilm = criteria.list();
 				 HashMap<String, ResourceRequestInfo> rri = new HashMap<String, ResourceRequestInfo>();
 				 for(int i = 0 ; i < ilm.size(); i++)
 					 if(ilm.get(i).getWiki() != null)

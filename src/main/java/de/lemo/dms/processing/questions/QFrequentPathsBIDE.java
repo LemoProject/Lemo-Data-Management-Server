@@ -1,15 +1,14 @@
 package de.lemo.dms.processing.questions;
 
-import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
-import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
-import static de.lemo.dms.processing.parameter.MetaParam.MIN_SUP;
-import static de.lemo.dms.processing.parameter.MetaParam.SESSION_WISE;
-import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
-import static de.lemo.dms.processing.parameter.MetaParam.USER_IDS;
+import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
+import static de.lemo.dms.processing.MetaParam.END_TIME;
+import static de.lemo.dms.processing.MetaParam.MIN_SUP;
+import static de.lemo.dms.processing.MetaParam.SESSION_WISE;
+import static de.lemo.dms.processing.MetaParam.START_TIME;
+import static de.lemo.dms.processing.MetaParam.USER_IDS;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,14 +38,9 @@ import com.google.common.collect.Maps;
 
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.parameter.Interval;
-import de.lemo.dms.processing.parameter.MetaParam;
-import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
@@ -55,40 +49,8 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
 @Path("frequentPaths")
 public class QFrequentPathsBIDE extends Question{
 
-//	private static final String STARTTIME = "start";
-//	private static final String ENDTIME = "end";
-//	private static final String MINSUP = "min_sup";
-//	private static final String SESSIONWISE = "session_wise";
-//	private static final String COURSE_IDS = "cid";
-//	private static final String USER_IDS = "uid";
-//	
 	private static HashMap<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
 	private static HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
-	
-	
-    protected List<MetaParam<?>> createParamMetaData() {
-        List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
-        
-        Session session = dbHandler.getMiningSession();
-        List<?> latest = dbHandler.performQuery(session,EQueryType.SQL, "Select max(timestamp) from resource_log");
-        dbHandler.closeSession(session); 
-        
-        Long now = System.currentTimeMillis()/1000;
-        
-        if(latest.size() > 0)
-        	now = ((BigInteger)latest.get(0)).longValue();
-     
-        Collections.<MetaParam<?>>
-        addAll(parameters,
-                Parameter.create(COURSE_IDS,"Courses","List of courses."),
-                Parameter.create(USER_IDS,"User","List of users."),
-                Parameter.create(SESSION_WISE,"Heed sessions","Choose if user histories shall be devided into sessions."),
-                Interval.create(double.class, MIN_SUP, "Start time", "", 0.0d, 1.0d, 1d), 
-                Interval.create(long.class, START_TIME, "Start time", "", 0L, now, 0L), 
-                Interval.create(long.class, END_TIME, "End time", "", 0L, now, now)
-                );
-        return parameters;
-	}
 	
     @POST
     public ResultListUserPathGraph compute(
@@ -638,7 +600,7 @@ public class QFrequentPathsBIDE extends Question{
 			
 			HashMap<Long, ArrayList<ILogMining>> logMap = new HashMap<Long, ArrayList<ILogMining>>();
 			
-			int pre = 1000;
+			// int pre = 1000;
 			
 			for(int i = 0; i < list.size(); i++)
 			{

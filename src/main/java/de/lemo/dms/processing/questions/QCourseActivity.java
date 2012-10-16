@@ -1,15 +1,13 @@
 package de.lemo.dms.processing.questions;
-import static de.lemo.dms.processing.parameter.MetaParam.COURSE_IDS;
-import static de.lemo.dms.processing.parameter.MetaParam.END_TIME;
-import static de.lemo.dms.processing.parameter.MetaParam.RESOLUTION;
-import static de.lemo.dms.processing.parameter.MetaParam.ROLE_IDS;
-import static de.lemo.dms.processing.parameter.MetaParam.START_TIME;
-import static de.lemo.dms.processing.parameter.MetaParam.TYPES;
+import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
+import static de.lemo.dms.processing.MetaParam.END_TIME;
+import static de.lemo.dms.processing.MetaParam.RESOLUTION;
+import static de.lemo.dms.processing.MetaParam.ROLE_IDS;
+import static de.lemo.dms.processing.MetaParam.START_TIME;
+import static de.lemo.dms.processing.MetaParam.TYPES;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -21,43 +19,14 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.parameter.Interval;
-import de.lemo.dms.processing.parameter.MetaParam;
-import de.lemo.dms.processing.parameter.Parameter;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 @Path("courseactivity")
 public class QCourseActivity extends Question{ 
-
-    @Override
-	protected List<MetaParam<?>> createParamMetaData() {
-	    List<MetaParam<?>> parameters = new LinkedList<MetaParam<?>>();
-        
-        Session session = dbHandler.getMiningSession();
-        List<?> latest = dbHandler.performQuery(session,EQueryType.SQL, "Select max(timestamp) from resource_log");
-        dbHandler.closeSession(session); 
-        
-        Long now = System.currentTimeMillis()/1000;
-        
-        if(latest.size() > 0)
-        	now = ((BigInteger)latest.get(0)).longValue();
-     
-        Collections.<MetaParam<?>> addAll( parameters,
-                Parameter.create(COURSE_IDS,"Courses","List of courses."),
-                Parameter.create(ROLE_IDS, "Roles","List of roles."),
-                Interval.create(Long.class, START_TIME, "Start time", "", 0L, now, 0L), 
-                Interval.create(Long.class, END_TIME, "End time", "", 0L, now, now),
-                Parameter.create(TYPES, "ResourceTypes","List of resource types."),
-                Parameter.create(RESOLUTION, "Resolution", "")
-                );
-        return parameters;
-	}
-	
 	
     /**
      * Returns a list with the length of 'resolution'. Each entry holds the number of requests in the interval.
