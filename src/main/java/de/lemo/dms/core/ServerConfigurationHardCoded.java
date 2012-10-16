@@ -80,7 +80,7 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.show_sql");
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.format_sql");
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.use_sql_comments");
-        addDBProperty(sourceDBConfig, sourcePrefix, "log4j.logger.org.hibernate");
+        //addDBProperty(sourceDBConfig, sourcePrefix, "log4j.logger.org.hibernate");
 
     }
 

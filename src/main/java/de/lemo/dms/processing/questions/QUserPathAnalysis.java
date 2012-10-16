@@ -6,24 +6,19 @@ import static de.lemo.dms.processing.MetaParam.LOGOUT_FLAG;
 import static de.lemo.dms.processing.MetaParam.START_TIME;
 import static de.lemo.dms.processing.MetaParam.TYPES;
 import static de.lemo.dms.processing.MetaParam.USER_IDS;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
