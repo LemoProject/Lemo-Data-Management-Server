@@ -218,8 +218,7 @@
 					<!-- deployed application (tomcat6:deploy) -->
 					<path>/${lemo-system-name}/${project.artifactId}</path>
 					<update>true</update>
-
-					<!-- local server (tomcat6:run-war) -->
+					<!-- local server (tomcat6:run) -->
 					<port>8081</port>
 				</configuration>
 

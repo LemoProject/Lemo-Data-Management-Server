@@ -99,10 +99,12 @@ public class HibernateUtil {
      */
     private static Configuration loadHibernateConfig() throws NamingException {
         try {
+            // use hibernate.cfg.xml or hibernate.properties in classpath root, if is present
             return new Configuration().configure();
         } catch (HibernateException e) {
             String systemName = ApplicationProperties.getPropertyValue("lemo.system-name");
-            String configPath = systemName + ".hibernate.cfg.xml";
+            String configPath = systemName + ".dms.hibernate.cfg.xml";
+            // use profile specific configuration, e.g. beuth.dms.hibernate.cfg.xml
             return new Configuration().configure(configPath);
         }
     }

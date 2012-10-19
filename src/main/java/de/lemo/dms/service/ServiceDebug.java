@@ -50,12 +50,12 @@ public class ServiceDebug {
     @Produces(MediaType.TEXT_HTML)
     public String debug() {
 
-        StringBuilder content = new StringBuilder("<h1>DMS Server Info</h1><dl>");
+        StringBuilder content = new StringBuilder("<h1>DMS Server Info</h1>");
         content.append("<div class='page-header'><h3>Profile: ")
                 .append(ApplicationProperties.getPropertyValue("lemo.display-name"))
                 .append(" <small>[")
                 .append(ApplicationProperties.getPropertyValue("lemo.system-name"))
-                .append("]</small></h2></div>");
+                .append("]</small></h2></div><dl class='dl-horizontal'>");
         IDBHandler dbHandler = null;
         try {
             dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
