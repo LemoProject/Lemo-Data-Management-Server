@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
@@ -42,53 +43,36 @@ public class HibernateDBHandler implements IDBHandler {
      */
     public void saveCollectionToDB(Session session, List<Collection<?>> data) {
 
-        List<Object> objects = new ArrayList<Object>();
-        try {
-
-            for(Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();)
-            {
-                Collection<?> l = iter.next();
-                HashSet<IMappingClass> isIn = new HashSet<IMappingClass>();
-                for(Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
-                    Object o = iter2.next();
-
-                    if(isIn.contains((IMappingClass) o))
-                        logger.info("double " + o.getClass());
-                    else
-                    {
-                        isIn.add((IMappingClass) o);
-                        objects.add(o);
-                    }
-
-                }
-            }
-            Transaction tx = session.beginTransaction();
+    	try {
             int classOb = 0;
             String className = "";
-            for(int i = 0; i < objects.size(); i++)
+    		session.beginTransaction();
+    		int i = 0;
+            for(Collection<?> collection:data)
             {
-
-                if(!className.equals("") && !className.equals(objects.get(i).getClass().getName()))
+                for(Object obj:collection) 
                 {
-                    logger.info("Wrote " + classOb + " objects of class " + className);
-                    classOb = 0;
-                }
-                className = objects.get(i).getClass().getName();
-
-                classOb++;
-                // session.saveOrUpdate(objects.get(i));
-                session.saveOrUpdate(objects.get(i));
-
-                if(i % 50 == 0) {
-                    // flush a batch of inserts and release memory:
-                    session.flush();
-                    session.clear();
+                	
+                	if(!className.equals("") && !className.equals(obj.getClass().getName()))
+                    {
+                         System.out.println("Wrote " + classOb + " objects of class " + className);
+                         classOb = 0;
+                    }
+                	className = obj.getClass().getName();
+                	i++;
+                	classOb++;
+                    session.saveOrUpdate(obj);
+                    if(i % 50 == 0) 
+                    {
+                        // flush a batch of inserts and release memory:
+                        session.flush();
+                        session.clear();
+                     }
                 }
             }
-            logger.info("Wrote " + classOb + " objects of class " + className + " to database.");
-            tx.commit();
+            System.out.println("Wrote " + classOb + " objects of class " + className + " to database.");
+            session.getTransaction().commit();
             session.clear();
-
         } catch (HibernateException e)
         {
             e.printStackTrace();

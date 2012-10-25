@@ -68,7 +68,7 @@ public class ConnectorChemgapedia implements IConnector{
 		if(processVSC || processLog)
 		{
 			Long pid = 0L;
-			Long pref = 1000L;
+			Long pref = 10L;
 			
 			for(PlatformMining p : l)
 			{

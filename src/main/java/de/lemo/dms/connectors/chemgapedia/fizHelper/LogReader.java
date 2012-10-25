@@ -265,9 +265,9 @@ public class LogReader {
        	       			{
        	       				id = largestId + 1;
        	       				largestId = id;
-       	       				id_mapping.put(name, new IDMappingMining(id, name, pf.getId()));
-       	       				new_id_mapping.put(name, new IDMappingMining(id, name, pf.getId()));
-       	       				lo.setId(id);
+       	       				id_mapping.put(name, new IDMappingMining(Long.valueOf(pf.getPrefix() + "" + id), name, pf.getId()));
+       	       				new_id_mapping.put(name, new IDMappingMining(Long.valueOf(pf.getPrefix() + "" + id), name, pf.getId()));
+       	       				lo.setId(Long.valueOf(pf.getPrefix() + "" + id));
        	       			}
        	       			
        	       			//Set timestamp
@@ -531,6 +531,7 @@ public class LogReader {
 						rl.setTimestamp(loadedItem.get(i).getTime());
 						rl.setDuration(loadedItem.get(i).getDuration());
 						rl.setAction("View");
+						rl.setPlatform(pf.getId());
 						
 						resourceLogMining.add(rl);
 					}
