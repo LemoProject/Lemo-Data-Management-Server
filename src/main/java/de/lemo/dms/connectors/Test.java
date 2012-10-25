@@ -43,8 +43,8 @@ public class Test {
 	{
 		ConnectorMoodle cm = new ConnectorMoodle();
 		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-		cm.getData("Moodle(Beuth)");
-		//cm.updateData("Moodle(Beuth)", 1338853158);
+		//cm.getData("Moodle(Beuth)");
+		cm.updateData("Moodle(Beuth)", 1338853158);
 	}
 	
 	public static void runClixConn()
@@ -64,10 +64,15 @@ public class Test {
         System.out.println("Person tables: " + person.size()); 
 	}
 	
+	public static void run()
+	{
+		runChemConn();
+	}
+	
 	public static void main(String[] args)
 	{
 		//test();
-		runChemConn();
+		//runChemConn();
 		//runClixConn();
 		//runMoodleConn();
 	}

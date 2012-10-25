@@ -195,37 +195,6 @@ public class LogReader {
 		this.newUsers = tempUsers;
 	}
 	
-	/*
-	private void prepareFile(String inFile, String outFile)
-	{
-		try
-	    {
-			FileWriter outFiles = new FileWriter(outFile);
-		    PrintWriter out = new PrintWriter(outFiles);
-			BufferedReader input =  new BufferedReader(new FileReader(inFile));
-			String line = null;
-			while (( line = input.readLine()) != null)
-			{
-				String[] sarr = line.split("\t");
-				if(sarr.length > 5 && !sarr[4].contains("adsense.html") && !sarr[4].contains("/vsengine/dummy.html"))
-				{
-					String id;
-					if(sarr[2].split("/").length == 2)
-	    				  id = Encoder.createMD5(sarr[2].split("/")[0].trim()) + "/" +  sarr[2].split("/")[1] + "\t" + Encoder.createMD5(sarr[2].split("/")[0].trim());	
-	    				  
-	    			  else
-	    				  id = "-\t" + Encoder.createMD5(sarr[3].trim());
-					if(sarr[5].contains("www.google."))
-						sarr[5] = "-";
-					out.println(sarr[0].trim() + "\t" + sarr[1].trim() + "\t" + id + "\t" + "http://www.chemgapedia.de"+sarr[4].trim() + "\t" + sarr[5].trim());
-				}
-			}
-		}catch(Exception e)
-	    {
-			System.out.println(e.getMessage());
-	    }
-	}*/
-	
 	/**
 	 * Loads the data from the server-log-file.
 	 *
@@ -361,8 +330,9 @@ public class LogReader {
 		       	       			{
 		       	       				resource_id = largestId + 1;
 		       	       				largestId = resource_id;
-		       	       				id_mapping.put(lo.getUrl(), new IDMappingMining(resource_id, lo.getUrl(), pf.getId()));
-		       	       				new_id_mapping.put(lo.getUrl(), new IDMappingMining(resource_id, lo.getUrl(), pf.getId()));
+		       	       				id_mapping.put(lo.getUrl(), new IDMappingMining(Long.valueOf(pf.getPrefix() + "" + resource_id), lo.getUrl(), pf.getId()));
+		       	       				new_id_mapping.put(lo.getUrl(), new IDMappingMining(Long.valueOf(pf.getPrefix() + "" + resource_id), lo.getUrl(), pf.getId()));
+		       	       				resource_id = Long.valueOf(pf.getPrefix() + "" + resource_id);
 		       	       				lo.setId(resource_id);
 		       	       			}
 		       	       			if(lo.getId() > largestId)
@@ -455,9 +425,8 @@ public class LogReader {
 	 */
 	private void calculateDurations()
 	{
-		for(Iterator<ArrayList<LogObject>> iter = this.userHistories.values().iterator(); iter.hasNext();)
+		for(ArrayList<LogObject> loadedItem : this.userHistories.values())
 		{
-			ArrayList<LogObject> loadedItem = iter.next();
 			for(int i = 0; i < loadedItem.size()-1; i++)
 			{
 				Long nextRequest = loadedItem.get(i+1).getTime();
