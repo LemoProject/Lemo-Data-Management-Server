@@ -61,7 +61,7 @@ public class HibernateDBHandler implements IDBHandler {
                 	className = obj.getClass().getName();
                 	i++;
                 	classOb++;
-                    session.saveOrUpdate(obj);
+                    session.merge(obj);
                     if(i % 50 == 0) 
                     {
                         // flush a batch of inserts and release memory:
@@ -72,12 +72,11 @@ public class HibernateDBHandler implements IDBHandler {
             }
             System.out.println("Wrote " + classOb + " objects of class " + className + " to database.");
             session.getTransaction().commit();
-            session.clear();
+            session.close();
         } catch (HibernateException e)
         {
             e.printStackTrace();
         }
-        closeSession(session);
     }
 
     @Override

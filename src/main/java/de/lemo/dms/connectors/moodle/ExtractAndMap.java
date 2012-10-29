@@ -357,7 +357,7 @@ public abstract class ExtractAndMap{
 		config_mining_timestamp = (List<Timestamp>) dbHandler.performQuery(session, EQueryType.HQL, "select max(lastmodified) from ConfigMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
 		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "select largestId from ConfigMining x order by x.id asc"));
 		if(l != null && l.size() > 0)
-			largestId = l.get(l.size()-1);
+			largestId = Long.valueOf((l.get(l.size()-1) + "").substring(2));
 		else
 			largestId = 0;
 		

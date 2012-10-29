@@ -25,7 +25,10 @@ public class Test {
 			sourceConf.addProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120614\\120614_lemo_"+i+".log");
 			sourceConf.addProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
 			sourceConf.addProperty("filter_log_file", "true");
-			sourceConf.addProperty("process_metadata", "true");
+			if(i == 0)
+				sourceConf.addProperty("process_metadata", "true");
+			else
+				sourceConf.addProperty("process_metadata", "false");
 			sourceConf.addProperty("process_log_file", "true");
 			
 			ConnectorChemgapedia cm = new ConnectorChemgapedia();

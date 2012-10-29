@@ -139,7 +139,9 @@ public class LogReader {
 				c.add(Restrictions.eq("conf.platform", platform.getId()));
 				List<ConfigMining>l = c.list();
 				if(l != null && l.size() > 0)
-					largestId = l.get(l.size()-1).getLargestId();
+				{
+					largestId = Long.valueOf((l.get(l.size()-1).getLargestId() + "").substring(2));
+				}
 				else
 					largestId = 0L;
 			}
@@ -149,6 +151,30 @@ public class LogReader {
 		{
 			System.out.println(e.getMessage());
 		}
+		
+	}
+	
+	public Long update(String inFile)
+	{
+		for(ResourceMining resource : newResources.values())
+			oldResources.put(resource.getUrl(), resource);
+		newResources.clear();
+		
+		
+		for(UserMining user : newUsers.values())
+			oldUsers.put(user.getId(), user);
+		newUsers.clear();
+		
+		for(IDMappingMining mapping : new_id_mapping.values())
+			id_mapping.put(mapping.getHash(), mapping);
+		new_id_mapping.clear();
+		
+		userHistories.clear();
+		resourceLog.clear();
+		
+		loadServerLogData(inFile);
+		filterServerLogFile();
+		return save();
 		
 	}
 	
@@ -335,8 +361,6 @@ public class LogReader {
 		       	       				resource_id = Long.valueOf(pf.getPrefix() + "" + resource_id);
 		       	       				lo.setId(resource_id);
 		       	       			}
-		       	       			if(lo.getId() > largestId)
-		       	       				largestId = lo.getId();
 		    				  
 		    				  r.setId(resource_id);
 		    				  r.setUrl(lo.getUrl());
@@ -442,10 +466,11 @@ public class LogReader {
 	/**
 	 * Writes users to the database.
 	 */
-	public void usersToDB()
+	public Long save()
 	{
 		//try{	
 			List<Collection<?>> l = new ArrayList<Collection<?>>();
+			ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
 			Collection<UserMining> it = (Collection<UserMining>)this.newUsers.values();
 			Collection<IDMappingMining> idmap = (Collection<IDMappingMining>)new_id_mapping.values();
 			System.out.println("Found " + it.size() + " users.");
@@ -453,20 +478,63 @@ public class LogReader {
 			l.add(idmap);
 			
 			Session session = dbHandler.getMiningSession();
-			dbHandler.saveCollectionToDB(session, l);
 			
+			long li = (Long)(dbHandler.performQuery(session, EQueryType.HQL, "Select count(*) from ResourceLogMining").get(0));
+			if (li > 0)
+			startIndex = 1 + li;
+			for(Iterator<ArrayList<LogObject>> iter = this.userHistories.values().iterator(); iter.hasNext();)
+			{
+				ArrayList<LogObject> loadedItem = iter.next();
+				for(int i =0; i < loadedItem.size(); i++)
+				{
+					if(this.newUsers.get(loadedItem.get(i).getUser().getId()) != null)
+					{
+						//startIndex++;
+						ResourceLogMining rl = new ResourceLogMining();
+						//rl.setId(startIndex);
+						if(oldResources.get(loadedItem.get(i).getUrl()) == null)
+							rl.setResource(newResources.get(loadedItem.get(i).getUrl()));
+						else
+							rl.setResource(oldResources.get(loadedItem.get(i).getUrl()));
+
+						rl.setCourse(loadedItem.get(i).getCourse());
+						rl.setUser(loadedItem.get(i).getUser());
+						rl.setTimestamp(loadedItem.get(i).getTime());
+						rl.setDuration(loadedItem.get(i).getDuration());
+						rl.setAction("View");
+						rl.setPlatform(pf.getId());
+						
+						resourceLogMining.add(rl);
+					}
+				}
+			}
+//			ArrayList<ResourceLogMining> rlm = new ArrayList<ResourceLogMining>(resourceLogMining.values());
+			Collections.sort(resourceLogMining);
+			for(int i = 0; i < resourceLogMining.size(); i++)
+			{
+				startIndex++;
+				resourceLogMining.get(i).setId(startIndex);
+			}
+			session.close();
+			session = dbHandler.getMiningSession();
+			l.add(this.newResources.values());
+			l.add(resourceLogMining);			
+			
+			dbHandler.saveCollectionToDB(session, l);
 			
 			/*}
 		catch (Exception e)
 		{
 			System.out.println(e.getMessage());
 		}*/
+			return largestId;
 	}
 	
 	/**
 	 * Writes resource logs to the database.
 	 */
-	public Long resourceLogsToDB()
+	/*
+	public Long resourceLfogsToDB()
 	{
 		calculateDurations();
 		List<Collection<?>> l = new ArrayList<Collection<?>>();
@@ -513,6 +581,8 @@ public class LogReader {
 				startIndex++;
 				resourceLogMining.get(i).setId(startIndex);
 			}
+			session.close();
+			session = dbHandler.getMiningSession();
 			l.add(this.newResources.values());
 			l.add(resourceLogMining);			
 			dbHandler.saveCollectionToDB(session, l);
@@ -523,4 +593,5 @@ public class LogReader {
 		}
 		return largestId;
 	}
+	*/
 }
