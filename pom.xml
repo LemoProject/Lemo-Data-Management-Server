@@ -8,20 +8,56 @@
 	<name>Lemo Data Management Server</name>
 
 	<properties>
-		<!-- defaults, may be overridden by deployment profiles -->
-		<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-		<tomcat-url>http://141.45.146.174:8080/manager</tomcat-url>
-		<lemo-system-name>lemo</lemo-system-name>
-		<lemo-display-name>LeMo Debug</lemo-display-name>
+		<lemo3-tomcat-url>http://141.45.146.174:8080/manager</lemo3-tomcat-url>
 	</properties>
 
 	<profiles>
+		<!-- Debug and deployment profiles. Server credentials and local database 
+			connection needs to be set in ~/.m2/settings.xml -->
 
+		<profile>
+			<!-- default local test profile -->
+			<id>debug</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<lemo-system-name>lemo-debug</lemo-system-name>
+				<lemo-display-name>LeMo Debug</lemo-display-name>
+				<!-- intentionally invalid, to avoid accidental upload to local machine -->
+				<tomcat-server>none</tomcat-server>
+				<tomcat-url>none</tomcat-url>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>devel</id>
+			<properties>
+				<lemo-system-name>lemo-devel</lemo-system-name>
+				<lemo-display-name>LeMo [development]</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>stable</id>
+			<properties>
+				<lemo-system-name>lemo</lemo-system-name>
+				<lemo-display-name>LeMo</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+			</properties>
+		</profile>
+
+		<!-- partner profiles -->
 		<profile>
 			<id>beuth</id>
 			<properties>
 				<lemo-system-name>beuth</lemo-system-name>
 				<lemo-display-name>Beuth</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
 
@@ -30,6 +66,8 @@
 			<properties>
 				<lemo-system-name>chemgapedia</lemo-system-name>
 				<lemo-display-name>Chemgapedia</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
 
@@ -58,8 +96,6 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.21</version>
-			<!-- <scope>provided</scope> -->
-			<!--shared tomcat libraries, see tomcat-maven-plugin -->
 		</dependency>
 
 		<dependency>
@@ -191,18 +227,6 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>de.lemo.dms.core.DMSMain</mainClass>
-					<arguments>
-					</arguments>
-				</configuration>
 			</plugin>
 
 			<!-- tomcat deployment -->
@@ -215,22 +239,11 @@
 					<!-- remote tomcat manager -->
 					<url>${tomcat-url}</url>
 					<server>${tomcat-server}</server>
-					<!-- deployed application (tomcat6:deploy) -->
 					<path>/${lemo-system-name}/${project.artifactId}</path>
 					<update>true</update>
-					<!-- local server (tomcat6:run) -->
+					<!-- local server port, only used when executed with tomcat6:run -->
 					<port>8081</port>
 				</configuration>
-
-				<!-- tomcat-maven-plugin dependencies are managed by the tomcat server 
-					(in {$catalina_home}\lib) -->
-				<!-- <dependencies> -->
-				<!-- <dependency> -->
-				<!-- <groupId>mysql</groupId> -->
-				<!-- <artifactId>mysql-connector-java</artifactId> -->
-				<!-- <version>5.1.21</version> -->
-				<!-- </dependency> -->
-				<!-- </dependencies> -->
 
 			</plugin>
 
@@ -265,10 +278,7 @@
 						</resource>
 					</webResources>
 				</configuration>
-
-
 			</plugin>
-
 
 			<!-- Java compiler target - http://maven.apache.org/plugins/maven-compiler-plugin/examples/set-compiler-source-and-target.html -->
 			<plugin>
