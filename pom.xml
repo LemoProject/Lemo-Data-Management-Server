@@ -8,7 +8,7 @@
 	<name>Lemo Data Management Server</name>
 
 	<properties>
-		<lemo3-tomcat-url>http://141.45.146.174:8080/manager</lemo3-tomcat-url>
+		<lemo3-tomcat-url>http://141.45.146.174:8080</lemo3-tomcat-url>
 	</properties>
 
 	<profiles>
@@ -237,8 +237,8 @@
 				<configuration>
 					<warDirectory>target/${project.build.finalName}.war</warDirectory>
 					<!-- remote tomcat manager -->
-					<url>${tomcat-url}</url>
 					<server>${tomcat-server}</server>
+					<url>${tomcat-url}/manager</url>
 					<path>/${lemo-system-name}/${project.artifactId}</path>
 					<update>true</update>
 					<!-- local server port, only used when executed with tomcat6:run -->
@@ -268,14 +268,6 @@
 							<filtering>true</filtering>
 							<targetPath>WEB-INF</targetPath>
 						</webResource>
-						<resource>
-							<!-- include hibernate mapping files -->
-							<directory>src/main/java</directory>
-							<targetPath>WEB-INF/classes</targetPath>
-							<includes>
-								<include>**/*.xml</include>
-							</includes>
-						</resource>
 					</webResources>
 				</configuration>
 			</plugin>
@@ -303,6 +295,7 @@
 				</includes>
 			</resource>
 			<resource>
+				<!-- include hibernate mapping files -->
 				<directory>src/main/java</directory>
 				<filtering>false</filtering>
 				<includes>
