@@ -31,9 +31,9 @@
 		</profile>
 
 		<profile>
-			<id>devel</id>
+			<id>dev</id>
 			<properties>
-				<lemo-system-name>lemo-devel</lemo-system-name>
+				<lemo-system-name>lemo-dev</lemo-system-name>
 				<lemo-display-name>LeMo [development]</lemo-display-name>
 				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
