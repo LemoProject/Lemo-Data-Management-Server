@@ -67,6 +67,13 @@ public class QCourseActivity extends Question{
 				resArr[i] = 0L;
 			
 			
+			if(resourceTypes!=null && resourceTypes.size()>0)
+	    		for(int i=0; i<resourceTypes.size();i++){
+	    			logger.info("Course Activity Request - CA Selection: "+resourceTypes.get(i));
+	    		}
+	    	else logger.info("Course Activity Request - CA Selection: NO Items selected ");
+
+			
 			List<CourseUserMining> ilm = null;
 			if(roles != null && roles.size() > 0)
 			{
@@ -102,7 +109,7 @@ public class QCourseActivity extends Question{
 				boolean isInRT = false;
 				if(resourceTypes != null && resourceTypes.size() > 0)
 					for(int j = 0; j < resourceTypes.size(); j++)
-						if(logs.get(i).getClass().toString().toLowerCase().contains(resourceTypes.get(j)))
+						if(logs.get(i).getClass().toString().toUpperCase().contains(resourceTypes.get(j)))
 						{
 							isInRT = true;
 							break;
@@ -117,6 +124,8 @@ public class QCourseActivity extends Question{
 			}			
 			Collections.addAll(list, resArr);
 		}
+		
+		logger.info("Course Activity: Total returned objects: "+ list.size());
         return new ResultListLongObject(list);
     }
 }

@@ -72,6 +72,12 @@ public class QLearningObjectUsage extends Question {
             logger.info("Invalid time params.");
             return null;
         }
+        
+        if(types!=null && types.size()>0)
+    		for(int i=0; i<types.size();i++){
+    			logger.info("LO Request - LO Selection: "+types.get(i));
+    		}
+    	else logger.info("LO Request - LO Selection: NO Items selected ");
 
         criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 
@@ -92,7 +98,7 @@ public class QLearningObjectUsage extends Question {
         {
         	String obType = ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf(".") + 1, ilo.getClass().toString().lastIndexOf("Log"));
         	
-        	if(types == null || types.size() == 0 || types.contains(obType))
+        	if(types == null || types.size() == 0 || types.contains(obType.toUpperCase()))
         	{
 	        	String id = ilo.getPrefix() +"_"+ ilo.getLearnObjId() + "?" + obType +"$"+ ilo.getTitle();
 	        	if(requests.get(id) == null)
@@ -113,6 +119,8 @@ public class QLearningObjectUsage extends Question {
         	ResourceRequestInfo rri = new ResourceRequestInfo(id, ELearnObjType.valueOf(type.toUpperCase()), Long.valueOf(item.getValue().size()), Long.valueOf(new HashSet<Long>(item.getValue()).size()), title, 0L);
         	result.add(rri);
         }
+        logger.info("Total returned entries: " + result.getResourceRequestInfos().size());
+        
         return result;
     }
 
