@@ -17,13 +17,13 @@
 
 		<profile>
 			<!-- default local test profile -->
-			<id>debug</id>
+			<id>local</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<lemo-system-name>lemo-debug</lemo-system-name>
-				<lemo-display-name>LeMo Debug</lemo-display-name>
+				<lemo-system-name>lemo-local</lemo-system-name>
+				<lemo-display-name>LeMo [local]</lemo-display-name>
 				<!-- intentionally invalid, to avoid accidental upload to local machine -->
 				<tomcat-server>none</tomcat-server>
 				<tomcat-url>none</tomcat-url>
@@ -43,8 +43,8 @@
 		<profile>
 			<id>stable</id>
 			<properties>
-				<lemo-system-name>lemo</lemo-system-name>
-				<lemo-display-name>LeMo</lemo-display-name>
+				<lemo-system-name>lemo-stable</lemo-system-name>
+				<lemo-display-name>LeMo [stable]</lemo-display-name>
 				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
