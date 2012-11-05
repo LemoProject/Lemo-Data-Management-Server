@@ -16,6 +16,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -79,7 +80,8 @@ public class QUserPathAnalysis extends Question {
         }
 
         criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
-
+        criteria.addOrder(Order.asc("log.timestamp"));
+        
         if(!courseIds.isEmpty())
             criteria.add(Restrictions.in("log.course.id", courseIds));
 
