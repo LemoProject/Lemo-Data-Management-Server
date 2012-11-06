@@ -8,12 +8,16 @@
 	<name>Lemo Data Management Server</name>
 
 	<properties>
+		<jersey-version>1.14</jersey-version>
+		<hibernate-version>3.6.10.Final</hibernate-version>
+		<slf4j-version>1.6.6</slf4j-version>
+
 		<lemo3-tomcat-url>http://141.45.146.174:8080</lemo3-tomcat-url>
 	</properties>
 
 	<profiles>
 		<!-- Debug and deployment profiles. Server credentials and local database 
-			connection needs to be set in ~/.m2/settings.xml -->
+			connection need to be set in ~/.m2/settings.xml -->
 
 		<profile>
 			<!-- default local test profile -->
@@ -75,18 +79,6 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>ca.pfv</groupId>
-			<artifactId>sqpm</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3.0</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -97,14 +89,12 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>3.6.10.Final</version>
+			<version>${hibernate-version}</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
-			<version>3.6.10.Final</version>
+			<version>${hibernate-version}</version>
 		</dependency>
 
 		<dependency>
@@ -128,29 +118,27 @@
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-core</artifactId>
-			<version>1.14</version>
+			<version>${jersey-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
-			<version>1.14</version>
+			<version>${jersey-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
-			<version>1.14</version>
+			<version>${jersey-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-servlet</artifactId>
-			<version>1.14</version>
+			<version>${jersey-version}</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-grizzly2</artifactId>
-			<version>1.14</version>
+			<version>${jersey-version}</version>
 		</dependency>
 
 		<dependency>
@@ -158,30 +146,26 @@
 			<artifactId>org.apache.logging.log4j</artifactId>
 			<version>1.2.14</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.6</version>
+			<version>${slf4j-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.6</version>
+			<version>${slf4j-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
-			<version>1.6.6</version>
+			<version>${slf4j-version}</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>11.0.1</version>
+			<version>13.0.1</version>
 		</dependency>
 
 		<dependency>
@@ -190,21 +174,19 @@
 			<version>4.10</version>
 		</dependency>
 
+		<!-- from lemo repo -->
 
-		<!-- classpath config - http://maven.apache.org/shared/maven-archiver/examples/classpath.html#Repository -->
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.1</version>
+			<groupId>ca.pfv</groupId>
+			<artifactId>sqpm</artifactId>
+			<version>1.0</version>
 		</dependency>
 
-		<!-- classpath config - http://maven.apache.org/shared/maven-archiver/examples/classpath.html#Repository -->
 		<dependency>
-			<groupId>org.codehaus.plexus</groupId>
-			<artifactId>plexus-utils</artifactId>
-			<version>1.1</version>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.3.0</version>
 		</dependency>
-
 
 	</dependencies>
 
@@ -302,11 +284,11 @@
 
 	</build>
 
-  <repositories>
+	<repositories>
 		<repository>
 			<id>Lemo Repo</id>
 			<url>http://lemo2.f4.htw-berlin.de/maven/</url>
 		</repository>
 	</repositories>
-  
+
 </project>

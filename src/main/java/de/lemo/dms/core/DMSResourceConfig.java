@@ -6,8 +6,7 @@ import java.util.Map.Entry;
 
 import javax.ws.rs.Path;
 
-import org.apache.commons.lang.StringUtils;
-
+import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.Iterables;
@@ -17,13 +16,13 @@ import com.sun.jersey.api.core.PackagesResourceConfig;
 
 /**
  * Resource configuration for the DMS, used to discover and load web services when not running in a servlet container
- * environment. Creates singletons of question and service classes. Modifies given paths in {@link Path} annotations to
- * mimic URLs provided by servlets defined in the web.xml file.
+ * environment. Creates singletons of question and service classes.
+ * 
+ * Modifies given paths in {@link Path} annotations to mimic URLs provided by servlets defined in the web.xml file.
  * 
  * @author Leonard Kappe
  * 
  */
-
 public class DMSResourceConfig extends DefaultResourceConfig {
 
     public static final String SYSTEM_NAME = ApplicationProperties.getPropertyValue("lemo.system-name");
@@ -90,7 +89,7 @@ public class DMSResourceConfig extends DefaultResourceConfig {
         HashMap<String, Class<?>> resourceClasses = Maps.newHashMap();
         for(Class<?> resource : new PackagesResourceConfig(packagePath).getClasses()) {
             Path annotation = resource.getAnnotation(Path.class);
-            resourceClasses.put(baseUrl + StringUtils.strip(annotation.value(), "/"), resource);
+            resourceClasses.put(baseUrl + CharMatcher.is('/').trimFrom(annotation.value()), resource);
         }
         return resourceClasses;
     }
