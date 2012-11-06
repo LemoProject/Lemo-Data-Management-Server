@@ -300,12 +300,7 @@ public class ClixImporter {
 
 		Long upperLimit = 0L;
 		
-		Long pid = 0L;
-		Long pref = 1000L;
-		
 		platform_mining = new HashMap<Long, PlatformMining>();
-		
-		boolean first = true;
 		
 		while (startTime <= currentSysTime)
 		{
@@ -439,7 +434,6 @@ public class ClixImporter {
 				
 				quiz_user_mining = generateQuizUserMining();
 				updates.add(quiz_user_mining.values());
-					
 				
 			}
 			
@@ -491,7 +485,7 @@ public class ClixImporter {
 		}
 	}
 	
-	private static void clearSourceData()
+	public static void clearSourceData()
 	{
 		biTrackContentImpressions.clear();
 		chatProtocol.clear();

@@ -239,7 +239,7 @@ public abstract class ExtractAndMap{
 
 		
 		
-		
+		dbHandler.saveToDB(session, platform);
 		System.out.println("Initialized database in " + c.getAndReset());
 //default call without parameter	        
 		if(args.length == 1)
@@ -733,6 +733,8 @@ public abstract class ExtractAndMap{
 			updates.add(generateQuizQuestionMining().values());
 			objects += updates.get(updates.size()-1).size();
 			System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuizQuestionMining entries in "+ c.getAndReset() +" s. ");
+			
+			
 			
 		}		
 		System.out.println("\nAssociation tables:\n");

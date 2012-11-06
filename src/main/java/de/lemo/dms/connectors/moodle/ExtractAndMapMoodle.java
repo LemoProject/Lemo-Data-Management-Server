@@ -1106,10 +1106,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     				uid = id_mapping.get(loadedItem.getUserid()).getId();
     			else if(old_id_mapping.get(loadedItem.getUserid()) != null)
     				uid = old_id_mapping.get(loadedItem.getUserid()).getId();
-    			if(uid != -1)
+    			if(uid != -1 && questionLogMining.get(timestampIdMap.get(loadedItem.getTime())) != null)
     			{
     				questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).setUser(uid, user_mining, old_user_mining);
-    				questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).setCourse(loadedItem.getCourse(), course_mining, old_course_mining);
+    				questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).setCourse(Long.valueOf(platform.getPrefix() + "" +loadedItem.getCourse()), course_mining, old_course_mining);
     			}
     			if(questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).getCourse() == null || questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).getUser() == null)
     				questionLogMining.remove(timestampIdMap.get(loadedItem.getTime()));

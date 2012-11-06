@@ -24,6 +24,14 @@
 				<lemo-display-name>Beuth</lemo-display-name>
 			</properties>
 		</profile>
+		
+		<profile>
+			<id>clix</id>
+			<properties>
+				<lemo-system-name>clix</lemo-system-name>
+				<lemo-display-name>Clix</lemo-display-name>
+			</properties>
+		</profile>
 
 		<profile>
 			<id>chem</id>
