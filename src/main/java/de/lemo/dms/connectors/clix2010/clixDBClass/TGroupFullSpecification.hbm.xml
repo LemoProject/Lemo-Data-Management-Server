@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.TGroupFullSpecification"
-        table="lemo_db.T_GROUPFULLSPECIFICATION">
+        table="T_GROUPFULLSPECIFICATION">
 
         <id
             name="group"

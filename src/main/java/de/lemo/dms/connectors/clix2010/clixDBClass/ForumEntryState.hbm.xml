@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntryState"
-        table="lemo_db.FORUM_ENTRY_STATE">
+        table="FORUM_ENTRY_STATE">
 
 		<composite-id
        	name="id"

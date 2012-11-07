@@ -48,10 +48,9 @@ public class HibernateDBHandler implements IDBHandler {
             String className = "";
     		session.beginTransaction();
     		int i = 0;
-            for(Collection<?> collection:data)
-            {
-                for(Object obj:collection) 
-                {
+    		for(int j = 0; j < data.size(); j++)
+    			for(Object obj:data.get(j))
+    			{
                 	
                 	if(!className.equals("") && !className.equals(obj.getClass().getName()))
                     {
@@ -61,7 +60,7 @@ public class HibernateDBHandler implements IDBHandler {
                 	className = obj.getClass().getName();
                 	i++;
                 	classOb++;
-                    session.merge(obj);
+                    session.saveOrUpdate(obj);
                     if(i % 50 == 0) 
                     {
                         // flush a batch of inserts and release memory:
@@ -69,7 +68,6 @@ public class HibernateDBHandler implements IDBHandler {
                         session.clear();
                      }
                 }
-            }
             System.out.println("Wrote " + classOb + " objects of class " + className + " to database.");
             session.getTransaction().commit();
             session.close();

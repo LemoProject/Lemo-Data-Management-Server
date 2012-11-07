@@ -1,11 +1,19 @@
 package de.lemo.dms.connectors;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.CourseMining;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
+import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
@@ -67,20 +75,48 @@ public class Test {
         System.out.println("Person tables: " + person.size()); 
 	}
 	
+	public static void calculateMeichsner()
+	{
+		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+		Session session = dbHandler.getMiningSession();
+		
+		ArrayList<Long> cids = new ArrayList<Long>();
+		cids.add(100117945446L);
+		cids.add(100113617310L);
+		cids.add(100110921956L);
+		cids.add(10018074949L);
+		cids.add(10014667155L);
+		
+		Criteria crit = session.createCriteria(ResourceLogMining.class, "logs");
+		crit.add(Restrictions.in("logs.course.id", cids));
+		System.out.println("Reading DB");
+		List<ResourceLogMining> l = crit.list();
+		System.out.println("Found "+l.size()+" courses.");
+		
+		HashSet<String> hSet = new HashSet<String>();
+		for(ResourceLogMining resL : l)
+		{
+			if(resL.getResource() != null && resL.getResource().getTitle().contains("Grundlagen des Projektmanagements"))
+			{
+				String id = resL.getCourse().getTitle() + "-" + resL.getResource().getTitle();
+				hSet.add(id);
+			}
+		}
+		
+		for(String s : hSet)
+		{
+			System.out.println(s);
+		}
+		
+	}
+	
 	public static void run()
 	{
 		System.out.println("Starting test");
-		runClixConn();
+		calculateMeichsner();
 		System.out.println("Test finished");
 	}
-	
-	public static void main(String[] args)
-	{
-		//test();
-		//runChemConn();
-		runClixConn();
-		//runMoodleConn();
-	}
+
 	
 	
 }

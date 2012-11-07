@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContent"
-        table="lemo_db.T_QTI_CONTENT">
+        table="T_QTI_CONTENT">
 
         <id
             name="id"

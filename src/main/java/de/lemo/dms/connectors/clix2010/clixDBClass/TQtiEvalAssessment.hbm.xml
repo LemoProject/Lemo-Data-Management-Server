@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiEvalAssessment"
-        table="lemo_db.T_QTI_EVAL_ASSESSMENT">
+        table="T_QTI_EVAL_ASSESSMENT">
 
         <id
             name="id"

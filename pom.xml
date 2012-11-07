@@ -49,16 +49,12 @@
 			<groupId>ca.pfv</groupId>
 			<artifactId>sqpm</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/mining.jar</systemPath>
 		</dependency>
 
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>11.2.0.3.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
 		</dependency>
 
 
@@ -311,5 +307,12 @@
 		</resources>
 
 	</build>
+	
+	<repositories>
+    	<repository>
+      	<id>Lemo Repo</id>
+      	<url>http://lemo2.f4.htw-berlin.de/maven/</url>
+    	</repository>
+  	</repositories> 
 
 </project>

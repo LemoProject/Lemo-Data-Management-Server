@@ -342,6 +342,8 @@ public class ClixImporter {
 			
 			if(user_mining == null)
 			{
+				updates.add(platform_mining.values());
+				
 				course_mining = generateCourseMining();
 				updates.add(course_mining.values());
 				
@@ -362,41 +364,26 @@ public class ClixImporter {
 				
 				wiki_mining = generateWikiMining();
 				updates.add(wiki_mining.values());
-				
-				//Clearing source-data, that isn't longer needed
-				eComponent.clear();
-				eComponentType.clear();
-				
+								
 				user_mining = generateUserMining();
 				updates.add(user_mining.values());
-				
-				person.clear();
-				
+								
 				group_mining = generateGroupMining();
 				updates.add(group_mining.values());
 				
 				question_mining = generateQuestionMining();
 				updates.add(question_mining.values());
 				
-				t2Task.clear();
-				tQtiContent.clear();
-				
 				role_mining = generateRoleMining();
 				updates.add(role_mining.values());
-				
-				platformGroup.clear();
-				
+								
 				chat_mining = generateChatMining();
 				updates.add(chat_mining.values());
-				
-				chatroom.clear();
-				
+								
 				System.out.println("\nAssociationObjects: \n");
 				
 				quiz_question_mining = generateQuizQuestionMining();
 				updates.add(quiz_question_mining.values());
-				
-				tTestSpecification.clear();
 				
 				course_quiz_mining = generateCourseQuizMining();
 				updates.add(course_quiz_mining.values());
@@ -406,20 +393,12 @@ public class ClixImporter {
 	
 				course_scorm_mining = generateCourseScormMining();
 				updates.add(course_scorm_mining.values());
-				
-				//course_user_mining = generateCourseUserMining();
-				//updates.add(course_user_mining.values());
 	
-				personComponentAssignment.clear();
-				portfolio.clear();
-				
 				course_forum_mining = generateCourseForumMining();
 				updates.add(course_forum_mining.values());
 				
 				course_group_mining = generateCourseGroupMining();
 				updates.add(course_group_mining.values());
-				
-				teamExerciseGroup.clear();
 				
 				course_wiki_mining = generateCourseWikiMining();
 				updates.add(course_wiki_mining.values());
@@ -430,8 +409,6 @@ public class ClixImporter {
 				group_user_mining = generateGroupUserMining();
 				updates.add(group_user_mining.values());
 				
-				platformGroupSpecification.clear();
-				
 				quiz_user_mining = generateQuizUserMining();
 				updates.add(quiz_user_mining.values());
 				
@@ -440,45 +417,42 @@ public class ClixImporter {
 			System.out.println("\nLogObjects: \n");
 			
 			updates.add(generateAssignmentLogMining().values());
-
-			exerciseGroup.clear();
-			exercisePersonalised.clear();
-			
+		
 			updates.add(generateCourseLogMining().values());
-			portfolioLog.clear();
 			
 			updates.add(generateForumLogMining().values());
 			
-			forumEntry.clear();
-			forumEntryState.clear();
-			
 			updates.add(generateQuizLogMining().values());
-			
-			tQtiEvalAssessment.clear();
 			
 			updates.add(generateQuestionLogMining().values());
 			
-			tAnswerPosition.clear();
-			
 			updates.add(generateScormLogMining().values());
-
-			scormSessionTimes.clear();
 			
 			updates.add(generateResourceLogMining().values());
 
-			biTrackContentImpressions.clear();
-
 			updates.add(generateWikiLogMining().values());
-			
-			wikiEntry.clear();
 			
 			updates.add(generateChatLogMining().values());
 			
-			clearSourceData();
+			Long objects = 0L;
 			
-	        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-	        Session session = dbHandler.getMiningSession();
-	        dbHandler.saveCollectionToDB(session, updates);
+			for(Collection<?> collection:updates)
+			{
+				objects += collection.size();
+			}
+			
+			if(objects > 0)
+			{
+				
+				IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+		        Session session = dbHandler.getMiningSession();
+		        System.out.println("Writing to DB");
+				dbHandler.saveCollectionToDB(session, updates);
+			}
+			else
+				System.out.println("No new objects found.");
+			
+	        clearSourceData();
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -534,7 +508,7 @@ public class ClixImporter {
 	        if(platform == null)
 	        {
 				Long pid = 0L;
-				Long pref = 1000L;
+				Long pref = 10L;
 		        
 		        Query old_platform = session.createQuery("from PlatformMining x order by x.id asc");
 		        l = (ArrayList<PlatformMining>) old_platform.list();
@@ -856,7 +830,7 @@ public class ClixImporter {
 	        wikiEntry = wE.list();	        
 	        System.out.println("WikiEntry tables: " + wikiEntry.size()); 
 
-	//		writeToFile();
+//			writeToFile();
 //	        loadFromFile();
 	        
 		}catch(Exception e)
@@ -2082,7 +2056,13 @@ public class ClixImporter {
 				item.setPlatform(platform.getId());
 				
 				if(item.getCourse() != null && item.getUser() != null)
+				{
 					courseLogs.put(item.getId(), item);
+					if(item.getId() == 20438)
+						System.out.println();
+				}
+				if(item.getId() == 22746)
+					System.out.println();
 			}
 			System.out.println("Generated " + courseLogs.size() + " CourseLogMinings.");
 			

@@ -803,30 +803,6 @@ public abstract class ExtractAndMap{
 			System.out.println("Writing to DB");
 			dbHandler.saveCollectionToDB(session, updates);
 		}
-		/*
-		int i= new Integer(0);
-		//save in the session
-	    for ( Iterator<List<?>> iter = updates.iterator(); iter.hasNext();) 
-	    {
-	    	List<?> l = iter.next();
-	    	for ( Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
-	    		Object o = iter2.next();
-	    		dbHandler.getSession().saveOrUpdate(o);
-	    		i++;
-	    		
-	    	    if ( i % 60 == 0 ) {
-	    	        //flush a batch of inserts and release memory:
-	    	    	dbHandler.getSession().flush();
-	    	    	dbHandler.getSession().clear();
-	    	    }
-	    	}
-	    }	    
-	    //hibernate session finish and close
-	    tx.commit();
-	    dbHandler.getSession().clear();
-	    */
-	    
-	    
 	    
 	    clearLMStables();
 		updates.clear();

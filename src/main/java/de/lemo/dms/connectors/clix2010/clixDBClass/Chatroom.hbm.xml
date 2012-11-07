@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.Chatroom"
-        table="lemo_db.CHATROOM">
+        table="CHATROOM">
 
         <id
             name="id"
