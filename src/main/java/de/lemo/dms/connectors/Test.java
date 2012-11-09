@@ -54,8 +54,8 @@ public class Test {
 	{
 		ConnectorMoodle cm = new ConnectorMoodle();
 		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-		//cm.getData("Moodle(Beuth)");
-		cm.updateData("Moodle(Beuth)", 1338800000);
+		cm.getData("Moodle(Beuth)");
+		//cm.updateData("Moodle(Beuth)", 1338800000);
 	}
 	
 	public static void runClixConn()
@@ -113,7 +113,7 @@ public class Test {
 	public static void run()
 	{
 		System.out.println("Starting test");
-		calculateMeichsner();
+		runMoodleConn();
 		System.out.println("Test finished");
 	}
 
