@@ -14,6 +14,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.processing.questions.QCourseActivity;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
@@ -110,10 +111,24 @@ public class Test {
 		
 	}
 	
+	public static void test2()
+	{
+		QCourseActivity qca = new QCourseActivity();
+		List<Long> courses = new ArrayList<Long>();
+		courses.add(112200L);
+		courses.add(11476L);
+		List<Long> roles = new ArrayList<Long>();
+		Long startTime = 0L;
+		Long endTime = 1500000000L;
+		int resolution = 100;
+		List<String> resourceTypes = new ArrayList<String>();
+		qca.compute(courses, roles, startTime, endTime, resolution, resourceTypes);
+	}
+	
 	public static void run()
 	{
 		System.out.println("Starting test");
-		runMoodleConn();
+		test2();
 		System.out.println("Test finished");
 	}
 
