@@ -315,11 +315,5 @@
     	</repository>
   	</repositories> 
 
-  <repositories>
-		<repository>
-			<id>Lemo Repo</id>
-			<url>http://lemo2.f4.htw-berlin.de/maven/</url>
-		</repository>
-	</repositories>
   
 </project>
