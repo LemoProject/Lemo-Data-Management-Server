@@ -24,6 +24,14 @@
 				<lemo-display-name>Beuth</lemo-display-name>
 			</properties>
 		</profile>
+		
+		<profile>
+			<id>clix</id>
+			<properties>
+				<lemo-system-name>clix</lemo-system-name>
+				<lemo-display-name>Clix</lemo-display-name>
+			</properties>
+		</profile>
 
 		<profile>
 			<id>chem</id>
@@ -299,6 +307,13 @@
 		</resources>
 
 	</build>
+	
+	<repositories>
+    	<repository>
+      	<id>Lemo Repo</id>
+      	<url>http://lemo2.f4.htw-berlin.de/maven/</url>
+    	</repository>
+  	</repositories> 
 
   <repositories>
 		<repository>

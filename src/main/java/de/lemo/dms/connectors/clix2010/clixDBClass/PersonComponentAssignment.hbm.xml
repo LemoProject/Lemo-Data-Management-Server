@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.PersonComponentAssignment"
-        table="lemo_db.PERSON_COMPONENT_ASSIGNMENT">
+        table="PERSON_COMPONENT_ASSIGNMENT">
 
 
 		<composite-id

@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.PortfolioLog"
-        table="lemo_db.PORTFOLIO_LOG">
+        table="PORTFOLIO_LOG">
 
         <id
             name="id"

@@ -68,7 +68,7 @@ public class ConnectorChemgapedia implements IConnector{
 		if(processVSC || processLog)
 		{
 			Long pid = 0L;
-			Long pref = 1000L;
+			Long pref = 10L;
 			
 			for(PlatformMining p : l)
 			{
@@ -106,8 +106,8 @@ public class ConnectorChemgapedia implements IConnector{
 				if(filter)
 					
 					logR.filterServerLogFile();
-				logR.usersToDB();
-				largestId = logR.resourceLogsToDB();
+				
+				largestId = logR.save();
 			}
 			
 			Long endtime = System.currentTimeMillis()/1000;
@@ -140,7 +140,7 @@ PlatformMining platform = null;
 		if(processVSC || processLog)
 		{
 			Long pid = 0L;
-			Long pref = 1000L;
+			Long pref = 10L;
 			
 			for(PlatformMining p : l)
 			{
@@ -173,12 +173,14 @@ PlatformMining platform = null;
 			if(processLog)
 			{			
 				LogReader logR = new LogReader(platform, largestId);
+				
+				
 				logR.loadServerLogData(logPath);
 				if(filter)
 					
 					logR.filterServerLogFile();
-				logR.usersToDB();
-				largestId = logR.resourceLogsToDB();
+			
+				largestId = logR.save();
 			}
 			
 			Long endtime = System.currentTimeMillis()/1000;

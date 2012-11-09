@@ -8,6 +8,7 @@ import static de.lemo.dms.processing.MetaParam.TYPES;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -41,7 +42,7 @@ public class QCourseActivity extends Question{
      */
     @SuppressWarnings("unchecked")
 	@POST
-    public ResultListLongObject compute(
+    public HashMap<Long, ResultListLongObject> compute(
             @FormParam(COURSE_IDS) List<Long> courses,
             @FormParam(ROLE_IDS) List<Long> roles,
             @FormParam(START_TIME) Long startTime,
@@ -50,6 +51,7 @@ public class QCourseActivity extends Question{
             @FormParam(TYPES) List<String> resourceTypes) {
 		
 		List<Long> list = new ArrayList<Long>();
+		HashMap<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();
 		//Check arguments
 		if(startTime < endTime && resolution > 0)
 		{
@@ -62,9 +64,16 @@ public class QCourseActivity extends Question{
 			double intervall = (endTime - startTime) / (resolution);
 			
 			//Create and initialize array for results
-			Long[] resArr = new Long[resolution];
-			for(int i =  0; i < resArr.length; i++)
-				resArr[i] = 0L;
+			for( int j =0; j < courses.size(); j++)
+			{
+				
+				Long[] resArr = new Long[resolution];
+				for(int i =  0; i < resArr.length; i++)
+					resArr[i] = 0L;
+				List<Long> l = new ArrayList<Long>();
+				Collections.addAll(l, resArr);
+				result.put(courses.get(j), new ResultListLongObject(l));
+			}
 			
 			
 			List<CourseUserMining> ilm = null;
@@ -111,12 +120,11 @@ public class QCourseActivity extends Question{
 				{
 					Integer pos = new Double((logs.get(i).getTimestamp() - startTime) / intervall).intValue();
 					if(pos > resolution - 1)
-						pos = resolution-1;
-					resArr[pos] = resArr[pos] + 1;
+						pos = resolution - 1;
+					result.get(logs.get(i).getCourse().getId()).getElements().set(pos, result.get(logs.get(i).getCourse().getId()).getElements().get(pos) + 1);
 				}
 			}			
-			Collections.addAll(list, resArr);
 		}
-        return new ResultListLongObject(list);
+        return result;
     }
 }

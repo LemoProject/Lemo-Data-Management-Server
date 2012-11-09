@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.EComposing"
-        table="lemo_db.E_COMPOSING">
+        table="E_COMPOSING">
 
         <id
             name="id"

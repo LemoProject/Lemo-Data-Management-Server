@@ -142,44 +142,13 @@ public class XMLPackageParser {
     	
 		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "Select largestId from ConfigMining x where x.platform=" + platform.getId() + " order by x.id asc"));
 		if(l != null && l.size() > 0)
-			largestId = l.get(l.size()-1);
+			largestId = Long.valueOf((l.get(l.size()-1) + "").substring(2));
 		else
 			largestId = 0L;
 		
 	     dbHandler.closeSession(session);
 	}
-	/**
-	 * Returns the URL of a vlu-overview.
-	 * 
-	 * @param filename Absolute path of the file representing the vlu.
-	 * @return URL as string.
-	 */
-	private String getUrlFromVlu(String filename)
-	{
-		try {
-		      // ---- Parse XML file ----
-				NamedNodeMap t = null;
-				DocumentBuilderFactory factory  = DocumentBuilderFactory.newInstance();
-				DocumentBuilder        builder  = factory.newDocumentBuilder();
-				Document               document = builder.parse( new File( filename ) );
-				NodeList root = document.getElementsByTagName("vlunode");
-				for(int i = 0 ; i < root.getLength(); i++)
-				{
-					t = root.item(i).getAttributes();
-					for(int j = 0; j < t.getLength(); j++)
-					{
-						if(t.item(j).getNodeName() ==  "xlink:href")
-						{
-							return "http://www.chemgapedia.de/vsengine/vlu" + t.item(j).getNodeValue()+".html";
-						}
-					}
-				}
-		}catch (Exception e)
-		{
-			return "";
-		}
-		return "";
-	}
+	
 	
 	/**
 	 * Opens a vlu - file, creates objects of the type "Department","Degree","Course","Resource",
@@ -244,7 +213,7 @@ public class XMLPackageParser {
 		      if(departmentObj.get(department) == null)
 		      {		    	 
 		    	  dep.setTitle(department);
-		    	  dep.setId(depId + 1);
+		    	  dep.setId(Long.valueOf(pf.getPrefix() + "" + (depId + 1)));
 		    	  dep.setPlatform(pf.getId());
 		    	  depId++;
 		    	  departmentObj.put(dep.getTitle(), dep);
@@ -255,7 +224,7 @@ public class XMLPackageParser {
 		      {
 		    	  
 		    	  deg.setTitle(degree);
-		    	  deg.setId(degId + 1);
+		    	  deg.setId(Long.valueOf(pf.getPrefix() + "" + (degId + 1)));
 		    	  deg.setPlatform(pf.getId());
 		    	  degId++;
 		    	  degreeObj.put(deg.getTitle(), deg);
@@ -266,7 +235,7 @@ public class XMLPackageParser {
 		      {
 		    	 
 		    	  cou.setTitle(course);
-		    	  cou.setId(couId + 1);
+		    	  cou.setId(Long.valueOf(pf.getPrefix() + "" + (couId + 1)));
 		    	  cou.setPlatform(pf.getId());
 		    	  couId++;
 		    	  courseObj.put(cou.getTitle(), cou);
@@ -275,7 +244,22 @@ public class XMLPackageParser {
 		    	  cou = courseObj.get(course);
 
 		      //Set URL (has to be done in another method - otherwise it isn't working)
-		      resource.setUrl(getUrlFromVlu(filename));
+
+		      
+		      NodeList root = document.getElementsByTagName("vlunode");
+				for(int i = 0 ; i < root.getLength(); i++)
+				{
+					t = root.item(i).getAttributes();
+					for(int j = 0; j < t.getLength(); j++)
+					{
+						if(t.item(j).getNodeName() ==  "xlink:href")
+						{
+							resource.setUrl("http://www.chemgapedia.de/vsengine/vlu" + t.item(j).getNodeValue()+".html");
+							break;
+						}
+					}
+				}
+		      
 		      if(!resource.getUrl().contains("/0/"))
 		      {		    	  
 			      resource.setPosition(0);
@@ -293,8 +277,9 @@ public class XMLPackageParser {
 	 	       			{
 	 	       				r_id = resId + 1;
 	 	       				resId = r_id;
-	 	       				id_mapping.put(resource.getUrl(), new IDMappingMining(r_id, resource.getUrl(), pf.getId()));
 	 	       				largestId = resId;
+	 	       				r_id = Long.valueOf(pf.getPrefix() + "" + r_id);
+	 	       				id_mapping.put(resource.getUrl(), new IDMappingMining(r_id, resource.getUrl(), pf.getId()));
 	 	       				resource.setId(r_id);
 	 	       			}
 			    	  
@@ -307,7 +292,7 @@ public class XMLPackageParser {
 				    	  DepartmentDegreeMining ddm = new DepartmentDegreeMining();
 				    	  ddm.setDegree(deg);
 				    	  ddm.setDepartment(dep);
-				    	  ddm.setId(depDegId + 1);
+				    	  ddm.setId(Long.valueOf(pf.getPrefix() + "" + (depDegId + 1)));
 				    	  ddm.setPlatform(pf.getId());
 				    	  depDegId++;
 				    	  this.departmentDegrees.put(deg.getId() , ddm);			    	  
@@ -318,7 +303,7 @@ public class XMLPackageParser {
 				    	  DegreeCourseMining dcm = new DegreeCourseMining();
 				    	  dcm.setDegree(deg);
 				    	  dcm.setCourse(cou);
-				    	  dcm.setId(degCouId + 1);
+				    	  dcm.setId(Long.valueOf(pf.getPrefix() + "" + (degCouId + 1)));
 				    	  dcm.setPlatform(pf.getId());
 				    	  degCouId++;
 				    	  this.degreeCourses.put(cou.getId() , dcm);			    	  
@@ -329,7 +314,7 @@ public class XMLPackageParser {
 				    	  CourseResourceMining crm = new CourseResourceMining();
 				    	  crm.setResource(resource);
 				    	  crm.setCourse(cou);
-				    	  crm.setId(couResId + 1);
+				    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
 				    	  couResId++;
 				    	  crm.setPlatform(pf.getId());
 				    	  this.courseResources.put(resource.getId(), crm);			    	  
@@ -383,8 +368,10 @@ public class XMLPackageParser {
 			       	       			{
 			       	       				resource_id = resId + 1;
 			       	       				resId = resource_id;
-			       	       				id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(), pf.getId()));
 			       	       				largestId = resId;
+			       	       				resource_id = Long.valueOf(pf.getPrefix() + "" + resource_id);
+			       	       				id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(), pf.getId()));
+			       	       				
 			       	       				r1.setId(resource_id);
 			       	       			}
 				    				  
@@ -400,7 +387,7 @@ public class XMLPackageParser {
 			    				    	  CourseResourceMining crm = new CourseResourceMining();
 			    				    	  crm.setResource(r1);
 			    				    	  crm.setCourse(cou);
-			    				    	  crm.setId(couResId + 1);
+			    				    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
 			    				    	  couResId++;
 			    				    	  crm.setPlatform(pf.getId());
 			    				    	  this.courseResources.put(r1.getId(), crm);			    	  
@@ -431,7 +418,7 @@ public class XMLPackageParser {
 						  
 						  if(resourceObj.get(r1.getUrl()) == null)
 						  {
-							  r1.setId(resId + 1);
+							  r1.setId(Long.valueOf(pf.getPrefix() + "" + (resId + 1)));
 							  resId++;
 						  }
 						  
@@ -448,7 +435,7 @@ public class XMLPackageParser {
 	   				    	  CourseResourceMining crm = new CourseResourceMining();
 					    	  crm.setResource(r1);
 					    	  crm.setCourse(cou);
-					    	  crm.setId(couResId + 1);
+					    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
 					    	  couResId++;
 					    	  crm.setPlatform(pf.getId());
 					    	  this.courseResources.put(r1.getId() , crm);	

@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalised"
-        table="lemo_db.EXERCISE_PERSONALISED">
+        table="EXERCISE_PERSONALISED">
 
 
 		<composite-id

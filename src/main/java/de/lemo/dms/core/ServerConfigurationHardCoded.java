@@ -67,15 +67,17 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
         // Setting up source database
         sourceDBConfig = new DBConfigObject();
 
-        sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        sourceDBConfig.addProperty("hibernate.hbm2ddl.auto", "update");
+        //sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        //sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.OracleDialect");
 
         String sourcePrefix = "source";
 
+        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.dialect");
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.driver_class");
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.url");
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.username");
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.password");
+        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.default_schema");
 
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.show_sql");
         addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.format_sql");

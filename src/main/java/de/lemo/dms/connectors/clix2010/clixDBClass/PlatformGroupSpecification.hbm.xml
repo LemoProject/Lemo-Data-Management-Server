@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.PlatformGroupSpecification"
-        table="lemo_db.PLATFORMGROUPSPECIFICATION">
+        table="PLATFORMGROUPSPECIFICATION">
 
 
 		<composite-id

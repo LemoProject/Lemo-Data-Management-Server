@@ -28,7 +28,7 @@
         <property
             name="title"
             column="title"
-            type="string"/>
+            type="text"/>
                
         <property
             name="timecreated"
