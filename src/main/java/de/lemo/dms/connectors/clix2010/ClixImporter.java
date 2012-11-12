@@ -2124,7 +2124,7 @@ public class ClixImporter {
 				item.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getComponent()), course_mining, old_course_mining);
 				item.setUser(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCandidate()), user_mining, old_user_mining);
 				item.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem.getAssessment()), quiz_mining, old_quiz_mining);
-				item.setGrade(loadedItem.getEvaluatedScore());
+				item.setGrade(Double.valueOf(loadedItem.getEvaluatedScore()));
 				item.setPlatform(platform.getId());
 				if(loadedItem.getEvalCount() == 0L)
 					item.setAction("Try");

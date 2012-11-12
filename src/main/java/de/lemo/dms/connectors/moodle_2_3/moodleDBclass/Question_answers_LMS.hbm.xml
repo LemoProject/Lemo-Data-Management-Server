@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Question_answers_LMS"
+        table="question_answers">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+            <generator class="native"/>
+        </id>
+
+        <property
+            name="question"
+            column="question"
+            type="long"/>            
+  
+        <property
+            name="answer"
+            column="answer"
+            type="string"/>  
+                
+    </class>
+
+</hibernate-mapping>

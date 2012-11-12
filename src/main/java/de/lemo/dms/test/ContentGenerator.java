@@ -638,7 +638,7 @@ public class ContentGenerator {
 							if(qLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == 2 && quiz.getMaxgrade() > 0)
 							{
 								qLog.setGrade(quiz.getMaxgrade() - randy.nextInt((int)quiz.getMaxgrade()));
-								qLog.setFinalgrade(qLog.getGrade() - randy.nextInt((int)qLog.getGrade()));
+								qLog.setFinalgrade(qLog.getGrade() - randy.nextInt(qLog.getGrade().intValue()));
 								qLog.setAction("report");
 								
 							}
