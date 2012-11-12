@@ -55,7 +55,7 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 	
 	public String getTitle()
 	{
-		return this.quiz.getTitle();
+		return this.quiz == null ? null : this.quiz.getTitle();
 	}
 	
 	public Long getLearnObjId()

@@ -50,7 +50,7 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 	
 	public String getTitle()
 	{
-		return this.course.getTitle();
+		return this.course == null ? null : this.course.getTitle();
 	}
 
 	public Long getLearnObjId()

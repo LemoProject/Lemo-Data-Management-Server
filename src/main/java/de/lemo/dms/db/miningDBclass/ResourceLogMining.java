@@ -30,7 +30,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , I
 	
 	public String getTitle()
 	{
-		return this.resource.getTitle();
+		return this.resource == null ? null : this.resource.getTitle();
 	}
 	
 	public Long getLearnObjId()

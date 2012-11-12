@@ -54,7 +54,7 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 
 	public String getTitle()
 	{
-		return this.scorm.getTitle();
+		return this.scorm == null ? null : this.scorm.getTitle();
 	}
 	
 	public Long getLearnObjId()

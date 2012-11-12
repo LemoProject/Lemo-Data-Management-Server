@@ -56,7 +56,7 @@ public class ForumLogMining implements ILogMining , IMappingClass {
 	
 	public String getTitle()
 	{
-		return this.forum.getTitle();
+		return this.forum == null ? null : this.forum.getTitle();
 	}
 
 	public Long getLearnObjId()

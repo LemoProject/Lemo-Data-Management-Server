@@ -54,7 +54,7 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 	
 	public String getTitle()
 	{
-		return this.wiki.getTitle();
+		return this.wiki == null ? null : this.wiki.getTitle();
 	}
 	
 	public Long getLearnObjId()

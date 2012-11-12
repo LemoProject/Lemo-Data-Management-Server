@@ -59,7 +59,7 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	
 	public String getTitle()
 	{
-		return this.question.getTitle();
+		return this.question == null ? null : this.question.getTitle();
 	}
 	
 	public Long getLearnObjId()

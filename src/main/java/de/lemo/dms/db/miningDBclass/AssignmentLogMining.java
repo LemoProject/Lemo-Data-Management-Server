@@ -48,7 +48,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass{
 	
 	public String getTitle()
 	{
-		return this.assignment.getTitle();
+		return this.assignment == null ? null : this.assignment.getTitle();
 	}
 	
 	public Long getLearnObjId()
