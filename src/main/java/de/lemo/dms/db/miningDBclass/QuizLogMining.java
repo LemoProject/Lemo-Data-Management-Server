@@ -13,8 +13,8 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 	private UserMining user;
 	private CourseMining course;
 	private QuizMining quiz;
-	private double grade;
-	private double finalgrade;
+	private Double grade;
+	private Double finalgrade;
 	private String action;
 	private long timestamp;	
 	private Long duration;
@@ -66,13 +66,13 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 	/** standard getter for the attribut finalgrade
 	 * @return the final grade of the user in this quiz
 	 */	
-	public double getFinalgrade() {
+	public Double getFinalgrade() {
 		return finalgrade;
 	}
 	/** standard setter for the attribut finalgrade
 	 * @param finalgrade the final grade of the user in this quiz
 	 */	
-	public void setFinalgrade(double finalgrade) {
+	public void setFinalgrade(Double finalgrade) {
 		this.finalgrade = finalgrade;
 	}	
 	
@@ -152,13 +152,13 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 	/** standard getter for the attribut grade
 	 * @return the grade in this case of action
 	 */	
-	public double getGrade() {
+	public Double getGrade() {
 		return grade;
 	}
 	/** standard setter for the attribut grade
 	 * @param grade the grade in this case of action
 	 */	
-	public void setGrade(double grade) {
+	public void setGrade(Double grade) {
 		this.grade = grade;
 	}
 	/** standard getter for the attribut timestamp

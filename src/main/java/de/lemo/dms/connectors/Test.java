@@ -56,7 +56,7 @@ public class Test {
 		ConnectorMoodle cm = new ConnectorMoodle();
 		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
 		cm.getData("Moodle(Beuth)");
-		//cm.updateData("Moodle(Beuth)", 1338800000);
+		//cm.updateData("Moodle(Beuth)", 1338000000);
 	}
 	
 	public static void runClixConn()
@@ -122,13 +122,12 @@ public class Test {
 		Long endTime = 1500000000L;
 		int resolution = 100;
 		List<String> resourceTypes = new ArrayList<String>();
-		qca.compute(courses, roles, startTime, endTime, resolution, resourceTypes);
 	}
 	
 	public static void run()
 	{
 		System.out.println("Starting test");
-		test2();
+		runMoodleConn();
 		System.out.println("Test finished");
 	}
 

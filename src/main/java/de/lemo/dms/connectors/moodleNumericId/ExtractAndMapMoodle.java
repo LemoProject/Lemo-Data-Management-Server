@@ -915,20 +915,28 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     
     
     public HashMap<Long, QuestionLogMining> generateQuestionLogMining(){
+    	HashMap<Long, QuestionLogMining> questionLogMiningtmp = new HashMap<Long, QuestionLogMining>();
     	HashMap<Long, QuestionLogMining> questionLogMining = new HashMap<Long, QuestionLogMining>();
-    	HashMap<Long, Long> timestampIdMap = new HashMap<Long,Long>();
+    	HashMap<String, Long> timestampIdMap = new HashMap<String, Long>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	    	
-    	for (Question_states_LMS loadedItem : question_states_lms) 
-    	{
-    		QuestionLogMining insert = new QuestionLogMining();
-    	
-    		insert.setId(questionLogMining.size() + 1 + questionLogMax); //ID
+    	for (Question_states_LMS loadedItem : question_states_lms) {
     		
+    		QuestionLogMining insert = new QuestionLogMining();
+    		
+    		insert.setId(questionLogMiningtmp.size() + 1 + questionLogMax); //ID
 			insert.setQuestion(Long.valueOf(platform.getPrefix() + "" + loadedItem.getQuestion()), question_mining, old_question_mining); //Question 
 			insert.setPenalty(loadedItem.getPenalty());	
 			insert.setAnswers(loadedItem.getAnswer());
-			insert.setTimestamp(loadedItem.getTimestamp());			
+			insert.setTimestamp(loadedItem.getTimestamp());	
+			insert.setPlatform(platform.getId());
+			
+			
+			//Set Grades
+			if(loadedItem.getEvent() == 3 || loadedItem.getEvent() == 6 || loadedItem.getEvent() == 9){
+				insert.setRawgrade(loadedItem.getRaw_grade());
+				insert.setFinalgrade(loadedItem.getGrade());
+			}			
 			
             switch(loadedItem.getEvent())
             {            
@@ -957,14 +965,28 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
             }
 			
 			//Set quiz type
+            if(insert.getQuestion() != null && quiz_question_mining.get(insert.getQuestion().getId()) != null )
+            {
+            	insert.setQuiz(quiz_question_mining.get(insert.getQuestion().getId()).getQuiz());
+            	if(course_quiz_mining.get(insert.getQuiz().getId()) != null)
+            		insert.setCourse(course_quiz_mining.get(insert.getQuiz().getId()).getCourse());
+            }
+            else if(insert.getQuestion() != null && old_quiz_question_mining.get(insert.getQuestion().getId()) != null && old_course_quiz_mining.get(insert.getQuiz().getId()) != null)
+            {
+            	insert.setQuiz(old_quiz_question_mining.get(insert.getQuestion().getId()).getQuiz());
+            	if(old_course_quiz_mining.get(insert.getQuiz().getId()) != null)
+            		insert.setCourse(course_quiz_mining.get(insert.getQuiz().getId()).getCourse());
+            }
+            /*
 			for(Quiz_question_instances_LMS loadedItem1 : quiz_question_instances_lms)
 			{
 				if(loadedItem1.getQuestion() == (loadedItem.getQuestion())){
 					insert.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem1.getQuiz()), quiz_mining, old_quiz_mining);
 					break;
 				}
-			}			
-			if(insert.getQuiz() != null)
+			}	
+			
+			if(insert.getQuiz() == null)
 				for(QuizQuestionMining loadedItem1 : old_quiz_question_mining.values())
 				{
 					if(loadedItem1.getQuestion().getId() == (loadedItem.getQuestion())){
@@ -972,6 +994,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 						break;
 					}
 				}	
+				*/
 			
 			//Set Type
 			for(Question_LMS loadedItem2 : question_lms)
@@ -987,16 +1010,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 				logger.info("In Question_log_mining, type not found for question_states: " + loadedItem.getId() +" and question: " + loadedItem.getQuestion() +" question list size: "+ question_lms.size() );
 			}  	
 							
-			//Set Grades
-			if(loadedItem.getEvent() == 3 || loadedItem.getEvent() == 6 || loadedItem.getEvent() == 9){
-				insert.setRawgrade(loadedItem.getRaw_grade());
-				insert.setFinalgrade(loadedItem.getGrade());
-			}			
+			
 
-			if(insert.getQuestion() != null && insert.getQuiz() != null)
+			if(insert.getQuestion() != null && insert.getQuiz() != null && insert.getCourse() != null)
 			{
-				timestampIdMap.put(insert.getTimestamp(), insert.getId());
-    			questionLogMining.put(insert.getId(), insert);
+				
+				timestampIdMap.put(insert.getTimestamp() + " " + insert.getQuiz().getId(), insert.getId());
+    			questionLogMiningtmp.put(insert.getId(), insert);
 			}			
     	}	  
     	
@@ -1023,19 +1043,20 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
          			times.add(loadedItem.getTime());
          		users.put(uid1, times);
          	}
-    		
-    		if(timestampIdMap.get(loadedItem.getTime()) != null && loadedItem.getModule().equals("quiz")){
-    			long uid = Long.valueOf(platform.getPrefix() + "" + loadedItem.getUserid());
-   				questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).setUser(uid, user_mining, old_user_mining);
-   				questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
-    			if(questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).getCourse() == null || questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).getUser() == null)
-    				questionLogMining.remove(timestampIdMap.get(loadedItem.getTime()));
+                 		
+    		if(uid1 != -1 && loadedItem.getModule().equals("quiz") && timestampIdMap.get(loadedItem.getTime() + " " + platform.getPrefix() + "" + loadedItem.getInfo()) != null){
+    			{
+    				
+    				QuestionLogMining qlm = questionLogMiningtmp.get(timestampIdMap.get(loadedItem.getTime() + " " + platform.getPrefix() + "" + loadedItem.getInfo()));
+    				qlm.setUser(uid1, user_mining, old_user_mining);
+    				questionLogMining.put(qlm.getId(), qlm);
+    			}
     		}	
 		}    	
     	
-    	for(QuestionLogMining r : questionLogMining.values())
+    	for( QuestionLogMining r : questionLogMining.values())
         {
-    		if(r.getUser() != null)
+        	if(r.getUser() != null)
         	{	
 	        	long duration = -1;
 	        	ArrayList<Long> times = users.get(r.getUser().getId());
@@ -1050,6 +1071,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	        	r.setDuration(duration);
         	}
         }
+    	
+    	
+    	
 		return questionLogMining;
     }    
     
