@@ -197,7 +197,7 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 
 	@Override
 	public Long getPrefix() {
-		return 1008L;
+		return 18L;
 	}
 
 	public Long getPlatform() {

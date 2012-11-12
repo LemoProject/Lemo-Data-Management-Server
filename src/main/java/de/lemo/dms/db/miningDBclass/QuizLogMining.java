@@ -219,7 +219,7 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 
 	@Override
 	public Long getPrefix() {
-		return 1004L;
+		return 14L;
 	}
 
 	public Long getPlatform() {

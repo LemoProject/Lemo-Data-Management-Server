@@ -193,7 +193,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , I
 
 	@Override
 	public Long getPrefix() {
-		return 1006L;
+		return 16L;
 	}
 
 	public Long getPlatform() {

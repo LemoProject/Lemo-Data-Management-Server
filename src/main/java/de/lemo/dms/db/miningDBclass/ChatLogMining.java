@@ -156,7 +156,7 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 
 	@Override
 	public Long getPrefix() {
-		return 1009L;
+		return 19L;
 	}
 
 	public Long getPlatform() {

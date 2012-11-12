@@ -6,6 +6,9 @@ import static de.lemo.dms.processing.MetaParam.MIN_SUP;
 import static de.lemo.dms.processing.MetaParam.SESSION_WISE;
 import static de.lemo.dms.processing.MetaParam.START_TIME;
 import static de.lemo.dms.processing.MetaParam.USER_IDS;
+import static de.lemo.dms.processing.MetaParam.TYPES;
+import static de.lemo.dms.processing.MetaParam.MIN_LENGTH;
+import static de.lemo.dms.processing.MetaParam.MAX_LENGTH;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -54,8 +57,11 @@ public class QFrequentPathsBIDE extends Question{
 	
     @POST
     public ResultListUserPathGraph compute(
-    		@FormParam(COURSE_IDS) List<Long> courseIds, 
-    		@FormParam(USER_IDS) List<Long> userIds, 
+    		@FormParam(COURSE_IDS) List<Long> courses, 
+    		@FormParam(USER_IDS) List<Long> users, 
+    		@FormParam(TYPES) List<String> types,
+    		@FormParam(MIN_LENGTH) Long minLength,
+    		@FormParam(MAX_LENGTH) Long maxLength,
     		@FormParam(MIN_SUP) double minSup, 
     		@FormParam(SESSION_WISE) boolean sessionWise,
     		@FormParam(START_TIME) long startTime,
@@ -64,11 +70,32 @@ public class QFrequentPathsBIDE extends Question{
         ArrayList<UserPathNode> nodes = Lists.newArrayList();
         ArrayList<UserPathLink> links = Lists.newArrayList();
 		
-        if(courseIds!=null && courseIds.size()!=0)
-        	System.out.println("Parameter list: Course Id: "+courseIds.get(0));
-        if(userIds!=null && userIds.size()!=0)
-        	System.out.println("Parameter list: User Id: "+userIds.get(0));
-        
+        if(courses!=null && courses.size() > 0)
+        {
+        	System.out.print("Parameter list: Courses: " + courses.get(0));
+        	for(int i = 1; i < courses.size(); i++)
+        		System.out.print(", " + courses.get(i));
+        	System.out.println();
+        }
+        if(users!=null && users.size() > 0)
+        {
+        	System.out.print("Parameter list: Users: " + users.get(0));
+        	for(int i = 1; i < users.size(); i++)
+        		System.out.print(", " + users.get(i));
+        	System.out.println();
+        }
+        if(types != null && types.size() > 0)
+        {
+        	System.out.print("Parameter list: Types: : "+types.get(0));
+        	for(int i = 1; i < types.size(); i++)
+        		System.out.print(", " + types.get(i));
+        	System.out.println();
+        }
+        if(minLength != null && maxLength != null && minLength < maxLength)
+        {
+            System.out.println("Parameter list: Minimum path length: : "+minLength);
+            System.out.println("Parameter list: Maximum path length: : "+maxLength);
+        }
         System.out.println("Parameter list: Minimum Support: : "+minSup);
         System.out.println("Parameter list: Session Wise: : "+sessionWise);
         System.out.println("Parameter list: Start time: : "+startTime);
@@ -89,11 +116,11 @@ public class QFrequentPathsBIDE extends Question{
 		SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
 		
 		if(!sessionWise)
-			sequenceDatabase.loadLinkedList(generateLinkedList(courseIds, userIds, startTime, endTime));
+			sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength, maxLength, startTime, endTime));
 			//sequenceDatabase.loadFile(generateInputFile(courseIds, userIds, startTime, endTime));
 		else
 			//sequenceDatabase.loadFile(generateInputFileSessionBound(courseIds, userIds, startTime, endTime));
-			sequenceDatabase.loadLinkedList(generateLinkedListSessionBound(courseIds, userIds, startTime, endTime));
+			sequenceDatabase.loadLinkedList(generateLinkedListSessionBound(courses, users, types, minLength, maxLength, startTime, endTime));
 			
 		AlgoBIDEPlus algo  = new AlgoBIDEPlus(minSup);
 		
@@ -117,7 +144,7 @@ public class QFrequentPathsBIDE extends Question{
 				{
 					
 					String obId = String.valueOf(res.getLevel(i).get(j).get(k).getItems().get(0).getId());
-					ILogMining ilo = idToLogM.get(obId.substring(0, 4) + " " + obId.substring(4));
+					ILogMining ilo = idToLogM.get(obId.substring(0, 2) + " " + obId.substring(2));
 					
 					String type = ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf(".") + 1, ilo.getClass().toString().lastIndexOf("Log"));
 			
@@ -131,42 +158,13 @@ public class QFrequentPathsBIDE extends Question{
 							
 						// Increment or create predecessor edge
 						pathObjects.get(predecessor).addEdgeOrIncrement(posId);
-						
-						/*
-						if((knownPath = pathObjects.get(obId + "_" + pathId)) == null)
-						{
-							 // If the node is new create entry in hash map
-							 posId = String.valueOf(pathObjects.size());
-	                         pathObjects.put(obId+"_" + pathId, new UserPathObject(posId, ilo.getTitle(), absSup, type, 
-	                        		 Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, 
-	                        		 Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
-						}
-						else
-						{
-							 // If the node is already known, increase weight
-							pathObjects.get(obId+"_" + pathId).increaseWeight(Double.parseDouble(ilo.getDuration()+""));
-							posId = knownPath.getId();
-						}
-						*/
-						
-						
+					
 					}
 					else
 					{
                         pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup,
                                 type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,  Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
 					}
-					
-					/*
-					else if(pathObjects.get(obId+"_" + pathId) == null)
-                    {
-                        String posId = String.valueOf(pathObjects.size());
-                        pathObjects.put(obId+"_" + pathId, new UserPathObject(posId, ilo.getTitle(), absSup,
-                                type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,  Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
-                    }
-                    else
-                        pathObjects.get(obId+"_" + pathId).increaseWeight(Double.valueOf(ilo.getDuration()));
-					*/
 					
 					predecessor = posId;
 				}
@@ -461,7 +459,7 @@ public class QFrequentPathsBIDE extends Question{
 	 * @return	The path to the generated file 
 	 */
 	@SuppressWarnings("unchecked")
-	private static LinkedList<String> generateLinkedListSessionBound(List<Long> courses, List<Long> users, Long starttime, Long endtime)
+	private static LinkedList<String> generateLinkedListSessionBound(List<Long> courses, List<Long> users, List<String> types, Long minLength, Long maxLength, Long starttime, Long endtime)
 	{
 		LinkedList<String> result = new LinkedList<String>();
 		try{
@@ -510,30 +508,77 @@ public class QFrequentPathsBIDE extends Question{
 			
 			uhis.addAll(logMap.values());
 			
+			//Determine whether minimum and maximum path length are set
+			boolean hasBorders = minLength != null && maxLength != null && maxLength > 0 && minLength < maxLength;
+			
+			//Determine longest path
+			for(int i= 0; i < uhis.size(); i++)
+			{
+				int s = uhis.get(i).size();
+				if(hasBorders)
+				{
+					if(s >= minLength && s <= maxLength && s > max)				
+						max = s;				
+				}else
+					if(s > max)
+						max = s;
+			}
+			
+			//This part is only for statistics - group histories of similar length together and display there respective lengths
 			Integer[] lengths = new Integer[max /10 +1];
 			for(int i = 0; i < lengths.length; i++)
 				lengths[i] = 0;
+			int uhisCount = 0;
 			
 			for(int i = 0; i< uhis.size(); i++)
-			{
-				lengths[uhis.get(i).size() / 10]++;				
-			}
+			{	
+				if(hasBorders)
+				{
+					if(uhis.size() >= minLength && uhis.size() <= maxLength)
+					{
+						lengths[uhis.get(i).size() / 10]++;
+						uhisCount++;
+					}
+				}
+				else
+				{
+					lengths[uhis.get(i).size() / 10]++;
+					uhisCount++;
+				}
 
+			}
+			
+			for(int i = 0; i< uhis.size(); i++)
+			{	
+				if(hasBorders)
+				{
+					if(uhis.size() >= minLength && uhis.size() <= maxLength)
+					{
+						lengths[uhis.get(i).size() / 10]++;
+						uhisCount++;
+					}
+				}
+				else
+				{
+					lengths[uhis.get(i).size() / 10]++;
+					uhisCount++;
+				}
+			}
+			
 			for(int i = 0 ; i < lengths.length; i++)
 				if(lengths[i] != 0)
 				{
 					System.out.println("Paths of length " + i + "0 - " + ( i +1 ) + "0: " +lengths[i]);
 				}
 			
-			System.out.println("Generated "+ uhis.size()+" user histories. Max length @ "+ max);
-	    	
+			System.out.println("Generated "+ uhisCount+" user histories. Max length @ "+ max);
+			
 	    	int z = 0;
 	    	
 	    	//Write data to output file
-			for(Iterator<ArrayList<ILogMining>> iter = uhis.iterator(); iter.hasNext();)
+			for(ArrayList<ILogMining> l : uhis)
 			{
-				ArrayList<ILogMining> l = iter.next();
-				if(l.size() > 5)
+				if(!hasBorders || (l.size() >= minLength && l.size() <= maxLength))
 				{
 					String line = "";
 					for(int i = 0; i < l.size(); i++)
@@ -578,7 +623,7 @@ public class QFrequentPathsBIDE extends Question{
 	 * @return	The path to the generated file 
 	 */
 	@SuppressWarnings("unchecked")
-	private static LinkedList<String> generateLinkedList(List<Long> courses, List<Long> users, Long starttime, Long endtime)
+	private static LinkedList<String> generateLinkedList(List<Long> courses, List<Long> users, List<String> types, Long minLength, Long maxLength, Long starttime, Long endtime)
 	{
 		LinkedList<String> result = new LinkedList<String>();
 		try{
@@ -622,78 +667,111 @@ public class QFrequentPathsBIDE extends Question{
 					}
 					else
 					{
-			//			if(logMap.get(list.get(i).getUser().getId()).size() < 26)
-				//		{
 							//Add current ILogMining-object to user-history
 							logMap.get(list.get(i).getUser().getId()).add(list.get(i));
 							//Sort the user's history (by time stamp)
 							Collections.sort(logMap.get(list.get(i).getUser().getId()));
 							
-							//If it is the longest user history, save its length
-							if(logMap.get(list.get(i).getUser().getId()).size() > max)
-								max = logMap.get(list.get(i).getUser().getId()).size();
-					/*	}
-						else
-						{
-							Long l = Long.valueOf(pre + "" + list.get(i).getUser().getId());
-							logMap.put(l , logMap.get(list.get(i).getUser().getId()));
-							pre++;
-							//User histories are saved in an ArrayList of ILogMining-objects
-							ArrayList<ILogMining> a = new ArrayList<ILogMining>();
-							//Add current ILogMining-object to user-history
-							a.add(list.get(i));
-							//Add user history to the user history map
-							logMap.put(list.get(i).getUser().getId(), a);
-						}*/
 					}	
 			}
 			
+			ArrayList<ArrayList<ILogMining>> uhis;
+			
 			//Just changing the container for the user histories
-			ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>(logMap.values());
+			if(types == null || types.size() == 0)
+				uhis = new ArrayList<ArrayList<ILogMining>>(logMap.values());
+			else
+			{
+				uhis = new ArrayList<ArrayList<ILogMining>>();
+				for(ArrayList<ILogMining> uh : logMap.values())
+				{
+					boolean hasTypes = false;
+					for(ILogMining log : uh)
+					{
+						if(log.getClass().toString().contains(arg0))
+					}
+				}
+			}
+			
+			//Determine whether minimum and maximum path length are set
+			boolean hasBorders = minLength != null && maxLength != null && maxLength > 0 && minLength < maxLength;
+			
+			//Determine longest path
+			for(int i= 0; i < uhis.size(); i++)
+			{
+				int s = uhis.get(i).size();
+				if(hasBorders)
+				{
+					if(s >= minLength && s <= maxLength && s > max)				
+						max = s;				
+				}else
+					if(s > max)
+						max = s;				
+			}
 			
 			//This part is only for statistics - group histories of similar length together and display there respective lengths
 			Integer[] lengths = new Integer[max /10 +1];
 			for(int i = 0; i < lengths.length; i++)
 				lengths[i] = 0;
+			int uhisCount = 0;
 			
 			for(int i = 0; i< uhis.size(); i++)
-				lengths[uhis.get(i).size() / 10]++;				
+			{	
+				int s = uhis.get(i).size();
+				if(hasBorders)
+				{
+					if(s >= minLength && s <= maxLength)
+					{
+						lengths[s / 10]++;
+						uhisCount++;
+					}
+				}
+				else
+				{
+					lengths[s / 10]++;
+					uhisCount++;
+				}
 
-
+			}
 			for(int i = 0 ; i < lengths.length; i++)
 				if(lengths[i] != 0)
 				{
 					System.out.println("Paths of length " + i + "0 - " + ( i +1 ) + "0: " +lengths[i]);
 				}
 			
-			System.out.println("Generated "+ uhis.size()+" user histories. Max length @ "+ max);
+			System.out.println("Generated "+ uhisCount+" user histories. Max length @ "+ max);
 			
 			int z = 0;
+			
+
 			
 			//Convert all user histories or "paths" into the format, that is requested by the BIDE-algorithm-class
 	    	for(ArrayList<ILogMining> l : uhis)
 			{
-    			String line = "";
-    			for(int i = 0; i < l.size(); i++)
-				{
-					if(idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
-						idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), l.get(i));
-					
-					//Update request numbers
-					if(requests.get(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId()) == null)
+    			if(!hasBorders || (l.size() >= minLength && l.size() <= maxLength))
+    			{
+    				String line = "";
+	    			for(int i = 0; i < l.size(); i++)
 					{
-							ArrayList<Long> us = new ArrayList<Long>();
-							us.add(l.get(i).getUser().getId());
-							requests.put(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId(), us);
+						if(idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
+							idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), l.get(i));
+						
+						//Update request numbers
+						if(requests.get(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId()) == null)
+						{
+								ArrayList<Long> us = new ArrayList<Long>();
+								us.add(l.get(i).getUser().getId());
+								requests.put(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId(), us);
+						}
+						else
+							requests.get(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId()).add(l.get(i).getUser().getId());
+						//The id of the object gets the prefix, indicating it's class. This is important for distinction between objects of different ILogMining-classes but same ids
+						line += l.get(i).getPrefix() + "" + l.get(i).getLearnObjId() + " -1 ";
 					}
-					else
-						requests.get(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId()).add(l.get(i).getUser().getId());
-					//The id of the object gets the prefix, indicating it's class. This is important for distinction between objects of different ILogMining-classes but same ids
-					line += l.get(i).getPrefix() + "" + l.get(i).getLearnObjId() + " -1 ";
-				}
-				line += "-2";
-				result.add(line);
-				z++;
+					line += "-2";
+					result.add(line);
+					z++;
+    			}
 			}
 	    	System.out.println("Wrote "+ z+" logs.");
 		}catch(Exception e)

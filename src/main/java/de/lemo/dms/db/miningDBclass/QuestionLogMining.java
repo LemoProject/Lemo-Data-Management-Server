@@ -284,7 +284,7 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 
 	@Override
 	public Long getPrefix() {
-		return 1003L;
+		return 13L;
 	}
 
 	public Long getPlatform() {

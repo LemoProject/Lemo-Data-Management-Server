@@ -156,7 +156,7 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 
 	public Long getPrefix() {
 		// TODO Auto-generated method stub
-		return 1002L;
+		return 12L;
 	}
 
 	public Long getPlatform() {

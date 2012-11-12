@@ -15,6 +15,7 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.processing.questions.QCourseActivity;
+import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
@@ -111,6 +112,23 @@ public class Test {
 		
 	}
 	
+	public static void testBIDE()
+	{
+		QFrequentPathsBIDE qBide = new QFrequentPathsBIDE();
+		List<Long> courses = new ArrayList<Long>();
+		courses.add(112200L);
+		
+		List<Long> users = new ArrayList<Long>();
+		users.add(1114L);
+		users.add(11693L);
+		users.add(111386L);
+		
+		List<String> types = new ArrayList();
+		
+		qBide.compute(courses, users, types, 11L, 31L, 0.8d, false, 0L, 1500000000L);
+		
+	}
+	
 	public static void test2()
 	{
 		QCourseActivity qca = new QCourseActivity();
@@ -128,7 +146,7 @@ public class Test {
 	public static void run()
 	{
 		System.out.println("Starting test");
-		test2();
+		testBIDE();
 		System.out.println("Test finished");
 	}
 

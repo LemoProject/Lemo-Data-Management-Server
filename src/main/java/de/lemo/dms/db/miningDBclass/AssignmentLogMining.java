@@ -224,7 +224,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass{
 
 	@Override
 	public Long getPrefix() {
-		return 1001L;
+		return 11L;
 	}
 
 	public Long getPlatform() {
