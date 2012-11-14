@@ -510,7 +510,7 @@ public class ContentGenerator {
 							if(aLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == 2 && a.getMaxgrade() > 0)
 							{
 								aLog.setGrade(a.getMaxgrade() - randy.nextInt((int)a.getMaxgrade()));
-								aLog.setFinalgrade(aLog.getGrade() - randy.nextInt((int)aLog.getGrade()));
+								aLog.setFinalgrade(aLog.getGrade() - randy.nextInt(aLog.getGrade().intValue()));
 								aLog.setAction(assignmentActionTeacher[randy.nextInt(assignmentActionTeacher.length)]);
 								
 							}
@@ -638,7 +638,7 @@ public class ContentGenerator {
 							if(qLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == 2 && quiz.getMaxgrade() > 0)
 							{
 								qLog.setGrade(quiz.getMaxgrade() - randy.nextInt((int)quiz.getMaxgrade()));
-								qLog.setFinalgrade(qLog.getGrade() - randy.nextInt((int)qLog.getGrade()));
+								qLog.setFinalgrade(qLog.getGrade() - randy.nextInt(qLog.getGrade().intValue()));
 								qLog.setAction("report");
 								
 							}

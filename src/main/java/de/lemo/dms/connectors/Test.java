@@ -116,14 +116,15 @@ public class Test {
 	{
 		QFrequentPathsBIDE qBide = new QFrequentPathsBIDE();
 		List<Long> courses = new ArrayList<Long>();
-		courses.add(112200L);
+		courses.add(11476L);
 		
 		List<Long> users = new ArrayList<Long>();
-		users.add(1114L);
-		users.add(11693L);
-		users.add(111386L);
+//		users.add(1114L);
+	//	users.add(11693L);
+		//users.add(111386L);
 		
-		List<String> types = new ArrayList();
+		List<String> types = new ArrayList<String>();
+		types.add("assignment");
 		
 		qBide.compute(courses, users, types, 11L, 31L, 0.8d, false, 0L, 1500000000L);
 		

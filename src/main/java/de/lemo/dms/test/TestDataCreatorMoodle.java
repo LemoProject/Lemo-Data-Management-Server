@@ -366,7 +366,7 @@ public class TestDataCreatorMoodle {
 			{
 				Assignment_submissions_LMS lms2 = new Assignment_submissions_LMS();
 				
-				lms2.setGrade((long)item.getGrade());
+				lms2.setGrade(item.getGrade().longValue());
 				lms2.setAssignment(item.getAssignment().getId());
 				lms2.setUserid(item.getUser().getId()+"");
 				lms2.setTimemodified(item.getTimestamp());			

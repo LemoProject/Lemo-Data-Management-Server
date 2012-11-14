@@ -62,10 +62,10 @@ public class QFrequentPathsBIDE extends Question{
     		@FormParam(TYPES) List<String> types,
     		@FormParam(MIN_LENGTH) Long minLength,
     		@FormParam(MAX_LENGTH) Long maxLength,
-    		@FormParam(MIN_SUP) double minSup, 
+    		@FormParam(MIN_SUP) Double minSup, 
     		@FormParam(SESSION_WISE) boolean sessionWise,
-    		@FormParam(START_TIME) long startTime,
-    		@FormParam(END_TIME) long endTime) {
+    		@FormParam(START_TIME) Long startTime,
+    		@FormParam(END_TIME) Long endTime) {
 		
         ArrayList<UserPathNode> nodes = Lists.newArrayList();
         ArrayList<UserPathLink> links = Lists.newArrayList();
@@ -449,6 +449,7 @@ public class QFrequentPathsBIDE extends Question{
 	}
 	
 	/**
+	 * This doesn't work at all; you shouldn't use it without major overhauling
 	 * Generates the necessary input file, containing the sequences (user paths) for the BIDE+ algorithm
 	 * 
 	 * @param courses	Course-Ids
@@ -477,7 +478,6 @@ public class QFrequentPathsBIDE extends Question{
 			
 			System.out.println("Read "+ list.size()+" logs.");
 			ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>();
-			
 			HashMap<Long, ArrayList<ILogMining>> logMap = new HashMap<Long, ArrayList<ILogMining>>();
 			int max = 0;
 			for(int i = 0; i < list.size(); i++)
@@ -485,25 +485,50 @@ public class QFrequentPathsBIDE extends Question{
 				if(list.get(i).getUser() != null && list.get(i).getLearnObjId() != null)
 					if(logMap.get(list.get(i).getUser().getId()) == null)
 					{
+						
 						ArrayList<ILogMining> a = new ArrayList<ILogMining>();
 						a.add(list.get(i));
 						logMap.put(list.get(i).getUser().getId(), a);
-						if(logMap.get(list.get(i).getUser().getId()).size() > max)
-							max = logMap.get(list.get(i).getUser().getId()).size();
 					}
 					else
-					{
-						
+					{						
 						logMap.get(list.get(i).getUser().getId()).add(list.get(i));
 						Collections.sort(logMap.get(list.get(i).getUser().getId()));
-						if(logMap.get(list.get(i).getUser().getId()).size() > max)
-							max = logMap.get(list.get(i).getUser().getId()).size();
 						if(list.get(i).getDuration() == -1)
 						{
 							uhis.add(new ArrayList<ILogMining>(logMap.get(list.get(i).getUser().getId())));
 							logMap.remove(list.get(i).getUser().getId());
 						}
 					}	
+			}
+			
+			
+			
+			//Just changing the container for the user histories
+			if(types == null || types.size() == 0)
+				uhis = new ArrayList<ArrayList<ILogMining>>(logMap.values());
+			else
+			{
+				uhis = new ArrayList<ArrayList<ILogMining>>();
+				for(ArrayList<ILogMining> uh : logMap.values())
+				{
+					boolean hasTypes = false;
+					for(ILogMining log : uh)
+					{
+						for(String s : types)
+						{
+							if(log.getClass().getName().toLowerCase().contains(s.toLowerCase()))
+								hasTypes = true;
+							if(hasTypes)
+								break;
+						}
+						if(hasTypes)
+						{
+							uhis.add(uh);
+							break;
+						}
+					}
+				}
 			}
 			
 			uhis.addAll(logMap.values());
@@ -688,7 +713,18 @@ public class QFrequentPathsBIDE extends Question{
 					boolean hasTypes = false;
 					for(ILogMining log : uh)
 					{
-						if(log.getClass().toString().contains(arg0))
+						for(String s : types)
+						{
+							if(log.getClass().getName().toLowerCase().contains(s.toLowerCase()))
+								hasTypes = true;
+							if(hasTypes)
+								break;
+						}
+						if(hasTypes)
+						{
+							uhis.add(uh);
+							break;
+						}
 					}
 				}
 			}
