@@ -7,6 +7,7 @@ import static de.lemo.dms.processing.MetaParam.START_TIME;
 import static de.lemo.dms.processing.MetaParam.TYPES;
 import static de.lemo.dms.processing.MetaParam.USER_IDS;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -89,6 +90,8 @@ public class QUserPathAnalysis extends Question {
         @SuppressWarnings("unchecked")
         List<ILogMining> list = criteria.list();
 
+        Collections.sort(list);
+        
         logger.info("Total matched entries: " + list.size());
 
         // Map for UserPathObjects
