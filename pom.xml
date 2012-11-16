@@ -24,6 +24,14 @@
 				<lemo-display-name>Beuth</lemo-display-name>
 			</properties>
 		</profile>
+		
+		<profile>
+			<id>clix</id>
+			<properties>
+				<lemo-system-name>clix</lemo-system-name>
+				<lemo-display-name>Clix</lemo-display-name>
+			</properties>
+		</profile>
 
 		<profile>
 			<id>chem</id>
@@ -37,23 +45,36 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>ca.pfv</groupId>
-			<artifactId>sqpm</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/mining.jar</systemPath>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>ca.pfv</groupId>-->
+<!--			<artifactId>sqpm</artifactId>-->
+<!--			<version>1.1</version>-->
+<!--			<scope>system</scope>-->
+<!--			<systemPath>${project.basedir}/lib/mining.jar</systemPath>-->
+<!--		</dependency>-->
+<!---->
+<!--		<dependency>-->
+<!--			<groupId>com.oracle</groupId>-->
+<!--			<artifactId>ojdbc6</artifactId>-->
+<!--			<version>11.2.0.3.0</version>-->
+<!--			<scope>system</scope>-->
+<!--			<systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>-->
+<!--		</dependency>-->
+
 
 		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
-		</dependency>
-
-
+	      <groupId>ca.pfv</groupId>
+	      <artifactId>sqpm</artifactId>
+	      <version>1.0</version>
+	    </dependency>
+	
+	    <dependency>
+	      <groupId>com.oracle</groupId>
+	      <artifactId>ojdbc6</artifactId>
+	      <version>11.2.0.3.0</version>
+	    </dependency>
+    
+    
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -283,6 +304,8 @@
 			</plugin>
 
 		</plugins>
+		
+		
 
 		<resources>
 			<resource>
@@ -303,5 +326,12 @@
 		</resources>
 
 	</build>
+	
+		<repositories>
+			    <repository>
+			      <id>Lemo Repo</id>
+			      <url>http://lemo2.f4.htw-berlin.de/maven/</url>
+			    </repository>
+		</repositories>
 
 </project>

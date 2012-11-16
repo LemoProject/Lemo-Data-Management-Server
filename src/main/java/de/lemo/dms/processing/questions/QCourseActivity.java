@@ -17,6 +17,7 @@ import java.util.Set;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -56,6 +57,8 @@ public class QCourseActivity extends Question{
             @FormParam(TYPES) List<String> resourceTypes) {
 		
 		List<Long> list = new ArrayList<Long>();
+		
+		
 		HashMap<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();
 		//Check arguments
 		if(startTime < endTime && resolution > 0)
