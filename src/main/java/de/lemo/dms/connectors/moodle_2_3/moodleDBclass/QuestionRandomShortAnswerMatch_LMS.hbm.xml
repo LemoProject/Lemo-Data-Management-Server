@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.QuestionRandomShortAnswerMatch_LMS"
-        table="question_randomsamatch">
+        table="mdl_question_randomsamatch">
 
         <id
             name="id"

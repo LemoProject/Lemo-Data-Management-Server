@@ -1966,6 +1966,7 @@ public class ClixImporter {
 				item.setAction("Post");
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				item.setPlatform(platform.getId());
+				item.setDuration(0L);
 				
 				if(ecMap.get(loadedItem.getForum()) != null)
 					item.setCourse(Long.valueOf(platform.getPrefix() + "" + ecMap.get(loadedItem.getForum()).getComposing()), course_mining, old_course_mining);
@@ -2021,6 +2022,7 @@ public class ClixImporter {
 					item.setCourse(Long.valueOf(platform.getPrefix() + "" + eComposingMap.get(item.getWiki().getId()).getComposing()), course_mining, old_course_mining);
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				item.setPlatform(platform.getId());
+				item.setDuration(0L);
 				
 				
 				if(item.getUser() != null && item.getWiki() != null )//a wiki doesn't have to be in a course, so no check for FK "course"
@@ -2054,6 +2056,7 @@ public class ClixImporter {
 				item.setAction(loadedItem.getTypeOfModification()+"");
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				item.setPlatform(platform.getId());
+				item.setDuration(0L);
 				
 				if(item.getCourse() != null && item.getUser() != null)
 				{
@@ -2094,6 +2097,7 @@ public class ClixImporter {
 				item.setId(questionLogs.size() + questionLogMax + 1);
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getEvaluated()));
 				item.setPlatform(platform.getId());
+				item.setDuration(0L);
 				
 				if(item.getQuestion() != null && item.getQuiz() != null && item.getUser() != null && item.getCourse() != null)
 					questionLogs.put(item.getId(), item);
@@ -2126,6 +2130,7 @@ public class ClixImporter {
 				item.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem.getAssessment()), quiz_mining, old_quiz_mining);
 				item.setGrade(Double.valueOf(loadedItem.getEvaluatedScore()));
 				item.setPlatform(platform.getId());
+				item.setDuration(0L);
 				if(loadedItem.getEvalCount() == 0L)
 					item.setAction("Try");
 				else
@@ -2175,6 +2180,7 @@ public class ClixImporter {
 					item.setCourse(Long.valueOf(platform.getPrefix() + "" + eg.get(loadedItem.getCommunity())), course_mining, old_course_mining);
 				
 				item.setId(assignmentLogs.size() + assignmentLogMax + 1);
+				item.setDuration(0L);
 				
 				if(item.getCourse() != null && item.getAssignment() != null && item.getUser() != null)
 					assignmentLogs.put(item.getId(), item);
@@ -2214,6 +2220,8 @@ public class ClixImporter {
 					item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 					item.setId(scormLogs.size() + scormLogMax + 1);
 					item.setPlatform(platform.getId());
+
+					item.setDuration(0L);
 					
 					if(eComp.get(loadedItem.getComponent()) != null)
 						item.setCourse(Long.valueOf(platform.getPrefix() + "" + eComp.get(loadedItem.getComponent())), course_mining, old_course_mining);
@@ -2252,7 +2260,7 @@ public class ClixImporter {
 				item.setUser(Long.valueOf(platform.getPrefix() + "" + loadedItem.getUser()), user_mining, old_user_mining);
 				item.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getContainer()), course_mining, old_course_mining);
 				item.setAction("View");
-				item.setDuration(1L);
+				item.setDuration(0L);
 				item.setId(resourceLogs.size() + resourceLogMax + 1);
 				//Time stamp has different format (2009-07-31)
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getDayOfAccess() + " 00:00:00.000"));
@@ -2289,6 +2297,7 @@ public class ClixImporter {
 				item.setMessage(loadedItem.getChatSource());
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				item.setPlatform(platform.getId());
+				item.setDuration(0L);
 				
 				if(item.getChat() != null && item.getUser() != null)
 					chatLogs.put(item.getId(), item);

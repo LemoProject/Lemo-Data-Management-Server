@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Grade_grades_LMS"
-        table="grade_grades">
+        table="mdl_grade_grades">
 
         <id
             name="id"

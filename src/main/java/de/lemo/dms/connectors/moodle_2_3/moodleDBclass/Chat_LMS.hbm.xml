@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Chat_LMS"
-        table="chat">
+        table="mdl_chat">
 
         <id
             name="id"

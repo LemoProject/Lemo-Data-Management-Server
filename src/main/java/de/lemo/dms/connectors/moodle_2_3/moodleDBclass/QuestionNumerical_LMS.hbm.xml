@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.QuestionNumerical_LMS"
-        table="question_numerical">
+        table="mdl_question_numerical">
 
         <id
             name="id"

@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Context_LMS"
-        table="context">
+        table="mdl_context">
 
         <id
             name="id"

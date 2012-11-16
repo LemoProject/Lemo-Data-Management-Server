@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Groups_LMS"
-        table="groups">
+        table="mdl_groups">
 
         <id
             name="id"

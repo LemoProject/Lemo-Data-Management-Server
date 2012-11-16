@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Log_LMS"
-        table="log">
+        table="mdl_log">
 
         <id
             name="id"
@@ -23,7 +23,7 @@
         <property
             name="userid"
             column="userid"
-            type="string"/>
+            type="long"/>
             
         <property
             name="course"

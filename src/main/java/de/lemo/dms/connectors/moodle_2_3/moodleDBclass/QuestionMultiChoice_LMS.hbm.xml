@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.QuestionMultiChoice_LMS"
-        table="question_multichoice">
+        table="mdl_question_multichoice">
 
         <id
             name="id"

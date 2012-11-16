@@ -3,7 +3,7 @@ package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 public class Forum_posts_LMS {
 
 	private long id;
-	private String userid;
+	private long userid;
 	private long created;
 	private long modified;
 	private String subject;
@@ -15,10 +15,10 @@ public class Forum_posts_LMS {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getUserid() {
+	public long getUserid() {
 		return userid;
 	}
-	public void setUserid(String userid) {
+	public void setUserid(long userid) {
 		this.userid = userid;
 	}
 	public long getCreated() {

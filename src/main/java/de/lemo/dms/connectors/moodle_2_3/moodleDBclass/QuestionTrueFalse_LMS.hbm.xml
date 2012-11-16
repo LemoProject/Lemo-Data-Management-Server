@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.QuestionTrueFalse_LMS"
-        table="question_truefalse">
+        table="mdl_question_truefalse">
 
         <id
             name="id"

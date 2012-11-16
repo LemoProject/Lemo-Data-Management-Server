@@ -3,7 +3,7 @@ package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 public class Log_LMS {
 	private long id;
 	private long time;
-	private String userid;
+	private long userid;
 	private long course;
 	private long cmid;
 	private String module;
@@ -40,10 +40,10 @@ public class Log_LMS {
 	public void setTime(long time) {
 		this.time = time;
 	}
-	public String getUserid() {
+	public long getUserid() {
 		return userid;
 	}
-	public void setUserid(String userid) {
+	public void setUserid(long userid) {
 		this.userid = userid;
 	}
 	public long getCourse() {

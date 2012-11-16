@@ -59,6 +59,14 @@ public class Test {
 		//cm.updateData("Moodle(Beuth)", 1338000000);
 	}
 	
+	public static void runMoodle23Conn()
+	{
+		de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle cm = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle();
+		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
+		cm.getData("Moodle 2.3(Beuth)");
+		//cm.updateData("Moodle 2.3(Beuth)", 1338000000);
+	}
+	
 	public static void runClixConn()
 	{
 		ConnectorClix cc = new ConnectorClix();

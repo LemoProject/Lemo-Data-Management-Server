@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Resource_LMS"
-        table="resource">
+        table="mdl_resource">
 
         <id
             name="id"
@@ -25,14 +25,9 @@
             column="name"
             type="string"/>  
             
-        <property
-            name="type"
-            column="type"
-            type="string"/>
-
-        <property
+	    <property
             name="summary"
-            column="summary"
+            column="intro"
             type="string"/>
  
 		<property

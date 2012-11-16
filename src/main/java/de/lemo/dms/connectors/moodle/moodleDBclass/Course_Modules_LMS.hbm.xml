@@ -6,8 +6,8 @@
 <hibernate-mapping>
 
     <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.CourseCategories_LMS"
-        table="mdl_course_categories">
+        name="de.lemo.dms.connectors.moodle.moodleDBclass.Course_Modules_LMS"
+        table="course_modules">
 
         <id
             name="id"
@@ -16,25 +16,20 @@
         </id>
 
         <property
-            name="title"
-            column="name"
-            type="string"/>
-            
-        <property
-            name="path"
-            column="path"
-            type="string"/>
+            name="module"
+            column="module"
+            type="long"/>
 
         <property
-            name="depth"
-            column="depth"
+            name="instance"
+            column="instance"
             type="long"/>
             
         <property
-            name="timemodified"
-            column="timemodified"
+            name="course"
+            column="course"
             type="long"/>
-
+            
     </class>
 
 </hibernate-mapping>

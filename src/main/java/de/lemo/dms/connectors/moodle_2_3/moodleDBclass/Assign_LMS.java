@@ -1,12 +1,13 @@
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
-public class Resource_LMS {
+public class Assign_LMS {
 
 	private long id;
 	private long course;
 	private String name;
-	private String summary;
+	private String description;
 	private long timemodified;
+	
 	
 	public long getId() {
 		return id;
@@ -26,18 +27,19 @@ public class Resource_LMS {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getSummary() {
-		return summary;
+	public String getDescription() {
+		return description;
 	}
-	public void setSummary(String summary) {
-		this.summary = summary;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public long getTimemodified() {
 		return timemodified;
 	}
-	public void setTimemodified(long timemodified) {
-		this.timemodified = timemodified;
+	public void setTimemodified(long timeModified) {
+		this.timemodified = timeModified;
 	}
+	
+	
 	
 }

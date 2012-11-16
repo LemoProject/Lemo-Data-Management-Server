@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Course_LMS"
-        table="course">
+        table="mdl_course">
 
         <id
             name="id"
@@ -43,21 +43,6 @@
         <property
             name="timemodified"
             column="timemodified"
-            type="long"/>
-            
-        <property
-            name="enrolstartdate"
-            column="enrolstartdate"
-            type="long"/>
-
-        <property
-            name="enrolenddate"
-            column="enrolenddate"
-            type="long"/>
-            
-                    <property
-            name="enrolperiod"
-            column="enrolperiod"
             type="long"/>
     
     </class>
