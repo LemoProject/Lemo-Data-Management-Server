@@ -1486,7 +1486,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	long moduleid = 0;
     	for(Modules_LMS loadedItem : modules_lms)
     	{
-    		if(loadedItem.getName().equals("assignment"))
+    		if(loadedItem.getName().equals("assign"))
     		{
     			moduleid = loadedItem.getId();
     			break;

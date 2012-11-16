@@ -1289,6 +1289,21 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	  
     	HashMap<Long, AssignmentLogMining> assignmentLogMining = new HashMap<Long, AssignmentLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
+    	HashMap<Long, ArrayList<Assignment_submissions_LMS>> asSub = new HashMap<Long, ArrayList<Assignment_submissions_LMS>>();
+    	
+    	for(Assignment_submissions_LMS as : assignment_submission_lms)
+    	{
+    		if(asSub.get(as.getAssignment()) == null)
+    		{
+    			ArrayList<Assignment_submissions_LMS> a = new ArrayList<Assignment_submissions_LMS>();
+    			a.add(as);
+    			asSub.put(as.getAssignment(), a);
+    		}
+    		else
+    			asSub.get(as.getAssignment()).add(as);
+    		
+    	}
+    		
     	
     	for(Log_LMS loadedItem : log_lms) {
     		
@@ -1350,12 +1365,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 				insert.setTimestamp(loadedItem.getTime());
 				insert.setAssignment(Long.valueOf(platform.getPrefix() + "" + loadedItem.getInfo()), assignment_mining, old_assignment_mining);
 				
+				
 				if(insert.getAssignment() != null && insert.getUser() != null && insert.getCourse() != null)//&& insert.getAction().equals("upload"))
-				{    
-					for (Assignment_submissions_LMS loadedItem2 : assignment_submission_lms) 
-					{
-						
-						if(loadedItem2.getAssignment() == Long.valueOf(loadedItem.getInfo()) && loadedItem2.getUserid().equals(loadedItem.getUserid()) && loadedItem2.getTimemodified() == loadedItem.getTime())
+				{   
+					if(asSub.get(Long.valueOf(loadedItem.getInfo())) != null)
+					for (Assignment_submissions_LMS loadedItem2 : asSub.get(Long.valueOf(loadedItem.getInfo()))) 
+					{						
+						if(loadedItem2.getAssignment() == Long.valueOf(loadedItem.getInfo()) && loadedItem2.getUserid().equals(loadedItem.getUserid()))// && loadedItem2.getTimemodified() == loadedItem.getTime())
 						{
 							insert.setGrade(loadedItem2.getGrade());
 							insert.setFinalgrade(loadedItem2.getGrade());
