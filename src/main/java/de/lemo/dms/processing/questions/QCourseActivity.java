@@ -130,7 +130,7 @@ public class QCourseActivity extends Question{
 				boolean isInRT = false;
 				if(resourceTypes != null && resourceTypes.size() > 0)
 					for(int j = 0; j < resourceTypes.size(); j++)
-						if(logs.get(i).getClass().toString().toLowerCase().contains(resourceTypes.get(j)))
+						if(logs.get(i).getClass().toString().toUpperCase().contains(resourceTypes.get(j)))
 						{
 							isInRT = true;
 							break;
