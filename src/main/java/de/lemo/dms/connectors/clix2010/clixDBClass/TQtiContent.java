@@ -19,10 +19,10 @@ public class TQtiContent  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "TQtiContentä$"
-				+this.id+"ä$"
-				+this.getCreated()+"ä$"
-				+this.getLastUpdated()+"ä$"
+		return "TQtiContent$$$"
+				+this.id+"$$$"
+				+this.getCreated()+"$$$"
+				+this.getLastUpdated()+"$$$"
 				+this.getName();
 	}
 

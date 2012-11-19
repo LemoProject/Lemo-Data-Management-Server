@@ -22,11 +22,11 @@ public class EComponentType  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "EComponentTypeä$"
-				+this.getUploadDir()+"ä$"
-				+this.getCharacteristic()+"ä$"
-				+this.getCharacteristicId()+"ä$"
-				+this.getComponent()+"ä$"
+		return "EComponentType$$$"
+				+this.getUploadDir()+"$$$"
+				+this.getCharacteristic()+"$$$"
+				+this.getCharacteristicId()+"$$$"
+				+this.getComponent()+"$$$"
 				+this.getLanguage();
 	}
 	

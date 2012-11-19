@@ -18,11 +18,11 @@ public class ScormSessionTimes  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "ScormSessionTimesä$"
-				+this.getLastUpdated()+"ä$"
-				+this.getScore()+"ä$"
-				+this.getStatus()+"ä$"
-				+this.getComponent()+"ä$"
+		return "ScormSessionTimes$$$"
+				+this.getLastUpdated()+"$$$"
+				+this.getScore()+"$$$"
+				+this.getStatus()+"$$$"
+				+this.getComponent()+"$$$"
 				+this.getPerson();
 	}
 

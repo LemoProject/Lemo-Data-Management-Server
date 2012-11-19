@@ -52,9 +52,9 @@ public class PersonComponentAssignment implements IClixMappingClass{
 
 	@Override
 	public String getString() {
-		return "PersonComponentAssignmentä$"
-				+this.getComponent()+"ä$"
-				+this.getPerson()+"ä$"
+		return "PersonComponentAssignment$$$"
+				+this.getComponent()+"$$$"
+				+this.getPerson()+"$$$"
 				+this.getContext();
 	}
 	

@@ -24,13 +24,13 @@ public class EComponent  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "EComponentä$"
-				+this.id+"ä$"
-				+this.getCreationDate()+"ä$"
-				+this.getDescription()+"ä$"
-				+this.getLastUpdated()+"ä$"
-				+this.getName()+"ä$"
-				+this.getStartDate()+"ä$"
+		return "EComponent$$$"
+				+this.id+"$$$"
+				+this.getCreationDate()+"$$$"
+				+this.getDescription()+"$$$"
+				+this.getLastUpdated()+"$$$"
+				+this.getName()+"$$$"
+				+this.getStartDate()+"$$$"
 				+this.getType();
 	}
 	

@@ -21,11 +21,11 @@ public class T2Task  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "T2Taskä$"
-				+this.getId()+"ä$"
-				+this.getQuestionText()+"ä$"
-				+this.getInputType()+"ä$"
-				+this.getTaskType()+"ä$"
+		return "T2Task$$$"
+				+this.getId()+"$$$"
+				+this.getQuestionText()+"$$$"
+				+this.getInputType()+"$$$"
+				+this.getTaskType()+"$$$"
 				+this.getTopicId();
 	}
 

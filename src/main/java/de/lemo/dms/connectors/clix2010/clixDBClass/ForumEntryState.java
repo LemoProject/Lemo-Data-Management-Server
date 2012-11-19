@@ -18,10 +18,10 @@ public class ForumEntryState  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "ForumEntryStateä$"
-				+this.getLastUpdated()+"ä$"
-				+this.getEntry()+"ä$"
-				+this.getForum()+"ä$"
+		return "ForumEntryState$$$"
+				+this.getLastUpdated()+"$$$"
+				+this.getEntry()+"$$$"
+				+this.getForum()+"$$$"
 				+this.getUser();
 	}
 

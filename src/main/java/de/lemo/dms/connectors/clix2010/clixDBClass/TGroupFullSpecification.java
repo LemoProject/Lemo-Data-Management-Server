@@ -15,8 +15,8 @@ public class TGroupFullSpecification  implements IClixMappingClass{
 
 	public String getString()
 	{
-		return "TGroupFullSpecificationä$"
-				+this.getGroup()+"ä$"
+		return "TGroupFullSpecification$$$"
+				+this.getGroup()+"$$$"
 				+this.getPerson();
 	}
 

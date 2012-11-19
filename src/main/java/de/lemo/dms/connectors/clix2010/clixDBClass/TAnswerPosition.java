@@ -16,11 +16,11 @@ public class TAnswerPosition  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "TAnswerPositionä$"
-				+this.getEvaluated()+"ä$"
-				+this.getPerson()+"ä$"
-				+this.getQuestion()+"ä$"
-				+this.getTask()+"ä$"
+		return "TAnswerPosition$$$"
+				+this.getEvaluated()+"$$$"
+				+this.getPerson()+"$$$"
+				+this.getQuestion()+"$$$"
+				+this.getTask()+"$$$"
 				+this.getTest();
 	}
 

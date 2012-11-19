@@ -20,14 +20,14 @@ public class WikiEntry  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "WikiEntryä$"
-				+this.id+"ä$"
-				+this.getCreated()+"ä$"
-				+this.getLastUpdated()+"ä$"
-				+this.getPublishingDate()+"ä$"
-				+this.getComponent()+"ä$"
-				+this.getCreator()+"ä$"
-				+this.getLastProcessor()+"ä$"
+		return "WikiEntry$$$"
+				+this.id+"$$$"
+				+this.getCreated()+"$$$"
+				+this.getLastUpdated()+"$$$"
+				+this.getPublishingDate()+"$$$"
+				+this.getComponent()+"$$$"
+				+this.getCreator()+"$$$"
+				+this.getLastProcessor()+"$$$"
 				+this.getPublisher();
 	}
 

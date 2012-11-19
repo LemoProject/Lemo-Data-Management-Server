@@ -19,13 +19,13 @@ public class TQtiEvalAssessment  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "TQtiEvalAssessmentä$"
-				+this.id+"ä$"
-				+this.getLastInvocation()+"ä$"
-				+this.getAssessment()+"ä$"
-				+this.getCandidate()+"ä$"
-				+this.getComponent()+"ä$"
-				+this.getEvalCount()+"ä$"
+		return "TQtiEvalAssessment$$$"
+				+this.id+"$$$"
+				+this.getLastInvocation()+"$$$"
+				+this.getAssessment()+"$$$"
+				+this.getCandidate()+"$$$"
+				+this.getComponent()+"$$$"
+				+this.getEvalCount()+"$$$"
 				+this.getEvaluatedScore();
 	}
 

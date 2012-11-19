@@ -17,10 +17,10 @@ public class PlatformGroup  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "PlatformGroupä$"
-				+this.id+"ä$"
-				+this.getCreated()+"ä$"
-				+this.getLastUpdated()+"ä$"
+		return "PlatformGroup$$$"
+				+this.id+"$$$"
+				+this.getCreated()+"$$$"
+				+this.getLastUpdated()+"$$$"
 				+this.getTypeId();
 	}
 

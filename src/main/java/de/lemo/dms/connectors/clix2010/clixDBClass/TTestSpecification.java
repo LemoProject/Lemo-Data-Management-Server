@@ -16,8 +16,8 @@ public class TTestSpecification  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "TTestSpecificationä$"
-				+this.getTask()+"ä$"
+		return "TTestSpecification$$$"
+				+this.getTask()+"$$$"
 				+this.getTest();
 	}
 

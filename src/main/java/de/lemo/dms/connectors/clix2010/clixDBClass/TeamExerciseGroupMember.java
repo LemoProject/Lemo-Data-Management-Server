@@ -15,9 +15,9 @@ public class TeamExerciseGroupMember  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "TeamExerciseGroupMemberä$"
-				+this.id+"ä$"
-				+this.getExerciseGroup()+"ä$"
+		return "TeamExerciseGroupMember$$$"
+				+this.id+"$$$"
+				+this.getExerciseGroup()+"$$$"
 				+this.getPortfolio();
 	}
 	

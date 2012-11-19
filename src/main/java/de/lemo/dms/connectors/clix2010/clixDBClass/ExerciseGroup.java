@@ -30,8 +30,8 @@ public class ExerciseGroup implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "ExerciseGroupä$"
-				+this.id+"ä$"
+		return "ExerciseGroup$$$"
+				+this.id+"$$$"
 				+this.getAssociatedCourse();
 	}
 

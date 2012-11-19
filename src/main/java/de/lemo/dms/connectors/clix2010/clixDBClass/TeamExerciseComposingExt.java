@@ -15,9 +15,9 @@ public class TeamExerciseComposingExt  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "TeamExerciseComposingExtä$"
-				+this.id+"ä$"
-				+this.getSubmissionDeadline()+"ä$"
+		return "TeamExerciseComposingExt$$$"
+				+this.id+"$$$"
+				+this.getSubmissionDeadline()+"$$$"
 				+this.geteComposingId();
 	}
 	

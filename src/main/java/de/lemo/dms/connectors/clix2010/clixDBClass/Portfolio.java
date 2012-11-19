@@ -79,9 +79,9 @@ public class Portfolio implements IClixMappingClass{
 
 	@Override
 	public String getString() {
-		return "Portfolioä$"
-				+this.id+"ä$"
-				+this.getPerson()+"ä$"
+		return "Portfolio$$$"
+				+this.id+"$$$"
+				+this.getPerson()+"$$$"
 				+this.getComponent();
 	}
 	

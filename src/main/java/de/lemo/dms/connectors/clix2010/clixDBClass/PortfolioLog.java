@@ -20,12 +20,12 @@ public class PortfolioLog  implements IClixMappingClass{
 
 	public String getString()
 	{
-		return "PortfolioLogä$"
-				+this.id+"ä$"
-					+this.getLastUpdated()+"ä$"
-					+this.getComponent()+"ä$"
-					+this.getLastUpdater()+"ä$"
-					+this.getPerson()+"ä$"
+		return "PortfolioLog$$$"
+				+this.id+"$$$"
+					+this.getLastUpdated()+"$$$"
+					+this.getComponent()+"$$$"
+					+this.getLastUpdater()+"$$$"
+					+this.getPerson()+"$$$"
 					+this.getTypeOfModification();
 	}
 

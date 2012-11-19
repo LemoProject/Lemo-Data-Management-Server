@@ -16,8 +16,8 @@ public class PlatformGroupSpecification  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "PlatformGroupSpecificationä$"
-				+this.getGroup()+"ä$"+
+		return "PlatformGroupSpecification$$$"
+				+this.getGroup()+"$$$"+
 				this.getPerson();
 	}
 

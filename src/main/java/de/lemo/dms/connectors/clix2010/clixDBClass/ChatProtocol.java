@@ -12,10 +12,10 @@ public class ChatProtocol  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "ChatProtocolä$"+this.id+"ä$"
-				+this.getChatSource()+"ä$"
-				+this.getLastUpdated()+"ä$"
-				+this.getChatroom()+"ä$"
+		return "ChatProtocol$$$"+this.id+"$$$"
+				+this.getChatSource()+"$$$"
+				+this.getLastUpdated()+"$$$"
+				+this.getChatroom()+"$$$"
 				+this.getPerson();
 	}
 	

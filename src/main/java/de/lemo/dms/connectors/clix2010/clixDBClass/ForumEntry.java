@@ -16,12 +16,12 @@ public class ForumEntry  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "ForumEntryä$"
-				+this.id+"ä$"
-				+this.getContent()+"ä$"
-				+this.getForum()+"ä$"
-				+this.getLastUpdated()+"ä$"
-				+this.getTitle()+"ä$"
+		return "ForumEntry$$$"
+				+this.id+"$$$"
+				+this.getContent()+"$$$"
+				+this.getForum()+"$$$"
+				+this.getLastUpdated()+"$$$"
+				+this.getTitle()+"$$$"
 				+this.getLastUpdater();
 	}
 

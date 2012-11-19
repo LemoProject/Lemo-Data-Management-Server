@@ -20,12 +20,12 @@ public class BiTrackContentImpressions implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "BiTrackContentImpressionsä$"
-				+this.getContainer()+"ä$"
-				+this.getDayOfAccess()+"ä$"
-				+this.getCharacteristic()+"ä$"
-				+this.getContent()+"ä$"
-				+this.getTotalImpressions()+"ä$"
+		return "BiTrackContentImpressions$$$"
+				+this.getContainer()+"$$$"
+				+this.getDayOfAccess()+"$$$"
+				+this.getCharacteristic()+"$$$"
+				+this.getContent()+"$$$"
+				+this.getTotalImpressions()+"$$$"
 				+this.getUser();
 	}
 

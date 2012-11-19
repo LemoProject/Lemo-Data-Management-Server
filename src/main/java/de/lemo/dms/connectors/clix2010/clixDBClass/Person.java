@@ -19,11 +19,11 @@ public class Person  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "Personä$"
-				+this.id+"ä$"
-				+this.getFirstLoginTime()+"ä$"
-				+this.getLastLoginTime()+"ä$"
-				+this.getLogin()+"ä$"
+		return "Person$$$"
+				+this.id+"$$$"
+				+this.getFirstLoginTime()+"$$$"
+				+this.getLastLoginTime()+"$$$"
+				+this.getLogin()+"$$$"
 				+this.getGender();
 	}
 	

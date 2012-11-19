@@ -13,12 +13,12 @@ public class EComposing  implements IClixMappingClass{
 	
 	public String getString()
 	{
-		return "EComposingä$"
-				+this.id+"ä$"
-				+this.getEndDate()+"ä$"
-				+this.getStartDate()+"ä$"
-				+this.getComponent()+"ä$"
-				+this.getComposing()+"ä$"
+		return "EComposing$$$"
+				+this.id+"$$$"
+				+this.getEndDate()+"$$$"
+				+this.getStartDate()+"$$$"
+				+this.getComponent()+"$$$"
+				+this.getComposing()+"$$$"
 				+this.getComposingType();
 	}
 	
