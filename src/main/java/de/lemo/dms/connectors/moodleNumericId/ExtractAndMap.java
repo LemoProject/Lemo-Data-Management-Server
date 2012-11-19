@@ -38,7 +38,6 @@ import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
 import de.lemo.dms.db.miningDBclass.GroupUserMining;
-import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionMining;

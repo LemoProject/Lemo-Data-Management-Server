@@ -1,22 +1,16 @@
 package de.lemo.dms.db.hibernate;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * Implementation of the IDBHandler interface for Hibernate.
@@ -27,7 +21,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
  */
 public class HibernateDBHandler implements IDBHandler {
 
-    private Logger logger = Logger.getLogger(getClass());
+    @SuppressWarnings("unused")
+	private Logger logger = Logger.getLogger(getClass());
 
     private static SessionFactory miningSessionFactory =
             de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining();

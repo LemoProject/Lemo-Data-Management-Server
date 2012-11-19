@@ -38,7 +38,6 @@ import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
 import de.lemo.dms.db.miningDBclass.GroupUserMining;
-import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionMining;
@@ -336,7 +335,7 @@ public abstract class ExtractAndMap{
 			if( p.getPrefix() > pref)
         		pref = p.getPrefix();
         	
-        	if(p.getType().equals("Moodle_1.9") && p.getName().equals(platformName))
+        	if(p.getType().equals("Moodle_2.3") && p.getName().equals(platformName))
         	{        		
         		platform = p;
         	}
@@ -352,7 +351,6 @@ public abstract class ExtractAndMap{
 		}
 		
 		config_mining_timestamp = (List<Timestamp>) dbHandler.performQuery(session, EQueryType.HQL, "select max(lastmodified) from ConfigMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
-		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "select largestId from ConfigMining x order by x.id asc"));
 		if(config_mining_timestamp.get(0) == null){
 			config_mining_timestamp.set(0, new Timestamp(0));
 		}
@@ -509,8 +507,6 @@ public abstract class ExtractAndMap{
 			old_chat_mining.put(((ChatMining)(t.get(i))).getId(), (ChatMining)t.get(i));
 		System.out.println("Loaded " + old_chat_mining.size() + " ChatMining objects from the mining database.");
 		
-		
-		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(session, EQueryType.HQL, "from IDMappingMining x WHERE x.platform=" + platform.getId() + " order by x.id asc");
 		
 		dbHandler.closeSession(session);
 		

@@ -1,9 +1,5 @@
 package de.lemo.dms.service;
 
-import java.util.Map;
-
-import de.lemo.dms.processing.Question;
-
 /**
  * Used by services that need to operate with a collection of all questions.
  * 

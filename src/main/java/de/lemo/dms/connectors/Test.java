@@ -11,14 +11,11 @@ import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.CourseMining;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.processing.questions.QCourseActivity;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
-import de.lemo.dms.connectors.clix2010.clixHelper.TimeConverter;
 import de.lemo.dms.connectors.moodle.ConnectorMoodle;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 
@@ -99,6 +96,7 @@ public class Test {
 		Criteria crit = session.createCriteria(ResourceLogMining.class, "logs");
 		crit.add(Restrictions.in("logs.course.id", cids));
 		System.out.println("Reading DB");
+		@SuppressWarnings("unchecked")
 		List<ResourceLogMining> l = crit.list();
 		System.out.println("Found "+l.size()+" courses.");
 		
@@ -135,7 +133,7 @@ public class Test {
 	public static void run()
 	{
 		System.out.println("Starting test");
-		runMoodleConn();
+		runMoodle23Conn();
 		System.out.println("Test finished");
 	}
 

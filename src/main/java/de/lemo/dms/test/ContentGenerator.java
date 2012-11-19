@@ -3,13 +3,11 @@ package de.lemo.dms.test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import de.lemo.dms.db.miningDBclass.*;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
-import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 public class ContentGenerator {
 
@@ -91,10 +89,7 @@ public class ContentGenerator {
 		ArrayList<QuestionLogMining> questionLogList = new ArrayList<QuestionLogMining>();
 		ArrayList<ChatLogMining> chatLogList = new ArrayList<ChatLogMining>();
 		
-		
-		ArrayList<ArrayList<ILogMining>> logList = new ArrayList<ArrayList<ILogMining>>();
-		
-		
+			
 		String[] forumAction = new String[4];
 		forumAction[0] = "view forum";
 		forumAction[1] = "subscribe";

@@ -1291,6 +1291,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	HashMap<Long, ArrayList<Assignment_submissions_LMS>> asSub = new HashMap<Long, ArrayList<Assignment_submissions_LMS>>();
     	
+    	//Arranging all assignment_submissions due to performance issues
     	for(Assignment_submissions_LMS as : assignment_submission_lms)
     	{
     		if(asSub.get(as.getAssignment()) == null)

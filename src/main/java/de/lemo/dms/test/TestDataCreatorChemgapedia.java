@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,9 +34,6 @@ public class TestDataCreatorChemgapedia {
 	
 	private ArrayList<ResourceLogMining> resourceLogList = new ArrayList<ResourceLogMining>();
 	private ArrayList<ResourceMining> resourceList = new ArrayList<ResourceMining>();
-	private ArrayList<DepartmentMining> departmentList = new ArrayList<DepartmentMining>();
-	private ArrayList<DegreeMining> degreeList = new ArrayList<DegreeMining>();
-	private ArrayList<CourseMining> courseList = new ArrayList<CourseMining>();
 	private ArrayList<DepartmentDegreeMining> departmentDegreeList = new ArrayList<DepartmentDegreeMining>();
 	private ArrayList<DegreeCourseMining> degreeCourseList = new ArrayList<DegreeCourseMining>();
 	private ArrayList<CourseResourceMining> courseResourceList = new ArrayList<CourseResourceMining>();
@@ -46,6 +42,7 @@ public class TestDataCreatorChemgapedia {
 	private HashMap<Long, DegreeMining> degCouMap = new HashMap<Long, DegreeMining>();
 	private HashMap<Long, DepartmentMining> depDegMap = new HashMap<Long, DepartmentMining>();
 	
+	@SuppressWarnings("unchecked")
 	public void getDataFromDB()
 	{
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
@@ -59,15 +56,7 @@ public class TestDataCreatorChemgapedia {
         
         Query resQuery = session.createQuery("from ResourceMining x order by x.id asc");
         resourceList = (ArrayList<ResourceMining>) resQuery.list();
-        
-        Query couQuery = session.createQuery("from CourseMining x order by x.id asc");
-        courseList = (ArrayList<CourseMining>) couQuery.list();
-        
-        Query depQuery = session.createQuery("from DepartmentMining x order by x.id asc");
-        departmentList = (ArrayList<DepartmentMining>) depQuery.list();
-        
-        Query degQuery = session.createQuery("from DegreeMining x order by x.id asc");
-        degreeList = (ArrayList<DegreeMining>) degQuery.list();
+
         
         Query degCouQuery = session.createQuery("from DegreeCourseMining x order by x.id asc");
         degreeCourseList = (ArrayList<DegreeCourseMining>) degCouQuery.list();
@@ -163,7 +152,7 @@ public class TestDataCreatorChemgapedia {
             time.setAttribute("value", timeValue);
             root.appendChild(time);
             
-            Element content = doc.createElement("content");
+            //Element content = doc.createElement("content");
            /** for(int i = 0; i < subResourceTitles.size(); i++)
             {
             	Element page = doc.createElement("page");

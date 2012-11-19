@@ -1,26 +1,29 @@
 package de.lemo.dms.connectors.clix2010;
 
-import java.util.List;
-
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 import de.lemo.dms.connectors.IConnector;
-import de.lemo.dms.connectors.clix2010.clixDBClass.EComponent;
-import de.lemo.dms.connectors.clix2010.clixHelper.TimeConverter;
-import de.lemo.dms.connectors.clix2010.HibernateUtil;
-import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
 
+/**
+ * Implementation of the IConnector for Clix platforms
+ * 
+ * @author s.schwarzrock
+ *
+ */
 public class ConnectorClix implements IConnector{
 
+	/**
+	 * 
+	 * Use for configuration of the database connection.
+	 */
 	@Override
 	public void setSourceDBConfig(DBConfigObject dbConf) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	
 	@Override
 	public boolean testConnections() {
 		try{
@@ -34,6 +37,9 @@ public class ConnectorClix implements IConnector{
 		return true;
 	}
 
+	/**
+	 * Retrieves all data from the platform and saves it to the database.
+	 */
 	@Override
 	public void getData(String platformName) {
 		try{
@@ -45,6 +51,9 @@ public class ConnectorClix implements IConnector{
 		
 	}
 
+	/**
+	 * Retrieves data from the platform that is newer then the given time 
+	 */
 	@Override
 	public void updateData(String platformName, long fromTimestamp) {
 		try{

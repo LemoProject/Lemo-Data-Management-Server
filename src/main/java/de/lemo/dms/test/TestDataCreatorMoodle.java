@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -821,7 +820,7 @@ public class TestDataCreatorMoodle {
 	
 	private void generateQuizQuestionInstancesLMS()
 	{
-		HashMap<Long, Quiz_question_instances_LMS> tempMap = new HashMap<Long, Quiz_question_instances_LMS>(); 
+		//HashMap<Long, Quiz_question_instances_LMS> tempMap = new HashMap<Long, Quiz_question_instances_LMS>(); 
 		for(QuizQuestionMining item : quizQuestionList)
 		{
 			Quiz_question_instances_LMS lms = new Quiz_question_instances_LMS();

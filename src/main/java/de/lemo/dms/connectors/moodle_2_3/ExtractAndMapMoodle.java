@@ -28,7 +28,6 @@ import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
 import de.lemo.dms.db.miningDBclass.GroupUserMining;
-import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionMining;
 import de.lemo.dms.db.miningDBclass.QuizLogMining;
@@ -93,7 +92,8 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen einf�gen
 
 //LMS tables instances lists
-	private static List<Log_LMS> log_lms;
+	/** The log_lms. */
+private static List<Log_LMS> log_lms;
 	private static List<Resource_LMS> resource_lms;
 	private static List<Course_LMS> course_lms;
 	private static List<Forum_LMS> forum_lms;
@@ -1249,6 +1249,22 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	  
     	HashMap<Long, AssignmentLogMining> assignmentLogMining = new HashMap<Long, AssignmentLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
+    	HashMap<Long, ArrayList<Assignment_submissions_LMS>> asSub = new HashMap<Long, ArrayList<Assignment_submissions_LMS>>();
+    	
+    	for(Assignment_submissions_LMS as : assignment_submission_lms)
+    	{
+    		if(asSub.get(as.getAssignment()) == null)
+    		{
+    			ArrayList<Assignment_submissions_LMS> a = new ArrayList<Assignment_submissions_LMS>();
+    			a.add(as);
+    			asSub.put(as.getAssignment(), a);
+    		}
+    		else
+    			asSub.get(as.getAssignment()).add(as);
+    		
+    	}
+    	
+    	
     	
     	for(Log_LMS loadedItem : log_lms) {
     		
@@ -1286,19 +1302,19 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 				insert.setTimestamp(loadedItem.getTime());
 				insert.setAssignment(Long.valueOf(platform.getPrefix() + "" + loadedItem.getInfo()), assignment_mining, old_assignment_mining);
 				
-				if(insert.getAssignment() != null && insert.getUser() != null && insert.getAction().equals("upload")){    
-					for (Assignment_submissions_LMS loadedItem2 : assignment_submission_lms) {
-											
-						long id = Long.valueOf(platform.getPrefix() + "" + loadedItem2.getUserid());
-			       		
-						if(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getAssignment()) == insert.getAssignment().getId() && id == insert.getUser().getId() && loadedItem2.getTimemodified() == insert.getTimestamp()){
+				if(insert.getAssignment() != null && insert.getUser() != null && insert.getCourse() != null)//&& insert.getAction().equals("upload"))
+				{   
+					if(asSub.get(Long.valueOf(loadedItem.getInfo())) != null)
+					for (Assignment_submissions_LMS loadedItem2 : asSub.get(Long.valueOf(loadedItem.getInfo()))) 
+					{						
+						if(loadedItem2.getAssignment() == Long.valueOf(loadedItem.getInfo()) && loadedItem2.getUserid().equals(loadedItem.getUserid()))// && loadedItem2.getTimemodified() == loadedItem.getTime())
 						{
-								insert.setGrade(loadedItem2.getGrade());
-								insert.setFinalgrade(loadedItem2.getGrade());
-							}
+							insert.setGrade(loadedItem2.getGrade());
+							insert.setFinalgrade(loadedItem2.getGrade());
+							break;
 						}
 					}
-				}			
+				}		
 				
 				if(insert.getAssignment()==null){
 		    		logger.info("In Assignment_log_mining, assignment not found for log: " + loadedItem.getId() + " and cmid: " + loadedItem.getCmid()+ " and info: " + loadedItem.getInfo());
@@ -1773,6 +1789,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     }
     
     
+    /* (non-Javadoc)
+     * @see de.lemo.dms.connectors.moodle_2_3.ExtractAndMap#generateWikiLogMining()
+     */
     public HashMap<Long, WikiLogMining> generateWikiLogMining(){
     	HashMap<Long, WikiLogMining> wikiLogMining = new HashMap<Long, WikiLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
