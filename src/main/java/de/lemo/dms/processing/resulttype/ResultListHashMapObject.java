@@ -1,18 +1,13 @@
 package de.lemo.dms.processing.resulttype;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.junit.Ignore;
 
 @XmlRootElement
 public class ResultListHashMapObject {
@@ -32,7 +27,6 @@ public class ResultListHashMapObject {
         
         if (elements!= null){
         	Set<Long> keys = elements.keySet();
-        	Collection<ResultListLongObject> entries = elements.values();
         	this.keys = keys.toArray(new Long[keys.size()]);
         	this.entries = new ArrayList<ResultListLongObject>();
         	Iterator<Long> it = keys.iterator();
