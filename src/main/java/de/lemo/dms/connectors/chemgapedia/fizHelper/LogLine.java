@@ -3,7 +3,6 @@ package de.lemo.dms.connectors.chemgapedia.fizHelper;
 import de.lemo.dms.connectors.Encoder;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * Class for parsing a line of a Log-file into its parts. Can be modified, if the Log-file format changes. 
  * @author s.schwarzrock

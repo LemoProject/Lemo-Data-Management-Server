@@ -7,9 +7,10 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 
+
 // TODO: Auto-generated Javadoc
 /**
- * The Class LogObject.
+ * The Class LogObject. An object of this class holds the information of a single line in a log-file.
  */
 public class LogObject implements Comparable<LogObject>{
 
@@ -28,28 +29,58 @@ public class LogObject implements Comparable<LogObject>{
 	/** The status. */
 	private String status;
 	
+	/** The duration of the access. */
 	private long duration;
 	
+	/** The course. */
 	private CourseMining course;
 	
+	/** The accessing user. */
 	private UserMining user;
 	
+	
+	/**
+	 * Gets the user.
+	 *
+	 * @return the user
+	 */
 	public UserMining getUser() {
 		return user;
 	}
 
+	/**
+	 * Sets the user.
+	 *
+	 * @param user the new user
+	 */
 	public void setUser(UserMining user) {
 		this.user = user;
 	}
 
+	/**
+	 * Gets the course.
+	 *
+	 * @return the course
+	 */
 	public CourseMining getCourse() {
 		return course;
 	}
 
+	/**
+	 * Sets the course.
+	 *
+	 * @param course the new course
+	 */
 	public void setCourse(CourseMining course) {
 		this.course = course;
 	}
 
+	/**
+	 * Equals.
+	 *
+	 * @param log the log
+	 * @return true, if successful
+	 */
 	public boolean equals(LogObject log)
 	{
 		try{
@@ -66,7 +97,7 @@ public class LogObject implements Comparable<LogObject>{
 	}
 
 	/**
-	 * Creates a new log object.
+	 * Constructor. Creates a new log object.
 	 */
 	public LogObject(){}
 	
@@ -88,16 +119,31 @@ public class LogObject implements Comparable<LogObject>{
 		this.referrer = referrer;
 	}
 	
+	/**
+	 * Instantiates a new log object.
+	 *
+	 * @param id the id
+	 */
 	public LogObject(long id)
 	{
 		this.id = id;
 	}
 	
 	
+	/**
+	 * Gets the duration.
+	 *
+	 * @return the duration
+	 */
 	public long getDuration() {
 		return duration;
 	}
 
+	/**
+	 * Sets the duration.
+	 *
+	 * @param duration the new duration
+	 */
 	public void setDuration(long duration) {
 		this.duration = duration;
 	}
@@ -156,11 +202,24 @@ public class LogObject implements Comparable<LogObject>{
 		this.id = id;
 	}
 	
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the id
+	 * @param id_mapping_mining the id_mapping_mining
+	 */
 	public void setId(String id,  List<IDMappingMining> id_mapping_mining) {
 		long id_n = idForHash(id, id_mapping_mining);
 		this.id = id_n;
 	}
 	
+	/**
+	 * Id for hash.
+	 *
+	 * @param hash1 the hash1
+	 * @param id_mapping_mining the id_mapping_mining
+	 * @return the long
+	 */
 	public static long idForHash(String hash1, List<IDMappingMining> id_mapping_mining)
 	{
 		long id_n = -1;

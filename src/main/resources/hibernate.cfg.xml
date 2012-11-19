@@ -2,7 +2,7 @@
 <hibernate-configuration>
   <session-factory>
     <!-- Maven replacement variables-->
-    <property name="hibernate.connection.url">jdbc:mysql://localhost/moodle23</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost/moodletest</property>
     <property name="hibernate.connection.username">datamining</property>
     <property name="hibernate.connection.password">LabDat1#</property>
     <!-- config-->

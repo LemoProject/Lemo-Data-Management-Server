@@ -47,6 +47,8 @@ public class QFrequentPathsBIDE extends Question{
 
 	private static HashMap<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
 	private static HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
+	private static HashMap<String, Integer> idToInternalId = new HashMap<String, Integer>();
+	private static HashMap<Integer, String> internalIdToId = new HashMap<Integer, String>();
 	
     @POST
     public ResultListUserPathGraph compute(
@@ -70,125 +72,82 @@ public class QFrequentPathsBIDE extends Question{
         System.out.println("Parameter list: Start time: : "+startTime);
         System.out.println("Parameter list: End time: : "+endTime);
 		
-		try{
-			
-		//Session session =  dbHandler.getMiningSession();
-			
-		/**
-		FileWriter out = new FileWriter("./"+System.currentTimeMillis()+"_BIDEresults.txt");
-	    	PrintWriter pout = new PrintWriter(out);
-	    	
-	    	//Write header for the output file
-	    	pout.println("# LeMo - Sequential pattern data");
-	    	**/
-		
-		SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
-		
-		if(!sessionWise)
-			sequenceDatabase.loadLinkedList(generateLinkedList(courseIds, userIds, startTime, endTime));
-			//sequenceDatabase.loadFile(generateInputFile(courseIds, userIds, startTime, endTime));
-		else
-			//sequenceDatabase.loadFile(generateInputFileSessionBound(courseIds, userIds, startTime, endTime));
-			sequenceDatabase.loadLinkedList(generateLinkedListSessionBound(courseIds, userIds, startTime, endTime));
-			
-		AlgoBIDEPlus algo  = new AlgoBIDEPlus(minSup);
-		
-		// execute the algorithm
-		Clock c = new Clock();
-		Sequences res = algo.runAlgorithm(sequenceDatabase); 
-		System.out.println("Time for BIDE-calculation: " + c.get() );
-		
-		LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
-		Long pathId = 0L;
-		System.out.println();
-		for(int i = 0; i < res.getLevelCount(); i++)
+		try
 		{
-			for(int j = 0; j < res.getLevel(i).size(); j++)
-			{
-				String predecessor = null;
-				Long absSup = Long.valueOf(res.getLevel(i).get(j).getAbsoluteSupport());
-				pathId++;
-				System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
-				for(int k = 0; k < res.getLevel(i).get(j).size(); k++)
-				{
-					
-					String obId = String.valueOf(res.getLevel(i).get(j).get(k).getItems().get(0).getId());
-					ILogMining ilo = idToLogM.get(obId.substring(0, 4) + " " + obId.substring(4));
-					
-					String type = ilo.getClass().toString().substring(ilo.getClass().toString().lastIndexOf(".") + 1, ilo.getClass().toString().lastIndexOf("Log"));
+			SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
 			
-					String posId = String.valueOf(pathObjects.size());
-					
-					if(predecessor != null)
+			if(!sessionWise)
+				sequenceDatabase.loadLinkedList(generateLinkedList(courseIds, userIds, startTime, endTime));
+			else
+				sequenceDatabase.loadLinkedList(generateLinkedListSessionBound(courseIds, userIds, startTime, endTime));
+				
+			AlgoBIDEPlus algo  = new AlgoBIDEPlus(minSup);
+			
+			// execute the algorithm
+			Clock c = new Clock();
+			Sequences res = algo.runAlgorithm(sequenceDatabase); 
+			System.out.println("Time for BIDE-calculation: " + c.get() );
+			
+			LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
+			Long pathId = 0L;
+			
+			for(int i = 0; i < res.getLevelCount(); i++)
+			{
+				for(int j = 0; j < res.getLevel(i).size(); j++)
+				{
+					String predecessor = null;
+					Long absSup = Long.valueOf(res.getLevel(i).get(j).getAbsoluteSupport());
+					pathId++;
+					System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
+					for(int k = 0; k < res.getLevel(i).get(j).size(); k++)
 					{
-						pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup, type, 
-	                       		 Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, 
-	                       		 Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
-							
-						// Increment or create predecessor edge
-						pathObjects.get(predecessor).addEdgeOrIncrement(posId);
 						
-						/*
-						if((knownPath = pathObjects.get(obId + "_" + pathId)) == null)
+						String obId = internalIdToId.get(res.getLevel(i).get(j).get(k).getItems().get(0).getId());
+						
+						ILogMining ilo = idToLogM.get(obId);
+						
+						String type = ilo.getClass().getSimpleName();
+				
+						String posId = String.valueOf(pathObjects.size());
+						
+						if(predecessor != null)
 						{
-							 // If the node is new create entry in hash map
-							 posId = String.valueOf(pathObjects.size());
-	                         pathObjects.put(obId+"_" + pathId, new UserPathObject(posId, ilo.getTitle(), absSup, type, 
-	                        		 Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, 
-	                        		 Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
+							pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup, type, 
+		                       		 Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, 
+		                       		 Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
+								
+							// Increment or create predecessor edge
+							pathObjects.get(predecessor).addEdgeOrIncrement(posId);
 						}
 						else
 						{
-							 // If the node is already known, increase weight
-							pathObjects.get(obId+"_" + pathId).increaseWeight(Double.parseDouble(ilo.getDuration()+""));
-							posId = knownPath.getId();
+	                        pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup,
+	                                type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,  Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
 						}
-						*/
-						
-						
-					}
-					else
-					{
-                        pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup,
-                                type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,  Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
+						predecessor = posId;
 					}
 					
-					/*
-					else if(pathObjects.get(obId+"_" + pathId) == null)
-                    {
-                        String posId = String.valueOf(pathObjects.size());
-                        pathObjects.put(obId+"_" + pathId, new UserPathObject(posId, ilo.getTitle(), absSup,
-                                type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,  Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
-                    }
-                    else
-                        pathObjects.get(obId+"_" + pathId).increaseWeight(Double.valueOf(ilo.getDuration()));
-					*/
-					
-					predecessor = posId;
 				}
-				
 			}
-		}
-		System.out.println("\n");
-
-		for(UserPathObject pathEntry : pathObjects.values()) {
-
-            UserPathObject path = pathEntry;
-            path.setWeight(path.getWeight());
-            path.setPathId(pathEntry.getPathId());
-            nodes.add(new UserPathNode(path,true));
-            String sourcePos = path.getId();
-
-            for(Entry<String, Integer> linkEntry : pathEntry.getEdges().entrySet()) {
-                UserPathLink link = new UserPathLink();
-                link.setSource(sourcePos);
-                link.setPathId(path.getPathId());
-                link.setTarget(linkEntry.getKey());
-                link.setValue(String.valueOf(linkEntry.getValue()));
-                links.add(link);
-            }
-        }
-        
+			System.out.println("\n");
+	
+			for(UserPathObject pathEntry : pathObjects.values()) {
+	
+	            UserPathObject path = pathEntry;
+	            path.setWeight(path.getWeight());
+	            path.setPathId(pathEntry.getPathId());
+	            nodes.add(new UserPathNode(path,true));
+	            String sourcePos = path.getId();
+	
+	            for(Entry<String, Integer> linkEntry : pathEntry.getEdges().entrySet()) {
+	                UserPathLink link = new UserPathLink();
+	                link.setSource(sourcePos);
+	                link.setPathId(path.getPathId());
+	                link.setTarget(linkEntry.getKey());
+	                link.setValue(String.valueOf(linkEntry.getValue()));
+	                links.add(link);
+	            }
+	        }        
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -373,34 +332,35 @@ public class QFrequentPathsBIDE extends Question{
 					}
 					else
 					{
-			//			if(logMap.get(list.get(i).getUser().getId()).size() < 26)
-				//		{
-							//Add current ILogMining-object to user-history
-							logMap.get(list.get(i).getUser().getId()).add(list.get(i));
-							//Sort the user's history (by time stamp)
-							Collections.sort(logMap.get(list.get(i).getUser().getId()));
-							
-							//If it is the longest user history, save its length
-							if(logMap.get(list.get(i).getUser().getId()).size() > max)
-								max = logMap.get(list.get(i).getUser().getId()).size();
-					/*	}
-						else
-						{
-							Long l = Long.valueOf(pre + "" + list.get(i).getUser().getId());
-							logMap.put(l , logMap.get(list.get(i).getUser().getId()));
-							pre++;
-							//User histories are saved in an ArrayList of ILogMining-objects
-							ArrayList<ILogMining> a = new ArrayList<ILogMining>();
-							//Add current ILogMining-object to user-history
-							a.add(list.get(i));
-							//Add user history to the user history map
-							logMap.put(list.get(i).getUser().getId(), a);
-						}*/
+						//Add current ILogMining-object to user-history
+						logMap.get(list.get(i).getUser().getId()).add(list.get(i));
+						//Sort the user's history (by time stamp)
+						Collections.sort(logMap.get(list.get(i).getUser().getId()));
+						
+						//If it is the longest user history, save its length
+						if(logMap.get(list.get(i).getUser().getId()).size() > max)
+							max = logMap.get(list.get(i).getUser().getId()).size();
 					}	
 			}
 			
 			//Just changing the container for the user histories
-			ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>(logMap.values());
+			ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>();//(logMap.values());
+			int id = 1;
+			for(ArrayList<ILogMining> uLog : logMap.values())
+			{
+				ArrayList<ILogMining> tmp = new ArrayList<ILogMining>();
+				for(ILogMining iLog : uLog)
+				{
+					if(idToInternalId.get(iLog.getPrefix() + " " + iLog.getLearnObjId()) == null)
+					{
+						internalIdToId.put(id, iLog.getPrefix() + " " + iLog.getLearnObjId());
+						idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearnObjId(), id);
+						id++;						
+					}
+					tmp.add(iLog);
+				}
+				uhis.add(tmp);
+			}
 			
 			//This part is only for statistics - group histories of similar length together and display there respective lengths
 			Integer[] lengths = new Integer[max /10 +1];
@@ -431,16 +391,16 @@ public class QFrequentPathsBIDE extends Question{
 						idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), l.get(i));
 					
 					//Update request numbers
-					if(requests.get(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId()) == null)
+					if(requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
 					{
 							ArrayList<Long> us = new ArrayList<Long>();
 							us.add(l.get(i).getUser().getId());
-							requests.put(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId(), us);
+							requests.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), us);
 					}
 					else
-						requests.get(l.get(i).getPrefix() + "" + l.get(i).getLearnObjId()).add(l.get(i).getUser().getId());
+						requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(l.get(i).getUser().getId());
 					//The id of the object gets the prefix, indicating it's class. This is important for distinction between objects of different ILogMining-classes but same ids
-					line += l.get(i).getPrefix() + "" + l.get(i).getLearnObjId() + " -1 ";
+					line += idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
 				}
 				line += "-2";
 				result.add(line);

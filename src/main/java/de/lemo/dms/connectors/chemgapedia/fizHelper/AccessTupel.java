@@ -1,6 +1,5 @@
 package de.lemo.dms.connectors.chemgapedia.fizHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AccessTupel.
  */

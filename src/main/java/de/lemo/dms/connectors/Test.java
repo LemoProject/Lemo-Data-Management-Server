@@ -13,16 +13,25 @@ import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.processing.questions.QCourseActivity;
+import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
 import de.lemo.dms.connectors.moodle.ConnectorMoodle;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 
-
+/**
+ * Just a class for Connector-related tests.
+ * 
+ * @author s.schwarzrock
+ *
+ */
 public class Test {
 	
-	
+	/**
+	 * Tests the Chemgapedia-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
 	public static void runChemConn()
 	{
 		for(int i = 0 ; i < 5; i++)
@@ -39,15 +48,14 @@ public class Test {
 			
 			ConnectorChemgapedia cm = new ConnectorChemgapedia();
 			cm.setSourceDBConfig(sourceConf);
-			
-			
 			cm.getData("Chemgapedia(FIZ)");
 		}
-
-		
-		
 	}
 	
+	/**
+	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
 	public static void runMoodleConn()
 	{
 		ConnectorMoodle cm = new ConnectorMoodle();
@@ -56,6 +64,10 @@ public class Test {
 		//cm.updateData("Moodle(Beuth)", 1338000000);
 	}
 	
+	/**
+	 * Tests the Moodle(2.3)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
 	public static void runMoodle23Conn()
 	{
 		de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle cm = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle();
@@ -64,6 +76,10 @@ public class Test {
 		//cm.updateData("Moodle 2.3(Beuth)", 1338000000);
 	}
 	
+	/**
+	 * Tests the Clix(2010)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
 	public static void runClixConn()
 	{
 		ConnectorClix cc = new ConnectorClix();
@@ -119,21 +135,18 @@ public class Test {
 	
 	public static void test2()
 	{
-		QCourseActivity qca = new QCourseActivity();
+		QFrequentPathsBIDE qca = new QFrequentPathsBIDE();
 		List<Long> courses = new ArrayList<Long>();
 		courses.add(112200L);
-		courses.add(11476L);
-		List<Long> roles = new ArrayList<Long>();
 		Long startTime = 0L;
 		Long endTime = 1500000000L;
-		int resolution = 100;
-		List<String> resourceTypes = new ArrayList<String>();
+		qca.compute(courses, new ArrayList<Long>(), 0.8, false, startTime, endTime);
 	}
 	
 	public static void run()
 	{
 		System.out.println("Starting test");
-		runMoodle23Conn();
+		test2();
 		System.out.println("Test finished");
 	}
 

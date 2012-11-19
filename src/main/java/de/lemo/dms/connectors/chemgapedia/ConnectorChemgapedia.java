@@ -17,6 +17,12 @@ import de.lemo.dms.connectors.chemgapedia.fizHelper.LogReader;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.XMLPackageParser;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 
+/**
+ * Implementation of the IConnector for the platform Chemgapedia
+ * 
+ * @author s.schwarzrock
+ *
+ */
 public class ConnectorChemgapedia implements IConnector{
 
 	static DBConfigObject sourceDBConf;
@@ -27,7 +33,9 @@ public class ConnectorChemgapedia implements IConnector{
 	static String vscPath;
 	private Logger logger = Logger.getLogger(getClass());
 	
-	
+	/**
+	 * 
+	 */
 	@Override
 	public boolean testConnections() {
 		
@@ -51,6 +59,11 @@ public class ConnectorChemgapedia implements IConnector{
 		return true;
 	}
 
+	/**
+	 * Gets the data from the platform.
+	 * 
+	 * @param platformName Name of the Chemgapedia-platform
+	 */
 	public void getData(String platformName) {
 		
 		Long starttime = System.currentTimeMillis()/1000;
@@ -124,9 +137,14 @@ public class ConnectorChemgapedia implements IConnector{
 		}
 	}
 
+	/**
+	 * Gets the data from the platform.
+	 * 
+	 * @param platformName Name of the Chemgapedia-platform
+	 */
 	public void updateData(String platformName, long fromTimestamp) {
 		Long starttime = System.currentTimeMillis()/1000;
-PlatformMining platform = null;
+		PlatformMining platform = null;
 		
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		
