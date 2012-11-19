@@ -137,16 +137,16 @@ public class Test {
 	{
 		QFrequentPathsBIDE qca = new QFrequentPathsBIDE();
 		List<Long> courses = new ArrayList<Long>();
-		courses.add(112200L);
+		courses.add(10921956L);
 		Long startTime = 0L;
 		Long endTime = 1500000000L;
-		qca.compute(courses, new ArrayList<Long>(), 0.8, false, startTime, endTime);
+		qca.compute(courses, new ArrayList<Long>(), 0.5, false, startTime, endTime);
 	}
 	
 	public static void run()
 	{
 		System.out.println("Starting test");
-		test2();
+		runMoodleConn();
 		System.out.println("Test finished");
 	}
 

@@ -161,7 +161,7 @@ public class QFrequentPathsBIDE extends Question{
 	}
 	
 	/**
-	 * Generates the necessary input file, containing the sequences (user paths) for the BIDE+ algorithm
+	 * Generates the necessary list of input-strings, containing the sequences (user paths) for the BIDE+ algorithm
 	 * 
 	 * @param courses	Course-Ids
 	 * @param users		User-Ids
@@ -278,7 +278,7 @@ public class QFrequentPathsBIDE extends Question{
 	}
 	
 	/**
-	 * Generates the necessary input file, containing the sequences (user paths) for the BIDE+ algorithm
+	 * Generates the necessary list of input-strings, containing the sequences (user paths) for the BIDE+ algorithm
 	 * 
 	 * @param courses	Course-Ids
 	 * @param users		User-Ids
