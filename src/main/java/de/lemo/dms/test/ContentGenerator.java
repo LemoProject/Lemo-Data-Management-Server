@@ -139,7 +139,7 @@ public class ContentGenerator {
 		r0.setId(roleList.size() +1);
 		r0.setName("Administrator");
 		r0.setShortname("Admin");
-		r0.setDescription("Administatoren dürfen alles.");			
+		r0.setDescription("Administatoren dÃ¼rfen alles.");			
 		r0.setSortorder(0);
 		
 		roleList.add(r0);
@@ -148,7 +148,7 @@ public class ContentGenerator {
 		r1.setId(roleList.size() +1);
 		r1.setName("Dozent");
 		r1.setShortname("Doz");
-		r1.setDescription("Dozenten dürfen in ihren Kursen alles.");			
+		r1.setDescription("Dozenten dÃ¼rfen in ihren Kursen alles.");			
 		r1.setSortorder(1);
 		
 		roleList.add(r1);
@@ -157,7 +157,7 @@ public class ContentGenerator {
 		r2.setId(roleList.size() +1);
 		r2.setName("Student");
 		r2.setShortname("Stud");
-		r2.setDescription("Studenten dürfen alles lernen.");			
+		r2.setDescription("Studenten dÃ¼rfen alles lernen.");			
 		r2.setSortorder(2);
 		
 		roleList.add(r2);
