@@ -519,8 +519,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        	       			insert.setEnrolstart(loadedItem2.getTimestart());
        	       			insert.setEnrolend(loadedItem2.getTimeend());
        	                insert.setCourse(Long.valueOf(platform.getPrefix() + "" +  loadedItem.getInstanceid()), course_mining, old_course_mining);
-       	       			if(insert.getUser()!= null && insert.getCourse() != null && insert.getRole()!= null){       	       			
-       	       				course_user_mining.put(insert.getId(), insert);
+       	       			if(insert.getUser()!= null && insert.getCourse() != null && insert.getRole()!= null){  
+    						course_user_mining.put(insert.getId(), insert);
        	       			}    	       			
        	       		}
        			}   			
@@ -544,7 +544,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
             insert.setForum(Long.valueOf(platform.getPrefix() +  "" + loadedItem.getId()),forum_mining, old_forum_mining);
             insert.setPlatform(platform.getId());
             if(insert.getCourse()!= null && insert.getForum()!= null){
-            	course_forum_mining.put(insert.getId(), insert);
+					course_forum_mining.put(insert.getId(), insert);
             }
         }
 		return course_forum_mining;
@@ -567,7 +567,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         	insert.setTitle(loadedItem.getFullname());
         	insert.setShortname(loadedItem.getShortname());
         	insert.setPlatform(platform.getId());
-        	
+				
         	course_mining.put(insert.getId(), insert);
         }
 		return course_mining;
@@ -587,7 +587,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
             insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourseid()),course_mining, old_course_mining);
             insert.setPlatform(platform.getId());
             if(insert.getCourse()!= null && insert.getGroup()!= null){
-            	course_group_mining.put(insert.getId(), insert);
+					course_group_mining.put(insert.getId(), insert);
             }
         }
 		return course_group_mining;
@@ -607,7 +607,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		insert.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()), quiz_mining, old_quiz_mining);
     		insert.setPlatform(platform.getId());
     		if(insert.getCourse() != null && insert.getQuiz() != null){            
-    			course_quiz_mining.put(insert.getQuiz().getId(), insert);
+					course_quiz_mining.put(insert.getQuiz().getId(), insert);
     		}
     		if(insert.getQuiz() == null){
     			logger.info("In Course_quiz_mining, quiz(quiz) not found: " + loadedItem.getId());
@@ -631,7 +631,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 				logger.info("course not found for course-assignment: " + loadedItem.getId() + " and course: " + loadedItem.getCourse());
 			}
             insert.setAssignment(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()), assignment_mining, old_assignment_mining);
-            if(insert.getCourse()!= null && insert.getAssignment() != null){            
+            if(insert.getCourse()!= null && insert.getAssignment() != null){    
+					
             	course_assignment_mining.put(insert.getId(), insert);
             }
     		if(insert.getAssignment()==null){
@@ -653,7 +654,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	   		insert.setScorm(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()), scorm_mining, old_scorm_mining);
 	   		insert.setPlatform(platform.getId());
 	   		if(insert.getCourse()!= null && insert.getScorm() != null){            
-	   			course_scorm_mining.put(insert.getId(), insert);
+					course_scorm_mining.put(insert.getId(), insert);
 	   		}
 	   		if(insert.getScorm()==null){
 	   			logger.info("In Course_scorm_mining, scorm not found: " + loadedItem.getId());
@@ -675,7 +676,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
             insert.setResource(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()), resource_mining, old_resource_mining);
             insert.setPlatform(platform.getId());
             if(insert.getCourse()!= null && insert.getResource() != null){  
-            	course_resource_mining.put(insert.getId(), insert);
+					course_resource_mining.put(insert.getId(), insert);
             }
         }
 		return course_resource_mining;
@@ -747,7 +748,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
     			if(insert.getUser() != null && insert.getCourse() != null)
-    				courseLogMining.put(insert.getId(), insert);
+						courseLogMining.put(insert.getId(), insert);
     			
     		}
         }
@@ -787,7 +788,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
             insert.setWiki(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()), wiki_mining, old_wiki_mining);
             insert.setPlatform(platform.getId());
             if(insert.getCourse()!= null && insert.getWiki()!= null){
-            	course_wiki_mining.put(insert.getId(), insert);
+					course_wiki_mining.put(insert.getId(), insert);
             }
         }
 		return course_wiki_mining;
@@ -882,7 +883,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			}
     			insert.setTimestamp(loadedItem.getTime());
     			if(insert.getCourse() != null && insert.getForum() != null && insert.getUser() != null)
-    				forumLogMining.put(insert.getId(), insert);
+						forumLogMining.put(insert.getId(), insert);
     		}
     	}
     	
@@ -1260,7 +1261,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     				logger.info("In Quiz_log_mining(quiz), course not found for log: " + loadedItem.getId() + " and course: " + loadedItem.getCourse());
     			}
     			if(insert.getCourse() != null && insert.getQuiz() != null && insert.getUser() != null)
-    				quizLogMining.put(insert.getId(), insert);
+						quizLogMining.put(insert.getId(), insert);
     			
     		}          	
        	}
@@ -1393,7 +1394,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 				insert.setPlatform(platform.getId());
 				
 				if(insert.getUser() != null && insert.getAssignment() != null && insert.getCourse() != null)
-					assignmentLogMining.put(insert.getId(), insert);
+						assignmentLogMining.put(insert.getId(), insert);
 			}		
     	}
     	for( AssignmentLogMining r : assignmentLogMining.values())
@@ -1702,7 +1703,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         			insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getCourseid()), course_mining, old_course_mining);
         			insert.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getIteminstance()), quiz_mining, old_quiz_mining);
            		   	if(insert.getQuiz()!= null && insert.getUser() != null){
-        		   		quiz_user_mining.put(insert.getId(), insert);
+           		   		
+           		   	if(insert.getCourse() != null)
+						quiz_user_mining.put(insert.getId(), insert);
         		   	}
         		   	else{
         		   		logger.info("In Quiz_user_mining, quiz not found for: Iteminstance: " + loadedItem2.getIteminstance() + " Itemmodule: " + loadedItem2.getItemmodule() +" course: " + loadedItem2.getCourseid() + " user: " + loadedItem.getUserid());
@@ -1820,7 +1823,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     				logger.info("In Resource_log_mining, resource not found for log: " + loadedItem.getId() + " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()+ " and action: " + loadedItem.getAction());
     			}
     			if(insert.getCourse() != null && insert.getResource() != null && insert.getUser() != null)
-    				resourceLogMining.put(insert.getId(), insert);
+						resourceLogMining.put(insert.getId(), insert);
     			
             }
         }
@@ -1867,8 +1870,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
            	insert.setLastaccess(loadedItem.getLastaccess());
            	insert.setCurrentlogin(loadedItem.getCurrentlogin());
 			insert.setPlatform(platform.getId());
-           	
-           	user_mining.put(insert.getId(), insert);
+			user_mining.put(insert.getId(), insert);
         }
 		return user_mining;    	
     }
@@ -1954,7 +1956,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			insert.setTimestamp(loadedItem.getTime());
     			
     			if(insert.getUser() != null && insert.getCourse() != null && insert.getWiki() != null)
-    				wikiLogMining.put(insert.getId(), insert);
+						wikiLogMining.put(insert.getId(), insert);
     		}
         }
         
@@ -2109,7 +2111,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 					}
 				}
 				if(insert.getDegree() != null && insert.getCourse() != null)
-					degree_course.put(insert.getId(), insert);
+						degree_course.put(insert.getId(), insert);
 			}
 		}
 		return degree_course;
@@ -2130,6 +2132,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
 			
 			if(insert.getCourse() != null)
+					
 				chat_mining.put(insert.getId(), insert);
         }
 
@@ -2184,6 +2187,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
   				logger.info("In Chat_log_mining(chat part), chat not found for log: " + loadedItem.getId() +" and chat: " + loadedItem.getChat_id());
   			}
   			if(insert.getChat() != null && insert.getUser() != null && insert.getCourse() != null)
+					
   				chatLogMining.put(insert.getId(), insert);
   			
         }

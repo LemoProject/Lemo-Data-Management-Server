@@ -137,7 +137,7 @@ public class Test {
 	{
 		QFrequentPathsBIDE qca = new QFrequentPathsBIDE();
 		List<Long> courses = new ArrayList<Long>();
-		courses.add(10921956L);
+		courses.add(112200L);
 		Long startTime = 0L;
 		Long endTime = 1500000000L;
 		qca.compute(courses, new ArrayList<Long>(), 0.5, false, startTime, endTime);
