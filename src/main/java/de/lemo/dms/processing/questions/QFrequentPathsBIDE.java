@@ -6,6 +6,9 @@ import static de.lemo.dms.processing.MetaParam.MIN_SUP;
 import static de.lemo.dms.processing.MetaParam.SESSION_WISE;
 import static de.lemo.dms.processing.MetaParam.START_TIME;
 import static de.lemo.dms.processing.MetaParam.USER_IDS;
+import static de.lemo.dms.processing.MetaParam.MIN_LENGTH;
+import static de.lemo.dms.processing.MetaParam.MAX_LENGTH;
+import static de.lemo.dms.processing.MetaParam.TYPES;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +47,7 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
 
 @Path("frequentPaths")
 public class QFrequentPathsBIDE extends Question{
-
+	
 	private static HashMap<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
 	private static HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
 	private static HashMap<String, Integer> idToInternalId = new HashMap<String, Integer>();
@@ -54,6 +57,9 @@ public class QFrequentPathsBIDE extends Question{
     public ResultListUserPathGraph compute(
     		@FormParam(COURSE_IDS) List<Long> courseIds, 
     		@FormParam(USER_IDS) List<Long> userIds, 
+    		@FormParam(TYPES) List<String> types,
+    		@FormParam(MIN_LENGTH) Long minLength,
+    		@FormParam(MAX_LENGTH) Long maxLength,
     		@FormParam(MIN_SUP) double minSup, 
     		@FormParam(SESSION_WISE) boolean sessionWise,
     		@FormParam(START_TIME) long startTime,
@@ -77,9 +83,9 @@ public class QFrequentPathsBIDE extends Question{
 			SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
 			
 			if(!sessionWise)
-				sequenceDatabase.loadLinkedList(generateLinkedList(courseIds, userIds, startTime, endTime));
+				sequenceDatabase.loadLinkedList(generateLinkedList(courseIds, userIds, types, minLength, maxLength, startTime, endTime));
 			else
-				sequenceDatabase.loadLinkedList(generateLinkedListSessionBound(courseIds, userIds, startTime, endTime));
+				sequenceDatabase.loadLinkedList(generateLinkedListSessionBound(courseIds, userIds, types, minLength, maxLength, startTime, endTime));
 				
 			AlgoBIDEPlus algo  = new AlgoBIDEPlus(minSup);
 			
@@ -171,7 +177,7 @@ public class QFrequentPathsBIDE extends Question{
 	 * @return	The path to the generated file 
 	 */
 	@SuppressWarnings("unchecked")
-	private static LinkedList<String> generateLinkedListSessionBound(List<Long> courses, List<Long> users, Long starttime, Long endtime)
+	private static LinkedList<String> generateLinkedListSessionBound(List<Long> courses, List<Long> users, List<String> types, Long minLength, Long maxLength, Long starttime, Long endtime)
 	{
 		LinkedList<String> result = new LinkedList<String>();
 		try{
@@ -288,9 +294,11 @@ public class QFrequentPathsBIDE extends Question{
 	 * @return	The path to the generated file 
 	 */
 	@SuppressWarnings("unchecked")
-	private static LinkedList<String> generateLinkedList(List<Long> courses, List<Long> users, Long starttime, Long endtime)
+	private static LinkedList<String> generateLinkedList(List<Long> courses, List<Long> users, List<String> types, Long minLength, Long maxLength, Long starttime, Long endtime)
 	{
 		LinkedList<String> result = new LinkedList<String>();
+		boolean hasBorders = minLength != null && maxLength != null && maxLength > 0 && minLength < maxLength;
+		boolean hasTypes = types != null && types.size() > 0;
 		try{
 			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 			
@@ -324,11 +332,6 @@ public class QFrequentPathsBIDE extends Question{
 						a.add(list.get(i));
 						//Add user history to the user history map
 						logMap.put(list.get(i).getUser().getId(), a);
-				
-						
-						//If it is the longest user history, save its length
-						if(logMap.get(list.get(i).getUser().getId()).size() > max)
-							max = logMap.get(list.get(i).getUser().getId()).size();
 					}
 					else
 					{
@@ -336,10 +339,6 @@ public class QFrequentPathsBIDE extends Question{
 						logMap.get(list.get(i).getUser().getId()).add(list.get(i));
 						//Sort the user's history (by time stamp)
 						Collections.sort(logMap.get(list.get(i).getUser().getId()));
-						
-						//If it is the longest user history, save its length
-						if(logMap.get(list.get(i).getUser().getId()).size() > max)
-							max = logMap.get(list.get(i).getUser().getId()).size();
 					}	
 			}
 			
@@ -348,7 +347,9 @@ public class QFrequentPathsBIDE extends Question{
 			int id = 1;
 			for(ArrayList<ILogMining> uLog : logMap.values())
 			{
+				
 				ArrayList<ILogMining> tmp = new ArrayList<ILogMining>();
+				boolean containsType = false;
 				for(ILogMining iLog : uLog)
 				{
 					if(idToInternalId.get(iLog.getPrefix() + " " + iLog.getLearnObjId()) == null)
@@ -357,9 +358,24 @@ public class QFrequentPathsBIDE extends Question{
 						idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearnObjId(), id);
 						id++;						
 					}
+					if(hasTypes && !containsType)
+						for(String type : types)
+						{
+							if(iLog.getClass().getSimpleName().toLowerCase().contains(type.toLowerCase()))
+							{
+								containsType = true;
+								break;
+							}
+							
+						}
 					tmp.add(iLog);
 				}
-				uhis.add(tmp);
+				if((!hasBorders || (tmp.size() >= minLength && tmp.size() <= maxLength)) && (!hasTypes || containsType))
+				{
+					uhis.add(tmp);
+					if(tmp.size() > max)
+						max = tmp.size();
+				}
 			}
 			
 			//This part is only for statistics - group histories of similar length together and display there respective lengths

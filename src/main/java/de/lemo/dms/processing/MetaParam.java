@@ -22,4 +22,6 @@ public interface MetaParam {
     String LEARNING_OBJECT = "lo";
     String UNIQUE_USER = "unique_user";
     String DEGREE = "degree";
+	String MIN_LENGTH = "min_length";
+	String MAX_LENGTH = "max_length";
 }
