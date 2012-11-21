@@ -17,7 +17,7 @@ public class ResultListBoxPlot {
 		this.elements = elements;
 	}
 
-	//@XmlElement
+	@XmlElement
 	public List<BoxPlot> getElements() {
 		return this.elements;
 	}

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -22,7 +21,6 @@ import de.lemo.dms.processing.BoxPlotGeneratorForDates;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.BoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
-import de.lemo.dms.service.servicecontainer.SCTime;
 
 @Path("cumulative")
 public class QCumulativeUserAccess extends Question {
@@ -32,7 +30,7 @@ public class QCumulativeUserAccess extends Question {
 	 *            min time for the data
 	 * @param timestamp_max
 	 *            max time for the data
-	 * @param los
+	 * @param lol
 	 *            list with learning objects to compute
 	 * @param departments
 	 *            departments for the request
@@ -45,33 +43,49 @@ public class QCumulativeUserAccess extends Question {
 	 * @throws JSONException
 	 */
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
+	//@Produces(MediaType.APPLICATION_JSON)
 	public ResultListBoxPlot compute(
-			@FormParam(START_TIME) int timestamp_min,
-			@FormParam(END_TIME) int timestamp_max,
-			@FormParam(LEARNING_OBJECT) List<LearningObjects> los, //TODO LONG umstellen
-			@FormParam(DEPARTMENT) List<Long> departments, //TODO LONG umstellen
-			@FormParam(DEGREE) List<Long> degrees, //TODO LONG umstellen
-			@FormParam(COURSE_IDS) List<Long> course) { //TODO Long verwenden
+			@FormParam(COURSE_IDS) List<Long> course,
+			@FormParam(TYPES) List<String> lol,
+			@FormParam(DEPARTMENT) List<Long> departments, 
+			@FormParam(DEGREE) List<Long> degrees, 
+			@FormParam(START_TIME) Long timestamp_min,
+			@FormParam(END_TIME) Long timestamp_max) { 
 
 		super.logger.info("call for question: cumulative user access");
 		
 		BoxPlotGeneratorForDates bpg = new BoxPlotGeneratorForDates();
 		// ergebnis
 		ResultListBoxPlot rlbp;
-
+		List<LearningObjects> los = new ArrayList<LearningObjects>();
+		
+		super.logger.info("Starting actiivty type transformation ...");
+		if(lol !=null && !lol.isEmpty()){
+			for(int i = 0; i<lol.size();i++) {
+				super.logger.info("Activity types: "+lol.get(i).toLowerCase());
+				los.add(LearningObjects.valueOf(lol.get(i).toLowerCase()));
+			}
+		} else {
+			super.logger.info("No activity types selected ... looking for all types");
+			for(LearningObjects loValues : LearningObjects.values() )
+				los.add(loValues);	
+		}
+		
 		// generiere querys
 		HashMap<LearningObjects, String> querys = generateQuerys(timestamp_min,
 				timestamp_max, los, departments, degrees, course);
 
+		super.logger.info("Query result: "+querys.toString());
+		
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance()
 				.getDBHandler();
 		Session session = dbHandler.getMiningSession();
 
 		// SQL querys
+		super.logger.info("Starting processing ....");
 		for (LearningObjects lo : querys.keySet()) {
 			try {
-		
+				super.logger.info("Starting processing -- Entering try catch....");
 				@SuppressWarnings("deprecation")
 				Statement statement = session.connection().createStatement();
 				ResultSet set = statement.executeQuery(querys.get(lo));
@@ -87,6 +101,7 @@ public class QCumulativeUserAccess extends Question {
 					l.add(bp[i]);
 				}
 				rlbp = new ResultListBoxPlot(l);
+				super.logger.info("Resultlist created ...."+ rlbp.toString()+ " Number of entries: "+rlbp.getElements().size());
 				return rlbp;
 			} catch (Exception e) {
 				// TODO Fehler korrekt loggen
@@ -108,7 +123,7 @@ public class QCumulativeUserAccess extends Question {
 	 * @param los Learning Objects die erfasst werden sollen
 	 * @return Liste mit Querys zu den LearningObjects
 	 */
-	private HashMap<LearningObjects, String> generateQuerys(int timestamp_min, int timestamp_max, List<LearningObjects> los, List<Long> departments, List<Long> degrees, List<Long> course) {
+	private HashMap<LearningObjects, String> generateQuerys(long timestamp_min, long timestamp_max, List<LearningObjects> los, List<Long> departments, List<Long> degrees, List<Long> course) {
 		HashMap<LearningObjects, String> result = new HashMap<LearningObjects, String>();
 		boolean timeframe = false;
 		List<String> qa = new ArrayList<String>();
@@ -127,7 +142,7 @@ public class QCumulativeUserAccess extends Question {
 				qa.add(" timestamp >= "+timestamp_min+ " AND timestamp<= "+timestamp_max);
 			}
 			//filter departments
-			if(departments != null) {
+			if(departments != null && !departments.isEmpty()) {
 				StringBuilder sb = new StringBuilder();
 				sb.append(" (");
 				int i = 0;
@@ -142,7 +157,7 @@ public class QCumulativeUserAccess extends Question {
 				qa.add(sb.toString());
 			}
 			//filter degrees
-			if(degrees != null) {
+			if(degrees != null && !degrees.isEmpty()) {
 				StringBuilder sb = new StringBuilder();
 				sb.append(" (");
 				int i = 0;
@@ -157,7 +172,7 @@ public class QCumulativeUserAccess extends Question {
 				qa.add(sb.toString());
 			}
 			//filter course
-			if(course != null) {
+			if(course != null && !course.isEmpty()) {
 				StringBuilder sb = new StringBuilder();
 				sb.append("(");
 				int i = 0;
