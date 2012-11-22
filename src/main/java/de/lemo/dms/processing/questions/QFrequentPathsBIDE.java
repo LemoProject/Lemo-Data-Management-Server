@@ -367,19 +367,20 @@ public class QFrequentPathsBIDE extends Question{
 						idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearnObjId(), id);
 						id++;						
 					}
-					if(hasTypes && !containsType)
+					if(hasTypes) //&& !containsType)
 						
 						for(String type : types)
 						{
 							if(iLog.getClass().getSimpleName().toLowerCase().contains(type.toLowerCase()))
 							{
-								
+								tmp.add(iLog);
 								containsType = true;
 								break;
 							}
 							
 						}
-					tmp.add(iLog);
+					else
+						tmp.add(iLog);
 				}
 				if((!hasBorders || (tmp.size() >= minLength && tmp.size() <= maxLength)) && (!hasTypes || containsType))
 				{
