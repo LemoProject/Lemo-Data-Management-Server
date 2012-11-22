@@ -13,12 +13,12 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 	private UserMining user;
 	private CourseMining course;
 	private QuizMining quiz;
-	private Double grade;
-	private Double finalgrade;
+	private double grade;
+	private double finalgrade;
 	private String action;
 	private long timestamp;	
-	private Long duration;
-	private Long platform;
+	private long duration;
+	private long platform;
 	
 	@Override
 	public int compareTo(ILogMining arg0) {

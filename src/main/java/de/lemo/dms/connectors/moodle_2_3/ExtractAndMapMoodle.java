@@ -63,6 +63,7 @@ import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Modules_LMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Question_LMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Question_states_LMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Quiz_LMS;
+import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Quiz_attempts_LMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Quiz_grades_LMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Quiz_question_instances_LMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Resource_LMS;
@@ -125,6 +126,7 @@ private static List<Log_LMS> log_lms;
 	private static List<User_Enrolments_LMS> user_enrolments_lms;
 	private static List<Modules_LMS> modules_lms;
 	private static List<Course_Modules_LMS> course_modules_lms;
+	private static List<Quiz_attempts_LMS> quiz_attempts_lms;
 	
 	
 	private static boolean numericUserId = false;
@@ -185,6 +187,12 @@ private static List<Log_LMS> log_lms;
 	    	resource.setParameter("ceiling", ceiling);
 	    	resource_lms = resource.list();		        
 	    	System.out.println("resource_lms tables: " + resource_lms.size());
+	    	
+	    	Query quiz_attempts = session.createQuery("from Quiz_attempts_LMS_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
+	    	quiz_attempts.setParameter("readingtimestamp", readingfromtimestamp);
+	    	quiz_attempts.setParameter("ceiling", ceiling);
+	    	quiz_attempts_lms = quiz_attempts.list();		        
+	    	System.out.println("quiz_attempts_lms tables: " + quiz_attempts_lms.size());
 	    	
 	    	
 	    	Query chat = session.createQuery("from Chat_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
@@ -445,6 +453,12 @@ private static List<Log_LMS> log_lms;
 		    	grade_items_lms = grade_items.list();
 		    	System.out.println("Grade_items_LMS tables: " + grade_items_lms.size());	
 	        }
+	        
+	    	Query quiz_attempts = session.createQuery("from Quiz_attempts_LMS_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtotimestamp order by x.id asc");
+	    	quiz_attempts.setParameter("readingtimestamp", readingfromtimestamp);
+	    	quiz_attempts.setParameter("readingtimestamp2", readingtotimestamp);
+	    	quiz_attempts_lms = quiz_attempts.list();		        
+	    	System.out.println("quiz_attempts_lms tables: " + quiz_attempts_lms.size());
 	    	
 	    	Query log = session.createQuery("from Log_LMS x where x.time>=:readingtimestamp and x.time<=:readingtimestamp2 order by x.id asc");
 	        log.setParameter("readingtimestamp", readingfromtimestamp);
@@ -1193,7 +1207,7 @@ private static List<Log_LMS> log_lms;
     			
     			insert.setUser(Long.valueOf(platform.getPrefix() + "" + loadedItem.getUserid()), user_mining, old_user_mining);
 	       		
-    			if(loadedItem.getInfo().matches("[0-9]+"))
+    			if(loadedItem.getInfo().matches("[0-9]+")) 
     			{
     				insert.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem.getInfo()), quiz_mining, old_quiz_mining);
     			}
@@ -1201,12 +1215,13 @@ private static List<Log_LMS> log_lms;
     			insert.setTimestamp(loadedItem.getTime());
     			if(insert.getQuiz() != null && insert.getUser() != null && loadedItem.getAction() != "review")
     			{    
-    				for (Quiz_grades_LMS loadedItem2 : quiz_grades_lms) 
+    				for (Quiz_attempts_LMS loadedItem2 : quiz_attempts_lms) 
     				{
     					long id = Long.valueOf(platform.getPrefix() + "" + loadedItem2.getUserid());
     					
-    					if(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getQuiz()) == insert.getQuiz().getId() && id == insert.getUser().getId() && loadedItem2.getTimemodified() == insert.getTimestamp()){
-    						insert.setGrade(loadedItem2.getGrade());
+    					if(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getQuiz()) == insert.getQuiz().getId() && id == insert.getUser().getId() && loadedItem2.getTimemodified() == insert.getTimestamp())
+    					{
+    						insert.setGrade(loadedItem2.getSumgrades());
     					}
     				}
     			}

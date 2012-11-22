@@ -140,13 +140,13 @@ public class Test {
 		courses.add(112200L);
 		Long startTime = 0L;
 		Long endTime = 1500000000L;
-		qca.compute(courses, new ArrayList<Long>(), 0.5, false, startTime, endTime);
+		qca.compute(courses, new ArrayList<Long>(), new ArrayList<String>(), 26L, 100L, 0.80, false, startTime, endTime);
 	}
 	
 	public static void run()
 	{
 		System.out.println("Starting test");
-		runMoodleConn();
+		runMoodle23Conn();
 		System.out.println("Test finished");
 	}
 
