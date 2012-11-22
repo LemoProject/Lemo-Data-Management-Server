@@ -33,8 +33,8 @@
 			<properties>
 				<lemo-system-name>lemo-dev</lemo-system-name>
 				<lemo-display-name>LeMo [development]</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+				<tomcat-server>lemo2-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo2-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
 
@@ -43,8 +43,8 @@
 			<properties>
 				<lemo-system-name>lemo-stable</lemo-system-name>
 				<lemo-display-name>LeMo [stable]</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+				<tomcat-server>lemo2-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo2-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
 
@@ -58,12 +58,32 @@
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
-		
+
 		<profile>
 			<id>clix</id>
 			<properties>
 				<lemo-system-name>clix</lemo-system-name>
 				<lemo-display-name>Clix</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>clix-im</id>
+			<properties>
+				<lemo-system-name>clix-im</lemo-system-name>
+				<lemo-display-name>Clix Meichsner</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>bbw</id>
+			<properties>
+				<lemo-system-name>bbw</lemo-system-name>
+				<lemo-display-name>BBW</lemo-display-name>
 				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
@@ -86,18 +106,18 @@
 
 
 		<dependency>
-	      <groupId>ca.pfv</groupId>
-	      <artifactId>sqpm</artifactId>
-	      <version>1.0</version>
-	    </dependency>
-	
-	    <dependency>
-	      <groupId>com.oracle</groupId>
-	      <artifactId>ojdbc6</artifactId>
-	      <version>11.2.0.3.0</version>
-	    </dependency>
-    
-    
+			<groupId>ca.pfv</groupId>
+			<artifactId>sqpm</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.3.0</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -279,9 +299,10 @@
 				</configuration>
 			</plugin>
 
+
 		</plugins>
-		
-		
+
+
 
 		<resources>
 			<resource>
@@ -303,13 +324,6 @@
 		</resources>
 
 	</build>
-	
-		<repositories>
-			    <repository>
-			      <id>Lemo Repo</id>
-			      <url>http://lemo2.f4.htw-berlin.de/maven/</url>
-			    </repository>
-		</repositories>
 
 	<repositories>
 		<repository>
@@ -324,7 +338,8 @@
 		<hibernate-version>3.6.10.Final</hibernate-version>
 		<slf4j-version>1.6.6</slf4j-version>
 
-		<lemo3-tomcat-url>http://141.45.146.174:8080</lemo3-tomcat-url>
+    <lemo2-tomcat-url>http://lemo2.f4.htw-berlin.de:8080</lemo2-tomcat-url>
+    <lemo3-tomcat-url>http://141.45.146.174:8080</lemo3-tomcat-url>
 	</properties>
 
 </project>
