@@ -10,6 +10,7 @@ import static de.lemo.dms.processing.MetaParam.USER_IDS;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -71,16 +72,27 @@ public class QCourseActivity extends Question{
 			//Calculate size of time intervalls
 			double intervall = (endTime - startTime) / (resolution);
 			
+			HashMap<Long, HashMap<Integer, Set<Long>>> userPerResStep = new HashMap<Long, HashMap<Integer, Set<Long>>>();
+			
 			//Create and initialize array for results
 			for( int j =0; j < courses.size(); j++)
 			{
 				
 				Long[] resArr = new Long[resolution];
 				for(int i =  0; i < resArr.length; i++)
+				{
 					resArr[i] = 0L;
+				}
 				List<Long> l = new ArrayList<Long>();
 				Collections.addAll(l, resArr);
 				result.put(courses.get(j), new ResultListLongObject(l));
+			}
+			
+			for(Long c : courses)
+			{
+				
+				userPerResStep.put(c, new HashMap<Integer, Set<Long>>());
+				
 			}
 			
 			
@@ -141,9 +153,35 @@ public class QCourseActivity extends Question{
 					if(pos > resolution - 1)
 						pos = resolution - 1;
 					result.get(logs.get(i).getCourse().getId()).getElements().set(pos, result.get(logs.get(i).getCourse().getId()).getElements().get(pos) + 1);
+					if(userPerResStep.get(logs.get(i).getCourse().getId()).get(pos) == null)
+					{
+						Set s = new HashSet();
+						s.add(logs.get(i).getUser().getId());
+						userPerResStep.get(logs.get(i).getCourse().getId()).put(pos, s);
+					}
+					else
+						userPerResStep.get(logs.get(i).getCourse().getId()).get(pos).add(logs.get(i).getUser().getId());
 				}
-			}			
+			}
+		
+			for(Long c : courses)
+			{
+				for(Integer i : userPerResStep.get(c).keySet())
+					System.out.println(i+ "  ,");
+				for(int i = 0; i < resolution; i++)
+				{
+					if(userPerResStep.get(c).get(i) == null)
+					{
+						result.get(c).getElements().add(0L);
+					}
+					else
+						result.get(c).getElements().add(Long.valueOf(userPerResStep.get(c).get(i).size()));
+				}
+			}
 		}
+		
+		
+		
 		ResultListHashMapObject resultObject = new ResultListHashMapObject(result);
 		   if(resultObject!=null && resultObject.getElements()!=null){
            	Set<Long> keySet =  resultObject.getElements().keySet();
