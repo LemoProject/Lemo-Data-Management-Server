@@ -83,16 +83,18 @@ public class QCumulativeUserAccess extends Question {
 
 		// SQL querys
 		super.logger.info("Starting processing ....");
-		for (LearningObjects lo : querys.keySet()) {
+		
 			try {
-				super.logger.info("Starting processing -- Entering try catch....");
-				@SuppressWarnings("deprecation")
-				Statement statement = session.connection().createStatement();
-				ResultSet set = statement.executeQuery(querys.get(lo));
-
-				// durchlaufen des result sets
-				while (set.next()) {
-					bpg.addAccess(set.getLong("timestamp"));
+				for (LearningObjects lo : querys.keySet()) {
+					super.logger.info("Starting processing -- Entering try catch....");
+					@SuppressWarnings("deprecation")
+					Statement statement = session.connection().createStatement();
+					ResultSet set = statement.executeQuery(querys.get(lo));
+	
+					// durchlaufen des result sets
+					while (set.next()) {
+						bpg.addAccess(set.getLong("timestamp"));
+					}
 				}
 				BoxPlot[] bp;
 				bp = bpg.calculateResult();
@@ -107,11 +109,11 @@ public class QCumulativeUserAccess extends Question {
 				// TODO Fehler korrekt loggen
 				System.out.println("Exception at cumulativeUserAccess "
 						+ e.getMessage());
+				// bei fehler
+				rlbp = new ResultListBoxPlot();
+				return rlbp;
 			}
-		}
-		// bei fehler
-		rlbp = new ResultListBoxPlot();
-		return rlbp;
+		
 	}
 
 	/**

@@ -10,5 +10,4 @@ public enum LearningObjects {
 	quiz,
 	scorm,
 	wiki,
-	unknown,
 }
