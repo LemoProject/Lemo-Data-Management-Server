@@ -7,6 +7,7 @@ public enum LearningObjects {
 	course,
 	forum,
 	question,
+	quiz,
 	scorm,
-	wiki
+	wiki,
 }

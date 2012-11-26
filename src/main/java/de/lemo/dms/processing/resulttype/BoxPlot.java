@@ -5,53 +5,56 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class BoxPlot {
-	private String name = "";
-	private double median = 0, upperWhisker = 0, lowerWhisker = 0;
+	private String name;// = "";
+	private Double 	median, // = 0.0, 
+					upperWhisker,// = 0.0, 
+					lowerWhisker;// = 0.0;
 	//absolute zugriffe und einzigartige zugriffe
-	private long upperQuartil = 0, lowerQuartil = 0;
+	private Double  upperQuartil,// = 0.0, 
+					lowerQuartil;// = 0.0;
 
 	@XmlElement
-	public double getMedian() {
+	public Double getMedian() {
 		return median;
 	}
 
-	public void setMedian(double median) {
+	public void setMedian(Double median) {
 		this.median = median;
 	}
 
 	@XmlElement
-	public double getUpperQuartil() {
+	public Double getUpperQuartil() {
 		return upperQuartil;
 	}
 
-	public void setUpperQuartil(long upperQuartil) {
+	public void setUpperQuartil(Double upperQuartil) {
 		this.upperQuartil = upperQuartil;
 	}
 
 	@XmlElement
-	public double getLowerQuartil() {
+	public Double getLowerQuartil() {
 		return lowerQuartil;
 	}
 
-	public void setLowerQuartil(long lowerQuartil) {
+	public void setLowerQuartil(Double lowerQuartil) {
 		this.lowerQuartil = lowerQuartil;
 	}
 
 	@XmlElement
-	public double getUpperWhisker() {
+	public Double getUpperWhisker() {
 		return upperWhisker;
 	}
 
-	public void setUpperWhisker(double upperWhisker) {
+	public void setUpperWhisker(Double upperWhisker) {
 		this.upperWhisker = upperWhisker;
 	}
 
 	@XmlElement
-	public double getLowerWhisker() {
+	public Double getLowerWhisker() {
 		return lowerWhisker;
 	}
 
-	public void setLowerWhisker(double lowerWhisker) {
+	public void setLowerWhisker(Double lowerWhisker) {
 		this.lowerWhisker = lowerWhisker;
 	}
 

@@ -4,26 +4,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Session;
 import de.lemo.dms.core.LearningObjects;
 import static de.lemo.dms.processing.MetaParam.*;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.processing.BoxPlotGeneratorForDates;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.resulttype.BoxPlot;
+import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
 
 @Path("cumulative")
 public class QCumulativeUserAccess extends Question {
@@ -33,10 +30,8 @@ public class QCumulativeUserAccess extends Question {
 	 *            min time for the data
 	 * @param timestamp_max
 	 *            max time for the data
-	 * @param los
+	 * @param lol
 	 *            list with learning objects to compute
-	 * @param uniqueUser
-	 *            true or false (if true, counts a user only once)
 	 * @param departments
 	 *            departments for the request
 	 * @param degrees
@@ -48,115 +43,77 @@ public class QCumulativeUserAccess extends Question {
 	 * @throws JSONException
 	 */
 	@POST
-	public JSONObject compute(
-			@FormParam(START_TIME) int timestamp_min,
-			@FormParam(END_TIME) int timestamp_max,
-			@FormParam(LEARNING_OBJECT) List<LearningObjects> los,
-			@FormParam(UNIQUE_USER) boolean uniqueUser,
-			@FormParam(DEPARTMENT) List<Integer> departments,
-			@FormParam(DEGREE) List<Integer> degrees,
-			@FormParam(COURSE_IDS) List<Integer> course) {
+	//@Produces(MediaType.APPLICATION_JSON)
+	public ResultListBoxPlot compute(
+			@FormParam(COURSE_IDS) List<Long> course,
+			@FormParam(TYPES) List<String> lol,
+			@FormParam(DEPARTMENT) List<Long> departments, 
+			@FormParam(DEGREE) List<Long> degrees, 
+			@FormParam(START_TIME) Long timestamp_min,
+			@FormParam(END_TIME) Long timestamp_max) { 
 
+		super.logger.info("call for question: cumulative user access");
+		
+		BoxPlotGeneratorForDates bpg = new BoxPlotGeneratorForDates();
 		// ergebnis
-		HashMap<LearningObjects, HashMap<String, Integer>> tmp_result = new HashMap<LearningObjects, HashMap<String, Integer>>();
-		// json result
-		JSONObject result = new JSONObject();
-
+		ResultListBoxPlot rlbp;
+		List<LearningObjects> los = new ArrayList<LearningObjects>();
+		
+		super.logger.info("Starting actiivty type transformation ...");
+		if(lol !=null && !lol.isEmpty()){
+			for(int i = 0; i<lol.size();i++) {
+				super.logger.info("Activity types: "+lol.get(i).toLowerCase());
+				los.add(LearningObjects.valueOf(lol.get(i).toLowerCase()));
+			}
+		} else {
+			super.logger.info("No activity types selected ... looking for all types");
+			for(LearningObjects loValues : LearningObjects.values() )
+				los.add(loValues);	
+		}
+		
 		// generiere querys
 		HashMap<LearningObjects, String> querys = generateQuerys(timestamp_min,
 				timestamp_max, los, departments, degrees, course);
 
+		super.logger.info("Query result: "+querys.toString());
+		
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance()
 				.getDBHandler();
 		Session session = dbHandler.getMiningSession();
 
-		Calendar cal = GregorianCalendar.getInstance();
-
 		// SQL querys
-		for (LearningObjects lo : querys.keySet()) {
+		super.logger.info("Starting processing ....");
+		
 			try {
-				Statement statement = session.connection().createStatement();
-				ResultSet set = statement.executeQuery(querys.get(lo));
-
-				int week[] = new int[7];
-				int hour[] = new int[24];
-				HashSet<String> users = new HashSet<String>();
-
-				// woche
-				for (int i = 0; i < 7; i++) {
-					week[i] = 0;
-				}
-				// stunde
-				for (int i = 0; i < 24; i++) {
-					hour[i] = 0;
-				}
-
-				// durchlaufen des result sets
-				while (set.next()) {
-					// nutzer nur einmal miteinrechnen
-					if (uniqueUser) {
-						String user = set.getString("user_id");
-						if (users.contains(user)) {
-							continue;
-						}
-						users.add(user);
+				for (LearningObjects lo : querys.keySet()) {
+					super.logger.info("Starting processing -- Entering try catch....");
+					@SuppressWarnings("deprecation")
+					Statement statement = session.connection().createStatement();
+					ResultSet set = statement.executeQuery(querys.get(lo));
+	
+					// durchlaufen des result sets
+					while (set.next()) {
+						bpg.addAccess(set.getLong("timestamp"));
 					}
-					long timestamp = set.getLong("timestamp");
-					Date date = new Date(timestamp * 1000);
-					cal.setTime(date);
-					// woche
-					int day = cal.get(Calendar.DAY_OF_WEEK);
-					// TAG 0 = montag
-					switch (day) {
-					case Calendar.MONDAY:
-						week[0]++;
-						break;
-					case Calendar.TUESDAY:
-						week[1]++;
-						break;
-					case Calendar.WEDNESDAY:
-						week[2]++;
-						break;
-					case Calendar.THURSDAY:
-						week[3]++;
-						break;
-					case Calendar.FRIDAY:
-						week[4]++;
-						break;
-					case Calendar.SATURDAY:
-						week[5]++;
-						break;
-					case Calendar.SUNDAY:
-						week[6]++;
-						break;
-					}
-					// stunde
-					hour[cal.get(Calendar.HOUR_OF_DAY)]++;
 				}
-				// zusammensetzen des results
-				HashMap<String, Integer> cumulative = new HashMap<String, Integer>();
-				cumulative.put("monday", new Integer(week[0]));
-				cumulative.put("tuesday", new Integer(week[1]));
-				cumulative.put("wednesday", new Integer(week[2]));
-				cumulative.put("thursday", new Integer(week[3]));
-				cumulative.put("friday", new Integer(week[4]));
-				cumulative.put("saturday", new Integer(week[5]));
-				cumulative.put("sunday", new Integer(week[6]));
-				for (int i = 0; i < 24; i++) {
-					cumulative.put(new Integer(i).toString(), hour[i]);
+				BoxPlot[] bp;
+				bp = bpg.calculateResult();
+				List<BoxPlot> l = new ArrayList<BoxPlot>();
+				for(int i = 0; i< bp.length; i++) {
+					l.add(bp[i]);
 				}
-				tmp_result.put(lo, cumulative);
-				result.put(lo.toString(), cumulative);
-				return result;
+				rlbp = new ResultListBoxPlot(l);
+				super.logger.info("Resultlist created ...."+ rlbp.toString()+ " Number of entries: "+rlbp.getElements().size());
+				return rlbp;
 			} catch (Exception e) {
 				// TODO Fehler korrekt loggen
-				System.out.println("Exception bei cumulativeUserAccess "
+				System.out.println("Exception at cumulativeUserAccess "
 						+ e.getMessage());
+				// bei fehler
+				rlbp = new ResultListBoxPlot();
+				return rlbp;
 			}
-		}
-		// bei fehler
-		JSONObject error = new JSONObject();
-		return error;
+		
 	}
 
 	/**
@@ -168,7 +125,7 @@ public class QCumulativeUserAccess extends Question {
 	 * @param los Learning Objects die erfasst werden sollen
 	 * @return Liste mit Querys zu den LearningObjects
 	 */
-	private HashMap<LearningObjects, String> generateQuerys(int timestamp_min, int timestamp_max, List<LearningObjects> los, List<Integer> departments, List<Integer> degrees, List<Integer> course) {
+	private HashMap<LearningObjects, String> generateQuerys(long timestamp_min, long timestamp_max, List<LearningObjects> los, List<Long> departments, List<Long> degrees, List<Long> course) {
 		HashMap<LearningObjects, String> result = new HashMap<LearningObjects, String>();
 		boolean timeframe = false;
 		List<String> qa = new ArrayList<String>();
@@ -187,11 +144,11 @@ public class QCumulativeUserAccess extends Question {
 				qa.add(" timestamp >= "+timestamp_min+ " AND timestamp<= "+timestamp_max);
 			}
 			//filter departments
-			if(departments != null) {
+			if(departments != null && !departments.isEmpty()) {
 				StringBuilder sb = new StringBuilder();
 				sb.append(" (");
 				int i = 0;
-				for(Integer dep : departments) {
+				for(Long dep : departments) {
 					sb.append(" department.id = "+dep.toString());
 					if(i < departments.size() -1) {
 						sb.append(" OR");
@@ -202,11 +159,11 @@ public class QCumulativeUserAccess extends Question {
 				qa.add(sb.toString());
 			}
 			//filter degrees
-			if(degrees != null) {
+			if(degrees != null && !degrees.isEmpty()) {
 				StringBuilder sb = new StringBuilder();
 				sb.append(" (");
 				int i = 0;
-				for(Integer deg: degrees) {
+				for(Long deg: degrees) {
 					sb.append(" degree.id = "+deg.toString());
 					if(i < degrees.size() -1) {
 						sb.append(" OR");
@@ -217,11 +174,11 @@ public class QCumulativeUserAccess extends Question {
 				qa.add(sb.toString());
 			}
 			//filter course
-			if(course != null) {
+			if(course != null && !course.isEmpty()) {
 				StringBuilder sb = new StringBuilder();
 				sb.append("(");
 				int i = 0;
-				for(Integer co: course) {
+				for(Long co: course) {
 					sb.append(" course.id = "+co.toString());
 					if(i < course.size() -1) {
 						sb.append(" OR");

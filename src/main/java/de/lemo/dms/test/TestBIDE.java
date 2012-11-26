@@ -42,7 +42,7 @@ public class TestBIDE {
 				boolean heedSessions = false;
 				Long startTime = 0L;
 				Long endTime =   1500000000L;
-				fp.compute(courseIds, userIds, minSup, heedSessions, startTime, endTime);
+				fp.compute(courseIds, userIds, null, null, null, minSup, heedSessions, startTime, endTime);
 				//pout.println("\nMinSup: " + minSup + "\t" + c.getAndReset());
 			}
 			pout.close();

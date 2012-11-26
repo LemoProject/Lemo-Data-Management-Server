@@ -23,8 +23,8 @@ public class Test {
 		
 		
 		//analysis.compute(courseIds, userIds, types, startTime, endTime);
-		bide.compute(courseIds, userIds, minSup, sessionWise, startTime, endTime);
-		bide.compute(courseIds, userIds, minSup, sessionWise, startTime, endTime);
+		bide.compute(courseIds, userIds, null, null, null, minSup, sessionWise, startTime, endTime);
+		bide.compute(courseIds, userIds, null, null, null, minSup, sessionWise, startTime, endTime);
 	}
 
 }

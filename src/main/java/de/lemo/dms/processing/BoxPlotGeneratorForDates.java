@@ -158,6 +158,13 @@ public class BoxPlotGeneratorForDates {
 			}
 			BoxPlot bp = calcBox(days);
 			bp.setName(getNameForDay(i));
+			System.out.println("BoxPlotGenerator: Calculation results: "+getNameForDay(i)+
+															" LQ: "+bp.getLowerQuartil()+
+															" LW: "+bp.getLowerWhisker()+
+															" UQ: "+bp.getUpperQuartil()+
+															" UW: "+bp.getUpperWhisker()+
+															" MED: "+bp.getMedian()
+													);
 			resultList[i] = bp;
 		}
 		return resultList;
@@ -223,11 +230,11 @@ public class BoxPlotGeneratorForDates {
 			ow = uw +1;
 			Double m = new Double((list[uw] + list[ow]));
 			m = m/2;
-			result.setMedian(m.doubleValue());
+			result.setMedian(m);
 		}
 		else {
 			//ungerade
-			result.setMedian(list[(list.length/2)]);
+			result.setMedian(list[(list.length/2)].doubleValue());
 		}
 		//---QUARTILE
 		//1 & 2Quartile
@@ -242,10 +249,11 @@ public class BoxPlotGeneratorForDates {
 		}
 		Long i1 = new Long(q1-1);
 		Long i2 = new Long(q2-1);
-		result.setLowerQuartil(list[i1.intValue()]);
-		result.setUpperQuartil(list[i2.intValue()]);
-		result.setUpperWhisker(list[list.length-1]);
-		result.setLowerWhisker(list[0]);
+		result.setLowerQuartil(list[i1.intValue()].doubleValue());
+		result.setUpperQuartil(list[i2.intValue()].doubleValue());
+		result.setUpperWhisker(list[list.length-1].doubleValue());
+		result.setLowerWhisker(list[0].doubleValue());
+		
 		return result;
 	}
 	
