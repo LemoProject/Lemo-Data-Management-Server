@@ -217,7 +217,7 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 
 	@Override
 	public Long getPrefix() {
-		return 1007L;
+		return 17L;
 	}
 
 	public Long getPlatform() {

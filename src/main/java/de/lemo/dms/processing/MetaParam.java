@@ -8,20 +8,21 @@ package de.lemo.dms.processing;
 public interface MetaParam {
 
     String COURSE_IDS = "cid";
+    String DEGREE = "degree";
+    String DEPARTMENT = "dep";
     String END_TIME = "end";
+    String LEARNING_OBJECT = "lo";
     String LOG_OBJECT_IDS = "oid";
     String LOGOUT_FLAG = "logout";
+    String MAX_LENGTH = "max_length";
+    String MIN_LENGTH = "min_length";
+    String MIN_SUP = "min_sup";
     String RESOLUTION = "resolution";
     String ROLE_IDS = "rid";
+    String SESSION_WISE = "session_wise";
     String START_TIME = "start";
     String TYPES = "types";
-    String USER_IDS = "uid";
-    String MIN_SUP = "min_sup";
-    String SESSION_WISE = "session_wise";
-    String DEPARTMENT = "dep";
-    String LEARNING_OBJECT = "lo";
     String UNIQUE_USER = "unique_user";
-    String DEGREE = "degree";
-    String MIN_LENGTH = "min_length";
-    String MAX_LENGTH = "max_length";
+    String USER_IDS = "uid";
+
 }

@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressions"
-        table="lemo_db.BI_TRACKCONTENT_IMPRESSIONS">
+        table="BI_TRACKCONTENT_IMPRESSIONS">
 
 
 		<composite-id

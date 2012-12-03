@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.ScormSessionTimes"
-        table="lemo_db.SCORM_SESSION_TIMES">
+        table="SCORM_SESSION_TIMES">
 
 		<composite-id
        	name="id"

@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseGroupMember"
-        table="lemo_db.TEAM_EXERCISE_GROUP_MEMBER">
+        table="TEAM_EXERCISE_GROUP_MEMBER">
 
         <id
             name="id"

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,7 +38,42 @@ import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.User_LMS;
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Wiki_LMS;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.*;
+import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
+import de.lemo.dms.db.miningDBclass.AssignmentMining;
+import de.lemo.dms.db.miningDBclass.ChatLogMining;
+import de.lemo.dms.db.miningDBclass.ChatMining;
+import de.lemo.dms.db.miningDBclass.CourseAssignmentMining;
+import de.lemo.dms.db.miningDBclass.CourseForumMining;
+import de.lemo.dms.db.miningDBclass.CourseGroupMining;
+import de.lemo.dms.db.miningDBclass.CourseLogMining;
+import de.lemo.dms.db.miningDBclass.CourseMining;
+import de.lemo.dms.db.miningDBclass.CourseQuizMining;
+import de.lemo.dms.db.miningDBclass.CourseResourceMining;
+import de.lemo.dms.db.miningDBclass.CourseScormMining;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
+import de.lemo.dms.db.miningDBclass.CourseWikiMining;
+import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
+import de.lemo.dms.db.miningDBclass.DegreeMining;
+import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
+import de.lemo.dms.db.miningDBclass.DepartmentMining;
+import de.lemo.dms.db.miningDBclass.ForumLogMining;
+import de.lemo.dms.db.miningDBclass.ForumMining;
+import de.lemo.dms.db.miningDBclass.GroupMining;
+import de.lemo.dms.db.miningDBclass.GroupUserMining;
+import de.lemo.dms.db.miningDBclass.QuestionLogMining;
+import de.lemo.dms.db.miningDBclass.QuestionMining;
+import de.lemo.dms.db.miningDBclass.QuizLogMining;
+import de.lemo.dms.db.miningDBclass.QuizMining;
+import de.lemo.dms.db.miningDBclass.QuizQuestionMining;
+import de.lemo.dms.db.miningDBclass.QuizUserMining;
+import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.db.miningDBclass.ResourceMining;
+import de.lemo.dms.db.miningDBclass.RoleMining;
+import de.lemo.dms.db.miningDBclass.ScormLogMining;
+import de.lemo.dms.db.miningDBclass.ScormMining;
+import de.lemo.dms.db.miningDBclass.UserMining;
+import de.lemo.dms.db.miningDBclass.WikiLogMining;
+import de.lemo.dms.db.miningDBclass.WikiMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 
 public class TestDataCreatorMoodle {
@@ -366,7 +400,7 @@ public class TestDataCreatorMoodle {
 			{
 				Assignment_submissions_LMS lms2 = new Assignment_submissions_LMS();
 				
-				lms2.setGrade((long)item.getGrade());
+				lms2.setGrade(item.getGrade().longValue());
 				lms2.setAssignment(item.getAssignment().getId());
 				lms2.setUserid(item.getUser().getId()+"");
 				lms2.setTimemodified(item.getTimestamp());			

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -28,7 +27,14 @@ import org.w3c.dom.Text;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.*;
+import de.lemo.dms.db.miningDBclass.CourseMining;
+import de.lemo.dms.db.miningDBclass.CourseResourceMining;
+import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
+import de.lemo.dms.db.miningDBclass.DegreeMining;
+import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
+import de.lemo.dms.db.miningDBclass.DepartmentMining;
+import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.db.miningDBclass.ResourceMining;
 
 
 public class TestDataCreatorChemgapedia {

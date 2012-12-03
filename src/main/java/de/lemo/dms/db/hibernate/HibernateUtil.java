@@ -38,6 +38,7 @@ public class HibernateUtil {
 
             config.addResource("de/lemo/dms/db/miningDBclass/ConfigMining.hbm.xml");
             config.addResource("de/lemo/dms/db/miningDBclass/IDMappingMining.hbm.xml");
+            config.addResource("de/lemo/dms/db/miningDBclass/PlatformMining.hbm.xml");
 
             // Object-classes
             config.addResource("de/lemo/dms/db/miningDBclass/AssignmentMining.hbm.xml");

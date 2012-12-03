@@ -18,6 +18,7 @@ public class DMSMain {
         try {
             DMSRemoteServer.INSTANCE.start();
             System.in.read(); // TODO every example uses this to keep the server running but there may be a better way
+            
         } catch (IOException e) {
             logger.error("remote server could not be started... " + e.getMessage());
             System.exit(1);

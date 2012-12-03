@@ -1,9 +1,5 @@
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 public class EComponent  implements IClixMappingClass{

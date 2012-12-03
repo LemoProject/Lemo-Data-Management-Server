@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseComposingExt"
-        table="lemo_db.TEAM_EXERCISE_COMPOSING_EXT">
+        table="TEAM_EXERCISE_COMPOSING_EXT">
 
         <id
             name="id"

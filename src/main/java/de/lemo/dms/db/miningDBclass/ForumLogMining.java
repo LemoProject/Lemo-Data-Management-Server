@@ -218,7 +218,7 @@ public class ForumLogMining implements ILogMining , IMappingClass {
 
 	@Override
 	public Long getPrefix() {
-		return 1005L;
+		return 15L;
 	}
 
 	public Long getPlatform() {

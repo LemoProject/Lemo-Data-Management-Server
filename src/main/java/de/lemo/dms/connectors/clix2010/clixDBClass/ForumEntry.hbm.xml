@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntry"
-        table="lemo_db.FORUM_ENTRY">
+        table="FORUM_ENTRY">
 
         <id
             name="id"

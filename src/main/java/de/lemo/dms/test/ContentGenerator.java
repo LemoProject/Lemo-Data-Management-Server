@@ -3,13 +3,46 @@ package de.lemo.dms.test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import de.lemo.dms.db.miningDBclass.*;
+import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
+import de.lemo.dms.db.miningDBclass.AssignmentMining;
+import de.lemo.dms.db.miningDBclass.ChatLogMining;
+import de.lemo.dms.db.miningDBclass.ChatMining;
+import de.lemo.dms.db.miningDBclass.CourseAssignmentMining;
+import de.lemo.dms.db.miningDBclass.CourseForumMining;
+import de.lemo.dms.db.miningDBclass.CourseGroupMining;
+import de.lemo.dms.db.miningDBclass.CourseLogMining;
+import de.lemo.dms.db.miningDBclass.CourseMining;
+import de.lemo.dms.db.miningDBclass.CourseQuizMining;
+import de.lemo.dms.db.miningDBclass.CourseResourceMining;
+import de.lemo.dms.db.miningDBclass.CourseScormMining;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
+import de.lemo.dms.db.miningDBclass.CourseWikiMining;
+import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
+import de.lemo.dms.db.miningDBclass.DegreeMining;
+import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
+import de.lemo.dms.db.miningDBclass.DepartmentMining;
+import de.lemo.dms.db.miningDBclass.ForumLogMining;
+import de.lemo.dms.db.miningDBclass.ForumMining;
+import de.lemo.dms.db.miningDBclass.GroupMining;
+import de.lemo.dms.db.miningDBclass.GroupUserMining;
+import de.lemo.dms.db.miningDBclass.QuestionLogMining;
+import de.lemo.dms.db.miningDBclass.QuestionMining;
+import de.lemo.dms.db.miningDBclass.QuizLogMining;
+import de.lemo.dms.db.miningDBclass.QuizMining;
+import de.lemo.dms.db.miningDBclass.QuizQuestionMining;
+import de.lemo.dms.db.miningDBclass.QuizUserMining;
+import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.db.miningDBclass.ResourceMining;
+import de.lemo.dms.db.miningDBclass.RoleMining;
+import de.lemo.dms.db.miningDBclass.ScormLogMining;
+import de.lemo.dms.db.miningDBclass.ScormMining;
+import de.lemo.dms.db.miningDBclass.UserMining;
+import de.lemo.dms.db.miningDBclass.WikiLogMining;
+import de.lemo.dms.db.miningDBclass.WikiMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
-import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 public class ContentGenerator {
 
@@ -510,7 +543,7 @@ public class ContentGenerator {
 							if(aLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == 2 && a.getMaxgrade() > 0)
 							{
 								aLog.setGrade(a.getMaxgrade() - randy.nextInt((int)a.getMaxgrade()));
-								aLog.setFinalgrade(aLog.getGrade() - randy.nextInt((int)aLog.getGrade()));
+								aLog.setFinalgrade(aLog.getGrade() - randy.nextInt(aLog.getGrade().intValue()));
 								aLog.setAction(assignmentActionTeacher[randy.nextInt(assignmentActionTeacher.length)]);
 								
 							}
@@ -638,7 +671,7 @@ public class ContentGenerator {
 							if(qLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == 2 && quiz.getMaxgrade() > 0)
 							{
 								qLog.setGrade(quiz.getMaxgrade() - randy.nextInt((int)quiz.getMaxgrade()));
-								qLog.setFinalgrade(qLog.getGrade() - randy.nextInt((int)qLog.getGrade()));
+								qLog.setFinalgrade(qLog.getGrade() - randy.nextInt(qLog.getGrade().intValue()));
 								qLog.setAction("report");
 								
 							}
