@@ -378,8 +378,9 @@ public class ClixImporter {
 				course_quiz_mining = generateCourseQuizMining();
 				updates.add(course_quiz_mining.values());
 				
+				//
 				course_assignment_mining = generateCourseAssignmentMining();
-				updates.add(course_assignment_mining.values());
+				
 	
 				course_scorm_mining = generateCourseScormMining();
 				updates.add(course_scorm_mining.values());
@@ -407,6 +408,8 @@ public class ClixImporter {
 			System.out.println("\nLogObjects: \n");
 			
 			updates.add(generateAssignmentLogMining().values());
+			
+			updates.add(course_assignment_mining.values());
 		
 			updates.add(generateCourseLogMining().values());
 			
@@ -1066,8 +1069,13 @@ public class ClixImporter {
 					item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 					item.setPlatform(platform.getId());
 					
-					resources.put(item.getId(), item);
+					if(eCTypes.get(loadedItem.getType()).getCharacteristicId() != null)
+						if(eCTypes.get(loadedItem.getType()).getCharacteristicId() == 1L)
+							item.setType("Medium");
+						else
+							item.setType("Folder");
 					
+					resources.put(item.getId(), item);
 				}
 				
 			}
@@ -2176,7 +2184,19 @@ public class ClixImporter {
 				item.setDuration(0L);
 				
 				if(item.getCourse() != null && item.getAssignment() != null && item.getUser() != null)
+				{
 					assignmentLogs.put(item.getId(), item);
+					if(course_assignment_mining.get(item.getAssignment().getId()) == null)
+					{
+						CourseAssignmentMining cam = new CourseAssignmentMining();
+						cam.setAssignment(item.getAssignment());
+						cam.setCourse(item.getCourse());
+						cam.setPlatform(platform.getId());
+						cam.setId(Long.valueOf(platform.getPrefix() + "" + (course_assignment_mining.size())));
+						
+						course_assignment_mining.put(cam.getAssignment().getId(), cam);
+					}
+				}
 			}
 			System.out.println("Generated " + assignmentLogs.size() + " AssignmentLogMinings.");
 		
@@ -2291,6 +2311,7 @@ public class ClixImporter {
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				item.setPlatform(platform.getId());
 				item.setDuration(0L);
+				item.setCourse(item.getChat().getCourse());
 				
 				if(item.getChat() != null && item.getUser() != null)
 					chatLogs.put(item.getId(), item);

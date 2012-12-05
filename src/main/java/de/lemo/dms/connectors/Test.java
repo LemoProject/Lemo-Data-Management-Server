@@ -146,7 +146,7 @@ public class Test {
 	public static void run()
 	{
 		System.out.println("Starting test");
-		runMoodle23Conn();
+		runChemConn();
 		System.out.println("Test finished");
 	}
 
