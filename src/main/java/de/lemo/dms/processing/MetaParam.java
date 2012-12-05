@@ -24,4 +24,10 @@ public interface MetaParam {
     String DEGREE = "degree";
 	String MIN_LENGTH = "min_length";
 	String MAX_LENGTH = "max_length";
+	String MIN_INTERVAL = "min_interval";
+	String MAX_INTERVAL ="max_interval";
+	String MAX_WHOLE_INTERVAL ="max_whole_interval";
+	String MIN_WHOLE_INTERVAL ="min_whole_interval";
+	
+	
 }

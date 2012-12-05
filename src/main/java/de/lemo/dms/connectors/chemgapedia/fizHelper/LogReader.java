@@ -160,7 +160,7 @@ public class LogReader {
 	}
 	
 	/**
-	 * 
+	 * Updates the data.
 	 * 
 	 * @param inFile
 	 * @return

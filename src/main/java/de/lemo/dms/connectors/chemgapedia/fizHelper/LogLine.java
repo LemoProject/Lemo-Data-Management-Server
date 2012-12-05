@@ -10,7 +10,7 @@ import de.lemo.dms.connectors.Encoder;
  */
 public class LogLine {
 	
-	/** Id, which is basically the users hashed ip-address. */
+	/** Id, which is basically the users hashed IP-address. */
 	private String id;
 	
 	/** URL, the user requested. */

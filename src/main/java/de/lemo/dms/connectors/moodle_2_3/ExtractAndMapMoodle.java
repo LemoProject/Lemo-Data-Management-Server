@@ -129,8 +129,6 @@ private static List<Log_LMS> log_lms;
 	private static List<Quiz_attempts_LMS> quiz_attempts_lms;
 	
 	
-	private static boolean numericUserId = false;
-	
 	private Logger logger = Logger.getLogger(getClass());
 	
 	@SuppressWarnings("unchecked")	

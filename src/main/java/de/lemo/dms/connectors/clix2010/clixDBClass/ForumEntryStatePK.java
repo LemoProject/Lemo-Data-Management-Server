@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class ForumEntryStatePK implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7895343428630427499L;
 	private Long user;
 	private Long entry;
 	

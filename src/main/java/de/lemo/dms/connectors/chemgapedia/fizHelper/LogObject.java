@@ -8,7 +8,6 @@ import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class LogObject. An object of this class holds the information of a single line in a log-file.
  */

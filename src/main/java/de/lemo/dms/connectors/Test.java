@@ -12,8 +12,8 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-import de.lemo.dms.processing.questions.QCourseActivity;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
+import de.lemo.dms.processing.questions.QFrequentPathsViger;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
@@ -135,18 +135,34 @@ public class Test {
 	
 	public static void test2()
 	{
+		QFrequentPathsViger qca = new QFrequentPathsViger();
+		List<Long> courses = new ArrayList<Long>();
+		courses.add(112200L);
+		Long startTime = 1323385200L;
+		Long endTime = 1335736800L;
+		ArrayList<String> types = new ArrayList<String>();
+		//types.add("resource");
+	//  qca.compute(courses, users, types, minLength, maxLength, minInterval, maxInterval, minWholeInterval, maxWholeInterval, minSup, sessionWise, startTime, endTime)
+		qca.compute(courses, new ArrayList<Long>(), types, null, null, 0d, 5d, 0d, Double.MAX_VALUE, 0.5, false, startTime, endTime);
+	}
+	
+	public static void test3()
+	{
 		QFrequentPathsBIDE qca = new QFrequentPathsBIDE();
 		List<Long> courses = new ArrayList<Long>();
 		courses.add(112200L);
-		Long startTime = 0L;
-		Long endTime = 1500000000L;
-		qca.compute(courses, new ArrayList<Long>(), new ArrayList<String>(), 26L, 100L, 0.80, false, startTime, endTime);
+		Long startTime = 1323385200L;
+		Long endTime = 1335736800L;
+		ArrayList<String> types = new ArrayList<String>();
+		//types.add("resource");
+		qca.compute(courses, new ArrayList<Long>(), types, null, null, 0.5, false, startTime, endTime);
 	}
 	
 	public static void run()
 	{
 		System.out.println("Starting test");
-		runChemConn();
+		test3();
+		test2();
 		System.out.println("Test finished");
 	}
 
