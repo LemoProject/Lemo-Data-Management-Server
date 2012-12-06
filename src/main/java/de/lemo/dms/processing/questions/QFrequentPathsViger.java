@@ -9,6 +9,10 @@ import static de.lemo.dms.processing.MetaParam.USER_IDS;
 import static de.lemo.dms.processing.MetaParam.TYPES;
 import static de.lemo.dms.processing.MetaParam.MIN_LENGTH;
 import static de.lemo.dms.processing.MetaParam.MAX_LENGTH;
+import static de.lemo.dms.processing.MetaParam.MAX_INTERVAL;
+import static de.lemo.dms.processing.MetaParam.MAX_WHOLE_INTERVAL;
+import static de.lemo.dms.processing.MetaParam.MIN_INTERVAL;
+import static de.lemo.dms.processing.MetaParam.MIN_WHOLE_INTERVAL;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -32,7 +36,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import ca.pfv.spmf.sequentialpatterns.AlgoBIDEPlus;
+import ca.pfv.spmf.sequentialpatterns.AlgoFournierViger08;
 import ca.pfv.spmf.sequentialpatterns.SequenceDatabase;
 import ca.pfv.spmf.sequentialpatterns.Sequences;
 
@@ -49,8 +53,8 @@ import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;
 
-@Path("frequentPaths")
-public class QFrequentPathsBIDE extends Question{
+@Path("frequentPathsViger")
+public class QFrequentPathsViger extends Question{
 
 	private static HashMap<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
 	private static HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
@@ -65,6 +69,10 @@ public class QFrequentPathsBIDE extends Question{
     		@FormParam(TYPES) List<String> types,
     		@FormParam(MIN_LENGTH) Long minLength,
     		@FormParam(MAX_LENGTH) Long maxLength,
+    		@FormParam(MIN_INTERVAL) Long minInterval,
+    		@FormParam(MAX_INTERVAL) Long maxInterval,
+    		@FormParam(MIN_WHOLE_INTERVAL) Long minWholeInterval,
+    		@FormParam(MAX_WHOLE_INTERVAL) Long maxWholeInterval,
     		@FormParam(MIN_SUP) Double minSup, 
     		@FormParam(SESSION_WISE) boolean sessionWise,
     		@FormParam(START_TIME) Long startTime,
@@ -118,19 +126,15 @@ public class QFrequentPathsBIDE extends Question{
 		
 		SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
 		
-		if(!sessionWise)
-			sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength, maxLength, startTime, endTime));
+		sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength, maxLength, startTime, endTime));
 			//sequenceDatabase.loadFile(generateInputFile(courseIds, userIds, startTime, endTime));
-		else
-			//sequenceDatabase.loadFile(generateInputFileSessionBound(courseIds, userIds, startTime, endTime));
-			sequenceDatabase.loadLinkedList(generateLinkedListSessionBound(courses, users, types, minLength, maxLength, startTime, endTime));
 			
-		AlgoBIDEPlus algo  = new AlgoBIDEPlus(minSup);
+		AlgoFournierViger08 algo  = new AlgoFournierViger08(minSup, minInterval, maxInterval, minWholeInterval, maxWholeInterval, null,  true, false);
 		
 		// execute the algorithm
 		Clock c = new Clock();
 		Sequences res = algo.runAlgorithm(sequenceDatabase); 
-		System.out.println("Time for BIDE-calculation: " + c.get() );
+		System.out.println("Time for Viger-calculation: " + c.get() );
 		
 		LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 		Long pathId = 0L;
@@ -201,6 +205,8 @@ public class QFrequentPathsBIDE extends Question{
 		{
 			requests.clear();
 			idToLogM.clear();
+			internalIdToId.clear();
+			idToInternalId.clear();
 		}
 		return new ResultListUserPathGraph(nodes, links);
 	}
@@ -307,7 +313,7 @@ public class QFrequentPathsBIDE extends Question{
 						else
 							requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(l.get(i).getUser().getId());
 						
-						line += l.get(i).getPrefix() + "" + l.get(i).getLearnObjId() + " -1 ";
+						line += "<" + i + "> " + l.get(i).getPrefix() + "" + l.get(i).getLearnObjId() + " -1 ";
 					}
 					line += "-2";
 					result.add(line);
@@ -412,7 +418,7 @@ public class QFrequentPathsBIDE extends Question{
 							
 						}
 					if(!hasTypes)
-						tmp.add(iLog);
+						tmp.add(iLog);					
 				}
 				if((!hasBorders || (tmp.size() >= minLength && tmp.size() <= maxLength)) && (!hasTypes || containsType))
 				{
@@ -460,7 +466,7 @@ public class QFrequentPathsBIDE extends Question{
 					else
 						requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(l.get(i).getUser().getId());
 					//The id of the object gets the prefix, indicating it's class. This is important for distinction between objects of different ILogMining-classes but same ids
-					line += idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
+					line += "<" + i + "> " + idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
 				}
 				line += "-2";
 				result.add(line);
