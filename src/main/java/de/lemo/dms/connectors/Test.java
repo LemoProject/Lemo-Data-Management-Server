@@ -9,20 +9,28 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+
+import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
 import de.lemo.dms.connectors.moodle.ConnectorMoodle;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 
-
+/**
+ * Just a class for Connector-related tests.
+ * 
+ * @author s.schwarzrock
+ *
+ */
 public class Test {
 	
-	
+	/**
+	 * Tests the Chemgapedia-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
 	public static void runChemConn()
 	{
 		for(int i = 0 ; i < 5; i++)
@@ -39,23 +47,38 @@ public class Test {
 			
 			ConnectorChemgapedia cm = new ConnectorChemgapedia();
 			cm.setSourceDBConfig(sourceConf);
-			
-			
 			cm.getData("Chemgapedia(FIZ)");
 		}
-
-		
-		
 	}
 	
+	/**
+	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
 	public static void runMoodleConn()
 	{
 		ConnectorMoodle cm = new ConnectorMoodle();
 		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
 		cm.getData("Moodle(Beuth)");
-		//cm.updateData("Moodle(Beuth)", 1338800000);
+		//cm.updateData("Moodle(Beuth)", 1338000000);
 	}
 	
+	/**
+	 * Tests the Moodle(2.3)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
+	public static void runMoodle23Conn()
+	{
+		de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle cm = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle();
+		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
+		cm.getData("Moodle 2.3(Beuth)");
+		//cm.updateData("Moodle 2.3(Beuth)", 1338000000);
+	}
+	
+	/**
+	 * Tests the Clix(2010)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
 	public static void runClixConn()
 	{
 		ConnectorClix cc = new ConnectorClix();
@@ -88,6 +111,7 @@ public class Test {
 		Criteria crit = session.createCriteria(ResourceLogMining.class, "logs");
 		crit.add(Restrictions.in("logs.course.id", cids));
 		System.out.println("Reading DB");
+		@SuppressWarnings("unchecked")
 		List<ResourceLogMining> l = crit.list();
 		System.out.println("Found "+l.size()+" courses.");
 		
@@ -108,23 +132,6 @@ public class Test {
 		
 	}
 	
-	public static void testBIDE()
-	{
-		QFrequentPathsBIDE qBide = new QFrequentPathsBIDE();
-		List<Long> courses = new ArrayList<Long>();
-		courses.add(11476L);
-		
-		List<Long> users = new ArrayList<Long>();
-//		users.add(1114L);
-	//	users.add(11693L);
-		//users.add(111386L);
-		
-		List<String> types = new ArrayList<String>();
-		types.add("assignment");
-		
-		qBide.compute(courses, users, types, 11L, 31L, 0.8d, false, 0L, 1500000000L);
-		
-	}
 	
 //	public static void test2()
 //	{
@@ -143,7 +150,7 @@ public class Test {
 	public static void run()
 	{
 		System.out.println("Starting test");
-		testBIDE();
+
 		System.out.println("Test finished");
 	}
 

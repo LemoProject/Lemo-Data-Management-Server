@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class PlatformGroupSpecificationPK implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5700969997735490626L;
 	private Long group;
 	private Long person;
 	

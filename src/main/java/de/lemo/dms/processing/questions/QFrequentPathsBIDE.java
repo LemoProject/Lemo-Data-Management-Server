@@ -201,6 +201,8 @@ public class QFrequentPathsBIDE extends Question{
 		{
 			requests.clear();
 			idToLogM.clear();
+			internalIdToId.clear();
+			idToInternalId.clear();
 		}
 		return new ResultListUserPathGraph(nodes, links);
 	}

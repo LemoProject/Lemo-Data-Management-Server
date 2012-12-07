@@ -14,12 +14,8 @@ import static de.lemo.dms.processing.MetaParam.MAX_WHOLE_INTERVAL;
 import static de.lemo.dms.processing.MetaParam.MIN_INTERVAL;
 import static de.lemo.dms.processing.MetaParam.MIN_WHOLE_INTERVAL;
 
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -69,10 +65,10 @@ public class QFrequentPathsViger extends Question{
     		@FormParam(TYPES) List<String> types,
     		@FormParam(MIN_LENGTH) Long minLength,
     		@FormParam(MAX_LENGTH) Long maxLength,
-    		@FormParam(MIN_INTERVAL) Long minInterval,
-    		@FormParam(MAX_INTERVAL) Long maxInterval,
-    		@FormParam(MIN_WHOLE_INTERVAL) Long minWholeInterval,
-    		@FormParam(MAX_WHOLE_INTERVAL) Long maxWholeInterval,
+    		@FormParam(MIN_INTERVAL) Double minInterval,
+    		@FormParam(MAX_INTERVAL) Double maxInterval,
+    		@FormParam(MIN_WHOLE_INTERVAL) Double minWholeInterval,
+    		@FormParam(MAX_WHOLE_INTERVAL) Double maxWholeInterval,
     		@FormParam(MIN_SUP) Double minSup, 
     		@FormParam(SESSION_WISE) boolean sessionWise,
     		@FormParam(START_TIME) Long startTime,
@@ -123,7 +119,58 @@ public class QFrequentPathsViger extends Question{
 	    	//Write header for the output file
 	    	pout.println("# LeMo - Sequential pattern data");
 	    	**/
+
 		
+        if(courses!=null && courses.size() > 0)
+        {
+        	System.out.print("Parameter list: Courses: " + courses.get(0));
+        	for(int i = 1; i < courses.size(); i++)
+        		System.out.print(", " + courses.get(i));
+        	System.out.println();
+        }
+        if(users!=null && users.size() > 0)
+        {
+        	System.out.print("Parameter list: Users: " + users.get(0));
+        	for(int i = 1; i < users.size(); i++)
+        		System.out.print(", " + users.get(i));
+        	System.out.println();
+        }
+        if(types != null && types.size() > 0)
+        {
+        	System.out.print("Parameter list: Types: : "+types.get(0));
+        	for(int i = 1; i < types.size(); i++)
+        		System.out.print(", " + types.get(i));
+        	System.out.println();
+        }
+        if(minLength != null && maxLength != null && minLength < maxLength)
+        {
+            System.out.println("Parameter list: Minimum path length: : "+minLength);
+            System.out.println("Parameter list: Maximum path length: : "+maxLength);
+        }
+        if(minInterval != null && maxInterval != null && minInterval <= maxInterval)
+        {
+            System.out.println("Parameter list: Minimum interval length: : "+minInterval);
+            System.out.println("Parameter list: Maximum interval length: : "+maxInterval);
+        }
+        if(minWholeInterval != null && maxWholeInterval != null && minWholeInterval <= maxWholeInterval)
+        {
+            System.out.println("Parameter list: Minimum sequence interval length: : "+minWholeInterval);
+            System.out.println("Parameter list: Maximum sequence interval length: : "+maxWholeInterval);
+        }
+        System.out.println("Parameter list: Minimum Support: : "+minSup);
+        System.out.println("Parameter list: Session Wise: : "+sessionWise);
+        System.out.println("Parameter list: Start time: : "+startTime);
+        System.out.println("Parameter list: End time: : "+endTime);
+        
+        if(minInterval == null)
+        	minInterval = 0d;
+        if(maxInterval == null)
+        	maxInterval = Double.MAX_VALUE;
+        if(minWholeInterval == null)
+        	minWholeInterval = 0d;
+        if(maxWholeInterval == null)
+        	maxWholeInterval = Double.MAX_VALUE;
+
 		SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
 		
 		sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength, maxLength, startTime, endTime));

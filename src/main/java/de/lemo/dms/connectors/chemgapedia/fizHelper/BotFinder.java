@@ -1,4 +1,5 @@
 package de.lemo.dms.connectors.chemgapedia.fizHelper;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,7 +8,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * This class offers some functions for bot detection.
+ * This class offers some functions for the detection of web-crawlers.
+ * 
  * @author s.schwarzrock
  *
  */

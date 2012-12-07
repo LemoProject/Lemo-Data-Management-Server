@@ -95,6 +95,11 @@ public abstract class ExtractAndMap{
 	/** A List of entries in the new question table found in this run of the process. */
 	static HashMap<Long, QuestionMining> question_mining;
 	
+	/** A List of entries in the new question table found in this run of the process. */
+	static HashMap<Long, QuizQuestionMining> quiz_question_mining;
+	
+	static HashMap<Long, CourseQuizMining> course_quiz_mining;
+	
 	/** A List of entries in the new role table found in this run of the process. */
 	static HashMap<Long, RoleMining> role_mining;
 	
@@ -490,7 +495,7 @@ public abstract class ExtractAndMap{
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from QuizQuestionMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from QuizQuestionMining x order by x.id asc").list();
 		old_quiz_question_mining = new HashMap<Long, QuizQuestionMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_quiz_question_mining.put(((QuizQuestionMining)(t.get(i))).getId(), (QuizQuestionMining)t.get(i));
+			old_quiz_question_mining.put(((QuizQuestionMining)(t.get(i))).getQuestion().getId(), (QuizQuestionMining)t.get(i));
 		System.out.println("Loaded " + old_quiz_question_mining.size() + " QuizQuestionMining objects from the mining database.");
 		
 		t =  dbHandler.performQuery(session, EQueryType.HQL, "from DepartmentMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from DepartmentMining x order by x.id asc").list();
@@ -616,6 +621,8 @@ public abstract class ExtractAndMap{
 		old_department_mining.putAll(department_mining);
 		old_chat_mining.putAll(chat_mining);
 		old_id_mapping.putAll(id_mapping);
+		old_quiz_question_mining.putAll(quiz_question_mining);
+		old_course_quiz_mining.putAll(course_quiz_mining);
 	}
 	
 	/**
@@ -730,13 +737,54 @@ public abstract class ExtractAndMap{
 			objects += updates.get(updates.size()-1).size();
 			System.out.println("Generated " + updates.get(updates.size()-1).size() + " DepartmentDegreeMining entries in "+ c.getAndReset() +" s. ");
 			
-			updates.add(generateQuizQuestionMining().values());
+			quiz_question_mining = generateQuizQuestionMining();
+			objects += quiz_question_mining.size();
+			System.out.println("Generated " + quiz_question_mining.size() + " QuizQuestionMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(quiz_question_mining.values());
+			
+			System.out.println("\nAssociation tables:\n");
+			
+			updates.add(generateCourseForumMining().values());
 			objects += updates.get(updates.size()-1).size();
-			System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuizQuestionMining entries in "+ c.getAndReset() +" s. ");
+			System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseForumMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(generateCourseGroupMining().values());
+			objects += updates.get(updates.size()-1).size();
+			System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseGroupMining entries in "+ c.getAndReset() +" s. ");
+			
+			course_quiz_mining = generateCourseQuizMining();
+			objects += course_quiz_mining.size();
+			//updates.add(generateCourseQuizMining().values());
+			//objects += updates.get(updates.size()-1).size();
+			System.out.println("Generated " + course_quiz_mining.size() + " CourseQuizMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(course_quiz_mining.values());
+			
+			updates.add(generateCourseResourceMining().values());
+			objects += updates.get(updates.size()-1).size();
+			System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseResourceMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(generateCourseWikiMining().values());
+			objects += updates.get(updates.size()-1).size();
+			System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseWikiMining entries in "+ c.getAndReset() +" s. ");
 			
 			
+
+			updates.add(id_mapping.values());
 			
-		}		
+		}
+		
+		updates.add(generateCourseUserMining().values());
+		objects += updates.get(updates.size()-1).size();
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseUserMining entries in "+ c.getAndReset() +" s. ");
+		
+		
+		updates.add(generateGroupUserMining().values());
+		objects += updates.get(updates.size()-1).size();
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " GroupUserMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(generateQuizUserMining().values());
+		objects += updates.get(updates.size()-1).size();
+		System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuizUserMining entries in "+ c.getAndReset() +" s. ");
+		
+		
+		/*
 		System.out.println("\nAssociation tables:\n");
 		
 		updates.add(generateCourseForumMining().values());
@@ -745,9 +793,14 @@ public abstract class ExtractAndMap{
 		updates.add(generateCourseGroupMining().values());
 		objects += updates.get(updates.size()-1).size();
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseGroupMining entries in "+ c.getAndReset() +" s. ");
-		updates.add(generateCourseQuizMining().values());
-		objects += updates.get(updates.size()-1).size();
+		
+		course_quiz_mining = generateCourseQuizMining();
+		objects += course_quiz_mining.size();
+		//updates.add(generateCourseQuizMining().values());
+		//objects += updates.get(updates.size()-1).size();
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseQuizMining entries in "+ c.getAndReset() +" s. ");
+		updates.add(course_quiz_mining.values());
+		
 		updates.add(generateCourseResourceMining().values());
 		objects += updates.get(updates.size()-1).size();
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseResourceMining entries in "+ c.getAndReset() +" s. ");
@@ -757,6 +810,8 @@ public abstract class ExtractAndMap{
 		updates.add(generateCourseWikiMining().values());
 		objects += updates.get(updates.size()-1).size();
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseWikiMining entries in "+ c.getAndReset() +" s. ");
+		
+		
 		updates.add(generateGroupUserMining().values());
 		objects += updates.get(updates.size()-1).size();
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " GroupUserMining entries in "+ c.getAndReset() +" s. ");
@@ -765,6 +820,9 @@ public abstract class ExtractAndMap{
 		System.out.println("Generated " + updates.get(updates.size()-1).size() + " QuizUserMining entries in "+ c.getAndReset() +" s. ");
 		
 		updates.add(id_mapping.values());
+		
+		
+		*/
 		
 		System.out.println("\nLog tables:\n");
 		

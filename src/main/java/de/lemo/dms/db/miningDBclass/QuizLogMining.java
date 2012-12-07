@@ -17,8 +17,8 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 	private Double finalgrade;
 	private String action;
 	private long timestamp;	
-	private Long duration;
-	private Long platform;
+	private long duration;
+	private long platform;
 	
 	@Override
 	public int compareTo(ILogMining arg0) {
