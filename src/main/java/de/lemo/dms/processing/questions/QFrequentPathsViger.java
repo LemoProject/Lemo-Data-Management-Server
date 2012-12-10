@@ -107,7 +107,7 @@ public class QFrequentPathsViger extends Question{
 			sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength, maxLength, startTime, endTime));
 				//sequenceDatabase.loadFile(generateInputFile(courseIds, userIds, startTime, endTime));
 				
-			AlgoFournierViger08 algo  = new AlgoFournierViger08(minSup, 0, 1, 0, Double.MAX_VALUE, null,  true, true);
+			AlgoFournierViger08 algo  = new AlgoFournierViger08(minSup, 0L, 1L, 0L, 1000L , null,  true, false);
 			
 			// execute the algorithm
 			Clock c = new Clock();
@@ -444,10 +444,10 @@ public class QFrequentPathsViger extends Question{
 					else
 						requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(l.get(i).getUser().getId());
 					//The id of the object gets the prefix, indicating it's class. This is important for distinction between objects of different ILogMining-classes but same ids
-					line += "<" + 0 + "> " + idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
+					line += "<" + i + "> " + idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
 				}
 				line += "-2";
-				System.out.println(line);
+				
 				result.add(line);
 				z++;
 			}
