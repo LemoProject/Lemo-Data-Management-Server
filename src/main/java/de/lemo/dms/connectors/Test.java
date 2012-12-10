@@ -13,6 +13,8 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
+import de.lemo.dms.processing.questions.QFrequentPathsViger;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
@@ -147,13 +149,48 @@ public class Test {
 //		qca.compute(courses, roles, startTime, endTime, resolution, resourceTypes);
 //	}
 	
+	public static void testViger()
+	{
+		QFrequentPathsViger qfpv = new QFrequentPathsViger();
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(112200L);
+		ArrayList<Long> users = new ArrayList<Long>();
+		ArrayList<String> types = new ArrayList<String>();
+		Long minLength = 0L;
+		Long maxLength = 1000L;
+		double minSup = 1;
+		
+		qfpv.compute(courses, users, types, minLength, maxLength, minSup, false, 0L, 1500000000L);
+		
+	}
+	
+	public static void testBide()
+	{
+		QFrequentPathsBIDE qfpv = new QFrequentPathsBIDE();
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(112200L);
+		ArrayList<Long> users = new ArrayList<Long>();
+		ArrayList<String> types = new ArrayList<String>();
+		Long minLength = 0L;
+		Long maxLength = 1000L;
+		double minSup = 0.5;
+		
+		qfpv.compute(courses, users, types, minLength, maxLength, minSup, false, 0L, 1500000000L);
+		
+	}
+	
 	public static void run()
 	{
 		System.out.println("Starting test");
-
+		testViger();
+		testBide();
 		System.out.println("Test finished");
 	}
 
+	public static void main(String[] args)
+	{
+		run();
+	}
 	
 	
 }

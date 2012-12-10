@@ -184,8 +184,6 @@ public class QCourseActivity extends Question{
 			}
 		}
 		
-		
-		
 		ResultListHashMapObject resultObject = new ResultListHashMapObject(result);
 		   if(resultObject!=null && resultObject.getElements()!=null){
            	Set<Long> keySet =  resultObject.getElements().keySet();

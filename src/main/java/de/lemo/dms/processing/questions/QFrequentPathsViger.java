@@ -9,10 +9,6 @@ import static de.lemo.dms.processing.MetaParam.USER_IDS;
 import static de.lemo.dms.processing.MetaParam.TYPES;
 import static de.lemo.dms.processing.MetaParam.MIN_LENGTH;
 import static de.lemo.dms.processing.MetaParam.MAX_LENGTH;
-import static de.lemo.dms.processing.MetaParam.MAX_INTERVAL;
-import static de.lemo.dms.processing.MetaParam.MAX_WHOLE_INTERVAL;
-import static de.lemo.dms.processing.MetaParam.MIN_INTERVAL;
-import static de.lemo.dms.processing.MetaParam.MIN_WHOLE_INTERVAL;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,10 +61,6 @@ public class QFrequentPathsViger extends Question{
     		@FormParam(TYPES) List<String> types,
     		@FormParam(MIN_LENGTH) Long minLength,
     		@FormParam(MAX_LENGTH) Long maxLength,
-    		@FormParam(MIN_INTERVAL) Double minInterval,
-    		@FormParam(MAX_INTERVAL) Double maxInterval,
-    		@FormParam(MIN_WHOLE_INTERVAL) Double minWholeInterval,
-    		@FormParam(MAX_WHOLE_INTERVAL) Double maxWholeInterval,
     		@FormParam(MIN_SUP) Double minSup, 
     		@FormParam(SESSION_WISE) boolean sessionWise,
     		@FormParam(START_TIME) Long startTime,
@@ -107,142 +99,81 @@ public class QFrequentPathsViger extends Question{
         System.out.println("Parameter list: Session Wise: : "+sessionWise);
         System.out.println("Parameter list: Start time: : "+startTime);
         System.out.println("Parameter list: End time: : "+endTime);
-		
-		try{
-			
-		//Session session =  dbHandler.getMiningSession();
-			
-		/**
-		FileWriter out = new FileWriter("./"+System.currentTimeMillis()+"_BIDEresults.txt");
-	    	PrintWriter pout = new PrintWriter(out);
-	    	
-	    	//Write header for the output file
-	    	pout.println("# LeMo - Sequential pattern data");
-	    	**/
-
-		
-        if(courses!=null && courses.size() > 0)
-        {
-        	System.out.print("Parameter list: Courses: " + courses.get(0));
-        	for(int i = 1; i < courses.size(); i++)
-        		System.out.print(", " + courses.get(i));
-        	System.out.println();
-        }
-        if(users!=null && users.size() > 0)
-        {
-        	System.out.print("Parameter list: Users: " + users.get(0));
-        	for(int i = 1; i < users.size(); i++)
-        		System.out.print(", " + users.get(i));
-        	System.out.println();
-        }
-        if(types != null && types.size() > 0)
-        {
-        	System.out.print("Parameter list: Types: : "+types.get(0));
-        	for(int i = 1; i < types.size(); i++)
-        		System.out.print(", " + types.get(i));
-        	System.out.println();
-        }
-        if(minLength != null && maxLength != null && minLength < maxLength)
-        {
-            System.out.println("Parameter list: Minimum path length: : "+minLength);
-            System.out.println("Parameter list: Maximum path length: : "+maxLength);
-        }
-        if(minInterval != null && maxInterval != null && minInterval <= maxInterval)
-        {
-            System.out.println("Parameter list: Minimum interval length: : "+minInterval);
-            System.out.println("Parameter list: Maximum interval length: : "+maxInterval);
-        }
-        if(minWholeInterval != null && maxWholeInterval != null && minWholeInterval <= maxWholeInterval)
-        {
-            System.out.println("Parameter list: Minimum sequence interval length: : "+minWholeInterval);
-            System.out.println("Parameter list: Maximum sequence interval length: : "+maxWholeInterval);
-        }
-        System.out.println("Parameter list: Minimum Support: : "+minSup);
-        System.out.println("Parameter list: Session Wise: : "+sessionWise);
-        System.out.println("Parameter list: Start time: : "+startTime);
-        System.out.println("Parameter list: End time: : "+endTime);
         
-        if(minInterval == null)
-        	minInterval = 0d;
-        if(maxInterval == null)
-        	maxInterval = Double.MAX_VALUE;
-        if(minWholeInterval == null)
-        	minWholeInterval = 0d;
-        if(maxWholeInterval == null)
-        	maxWholeInterval = Double.MAX_VALUE;
-
-		SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
-		
-		sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength, maxLength, startTime, endTime));
-			//sequenceDatabase.loadFile(generateInputFile(courseIds, userIds, startTime, endTime));
-			
-		AlgoFournierViger08 algo  = new AlgoFournierViger08(minSup, minInterval, maxInterval, minWholeInterval, maxWholeInterval, null,  true, false);
-		
-		// execute the algorithm
-		Clock c = new Clock();
-		Sequences res = algo.runAlgorithm(sequenceDatabase); 
-		System.out.println("Time for Viger-calculation: " + c.get() );
-		
-		LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
-		Long pathId = 0L;
-		System.out.println();
-		for(int i = 0; i < res.getLevelCount(); i++)
+		try
 		{
-			for(int j = 0; j < res.getLevel(i).size(); j++)
-			{
-				String predecessor = null;
-				Long absSup = Long.valueOf(res.getLevel(i).get(j).getAbsoluteSupport());
-				pathId++;
-				System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
-				for(int k = 0; k < res.getLevel(i).get(j).size(); k++)
-				{
-					
-					String obId = internalIdToId.get(res.getLevel(i).get(j).get(k).getItems().get(0).getId());
-					
-					ILogMining ilo = idToLogM.get(obId);
-					
-					String type = ilo.getClass().getSimpleName();
+			SequenceDatabase sequenceDatabase = new SequenceDatabase(); 
 			
-					String posId = String.valueOf(pathObjects.size());
-					
-					if(predecessor != null)
-					{
-						pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup, type, 
-	                       		 Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, 
-	                       		 Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
-							
-						// Increment or create predecessor edge
-						pathObjects.get(predecessor).addEdgeOrIncrement(posId);
-					}
-					else
-					{
-                        pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup,
-                                type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,  Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
-					}
-					predecessor = posId;
-				}
+			sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength, maxLength, startTime, endTime));
+				//sequenceDatabase.loadFile(generateInputFile(courseIds, userIds, startTime, endTime));
 				
+			AlgoFournierViger08 algo  = new AlgoFournierViger08(minSup, 0, 1, 0, Double.MAX_VALUE, null,  true, true);
+			
+			// execute the algorithm
+			Clock c = new Clock();
+			Sequences res = algo.runAlgorithm(sequenceDatabase); 
+			System.out.println("Time for Hirate-calculation: " + c.get() );
+			
+			LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
+			Long pathId = 0L;
+			System.out.println();
+			for(int i = 0; i < res.getLevelCount(); i++)
+			{
+				for(int j = 0; j < res.getLevel(i).size(); j++)
+				{
+					String predecessor = null;
+					Long absSup = Long.valueOf(res.getLevel(i).get(j).getAbsoluteSupport());
+					pathId++;
+					System.out.println("New "+ i +"-Sequence. Support : " + res.getLevel(i).get(j).getAbsoluteSupport());
+					for(int k = 0; k < res.getLevel(i).get(j).size(); k++)
+					{
+						
+						String obId = internalIdToId.get(res.getLevel(i).get(j).get(k).getItems().get(0).getId());
+						
+						ILogMining ilo = idToLogM.get(obId);
+						
+						String type = ilo.getClass().getSimpleName();
+				
+						String posId = String.valueOf(pathObjects.size());
+						
+						if(predecessor != null)
+						{
+							pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup, type, 
+		                       		 Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, 
+		                       		 Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
+								
+							// Increment or create predecessor edge
+							pathObjects.get(predecessor).addEdgeOrIncrement(posId);
+						}
+						else
+						{
+	                        pathObjects.put(posId, new UserPathObject(posId, ilo.getTitle(), absSup,
+	                                type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,  Long.valueOf(requests.get(obId).size()), Long.valueOf(new HashSet<Long>(requests.get(obId)).size())));
+						}
+						predecessor = posId;
+					}
+					
+				}
 			}
-		}
-		System.out.println("\n");
-
-		for(UserPathObject pathEntry : pathObjects.values()) {
-
-            UserPathObject path = pathEntry;
-            path.setWeight(path.getWeight());
-            path.setPathId(pathEntry.getPathId());
-            nodes.add(new UserPathNode(path,true));
-            String sourcePos = path.getId();
-
-            for(Entry<String, Integer> linkEntry : pathEntry.getEdges().entrySet()) {
-                UserPathLink link = new UserPathLink();
-                link.setSource(sourcePos);
-                link.setPathId(path.getPathId());
-                link.setTarget(linkEntry.getKey());
-                link.setValue(String.valueOf(linkEntry.getValue()));
-                links.add(link);
-            }
-        }
+			System.out.println("\n");
+	
+			for(UserPathObject pathEntry : pathObjects.values()) {
+	
+	            UserPathObject path = pathEntry;
+	            path.setWeight(path.getWeight());
+	            path.setPathId(pathEntry.getPathId());
+	            nodes.add(new UserPathNode(path,true));
+	            String sourcePos = path.getId();
+	
+	            for(Entry<String, Integer> linkEntry : pathEntry.getEdges().entrySet()) {
+	                UserPathLink link = new UserPathLink();
+	                link.setSource(sourcePos);
+	                link.setPathId(path.getPathId());
+	                link.setTarget(linkEntry.getKey());
+	                link.setValue(String.valueOf(linkEntry.getValue()));
+	                links.add(link);
+	            }
+	        }
         
 		}catch(Exception e)
 		{
@@ -513,9 +444,10 @@ public class QFrequentPathsViger extends Question{
 					else
 						requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(l.get(i).getUser().getId());
 					//The id of the object gets the prefix, indicating it's class. This is important for distinction between objects of different ILogMining-classes but same ids
-					line += "<" + i + "> " + idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
+					line += "<" + 0 + "> " + idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
 				}
 				line += "-2";
+				System.out.println(line);
 				result.add(line);
 				z++;
 			}

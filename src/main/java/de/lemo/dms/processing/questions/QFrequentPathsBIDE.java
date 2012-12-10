@@ -35,6 +35,7 @@ import org.hibernate.criterion.Restrictions;
 import ca.pfv.spmf.sequentialpatterns.AlgoBIDEPlus;
 import ca.pfv.spmf.sequentialpatterns.SequenceDatabase;
 import ca.pfv.spmf.sequentialpatterns.Sequences;
+import ca.pfv.spmf.sequentialpatterns.prefixspan.AlgoPrefixSpan;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -465,6 +466,7 @@ public class QFrequentPathsBIDE extends Question{
 					line += idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
 				}
 				line += "-2";
+				System.out.println(line);
 				result.add(line);
 				z++;
 			}

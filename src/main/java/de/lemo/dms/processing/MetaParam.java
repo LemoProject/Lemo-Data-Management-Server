@@ -24,9 +24,4 @@ public interface MetaParam {
     String TYPES = "types";
     String UNIQUE_USER = "unique_user";
     String USER_IDS = "uid";
-	String MIN_INTERVAL = "min_interval";
-	String MAX_INTERVAL ="max_interval";
-	String MAX_WHOLE_INTERVAL ="max_whole_interval";
-	String MIN_WHOLE_INTERVAL ="min_whole_interval";
-
 }
