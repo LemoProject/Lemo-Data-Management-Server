@@ -48,6 +48,16 @@
 			</properties>
 		</profile>
 
+    <profile>
+      <id>public</id>
+      <properties>
+        <lemo-system-name>lemo-public</lemo-system-name>
+        <lemo-display-name>LeMo [public]</lemo-display-name>
+        <tomcat-server>lemo3-tomcat-manager</tomcat-server>
+        <tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+      </properties>
+    </profile>
+
 		<!-- partner profiles -->
 		<profile>
 			<id>beuth</id>
