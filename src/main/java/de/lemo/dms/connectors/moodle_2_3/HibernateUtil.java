@@ -49,6 +49,7 @@ public class HibernateUtil {
 				s.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Question_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_grades_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_LMS.hbm.xml");
+				s.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_attempts_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_question_instances_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Wiki_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Resource_LMS.hbm.xml");

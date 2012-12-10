@@ -186,7 +186,7 @@ private static List<Log_LMS> log_lms;
 	    	resource_lms = resource.list();		        
 	    	System.out.println("resource_lms tables: " + resource_lms.size());
 	    	
-	    	Query quiz_attempts = session.createQuery("from Quiz_attempts_LMS_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
+	    	Query quiz_attempts = session.createQuery("from Quiz_attempts_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	quiz_attempts.setParameter("readingtimestamp", readingfromtimestamp);
 	    	quiz_attempts.setParameter("ceiling", ceiling);
 	    	quiz_attempts_lms = quiz_attempts.list();		        

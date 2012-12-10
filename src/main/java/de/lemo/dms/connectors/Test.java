@@ -182,8 +182,7 @@ public class Test {
 	public static void run()
 	{
 		System.out.println("Starting test");
-		testViger();
-		testBide();
+		runMoodle23Conn();
 		System.out.println("Test finished");
 	}
 

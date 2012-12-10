@@ -4,7 +4,7 @@ public class Quiz_attempts_LMS {
 	
 	private long id;
 	private long uniqueid;
-	private double sumgrades;
+	private Double sumgrades;
 	private long attempt;
 	private String userid;
 	private long quiz;
@@ -60,10 +60,10 @@ public class Quiz_attempts_LMS {
 	public void setTimemodified(long timemodified) {
 		this.timemodified = timemodified;
 	}
-	public void setSumgrades(double sumgrades) {
+	public void setSumgrades(Double sumgrades) {
 		this.sumgrades = sumgrades;
 	}
-	public double getSumgrades() {
+	public Double getSumgrades() {
 		return sumgrades;
 	}
 }
