@@ -19,9 +19,9 @@ import de.lemo.dms.db.hibernate.HibernateDBHandler;
  * @author Leonard Kappe
  */
 public enum ServerConfigurationHardCoded implements IServerConfiguration {
-    
+
     INSTANCE;
-    
+
     private Level level;
     private Logger logger;
     private long startTime;
@@ -53,7 +53,7 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
             System.err.println("logger can't be initialized...");
             System.err.println(ex.getMessage());
         }
-        
+
         logger = Logger.getLogger(ServerConfigurationHardCoded.class);
         logger.info("DMS running | Profile " +
                 ApplicationProperties.getPropertyValue("lemo.display-name") +
@@ -67,23 +67,25 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
         // Setting up source database
         sourceDBConfig = new DBConfigObject();
 
-        //sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        //sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.OracleDialect");
+        // sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        // sourceDBConfig.addProperty("hibernate.dialect", "org.hibernate.dialect.OracleDialect");
 
         String sourcePrefix = "source";
+        try {
+            addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.dialect");
+            addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.driver_class");
+            addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.url");
+            addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.username");
+            addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.password");
+            addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.default_schema");
 
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.dialect");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.driver_class");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.url");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.username");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.password");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.default_schema");
-
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.show_sql");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.format_sql");
-        addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.use_sql_comments");
-        //addDBProperty(sourceDBConfig, sourcePrefix, "log4j.logger.org.hibernate");
-
+            addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.show_sql");
+            addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.format_sql");
+            addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.use_sql_comments");
+            // addDBProperty(sourceDBConfig, sourcePrefix, "log4j.logger.org.hibernate");
+        } catch (Exception e) {
+            logger.error("Minign DB connection setup failed.", e);
+        }
     }
 
     private void addDBProperty(DBConfigObject dbConfig, String propertyPrefix, String propertyName) {
