@@ -108,6 +108,7 @@ public class QFrequentPathsViger extends Question{
 				//sequenceDatabase.loadFile(generateInputFile(courseIds, userIds, startTime, endTime));
 				
 			AlgoFournierViger08 algo  = new AlgoFournierViger08(minSup, 0L, 1L, 0L, 1000L , null,  true, false);
+
 			
 			// execute the algorithm
 			Clock c = new Clock();
@@ -447,7 +448,6 @@ public class QFrequentPathsViger extends Question{
 					line += "<" + i + "> " + idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
 				}
 				line += "-2";
-				
 				result.add(line);
 				z++;
 			}

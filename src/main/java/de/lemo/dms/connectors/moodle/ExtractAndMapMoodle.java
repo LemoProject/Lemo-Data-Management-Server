@@ -1377,7 +1377,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 						{
 
 							insert.setGrade(Double.valueOf(loadedItem2.getGrade()));
-							insert.setFinalgrade(Double.valueOf(loadedItem2.getGrade()));
 							break;
 						}
 					}

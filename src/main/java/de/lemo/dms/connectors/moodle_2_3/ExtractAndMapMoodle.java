@@ -1323,7 +1323,6 @@ private static List<Log_LMS> log_lms;
 						if(loadedItem2.getAssignment() == Long.valueOf(loadedItem.getInfo()) && loadedItem2.getUserid().equals(loadedItem.getUserid()))// && loadedItem2.getTimemodified() == loadedItem.getTime())
 						{
 							insert.setGrade((double)loadedItem2.getGrade());
-							insert.setFinalgrade((double)loadedItem2.getGrade());
 							break;
 						}
 					}
