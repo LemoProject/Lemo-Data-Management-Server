@@ -38,7 +38,7 @@ public class ServiceRatedObjects extends BaseService {
 	 * @return	ResultList with 4 String elements per object(class name, class prefix, id, title)
 	 */
     @GET
-    public ResultListStringObject getRatedObjects(@FormParam(COURSE_IDS) List<Long> courses) {
+    public ResultListStringObject getRatedObjects(@QueryParam(COURSE_IDS) List<Long> courses) {
 
     	ArrayList<String> res = new ArrayList<String>();
     	
