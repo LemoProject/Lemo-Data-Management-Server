@@ -5,14 +5,15 @@ import java.util.Set;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
 /**This class represents the table assignment.*/
-public class AssignmentMining implements IMappingClass, ILearningObject{
+public class AssignmentMining implements IMappingClass, ILearningObject, IRatedObject{
 
 	private long id;
 	private String type;
 	private String title;
-	private double maxgrade;
+	private Double maxgrade;
 	private long timeopen;
 	private long timeclose;	
 	private long timecreated;
@@ -107,7 +108,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject{
 	/** standard getter for the attribute maxgrade
 	 * @return the maximum grade which is set for the assignment
 	 */
-	public double getMaxgrade() {
+	public Double getMaxgrade() {
 		return maxgrade;
 	}
 	/** standard setter for the attribute maxgrade
@@ -171,5 +172,11 @@ public class AssignmentMining implements IMappingClass, ILearningObject{
 
 	public void setPlatform(Long platform) {
 		this.platform = platform;
+	}
+
+	@Override
+	public Long getPrefix() {
+		// TODO Auto-generated method stub
+		return 11L;
 	}
 }

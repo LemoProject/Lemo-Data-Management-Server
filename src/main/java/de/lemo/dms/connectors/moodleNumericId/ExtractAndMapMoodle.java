@@ -1214,7 +1214,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 					if(loadedItem2.getAssignment() == Long.valueOf(loadedItem.getInfo()) && id == loadedItem.getUserid() && loadedItem2.getTimemodified() == insert.getTimestamp()){
 					{
 							insert.setGrade(Double.valueOf(loadedItem2.getGrade()));
-							insert.setFinalgrade(Double.valueOf(loadedItem2.getGrade()));
 						}
 					}
 				}

@@ -165,19 +165,19 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	/** standard setter for the attribut raw_grade
 	 * @param rawgrade the raw grade in this action(grade without penalty)
 	 */	
-	public void setRawgrade(double rawgrade) {
+	public void setRawgrade(Double rawgrade) {
 		this.rawgrade = rawgrade;
 	}
 	/** standard getter for the attribut finalgrade
 	 * @return the final grade in this action(with penalty)
 	 */	
-	public double getFinalgrade() {
+	public Double getFinalgrade() {
 		return finalgrade;
 	}
 	/** standard setter for the attribut finalgrade
 	 * @param finalgrade the final grade in this action(with penalty)
 	 */	
-	public void setFinalgrade(double finalgrade) {
+	public void setFinalgrade(Double finalgrade) {
 		this.finalgrade = finalgrade;
 	}
 	/** standard getter for the attribut question
@@ -293,5 +293,5 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 
 	public void setPlatform(Long platform) {
 		this.platform = platform;
-	}	
+	}
 }

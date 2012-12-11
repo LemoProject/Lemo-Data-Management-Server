@@ -10,12 +10,8 @@ import static de.lemo.dms.processing.MetaParam.TYPES;
 import static de.lemo.dms.processing.MetaParam.MIN_LENGTH;
 import static de.lemo.dms.processing.MetaParam.MAX_LENGTH;
 
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -35,7 +31,6 @@ import org.hibernate.criterion.Restrictions;
 import ca.pfv.spmf.sequentialpatterns.AlgoBIDEPlus;
 import ca.pfv.spmf.sequentialpatterns.SequenceDatabase;
 import ca.pfv.spmf.sequentialpatterns.Sequences;
-import ca.pfv.spmf.sequentialpatterns.prefixspan.AlgoPrefixSpan;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

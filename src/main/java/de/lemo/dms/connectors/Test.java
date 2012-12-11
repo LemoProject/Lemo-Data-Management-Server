@@ -15,6 +15,8 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsViger;
+import de.lemo.dms.processing.questions.QPerformanceHistogram;
+import de.lemo.dms.processing.resulttype.ResultListLongObject;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
@@ -179,10 +181,26 @@ public class Test {
 		
 	}
 	
+	public static void testHisto()
+	{
+		QPerformanceHistogram ph = new QPerformanceHistogram();
+		ArrayList<Long> quizzes = new ArrayList<Long>();
+		quizzes.add(11L);
+		quizzes.add(114861L);
+		quizzes.add(11L);
+		quizzes.add(114282L);
+		quizzes.add(14L);
+		quizzes.add(11888L);
+		
+		ResultListLongObject res = ph.compute(new ArrayList<Long>(), new ArrayList<Long>(), quizzes, 50, 0L, 1500000000L);
+		System.out.println(res.getElements().size());
+		
+	}
+	
 	public static void run()
 	{
 		System.out.println("Starting test");
-		runMoodle23Conn();
+		testHisto();
 		System.out.println("Test finished");
 	}
 

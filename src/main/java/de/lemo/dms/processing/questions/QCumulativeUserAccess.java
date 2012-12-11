@@ -9,8 +9,6 @@ import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import org.codehaus.jettison.json.JSONException;
 import org.hibernate.Session;
 import de.lemo.dms.core.LearningObjects;

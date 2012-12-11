@@ -4,17 +4,17 @@ import java.util.HashMap;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 
 
 /**This class represents the log table for the quiz modules.*/
-public class QuizLogMining implements ILogMining  , IMappingClass{
+public class QuizLogMining implements ILogMining  , IMappingClass, IRatedLogObject{
 
 	private long id;
 	private UserMining user;
 	private CourseMining course;
 	private QuizMining quiz;
 	private Double grade;
-	private Double finalgrade;
 	private String action;
 	private long timestamp;	
 	private long duration;
@@ -63,19 +63,6 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 		return this.quiz == null ? null : this.quiz.getId();
 	}
 
-	/** standard getter for the attribut finalgrade
-	 * @return the final grade of the user in this quiz
-	 */	
-	public Double getFinalgrade() {
-		return finalgrade;
-	}
-	/** standard setter for the attribut finalgrade
-	 * @param finalgrade the final grade of the user in this quiz
-	 */	
-	public void setFinalgrade(Double finalgrade) {
-		this.finalgrade = finalgrade;
-	}	
-	
 	/** standard getter for the attribut id
 	 * @return the identifier of the log entry
 	 */	
@@ -228,5 +215,16 @@ public class QuizLogMining implements ILogMining  , IMappingClass{
 
 	public void setPlatform(Long platform) {
 		this.platform = platform;
+	}
+
+	@Override
+	public Double getMaxgrade() {
+		return quiz.getMaxgrade();
+	}
+
+	@Override
+	public Double getFinalgrade() {
+		// TODO Auto-generated method stub
+		return grade;
 	}
 }
