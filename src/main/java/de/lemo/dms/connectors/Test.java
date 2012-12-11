@@ -15,7 +15,9 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsViger;
+import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
+import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
@@ -183,16 +185,13 @@ public class Test {
 	
 	public static void testHisto()
 	{
-		QPerformanceHistogram ph = new QPerformanceHistogram();
+		QPerformanceBoxPlot ph = new QPerformanceBoxPlot();
 		ArrayList<Long> quizzes = new ArrayList<Long>();
-		quizzes.add(11L);
-		quizzes.add(114861L);
-		quizzes.add(11L);
-		quizzes.add(114282L);
-		quizzes.add(14L);
-		quizzes.add(11888L);
+		quizzes.add(11114861L);
+		quizzes.add(11114282L);
+		quizzes.add(1411888L);
 		
-		ResultListLongObject res = ph.compute(new ArrayList<Long>(), new ArrayList<Long>(), quizzes, 50, 0L, 1500000000L);
+		ResultListBoxPlot res = ph.compute(new ArrayList<Long>(), new ArrayList<Long>(), quizzes, 0L, 1500000000L);
 		System.out.println(res.getElements().size());
 		
 	}
