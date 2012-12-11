@@ -114,7 +114,7 @@ public class QPerformanceHistogram extends Question{
 	        	{
 	        		//Determine size of each interval
 	        		 Double step = log.getMaxgrade() / resolution;
-	        		 System.out.println(log.getMaxgrade());
+	        		// System.out.println(log.getMaxgrade());
 	        		 if(step > 0d)
 	        		 {
 	        			 //Determine interval for specific grade
