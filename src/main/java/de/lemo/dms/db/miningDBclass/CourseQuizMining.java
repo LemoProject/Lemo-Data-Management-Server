@@ -4,10 +4,12 @@ package de.lemo.dms.db.miningDBclass;
 //import java.io.Serializable;
 import java.util.HashMap;
 
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
 /**This class represents the relationship between the courses and quiz.*/
-public class CourseQuizMining  implements IMappingClass{
+public class CourseQuizMining  implements IMappingClass, ICourseRatedObjectAssociation{
 //implements Serializable
 //	private static final long serialVersionUID = 1L;
 	private long id;
@@ -133,5 +135,10 @@ public class CourseQuizMining  implements IMappingClass{
 
 	public void setPlatform(Long platform) {
 		this.platform = platform;
+	}
+
+	@Override
+	public IRatedObject getRatedObject() {
+		return this.quiz;
 	}
 }

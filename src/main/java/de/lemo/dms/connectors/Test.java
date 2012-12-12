@@ -13,12 +13,15 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsViger;
 import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
+import de.lemo.dms.processing.resulttype.ResultListStringObject;
+import de.lemo.dms.service.ServiceRatedObjects;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
@@ -65,7 +68,19 @@ public class Test {
 	{
 		ConnectorMoodle cm = new ConnectorMoodle();
 		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-		cm.getData("Moodle(Beuth)");
+		cm.getData("Moodle(BBW)");
+		//cm.updateData("Moodle(Beuth)", 1338000000);
+	}
+	
+	/**
+	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
+	public static void runMoodleNumericConn()
+	{
+		de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle cm = new de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle();
+		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
+		cm.getData("Moodle(BBW)");
 		//cm.updateData("Moodle(Beuth)", 1338000000);
 	}
 	
@@ -196,10 +211,33 @@ public class Test {
 		
 	}
 	
+	public static void testService()
+	{
+		ArrayList<String> res = new ArrayList<String>();
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(11476L);
+		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+        Session session = dbHandler.getMiningSession();
+	        
+        Criteria criteria = session.createCriteria(ICourseRatedObjectAssociation.class, "aso");
+        criteria.add(Restrictions.in("aso.course.id", courses));
+        	        
+        ArrayList<ICourseRatedObjectAssociation> list = (ArrayList<ICourseRatedObjectAssociation>) criteria.list();
+        
+        for(ICourseRatedObjectAssociation obj : list)
+        {
+        	res.add(obj.getRatedObject().getClass().getSimpleName());
+        	res.add(obj.getRatedObject().getPrefix().toString());
+        	res.add(obj.getRatedObject().getId() + "");
+        	res.add(obj.getRatedObject().getTitle());
+        }
+        System.out.println("Starting test");
+	}
+	
 	public static void run()
 	{
 		System.out.println("Starting test");
-		testHisto();
+		runMoodleNumericConn();
 		System.out.println("Test finished");
 	}
 

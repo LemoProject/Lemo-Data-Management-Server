@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Resource_LMS"
-        table="resource">
+        table="mdl_resource">
 
         <id
             name="id"

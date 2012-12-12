@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.User_LMS"
-        table="user">
+        table="mdl_user">
 
         <id
             name="id"
@@ -19,6 +19,11 @@
             name="firstaccess"
             column="firstaccess"
             type="long"/>
+            
+        <property
+            name="login"
+            column="username"
+            type="string"/>
             
         <property
             name="lastaccess"

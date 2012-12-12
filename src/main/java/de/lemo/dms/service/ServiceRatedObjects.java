@@ -20,6 +20,7 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.RoleMining;
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 import de.lemo.dms.processing.resulttype.ResultList;
 import de.lemo.dms.processing.resulttype.ResultListRoleObject;
@@ -46,18 +47,18 @@ public class ServiceRatedObjects extends BaseService {
 	        // Set up db-connection
 	        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 	        Session session = dbHandler.getMiningSession();
-	
-	        Criteria criteria = session.createCriteria(IRatedObject.class, "obj");
-	        criteria.add(Restrictions.in("obj.course.id", courses));
+		        
+	        Criteria criteria = session.createCriteria(ICourseRatedObjectAssociation.class, "aso");
+	        criteria.add(Restrictions.in("aso.course.id", courses));
+	        	        
+	        ArrayList<ICourseRatedObjectAssociation> list = (ArrayList<ICourseRatedObjectAssociation>) criteria.list();
 	        
-	        ArrayList<IRatedObject> list = (ArrayList<IRatedObject>) criteria.list();
-	        
-	        for(IRatedObject obj : list)
+	        for(ICourseRatedObjectAssociation obj : list)
 	        {
-	        	res.add(obj.getClass().getSimpleName());
-	        	res.add(obj.getPrefix().toString());
-	        	res.add(obj.getId() + "");
-	        	res.add(obj.getTitle());
+	        	res.add(obj.getRatedObject().getClass().getSimpleName());
+	        	res.add(obj.getRatedObject().getPrefix().toString());
+	        	res.add(obj.getRatedObject().getId() + "");
+	        	res.add(obj.getRatedObject().getTitle());
 	        }
 	        
     	}catch(Exception e)

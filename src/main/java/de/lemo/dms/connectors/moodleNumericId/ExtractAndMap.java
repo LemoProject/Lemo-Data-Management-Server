@@ -362,48 +362,48 @@ public abstract class ExtractAndMap{
 		
 //load objects which are already in Mining DB for associations
 		
-		Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log x where x.platform="+ platform.getId());
+		Query logCount = session.createSQLQuery("select max(id) from resource_log where platform="+ platform.getId());
         resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(resourceLogMax == null)
         	resourceLogMax = 0L;
         
-        logCount = session.createQuery("select max(log.id) from ChatLogMining log x where x.platform="+ platform.getId());
+        logCount = session.createSQLQuery("select max(id) from chat_log where platform="+ platform.getId());
         chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(chatLogMax == null)
         	chatLogMax = 0L;
         
         
-        logCount = session.createQuery("select max(log.id) from AssignmentLogMining log x where x.platform="+ platform.getId());
+        logCount = session.createSQLQuery("select max(id) from assignment_log where platform="+ platform.getId());
         assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(assignmentLogMax == null)
         	assignmentLogMax = 0L;
         
-        logCount = session.createQuery("select max(log.id) from CourseLogMining log x where x.platform="+ platform.getId());
+        logCount = session.createSQLQuery("select max(id) from course_log where platform="+ platform.getId());
         courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(courseLogMax == null)
         	courseLogMax = 0L;
         
-        logCount = session.createQuery("select max(log.id) from ForumLogMining log x where x.platform="+ platform.getId());
+        logCount = session.createSQLQuery("select max(id) from forum_log where platform="+ platform.getId());
         forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(forumLogMax == null)
         	forumLogMax = 0L;
         
-        logCount = session.createQuery("select max(log.id) from QuestionLogMining log x where x.platform="+ platform.getId());
+        logCount = session.createSQLQuery("select max(id) from question_log where platform="+ platform.getId());
         questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(questionLogMax == null)
         	questionLogMax = 0L;
         
-        logCount = session.createQuery("select max(log.id) from QuizLogMining log x where x.platform="+ platform.getId());
+        logCount = session.createSQLQuery("select max(id) from quiz_log where platform="+ platform.getId());
         quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(quizLogMax == null)
         	quizLogMax = 0L;
         
-        logCount = session.createQuery("select max(log.id) from ScormLogMining log x where x.platform="+ platform.getId());
+        logCount = session.createSQLQuery("select max(id) from scorm_log where platform="+ platform.getId());
         scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(scormLogMax == null)
         	scormLogMax = 0L;
         
-        logCount = session.createQuery("select max(log.id) from WikiLogMining log x where x.platform="+ platform.getId());
+        logCount = session.createSQLQuery("select max(id) from wiki_log where platform="+ platform.getId());
         wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
         if(wikiLogMax == null)
         	wikiLogMax = 0L;
