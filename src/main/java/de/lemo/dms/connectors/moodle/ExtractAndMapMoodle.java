@@ -39,6 +39,7 @@ import de.lemo.dms.db.miningDBclass.ScormMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.WikiMining;
+import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.moodle.moodleDBclass.Assignment_LMS;
 import de.lemo.dms.connectors.moodle.moodleDBclass.Assignment_submissions_LMS;
 import de.lemo.dms.connectors.moodle.moodleDBclass.ChatLog_LMS;
@@ -1865,6 +1866,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	   			id_mapping.put(loadedItem.getId(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem.getId(), platform.getId()));
 	   			insert.setId(Long.valueOf(platform.getPrefix() + "" +  id));
     		}
+    		insert.setLogin(Encoder.createMD5(loadedItem.getLogin()));
            	insert.setLastlogin(loadedItem.getLastlogin());
            	insert.setFirstaccess(loadedItem.getFirstaccess());
            	insert.setLastaccess(loadedItem.getLastaccess());

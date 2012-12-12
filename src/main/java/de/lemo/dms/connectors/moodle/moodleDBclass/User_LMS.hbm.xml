@@ -25,6 +25,11 @@
             column="lastaccess"
             type="long"/>
             
+		<property
+            name="login"
+            column="username"
+            type="string"/>
+            
         <property
             name="lastlogin"
             column="lastlogin"

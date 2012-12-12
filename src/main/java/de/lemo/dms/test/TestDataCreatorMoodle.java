@@ -557,8 +557,8 @@ public class TestDataCreatorMoodle {
 			lms.setMessage(item.getMessage());
 			
 			lms.setTimestamp(item.getTimestamp());
-			lms.setChatId(item.getChat().getId());
-			lms.setUserId(item.getUser().getId());
+			lms.setChat_Id(item.getChat().getId());
+			lms.setUser_Id(item.getUser().getId());
 			lms.setId(item.getId());
 			
 			couId.put(item.getChat().getId(), item.getCourse().getId());

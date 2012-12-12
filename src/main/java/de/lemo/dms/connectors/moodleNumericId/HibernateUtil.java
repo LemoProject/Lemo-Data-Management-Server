@@ -30,6 +30,7 @@ public class HibernateUtil {
 			  
 				//Add mapping classes
 				s.addResource("de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Course_LMS.hbm.xml");
+				s.addResource("de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Course_Modules_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Forum_discussions_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Forum_posts_LMS.hbm.xml");
 				s.addResource("de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Forum_LMS.hbm.xml");

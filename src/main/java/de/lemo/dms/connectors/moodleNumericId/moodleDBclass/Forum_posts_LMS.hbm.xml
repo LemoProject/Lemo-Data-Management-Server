@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Forum_posts_LMS"
-        table="forum_posts">
+        table="mdl_forum_posts">
 
         <id
             name="id"
