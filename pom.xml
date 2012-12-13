@@ -3,11 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.lemo</groupId>
 	<artifactId>dms</artifactId>
-	<version>PT2S7_ReviewStable-34-gea6cddd</version><!-- FLAG 1 identifier DONT DELETE -->
+	<version>PT2S7_ReviewStable-35-g4d93478</version><!-- FLAG 1 identifier DONT DELETE -->
 	<packaging>war</packaging>
 	<name>Lemo Data Management Server</name>
-
-
 
 	<profiles>
 		<!-- Debug and deployment profiles. Server credentials and local database 
@@ -111,17 +109,17 @@
 	</profiles>
 
 	<dependencies>
-		<dependency>
+		<!--   <dependency>
 			<groupId>ca.pfv</groupId>
 			<artifactId>sqpm</artifactId>
 			<version>1.0</version>
-		</dependency>
+		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>11.2.0.3.0</version>
-		</dependency>
+		</dependency> -->
 
 
 		<dependency>
@@ -239,7 +237,30 @@
 			<artifactId>ojdbc6</artifactId>
 			<version>11.2.0.3.0</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.apache</groupId>
+			<artifactId>maven-model</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>org.apache.maven</groupId>
+      		<artifactId>maven-core</artifactId>
+      		<version>3.0.1</version>
+    	</dependency>
+    	
+    	<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-utils</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+		
+		<!-- <dependency>
+			<groupId>org.xmlpull</groupId>
+			<artifactId>xmlpull</artifactId>
+			<version>1.0.5</version>
+		</dependency> -->
 	</dependencies>
 
 	<build>
@@ -332,8 +353,6 @@
 			</plugin>
 
 		</plugins>
-
-
 
 		<resources>
 			<resource>

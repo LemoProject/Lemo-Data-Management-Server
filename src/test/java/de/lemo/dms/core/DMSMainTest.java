@@ -21,7 +21,6 @@ class TestUserThread extends Thread {
 
     @Override
     public void run() {
-
         Session session = dbHandler.getMiningSession();
         try {
             List<?> result = session.createCriteria(ResourceLogMining.class).setMaxResults(5000).list();
