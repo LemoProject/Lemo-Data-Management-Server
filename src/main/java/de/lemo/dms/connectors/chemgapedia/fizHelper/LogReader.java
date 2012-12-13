@@ -464,7 +464,6 @@ public class LogReader {
 		l.add(it);
 		l.add(idmap);
 		
-		Session session = dbHandler.getMiningSession();
 		
 		long li = (Long)(dbHandler.performQuery(session, EQueryType.HQL, "Select count(*) from ResourceLogMining").get(0));
 		if (li > 0)
@@ -501,8 +500,6 @@ public class LogReader {
 			startIndex++;
 			resourceLogMining.get(i).setId(startIndex);
 		}
-		session.close();
-		session = dbHandler.getMiningSession();
 		l.add(this.newResources.values());
 		l.add(resourceLogMining);			
 		

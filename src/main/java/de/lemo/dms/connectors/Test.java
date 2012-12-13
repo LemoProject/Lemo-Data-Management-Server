@@ -42,6 +42,7 @@ public class Test {
 	 */
 	public static void runChemConn()
 	{
+		//int i = 0;
 		for(int i = 0 ; i < 5; i++)
 		{
 			DBConfigObject sourceConf = new DBConfigObject();
@@ -68,7 +69,7 @@ public class Test {
 	{
 		ConnectorMoodle cm = new ConnectorMoodle();
 		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-		cm.getData("Moodle(BBW)");
+		cm.getData("Moodle(Beuth)");
 		//cm.updateData("Moodle(Beuth)", 1338000000);
 	}
 	
@@ -237,7 +238,7 @@ public class Test {
 	public static void run()
 	{
 		System.out.println("Starting test");
-		runMoodleNumericConn();
+		runChemConn();
 		System.out.println("Test finished");
 	}
 

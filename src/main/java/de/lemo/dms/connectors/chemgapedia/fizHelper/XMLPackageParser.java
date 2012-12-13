@@ -29,6 +29,9 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.DegreeMining;
 import de.lemo.dms.db.miningDBclass.DepartmentMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
+import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
+import de.lemo.dms.db.miningDBclass.LevelCourseMining;
+import de.lemo.dms.db.miningDBclass.LevelMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
@@ -42,20 +45,33 @@ import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
  */
 public class XMLPackageParser {
 	
+	
+	private HashMap<String, LevelMining> levelObj = new HashMap<String, LevelMining>();
+	
+	private HashMap<Long, LevelAssociationMining> levelAssociations = new HashMap<Long, LevelAssociationMining>();
+	
+	private HashMap<Long, LevelCourseMining> levelCourses = new HashMap<Long, LevelCourseMining>();
+	
+	private Long levId = 0L;
+	private Long levAscId = 0L;
+	private Long levCouId = 0L;
+	
+	//-------------------------------
+	
 	/** The list of department objects. */
-	private HashMap<String, DepartmentMining> departmentObj = new HashMap<String, DepartmentMining>();
+	//private HashMap<String, DepartmentMining> departmentObj = new HashMap<String, DepartmentMining>();
 	
 	/** The list of degree objects. */
-	private HashMap<String, DegreeMining> degreeObj = new HashMap<String, DegreeMining>();
+	//private HashMap<String, DegreeMining> degreeObj = new HashMap<String, DegreeMining>();
 	
 	/** The list of course objects. */
 	private HashMap<String, CourseMining> courseObj = new HashMap<String, CourseMining>();
 	
 	/** The list of department degree objects. */
-	private HashMap<Long, DepartmentDegreeMining> departmentDegrees = new HashMap<Long, DepartmentDegreeMining>();
+	//private HashMap<Long, DepartmentDegreeMining> departmentDegrees = new HashMap<Long, DepartmentDegreeMining>();
 	
 	/** The list of degree courses objects. */
-	private HashMap<Long, DegreeCourseMining> degreeCourses = new HashMap<Long, DegreeCourseMining>();
+	//private HashMap<Long, DegreeCourseMining> degreeCourses = new HashMap<Long, DegreeCourseMining>();
 	
 	/** The course resources objects. */
 	private HashMap<Long, CourseResourceMining> courseResources = new HashMap<Long, CourseResourceMining>();
@@ -67,12 +83,12 @@ public class XMLPackageParser {
 	
 	private HashMap<String, IDMappingMining> id_mapping;
 	
-	private Long depId = 0L;
-	private Long degId = 0L;
+	//private Long depId = 0L;
+	//private Long degId = 0L;
 	private Long couId = 0L;
 	private Long resId = 0L;
-	private Long depDegId = 0L;
-	private Long degCouId = 0L;
+	//private Long depDegId = 0L;
+	//private Long degCouId = 0L;
 	private Long couResId = 0L;
 	private PlatformMining pf;
 	
@@ -102,6 +118,14 @@ public class XMLPackageParser {
 			id_mapping.put(ids.get(i).getHash(), ids.get(i));
 		}
 		
+		//----------
+		List<LevelMining> levs = (List<LevelMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM LevelMining x where x.platform=" + platform.getId() + " order by x.id asc");
+    	if(levs.size() > 0)
+    		levId = levs.get(levs.size()-1).getId();
+		for(int i = 0; i < levs.size(); i++)
+    		this.levelObj.put(levs.get(i).getTitle(), levs.get(i));
+		
+		/*
 		List<DepartmentMining> deps = (List<DepartmentMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DepartmentMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(deps.size() > 0)
     		depId = deps.get(deps.size()-1).getId();
@@ -113,6 +137,7 @@ public class XMLPackageParser {
     		degId = degs.get(degs.size()-1).getId();
 		for(int i = 0; i < degs.size(); i++)
     		this.degreeObj.put(degs.get(i).getTitle(), degs.get(i));
+    	*/
     	
 		List<CourseMining> cous = (List<CourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM CourseMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(cous.size() > 0)
@@ -126,17 +151,34 @@ public class XMLPackageParser {
 		for(int i = 0; i < ress.size(); i++)
     		this.resourceObj.put(ress.get(i).getUrl(), ress.get(i));
 		
+		//----------
+		List<LevelAssociationMining> levAsc = (List<LevelAssociationMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM LevelAssociationMining x where x.platform=" + platform.getId() + " order by x.id asc");
+    	if(levAsc.size() > 0)
+    		levAscId = levAsc.get(levAsc.size()-1).getId();
+		for(int i = 0; i < levAsc.size(); i++)
+    		this.levelAssociations.put(levAsc.get(i).getLower().getId(), levAsc.get(i));
+		
+		/*
 		List<DepartmentDegreeMining> depDeg = (List<DepartmentDegreeMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DepartmentDegreeMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(depDeg.size() > 0)
-    		resId = depDeg.get(depDeg.size()-1).getId();
+    		depDegId = depDeg.get(depDeg.size()-1).getId();
 		for(int i = 0; i < depDeg.size(); i++)
     		this.departmentDegrees.put(depDeg.get(i).getDegree().getId(), depDeg.get(i));
+		*/
+		//----------------
+		List<LevelCourseMining> levCou = (List<LevelCourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM LevelCourseMining x where x.platform=" + platform.getId() + " order by x.id asc");
+    	if(levCou.size() > 0)
+    		levCouId = levCou.get(levCou.size()-1).getId();
+		for(int i = 0; i < levCou.size(); i++)
+    		this.levelCourses.put(levCou.get(i).getCourse().getId(), levCou.get(i));
 		
+		/*
 		List<DegreeCourseMining> degCou = (List<DegreeCourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DegreeCourseMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(degCou.size() > 0)
     		degCouId = degCou.get(degCou.size()-1).getId();
 		for(int i = 0; i < degCou.size(); i++)
     		this.degreeCourses.put(degCou.get(i).getCourse().getId(), degCou.get(i));
+		*/
 		
 		List<CourseResourceMining> couRes = (List<CourseResourceMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM CourseResourceMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(couRes.size() > 0)
@@ -172,6 +214,8 @@ public class XMLPackageParser {
 		      
 		      // ---- Get list of nodes to given element tag name ---- 
 		      NamedNodeMap t = null;
+		      
+		    
 
 		      NodeList content = document.getElementsByTagName("content");		      
 		      //Set resource type
@@ -182,6 +226,9 @@ public class XMLPackageParser {
 		      {
 		    	  resource.setTitle(document.getElementsByTagName("title").item(0).getTextContent());
 		      }
+		      
+		    
+		      
 		      //Set resource difficulty
 		      if(document.getElementsByTagName("audience").getLength() > 0)
 		      {
@@ -198,55 +245,74 @@ public class XMLPackageParser {
 		    	  resource.setProcessingTime(0L);
 		      }
 		      
-		      String department ="";
-		      String degree ="";
-		      String course ="";
+		      //--------------
+		      String level1 ="";
+		      String level2 ="";
+		      String level3 ="";
 		      
 		      if(document.getElementsByTagName("subject").getLength() > 0)
-		      	department = ((Element)document.getElementsByTagName("subject").item(0)).getAttribute("name");
+		    	  level1 = ((Element)document.getElementsByTagName("subject").item(0)).getAttribute("name");
 		      
 		      if(document.getElementsByTagName("subject").getLength() > 0)
-		    	  degree = ((Element)document.getElementsByTagName("subject").item(0)).getAttribute("area");
+		    	  level2 = ((Element)document.getElementsByTagName("subject").item(0)).getAttribute("area");
 		      
 		      if(document.getElementsByTagName("subject").getLength() > 0)
-		    	  course = ((Element)document.getElementsByTagName("subject").item(0)).getAttribute("specialism");
+		    	  level3 = ((Element)document.getElementsByTagName("subject").item(0)).getAttribute("specialism");
 		      
-		      DepartmentMining dep = new DepartmentMining();
-		      DegreeMining deg = new DegreeMining();
-		      CourseMining cou = new CourseMining();
+		      LevelMining lev1 = new LevelMining();
+		      LevelMining lev2 = new LevelMining();
+		      LevelMining lev3 = new LevelMining();
+		      CourseMining course = new CourseMining();
 		      
-		      if(departmentObj.get(department) == null)
+		      if(levelObj.get(level1) == null)
 		      {		    	 
-		    	  dep.setTitle(department);
-		    	  dep.setId(Long.valueOf(pf.getPrefix() + "" + (depId + 1)));
-		    	  dep.setPlatform(pf.getId());
-		    	  depId++;
-		    	  departmentObj.put(dep.getTitle(), dep);
+		    	  lev1.setTitle(level1);
+		    	  lev1.setId(Long.valueOf(pf.getPrefix() + "" + (levId + 1)));
+		    	  lev1.setPlatform(pf.getId());
+		    	  lev1.setDepth(1);
+		    	  levId++;
+		    	  levelObj.put(lev1.getTitle(), lev1);
 		      }
 		      else
-		    	  dep = departmentObj.get(department);
-		      if(degreeObj.get(degree) == null)
+		    	  lev1 = levelObj.get(level1);
+		      if(levelObj.get(level2) == null)
 		      {
 		    	  
-		    	  deg.setTitle(degree);
-		    	  deg.setId(Long.valueOf(pf.getPrefix() + "" + (degId + 1)));
-		    	  deg.setPlatform(pf.getId());
-		    	  degId++;
-		    	  degreeObj.put(deg.getTitle(), deg);
+		    	  lev2.setTitle(level2);
+		    	  lev2.setId(Long.valueOf(pf.getPrefix() + "" + (levId + 1)));
+		    	  lev2.setPlatform(pf.getId());
+		    	  lev2.setDepth(2);
+		    	  levId++;
+		    	  levelObj.put(lev2.getTitle(), lev2);
 		      }
 		      else
-		    	  deg = degreeObj.get(degree);
-		      if(courseObj.get(course) == null)
+		    	  lev2 = levelObj.get(level2);
+		      if(levelObj.get(level3) == null)
 		      {
 		    	 
-		    	  cou.setTitle(course);
-		    	  cou.setId(Long.valueOf(pf.getPrefix() + "" + (couId + 1)));
-		    	  cou.setPlatform(pf.getId());
-		    	  couId++;
-		    	  courseObj.put(cou.getTitle(), cou);
+		    	  lev3.setTitle(level3);
+		    	  lev3.setId(Long.valueOf(pf.getPrefix() + "" + (levId + 1)));
+		    	  lev3.setPlatform(pf.getId());
+		    	  lev3.setDepth(3);
+		    	  levId++;
+		    	  levelObj.put(lev3.getTitle(), lev3);
 		      }
 		      else
-		    	  cou = courseObj.get(course);
+		    	  lev3 = levelObj.get(level3);
+		      
+		      if(courseObj.get(resource.getTitle()) == null)
+		      {
+		    	  course.setTitle(resource.getTitle());
+		    	  course.setId(Long.valueOf(pf.getPrefix() + "" + (couId + 1)));
+		    	  course.setPlatform(pf.getId());
+		    	  couId++;
+		    	  courseObj.put(course.getTitle(),course);
+		      }
+		      else
+		    	  course = courseObj.get(resource.getTitle());
+		      
+		      //--------------
+
 
 		      //Set URL (has to be done in another method - otherwise it isn't working)
 
@@ -292,33 +358,45 @@ public class XMLPackageParser {
 			    	  this.resourceObj.put(resource.getUrl(), resource);
 			    	  this.fnames.add(filename);
 			    	  //Save department - degree relation locally
-				      if(this.departmentDegrees.get(deg.getId()) == null)
+			    	  if(this.levelAssociations.get(lev2.getId()) == null)
 				      {			    	  
-				    	  DepartmentDegreeMining ddm = new DepartmentDegreeMining();
-				    	  ddm.setDegree(deg);
-				    	  ddm.setDepartment(dep);
-				    	  ddm.setId(Long.valueOf(pf.getPrefix() + "" + (depDegId + 1)));
+				    	  LevelAssociationMining ddm = new LevelAssociationMining();
+				    	  ddm.setLower(lev2);
+				    	  ddm.setUpper(lev1);
+				    	  ddm.setId(Long.valueOf(pf.getPrefix() + "" + (levAscId + 1)));
 				    	  ddm.setPlatform(pf.getId());
-				    	  depDegId++;
-				    	  this.departmentDegrees.put(deg.getId() , ddm);			    	  
+				    	  levAscId++;
+				    	  this.levelAssociations.put(lev2.getId() , ddm);			    	  
 				      }
-				      
-				      if(this.degreeCourses.get(cou.getId()) == null)
+			    	  if(this.levelAssociations.get(lev3.getId()) == null)
 				      {			    	  
-				    	  DegreeCourseMining dcm = new DegreeCourseMining();
-				    	  dcm.setDegree(deg);
-				    	  dcm.setCourse(cou);
-				    	  dcm.setId(Long.valueOf(pf.getPrefix() + "" + (degCouId + 1)));
+				    	  LevelAssociationMining ddm = new LevelAssociationMining();
+				    	  ddm.setLower(lev3);
+				    	  ddm.setUpper(lev2);
+				    	  ddm.setId(Long.valueOf(pf.getPrefix() + "" + (levAscId + 1)));
+				    	  ddm.setPlatform(pf.getId());
+				    	  levAscId++;
+				    	  this.levelAssociations.put(lev3.getId() , ddm);			    	  
+				      }
+			    	  
+				      
+				      
+				      if(this.levelCourses.get(course.getId()) == null)
+				      {			    	  
+				    	  LevelCourseMining dcm = new LevelCourseMining();
+				    	  dcm.setLevel(lev3);
+				    	  dcm.setCourse(course);
+				    	  dcm.setId(Long.valueOf(pf.getPrefix() + "" + (levCouId + 1)));
 				    	  dcm.setPlatform(pf.getId());
-				    	  degCouId++;
-				    	  this.degreeCourses.put(cou.getId() , dcm);			    	  
+				    	  levCouId++;
+				    	  this.levelCourses.put(course.getId() , dcm);			    	  
 				      }
 				      
 				      if(this.courseResources.get(resource.getId()) == null)
 				      {			    	  
 				    	  CourseResourceMining crm = new CourseResourceMining();
 				    	  crm.setResource(resource);
-				    	  crm.setCourse(cou);
+				    	  crm.setCourse(course);
 				    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
 				    	  couResId++;
 				    	  crm.setPlatform(pf.getId());
@@ -391,7 +469,7 @@ public class XMLPackageParser {
 			    					  {
 			    				    	  CourseResourceMining crm = new CourseResourceMining();
 			    				    	  crm.setResource(r1);
-			    				    	  crm.setCourse(cou);
+			    				    	  crm.setCourse(course);
 			    				    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
 			    				    	  couResId++;
 			    				    	  crm.setPlatform(pf.getId());
@@ -439,7 +517,7 @@ public class XMLPackageParser {
 							  this.fnames.add(filename + "*");
 	   				    	  CourseResourceMining crm = new CourseResourceMining();
 					    	  crm.setResource(r1);
-					    	  crm.setCourse(cou);
+					    	  crm.setCourse(course);
 					    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
 					    	  couResId++;
 					    	  crm.setPlatform(pf.getId());
@@ -513,12 +591,11 @@ public class XMLPackageParser {
 	public Long saveAllToDB()
 	{
 		List<Collection<?>> li = new ArrayList<Collection<?>>();
-		li.add(this.departmentObj.values());
-		li.add(this.degreeObj.values());
+		li.add(this.levelObj.values());
 		li.add(this.courseObj.values());
 		li.add(this.resourceObj.values());
-		li.add(this.departmentDegrees.values());
-		li.add(this.degreeCourses.values());
+		li.add(this.levelAssociations.values());
+		li.add(this.levelCourses.values());
 		li.add(this.courseResources.values());
 		li.add(this.id_mapping.values());
 		
