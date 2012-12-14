@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.lemo</groupId>
 	<artifactId>dms</artifactId>
-	<version>0.8-SNAPSHOT</version>
+	<version>PT2S7_ReviewStable-34-gea6cddd</version><!-- FLAG 1 identifier DONT DELETE -->
 	<packaging>war</packaging>
 	<name>Lemo Data Management Server</name>
 
@@ -108,13 +108,9 @@
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
-
 	</profiles>
 
 	<dependencies>
-
-
-
 		<dependency>
 			<groupId>ca.pfv</groupId>
 			<artifactId>sqpm</artifactId>
@@ -278,7 +274,6 @@
 					<!-- local server port, only used when executed with tomcat6:run -->
 					<port>8081</port>
 				</configuration>
-
 			</plugin>
 
 			<plugin>
@@ -317,6 +312,24 @@
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<configuration>
+					<target>
+						<exec executable="git" outputproperty="BUILD_NUMBER">
+							<arg value="describe"/>
+						</exec>
+						<echo message="Build Number: ${BUILD_NUMBER}"/>
+						<copy file="pom.xml" tofile="pom.xml.old"/>
+						<replaceregexp file="pom.xml"
+							match="(&lt;version&gt;).*(&lt;/version&gt;&lt;!-- FLAG 1 identifier DONT DELETE --&gt;)"
+							replace="\1${BUILD_NUMBER}\2"
+							byline="true"/>
+					</target>
+				</configuration>
+			</plugin>
 
 		</plugins>
 
@@ -359,5 +372,5 @@
     <lemo2-tomcat-url>http://lemo2.f4.htw-berlin.de:8080</lemo2-tomcat-url>
     <lemo3-tomcat-url>http://141.45.146.174:8080</lemo3-tomcat-url>
 	</properties>
-
+	
 </project>
