@@ -21,4 +21,15 @@ public class VersionTest {
     	System.out.println("Version: " + v);
     	assertFalse("wrong version read", v == "unknown");
     }
+    
+	/**
+	 * check if the version != "unknown"
+	 */
+    @Test
+    public void testDBVersion() {
+    	Version version = new Version();
+    	String v = version.getDBVersion();
+    	System.out.println("Version: " + v);
+    	assertFalse("wrong version read", v == "unknown");
+    }
 }

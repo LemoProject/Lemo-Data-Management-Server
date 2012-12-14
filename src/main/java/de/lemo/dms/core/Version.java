@@ -8,7 +8,7 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
 
 /**
- * 
+ * read the version numbers from server and db
  * @author Boris Wenzlaff
  *
  */
@@ -33,6 +33,12 @@ public class Version {
 		}catch(Exception ex){
 			
 		}
+		return version;
+	}
+	
+	public String getDBVersion() {
+		String version = "unknown";
+		//TODO read db version
 		return version;
 	}
 }
