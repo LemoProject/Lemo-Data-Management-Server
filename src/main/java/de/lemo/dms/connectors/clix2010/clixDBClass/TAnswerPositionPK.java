@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class TAnswerPositionPK implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4802836843072674394L;
 	private Long person;
 	private Long question;
 	private Long task;

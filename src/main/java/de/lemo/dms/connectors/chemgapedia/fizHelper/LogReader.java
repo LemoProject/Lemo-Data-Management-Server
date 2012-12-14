@@ -31,7 +31,7 @@ import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.LogLine;
 
 /**
- * The Class LogReader.
+ * The Class LogReader. Reads Chemgapedia's server-logs and saves the found objects into the database.
  */
 public class LogReader {
 	
@@ -70,7 +70,12 @@ public class LogReader {
 	
 	PlatformMining pf;
 	
-	
+	/**
+	 * Constructor. Creates a new LogReader-object. 
+	 * 
+	 * @param platform	Platform-object of the Chemgapedia instance
+	 * @param idcount	
+	 */
 	@SuppressWarnings("unchecked")
     public LogReader(PlatformMining platform, Long idcount)
 	{
@@ -154,6 +159,12 @@ public class LogReader {
 		
 	}
 	
+	/**
+	 * Updates the data.
+	 * 
+	 * @param inFile
+	 * @return
+	 */
 	public Long update(String inFile)
 	{
 		for(ResourceMining resource : newResources.values())
@@ -441,157 +452,64 @@ public class LogReader {
 	}
 	 
 	/**
-	 * Calculates the duration of every view and saves the values to the global logList.
-	 * Keep in mind, that these values can be misleading as the duration of a view is calculated by 
-	 * the difference between a views time stamp and the the time stamp of the next view by the same user
-	 * with an internal referrer. If there is no view matching these criteria the value is set to -1.
-	 * 
-	 */
-	private void calculateDurations()
-	{
-		for(ArrayList<LogObject> loadedItem : this.userHistories.values())
-		{
-			for(int i = 0; i < loadedItem.size()-1; i++)
-			{
-				Long nextRequest = loadedItem.get(i+1).getTime();
-				Long dur = nextRequest - loadedItem.get(i).getTime();
-				if(dur > 3600L)
-					dur = 3600L;
-				loadedItem.get(i).setDuration(dur);
-			}
-		}
-	}
-	
-	
-	/**
-	 * Writes users to the database.
+	 * Writes the data to the database.
 	 */
 	public Long save()
 	{
-		//try{	
-			List<Collection<?>> l = new ArrayList<Collection<?>>();
-			ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
-			Collection<UserMining> it = (Collection<UserMining>)this.newUsers.values();
-			Collection<IDMappingMining> idmap = (Collection<IDMappingMining>)new_id_mapping.values();
-			System.out.println("Found " + it.size() + " users.");
-			l.add(it);
-			l.add(idmap);
-			
-			Session session = dbHandler.getMiningSession();
-			
-			long li = (Long)(dbHandler.performQuery(session, EQueryType.HQL, "Select count(*) from ResourceLogMining").get(0));
-			if (li > 0)
-			startIndex = 1 + li;
-			for(Iterator<ArrayList<LogObject>> iter = this.userHistories.values().iterator(); iter.hasNext();)
-			{
-				ArrayList<LogObject> loadedItem = iter.next();
-				for(int i =0; i < loadedItem.size(); i++)
-				{
-					if(this.newUsers.get(loadedItem.get(i).getUser().getId()) != null)
-					{
-						//startIndex++;
-						ResourceLogMining rl = new ResourceLogMining();
-						//rl.setId(startIndex);
-						if(oldResources.get(loadedItem.get(i).getUrl()) == null)
-							rl.setResource(newResources.get(loadedItem.get(i).getUrl()));
-						else
-							rl.setResource(oldResources.get(loadedItem.get(i).getUrl()));
-
-						rl.setCourse(loadedItem.get(i).getCourse());
-						rl.setUser(loadedItem.get(i).getUser());
-						rl.setTimestamp(loadedItem.get(i).getTime());
-						rl.setDuration(loadedItem.get(i).getDuration());
-						rl.setAction("View");
-						rl.setPlatform(pf.getId());
-						
-						resourceLogMining.add(rl);
-					}
-				}
-			}
-//			ArrayList<ResourceLogMining> rlm = new ArrayList<ResourceLogMining>(resourceLogMining.values());
-			Collections.sort(resourceLogMining);
-			for(int i = 0; i < resourceLogMining.size(); i++)
-			{
-				startIndex++;
-				resourceLogMining.get(i).setId(startIndex);
-			}
-			session.close();
-			session = dbHandler.getMiningSession();
-			l.add(this.newResources.values());
-			l.add(resourceLogMining);			
-			
-			dbHandler.saveCollectionToDB(session, l);
-			
-			/*}
-		catch (Exception e)
-		{
-			System.out.println(e.getMessage());
-		}*/
-			return largestId;
-	}
-	
-	/**
-	 * Writes resource logs to the database.
-	 */
-	/*
-	public Long resourceLfogsToDB()
-	{
-		calculateDurations();
 		List<Collection<?>> l = new ArrayList<Collection<?>>();
-		
-		//HashMap<Long, ResourceLogMining> resourceLogMining = new HashMap<Long, ResourceLogMining>();
 		ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
-		try{	
-		    
-		    Session session = dbHandler.getMiningSession();
-	       
-			long li = (Long)(dbHandler.performQuery(session, EQueryType.HQL, "Select count(*) from ResourceLogMining").get(0));
-			if (li > 0)
-			startIndex = 1 + li;
-			for(Iterator<ArrayList<LogObject>> iter = this.userHistories.values().iterator(); iter.hasNext();)
+		Collection<UserMining> it = (Collection<UserMining>)this.newUsers.values();
+		Collection<IDMappingMining> idmap = (Collection<IDMappingMining>)new_id_mapping.values();
+		System.out.println("Found " + it.size() + " users.");
+		l.add(it);
+		l.add(idmap);
+		
+		Session session = dbHandler.getMiningSession();
+		
+		long li = (Long)(dbHandler.performQuery(session, EQueryType.HQL, "Select count(*) from ResourceLogMining").get(0));
+		if (li > 0)
+		startIndex = 1 + li;
+		for(Iterator<ArrayList<LogObject>> iter = this.userHistories.values().iterator(); iter.hasNext();)
+		{
+			ArrayList<LogObject> loadedItem = iter.next();
+			for(int i =0; i < loadedItem.size(); i++)
 			{
-				ArrayList<LogObject> loadedItem = iter.next();
-				for(int i =0; i < loadedItem.size(); i++)
+				if(this.newUsers.get(loadedItem.get(i).getUser().getId()) != null)
 				{
-					if(this.newUsers.get(loadedItem.get(i).getUser().getId()) != null)
-					{
-						//startIndex++;
-						ResourceLogMining rl = new ResourceLogMining();
-						//rl.setId(startIndex);
-						if(oldResources.get(loadedItem.get(i).getUrl()) == null)
-							rl.setResource(newResources.get(loadedItem.get(i).getUrl()));
-						else
-							rl.setResource(oldResources.get(loadedItem.get(i).getUrl()));
+					//startIndex++;
+					ResourceLogMining rl = new ResourceLogMining();
+					//rl.setId(startIndex);
+					if(oldResources.get(loadedItem.get(i).getUrl()) == null)
+						rl.setResource(newResources.get(loadedItem.get(i).getUrl()));
+					else
+						rl.setResource(oldResources.get(loadedItem.get(i).getUrl()));
 
-						rl.setCourse(loadedItem.get(i).getCourse());
-						rl.setUser(loadedItem.get(i).getUser());
-						rl.setTimestamp(loadedItem.get(i).getTime());
-						rl.setDuration(loadedItem.get(i).getDuration());
-						rl.setAction("View");
-						rl.setPlatform(pf.getId());
-						
-						resourceLogMining.add(rl);
-					}
+					rl.setCourse(loadedItem.get(i).getCourse());
+					rl.setUser(loadedItem.get(i).getUser());
+					rl.setTimestamp(loadedItem.get(i).getTime());
+					rl.setDuration(loadedItem.get(i).getDuration());
+					rl.setAction("View");
+					rl.setPlatform(pf.getId());
+					
+					resourceLogMining.add(rl);
 				}
 			}
-//			ArrayList<ResourceLogMining> rlm = new ArrayList<ResourceLogMining>(resourceLogMining.values());
-			Collections.sort(resourceLogMining);
-			for(int i = 0; i < resourceLogMining.size(); i++)
-			{
-				startIndex++;
-				resourceLogMining.get(i).setId(startIndex);
-			}
-			session.close();
-			session = dbHandler.getMiningSession();
-			l.add(this.newResources.values());
-			l.add(resourceLogMining);			
-			dbHandler.saveCollectionToDB(session, l);
 		}
-		catch (Exception e)
+		Collections.sort(resourceLogMining);
+		for(int i = 0; i < resourceLogMining.size(); i++)
 		{
-			System.out.println(e.getMessage());
+			startIndex++;
+			resourceLogMining.get(i).setId(startIndex);
 		}
+		session.close();
+		session = dbHandler.getMiningSession();
+		l.add(this.newResources.values());
+		l.add(resourceLogMining);			
+		
+		dbHandler.saveCollectionToDB(session, l);
+		
 		return largestId;
 	}
-	*/
+	
+	
 }

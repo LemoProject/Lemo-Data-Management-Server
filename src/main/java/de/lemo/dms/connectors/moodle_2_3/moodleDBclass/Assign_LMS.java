@@ -1,0 +1,45 @@
+package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
+
+public class Assign_LMS {
+
+	private long id;
+	private long course;
+	private String name;
+	private String description;
+	private long timemodified;
+	
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public long getCourse() {
+		return course;
+	}
+	public void setCourse(long course) {
+		this.course = course;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public long getTimemodified() {
+		return timemodified;
+	}
+	public void setTimemodified(long timeModified) {
+		this.timemodified = timeModified;
+	}
+	
+	
+	
+}

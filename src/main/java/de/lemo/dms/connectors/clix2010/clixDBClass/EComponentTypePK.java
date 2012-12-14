@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class EComponentTypePK implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2147746468879800061L;
 	private Long component;
 	private Long language;
 

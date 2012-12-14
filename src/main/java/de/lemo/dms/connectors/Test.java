@@ -9,20 +9,37 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+
+import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
+import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
+import de.lemo.dms.processing.questions.QFrequentPathsViger;
+import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
+import de.lemo.dms.processing.questions.QPerformanceHistogram;
+import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
+import de.lemo.dms.processing.resulttype.ResultListLongObject;
+import de.lemo.dms.processing.resulttype.ResultListStringObject;
+import de.lemo.dms.service.ServiceRatedObjects;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
 import de.lemo.dms.connectors.moodle.ConnectorMoodle;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 
-
+/**
+ * Just a class for Connector-related tests.
+ * 
+ * @author s.schwarzrock
+ *
+ */
 public class Test {
 	
-	
+	/**
+	 * Tests the Chemgapedia-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
 	public static void runChemConn()
 	{
 		for(int i = 0 ; i < 5; i++)
@@ -39,23 +56,50 @@ public class Test {
 			
 			ConnectorChemgapedia cm = new ConnectorChemgapedia();
 			cm.setSourceDBConfig(sourceConf);
-			
-			
 			cm.getData("Chemgapedia(FIZ)");
 		}
-
-		
-		
 	}
 	
+	/**
+	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
 	public static void runMoodleConn()
 	{
 		ConnectorMoodle cm = new ConnectorMoodle();
 		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-		cm.getData("Moodle(Beuth)");
-		//cm.updateData("Moodle(Beuth)", 1338800000);
+		cm.getData("Moodle(BBW)");
+		//cm.updateData("Moodle(Beuth)", 1338000000);
 	}
 	
+	/**
+	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
+	public static void runMoodleNumericConn()
+	{
+		de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle cm = new de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle();
+		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
+		cm.getData("Moodle(BBW)");
+		//cm.updateData("Moodle(Beuth)", 1338000000);
+	}
+	
+	/**
+	 * Tests the Moodle(2.3)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
+	public static void runMoodle23Conn()
+	{
+		de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle cm = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle();
+		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
+		cm.getData("Moodle 2.3(Beuth)");
+		//cm.updateData("Moodle 2.3(Beuth)", 1338000000);
+	}
+	
+	/**
+	 * Tests the Clix(2010)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
 	public static void runClixConn()
 	{
 		ConnectorClix cc = new ConnectorClix();
@@ -88,6 +132,7 @@ public class Test {
 		Criteria crit = session.createCriteria(ResourceLogMining.class, "logs");
 		crit.add(Restrictions.in("logs.course.id", cids));
 		System.out.println("Reading DB");
+		@SuppressWarnings("unchecked")
 		List<ResourceLogMining> l = crit.list();
 		System.out.println("Found "+l.size()+" courses.");
 		
@@ -108,23 +153,6 @@ public class Test {
 		
 	}
 	
-	public static void testBIDE()
-	{
-		QFrequentPathsBIDE qBide = new QFrequentPathsBIDE();
-		List<Long> courses = new ArrayList<Long>();
-		courses.add(11476L);
-		
-		List<Long> users = new ArrayList<Long>();
-//		users.add(1114L);
-	//	users.add(11693L);
-		//users.add(111386L);
-		
-		List<String> types = new ArrayList<String>();
-		types.add("assignment");
-		
-		qBide.compute(courses, users, types, 11L, 31L, 0.8d, false, 0L, 1500000000L);
-		
-	}
 	
 //	public static void test2()
 //	{
@@ -140,13 +168,83 @@ public class Test {
 //		qca.compute(courses, roles, startTime, endTime, resolution, resourceTypes);
 //	}
 	
+	public static void testViger()
+	{
+		QFrequentPathsViger qfpv = new QFrequentPathsViger();
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(112200L);
+		ArrayList<Long> users = new ArrayList<Long>();
+		ArrayList<String> types = new ArrayList<String>();
+		Long minLength = 0L;
+		Long maxLength = 1000L;
+		double minSup = 1;
+		
+		qfpv.compute(courses, users, types, minLength, maxLength, minSup, false, 0L, 1500000000L);
+		
+	}
+	
+	public static void testBide()
+	{
+		QFrequentPathsBIDE qfpv = new QFrequentPathsBIDE();
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(112200L);
+		ArrayList<Long> users = new ArrayList<Long>();
+		ArrayList<String> types = new ArrayList<String>();
+		Long minLength = 0L;
+		Long maxLength = 1000L;
+		double minSup = 0.5;
+		
+		qfpv.compute(courses, users, types, minLength, maxLength, minSup, false, 0L, 1500000000L);
+		
+	}
+	
+	public static void testHisto()
+	{
+		QPerformanceBoxPlot ph = new QPerformanceBoxPlot();
+		ArrayList<Long> quizzes = new ArrayList<Long>();
+		quizzes.add(11114861L);
+		quizzes.add(11114282L);
+		quizzes.add(1411888L);
+		
+		ResultListBoxPlot res = ph.compute(new ArrayList<Long>(), new ArrayList<Long>(), quizzes, 0L, 1500000000L);
+		System.out.println(res.getElements().size());
+		
+	}
+	
+	public static void testService()
+	{
+		ArrayList<String> res = new ArrayList<String>();
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(11476L);
+		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+        Session session = dbHandler.getMiningSession();
+	        
+        Criteria criteria = session.createCriteria(ICourseRatedObjectAssociation.class, "aso");
+        criteria.add(Restrictions.in("aso.course.id", courses));
+        	        
+        ArrayList<ICourseRatedObjectAssociation> list = (ArrayList<ICourseRatedObjectAssociation>) criteria.list();
+        
+        for(ICourseRatedObjectAssociation obj : list)
+        {
+        	res.add(obj.getRatedObject().getClass().getSimpleName());
+        	res.add(obj.getRatedObject().getPrefix().toString());
+        	res.add(obj.getRatedObject().getId() + "");
+        	res.add(obj.getRatedObject().getTitle());
+        }
+        System.out.println("Starting test");
+	}
+	
 	public static void run()
 	{
 		System.out.println("Starting test");
-		testBIDE();
+		runMoodleNumericConn();
 		System.out.println("Test finished");
 	}
 
+	public static void main(String[] args)
+	{
+		run();
+	}
 	
 	
 }

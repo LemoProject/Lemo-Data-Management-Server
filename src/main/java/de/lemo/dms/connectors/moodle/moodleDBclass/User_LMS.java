@@ -8,6 +8,7 @@ public class User_LMS {
 	private long lastlogin;
 	private long currentlogin;
 	private long timemodified;
+	private String login;
 	
 	public String getId() {
 		return id;
@@ -44,5 +45,11 @@ public class User_LMS {
 	}
 	public void setTimemodified(long timemodified) {
 		this.timemodified = timemodified;
+	}
+	public String getLogin() {
+		return login;
+	}
+	public void setLogin(String login) {
+		this.login = login;
 	}
 }

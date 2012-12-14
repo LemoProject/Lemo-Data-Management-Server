@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class ScormSessionTimesPK implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1333399944075685332L;
 	private Long component;
 	private Long person;
 	

@@ -57,9 +57,6 @@ public class QCourseActivity extends Question{
             @FormParam(RESOLUTION) Integer resolution,
             @FormParam(TYPES) List<String> resourceTypes) {
 		
-		List<Long> list = new ArrayList<Long>();
-		
-		
 		HashMap<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();
 		//Check arguments
 		if(startTime < endTime && resolution > 0)
@@ -95,6 +92,13 @@ public class QCourseActivity extends Question{
 				
 			}
 			
+			
+			if(resourceTypes != null && resourceTypes.size() > 0)
+	    		for(int i = 0; i < resourceTypes.size(); i++){
+	    			logger.info("Course Activity Request - CA Selection: " + resourceTypes.get(i));
+	    		}
+	    	else logger.info("Course Activity Request - CA Selection: NO Items selected ");
+
 			
 			if(resourceTypes != null && resourceTypes.size() > 0)
 	    		for(int i = 0; i < resourceTypes.size(); i++){
@@ -179,8 +183,6 @@ public class QCourseActivity extends Question{
 				}
 			}
 		}
-		
-		
 		
 		ResultListHashMapObject resultObject = new ResultListHashMapObject(result);
 		   if(resultObject!=null && resultObject.getElements()!=null){

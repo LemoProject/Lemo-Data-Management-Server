@@ -2,7 +2,6 @@ package de.lemo.dms.connectors;
 
 import org.apache.log4j.Logger;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.DBConfigObject;
 
 /**

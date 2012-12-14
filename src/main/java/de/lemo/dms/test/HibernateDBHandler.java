@@ -2,7 +2,6 @@ package de.lemo.dms.test;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import org.hibernate.Transaction;
 
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * Implementation of the IDBHandler interface for Hibernate.
@@ -44,7 +42,6 @@ public class HibernateDBHandler implements IDBHandler {
             for(Iterator<Collection<?>> iter = data.iterator(); iter.hasNext();)
             {
                 Collection<?> l = iter.next();
-                HashSet<IMappingClass> isIn = new HashSet<IMappingClass>();
                 for(Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
                     Object o = iter2.next();
 

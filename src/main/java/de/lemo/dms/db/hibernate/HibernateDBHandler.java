@@ -21,7 +21,8 @@ import de.lemo.dms.db.IDBHandler;
  */
 public class HibernateDBHandler implements IDBHandler {
 
-    private Logger logger = Logger.getLogger(getClass());
+    @SuppressWarnings("unused")
+	private Logger logger = Logger.getLogger(getClass());
 
     private static SessionFactory miningSessionFactory =
             de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining();

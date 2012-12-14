@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class PersonComponentAssignmentPK implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5245182973491294243L;
 	private Long person;
 	private Long component;
 	private Long context;
