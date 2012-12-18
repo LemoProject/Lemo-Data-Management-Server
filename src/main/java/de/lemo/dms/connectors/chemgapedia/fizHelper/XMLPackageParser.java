@@ -189,7 +189,7 @@ public class XMLPackageParser {
     	
 		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "Select largestId from ConfigMining x where x.platform=" + platform.getId() + " order by x.id asc"));
 		if(l != null && l.size() > 0)
-			largestId = Long.valueOf((l.get(l.size()-1) + "").substring(2));
+			largestId = l.get(l.size()-1);
 		else
 			largestId = 0L;
 		

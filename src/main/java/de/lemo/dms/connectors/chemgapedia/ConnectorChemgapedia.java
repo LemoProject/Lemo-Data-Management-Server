@@ -128,6 +128,7 @@ public class ConnectorChemgapedia implements IConnector{
 		    config.setLastmodified(System.currentTimeMillis());
 		    config.setElapsed_time((endtime) - (starttime));	
 		    config.setLargestId(largestId);
+		    config.setDatabaseModel("1.2");
 		    config.setPlatform(platform.getId());
 		    
 		    session = dbHandler.getMiningSession();
@@ -206,6 +207,7 @@ public class ConnectorChemgapedia implements IConnector{
 		    config.setLastmodified(System.currentTimeMillis());
 		    config.setElapsed_time((endtime) - (starttime));	
 		    config.setLargestId(largestId);
+		    config.setDatabaseModel("1.2");
 		    config.setPlatform(platform.getId());
 		    
 		    dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();

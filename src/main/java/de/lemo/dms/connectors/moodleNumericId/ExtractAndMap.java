@@ -295,6 +295,7 @@ public abstract class ExtractAndMap{
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (starttime));	
 	    config.setLargestId(largestId);
+	    config.setDatabaseModel("1.2");
 	    config.setPlatform(platform.getId());
 	    dbHandler.saveToDB(session, config);
 	    //mining_session.saveOrUpdate(config);
