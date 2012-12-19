@@ -301,7 +301,6 @@ public abstract class ExtractAndMap{
 	    ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (starttime));	
-	    config.setLargestId(0);
 	    config.setDatabaseModel("1.2");
 	    config.setPlatform(platform.getId());
 	    dbHandler.saveToDB(session, config);

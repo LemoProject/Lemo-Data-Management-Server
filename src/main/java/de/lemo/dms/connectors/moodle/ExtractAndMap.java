@@ -187,7 +187,7 @@ public abstract class ExtractAndMap{
 	/** The old_chat_log_mining. */
 	static HashMap<Long, ChatLogMining> old_chat_log_mining;
 	
-
+	static Long largestId;
 	
 //	@SuppressWarnings("unchecked")
 	/** A list of objects used for submitting them to the DB. */
@@ -204,10 +204,7 @@ public abstract class ExtractAndMap{
 	
 	/**Database-handler**/
 	static IDBHandler dbHandler;
-	
-	/** value of the highest user-id in the dataset. Used for creating new numeric ids **/
-	static long largestId;
-	
+		
 	private Logger logger = Logger.getLogger(getClass());
 
 	static Long questionLogMax;
@@ -313,7 +310,6 @@ public abstract class ExtractAndMap{
 	    ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (starttime));	
-	    config.setLargestId(largestId);
 	    config.setPlatform(platform.getId());
 	    config.setDatabaseModel("1.2");
 	    dbHandler.saveToDB(session, config);
@@ -372,16 +368,14 @@ public abstract class ExtractAndMap{
 			platform_mining.put(platform.getId(), platform);
 		}
 		
-		config_mining_timestamp = (List<Timestamp>) dbHandler.performQuery(session, EQueryType.HQL, "select max(lastmodified) from ConfigMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
-		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "select largestId from ConfigMining x order by x.id asc"));
-		if(l != null && l.size() > 0)
-			largestId = Long.valueOf((l.get(l.size()-1) + "").substring(2));
-		else
-			largestId = 0;
-		
 		if(config_mining_timestamp.get(0) == null){
 			config_mining_timestamp.set(0, new Timestamp(0));
 		}
+        Query large = session.createQuery("select max(user.id) from UserMining user where user.platform="+ platform.getId() +"");
+        if(large.list().size() > 0)
+        	largestId = ((ArrayList<Long>) large.list()).get(0);
+        if(largestId == null)
+        	largestId = 0L;
 		
 		Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log where log.platform="+ platform.getId() +"");
         resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);

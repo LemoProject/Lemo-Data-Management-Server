@@ -83,18 +83,14 @@ public class XMLPackageParser {
 	
 	private HashMap<String, IDMappingMining> id_mapping;
 	
-	//private Long depId = 0L;
-	//private Long degId = 0L;
 	private Long couId = 0L;
 	private Long resId = 0L;
-	//private Long depDegId = 0L;
-	//private Long degCouId = 0L;
 	private Long couResId = 0L;
 	private PlatformMining pf;
 	
-	private static IDBHandler dbHandler;
+	private IDBHandler dbHandler;
 	
-	private static Long largestId;
+	//private Long largestId;
 	
 	
 	/**
@@ -114,9 +110,8 @@ public class XMLPackageParser {
 		
 		id_mapping = new HashMap<String, IDMappingMining>();
 		for(int i = 0; i < ids.size(); i++)
-		{
 			id_mapping.put(ids.get(i).getHash(), ids.get(i));
-		}
+		System.out.println("Loaded " + id_mapping.size() + " IDMappingMining objects from the mining database.");
 		
 		//----------
 		List<LevelMining> levs = (List<LevelMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM LevelMining x where x.platform=" + platform.getId() + " order by x.id asc");
@@ -124,32 +119,22 @@ public class XMLPackageParser {
     		levId = levs.get(levs.size()-1).getId();
 		for(int i = 0; i < levs.size(); i++)
     		this.levelObj.put(levs.get(i).getTitle(), levs.get(i));
+		System.out.println("Loaded " + levelObj.size() + " LevelMining objects from the mining database.");
 		
-		/*
-		List<DepartmentMining> deps = (List<DepartmentMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DepartmentMining x where x.platform=" + platform.getId() + " order by x.id asc");
-    	if(deps.size() > 0)
-    		depId = deps.get(deps.size()-1).getId();
-		for(int i = 0; i < deps.size(); i++)
-    		this.departmentObj.put(deps.get(i).getTitle(), deps.get(i));
-    	
-		List<DegreeMining> degs = (List<DegreeMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DegreeMining x where x.platform=" + platform.getId() + " order by x.id asc");
-    	if(degs.size() > 0)
-    		degId = degs.get(degs.size()-1).getId();
-		for(int i = 0; i < degs.size(); i++)
-    		this.degreeObj.put(degs.get(i).getTitle(), degs.get(i));
-    	*/
-    	
+		
 		List<CourseMining> cous = (List<CourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM CourseMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(cous.size() > 0)
     		couId = cous.get(cous.size()-1).getId();
 		for(int i = 0; i < cous.size(); i++)
     		this.courseObj.put(cous.get(i).getTitle(), cous.get(i));
+		System.out.println("Loaded " + courseObj.size() + " CourseMining objects from the mining database.");
 		
 		List<ResourceMining> ress = (List<ResourceMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM ResourceMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(ress.size() > 0)
     		resId = ress.get(ress.size()-1).getId();
 		for(int i = 0; i < ress.size(); i++)
     		this.resourceObj.put(ress.get(i).getUrl(), ress.get(i));
+		System.out.println("Loaded " + resourceObj.size() + " ResourceMining objects from the mining database.");
 		
 		//----------
 		List<LevelAssociationMining> levAsc = (List<LevelAssociationMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM LevelAssociationMining x where x.platform=" + platform.getId() + " order by x.id asc");
@@ -157,42 +142,22 @@ public class XMLPackageParser {
     		levAscId = levAsc.get(levAsc.size()-1).getId();
 		for(int i = 0; i < levAsc.size(); i++)
     		this.levelAssociations.put(levAsc.get(i).getLower().getId(), levAsc.get(i));
-		
-		/*
-		List<DepartmentDegreeMining> depDeg = (List<DepartmentDegreeMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DepartmentDegreeMining x where x.platform=" + platform.getId() + " order by x.id asc");
-    	if(depDeg.size() > 0)
-    		depDegId = depDeg.get(depDeg.size()-1).getId();
-		for(int i = 0; i < depDeg.size(); i++)
-    		this.departmentDegrees.put(depDeg.get(i).getDegree().getId(), depDeg.get(i));
-		*/
-		//----------------
+		System.out.println("Loaded " + levelAssociations.size() + " LevelAssociationMining objects from the mining database.");
+
 		List<LevelCourseMining> levCou = (List<LevelCourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM LevelCourseMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(levCou.size() > 0)
     		levCouId = levCou.get(levCou.size()-1).getId();
 		for(int i = 0; i < levCou.size(); i++)
     		this.levelCourses.put(levCou.get(i).getCourse().getId(), levCou.get(i));
-		
-		/*
-		List<DegreeCourseMining> degCou = (List<DegreeCourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DegreeCourseMining x where x.platform=" + platform.getId() + " order by x.id asc");
-    	if(degCou.size() > 0)
-    		degCouId = degCou.get(degCou.size()-1).getId();
-		for(int i = 0; i < degCou.size(); i++)
-    		this.degreeCourses.put(degCou.get(i).getCourse().getId(), degCou.get(i));
-		*/
-		
+		System.out.println("Loaded " + levelCourses.size() + " LevelCourseMining objects from the mining database.");
+	
 		List<CourseResourceMining> couRes = (List<CourseResourceMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM CourseResourceMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(couRes.size() > 0)
     		couResId = couRes.get(couRes.size()-1).getId();
 		for(int i = 0; i < couRes.size(); i++)
     		this.courseResources.put(couRes.get(i).getResource().getId(), couRes.get(i));
-		
+		System.out.println("Loaded " + courseResources.size() + " CourseResourceMining objects from the mining database.");
     	
-		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "Select largestId from ConfigMining x where x.platform=" + platform.getId() + " order by x.id asc"));
-		if(l != null && l.size() > 0)
-			largestId = l.get(l.size()-1);
-		else
-			largestId = 0L;
-		
 	     dbHandler.closeSession(session);
 	}
 	
@@ -348,7 +313,6 @@ public class XMLPackageParser {
 	 	       			{
 	 	       				r_id = resId + 1;
 	 	       				resId = r_id;
-	 	       				largestId = resId;
 	 	       				r_id = Long.valueOf(pf.getPrefix() + "" + r_id);
 	 	       				id_mapping.put(resource.getUrl(), new IDMappingMining(r_id, resource.getUrl(), pf.getId()));
 	 	       				resource.setId(r_id);
@@ -451,7 +415,6 @@ public class XMLPackageParser {
 			       	       			{
 			       	       				resource_id = resId + 1;
 			       	       				resId = resource_id;
-			       	       				largestId = resId;
 			       	       				resource_id = Long.valueOf(pf.getPrefix() + "" + resource_id);
 			       	       				id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(), pf.getId()));
 			       	       				
@@ -513,8 +476,7 @@ public class XMLPackageParser {
 							  r1.setPlatform(pf.getId());
 							  this.resourceObj.put(r1.getUrl(), r1);
 							  id_mapping.put(r1.getUrl(), new IDMappingMining(r1.getId(), r1.getUrl(), pf.getId()));
-	     	       			  largestId = resId;
-							  this.fnames.add(filename + "*");
+	     	       			  this.fnames.add(filename + "*");
 	   				    	  CourseResourceMining crm = new CourseResourceMining();
 					    	  crm.setResource(r1);
 					    	  crm.setCourse(course);
@@ -588,7 +550,7 @@ public class XMLPackageParser {
 	 *
 	 * @return Largest id in the id-mapping-table
 	 */
-	public Long saveAllToDB()
+	public void saveAllToDB()
 	{
 		List<Collection<?>> li = new ArrayList<Collection<?>>();
 		li.add(this.levelObj.values());
@@ -601,7 +563,6 @@ public class XMLPackageParser {
 		
 		Session session = dbHandler.getMiningSession();
 		dbHandler.saveCollectionToDB(session,li);	
-		return largestId;
 	}
 	
 	/**

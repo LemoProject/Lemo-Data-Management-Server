@@ -77,7 +77,6 @@ public class ConnectorChemgapedia implements IConnector{
 		Query old_platform = session.createQuery("from PlatformMining x order by x.id asc");
         ArrayList<PlatformMining> l = (ArrayList<PlatformMining>) old_platform.list();
 		
-		Long largestId = -1L;	
 		if(processVSC || processLog)
 		{
 			Long pid = 0L;
@@ -93,6 +92,7 @@ public class ConnectorChemgapedia implements IConnector{
 	        	if(p.getType().equals("Chemgapedia") && p.getName().equals(platformName))
 	        	{        		
 	        		platform = p;
+	        		break;
 	        	}
 			}
 			if(platform == null)
@@ -104,30 +104,26 @@ public class ConnectorChemgapedia implements IConnector{
 				platform.setPrefix(pref + 1);			
 			}
 			
+			session.clear();
 			session.close();
 			
 			if(processVSC)
 			{
 				XMLPackageParser x = new XMLPackageParser(platform);
 				x.readAllVlus(vscPath);
-				largestId = x.saveAllToDB();
+				x.saveAllToDB();
 			}
 			if(processLog)
 			{			
-				LogReader logR = new LogReader(platform, largestId);
-				logR.loadServerLogData(logPath);
-				if(filter)
-					
-					logR.filterServerLogFile();
-				
-				largestId = logR.save();
+				LogReader logR = new LogReader(platform);
+				logR.loadServerLogData(logPath, 0L, filter);
+				logR.save();
 			}
 			
 			Long endtime = System.currentTimeMillis()/1000;
 			ConfigMining config = new ConfigMining();
 		    config.setLastmodified(System.currentTimeMillis());
 		    config.setElapsed_time((endtime) - (starttime));	
-		    config.setLargestId(largestId);
 		    config.setDatabaseModel("1.2");
 		    config.setPlatform(platform.getId());
 		    
@@ -154,8 +150,7 @@ public class ConnectorChemgapedia implements IConnector{
 		
 		Query old_platform = session.createQuery("from PlatformMining x order by x.id asc");
         ArrayList<PlatformMining> l = (ArrayList<PlatformMining>) old_platform.list();
-		
-		Long largestId = -1L;	
+			
 		if(processVSC || processLog)
 		{
 			Long pid = 0L;
@@ -187,26 +182,19 @@ public class ConnectorChemgapedia implements IConnector{
 			{
 				XMLPackageParser x = new XMLPackageParser(platform);
 				x.readAllVlus(vscPath);
-				largestId = x.saveAllToDB();
+				x.saveAllToDB();
 			}
 			if(processLog)
 			{			
-				LogReader logR = new LogReader(platform, largestId);
-				
-				
-				logR.loadServerLogData(logPath);
-				if(filter)
-					
-					logR.filterServerLogFile();
-			
-				largestId = logR.save();
+				LogReader logR = new LogReader(platform);				
+				logR.loadServerLogData(logPath, 100000L, filter);
+				logR.save();
 			}
 			
 			Long endtime = System.currentTimeMillis()/1000;
 			ConfigMining config = new ConfigMining();
 		    config.setLastmodified(System.currentTimeMillis());
 		    config.setElapsed_time((endtime) - (starttime));	
-		    config.setLargestId(largestId);
 		    config.setDatabaseModel("1.2");
 		    config.setPlatform(platform.getId());
 		    

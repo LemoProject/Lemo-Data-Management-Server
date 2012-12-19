@@ -196,7 +196,7 @@ public abstract class ExtractAndMap{
 	static IDBHandler dbHandler;
 	
 	/** value of the highest user-id in the data set. Used for creating new numeric ids **/
-	static long largestId;
+	static Long largestId;
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
@@ -294,7 +294,6 @@ public abstract class ExtractAndMap{
 	    ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (starttime));	
-	    config.setLargestId(largestId);
 	    config.setDatabaseModel("1.2");
 	    config.setPlatform(platform.getId());
 	    dbHandler.saveToDB(session, config);
@@ -357,11 +356,11 @@ public abstract class ExtractAndMap{
 		
 		config_mining_timestamp = (List<Timestamp>) dbHandler.getMiningSession().createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
 			
-		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "select max(largestId) from ConfigMining x"));
-		if(l != null && l.get(0) != null)
-			largestId = l.get(l.size()-1);
-		else
-			largestId = 0;
+		Query large = session.createQuery("select max(user.id) from UserMining user where user.platform="+ platform.getId() +"");
+        if(large.list().size() > 0)
+        	largestId = ((ArrayList<Long>) large.list()).get(0);
+        if(largestId == null)
+        	largestId = 0L;
 		
 		if(config_mining_timestamp.get(0) == null){
 			config_mining_timestamp.set(0, new Timestamp(0));

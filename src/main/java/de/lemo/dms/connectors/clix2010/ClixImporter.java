@@ -367,7 +367,6 @@ public class ClixImporter {
 		ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (starttime));	
-	    config.setLargestId(largestId);
 	    config.setDatabaseModel("1.2");
 	    config.setPlatform(platform.getId());
 	    
@@ -413,7 +412,6 @@ public class ClixImporter {
 		ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (currentSysTime));	
-	    config.setLargestId(largestId);
 	    config.setDatabaseModel("1.2");
 	    config.setPlatform(platform.getId());
 	    

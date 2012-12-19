@@ -42,23 +42,21 @@ public class Test {
 	 */
 	public void runChemConn()
 	{
+		String logs = "C:\\Users\\s.schwarzrock\\Desktop\\120614\\lemo-join.log";
 		//int i = 0;
-		for(int i = 2 ; i < 5; i++)
-		{
+		//for(int i = 1 ; i < 6; i++)
+		//{
 			DBConfigObject sourceConf = new DBConfigObject();
-			sourceConf.addProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120614\\120614_lemo_"+i+".log");
+			sourceConf.addProperty("path.log_file", logs);
 			sourceConf.addProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
 			sourceConf.addProperty("filter_log_file", "true");
-			if(i == 0)
-				sourceConf.addProperty("process_metadata", "false");
-			else
-				sourceConf.addProperty("process_metadata", "false");
+			sourceConf.addProperty("process_metadata", "false");
 			sourceConf.addProperty("process_log_file", "true");
 			
 			ConnectorChemgapedia cm = new ConnectorChemgapedia();
 			cm.setSourceDBConfig(sourceConf);
-			cm.getData("Chemgapedia(FIZ)");
-		}
+			cm.updateData("Chemgapedia(FIZ)", 0L);
+		//}
 	}
 	
 	/**
@@ -238,7 +236,7 @@ public class Test {
 	public void run()
 	{
 		System.out.println("Starting test");
-		runClixConn();
+		runChemConn();
 		System.out.println("Test finished");
 	}
 	

@@ -6,7 +6,6 @@ public class ConfigMining {
 	private Timestamp lastmodified;
 	private long extractcycle;
 	private long elapsed_time;
-	private long largestId;
 	private Long platform;
 	private String databaseModel;
 
@@ -18,13 +17,6 @@ public class ConfigMining {
 		this.platform = platform;
 	}
 
-	public long getLargestId() {
-		return largestId;
-	}
-
-	public void setLargestId(long largestId) {
-		this.largestId = largestId;
-	}
 
 	public ConfigMining() {
 		this.lastmodified = new Timestamp(0);
