@@ -50,14 +50,7 @@ public class PersonComponentAssignment implements IClixMappingClass{
 		this.context = context;
 	}
 
-	@Override
-	public String getString() {
-		return "PersonComponentAssignment$$$"
-				+this.getComponent()+"$$$"
-				+this.getPerson()+"$$$"
-				+this.getContext();
-	}
-	
+
 	public PersonComponentAssignment()
 	{
 		

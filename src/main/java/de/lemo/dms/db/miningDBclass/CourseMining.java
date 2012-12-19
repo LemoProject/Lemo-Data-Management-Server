@@ -38,7 +38,8 @@ public class CourseMining implements IMappingClass, ILearningObject {
 	private Set<ResourceLogMining> resource_log = new HashSet<ResourceLogMining>();
 	private Set<ScormLogMining> scorm_log = new HashSet<ScormLogMining>();
 	private Set<CourseScormMining> course_scorm = new HashSet<CourseScormMining>();	
-	private Set<DegreeCourseMining> degree_course = new HashSet<DegreeCourseMining>();
+	//private Set<DegreeCourseMining> degree_course = new HashSet<DegreeCourseMining>();
+	private Set<LevelCourseMining> levelCourse = new HashSet<LevelCourseMining>();
 	
 	public boolean equals(IMappingClass o)
 	{
@@ -477,23 +478,38 @@ public class CourseMining implements IMappingClass, ILearningObject {
 	public void addCourse_scorm(CourseScormMining course_scorm_add){	
 		course_scorm.add(course_scorm_add);	
 	}
+
+	/*
+	public void setDegree_course(Set<DegreeCourseMining> degree_course) {
+		this.degree_course = degree_course;
+	}
+		
+	public Set<DegreeCourseMining> getDegree_course() {
+		return degree_course;
+	}
+			
+	public void addDegree_course(DegreeCourseMining degree_course_add){	
+		degree_course.add(degree_course_add);	
+	}
+	*/
+	
 	/** standard setter for the attribut course_scorm
 	 * @param degree_course a set of entrys in the course_scorm table which shows the assignments used in the course
 	 */	
-	public void setDegree_course(Set<DegreeCourseMining> degree_course) {
-		this.degree_course = degree_course;
+	public void setLevelCourse(Set<LevelCourseMining> levelCourse) {
+		this.levelCourse = levelCourse;
 	}
 	/** standard getter for the attribut course_scorm
 	 * @return a set of entrys in the course_scorm table which shows the scorm used in the course
 	 */	
-	public Set<DegreeCourseMining> getDegree_course() {
-		return degree_course;
+	public Set<LevelCourseMining> getLevelCourse() {
+		return levelCourse;
 	}
 	/** standard add method for the attribut course_scorm
 	 * @param degree_course_add this entry of the course_scorm table will be added to this course
 	 * */		
-	public void addDegree_course(DegreeCourseMining degree_course_add){	
-		degree_course.add(degree_course_add);	
+	public void addLevelCourse(LevelCourseMining levelCourseAdd){	
+		levelCourse.add(levelCourseAdd);	
 	}
 
 	public Long getPlatform() {

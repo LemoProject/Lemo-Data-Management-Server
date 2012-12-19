@@ -64,9 +64,11 @@ public class HibernateDBHandler implements IDBHandler {
                      }
                 }
             System.out.println("Wrote " + classOb + " objects of class " + className + " to database.");
+            session.flush();
+            session.clear();
             session.getTransaction().commit();
             session.close();
-        } catch (HibernateException e)
+    	} catch (HibernateException e)
         {
             e.printStackTrace();
         }

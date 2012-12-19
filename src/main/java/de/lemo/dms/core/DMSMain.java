@@ -19,7 +19,8 @@ public class DMSMain {
 
         try {
             DMSRemoteServer.INSTANCE.start();
-            //Test.run();
+            Test t = new Test();
+            t.run();
             System.in.read(); // TODO every example uses this to keep the server running but there may be a better way
             
         } catch (IOException e) {

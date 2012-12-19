@@ -24,6 +24,11 @@
             name="elapsed_time"
             column="elapsed_time"
             type="long"/>   
+            
+        <property
+            name="databaseModel"
+            column="database_model"
+            type="long"/>   
  
         <property
             name="platform"

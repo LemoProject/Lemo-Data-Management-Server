@@ -8,6 +8,7 @@ public class ConfigMining {
 	private long elapsed_time;
 	private long largestId;
 	private Long platform;
+	private String databaseModel;
 
 	public Long getPlatform() {
 		return platform;
@@ -77,5 +78,13 @@ public class ConfigMining {
 	 */	
 	public void setElapsed_time(long elapsed_time) {
 		this.elapsed_time = elapsed_time;
+	}
+
+	public String getDatabaseModel() {
+		return databaseModel;
+	}
+
+	public void setDatabaseModel(String databaseModel) {
+		this.databaseModel = databaseModel;
 	}
 }
