@@ -48,15 +48,15 @@
 			</properties>
 		</profile>
 
-    <profile>
-      <id>public</id>
-      <properties>
-        <lemo-system-name>lemo-public</lemo-system-name>
-        <lemo-display-name>LeMo [public]</lemo-display-name>
-        <tomcat-server>lemo3-tomcat-manager</tomcat-server>
-        <tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-      </properties>
-    </profile>
+		<profile>
+			<id>public</id>
+			<properties>
+				<lemo-system-name>lemo-public</lemo-system-name>
+				<lemo-display-name>LeMo [public]</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+			</properties>
+		</profile>
 
 		<!-- partner profiles -->
 		<profile>
@@ -155,6 +155,15 @@
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
 			<version>1.1.1</version>
+		</dependency>
+
+		<!-- Provided by the servlet container, but sometimes referenced in the 
+			application code. -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet-api-release-version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -288,6 +297,7 @@
 					</archive>
 					<!-- don't put local hibernate configuration in war -->
 					<packagingExcludes>**/hibernate.cfg.xml</packagingExcludes>
+					<packagingExcludes>**/lemo.xml</packagingExcludes>
 					<webResources>
 						<webResource>
 							<directory>src/main/webapp/WEB-INF</directory>
@@ -321,6 +331,7 @@
 				<includes>
 					<include>**/*.properties</include>
 					<include>**/hibernate.cfg.xml</include>
+					<include>**/lemo.xml</include>
 				</includes>
 			</resource>
 			<resource>
@@ -347,9 +358,10 @@
 		<jersey-version>1.14</jersey-version>
 		<hibernate-version>3.6.10.Final</hibernate-version>
 		<slf4j-version>1.6.6</slf4j-version>
+		<servlet-api-release-version>2.5</servlet-api-release-version>
 
-    <lemo2-tomcat-url>http://lemo2.f4.htw-berlin.de:8080</lemo2-tomcat-url>
-    <lemo3-tomcat-url>http://141.45.146.174:8080</lemo3-tomcat-url>
+		<lemo2-tomcat-url>http://lemo2.f4.htw-berlin.de:8080</lemo2-tomcat-url>
+		<lemo3-tomcat-url>http://141.45.146.174:8080</lemo3-tomcat-url>
 	</properties>
 
 </project>
