@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/javaee">
   <display-name>DMS ${lemo-display-name} ${project.version}</display-name>
+  <listener>
+    <listener-class>de.lemo.dms.core.DMSServletContextListener</listener-class>
+  </listener>
   <servlet>
     <servlet-name>DMS-Services</servlet-name>
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>

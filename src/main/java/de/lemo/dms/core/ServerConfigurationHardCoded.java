@@ -13,7 +13,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.hibernate.HibernateDBHandler;
 
 /**
- * Server configuration singleton. Some values are hard coded, some provided by {@link ConfigurationProperties}.
+ * Server configuration singleton. Some values are hard coded, some provided by {@link ServerConfiguration}.
  * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe
@@ -28,7 +28,7 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
     private IDBHandler dbHandler;
     private DBConfigObject sourceDBConfig;
 
-    private Level defaultLevel = Level.toLevel(ConfigurationProperties.getPropertyValue("logger.level"), Level.INFO); //$NON-NLS-1$
+   // private Level defaultLevel = Level.toLevel(ServerConfiguration.getPropertyValue("logger.level"), Level.INFO); //$NON-NLS-1$
     private String logfileName = "./DatamanagementServer.log";
     private int port = 8081;
     private int keepAlive = 180;
@@ -43,12 +43,12 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
         try {
             Logger logger = Logger.getRootLogger();
             PatternLayout layout = new PatternLayout();
-            layout.setConversionPattern(ConfigurationProperties.getPropertyValue("logger.pattern")); //$NON-NLS-1$
+           // layout.setConversionPattern(ServerConfiguration.getPropertyValue("logger.pattern")); //$NON-NLS-1$
             ConsoleAppender conapp = new ConsoleAppender(layout);
             logger.addAppender(conapp);
             FileAppender filapp = new FileAppender(layout, logfileName);
             logger.addAppender(filapp);
-            logger.setLevel(defaultLevel);
+    //        logger.setLevel(defaultLevel);
         } catch (Exception ex) {
             System.err.println("logger can't be initialized...");
             System.err.println(ex.getMessage());
@@ -87,8 +87,8 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
     }
 
     private void addDBProperty(DBConfigObject dbConfig, String propertyPrefix, String propertyName) {
-        dbConfig.addProperty(propertyName,
-            ConfigurationProperties.getPropertyValue(propertyPrefix + "." + propertyName));
+//        dbConfig.addProperty(propertyName,
+//            ServerConfiguration.getPropertyValue(propertyPrefix + "." + propertyName));
     }
 
     public IDBHandler getDBHandler()
@@ -96,37 +96,37 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
         return dbHandler;
     }
 
-    @Override
+   
     public Logger getLogger() {
         return this.logger;
     }
 
-    @Override
+ 
     public Level getLoggingLevel() {
         return this.level;
     }
 
-    @Override
+    
     public void setLoggingLevel(Level level) {
         this.level = level;
     }
 
-    @Override
+ 
     public long getStartTime() {
         return startTime;
     }
 
-    @Override
+   
     public void setStartTime(long time) {
         this.startTime = time;
     }
 
-    @Override
+  
     public int getRemotePort() {
         return port;
     }
 
-    @Override
+  
     public void setRemotePort(int port) {
         this.port = port;
     }
@@ -136,7 +136,7 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
         return sourceDBConfig;
     }
 
-    @Override
+   
     public int getKeepAliveTimeoutInSec() {
         return keepAlive;
     }

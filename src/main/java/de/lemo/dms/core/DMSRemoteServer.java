@@ -20,11 +20,10 @@ public enum DMSRemoteServer {
     private String host = "localhost";
     private IServerConfiguration config;
     private HttpServer server;
-    private Logger logger;
+    private Logger logger = Logger.getLogger(getClass());
 
     private DMSRemoteServer() {
         config = ServerConfigurationHardCoded.getInstance();
-        logger = config.getLogger();
     }
 
     /**
@@ -56,7 +55,7 @@ public enum DMSRemoteServer {
      * @throws IOException
      */
     protected void start() throws IOException {
-        int port = config.getRemotePort();
+        int port = ((ServerConfigurationHardCoded) config).getRemotePort();
         if(server == null) {
             server = GrizzlyServerFactory.createHttpServer("http://" + host + ":" + port, new DMSResourceConfig());
             server.start();
