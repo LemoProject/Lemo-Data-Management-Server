@@ -8,6 +8,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.hibernate.HibernateDBHandler;
@@ -60,7 +61,7 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
                 " [" + ApplicationProperties.getPropertyValue("lemo.system-name") + "]");
 
         initDbConfig();
-        dbHandler = new HibernateDBHandler();
+   //     dbHandler = new HibernateDBHandler();
     }
 
     private void initDbConfig() {

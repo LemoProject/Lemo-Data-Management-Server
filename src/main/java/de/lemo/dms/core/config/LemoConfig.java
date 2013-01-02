@@ -3,12 +3,12 @@ package de.lemo.dms.core.config;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-public class Config {
+@XmlRootElement(name="config")
+public class LemoConfig {
 
     @XmlElement(name = "apps")
-    ApplicationServer applicationServer;
+    protected ApplicationServer applicationServer;
 
     @XmlElement(name = "dms")
-    DataManagementServer dataManagementServer;
+    protected DataManagementServer dataManagementServer;
 }
