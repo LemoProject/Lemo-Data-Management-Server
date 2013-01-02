@@ -13,8 +13,12 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
-import org.hibernate.cfg.Configuration;
 
+import com.google.common.collect.Lists;
+
+import de.lemo.dms.connectors.ESourcePlatform;
+import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.core.ConnectorManager;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 
@@ -28,12 +32,13 @@ public enum ServerConfiguration {
     INSTANCE;
 
     {
+        // the very first place where we can initialize the logger
         Logger.getRootLogger().setLevel(Level.INFO);
         Logger.getRootLogger().addAppender(new ConsoleAppender(
                 new PatternLayout("[%p] %d{ISO8601} [%c{1}] - %m%n")));
     }
 
-    private Configuration miningConfig;
+    private DBConfigObject miningDBConfig;
     private Logger logger = Logger.getLogger(getClass());
 
     public static ServerConfiguration getInstance() {
@@ -59,6 +64,19 @@ public enum ServerConfiguration {
      * @param contextPath
      */
     public void loadConfig(String contextPath) {
+        LemoConfig lemoConfig = readConfigFiles(contextPath);
+        // TODO set log level from config
+
+        miningDBConfig = createDBConfig(lemoConfig.dataManagementServer.hibernateConfig);
+
+        List<IConnector> connectors = createConnectors(lemoConfig.dataManagementServer.connectors);
+        ConnectorManager connectorManager = ConnectorManager.getInstance();
+        for(IConnector connector : connectors) {
+            connectorManager.addConnector(connector);
+        }
+    }
+
+    private LemoConfig readConfigFiles(String contextPath) {
         if(contextPath.isEmpty()) {
             // empty means root context, Tomcat convention for root context war files is 'ROOT.war'
             contextPath = "/ROOT";
@@ -68,8 +86,7 @@ public enum ServerConfiguration {
         String warName = contextPath.substring(1).replace('/', '#');
 
         Set<String> fileNames = new LinkedHashSet<String>();
-        // default, based on war name
-        fileNames.add(warName + ".xml");
+        fileNames.add(warName + ".xml"); // default, based on war name
 
         int lastHash;
         String warPath = warName;
@@ -80,26 +97,23 @@ public enum ServerConfiguration {
             fileNames.add(warPath + ".xml");
         }
 
-        // eventually try generic lemo.xml for use in local development
-        fileNames.add("lemo.xml");
+        fileNames.add("lemo.xml"); // eventually try generic lemo.xml for use in local development
 
         LemoConfig lemoConfig = null;
-        for(String fileName : fileNames) {
-            InputStream in = getClass().getResourceAsStream("/" + fileName);
-            if(in == null) {
-                continue;
-            }
-            logger.info("Using config file: " + fileName);
-            try {
-                JAXBContext jaxbContext = JAXBContext.newInstance(LemoConfig.class);
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                lemoConfig = (LemoConfig) jaxbUnmarshaller.unmarshal(in);
-            } catch (JAXBException e) {
-                // no way to recover, re-throw at runtime
-                throw new RuntimeException(e);
-            }
-        }
+        try {
+            Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(LemoConfig.class).createUnmarshaller();
 
+            for(String fileName : fileNames) {
+                InputStream in = getClass().getResourceAsStream("/" + fileName);
+                if(in != null) {
+                    logger.info("Using config file: " + fileName);
+                    lemoConfig = (LemoConfig) jaxbUnmarshaller.unmarshal(in);
+                }
+            }
+        } catch (JAXBException e) {
+            // no way to recover, re-throw at runtime
+            throw new RuntimeException(e);
+        }
         if(lemoConfig == null) {
             String files = fileNames.toString();
             throw new RuntimeException(
@@ -109,32 +123,37 @@ public enum ServerConfiguration {
         }
 
         logger.info("Config loaded for '" + lemoConfig.dataManagementServer.name + "'");
-
-        // TODO set level from config
-        // Logger.getRootLogger().setLevel(Level.INFO);
-
-        createMiningConfig(lemoConfig.dataManagementServer.hibernateConfig);
-        createConnectors(lemoConfig.dataManagementServer.connectors);
+        return lemoConfig;
     }
 
-    private void createConnectors(List<Connector> connectors) {
-        // TODO Auto-generated method stub
+    private List<IConnector> createConnectors(List<Connector> connectorConfigurations) {
 
-    }
-
-    private void createMiningConfig(List<HibernateProperty> lemoHibernateConfig) {
-        miningConfig = new Configuration();
-        for(HibernateProperty property : lemoHibernateConfig) {
-            miningConfig.setProperty(property.name, property.value);
+        List<IConnector> result = Lists.newArrayList();
+        for(Connector connectorConfig : connectorConfigurations) {
+            logger.info("Connector: " + connectorConfig.name);
+            ESourcePlatform platform = ESourcePlatform.valueOf(connectorConfig.platformType);
+            Class<? extends IConnector> connectorType = platform.getConnectorType();
+            IConnector connector = null;
+            try {
+                connector = connectorType.newInstance();
+            } catch (ReflectiveOperationException e) {
+                e.printStackTrace();
+            }
+            connector.setSourceDBConfig(createDBConfig(connectorConfig.hibernateConfig));
+            result.add(connector);
         }
+        return result;
+    }
+
+    private DBConfigObject createDBConfig(List<HibernateProperty> lemoHibernateConfig) {
+        DBConfigObject result = new DBConfigObject();
+        for(HibernateProperty property : lemoHibernateConfig) {
+            result.setProperty(property.name, property.value);
+        }
+        return result;
     }
 
     public IDBHandler getDBHandler() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public DBConfigObject getSourceDBConfig() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -148,9 +167,8 @@ public enum ServerConfiguration {
         // TODO Auto-generated method stub
 
     }
-
-    public Configuration getMiningConfig() {
-        return miningConfig;
-    }
+//    public DBConfigObject getMiningDBConfig() {
+//        return miningDBConfig;
+//    }
 
 }

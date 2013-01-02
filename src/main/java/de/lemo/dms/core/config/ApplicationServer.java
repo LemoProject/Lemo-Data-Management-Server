@@ -2,6 +2,7 @@ package de.lemo.dms.core.config;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
@@ -13,7 +14,7 @@ public class ApplicationServer {
 
     private static final String DEFAULT_NAME = "Lemo Application Server";
 
-    @XmlElement(defaultValue = DEFAULT_NAME)
+    @XmlAttribute
     protected String name = DEFAULT_NAME;
 
     @XmlElement(name = "dms-url")

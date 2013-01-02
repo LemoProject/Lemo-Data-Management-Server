@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <config>
   <!-- -->
-  <apps>
-    <name>Lemo Apps</name>
+  <apps name="Lemo DMS">
     <session-factory>
       <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
@@ -11,21 +10,20 @@
     <dms-url>http://localhost:8080/lemo/dms</dms-url>
   </apps>
   <!-- -->
-  <dms>
-    <name>Lemo DMS</name>
+  <dms name="Lemo DMS">
     <session-factory>
       <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
       <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
     </session-factory>
     <connectors>
-      <connector name="beuth1" platform="moodle_1_9">
+      <connector name="beuth1" platform-id="2" platform-type="moodle_1_9">
         <session-factory>
           <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
           <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         </session-factory>
       </connector>
-      <connector name="Chemgaroo" platform="Chemgaroo">
+      <connector name="Chemgaroo" platform-id="3" platform-type="Chemgaroo">
         <log-path>.</log-path>
         <metadata-path>.</metadata-path>
       </connector>

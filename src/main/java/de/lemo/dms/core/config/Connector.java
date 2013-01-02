@@ -4,23 +4,30 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
+
+import com.google.common.collect.Lists;
 
 @XmlType
 public class Connector {
 
     @XmlAttribute(required = true)
-    String name;
+    protected String name;
 
-    @XmlAttribute(required = true)
-    String platform;
+    @XmlAttribute(name = "platform-id", required = true)
+    protected Integer platformId;
 
-    @XmlElement(name = "session-factory")
-    List<HibernateProperty> hibernateConfig;
+    @XmlAttribute(name = "platform-type", required = true)
+    protected String platformType;
+
+    @XmlElementWrapper(name = "session-factory", required = true)
+    @XmlElement(name = "property")
+    protected List<HibernateProperty> hibernateConfig = Lists.newArrayList();
 
     @XmlElement(name = "log-path")
-    String logPath;
+    protected String logPath;
 
     @XmlElement(name = "metadata-path")
-    String metaDataPath;
+    protected String metaDataPath;
 }
