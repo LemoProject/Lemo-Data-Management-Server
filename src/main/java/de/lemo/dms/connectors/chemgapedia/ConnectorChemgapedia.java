@@ -19,12 +19,11 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
 
 public class ConnectorChemgapedia implements IConnector{
 
-	static DBConfigObject sourceDBConf;
-	static boolean filter = false;
-	static boolean processVSC = false;
-	static boolean processLog = false;
-	static String logPath;
-	static String vscPath;
+	private boolean filter = false;
+	private boolean processVSC = false;
+	private boolean processLog = false;
+	private String logPath;
+	private String vscPath;
 	private Logger logger = Logger.getLogger(getClass());
 	
 	

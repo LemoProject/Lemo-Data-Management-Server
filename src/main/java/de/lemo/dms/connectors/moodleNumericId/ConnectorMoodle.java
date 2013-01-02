@@ -10,7 +10,7 @@ import de.lemo.dms.db.IDBHandler;
 
 public class ConnectorMoodle implements IConnector{
 
-	private static DBConfigObject sourceDBConf;
+	private DBConfigObject sourceDBConf;
 	
 	@Override
 	public boolean testConnections() {

@@ -16,9 +16,9 @@ import org.apache.log4j.PatternLayout;
 
 import com.google.common.collect.Lists;
 
+import de.lemo.dms.connectors.ConnectorManager;
 import de.lemo.dms.connectors.ESourcePlatform;
 import de.lemo.dms.connectors.IConnector;
-import de.lemo.dms.core.ConnectorManager;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 
@@ -102,7 +102,6 @@ public enum ServerConfiguration {
         LemoConfig lemoConfig = null;
         try {
             Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(LemoConfig.class).createUnmarshaller();
-
             for(String fileName : fileNames) {
                 InputStream in = getClass().getResourceAsStream("/" + fileName);
                 if(in != null) {

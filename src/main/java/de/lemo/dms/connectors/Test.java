@@ -28,14 +28,14 @@ public class Test {
 		for(int i = 0 ; i < 5; i++)
 		{
 			DBConfigObject sourceConf = new DBConfigObject();
-			sourceConf.addProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120614\\120614_lemo_"+i+".log");
-			sourceConf.addProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
-			sourceConf.addProperty("filter_log_file", "true");
+			sourceConf.setProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120614\\120614_lemo_"+i+".log");
+			sourceConf.setProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
+			sourceConf.setProperty("filter_log_file", "true");
 			if(i == 0)
-				sourceConf.addProperty("process_metadata", "true");
+				sourceConf.setProperty("process_metadata", "true");
 			else
-				sourceConf.addProperty("process_metadata", "false");
-			sourceConf.addProperty("process_log_file", "true");
+				sourceConf.setProperty("process_metadata", "false");
+			sourceConf.setProperty("process_log_file", "true");
 			
 			ConnectorChemgapedia cm = new ConnectorChemgapedia();
 			cm.setSourceDBConfig(sourceConf);

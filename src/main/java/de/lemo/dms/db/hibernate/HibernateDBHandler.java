@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
@@ -22,9 +23,11 @@ import de.lemo.dms.db.IDBHandler;
 public class HibernateDBHandler implements IDBHandler {
 
     private Logger logger = Logger.getLogger(getClass());
+    private SessionFactory miningSessionFactory;
 
-    private static SessionFactory miningSessionFactory =
-            de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining();
+    public HibernateDBHandler(Configuration config) {
+        miningSessionFactory = de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining(config);
+    }
 
     public Session getMiningSession() {
         return miningSessionFactory.openSession();
@@ -37,32 +40,32 @@ public class HibernateDBHandler implements IDBHandler {
      */
     public void saveCollectionToDB(Session session, List<Collection<?>> data) {
 
-    	try {
+        try {
             int classOb = 0;
             String className = "";
-    		session.beginTransaction();
-    		int i = 0;
-    		for(int j = 0; j < data.size(); j++)
-    			for(Object obj:data.get(j))
-    			{
-                	
-                	if(!className.equals("") && !className.equals(obj.getClass().getName()))
+            session.beginTransaction();
+            int i = 0;
+            for(int j = 0; j < data.size(); j++)
+                for(Object obj : data.get(j))
+                {
+
+                    if(!className.equals("") && !className.equals(obj.getClass().getName()))
                     {
-                         System.out.println("Wrote " + classOb + " objects of class " + className);
-                         classOb = 0;
+                        logger.debug("Wrote " + classOb + " objects of class " + className);
+                        classOb = 0;
                     }
-                	className = obj.getClass().getName();
-                	i++;
-                	classOb++;
+                    className = obj.getClass().getName();
+                    i++;
+                    classOb++;
                     session.saveOrUpdate(obj);
-                    if(i % 50 == 0) 
+                    if(i % 50 == 0)
                     {
                         // flush a batch of inserts and release memory:
                         session.flush();
                         session.clear();
-                     }
+                    }
                 }
-            System.out.println("Wrote " + classOb + " objects of class " + className + " to database.");
+            logger.debug("Wrote " + classOb + " objects of class " + className + " to database.");
             session.getTransaction().commit();
             session.close();
         } catch (HibernateException e)

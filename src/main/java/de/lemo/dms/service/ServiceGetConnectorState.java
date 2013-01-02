@@ -7,8 +7,9 @@ import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
+import de.lemo.dms.connectors.ConnectorManager;
 import de.lemo.dms.connectors.EConnectorState;
-import de.lemo.dms.core.ConnectorManager;
 
 /**
  * return the state of the connector 

@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import de.lemo.dms.db.EQueryType;
@@ -25,9 +26,10 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 public class HibernateDBHandler implements IDBHandler {
 
     private Logger logger = Logger.getLogger(getClass());
-
+    private SessionFactory miningSessionFactory;
+    
     public Session getMiningSession() {
-        return de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining().openSession();
+        return miningSessionFactory.openSession();
     }
 
     @Override

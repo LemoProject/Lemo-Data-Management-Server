@@ -10,13 +10,12 @@ import de.lemo.dms.db.IDBHandler;
 
 public class ConnectorMoodle implements IConnector{
 
-	private static DBConfigObject sourceDBConf;
- 
+	private DBConfigObject sourceDBConf;
 	
 	@Override
 	public boolean testConnections() {
 		try{
-            Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
+            Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle(sourceDBConf).openSession();
             session.close();
        
             IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
@@ -33,7 +32,6 @@ public class ConnectorMoodle implements IConnector{
 		ExtractAndMapMoodle extract = new ExtractAndMapMoodle();	
 		String[] s = new String[1];
 		s[0] = "ExtractAndMapMoodle";
-		
 		extract.start(s, platformName, sourceDBConf);		
 	}
 
