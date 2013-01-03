@@ -3,15 +3,22 @@ package de.lemo.dms.core;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.Order;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
+import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.RoleMining;
 import de.lemo.dms.processing.resulttype.ResultListRoleObject;
 import de.lemo.dms.processing.resulttype.RoleObject;
@@ -43,7 +50,7 @@ public class Version {
 		    model.setPomFile(pomfile);
 		    version = model.getVersion();
 		}catch(Exception ex){
-			
+		
 		}
 		return version;
 	}
@@ -57,12 +64,21 @@ public class Version {
 		try {
 			Session session = dbHandler.getMiningSession();
 
-			@SuppressWarnings("unchecked")
+			/*@SuppressWarnings("unchecked")
 			ArrayList<String> dbversion = (ArrayList<String>) dbHandler
 					.performQuery(session, EQueryType.HQL,
-							"SELECT * FROM config");
+							"SELECT platform FROM config ORDER BY lastmodified DESC LIMIT 1");
 			version = dbversion.get(0);
-			dbHandler.closeSession(session);
+			dbHandler.closeSession(session);*/
+			Criteria criteria = session.createCriteria(ConfigMining.class, "config");
+			criteria.setMaxResults(1);
+			criteria.addOrder(org.hibernate.criterion.Order.desc("lastmodified"));
+			ConfigMining prop = (ConfigMining) criteria.list().get(0);
+			version = prop.getPlatform().toString();
+			//SELECT platform FROM config ORDER BY lastmodified DESC LIMIT 1
+			//ConfigMining prop = (ConfigMining) criteria.list().get(0);
+			//prop.getPlatf
+			
 		} catch (Exception ex) {
 			logger.warn("cant read version from db\n"+ex.getMessage());
 		}

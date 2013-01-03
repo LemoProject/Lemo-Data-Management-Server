@@ -331,19 +331,28 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
-				<configuration>
-					<target>
-						<exec executable="git" outputproperty="BUILD_NUMBER">
-							<arg value="describe"/>
-						</exec>
-						<echo message="Build Number: ${BUILD_NUMBER}"/>
-						<copy file="pom.xml" tofile="pom.xml.old"/>
-						<replaceregexp file="pom.xml"
-							match="(&lt;version&gt;).*(&lt;/version&gt;&lt;!-- FLAG 1 identifier DONT DELETE --&gt;)"
-							replace="\1${BUILD_NUMBER}\2"
-							byline="true"/>
-					</target>
-				</configuration>
+				<executions>
+                	<execution>
+	                    <id>versionnumber</id>
+						<configuration>
+							<target>
+								<exec executable="git" outputproperty="BUILD_NUMBER">
+									<arg value="describe"/>
+								</exec>
+								<echo message="Build Number: ${BUILD_NUMBER}"/>
+								<copy file="pom.xml" tofile="pom.xml.old"/>
+								<replaceregexp file="pom.xml"
+									match="(&lt;version&gt;).*(&lt;/version&gt;&lt;!-- FLAG 1 identifier DONT DELETE --&gt;)"
+									replace="\1${BUILD_NUMBER}\2"
+									byline="true"/>
+							</target>
+						</configuration>
+					    <phase>package</phase>
+	                    <goals>
+	                        <goal>run</goal>
+	                    </goals>
+                	</execution>
+                </executions>
 			</plugin>
 
 		</plugins>
