@@ -45,52 +45,48 @@ import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
  */
 public class XMLPackageParser {
 	
-	
+	/** The level objects. */
 	private HashMap<String, LevelMining> levelObj = new HashMap<String, LevelMining>();
 	
+	/** The level association objects . */
 	private HashMap<Long, LevelAssociationMining> levelAssociations = new HashMap<Long, LevelAssociationMining>();
 	
+	/** The level course objects. */
 	private HashMap<Long, LevelCourseMining> levelCourses = new HashMap<Long, LevelCourseMining>();
 	
+	/** The largest level id of previous runs. */
 	private Long levId = 0L;
+	
+	/** The largest level association id of previous runs. */
 	private Long levAscId = 0L;
+	
+	/** The largest level course id of previous runs. */
 	private Long levCouId = 0L;
-	
-	//-------------------------------
-	
-	/** The list of department objects. */
-	//private HashMap<String, DepartmentMining> departmentObj = new HashMap<String, DepartmentMining>();
-	
-	/** The list of degree objects. */
-	//private HashMap<String, DegreeMining> degreeObj = new HashMap<String, DegreeMining>();
-	
+
 	/** The list of course objects. */
 	private HashMap<String, CourseMining> courseObj = new HashMap<String, CourseMining>();
 	
-	/** The list of department degree objects. */
-	//private HashMap<Long, DepartmentDegreeMining> departmentDegrees = new HashMap<Long, DepartmentDegreeMining>();
-	
-	/** The list of degree courses objects. */
-	//private HashMap<Long, DegreeCourseMining> degreeCourses = new HashMap<Long, DegreeCourseMining>();
-	
 	/** The course resources objects. */
 	private HashMap<Long, CourseResourceMining> courseResources = new HashMap<Long, CourseResourceMining>();
-	
+
 	/** The list of resource objects. */
 	private HashMap<String, ResourceMining> resourceObj = new HashMap<String, ResourceMining>();
 	
-	private ArrayList<String> fnames = new ArrayList<String>();
+	/** The list of file names */
+	private ArrayList<String> fileNames = new ArrayList<String>();
 	
+	/** The map containing the IDMapping-objects. */
 	private HashMap<String, IDMappingMining> id_mapping;
 	
+	/** The largest course id of previous runs. */
 	private Long couId = 0L;
+	/** The resource level id of previous runs. */
 	private Long resId = 0L;
+	/** The largest course resource id of previous runs. */
 	private Long couResId = 0L;
-	private PlatformMining pf;
+	private PlatformMining platform;
 	
 	private IDBHandler dbHandler;
-	
-	//private Long largestId;
 	
 	
 	/**
@@ -101,7 +97,7 @@ public class XMLPackageParser {
 	@SuppressWarnings("unchecked")
     public XMLPackageParser(PlatformMining platform)
 	{
-		pf = platform;
+		this.platform = platform;
 		
 		dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();	
 		Session session = dbHandler.getMiningSession();
@@ -113,7 +109,6 @@ public class XMLPackageParser {
 			id_mapping.put(ids.get(i).getHash(), ids.get(i));
 		System.out.println("Loaded " + id_mapping.size() + " IDMappingMining objects from the mining database.");
 		
-		//----------
 		List<LevelMining> levs = (List<LevelMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM LevelMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(levs.size() > 0)
     		levId = levs.get(levs.size()-1).getId();
@@ -136,7 +131,6 @@ public class XMLPackageParser {
     		this.resourceObj.put(ress.get(i).getUrl(), ress.get(i));
 		System.out.println("Loaded " + resourceObj.size() + " ResourceMining objects from the mining database.");
 		
-		//----------
 		List<LevelAssociationMining> levAsc = (List<LevelAssociationMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM LevelAssociationMining x where x.platform=" + platform.getId() + " order by x.id asc");
     	if(levAsc.size() > 0)
     		levAscId = levAsc.get(levAsc.size()-1).getId();
@@ -210,7 +204,6 @@ public class XMLPackageParser {
 		    	  resource.setProcessingTime(0L);
 		      }
 		      
-		      //--------------
 		      String level1 ="";
 		      String level2 ="";
 		      String level3 ="";
@@ -232,8 +225,8 @@ public class XMLPackageParser {
 		      if(levelObj.get(level1) == null)
 		      {		    	 
 		    	  lev1.setTitle(level1);
-		    	  lev1.setId(Long.valueOf(pf.getPrefix() + "" + (levId + 1)));
-		    	  lev1.setPlatform(pf.getId());
+		    	  lev1.setId(Long.valueOf(this.platform.getPrefix() + "" + (levId + 1)));
+		    	  lev1.setPlatform(this.platform.getId());
 		    	  lev1.setDepth(1);
 		    	  levId++;
 		    	  levelObj.put(lev1.getTitle(), lev1);
@@ -244,8 +237,8 @@ public class XMLPackageParser {
 		      {
 		    	  
 		    	  lev2.setTitle(level2);
-		    	  lev2.setId(Long.valueOf(pf.getPrefix() + "" + (levId + 1)));
-		    	  lev2.setPlatform(pf.getId());
+		    	  lev2.setId(Long.valueOf(this.platform.getPrefix() + "" + (levId + 1)));
+		    	  lev2.setPlatform(this.platform.getId());
 		    	  lev2.setDepth(2);
 		    	  levId++;
 		    	  levelObj.put(lev2.getTitle(), lev2);
@@ -256,8 +249,8 @@ public class XMLPackageParser {
 		      {
 		    	 
 		    	  lev3.setTitle(level3);
-		    	  lev3.setId(Long.valueOf(pf.getPrefix() + "" + (levId + 1)));
-		    	  lev3.setPlatform(pf.getId());
+		    	  lev3.setId(Long.valueOf(this.platform.getPrefix() + "" + (levId + 1)));
+		    	  lev3.setPlatform(this.platform.getId());
 		    	  lev3.setDepth(3);
 		    	  levId++;
 		    	  levelObj.put(lev3.getTitle(), lev3);
@@ -268,20 +261,15 @@ public class XMLPackageParser {
 		      if(courseObj.get(resource.getTitle()) == null)
 		      {
 		    	  course.setTitle(resource.getTitle());
-		    	  course.setId(Long.valueOf(pf.getPrefix() + "" + (couId + 1)));
-		    	  course.setPlatform(pf.getId());
+		    	  course.setId(Long.valueOf(this.platform.getPrefix() + "" + (couId + 1)));
+		    	  course.setPlatform(this.platform.getId());
 		    	  couId++;
 		    	  courseObj.put(course.getTitle(),course);
 		      }
 		      else
 		    	  course = courseObj.get(resource.getTitle());
-		      
-		      //--------------
 
-
-		      //Set URL (has to be done in another method - otherwise it isn't working)
-
-		      
+		      //Set URL
 		      NodeList root = document.getElementsByTagName("vlunode");
 				for(int i = 0 ; i < root.getLength(); i++)
 				{
@@ -296,39 +284,36 @@ public class XMLPackageParser {
 					}
 				}
 		      
-		      if(!resource.getUrl().contains("/0/"))
-		      {		    	  
-			      resource.setPosition(0);
-	
-			      this.resourceObj.get(resource.getUrl());
-			      //if(this.resourceObj.get(r.getUrl()) == null)
-			      //{
-					  	long r_id = -1;
-	 	       			if(id_mapping.get(resource.getUrl()) != null)
-	 	       			{
-	 	       				r_id = id_mapping.get(resource.getUrl()).getId();
-	 	       				resource.setId(r_id);
-	 	       			}
-	 	       			if(r_id == -1 )
-	 	       			{
-	 	       				r_id = resId + 1;
-	 	       				resId = r_id;
-	 	       				r_id = Long.valueOf(pf.getPrefix() + "" + r_id);
-	 	       				id_mapping.put(resource.getUrl(), new IDMappingMining(r_id, resource.getUrl(), pf.getId()));
-	 	       				resource.setId(r_id);
-	 	       			}
-			    	  
-	 	       			resource.setPlatform(pf.getId());
+				if(!resource.getUrl().contains("/0/"))
+				{		    	  
+					resource.setPosition(0);
+					this.resourceObj.get(resource.getUrl());
+					long r_id = -1;
+					if(id_mapping.get(resource.getUrl()) != null)
+					{
+						r_id = id_mapping.get(resource.getUrl()).getId();
+						resource.setId(r_id);
+					}
+					if(r_id == -1 )
+					{
+						r_id = resId + 1;
+						resId = r_id;
+						r_id = Long.valueOf(this.platform.getPrefix() + "" + r_id);
+						id_mapping.put(resource.getUrl(), new IDMappingMining(r_id, resource.getUrl(), this.platform.getId()));
+						resource.setId(r_id);
+					}
+	    	  
+					resource.setPlatform(this.platform.getId());
 			    	  this.resourceObj.put(resource.getUrl(), resource);
-			    	  this.fnames.add(filename);
+			    	  this.fileNames.add(filename);
 			    	  //Save department - degree relation locally
 			    	  if(this.levelAssociations.get(lev2.getId()) == null)
 				      {			    	  
 				    	  LevelAssociationMining ddm = new LevelAssociationMining();
 				    	  ddm.setLower(lev2);
 				    	  ddm.setUpper(lev1);
-				    	  ddm.setId(Long.valueOf(pf.getPrefix() + "" + (levAscId + 1)));
-				    	  ddm.setPlatform(pf.getId());
+				    	  ddm.setId(Long.valueOf(this.platform.getPrefix() + "" + (levAscId + 1)));
+				    	  ddm.setPlatform(this.platform.getId());
 				    	  levAscId++;
 				    	  this.levelAssociations.put(lev2.getId() , ddm);			    	  
 				      }
@@ -337,33 +322,32 @@ public class XMLPackageParser {
 				    	  LevelAssociationMining ddm = new LevelAssociationMining();
 				    	  ddm.setLower(lev3);
 				    	  ddm.setUpper(lev2);
-				    	  ddm.setId(Long.valueOf(pf.getPrefix() + "" + (levAscId + 1)));
-				    	  ddm.setPlatform(pf.getId());
+				    	  ddm.setId(Long.valueOf(this.platform.getPrefix() + "" + (levAscId + 1)));
+				    	  ddm.setPlatform(this.platform.getId());
 				    	  levAscId++;
 				    	  this.levelAssociations.put(lev3.getId() , ddm);			    	  
 				      }
 			    	  
-				      
-				      
+			    	  //Find out whether there already is a association between the course and a hierarchy layer. If not create one.
 				      if(this.levelCourses.get(course.getId()) == null)
 				      {			    	  
 				    	  LevelCourseMining dcm = new LevelCourseMining();
 				    	  dcm.setLevel(lev3);
 				    	  dcm.setCourse(course);
-				    	  dcm.setId(Long.valueOf(pf.getPrefix() + "" + (levCouId + 1)));
-				    	  dcm.setPlatform(pf.getId());
+				    	  dcm.setId(Long.valueOf(this.platform.getPrefix() + "" + (levCouId + 1)));
+				    	  dcm.setPlatform(this.platform.getId());
 				    	  levCouId++;
 				    	  this.levelCourses.put(course.getId() , dcm);			    	  
 				      }
-				      
+				      //Find out whether there already is a association between this resource and a course. If not create one.
 				      if(this.courseResources.get(resource.getId()) == null)
 				      {			    	  
 				    	  CourseResourceMining crm = new CourseResourceMining();
 				    	  crm.setResource(resource);
 				    	  crm.setCourse(course);
-				    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
+				    	  crm.setId(Long.valueOf(this.platform.getPrefix() + "" + (couResId + 1)));
 				    	  couResId++;
-				    	  crm.setPlatform(pf.getId());
+				    	  crm.setPlatform(this.platform.getId());
 				    	  this.courseResources.put(resource.getId(), crm);			    	  
 				      }
 				      
@@ -415,27 +399,27 @@ public class XMLPackageParser {
 			       	       			{
 			       	       				resource_id = resId + 1;
 			       	       				resId = resource_id;
-			       	       				resource_id = Long.valueOf(pf.getPrefix() + "" + resource_id);
-			       	       				id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(), pf.getId()));
+			       	       				resource_id = Long.valueOf(this.platform.getPrefix() + "" + resource_id);
+			       	       				id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(), this.platform.getId()));
 			       	       				
 			       	       				r1.setId(resource_id);
 			       	       			}
 				    				  
 				    				  
 				    				  r1.setPosition(pos);
-				    				  r1.setPlatform(pf.getId());
+				    				  r1.setPlatform(this.platform.getId());
 			    					  tempRes.add(r1);
 			    					  this.resourceObj.put(r1.getUrl(), r1);
 			    					  //this.resourceObj.add(r1);
-			    					  this.fnames.add(filename + "*");
+			    					  this.fileNames.add(filename + "*");
 			    					  if(this.courseResources.get(r1.getId()) == null)
 			    					  {
 			    				    	  CourseResourceMining crm = new CourseResourceMining();
 			    				    	  crm.setResource(r1);
 			    				    	  crm.setCourse(course);
-			    				    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
+			    				    	  crm.setId(Long.valueOf(this.platform.getPrefix() + "" + (couResId + 1)));
 			    				    	  couResId++;
-			    				    	  crm.setPlatform(pf.getId());
+			    				    	  crm.setPlatform(this.platform.getId());
 			    				    	  this.courseResources.put(r1.getId(), crm);			    	  
 			    					  }
 			    					  pos++;///////////
@@ -464,7 +448,7 @@ public class XMLPackageParser {
 						  
 						  if(resourceObj.get(r1.getUrl()) == null)
 						  {
-							  r1.setId(Long.valueOf(pf.getPrefix() + "" + (resId + 1)));
+							  r1.setId(Long.valueOf(this.platform.getPrefix() + "" + (resId + 1)));
 							  resId++;
 						  }
 						  
@@ -473,16 +457,16 @@ public class XMLPackageParser {
 						  
 						  if(this.resourceObj.get(r1.getUrl()) == null)
 						  {
-							  r1.setPlatform(pf.getId());
+							  r1.setPlatform(this.platform.getId());
 							  this.resourceObj.put(r1.getUrl(), r1);
-							  id_mapping.put(r1.getUrl(), new IDMappingMining(r1.getId(), r1.getUrl(), pf.getId()));
-	     	       			  this.fnames.add(filename + "*");
+							  id_mapping.put(r1.getUrl(), new IDMappingMining(r1.getId(), r1.getUrl(), this.platform.getId()));
+	     	       			  this.fileNames.add(filename + "*");
 	   				    	  CourseResourceMining crm = new CourseResourceMining();
 					    	  crm.setResource(r1);
 					    	  crm.setCourse(course);
-					    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
+					    	  crm.setId(Long.valueOf(this.platform.getPrefix() + "" + (couResId + 1)));
 					    	  couResId++;
-					    	  crm.setPlatform(pf.getId());
+					    	  crm.setPlatform(this.platform.getId());
 					    	  this.courseResources.put(r1.getId() , crm);	
 						  }
 				      }
@@ -589,5 +573,17 @@ public class XMLPackageParser {
 		{
 			System.out.println("Exception @ readAllVLUs " + e.getMessage());
 		}
+	}
+	
+	public void clearMaps()
+	{
+		courseObj.clear();
+		courseResources.clear();
+		fileNames.clear();
+		id_mapping.clear();
+		levelAssociations.clear();
+		levelCourses.clear();
+		levelObj.clear();
+		resourceObj.clear();
 	}
 }

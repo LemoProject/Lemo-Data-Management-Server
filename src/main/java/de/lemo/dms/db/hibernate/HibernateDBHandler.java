@@ -90,6 +90,7 @@ public class HibernateDBHandler implements IDBHandler {
      */
     public void closeSession(Session session) {
         try {
+        	session.clear();
             session.close();
         } catch (HibernateException he)
         {

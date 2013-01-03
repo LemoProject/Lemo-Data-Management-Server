@@ -36,30 +36,79 @@ import de.lemo.dms.connectors.chemgapedia.fizHelper.LogLine;
  */
 public class LogReader {
 
-	
+	/**
+	 * User-objects of previous connector-runs
+	 */
 	private HashMap<String, UserMining> oldUsers = new HashMap<String, UserMining>();
+	/**
+	 * User-objects of current connector-run
+	 */
 	private HashMap<String, UserMining> newUsers = new HashMap<String, UserMining>();
-	/** The resources. */
+	/**
+	 * Resource-objects of previous connector-runs
+	 */
 	private HashMap<String, ResourceMining> oldResources = new HashMap<String, ResourceMining>();
+	/**
+	 * Resource-objects of current connector-run
+	 */
 	private HashMap<String, ResourceMining> newResources = new HashMap<String, ResourceMining>();
+	/**
+	 * CourseResource-objects found in database
+	 */
 	private HashMap<String, CourseResourceMining> courseResources = new HashMap<String, CourseResourceMining>();
+	/**
+	 * IDMapping-objects of previous connector-runs
+	 */
 	private HashMap<String, IDMappingMining> id_mapping = new HashMap<String, IDMappingMining>();
+	/**
+	 * IDMapping-objects of current connector-run
+	 */
 	private HashMap<String, IDMappingMining> new_id_mapping = new HashMap<String, IDMappingMining>();
+	/**
+	 * HashMap storing all logged accesses, with according user-login as key
+	 */
 	private HashMap<String, ArrayList<LogObject>> userHistories = new HashMap<String, ArrayList<LogObject>>();
+	/**
+	 * Course-objects of previous connector-runs
+	 */
 	private HashMap<String, CourseMining> oldCourses = new HashMap<String, CourseMining>();
+	/**
+	 * Internal clock-object for statistics
+	 */
 	private Clock clock = new Clock();
+	/**
+	 * DBHandler-object, for connection to Mining-Database
+	 */
 	private IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+	/**
+	 * Session object for database-interaction
+	 */
 	private Session session;
+	/**
+	 * Platform-object for import
+	 */
 	private PlatformMining platform;
+	/**
+	 * Database's largest id used in ResourceLogMining
+	 */
 	private Long resLogId;
+	/**
+	 * Database's largest id used in UserMining
+	 */
 	private Long userIdCount;
+	/**
+	 * Database's largest id used in ResourceMining
+	 */
 	private Long resIdCount;
+	/**
+	 * Database's largest timestamp used in ResourceLogMining
+	 */
+	private Long resLogTime;
 	
 	/**
-	 * Constructor. Creates a new LogReader-object. 
+	 * Constructor. Creates a new LogReader-object, imports necessary objects from Mining-Database and sets counters.
 	 * 
 	 * @param platform	Platform-object of the Chemgapedia instance
-	 * @param idcount	
 	 */
 	@SuppressWarnings("unchecked")
     public LogReader(PlatformMining platform)
@@ -143,6 +192,12 @@ public class LogReader {
             if(resLogId == null)
             	resLogId = 0L;
             
+	    	Query logTime = session.createQuery("select max(log.timestamp) from ResourceLogMining log where log.platform="+ this.platform.getId() +"");
+            if(logCount.list().size() > 0)
+            	resLogTime = ((ArrayList<Long>) logCount.list()).get(0);
+            if(resLogTime == null)
+            	resLogTime = 0L;
+            
 		}catch(Exception e)
 		{
 			System.out.println(e.getMessage());
@@ -165,17 +220,25 @@ public class LogReader {
 		
 		for(ResourceMining resource : newResources.values())
 			oldResources.put(resource.getUrl(), resource);
-		newResources.clear();
+		
 		
 		for(UserMining user : newUsers.values())
 			oldUsers.put(user.getLogin(), user);
-		newUsers.clear();
+		
 		
 		for(IDMappingMining mapping : new_id_mapping.values())
 			id_mapping.put(mapping.getHash(), mapping);
-		new_id_mapping.clear();
 		
+		clearMaps();
+		
+	}
+	
+	public void clearMaps()
+	{
+		newResources.clear();
+		newUsers.clear();
 		userHistories.clear();
+		new_id_mapping.clear();
 	}
 	
 	
@@ -212,7 +275,11 @@ public class LogReader {
 				if(susp1 < 1 && susp2 == 0 && susp3 == 0)
 					tempUsers.put(((UserMining)user[i]).getLogin(), (UserMining)user[i]);
 				else
+				{
+					
 					linesDeleted += a.size();
+					userHistories.remove(((UserMining)user[i]).getLogin());
+				}
 			}
 		}
 		
@@ -226,6 +293,8 @@ public class LogReader {
 	 * Loads the data from the server-log-file.
 	 *
 	 * @param inFile the path of the server log file
+	 * @param linesPerRun Number of log-lines that are read before data is stored to database
+	 * @param filterLog Determines whether suspicious logs are ignored or not
 	 */
 	public void loadServerLogData(String inFile, Long linesPerRun, boolean filterLog)
 	{	    
@@ -236,18 +305,12 @@ public class LogReader {
 	    	int count = 0;
 	    	try 
 	    	{
-	    		String line1 = null;
+	    		String line = null;
 	    		clock.reset();
-	    		ArrayList<String> lines = new ArrayList<String>();
-	    		while ((line1 = input.readLine()) != null)
+	    		Long i = 0L;
+	    		while ((line = input.readLine()) != null)
 	    		{
-	    			lines.add(line1);
-	    		}
-	    		Collections.sort(lines);
-	    		
-	    		for(int i = 0; i < lines.size() ; i++)
-	    		{
-	    			String line = lines.get(i);
+	    			i++;
 	    			if(linesPerRun != 0 && i > 0 && i % linesPerRun == 0)
 	    			{
 	    				update(filterLog);
@@ -489,26 +552,24 @@ public class LogReader {
 		{
 			for(int i =0; i < loadedItem.size(); i++)
 			{
-				if(this.newUsers.get(loadedItem.get(i).getUser().getLogin()) != null)
-				{
-					ResourceLogMining rl = new ResourceLogMining();
-					
-					if(oldResources.get(loadedItem.get(i).getUrl()) == null)
-						rl.setResource(newResources.get(loadedItem.get(i).getUrl()));
-					else
-						rl.setResource(oldResources.get(loadedItem.get(i).getUrl()));
+				ResourceLogMining rl = new ResourceLogMining();
+				
+				//Set Url for resource-object
+				if(newResources.get(loadedItem.get(i).getUrl()) != null)
+					rl.setResource(newResources.get(loadedItem.get(i).getUrl()));
+				else
+					rl.setResource(oldResources.get(loadedItem.get(i).getUrl()));
 
-					rl.setCourse(loadedItem.get(i).getCourse());
-					rl.setUser(loadedItem.get(i).getUser());
-					rl.setTimestamp(loadedItem.get(i).getTime());
-					rl.setDuration(loadedItem.get(i).getDuration());
-					rl.setAction("View");
-					rl.setPlatform(this.platform.getId());
-					rl.setId(resLogId + 1);
-					resLogId++;
-					
-					resourceLogMining.add(rl);
-				}
+				rl.setCourse(loadedItem.get(i).getCourse());
+				rl.setUser(loadedItem.get(i).getUser());
+				rl.setTimestamp(loadedItem.get(i).getTime());
+				rl.setDuration(loadedItem.get(i).getDuration());
+				rl.setAction("View");
+				rl.setPlatform(this.platform.getId());
+				rl.setId(resLogId + 1);
+				resLogId++;
+				
+				resourceLogMining.add(rl);
 			}
 		}
 		Collections.sort(resourceLogMining);

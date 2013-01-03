@@ -3,6 +3,7 @@ package de.lemo.dms.connectors.chemgapedia;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -12,6 +13,7 @@ import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.LogReader;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.XMLPackageParser;
@@ -112,12 +114,14 @@ public class ConnectorChemgapedia implements IConnector{
 				XMLPackageParser x = new XMLPackageParser(platform);
 				x.readAllVlus(vscPath);
 				x.saveAllToDB();
+				x.clearMaps();
 			}
 			if(processLog)
 			{			
 				LogReader logR = new LogReader(platform);
 				logR.loadServerLogData(logPath, 0L, filter);
 				logR.save();
+				logR.clearMaps();
 			}
 			
 			Long endtime = System.currentTimeMillis()/1000;
@@ -175,21 +179,24 @@ public class ConnectorChemgapedia implements IConnector{
 				platform.setType("Chemgapedia");
 				platform.setName(platformName);
 				platform.setPrefix(pref + 1);			
-			}
-			
+			}			
+			session.clear();
 			session.close();		
 			if(processVSC)
 			{
 				XMLPackageParser x = new XMLPackageParser(platform);
 				x.readAllVlus(vscPath);
 				x.saveAllToDB();
+				x.clearMaps();
 			}
 			if(processLog)
 			{			
 				LogReader logR = new LogReader(platform);				
-				logR.loadServerLogData(logPath, 100000L, filter);
+				logR.loadServerLogData(logPath, 10000L, filter);
 				logR.save();
+				logR.clearMaps();				
 			}
+			
 			
 			Long endtime = System.currentTimeMillis()/1000;
 			ConfigMining config = new ConfigMining();
@@ -198,9 +205,12 @@ public class ConnectorChemgapedia implements IConnector{
 		    config.setDatabaseModel("1.2");
 		    config.setPlatform(platform.getId());
 		    
+
+		    
 		    dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		    session = dbHandler.getMiningSession();
 	        dbHandler.saveToDB(session, config);
+	        dbHandler.saveToDB(session, platform);
 	        dbHandler.closeSession(session);
 		}
 	}
