@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 @XmlType
-public class HibernateProperty {
+public class HibernatePropertyConfig {
 
     @XmlAttribute(required = true)
     protected String name;

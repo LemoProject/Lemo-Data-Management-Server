@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class LemoConfig {
 
     @XmlElement(name = "apps")
-    protected ApplicationServer applicationServer;
+    protected ApplicationServerConfig applicationServer;
 
     @XmlElement(name = "dms")
-    protected DataManagementServer dataManagementServer;
+    protected DataManagementServerConfig dataManagementServer;
 }

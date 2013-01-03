@@ -10,19 +10,17 @@ import javax.xml.bind.annotation.XmlType;
 import com.google.common.collect.Lists;
 
 @XmlType
-public class DataManagementServer {
+public class ApplicationServerConfig {
 
-    private static final String DEFAULT_NAME = "Lemo Data Management Server";
+    private static final String DEFAULT_NAME = "Lemo Application Server";
 
     @XmlAttribute
     protected String name = DEFAULT_NAME;
 
+    @XmlElement(name = "dms-url")
+    protected String dataManagementServerURL;
+
     @XmlElementWrapper(name = "session-factory", required = true)
     @XmlElement(name = "property")
-    protected List<HibernateProperty> hibernateConfig = Lists.newArrayList();
-
-    @XmlElementWrapper(name = "connectors", required = true)
-    @XmlElement(name = "connector")
-    protected List<Connector> connectors = Lists.newArrayList();
-
+    protected List<HibernatePropertyConfig> hibernateConfig = Lists.newArrayList();
 }

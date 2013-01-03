@@ -125,10 +125,10 @@ public enum ServerConfiguration {
         return lemoConfig;
     }
 
-    private List<IConnector> createConnectors(List<Connector> connectorConfigurations) {
+    private List<IConnector> createConnectors(List<ConnectorConfig> connectorConfigurations) {
 
         List<IConnector> result = Lists.newArrayList();
-        for(Connector connectorConfig : connectorConfigurations) {
+        for(ConnectorConfig connectorConfig : connectorConfigurations) {
             logger.info("Connector: " + connectorConfig.name);
             ESourcePlatform platform = ESourcePlatform.valueOf(connectorConfig.platformType);
             Class<? extends IConnector> connectorType = platform.getConnectorType();
@@ -144,9 +144,9 @@ public enum ServerConfiguration {
         return result;
     }
 
-    private DBConfigObject createDBConfig(List<HibernateProperty> lemoHibernateConfig) {
+    private DBConfigObject createDBConfig(List<HibernatePropertyConfig> lemoHibernateConfig) {
         DBConfigObject result = new DBConfigObject();
-        for(HibernateProperty property : lemoHibernateConfig) {
+        for(HibernatePropertyConfig property : lemoHibernateConfig) {
             result.setProperty(property.name, property.value);
         }
         return result;

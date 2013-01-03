@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 import com.google.common.collect.Lists;
 
 @XmlType
-public class Connector {
+public class ConnectorConfig {
 
     @XmlAttribute(required = true)
     protected String name;
@@ -23,7 +23,7 @@ public class Connector {
 
     @XmlElementWrapper(name = "session-factory", required = true)
     @XmlElement(name = "property")
-    protected List<HibernateProperty> hibernateConfig = Lists.newArrayList();
+    protected List<HibernatePropertyConfig> hibernateConfig = Lists.newArrayList();
 
     @XmlElement(name = "log-path")
     protected String logPath;
