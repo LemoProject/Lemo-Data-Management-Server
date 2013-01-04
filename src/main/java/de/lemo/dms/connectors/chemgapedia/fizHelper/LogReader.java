@@ -249,44 +249,51 @@ public class LogReader {
 	 */
 	private void filterServerLogFile()
 	{
-		clock.reset();
-		ArrayList<LogObject>  a;
-		Object[] user = this.newUsers.values().toArray();
-		HashMap<String, UserMining> tempUsers = new HashMap<String, UserMining>();
-		double old = Long.parseLong(newUsers.size() +"");
-		int totalLines = 0;
-		int linesDeleted = 0;
-		BotFinder bf = new BotFinder();
-		for(int i= 0; i < user.length; i++)
-		{
-			int susp1 = 0;
-			int susp2 = 0;
-			int susp3 = 0;
-			
-			a = userHistories.get(((UserMining)user[i]).getLogin());
-			Collections.sort(a);
-			
-			if(a != null && a.size() > 0)
+		try{
+			clock.reset();
+			ArrayList<LogObject>  a;
+			Object[] user = this.newUsers.values().toArray();
+			HashMap<String, UserMining> tempUsers = new HashMap<String, UserMining>();
+			double old = Long.parseLong(newUsers.size() +"");
+			int totalLines = 0;
+			int linesDeleted = 0;
+			BotFinder bf = new BotFinder();
+			for(int i= 0; i < user.length; i++)
 			{
-				totalLines += a.size();
-				susp1 = bf.checkFastOnes(a, 1).size();
-				susp2 = bf.checkPeriods(a, 5);
-				susp3 = bf.checkForRepetitions(a, 10);
-				if(susp1 < 1 && susp2 == 0 && susp3 == 0)
-					tempUsers.put(((UserMining)user[i]).getLogin(), (UserMining)user[i]);
-				else
+				int susp1 = 0;
+				int susp2 = 0;
+				int susp3 = 0;
+				
+				a = userHistories.get(((UserMining)user[i]).getLogin());
+				Collections.sort(a);
+				
+				if(a != null && a.size() > 0)
 				{
-					
-					linesDeleted += a.size();
-					userHistories.remove(((UserMining)user[i]).getLogin());
+					totalLines += a.size();
+					susp1 = bf.checkFastOnes(a, 1).size();
+					susp2 = bf.checkPeriods(a, 5);
+					susp3 = bf.checkForRepetitions(a, 10);
+					if(susp1 < 1 && susp2 == 0 && susp3 == 0)
+						tempUsers.put(((UserMining)user[i]).getLogin(), (UserMining)user[i]);
+					else
+					{
+						
+						linesDeleted += a.size();
+						userHistories.remove(((UserMining)user[i]).getLogin());
+					}
 				}
 			}
+			
+			double cutUsePerc = (old - Long.valueOf(""+tempUsers.size())) / (old / 100);
+			double tmp = totalLines / 100.0d;
+			double cutLinPerc = linesDeleted / tmp;
+			System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users  out of " + old + " (" + new DecimalFormat("0.00").format(cutUsePerc) + "%), eliminating " + linesDeleted + " log lines (" + new DecimalFormat("0.00").format(cutLinPerc) + "%).");
+			this.newUsers = tempUsers;
+		}catch(Exception e)
+		{
+			System.out.println("Error while filtering log-file:");
+			e.printStackTrace();
 		}
-		
-		double cutUsePerc = (old - Long.valueOf(""+tempUsers.size())) / (old / 100);
-		double cutLinPerc = linesDeleted / (totalLines / 100);
-		System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users  out of " + old + " (" + new DecimalFormat("0.00").format(cutUsePerc) + "%), eliminating " + linesDeleted + " log lines (" + new DecimalFormat("0.00").format(cutLinPerc) + "%).");
-		this.newUsers = tempUsers;
 	}
 	
 	/**

@@ -192,7 +192,7 @@ public class ConnectorChemgapedia implements IConnector{
 			if(processLog)
 			{			
 				LogReader logR = new LogReader(platform);				
-				logR.loadServerLogData(logPath, 10000L, filter);
+				logR.loadServerLogData(logPath, 0L, filter);
 				logR.save();
 				logR.clearMaps();				
 			}

@@ -42,7 +42,7 @@ public class Test {
 	 */
 	public void runChemConn()
 	{
-		String logs = "C:\\Users\\s.schwarzrock\\Desktop\\120614\\lemo-join.log";
+		String logs = "C:\\Users\\s.schwarzrock\\Desktop\\120614\\130104_lemojoin_10K_1.log";
 		//int i = 0;
 		//for(int i = 1 ; i < 6; i++)
 		//{
@@ -50,7 +50,7 @@ public class Test {
 			sourceConf.addProperty("path.log_file", logs);
 			sourceConf.addProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
 			sourceConf.addProperty("filter_log_file", "true");
-			sourceConf.addProperty("process_metadata", "false");
+			sourceConf.addProperty("process_metadata", "true");
 			sourceConf.addProperty("process_log_file", "true");
 			
 			ConnectorChemgapedia cm = new ConnectorChemgapedia();
