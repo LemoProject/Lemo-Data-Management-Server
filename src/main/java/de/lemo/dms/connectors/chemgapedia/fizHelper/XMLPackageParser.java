@@ -20,20 +20,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import de.lemo.dms.core.Clock;
-import de.lemo.dms.core.ServerConfigurationHardCoded;
 
+import de.lemo.dms.core.Clock;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
+import de.lemo.dms.db.miningDBclass.CourseResourceMining;
+import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
 import de.lemo.dms.db.miningDBclass.DegreeMining;
+import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
 import de.lemo.dms.db.miningDBclass.DepartmentMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
-import de.lemo.dms.db.miningDBclass.CourseResourceMining;
-import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
-import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
 
 
 
@@ -82,14 +82,14 @@ public class XMLPackageParser {
 	
 	
 	@SuppressWarnings("unchecked")
-    public XMLPackageParser(PlatformMining platform)
+    public XMLPackageParser(long platformId)
 	{
-		pf = platform;
+	 
 		
-		dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();	
+		dbHandler = ServerConfiguration.getInstance().getDBHandler();	
 		Session session = dbHandler.getMiningSession();
 		
-		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(session, EQueryType.HQL, "from IDMappingMining x where x.platform=" + platform.getId() + " order by x.id asc");
+		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(session, EQueryType.HQL, "from IDMappingMining x where x.platform=" +platformId + " order by x.id asc");
 		
 		id_mapping = new HashMap<String, IDMappingMining>();
 		for(int i = 0; i < ids.size(); i++)
@@ -97,50 +97,50 @@ public class XMLPackageParser {
 			id_mapping.put(ids.get(i).getHash(), ids.get(i));
 		}
 		
-		List<DepartmentMining> deps = (List<DepartmentMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DepartmentMining x where x.platform=" + platform.getId() + " order by x.id asc");
+		List<DepartmentMining> deps = (List<DepartmentMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DepartmentMining x where x.platform=" + platformId + " order by x.id asc");
     	if(deps.size() > 0)
     		depId = deps.get(deps.size()-1).getId();
 		for(int i = 0; i < deps.size(); i++)
     		this.departmentObj.put(deps.get(i).getTitle(), deps.get(i));
     	
-		List<DegreeMining> degs = (List<DegreeMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DegreeMining x where x.platform=" + platform.getId() + " order by x.id asc");
+		List<DegreeMining> degs = (List<DegreeMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DegreeMining x where x.platform=" +platformId + " order by x.id asc");
     	if(degs.size() > 0)
     		degId = degs.get(degs.size()-1).getId();
 		for(int i = 0; i < degs.size(); i++)
     		this.degreeObj.put(degs.get(i).getTitle(), degs.get(i));
     	
-		List<CourseMining> cous = (List<CourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM CourseMining x where x.platform=" + platform.getId() + " order by x.id asc");
+		List<CourseMining> cous = (List<CourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM CourseMining x where x.platform=" + platformId + " order by x.id asc");
     	if(cous.size() > 0)
     		couId = cous.get(cous.size()-1).getId();
 		for(int i = 0; i < cous.size(); i++)
     		this.courseObj.put(cous.get(i).getTitle(), cous.get(i));
 		
-		List<ResourceMining> ress = (List<ResourceMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM ResourceMining x where x.platform=" + platform.getId() + " order by x.id asc");
+		List<ResourceMining> ress = (List<ResourceMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM ResourceMining x where x.platform=" + platformId + " order by x.id asc");
     	if(ress.size() > 0)
     		resId = ress.get(ress.size()-1).getId();
 		for(int i = 0; i < ress.size(); i++)
     		this.resourceObj.put(ress.get(i).getUrl(), ress.get(i));
 		
-		List<DepartmentDegreeMining> depDeg = (List<DepartmentDegreeMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DepartmentDegreeMining x where x.platform=" + platform.getId() + " order by x.id asc");
+		List<DepartmentDegreeMining> depDeg = (List<DepartmentDegreeMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DepartmentDegreeMining x where x.platform=" + platformId + " order by x.id asc");
     	if(depDeg.size() > 0)
     		resId = depDeg.get(depDeg.size()-1).getId();
 		for(int i = 0; i < depDeg.size(); i++)
     		this.departmentDegrees.put(depDeg.get(i).getDegree().getId(), depDeg.get(i));
 		
-		List<DegreeCourseMining> degCou = (List<DegreeCourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DegreeCourseMining x where x.platform=" + platform.getId() + " order by x.id asc");
+		List<DegreeCourseMining> degCou = (List<DegreeCourseMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM DegreeCourseMining x where x.platform=" + platformId + " order by x.id asc");
     	if(degCou.size() > 0)
     		degCouId = degCou.get(degCou.size()-1).getId();
 		for(int i = 0; i < degCou.size(); i++)
     		this.degreeCourses.put(degCou.get(i).getCourse().getId(), degCou.get(i));
 		
-		List<CourseResourceMining> couRes = (List<CourseResourceMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM CourseResourceMining x where x.platform=" + platform.getId() + " order by x.id asc");
+		List<CourseResourceMining> couRes = (List<CourseResourceMining>) dbHandler.performQuery(session, EQueryType.HQL, "FROM CourseResourceMining x where x.platform=" +platformId + " order by x.id asc");
     	if(couRes.size() > 0)
     		couResId = couRes.get(couRes.size()-1).getId();
 		for(int i = 0; i < couRes.size(); i++)
     		this.courseResources.put(couRes.get(i).getResource().getId(), couRes.get(i));
 		
     	
-		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "Select largestId from ConfigMining x where x.platform=" + platform.getId() + " order by x.id asc"));
+		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "Select largestId from ConfigMining x where x.platform=" + platformId + " order by x.id asc"));
 		if(l != null && l.size() > 0)
 			largestId = Long.valueOf((l.get(l.size()-1) + "").substring(2));
 		else

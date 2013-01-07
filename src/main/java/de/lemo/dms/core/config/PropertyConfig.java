@@ -5,12 +5,12 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 @XmlType
-public class HibernatePropertyConfig {
+class PropertyConfig {
 
-    @XmlAttribute(required = true)
-    protected String name;
+    @XmlAttribute(name = "name", required = true)
+    public String key;
 
     @XmlValue
-    protected String value;
+    public String value;
 
 }

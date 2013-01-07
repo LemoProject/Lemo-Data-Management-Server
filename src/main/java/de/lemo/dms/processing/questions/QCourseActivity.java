@@ -18,13 +18,12 @@ import java.util.Set;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
@@ -55,10 +54,7 @@ public class QCourseActivity extends Question{
             @FormParam(START_TIME) Long startTime,
             @FormParam(END_TIME) Long endTime,
             @FormParam(RESOLUTION) Integer resolution,
-            @FormParam(TYPES) List<String> resourceTypes) {
-		
-		List<Long> list = new ArrayList<Long>();
-		
+            @FormParam(TYPES) List<String> resourceTypes) {	
 		
 		HashMap<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();
 		//Check arguments
@@ -66,7 +62,7 @@ public class QCourseActivity extends Question{
 		{
 			
 			//Set up db-connection
-			IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+			IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
 			Session session = dbHandler.getMiningSession();
 			
 			//Calculate size of time intervalls

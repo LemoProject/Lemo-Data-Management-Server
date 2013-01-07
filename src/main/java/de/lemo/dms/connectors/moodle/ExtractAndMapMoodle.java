@@ -1,6 +1,42 @@
 package de.lemo.dms.connectors.moodle;
 //import miningDBclass.Config_mining;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Assignment_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Assignment_submissions_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.ChatLog_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Chat_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Context_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.CourseCategories_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Course_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Forum_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Forum_discussions_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Forum_posts_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Grade_grades_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Grade_items_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Groups_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Groups_members_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Log_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Question_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Question_states_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_grades_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_question_instances_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Resource_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Role_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Role_assignments_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Scorm_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.User_LMS;
+import de.lemo.dms.connectors.moodle.moodleDBclass.Wiki_LMS;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.AssignmentMining;
@@ -39,40 +75,6 @@ import de.lemo.dms.db.miningDBclass.ScormMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.WikiMining;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Assignment_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Assignment_submissions_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.ChatLog_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Chat_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Context_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.CourseCategories_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Course_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Forum_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Forum_discussions_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Forum_posts_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Grade_grades_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Grade_items_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Groups_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Groups_members_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Log_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Question_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Question_states_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_grades_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Quiz_question_instances_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Resource_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Role_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Role_assignments_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Scorm_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.User_LMS;
-import de.lemo.dms.connectors.moodle.moodleDBclass.Wiki_LMS;
-
-import org.apache.log4j.Logger;
-import org.hibernate.*;
-
-import de.lemo.dms.connectors.moodle.HibernateUtil;
-import de.lemo.dms.core.ServerConfigurationHardCoded;
-
-import java.util.*;
 
 /** The main class of the extraction process. 
  * Implementation of the abstract extract class for the LMS Moodle.
@@ -80,44 +82,49 @@ import java.util.*;
 public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen einf�gen
 
 //LMS tables instances lists
-	private static List<Log_LMS> log_lms;
-	private static List<Resource_LMS> resource_lms;
-	private static List<Course_LMS> course_lms;
-	private static List<Forum_LMS> forum_lms;
-	private static List<Wiki_LMS> wiki_lms;
-	private static List<User_LMS> user_lms;
-	private static List<Quiz_LMS> quiz_lms;
-	private static List<Quiz_question_instances_LMS> quiz_question_instances_lms;
-	private static List<Question_LMS> question_lms;
-	private static List<Groups_LMS> group_lms;
-	private static List<Groups_members_LMS> group_members_lms;
-	private static List<Question_states_LMS> question_states_lms;
-	private static List<Forum_posts_LMS> forum_posts_lms;
-	private static List<Role_LMS> role_lms;
-	private static List<Context_LMS> context_lms;
-	private static List<Role_assignments_LMS> role_assignments_lms;
-	private static List<Assignment_LMS> assignment_lms;	
-	private static List<Assignment_submissions_LMS> assignment_submission_lms;
-	private static List<Quiz_grades_LMS> quiz_grades_lms;
-	private static List<Forum_discussions_LMS> forum_discussions_lms;
-	private static List<Scorm_LMS> scorm_lms;
-	private static List<Grade_grades_LMS> grade_grades_lms;
-	private static List<Grade_items_LMS> grade_items_lms;
-	private static List<Chat_LMS> chat_lms;
-	private static List<ChatLog_LMS> chat_log_lms;
-	private static List<CourseCategories_LMS> course_categories_lms;
+	private List<Log_LMS> log_lms;
+	private List<Resource_LMS> resource_lms;
+	private List<Course_LMS> course_lms;
+	private List<Forum_LMS> forum_lms;
+	private List<Wiki_LMS> wiki_lms;
+	private List<User_LMS> user_lms;
+	private List<Quiz_LMS> quiz_lms;
+	private List<Quiz_question_instances_LMS> quiz_question_instances_lms;
+	private List<Question_LMS> question_lms;
+	private List<Groups_LMS> group_lms;
+	private List<Groups_members_LMS> group_members_lms;
+	private List<Question_states_LMS> question_states_lms;
+	private List<Forum_posts_LMS> forum_posts_lms;
+	private List<Role_LMS> role_lms;
+	private List<Context_LMS> context_lms;
+	private List<Role_assignments_LMS> role_assignments_lms;
+	private List<Assignment_LMS> assignment_lms;	
+	private List<Assignment_submissions_LMS> assignment_submission_lms;
+	private List<Quiz_grades_LMS> quiz_grades_lms;
+	private List<Forum_discussions_LMS> forum_discussions_lms;
+	private List<Scorm_LMS> scorm_lms;
+	private List<Grade_grades_LMS> grade_grades_lms;
+	private List<Grade_items_LMS> grade_items_lms;
+	private List<Chat_LMS> chat_lms;
+	private List<ChatLog_LMS> chat_log_lms;
+	private List<CourseCategories_LMS> course_categories_lms;
 	
 	
-	private static boolean numericUserId = false;
+	private boolean numericUserId = false;
 	
 	private Logger logger = Logger.getLogger(getClass());
+	
+	private IConnector connector;
+	
+    public ExtractAndMapMoodle(IConnector connector) {
+        super(connector);
+        this.connector = connector;
+    }
 	
 	@SuppressWarnings("unchecked")	
 	public void getLMStables(DBConfigObject dbConf, long readingfromtimestamp) {
 		   
-		   	//accessing DB by creating a session and a transaction using HibernateUtil
-	        Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
-	        session.clear();
+	        Session session = MoodleHibernateUtil.getSessionFactory(dbConf).openSession();
 	        Transaction tx = session.beginTransaction();
 
 	        //Just for testing. has to be set to Long.MaxValue if not longer needed.
@@ -291,7 +298,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	public void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, long readingtotimestamp) {
 		   
 //accessing DB by creating a session and a transaction using HibernateUtil
-	        Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle(dbConf).openSession();
+	        Session session = MoodleHibernateUtil.getSessionFactory(dbConf).openSession();
 			//Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
 	        session.clear();
 	        Transaction tx = session.beginTransaction();
@@ -481,9 +488,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        			{
        	       		if(loadedItem2.getContextid() == loadedItem.getId()){
        	       			CourseUserMining insert = new CourseUserMining();
-       	       			insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getId()));
-       	       			insert.setRole(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getRoleid()), role_mining, old_role_mining);
-       	       			insert.setPlatform(platform.getId());
+       	       			insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getId()));
+       	       			insert.setRole(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getRoleid()), role_mining, old_role_mining);
+       	       			insert.setPlatform(connector.getPlatformId());
        	       			
        	       			if(!numericUserId)
        	       			{
@@ -502,13 +509,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       	       			{
 	       	       				id = largestId + 1;
 	       	       				largestId = id;
-	       	       				id_mapping.put(loadedItem2.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem2.getUserid(), platform.getId()));
-	       	       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+	       	       				id_mapping.put(loadedItem2.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), loadedItem2.getUserid(), connector.getPlatformId()));
+	       	       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
 	       	       			}
        	       			}
        	       			insert.setEnrolstart(loadedItem2.getTimestart());
        	       			insert.setEnrolend(loadedItem2.getTimeend());
-       	                insert.setCourse(Long.valueOf(platform.getPrefix() + "" +  loadedItem.getInstanceid()), course_mining, old_course_mining);
+       	                insert.setCourse(Long.valueOf(connector.getPrefix() + "" +  loadedItem.getInstanceid()), course_mining, old_course_mining);
        	       			if(insert.getUser()!= null && insert.getCourse() != null && insert.getRole()!= null){       	       			
        	       				course_user_mining.put(insert.getId(), insert);
        	       			}    	       			
@@ -529,10 +536,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		CourseForumMining insert = new CourseForumMining();
         
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" +  loadedItem.getId()));
-            insert.setCourse(Long.valueOf(platform.getPrefix() +"" + loadedItem.getCourse()),course_mining, old_course_mining);
-            insert.setForum(Long.valueOf(platform.getPrefix() +  "" + loadedItem.getId()),forum_mining, old_forum_mining);
-            insert.setPlatform(platform.getId());
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" +  loadedItem.getId()));
+            insert.setCourse(Long.valueOf(connector.getPrefix() +"" + loadedItem.getCourse()),course_mining, old_course_mining);
+            insert.setForum(Long.valueOf(connector.getPrefix() +  "" + loadedItem.getId()),forum_mining, old_forum_mining);
+            insert.setPlatform(connector.getPlatformId());
             if(insert.getCourse()!= null && insert.getForum()!= null){
             	course_forum_mining.put(insert.getId(), insert);
             }
@@ -548,7 +555,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        	{
         	CourseMining insert = new CourseMining();
         
-        	insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+        	insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
         	insert.setStartdate(loadedItem.getStartdate());
         	insert.setEnrolstart(loadedItem.getEnrolstartdate());
         	insert.setEnrolend(loadedItem.getEnrolenddate());
@@ -556,7 +563,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         	insert.setTimemodified(loadedItem.getTimemodified());
         	insert.setTitle(loadedItem.getFullname());
         	insert.setShortname(loadedItem.getShortname());
-        	insert.setPlatform(platform.getId());
+        	insert.setPlatform(connector.getPlatformId());
         	
         	course_mining.put(insert.getId(), insert);
         }
@@ -572,10 +579,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		CourseGroupMining insert = new CourseGroupMining();
         
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-            insert.setGroup(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()),group_mining, old_group_mining);
-            insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourseid()),course_mining, old_course_mining);
-            insert.setPlatform(platform.getId());
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+            insert.setGroup(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()),group_mining, old_group_mining);
+            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourseid()),course_mining, old_course_mining);
+            insert.setPlatform(connector.getPlatformId());
             if(insert.getCourse()!= null && insert.getGroup()!= null){
             	course_group_mining.put(insert.getId(), insert);
             }
@@ -592,10 +599,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		CourseQuizMining insert = new CourseQuizMining();
     	
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-    		insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()),course_mining, old_course_mining);
-    		insert.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()), quiz_mining, old_quiz_mining);
-    		insert.setPlatform(platform.getId());
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+    		insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()),course_mining, old_course_mining);
+    		insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), quiz_mining, old_quiz_mining);
+    		insert.setPlatform(connector.getPlatformId());
     		if(insert.getCourse() != null && insert.getQuiz() != null){            
     			course_quiz_mining.put(insert.getId(), insert);
     		}
@@ -614,13 +621,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		CourseAssignmentMining insert = new CourseAssignmentMining();
     	
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-            insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()),course_mining, old_course_mining);
-            insert.setPlatform(platform.getId());
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()),course_mining, old_course_mining);
+            insert.setPlatform(connector.getPlatformId());
 			if(insert.getCourse()==null){
 				logger.info("course not found for course-assignment: " + loadedItem.getId() + " and course: " + loadedItem.getCourse());
 			}
-            insert.setAssignment(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()), assignment_mining, old_assignment_mining);
+            insert.setAssignment(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), assignment_mining, old_assignment_mining);
             if(insert.getCourse()!= null && insert.getAssignment() != null){            
             	course_assignment_mining.put(insert.getId(), insert);
             }
@@ -638,10 +645,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	   	{
 	   		CourseScormMining insert = new CourseScormMining();
 	   	
-	   		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-	   		insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()),course_mining, old_course_mining);
-	   		insert.setScorm(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()), scorm_mining, old_scorm_mining);
-	   		insert.setPlatform(platform.getId());
+	   		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+	   		insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()),course_mining, old_course_mining);
+	   		insert.setScorm(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), scorm_mining, old_scorm_mining);
+	   		insert.setPlatform(connector.getPlatformId());
 	   		if(insert.getCourse()!= null && insert.getScorm() != null){            
 	   			course_scorm_mining.put(insert.getId(), insert);
 	   		}
@@ -660,10 +667,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		CourseResourceMining insert = new CourseResourceMining();
         
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-            insert.setCourse(Long.valueOf(platform.getPrefix() + "" +  loadedItem.getCourse()), course_mining, old_course_mining);
-            insert.setResource(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()), resource_mining, old_resource_mining);
-            insert.setPlatform(platform.getId());
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+            insert.setCourse(Long.valueOf(connector.getPrefix() + "" +  loadedItem.getCourse()), course_mining, old_course_mining);
+            insert.setResource(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), resource_mining, old_resource_mining);
+            insert.setPlatform(connector.getPlatformId());
             if(insert.getCourse()!= null && insert.getResource() != null){  
             	course_resource_mining.put(insert.getId(), insert);
             }
@@ -709,8 +716,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			CourseLogMining insert = new CourseLogMining();
     			
     			insert.setId(courseLogMining.size() + 1 + courseLogMax);
-    			insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
-    			insert.setPlatform(platform.getId());
+    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+    			insert.setPlatform(connector.getPlatformId());
     			
     			if(!numericUserId)
     			{
@@ -730,8 +737,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem.getUserid(), platform.getId()));
-	       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), loadedItem.getUserid(), connector.getPlatformId()));
+	       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
 	       			}
     			}
     			insert.setAction(loadedItem.getAction());
@@ -772,10 +779,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		CourseWikiMining insert = new CourseWikiMining();
         
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-            insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
-            insert.setWiki(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()), wiki_mining, old_wiki_mining);
-            insert.setPlatform(platform.getId());
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+            insert.setWiki(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), wiki_mining, old_wiki_mining);
+            insert.setPlatform(connector.getPlatformId());
             if(insert.getCourse()!= null && insert.getWiki()!= null){
             	course_wiki_mining.put(insert.getId(), insert);
             }
@@ -822,7 +829,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			ForumLogMining insert = new ForumLogMining();
     			
     			insert.setId(forumLogMining.size() + 1 + forumLogMax);
-    			insert.setPlatform(platform.getId());
+    			insert.setPlatform(connector.getPlatformId());
     			
     			if(!numericUserId)
     			{
@@ -841,12 +848,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem.getUserid(), platform.getId()));
-	       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), loadedItem.getUserid(), connector.getPlatformId()));
+	       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
 	       			}
     			}
     			if((loadedItem.getAction().equals("view forum") || loadedItem.getAction().equals("subscribe")) && loadedItem.getInfo().matches("[0-9]+")){
-    				insert.setForum(Long.valueOf(platform.getPrefix() + "" + loadedItem.getInfo()), forum_mining, old_forum_mining);
+    				insert.setForum(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), forum_mining, old_forum_mining);
     			}
     			else{
     				if((loadedItem.getAction().equals("add discussion") || loadedItem.getAction().equals("view discussion")) && loadedItem.getInfo().matches("[0-9]+")){
@@ -854,13 +861,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     					{
     			    		if(loadedItem2.getId() == Long.valueOf(loadedItem.getInfo()))
     			    		{
-    			    			insert.setForum(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getForum()), forum_mining, old_forum_mining);
+    			    			insert.setForum(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getForum()), forum_mining, old_forum_mining);
     			    			break;
     			    		}
     					}
     				}
     			}
-    			insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
     			insert.setAction(loadedItem.getAction());
    				for (Forum_posts_LMS loadedItem2 : forum_posts_lms) 
    				{
@@ -905,19 +912,19 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
    	    	ForumMining insert = new ForumMining();
     	
-   	    	insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+   	    	insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
             insert.setTimemodified(loadedItem.getTimemodified());
    	    	insert.setTitle(loadedItem.getName());
    	    	insert.setSummary(loadedItem.getIntro()); 
-   	    	insert.setPlatform(platform.getId());
+   	    	insert.setPlatform(connector.getPlatformId());
     		forum_mining.put(insert.getId(), insert);  
     	} 
     	
        	for ( Log_LMS loadedItem : log_lms) 
        	{
-           	if(forum_mining.get(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCmid())) != null && (forum_mining.get(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCmid())).getTimecreated() == 0 || forum_mining.get(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCmid())).getTimecreated() > loadedItem.getTime()))
+           	if(forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())) != null && (forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())).getTimecreated() == 0 || forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())).getTimecreated() > loadedItem.getTime()))
            	{           		
-           		forum_mining.get(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCmid())).setTimecreated(loadedItem.getTime());
+           		forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())).setTimecreated(loadedItem.getTime());
        		}
        	}   
 		return forum_mining;
@@ -932,8 +939,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		GroupUserMining insert = new GroupUserMining();
         
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-           	insert.setGroup(Long.valueOf(platform.getPrefix() + "" + loadedItem.getGroupid()), group_mining, old_group_mining);
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+           	insert.setGroup(Long.valueOf(connector.getPrefix() + "" + loadedItem.getGroupid()), group_mining, old_group_mining);
            	
 			if(!numericUserId)
 			{
@@ -953,13 +960,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        			{
        				id = largestId + 1;
        				largestId = id;
-       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem.getUserid(), platform.getId()));
-       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), loadedItem.getUserid(), connector.getPlatformId()));
+       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
        				
        			}
 			}
            	insert.setTimestamp(loadedItem.getTimeadded());
-           	insert.setPlatform(platform.getId());
+           	insert.setPlatform(connector.getPlatformId());
            	if(insert.getUser() != null && insert.getGroup() != null)
            		group_members_mining.put(insert.getId(), insert);
         }
@@ -975,10 +982,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		GroupMining insert = new GroupMining();
         
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
            	insert.setTimecreated(loadedItem.getTimecreated());
            	insert.setTimemodified(loadedItem.getTimemodified());
-           	insert.setPlatform(platform.getId());
+           	insert.setPlatform(connector.getPlatformId());
            	group_mining.put(insert.getId(), insert);
         }
 		return group_mining;    	
@@ -995,11 +1002,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		QuestionLogMining insert = new QuestionLogMining();
     		
     		insert.setId(questionLogMining.size() + 1 + questionLogMax); //ID
-			insert.setQuestion(Long.valueOf(platform.getPrefix() + "" + loadedItem.getQuestion()), question_mining, old_question_mining); //Question 
+			insert.setQuestion(Long.valueOf(connector.getPrefix() + "" + loadedItem.getQuestion()), question_mining, old_question_mining); //Question 
 			insert.setPenalty(loadedItem.getPenalty());	
 			insert.setAnswers(loadedItem.getAnswer());
 			insert.setTimestamp(loadedItem.getTimestamp());	
-			insert.setPlatform(platform.getId());
+			insert.setPlatform(connector.getPlatformId());
 			
             switch(loadedItem.getEvent())
             {            
@@ -1031,7 +1038,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			for(Quiz_question_instances_LMS loadedItem1 : quiz_question_instances_lms)
 			{
 				if(loadedItem1.getQuestion() == (loadedItem.getQuestion())){
-					insert.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem1.getQuiz()), quiz_mining, old_quiz_mining);
+					insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem1.getQuiz()), quiz_mining, old_quiz_mining);
 					break;
 				}
 			}			
@@ -1109,7 +1116,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			if(uid != -1 && questionLogMining.get(timestampIdMap.get(loadedItem.getTime())) != null)
     			{
     				questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).setUser(uid, user_mining, old_user_mining);
-    				questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).setCourse(Long.valueOf(platform.getPrefix() + "" +loadedItem.getCourse()), course_mining, old_course_mining);
+    				questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).setCourse(Long.valueOf(connector.getPrefix() + "" +loadedItem.getCourse()), course_mining, old_course_mining);
     			}
     			if(questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).getCourse() == null || questionLogMining.get(timestampIdMap.get(loadedItem.getTime())).getUser() == null)
     				questionLogMining.remove(timestampIdMap.get(loadedItem.getTime()));
@@ -1175,8 +1182,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			QuizLogMining insert = new QuizLogMining();
     			
     		    insert.setId(quizLogMining.size() + 1 + quizLogMax);
-    			insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
-    			insert.setPlatform(platform.getId());
+    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+    			insert.setPlatform(connector.getPlatformId());
     			
     			if(!numericUserId)
     			{
@@ -1197,12 +1204,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem.getUserid(), platform.getId()));
-	       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), loadedItem.getUserid(), connector.getPlatformId()));
+	       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
 	       			}
     			}
     			if(loadedItem.getInfo().matches("[0-9]+")){
-    				insert.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem.getInfo()), quiz_mining, old_quiz_mining);
+    				insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), quiz_mining, old_quiz_mining);
     			}
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
@@ -1224,7 +1231,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		       			
     		       			}
     	    			}
-    					if(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getQuiz()) == insert.getQuiz().getId() && id == insert.getUser().getId() && loadedItem2.getTimemodified() == insert.getTimestamp()){
+    					if(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getQuiz()) == insert.getQuiz().getId() && id == insert.getUser().getId() && loadedItem2.getTimemodified() == insert.getTimestamp()){
     						insert.setGrade(loadedItem2.getGrade());
     					}
     				}
@@ -1302,7 +1309,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			{
 				AssignmentLogMining insert = new AssignmentLogMining();
 			    insert.setId(assignmentLogMining.size() + 1 + assignmentLogMax);
-				insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+				insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
 				
 				if(!numericUserId)
 				{
@@ -1321,13 +1328,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem.getUserid(), platform.getId()));
-	       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), loadedItem.getUserid(), connector.getPlatformId()));
+	       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
 	       			}
 				}    			
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
-				insert.setAssignment(Long.valueOf(platform.getPrefix() + "" + loadedItem.getInfo()), assignment_mining, old_assignment_mining);
+				insert.setAssignment(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), assignment_mining, old_assignment_mining);
 				
 				if(insert.getAssignment() != null && insert.getUser() != null && insert.getAction().equals("upload")){    
 					for (Assignment_submissions_LMS loadedItem2 : assignment_submission_lms) {
@@ -1362,7 +1369,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 				if(insert.getUser()==null){
 					logger.info("In Assignment_log_mining, user not found for log: " + loadedItem.getId() +" and user: " + loadedItem.getUserid());
 				}    	
-				insert.setPlatform(platform.getId());
+				insert.setPlatform(connector.getPlatformId());
 				if(insert.getUser() != null && insert.getAssignment() != null && insert.getCourse() != null)
 					assignmentLogMining.put(insert.getId(), insert);
 			}		
@@ -1426,8 +1433,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
   			ScormLogMining insert = new ScormLogMining();
   			
   		    insert.setId(scormLogMining.size() + 1 + scormLogMax);
-  			insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
-			insert.setPlatform(platform.getId());
+  			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+			insert.setPlatform(connector.getPlatformId());
   			
 			if(!numericUserId)
 			{
@@ -1448,14 +1455,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        			{
        				id = largestId + 1;
        				largestId = id;
-       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem.getUserid(), platform.getId()));
-       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), loadedItem.getUserid(), connector.getPlatformId()));
+       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
        			}
 			}
   			insert.setAction(loadedItem.getAction());
   			insert.setTimestamp(loadedItem.getTime());
   			if(loadedItem.getInfo().matches("[0-9]+")){
-  				insert.setScorm(Long.valueOf(platform.getPrefix() + "" + loadedItem.getInfo()), scorm_mining, old_scorm_mining);
+  				insert.setScorm(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), scorm_mining, old_scorm_mining);
   			}
   			if(insert.getScorm() != null && insert.getCourse() != null && insert.getUser() != null)
   				scormLogMining.put(insert.getId(), insert);
@@ -1500,14 +1507,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 
     		QuizMining insert = new QuizMining();
     		
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId())); 		
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId())); 		
     		insert.setTitle(loadedItem.getName());
     		insert.setTimeopen(loadedItem.getTimeopen());
     		insert.setTimeclose(loadedItem.getTimeclose());
     		insert.setTimecreated(loadedItem.getTimecreated());
     		insert.setTimemodified(loadedItem.getTimemodified());
     		insert.setQtype("quiz");
-			insert.setPlatform(platform.getId());
+			insert.setPlatform(connector.getPlatformId());
         	for (Grade_items_LMS loadedItem2 : grade_items_lms) 
         	{
         		if(loadedItem2.getIteminstance() != null && loadedItem2.getItemmodule() != null){
@@ -1534,12 +1541,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		AssignmentMining insert = new AssignmentMining();
         
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId())); 
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId())); 
            	insert.setTitle(loadedItem.getName());
            	insert.setTimeopen(loadedItem.getTimeavailable());
            	insert.setTimeclose(loadedItem.getTimedue());
            	insert.setTimemodified(loadedItem.getTimemodified());
-           	insert.setPlatform(platform.getId());
+           	insert.setPlatform(connector.getPlatformId());
         	for (Grade_items_LMS loadedItem2 : grade_items_lms) 
         	{
         		if(loadedItem2.getIteminstance() != null && loadedItem2.getItemmodule() != null)
@@ -1568,11 +1575,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		ScormMining insert = new ScormMining();
         
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
            	insert.setTitle(loadedItem.getName());
            	insert.setTimemodified(loadedItem.getTimemodified());
     		insert.setMaxgrade(loadedItem.getMaxgrade());
-			insert.setPlatform(platform.getId());
+			insert.setPlatform(connector.getPlatformId());
     		
     		scorm_mining.put(insert.getId(), insert);
         }  
@@ -1587,10 +1594,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		QuizQuestionMining insert = new QuizQuestionMining();
         
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-           	insert.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem.getQuiz()), quiz_mining, old_quiz_mining);
-           	insert.setQuestion(Long.valueOf(platform.getPrefix() + "" + loadedItem.getQuestion()), question_mining, old_question_mining);
-			insert.setPlatform(platform.getId());
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+           	insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem.getQuiz()), quiz_mining, old_quiz_mining);
+           	insert.setQuestion(Long.valueOf(connector.getPrefix() + "" + loadedItem.getQuestion()), question_mining, old_question_mining);
+			insert.setPlatform(connector.getPlatformId());
             if(insert.getQuiz() != null && insert.getQuestion() != null)
             {  
             	quiz_question_mining.put(insert.getId(), insert);
@@ -1612,12 +1619,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		QuestionMining insert = new QuestionMining();
          
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
            	insert.setTitle(loadedItem.getName());
            	insert.setText(loadedItem.getQuestiontext());
            	insert.setType(loadedItem.getQtype());
            	insert.setTimecreated(loadedItem.getTimecreated());
-			insert.setPlatform(platform.getId());
+			insert.setPlatform(connector.getPlatformId());
            	insert.setTimemodified(loadedItem.getTimemodified());
            	
            	question_mining.put(insert.getId(), insert);
@@ -1632,8 +1639,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		QuizUserMining insert = new QuizUserMining();
         
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-			insert.setPlatform(platform.getId());
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setPlatform(connector.getPlatformId());
            	if(loadedItem.getFinalgrade()!=null){
            		insert.setFinalgrade(loadedItem.getFinalgrade());
            	}
@@ -1663,15 +1670,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        			{
        				id = largestId + 1;
        				largestId = id;
-       				id_mapping.put( loadedItem.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id),  loadedItem.getUserid(), platform.getId()));
-       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+       				id_mapping.put( loadedItem.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id),  loadedItem.getUserid(), connector.getPlatformId()));
+       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
        			}
 			}
            	for (Grade_items_LMS loadedItem2 : grade_items_lms) 
            	{
         		if(loadedItem2.getId() == loadedItem.getItemid() && loadedItem2.getIteminstance() != null){
-        			insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getCourseid()), course_mining, old_course_mining);
-        			insert.setQuiz(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getIteminstance()), quiz_mining, old_quiz_mining);
+        			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getCourseid()), course_mining, old_course_mining);
+        			insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getIteminstance()), quiz_mining, old_quiz_mining);
            		   	if(insert.getQuiz()!= null && insert.getUser() != null){
         		   		quiz_user_mining.put(insert.getId(), insert);
         		   	}
@@ -1692,10 +1699,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         {
             ResourceMining insert = new ResourceMining();
         
-            insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+            insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
            	insert.setType(loadedItem.getType());
            	insert.setTitle(loadedItem.getName());
-			insert.setPlatform(platform.getId());
+			insert.setPlatform(connector.getPlatformId());
            	
            	//Get time of creation
         	
@@ -1751,7 +1758,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
             
             if(loadedItem.getModule().equals("resource")){
             	ResourceLogMining insert = new ResourceLogMining();
-    			insert.setPlatform(platform.getId());
+    			insert.setPlatform(connector.getPlatformId());
             	
             	insert.setId(resourceLogMining.size() + 1 + resourceLogMax);
             	
@@ -1774,17 +1781,17 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id),  loadedItem.getUserid(), platform.getId()));
-	       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id),  loadedItem.getUserid(), connector.getPlatformId()));
+	       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
 	       			}
     			}
-            	insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+            	insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
             	insert.setAction(loadedItem.getAction()); 
             	
             	
             	
             	if(loadedItem.getInfo().matches("[0-9]+")){
-    				insert.setResource(Long.valueOf(platform.getPrefix() + "" + loadedItem.getInfo()), resource_mining, old_resource_mining);
+    				insert.setResource(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), resource_mining, old_resource_mining);
     			}    				
             	insert.setTimestamp(loadedItem.getTime());
     			if(insert.getResource()== null && !(loadedItem.getAction().equals("view all"))){
@@ -1830,14 +1837,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     		{
 				long id = largestId + 1;
 	   			largestId = id;
-	   			id_mapping.put(loadedItem.getId(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem.getId(), platform.getId()));
-	   			insert.setId(Long.valueOf(platform.getPrefix() + "" +  id));
+	   			id_mapping.put(loadedItem.getId(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), loadedItem.getId(), connector.getPlatformId()));
+	   			insert.setId(Long.valueOf(connector.getPrefix() + "" +  id));
     		}
            	insert.setLastlogin(loadedItem.getLastlogin());
            	insert.setFirstaccess(loadedItem.getFirstaccess());
            	insert.setLastaccess(loadedItem.getLastaccess());
            	insert.setCurrentlogin(loadedItem.getCurrentlogin());
-			insert.setPlatform(platform.getId());
+			insert.setPlatform(connector.getPlatformId());
            	
            	user_mining.put(insert.getId(), insert);
         }
@@ -1884,8 +1891,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     			
     			insert.setId(wikiLogMining.size() + 1 + wikiLogMax);
     			//Cannot tell, how to extract the correct wiki-id - so it'll always be null
-    			insert.setWiki(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCmid()), wiki_mining, old_wiki_mining);
-    			insert.setPlatform(platform.getId());
+    			insert.setWiki(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid()), wiki_mining, old_wiki_mining);
+    			insert.setPlatform(connector.getPlatformId());
     			
     			if(!numericUserId)
     			{
@@ -1906,12 +1913,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 	       			{
 	       				id = largestId + 1;
 	       				largestId = id;
-	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem.getUserid(), platform.getId()));
-	       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+	       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), loadedItem.getUserid(), connector.getPlatformId()));
+	       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
 	       			}
     			}
     			
-    			insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
     			
@@ -1949,11 +1956,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		WikiMining insert = new WikiMining();
     	
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
     		insert.setTitle(loadedItem.getName());
     		insert.setSummary(loadedItem.getSummary());
     		insert.setTimemodified(loadedItem.getTimemodified());
-			insert.setPlatform(platform.getId());
+			insert.setPlatform(connector.getPlatformId());
     		wiki_mining.put(insert.getId(), insert);
     	}
        	for (Log_LMS loadedItem : log_lms) 
@@ -1974,12 +1981,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
     	{
     		RoleMining insert = new RoleMining();
     	
-    		insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
     		insert.setName(loadedItem.getName());
     		insert.setShortname(loadedItem.getShortname());
     		insert.setDescription(loadedItem.getDescription());
     		insert.setSortorder(loadedItem.getSortorder());
-			insert.setPlatform(platform.getId());
+			insert.setPlatform(connector.getPlatformId());
     		
     		role_mining.put(insert.getId(), insert);
     	}
@@ -1995,9 +2002,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			{
 				DegreeMining insert = new DegreeMining();
 				
-				insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+				insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
 				insert.setTitle(loadedItem.getTitle());
-				insert.setPlatform(platform.getId());
+				insert.setPlatform(connector.getPlatformId());
 				degree_mining.put(insert.getId(), insert);
 			}
 		}
@@ -2014,9 +2021,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 			{
 				DepartmentMining insert = new DepartmentMining();
 				
-				insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+				insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
 				insert.setTitle(loadedItem.getTitle());
-				insert.setPlatform(platform.getId());
+				insert.setPlatform(connector.getPlatformId());
 				department_mining.put(insert.getId(), insert);
 			}
 		}
@@ -2036,10 +2043,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 				{
 					DepartmentDegreeMining insert = new DepartmentDegreeMining();
 					
-					insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-					insert.setDegree(Long.valueOf(platform.getPrefix() + "" + s[s.length - 1]), degree_mining, old_degree_mining);
-					insert.setDepartment(Long.valueOf(platform.getPrefix() + "" + s[s.length - 2]), department_mining, old_department_mining);
-					insert.setPlatform(platform.getId());
+					insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+					insert.setDegree(Long.valueOf(connector.getPrefix() + "" + s[s.length - 1]), degree_mining, old_degree_mining);
+					insert.setDepartment(Long.valueOf(connector.getPrefix() + "" + s[s.length - 2]), department_mining, old_department_mining);
+					insert.setPlatform(connector.getPlatformId());
 					if(insert.getDegree() != null && insert.getDepartment() != null)
 						department_degree.put(insert.getId(), insert);
 				}
@@ -2059,14 +2066,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 				DegreeCourseMining insert = new DegreeCourseMining();
 				
 				String[] s = loadedItem.getPath().split("/");
-				insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
-				insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getInstanceid()), course_mining, old_course_mining);
-				insert.setPlatform(platform.getId());
+				insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+				insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInstanceid()), course_mining, old_course_mining);
+				insert.setPlatform(connector.getPlatformId());
 				for ( Context_LMS loadedItem2 : context_lms)
 				{
 					if(loadedItem2.getContextlevel() == 40 && loadedItem2.getId() == Integer.parseInt(s[3]))
 					{
-						insert.setDegree(Long.valueOf(platform.getPrefix() + "" + loadedItem2.getInstanceid()), degree_mining, old_degree_mining);
+						insert.setDegree(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getInstanceid()), degree_mining, old_degree_mining);
 						break;
 					}
 				}
@@ -2084,12 +2091,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
 		{
 			ChatMining insert = new ChatMining();
 		
-			insert.setId(Long.valueOf(platform.getPrefix() + "" + loadedItem.getId()));
+			insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setChattime(loadedItem.getChattime());
 			insert.setDescription(loadedItem.getDescription());
 			insert.setTitle(loadedItem.getTitle());
-			insert.setPlatform(platform.getId());
-			insert.setCourse(Long.valueOf(platform.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+			insert.setPlatform(connector.getPlatformId());
+			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
 			
 			if(insert.getCourse() != null)
 				chat_mining.put(insert.getId(), insert);
@@ -2106,10 +2113,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
         {
         	ChatLogMining insert = new ChatLogMining();
         	insert.setId(chatLogMining.size() + 1 + chatLogMax);
-        	insert.setChat(Long.valueOf(platform.getPrefix() + "" + loadedItem.getChat_id()), chat_mining, old_chat_mining);
+        	insert.setChat(Long.valueOf(connector.getPrefix() + "" + loadedItem.getChat_id()), chat_mining, old_chat_mining);
         	insert.setMessage(loadedItem.getMessage());
         	insert.setTimestamp(loadedItem.getTimestamp());
-        	insert.setPlatform(platform.getId());
+        	insert.setPlatform(connector.getPlatformId());
         	if(insert.getChat() != null)
         		insert.setCourse(insert.getChat().getCourse().getId(), course_mining, old_course_mining);
         	insert.setDuration(0L);
@@ -2134,8 +2141,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen
        			{
        				id = largestId + 1;
        				largestId = id;
-       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(platform.getPrefix() + "" + id), loadedItem.getUserid(), platform.getId()));
-       				insert.setUser(Long.valueOf(platform.getPrefix() + "" + id), user_mining, old_user_mining);
+       				id_mapping.put(loadedItem.getUserid(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), loadedItem.getUserid(), connector.getPlatformId()));
+       				insert.setUser(Long.valueOf(connector.getPrefix() + "" + id), user_mining, old_user_mining);
        			}
        			
 			}

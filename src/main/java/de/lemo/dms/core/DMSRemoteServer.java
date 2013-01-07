@@ -7,6 +7,8 @@ import org.glassfish.grizzly.http.server.HttpServer;
 
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 
+import de.lemo.dms.core.config.ServerConfiguration;
+
 /**
  * Server instance which can be run as a java application.
  * 
@@ -16,15 +18,11 @@ import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 public enum DMSRemoteServer {
 
     INSTANCE;
-    
-    private String host = "localhost";
-    private IServerConfiguration config;
-    private HttpServer server;
-    private Logger logger = Logger.getLogger(getClass());
 
-    private DMSRemoteServer() {
-        config = ServerConfigurationHardCoded.getInstance();
-    }
+    private int port = 8081;
+    private String host = "localhost";
+    private Logger logger = Logger.getLogger(getClass());
+    private HttpServer server;
 
     /**
      * Stop it.
@@ -55,14 +53,13 @@ public enum DMSRemoteServer {
      * @throws IOException
      */
     protected void start() throws IOException {
-        int port = ((ServerConfigurationHardCoded) config).getRemotePort();
         if(server == null) {
             server = GrizzlyServerFactory.createHttpServer("http://" + host + ":" + port, new DMSResourceConfig());
             server.start();
-            logger.info("remote server start... host: " + host + " on port " + port);
+            logger.info("DMS started on " + host + ":" + port);
         }
         else {
-            logger.info("remote server already started... host: " + host + " on port " + port);
+            logger.info("DMS already running on " + host + ":" + port);
         }
     }
 }

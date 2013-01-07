@@ -2,22 +2,36 @@ package de.lemo.dms.connectors;
 
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
+import de.lemo.dms.db.DBConfigObject;
 
 public enum ESourcePlatform {
 
-    Moodle_1_9(de.lemo.dms.connectors.moodle.ConnectorMoodle.class),
-    Moodle_1_9_Numeric(de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle.class),
-    Clix(ConnectorClix.class),
-    Chemgaroo(ConnectorChemgapedia.class),
-    Dummy(ConnectorDummy.class), ;
+    Moodle_1_9,
+    Moodle_1_9_Numeric,
+    Clix,
+    Chemgaroo,
+    Dummy, ;
 
-    private Class<? extends IConnector> connectorType;
+    public IConnector newConnector(DBConfigObject config) {
+        switch(this) {
+        case Chemgaroo:
+            return new ConnectorChemgapedia(config);
 
-    private ESourcePlatform(Class<? extends IConnector> connectorType) {
-        this.connectorType = connectorType;
-    }
+        case Clix:
+            return new ConnectorClix(config);
 
-    public Class<? extends IConnector> getConnectorType() {
-        return connectorType;
+        case Dummy:
+            return new ConnectorDummy();
+
+        case Moodle_1_9:
+            return new de.lemo.dms.connectors.moodle.ConnectorMoodle(config);
+
+        case Moodle_1_9_Numeric:
+            return new de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle(config);
+            
+        default:
+            throw new RuntimeException("No Connector implementation");
+        }
+
     }
 }

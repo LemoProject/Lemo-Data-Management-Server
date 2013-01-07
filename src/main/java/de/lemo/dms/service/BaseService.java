@@ -2,8 +2,7 @@ package de.lemo.dms.service;
 
 import org.apache.log4j.Logger;
 
-import de.lemo.dms.core.IServerConfiguration;
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 
 /**
@@ -14,7 +13,7 @@ import de.lemo.dms.db.IDBHandler;
  */
 public abstract class BaseService {
 
-    protected final IServerConfiguration config = ServerConfigurationHardCoded.getInstance();
+    protected final ServerConfiguration config = ServerConfiguration.getInstance();
     protected final Logger logger = Logger.getLogger(this.getClass());
     IDBHandler dbHandler = config.getDBHandler();
 

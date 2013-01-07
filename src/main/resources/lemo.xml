@@ -2,30 +2,54 @@
 <config>
   <!-- -->
   <apps name="Lemo DMS">
-    <session-factory>
+    <database>
       <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
       <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
-    </session-factory>
+    </database>
     <dms-url>http://localhost:8080/lemo/dms</dms-url>
   </apps>
   <!-- -->
   <dms name="Lemo DMS">
-    <session-factory>
+    <database>
+      <!-- Maven replacement variables-->
+      <property name="hibernate.connection.url">${mining-hibernate-url}</property>
+      <property name="hibernate.connection.username">${mining-hibernate-username}</property>
+      <property name="hibernate.connection.password">${mining-hibernate-password}</property>
+      <!-- main config-->
       <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
       <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
-    </session-factory>
+      <property name="hibernate.show_sql">false</property>
+      <property name="hibernate.format_sql">false</property>
+      <property name="hibernate.hbm2ddl.auto">update</property>
+      <property name="hibernate.cache.use_second_level_cache">false</property>
+      <property name="hibernate.cache.use_query_level_cache">false</property>
+      <!-- connection pooling-->
+      <property name="c3p0.acquire_increment">3</property>
+      <property name="c3p0.min_size">3</property>
+      <property name="c3p0.timeout">60</property>
+      <property name="c3p0.max_size">100</property>
+      <property name="c3p0.idleConnectionTestPeriod">100</property>
+      <property name="c3p0.max_statements">0</property>
+      <property name="c3p0.propertyCycle">2</property>
+      <property name="c3p0.autoCommitOnClose ">false</property>
+      <property name="c3p0.numHelperThreads">3</property>
+      <property name="c3p0.validate">true</property>
+      <property name="c3p0.acquireRetryAttempts">50</property>
+      <property name="c3p0.acquireRetryDelay">1000</property>
+      <property name="c3p0.maxConnectionAge">120</property>
+      <property name="c3p0.automaticTestTable">connection_test_table</property>
+      <property name="c3p0.testConnectionOnCheckout">true</property>
+    </database>
     <connectors>
-      <connector name="beuth1" platform-id="2" platform-type="moodle_1_9">
-        <session-factory>
-          <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-          <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        </session-factory>
+      <connector platform-id="2" name="beuth1" platform-type="Moodle_1_9">
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
       </connector>
-      <connector name="Chemgaroo" platform-id="3" platform-type="Chemgaroo">
-        <log-path>.</log-path>
-        <metadata-path>.</metadata-path>
+      <connector platform-id="3" name="Chemgaroo" platform-type="Chemgaroo">
+        <property name="log-path">.</property>
+        <property name="metadata-path">.</property>
       </connector>
     </connectors>
   </dms>

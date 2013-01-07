@@ -20,7 +20,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.Question;
@@ -62,7 +62,7 @@ public class QLearningObjectUsage extends Question {
 
         ResultListResourceRequestInfo result = new ResultListResourceRequestInfo();
         // DB-initialization
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
         Session session = dbHandler.getMiningSession();
         
         // Create criteria for log-file-search

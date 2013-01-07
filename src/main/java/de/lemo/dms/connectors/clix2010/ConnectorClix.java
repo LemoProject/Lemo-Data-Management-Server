@@ -2,50 +2,40 @@ package de.lemo.dms.connectors.clix2010;
 
 import org.hibernate.HibernateException;
 
-import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.AbstractConnector;
 import de.lemo.dms.db.DBConfigObject;
 
-public class ConnectorClix implements IConnector{
+public class ConnectorClix extends AbstractConnector {
 
-	@Override
-	public void setSourceDBConfig(DBConfigObject dbConf) {
-		// TODO Auto-generated method stub
-		
-	}
+    private DBConfigObject config;
 
-	@Override
-	public boolean testConnections() {
-		try{
-			
-			//ToDo - TestImpl
-		}catch(HibernateException he)
-		{
-			he.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+    public ConnectorClix(DBConfigObject config) {
+        this.config = config;
+    }
 
-	@Override
-	public void getData(String platformName) {
-		try{
-			ClixImporter.getClixData(platformName);
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-	}
+    @Override
+    public boolean testConnections() {
+        try {
 
-	@Override
-	public void updateData(String platformName, long fromTimestamp) {
-		try{
-			ClixImporter.updateClixData(platformName, fromTimestamp);
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-	}
+            // ToDo - TestImpl
+        } catch (HibernateException he)
+        {
+            he.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void getData() {
+        ClixImporter ci = new ClixImporter(this);
+        ci.getClixData(config);
+    }
+
+    @Override
+    public void updateData(long fromTimestamp) {
+        ClixImporter ci = new ClixImporter(this);
+        ci.updateClixData(config, fromTimestamp);
+    }
 
 }

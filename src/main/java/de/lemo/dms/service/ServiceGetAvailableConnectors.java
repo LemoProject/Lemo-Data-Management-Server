@@ -12,9 +12,10 @@ import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.service.servicecontainer.SCConnectors;
 
 /**
- * REST Webservice for the available connectors of the DMS
+ * REST web service for the available connectors of the DMS
  * 
  * @author Boris Wenzlaff
+ * @author Leonard Kappe
  * 
  */
 

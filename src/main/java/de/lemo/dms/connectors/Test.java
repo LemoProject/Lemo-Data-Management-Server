@@ -5,15 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
-import de.lemo.dms.connectors.clix2010.ConnectorClix;
-import de.lemo.dms.connectors.clix2010.HibernateUtil;
-import de.lemo.dms.connectors.moodle.ConnectorMoodle;
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
@@ -37,45 +33,44 @@ public class Test {
 				sourceConf.setProperty("process_metadata", "false");
 			sourceConf.setProperty("process_log_file", "true");
 			
-			ConnectorChemgapedia cm = new ConnectorChemgapedia();
-			cm.setSourceDBConfig(sourceConf);
+            ConnectorChemgapedia cm = new ConnectorChemgapedia(sourceConf);
 			
 			
-			cm.getData("Chemgapedia(FIZ)");
+		//	cm.getData("Chemgapedia(FIZ)");
 		}
 
 		
 		
 	}
 	
-	public static void runMoodleConn()
-	{
-		ConnectorMoodle cm = new ConnectorMoodle();
-		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-		cm.getData("Moodle(Beuth)");
-		//cm.updateData("Moodle(Beuth)", 1338800000);
-	}
+//	public static void runMoodleConn()
+//	{
+//	    ConnectorMoodle cm = (ConnectorMoodle) ConnectorManager.getInstance().getConnectorById(/* moodle id */)
+//  
+//	    // cm.getData("Moodle(Beuth)");
+//		// cm.updateData("Moodle(Beuth)", 1338800000);
+//	}
+//	
+//	public static void runClixConn()
+//	{
+//		ConnectorClix cc = new ConnectorClix();
+//		//cc.getData("Clix(HTW)");
+//	}
 	
-	public static void runClixConn()
-	{
-		ConnectorClix cc = new ConnectorClix();
-		cc.getData("Clix(HTW)");
-	}
-	
-	public static void test()
-	{
-		Session session = HibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
-        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
-        session.clear();
-		
-		Query pers = session.createQuery("from Person x order by x.id asc");
-        List<?> person = pers.list();	        
-        System.out.println("Person tables: " + person.size()); 
-	}
+//	public static void test()
+//	{
+//		Session session = ClixHibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
+//        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
+//        session.clear();
+//		
+//		Query pers = session.createQuery("from Person x order by x.id asc");
+//        List<?> person = pers.list();	        
+//        System.out.println("Person tables: " + person.size()); 
+//	}
 	
 	public static void calculateMeichsner()
 	{
-		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
 		Session session = dbHandler.getMiningSession();
 		
 		ArrayList<Long> cids = new ArrayList<Long>();
@@ -88,7 +83,8 @@ public class Test {
 		Criteria crit = session.createCriteria(ResourceLogMining.class, "logs");
 		crit.add(Restrictions.in("logs.course.id", cids));
 		System.out.println("Reading DB");
-		List<ResourceLogMining> l = crit.list();
+		
+        List<ResourceLogMining> l = crit.list();
 		System.out.println("Found "+l.size()+" courses.");
 		
 		HashSet<String> hSet = new HashSet<String>();

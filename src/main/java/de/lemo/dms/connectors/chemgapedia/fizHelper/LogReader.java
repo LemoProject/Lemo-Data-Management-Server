@@ -16,19 +16,17 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.proxy.HibernateProxy;
 
 import de.lemo.dms.core.Clock;
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.CourseMining;
+import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
+import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
-import de.lemo.dms.db.miningDBclass.CourseResourceMining;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-
-import de.lemo.dms.connectors.chemgapedia.fizHelper.LogLine;
 
 /**
  * The Class LogReader.
@@ -61,7 +59,7 @@ public class LogReader {
 	
 	Clock clock = new Clock();
 	
-	IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+	IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
 	Session session;
 	
 	Long largestId;
@@ -72,9 +70,9 @@ public class LogReader {
 	
 	
 	@SuppressWarnings("unchecked")
-    public LogReader(PlatformMining platform, Long idcount)
+    public LogReader(long platformId, Long idcount)
 	{
-		pf = platform;
+	 
 		try{
 			
 			new_id_mapping = new HashMap<String, IDMappingMining>();
@@ -83,7 +81,7 @@ public class LogReader {
 	    	
 	    	Criteria c = session.createCriteria(IDMappingMining.class, "idmap");
 	    	
-	    	c.add(Restrictions.eq("idmap.platform", platform.getId()));
+	    	c.add(Restrictions.eq("idmap.platform", platformId));
 			
 			List<IDMappingMining> ids = c.list();
 			
@@ -97,21 +95,21 @@ public class LogReader {
 			
 			
 			c = session.createCriteria(UserMining.class, "users");
-			c.add(Restrictions.eq("users.platform", platform.getId()));
+			c.add(Restrictions.eq("users.platform", platformId));
 	    	List<UserMining> us  = c.list();
 	    	for(int i = 0; i < us.size(); i++)
 	    		this.oldUsers.put(us.get(i).getId(), us.get(i));
 	    	System.out.println("Read "+us.size() + " UserMinings from database.");
 	    	
 	    	c = session.createCriteria(ResourceMining.class, "resources");
-	    	c.add(Restrictions.eq("resources.platform", platform.getId()));
+	    	c.add(Restrictions.eq("resources.platform", platformId));
 	    	List<ResourceMining> rt  = c.list();
 	    	for(ResourceMining res : rt)
 	    		this.oldResources.put(res.getUrl(), res);
 	    	System.out.println("Read "+rt.size() + " ResourceMinings from database.");
 	    	
 	    	c = session.createCriteria(CourseMining.class, "courses");
-	    	c.add(Restrictions.eq("courses.platform", platform.getId()));
+	    	c.add(Restrictions.eq("courses.platform", platformId));
 	    	List<CourseMining> cm  = c.list();
 	    	for(int i = 0; i < cm.size(); i++)
 	    	{
@@ -120,7 +118,7 @@ public class LogReader {
 	    	System.out.println("Read "+cm.size() + " CourseMinings from database.");
 	    
 	    	c = session.createCriteria(CourseResourceMining.class, "coursesResources");
-	    	c.add(Restrictions.eq("coursesResources.platform", platform.getId()));
+	    	c.add(Restrictions.eq("coursesResources.platform", platformId));
 	    	List<CourseResourceMining> courseResource = c.list();
 	    	for(int i = 0; i < courseResource.size(); i++)
 	    		this.courseResources.put(((CourseResourceMining)courseResource.get(i)).getResource().getUrl(), ((CourseResourceMining)courseResource.get(i)));
@@ -129,14 +127,14 @@ public class LogReader {
 	    	if(idcount == -1)
 	    	{
 	    		c = session.createCriteria(ResourceLogMining.class, "rLogs");
-		    	c.add(Restrictions.eq("rLogs.platform", platform.getId()));
+		    	c.add(Restrictions.eq("rLogs.platform", platformId));
 	    		List<ResourceLogMining> l1 = c.list();
 				if(l1 != null && l1.size() > 0 && l1.get(l1.size()-1) != null)
 					lastTimestamp = l1.get(l1.size()-1).getTimestamp();
 	    		
 	    		
 				c = session.createCriteria(ConfigMining.class, "conf");
-				c.add(Restrictions.eq("conf.platform", platform.getId()));
+				c.add(Restrictions.eq("conf.platform", platformId));
 				List<ConfigMining>l = c.list();
 				if(l != null && l.size() > 0)
 				{

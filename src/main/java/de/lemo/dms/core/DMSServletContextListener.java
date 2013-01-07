@@ -24,7 +24,7 @@ public class DMSServletContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
         ServerConfiguration config = ServerConfiguration.getInstance();
-        
+
         logger = Logger.getLogger(getClass());
         logger.info("Context initialized");
         logger.info("ServerInfo:  " + servletContext.getServerInfo());

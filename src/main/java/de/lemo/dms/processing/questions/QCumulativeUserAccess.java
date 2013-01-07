@@ -1,21 +1,28 @@
 package de.lemo.dms.processing.questions;
 
+import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
+import static de.lemo.dms.processing.MetaParam.DEGREE;
+import static de.lemo.dms.processing.MetaParam.DEPARTMENT;
+import static de.lemo.dms.processing.MetaParam.END_TIME;
+import static de.lemo.dms.processing.MetaParam.START_TIME;
+import static de.lemo.dms.processing.MetaParam.TYPES;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+
 import org.codehaus.jettison.json.JSONException;
 import org.hibernate.Session;
+
 import de.lemo.dms.core.LearningObjects;
-import static de.lemo.dms.processing.MetaParam.*;
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.BoxPlotGeneratorForDates;
 import de.lemo.dms.processing.Question;
@@ -77,7 +84,7 @@ public class QCumulativeUserAccess extends Question {
 
 		super.logger.info("Query result: "+querys.toString());
 		
-		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance()
+		IDBHandler dbHandler = ServerConfiguration.getInstance()
 				.getDBHandler();
 		Session session = dbHandler.getMiningSession();
 

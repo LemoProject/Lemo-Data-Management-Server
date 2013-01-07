@@ -1,23 +1,25 @@
 package de.lemo.dms.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
-
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 
 class TestUserThread extends Thread {
 
     Exception exeption;
-    private IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+    private IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
 
     @Override
     public void run() {

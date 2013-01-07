@@ -3,7 +3,7 @@ package de.lemo.dms.test;
 
 import org.hibernate.Session;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 
 public class Test {
@@ -14,7 +14,7 @@ public class Test {
 	{
 		ContentGenerator conGen = new ContentGenerator();
 		
-		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
 		Session session = dbHandler.getMiningSession();
         dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 2, 2, 1293840000L, 1000));
         dbHandler.closeSession(session);

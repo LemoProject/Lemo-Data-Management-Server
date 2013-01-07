@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
@@ -64,7 +64,7 @@ public class QCourseUserPaths extends Question {
         stopWatch.start();
 
         /* A criteria is created from the session. */
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
         Session session = dbHandler.getMiningSession();
 
         /*

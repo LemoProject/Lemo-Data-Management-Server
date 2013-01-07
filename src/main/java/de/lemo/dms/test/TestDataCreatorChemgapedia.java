@@ -25,7 +25,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
@@ -54,7 +54,7 @@ public class TestDataCreatorChemgapedia {
 	
 	public void getDataFromDB()
 	{
-		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
 		
 		//accessing DB by creating a session and a transaction using HibernateUtil
         Session session = dbHandler.getMiningSession();

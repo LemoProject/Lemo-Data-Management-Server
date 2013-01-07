@@ -1,6 +1,7 @@
 package de.lemo.dms.core.config;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,12 +16,15 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.lemo.dms.connectors.ConnectorManager;
 import de.lemo.dms.connectors.ESourcePlatform;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.hibernate.MiningHibernateUtil;
+import de.lemo.dms.test.HibernateDBHandler;
 
 /**
  * 
@@ -34,12 +38,12 @@ public enum ServerConfiguration {
     {
         // the very first place where we can initialize the logger
         Logger.getRootLogger().setLevel(Level.INFO);
-        Logger.getRootLogger().addAppender(new ConsoleAppender(
-                new PatternLayout("[%p] %d{ISO8601} [%c{1}] - %m%n")));
+        Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("[%p] %d{ISO8601} [%c{1}] - %m%n")));
     }
 
-    private DBConfigObject miningDBConfig;
     private Logger logger = Logger.getLogger(getClass());
+    private IDBHandler miningDbHandler;
+    private long startTime;
 
     public static ServerConfiguration getInstance() {
         return INSTANCE;
@@ -67,8 +71,11 @@ public enum ServerConfiguration {
         LemoConfig lemoConfig = readConfigFiles(contextPath);
         // TODO set log level from config
 
-        miningDBConfig = createDBConfig(lemoConfig.dataManagementServer.hibernateConfig);
-
+        logger.info("Inititalizing mining database");
+        DBConfigObject miningDBConfig = createDBConfig(lemoConfig.dataManagementServer.databaseProperties);
+        MiningHibernateUtil.initSessionFactory(miningDBConfig);
+        miningDbHandler = new HibernateDBHandler();
+        
         List<IConnector> connectors = createConnectors(lemoConfig.dataManagementServer.connectors);
         ConnectorManager connectorManager = ConnectorManager.getInstance();
         for(IConnector connector : connectors) {
@@ -125,49 +132,42 @@ public enum ServerConfiguration {
         return lemoConfig;
     }
 
-    private List<IConnector> createConnectors(List<ConnectorConfig> connectorConfigurations) {
-
+    private List<IConnector> createConnectors(List<Connector> connectorConfigurations) {
         List<IConnector> result = Lists.newArrayList();
-        for(ConnectorConfig connectorConfig : connectorConfigurations) {
-            logger.info("Connector: " + connectorConfig.name);
+        for(Connector connectorConfig : connectorConfigurations) {
+            logger.info("Inititalizing connector: " + connectorConfig);
+
             ESourcePlatform platform = ESourcePlatform.valueOf(connectorConfig.platformType);
-            Class<? extends IConnector> connectorType = platform.getConnectorType();
-            IConnector connector = null;
-            try {
-                connector = connectorType.newInstance();
-            } catch (ReflectiveOperationException e) {
-                e.printStackTrace();
-            }
-            connector.setSourceDBConfig(createDBConfig(connectorConfig.hibernateConfig));
-            result.add(connector);
+            DBConfigObject config = createDBConfig(connectorConfig.properties);
+            result.add(platform.newConnector(config));
         }
         return result;
     }
 
-    private DBConfigObject createDBConfig(List<HibernatePropertyConfig> lemoHibernateConfig) {
-        DBConfigObject result = new DBConfigObject();
-        for(HibernatePropertyConfig property : lemoHibernateConfig) {
-            result.setProperty(property.name, property.value);
+    private DBConfigObject createDBConfig(List<PropertyConfig> properties) {
+        HashMap<String, String> propertyMap = Maps.newHashMap();
+        logger.debug("Properties: " + propertyMap.size());
+        for(PropertyConfig property : properties) {
+            logger.debug(" " + property.key + ":\t" + property.value);
+            propertyMap.put(property.key, property.value);
         }
-        return result;
+        return new DBConfigObject(propertyMap);
     }
 
     public IDBHandler getDBHandler() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public long getStartTime() {
-        // TODO Auto-generated method stub
-        return 0;
+        return startTime;
     }
 
-    public void setStartTime(long timestamp) {
-        // TODO Auto-generated method stub
-
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
-//    public DBConfigObject getMiningDBConfig() {
-//        return miningDBConfig;
-//    }
+
+    public IDBHandler getMiningDbHandler() {
+        return miningDbHandler;
+    }
 
 }

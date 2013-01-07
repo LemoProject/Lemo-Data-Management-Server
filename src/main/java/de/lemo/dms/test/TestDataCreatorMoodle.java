@@ -36,7 +36,7 @@ import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Role_assignments_LMS
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Scorm_LMS;
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.User_LMS;
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Wiki_LMS;
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.AssignmentMining;
@@ -609,7 +609,7 @@ public class TestDataCreatorMoodle {
 	@SuppressWarnings("unchecked")
 	public void getDataFromDB()
 	{
-		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
 		
 		//accessing DB by creating a session and a transaction using HibernateUtil
         Session session = dbHandler.getMiningSession();

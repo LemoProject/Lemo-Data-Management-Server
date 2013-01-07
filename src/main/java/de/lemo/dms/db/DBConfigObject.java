@@ -3,12 +3,19 @@ package de.lemo.dms.db;
 import java.util.HashMap;
 
 /**
- * This class has been created to give users the possibility to save and submit parameters for
- * the database connection.
+ * This class has been created to give users the possibility to save and submit parameters for the database connection.
  */
 public class DBConfigObject {
 
-    private HashMap<String, String> properties = new HashMap<String, String>();
+    private HashMap<String, String> properties;
+
+    public DBConfigObject() {
+        properties = new HashMap<String, String>();
+    }
+
+    public DBConfigObject(HashMap<String, String> properties) {
+        this.properties = properties;
+    }
 
     /**
      * Adds a key-value-pair to the property list.

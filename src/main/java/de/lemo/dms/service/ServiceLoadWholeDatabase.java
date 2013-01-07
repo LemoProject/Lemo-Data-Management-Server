@@ -21,7 +21,7 @@ public class ServiceLoadWholeDatabase extends BaseService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject loadWholeDatabase(@QueryParam("connector") Integer connectorId) {
+    public JSONObject loadWholeDatabase(@QueryParam("connector") Long connectorId) {
         super.logger.info("call for service: loadWholeDatabase");
 
         ConnectorManager cm = ConnectorManager.getInstance();

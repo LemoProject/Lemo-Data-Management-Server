@@ -20,7 +20,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
@@ -61,7 +61,7 @@ public class QUserLogHistory extends Question {
             return null;
         }
 
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
         Session session = dbHandler.getMiningSession();
 
 

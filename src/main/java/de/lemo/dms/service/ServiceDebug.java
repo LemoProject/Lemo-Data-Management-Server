@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 import org.hibernate.Session;
 
 import de.lemo.dms.core.ApplicationProperties;
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.CourseLogMining;
@@ -58,7 +58,7 @@ public class ServiceDebug {
                 .append("]</small></h2></div><dl class='dl-horizontal'>");
         IDBHandler dbHandler = null;
         try {
-            dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+            dbHandler = ServerConfiguration.getInstance().getDBHandler();
         } catch (ExceptionInInitializerError e) {
             content.append("<div class='alert alert-error'><b>ExceptionInInitializerError</b>");
             printExceptionStack(content, e);

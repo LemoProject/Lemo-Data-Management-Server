@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.hibernate.Session;
 
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.RoleMining;
@@ -23,8 +23,7 @@ public class ServiceRoles extends BaseService {
     @GET
     public ResultListRoleObject getUserRoles() {
 
-        // Set up db-connection
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
         Session session = dbHandler.getMiningSession();
 
         @SuppressWarnings("unchecked")
