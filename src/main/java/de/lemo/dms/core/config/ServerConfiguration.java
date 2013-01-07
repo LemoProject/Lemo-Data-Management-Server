@@ -44,6 +44,7 @@ public enum ServerConfiguration {
     private Logger logger = Logger.getLogger(getClass());
     private IDBHandler miningDbHandler;
     private long startTime;
+    private String serverName;
 
     public static ServerConfiguration getInstance() {
         return INSTANCE;
@@ -71,11 +72,13 @@ public enum ServerConfiguration {
         LemoConfig lemoConfig = readConfigFiles(contextPath);
         // TODO set log level from config
 
+        serverName = lemoConfig.dataManagementServer.name;
+
         logger.info("Inititalizing mining database");
         DBConfigObject miningDBConfig = createDBConfig(lemoConfig.dataManagementServer.databaseProperties);
         MiningHibernateUtil.initSessionFactory(miningDBConfig);
         miningDbHandler = new HibernateDBHandler();
-        
+
         List<IConnector> connectors = createConnectors(lemoConfig.dataManagementServer.connectors);
         ConnectorManager connectorManager = ConnectorManager.getInstance();
         for(IConnector connector : connectors) {
@@ -155,7 +158,7 @@ public enum ServerConfiguration {
     }
 
     public IDBHandler getDBHandler() {
-        return null;
+        return miningDbHandler;
     }
 
     public long getStartTime() {
@@ -168,6 +171,10 @@ public enum ServerConfiguration {
 
     public IDBHandler getMiningDbHandler() {
         return miningDbHandler;
+    }
+
+    public String getName() {
+        return serverName;
     }
 
 }

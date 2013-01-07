@@ -9,7 +9,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.hibernate.Session;
 
-import de.lemo.dms.core.ApplicationProperties;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
@@ -52,10 +51,8 @@ public class ServiceDebug {
 
         StringBuilder content = new StringBuilder("<h1>DMS Server Info</h1>");
         content.append("<div class='page-header'><h3>Profile: ")
-                .append(ApplicationProperties.getPropertyValue("lemo.display-name"))
-                .append(" <small>[")
-                .append(ApplicationProperties.getPropertyValue("lemo.system-name"))
-                .append("]</small></h2></div><dl class='dl-horizontal'>");
+                .append(ServerConfiguration.getInstance().getName())
+                .append("</h2></div><dl class='dl-horizontal'>");
         IDBHandler dbHandler = null;
         try {
             dbHandler = ServerConfiguration.getInstance().getDBHandler();
