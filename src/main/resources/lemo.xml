@@ -1,13 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <config>
   <!-- -->
-  <apps name="Lemo DMS">
-    <database>
-      <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-      <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-      <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
-    </database>
-    <dms-url>http://localhost:8080/lemo/dms</dms-url>
+  <apps name="Lemo Apps">
+    <!--
+    You may ignore this element, it just ensures that there's
+    no conflict when mixing dms and apps config in the same file.
+    -->
   </apps>
   <!-- -->
   <dms name="Lemo DMS">
@@ -48,8 +46,11 @@
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
       </connector>
       <connector platform-id="3" name="Chemgaroo" platform-type="Chemgaroo">
-        <property name="log-path">.</property>
-        <property name="metadata-path">.</property>
+        <property name="lemo.log_file_path">.</property>
+        <property name="lemo.resource_metadata_path">.</property>
+        <property name="lemo.process_log_file">true</property>
+        <property name="lemo.process_metadata">true</property>
+        <property name="lemo.filter_log_file">true</property>
       </connector>
     </connectors>
   </dms>
