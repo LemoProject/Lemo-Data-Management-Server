@@ -16,9 +16,15 @@ import de.lemo.dms.db.miningDBclass.ConfigMining;
 
 public class ConnectorChemgapedia extends AbstractConnector {
 
-    private boolean filter = false;
-    private boolean processVSC = false;
-    private boolean processLog = false;
+    private static final String PATH_LOG_FILE = "lemo.log_file_path";
+    private static final String PATH_RESOURCE_METADATA = "lemo.resource_metadata_path";
+    private static final String PROCESS_LOG_FILE = "lemo.process_log_file";
+    private static final String PROCESS_METADATA = "lemo.process_metadata";
+    private static final String FILTER_LOG_FILE = "lemo.filter_log_file";
+
+    private boolean filter;
+    private boolean processVSC;
+    private boolean processLog;
     private String logPath;
     private String vscPath;
     private Logger logger = Logger.getLogger(getClass());
@@ -26,19 +32,20 @@ public class ConnectorChemgapedia extends AbstractConnector {
     public ConnectorChemgapedia(DBConfigObject config) {
         HashMap<String, String> props = config.getProperties();
 
-        filter = props.get("filter_log_file") != null && props.get("filter_log_file").equals("true");
-        processVSC = props.get("process_metadata") != null && props.get("process_metadata").equals("true");
-        processLog = props.get("process_log_file") != null && props.get("process_log_file").equals("true");
-
-        if(props.get("path.log_file") == null)
+        // required
+        logPath = props.get(PATH_LOG_FILE);
+        if(props.get(PATH_LOG_FILE) == null)
             logger.error("Connector Chemgapedia : No path for log file defined");
-        else
-            logPath = props.get("path.log_file");
 
-        if(props.get("path.resource_metadata") == null && processVSC)
+        // optional
+        filter = props.containsKey(FILTER_LOG_FILE) && props.get(FILTER_LOG_FILE).toLowerCase().equals("true");
+        processVSC = props.containsKey(PROCESS_METADATA) && props.get(PROCESS_METADATA).toLowerCase().equals("true");
+        processLog = props.containsKey(PROCESS_LOG_FILE) && props.get(PROCESS_LOG_FILE).toLowerCase().equals("true");
+
+        // conditionally required
+        vscPath = props.get(PATH_RESOURCE_METADATA);
+        if(vscPath == null && processVSC)
             logger.error("Connector Chemgapedia : No path for resource metadata defined");
-        else
-            vscPath = props.get("path.resource_metadata");
 
     }
 
@@ -47,18 +54,18 @@ public class ConnectorChemgapedia extends AbstractConnector {
 
         if(logPath == null)
         {
-            logger.info("Connector Chemgapedia : No path for log file defined");
+            logger.error("Connector Chemgapedia : No path for log file defined");
             return false;
         }
         if(vscPath == null)
         {
-            logger.info("Connector Chemgapedia : No path for resource metadata defined");
+            logger.error("Connector Chemgapedia : No path for resource metadata defined");
             return false;
         }
         File f = new File(logPath);
         if(!f.exists())
         {
-            logger.info("Connector Chemgapedia : Defined Log file doesn't exist.");
+            logger.error("Connector Chemgapedia : Defined Log file doesn't exist.");
             return false;
         }
 
@@ -108,8 +115,6 @@ public class ConnectorChemgapedia extends AbstractConnector {
     public void updateData(long fromTimestamp) {
         Long starttime = System.currentTimeMillis() / 1000;
 
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
-
         Long largestId = -1L;
         if(processVSC || processLog)
         {
@@ -138,7 +143,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
             config.setLargestId(largestId);
             config.setPlatform(getPlatformId());
 
-            dbHandler = ServerConfiguration.getInstance().getDBHandler();
+            IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
             Session session = dbHandler.getMiningSession();
             dbHandler.saveToDB(session, config);
             dbHandler.closeSession(session);
