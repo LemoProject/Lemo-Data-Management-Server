@@ -3,6 +3,7 @@ package de.lemo.dms.connectors.chemgapedia.fizHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
@@ -14,6 +15,34 @@ import java.util.Set;
  *
  */
 public class BotFinder {
+	
+	
+	/**
+	 * Takes all requests of a user and divides the sequence into several sessions according to web-usyge heuristics.
+	 * 
+	 * @param log	
+	 * @return
+	 */
+	public ArrayList<ArrayList<LogObject>> sessionize(ArrayList<LogObject> log)
+	{
+		ArrayList<ArrayList<LogObject>> sessions = new ArrayList<ArrayList<LogObject>>();
+		ArrayList<LogObject> currentSession = new ArrayList<LogObject>();
+		HashSet<String> previousPages = new HashSet<String>(); 
+		for(int i = 0 ; i < log.size(); i++)
+		{
+			LogObject l = log.get(i);
+			if(l.getReferrer() == "-" || !previousPages.contains(l.getReferrer()))
+			{
+					if(currentSession.size() > 0)
+						sessions.add(currentSession);
+					currentSession.clear();
+					previousPages.clear();
+			}
+			currentSession.add(l);
+			previousPages.add(l.getUrl());
+		}		
+		return sessions;
+	}
 
 	
 	/**
