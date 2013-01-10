@@ -48,7 +48,8 @@ public class DegreeCourseMining implements IMappingClass {
 	 * @param course the id of a course in which the resource is used
 	 * @param courseMining a list of new added departments, which is searched for the department with the id submitted in the department parameter
 	 * @param oldCourseMining a list of department in the miningdatabase, which is searched for the department with the id submitted in the department parameter
-	 */	
+	 */
+	/*
 	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
 		
 		if(courseMining.get(course) != null)
@@ -62,6 +63,7 @@ public class DegreeCourseMining implements IMappingClass {
 			oldCourseMining.get(course).addDegree_course(this);
 		}
 	}
+	*/
 	/** standard getter for the attribute degree
 	 * @return the degree which is used in the department
 	 */	

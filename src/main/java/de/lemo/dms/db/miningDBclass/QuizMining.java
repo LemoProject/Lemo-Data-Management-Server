@@ -15,7 +15,7 @@ public class QuizMining implements Serializable , IMappingClass, ILearningObject
 	private long id;
 	private String type;	
 	private String title;
-	private Double maxgrade;
+	private double maxgrade;
 	private long timeopen;
 	private long timeclose;	
 	private Long platform;

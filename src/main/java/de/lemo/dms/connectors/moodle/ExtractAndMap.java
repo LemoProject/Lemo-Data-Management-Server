@@ -39,6 +39,9 @@ import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
 import de.lemo.dms.db.miningDBclass.GroupUserMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
+import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
+import de.lemo.dms.db.miningDBclass.LevelCourseMining;
+import de.lemo.dms.db.miningDBclass.LevelMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionMining;
@@ -80,6 +83,12 @@ public abstract class ExtractAndMap{
 	/** A List of new entries in the forum table found in this run of the process. */
 	static HashMap<Long, ForumMining> forum_mining;
 	
+	/** A List of entries in the new role table found in this run of the process. */
+	static HashMap<Long, LevelMining> level_mining;
+	
+	/** A List of entries in the new role table found in this run of the process. */
+	static HashMap<Long, LevelAssociationMining> level_association_mining;
+	
 	/** A List of new entries in the resource table found in this run of the process. */	
 	static HashMap<Long, ResourceMining> resource_mining;
 	
@@ -104,10 +113,10 @@ public abstract class ExtractAndMap{
 	static HashMap<Long, RoleMining> role_mining;
 	
 	/** The department_mining. */
-	static HashMap<Long, DepartmentMining> department_mining;
+	//static HashMap<Long, DepartmentMining> department_mining;
 	
 	/** The degree_mining. */
-	static HashMap<Long, DegreeMining> degree_mining;
+	//static HashMap<Long, DegreeMining> degree_mining;
 	
 	/** The chat_mining. */
 	static HashMap<Long, ChatMining> chat_mining;
@@ -129,6 +138,9 @@ public abstract class ExtractAndMap{
 	
 	/** A List of entries in the quiz table, needed for linking reasons in the process. */
 	static HashMap<Long, QuizMining> old_quiz_mining;
+	
+	/** The old_department_mining. */
+	static HashMap<Long, LevelMining> old_level_mining;
 		
 	/** A List of entries in the assignment table, needed for linking reasons in the process. */
 	static HashMap<Long, AssignmentMining> old_assignment_mining;
@@ -164,10 +176,10 @@ public abstract class ExtractAndMap{
 	static HashMap<Long, CourseQuizMining> old_course_quiz_mining;
 	
 	/** The old_department_mining. */
-	static HashMap<Long, DepartmentMining> old_department_mining;
+	//static HashMap<Long, DepartmentMining> old_department_mining;
 	
 	/** The old_degree_mining. */
-	static HashMap<Long, DegreeMining> old_degree_mining;
+	//static HashMap<Long, DegreeMining> old_degree_mining;
 	
 	/** The old_chat_mining. */
 	static HashMap<Long, ChatMining> old_chat_mining;
@@ -175,7 +187,7 @@ public abstract class ExtractAndMap{
 	/** The old_chat_log_mining. */
 	static HashMap<Long, ChatLogMining> old_chat_log_mining;
 	
-
+	static Long largestId;
 	
 //	@SuppressWarnings("unchecked")
 	/** A list of objects used for submitting them to the DB. */
@@ -192,10 +204,7 @@ public abstract class ExtractAndMap{
 	
 	/**Database-handler**/
 	static IDBHandler dbHandler;
-	
-	/** value of the highest user-id in the dataset. Used for creating new numeric ids **/
-	static long largestId;
-	
+		
 	private Logger logger = Logger.getLogger(getClass());
 
 	static Long questionLogMax;
@@ -301,8 +310,8 @@ public abstract class ExtractAndMap{
 	    ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (starttime));	
-	    config.setLargestId(largestId);
 	    config.setPlatform(platform.getId());
+	    config.setDatabaseModel("1.2");
 	    dbHandler.saveToDB(session, config);
 	    //mining_session.saveOrUpdate(config);
 
@@ -359,16 +368,14 @@ public abstract class ExtractAndMap{
 			platform_mining.put(platform.getId(), platform);
 		}
 		
-		config_mining_timestamp = (List<Timestamp>) dbHandler.performQuery(session, EQueryType.HQL, "select max(lastmodified) from ConfigMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
-		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "select largestId from ConfigMining x order by x.id asc"));
-		if(l != null && l.size() > 0)
-			largestId = Long.valueOf((l.get(l.size()-1) + "").substring(2));
-		else
-			largestId = 0;
-		
 		if(config_mining_timestamp.get(0) == null){
 			config_mining_timestamp.set(0, new Timestamp(0));
 		}
+        Query large = session.createQuery("select max(user.id) from UserMining user where user.platform="+ platform.getId() +"");
+        if(large.list().size() > 0)
+        	largestId = ((ArrayList<Long>) large.list()).get(0);
+        if(largestId == null)
+        	largestId = 0L;
 		
 		Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log where log.platform="+ platform.getId() +"");
         resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
@@ -498,6 +505,13 @@ public abstract class ExtractAndMap{
 			old_quiz_question_mining.put(((QuizQuestionMining)(t.get(i))).getQuestion().getId(), (QuizQuestionMining)t.get(i));
 		System.out.println("Loaded " + old_quiz_question_mining.size() + " QuizQuestionMining objects from the mining database.");
 		
+		t = dbHandler.performQuery(session, EQueryType.HQL, "from LevelMining x where x.platform="+ platform.getId() + " order by x.id asc");//mining_session.createQuery("from DepartmentMining x order by x.id asc").list();
+		old_level_mining = new HashMap<Long, LevelMining>();
+		for(int i = 0; i < t.size(); i++)
+			old_level_mining.put(((LevelMining)(t.get(i))).getId(), (LevelMining)t.get(i));
+		System.out.println("Loaded " + old_level_mining.size() + " LevelMining objects from the mining database.");
+		
+		/*
 		t =  dbHandler.performQuery(session, EQueryType.HQL, "from DepartmentMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from DepartmentMining x order by x.id asc").list();
 		old_department_mining = new HashMap<Long, DepartmentMining>();
 		for(int i = 0; i < t.size(); i++)
@@ -509,7 +523,7 @@ public abstract class ExtractAndMap{
 		for(int i = 0; i < t.size(); i++)
 			old_degree_mining.put(((DegreeMining)(t.get(i))).getId(), (DegreeMining)t.get(i));
 		System.out.println("Loaded " + old_degree_mining.size() + " DegreeMining objects from the mining database.");
-		
+		*/
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from ChatMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from ChatMining x order by x.id asc").list();
 		old_chat_mining = new HashMap<Long, ChatMining>();
 		for(int i = 0; i < t.size(); i++)
@@ -593,11 +607,12 @@ public abstract class ExtractAndMap{
 		group_mining.clear();
 		question_mining.clear();
 		role_mining.clear();
-		degree_mining.clear();
-		department_mining.clear();
+		//degree_mining.clear();
+		//department_mining.clear();
 		chat_mining.clear();
 		id_mapping.clear();
 		chat_mining.clear();
+		level_mining.clear();
 	}	
 	
 	/**
@@ -617,12 +632,13 @@ public abstract class ExtractAndMap{
 		old_group_mining.putAll(group_mining);
 		old_question_mining.putAll(question_mining);
 		old_role_mining.putAll(role_mining);
-		old_degree_mining.putAll(degree_mining);
-		old_department_mining.putAll(department_mining);
+		//old_degree_mining.putAll(degree_mining);
+		//old_department_mining.putAll(department_mining);
 		old_chat_mining.putAll(chat_mining);
 		old_id_mapping.putAll(id_mapping);
 		old_quiz_question_mining.putAll(quiz_question_mining);
 		old_course_quiz_mining.putAll(course_quiz_mining);
+		old_level_mining.putAll(level_mining);
 	}
 	
 	/**
@@ -665,6 +681,12 @@ public abstract class ExtractAndMap{
 			updates.add(chat_mining.values());
 			System.out.println("Generated " + chat_mining.size() + " ChatMining entries in "+ c.getAndReset() +" s. ");
 			
+			level_mining = generateLevelMining();
+			objects += level_mining.size();
+			System.out.println("Generated " + level_mining.size() + " LevelMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(level_mining.values());
+			
+			/*
 			degree_mining = generateDegreeMining();
 			objects += degree_mining.size();
 			System.out.println("Generated " + degree_mining.size() + " DegreeMining entries in "+ c.getAndReset() +" s. ");
@@ -674,6 +696,7 @@ public abstract class ExtractAndMap{
 			objects += department_mining.size();
 			System.out.println("Generated " + department_mining.size() + " DepartmentMining entries in "+ c.getAndReset() +" s. ");
 			updates.add(department_mining.values());
+			*/
 			
 			forum_mining = generateForumMining();
 			objects += forum_mining.size();
@@ -729,6 +752,16 @@ public abstract class ExtractAndMap{
 			objects += updates.get(updates.size()-1).size();
 			System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseScormMining entries in "+ c.getAndReset() +" s. ");
 			
+			updates.add(generateLevelAssociationMining().values());
+			objects += updates.get(updates.size()-1).size();
+			System.out.println("Generated " + updates.get(updates.size()-1).size() + " LevelAssociationMining entries in "+ c.getAndReset() +" s. ");
+			
+			updates.add(generateLevelCourseMining().values());
+			objects += updates.get(updates.size()-1).size();
+			System.out.println("Generated " + updates.get(updates.size()-1).size() + " LevelCourseMining entries in "+ c.getAndReset() +" s. ");
+			
+			
+			/*
 			updates.add(generateDegreeCourseMining().values());
 			objects += updates.get(updates.size()-1).size();
 			System.out.println("Generated " + updates.get(updates.size()-1).size() + " DegreeCourseMining entries in "+ c.getAndReset() +" s. ");
@@ -736,6 +769,7 @@ public abstract class ExtractAndMap{
 			updates.add(generateDepartmentDegreeMining().values());
 			objects += updates.get(updates.size()-1).size();
 			System.out.println("Generated " + updates.get(updates.size()-1).size() + " DepartmentDegreeMining entries in "+ c.getAndReset() +" s. ");
+			*/
 			
 			quiz_question_mining = generateQuizQuestionMining();
 			objects += quiz_question_mining.size();
@@ -1138,34 +1172,69 @@ public abstract class ExtractAndMap{
 	 * **/
 	abstract HashMap<Long, RoleMining> generateRoleMining();
 	
-	
 	/**
-	 * Generate degree mining.
+	 * Generate level mining.
 	 *
 	 * @return the list
 	 */
-	abstract HashMap<Long, DegreeMining> generateDegreeMining();
+	abstract HashMap<Long, LevelMining> generateLevelMining();
 	
-	/**
-	 * Generate department mining.
-	 *
-	 * @return the list
-	 */
-	abstract HashMap<Long, DepartmentMining> generateDepartmentMining();
 	
 	/**
 	 * Generate department degree mining.
 	 *
 	 * @return the list
 	 */
-	abstract HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining();
+	//abstract HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining();
+	
+	/**
+	 * Generate level association mining.
+	 *
+	 * @return the list
+	 */
+	abstract HashMap<Long, LevelAssociationMining> generateLevelAssociationMining();
 	
 	/**
 	 * Generate degree course mining.
 	 *
 	 * @return the list
 	 */
-	abstract HashMap<Long, DegreeCourseMining> generateDegreeCourseMining();
+	//abstract HashMap<Long, DegreeCourseMining> generateDegreeCourseMining();
+	
+	/**
+	 * Generate level course mining.
+	 *
+	 * @return the list
+	 */
+	abstract HashMap<Long, LevelCourseMining> generateLevelCourseMining();
+	
+	/**
+	 * Generate degree mining.
+	 *
+	 * @return the list
+	 */
+	//abstract HashMap<Long, DegreeMining> generateDegreeMining();
+	
+	/**
+	 * Generate department mining.
+	 *
+	 * @return the list
+	 */
+	//abstract HashMap<Long, DepartmentMining> generateDepartmentMining();
+	
+	/**
+	 * Generate department degree mining.
+	 *
+	 * @return the list
+	 */
+	//abstract HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining();
+	
+	/**
+	 * Generate degree course mining.
+	 *
+	 * @return the list
+	 */
+	//abstract HashMap<Long, DegreeCourseMining> generateDegreeCourseMining();
 	
 	/**
 	 * Generate chat mining.

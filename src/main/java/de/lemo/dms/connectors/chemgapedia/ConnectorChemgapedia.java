@@ -3,6 +3,7 @@ package de.lemo.dms.connectors.chemgapedia;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -12,6 +13,7 @@ import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.LogReader;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.XMLPackageParser;
@@ -77,7 +79,6 @@ public class ConnectorChemgapedia implements IConnector{
 		Query old_platform = session.createQuery("from PlatformMining x order by x.id asc");
         ArrayList<PlatformMining> l = (ArrayList<PlatformMining>) old_platform.list();
 		
-		Long largestId = -1L;	
 		if(processVSC || processLog)
 		{
 			Long pid = 0L;
@@ -93,6 +94,7 @@ public class ConnectorChemgapedia implements IConnector{
 	        	if(p.getType().equals("Chemgapedia") && p.getName().equals(platformName))
 	        	{        		
 	        		platform = p;
+	        		break;
 	        	}
 			}
 			if(platform == null)
@@ -104,30 +106,29 @@ public class ConnectorChemgapedia implements IConnector{
 				platform.setPrefix(pref + 1);			
 			}
 			
+			session.clear();
 			session.close();
 			
 			if(processVSC)
 			{
 				XMLPackageParser x = new XMLPackageParser(platform);
 				x.readAllVlus(vscPath);
-				largestId = x.saveAllToDB();
+				x.saveAllToDB();
+				x.clearMaps();
 			}
 			if(processLog)
 			{			
-				LogReader logR = new LogReader(platform, largestId);
-				logR.loadServerLogData(logPath);
-				if(filter)
-					
-					logR.filterServerLogFile();
-				
-				largestId = logR.save();
+				LogReader logR = new LogReader(platform);
+				logR.loadServerLogData(logPath, 0L, filter);
+				logR.save();
+				logR.clearMaps();
 			}
 			
 			Long endtime = System.currentTimeMillis()/1000;
 			ConfigMining config = new ConfigMining();
 		    config.setLastmodified(System.currentTimeMillis());
 		    config.setElapsed_time((endtime) - (starttime));	
-		    config.setLargestId(largestId);
+		    config.setDatabaseModel("1.2");
 		    config.setPlatform(platform.getId());
 		    
 		    session = dbHandler.getMiningSession();
@@ -153,8 +154,7 @@ public class ConnectorChemgapedia implements IConnector{
 		
 		Query old_platform = session.createQuery("from PlatformMining x order by x.id asc");
         ArrayList<PlatformMining> l = (ArrayList<PlatformMining>) old_platform.list();
-		
-		Long largestId = -1L;	
+			
 		if(processVSC || processLog)
 		{
 			Long pid = 0L;
@@ -179,38 +179,38 @@ public class ConnectorChemgapedia implements IConnector{
 				platform.setType("Chemgapedia");
 				platform.setName(platformName);
 				platform.setPrefix(pref + 1);			
-			}
-			
+			}			
+			session.clear();
 			session.close();		
 			if(processVSC)
 			{
 				XMLPackageParser x = new XMLPackageParser(platform);
 				x.readAllVlus(vscPath);
-				largestId = x.saveAllToDB();
+				x.saveAllToDB();
+				x.clearMaps();
 			}
 			if(processLog)
 			{			
-				LogReader logR = new LogReader(platform, largestId);
-				
-				
-				logR.loadServerLogData(logPath);
-				if(filter)
-					
-					logR.filterServerLogFile();
-			
-				largestId = logR.save();
+				LogReader logR = new LogReader(platform);				
+				logR.loadServerLogData(logPath, 0L, filter);
+				logR.save();
+				logR.clearMaps();				
 			}
+			
 			
 			Long endtime = System.currentTimeMillis()/1000;
 			ConfigMining config = new ConfigMining();
 		    config.setLastmodified(System.currentTimeMillis());
 		    config.setElapsed_time((endtime) - (starttime));	
-		    config.setLargestId(largestId);
+		    config.setDatabaseModel("1.2");
 		    config.setPlatform(platform.getId());
+		    
+
 		    
 		    dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		    session = dbHandler.getMiningSession();
 	        dbHandler.saveToDB(session, config);
+	        dbHandler.saveToDB(session, platform);
 	        dbHandler.closeSession(session);
 		}
 	}

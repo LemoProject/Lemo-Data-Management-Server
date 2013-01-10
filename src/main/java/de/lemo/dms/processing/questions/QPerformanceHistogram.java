@@ -24,6 +24,7 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
+import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
@@ -68,7 +69,7 @@ public class QPerformanceHistogram extends Question{
         System.out.println("Parameter list: Start time: : "	+ startTime);
         System.out.println("Parameter list: End time: : " + endTime);
     	
-    	if(quizzes == null || quizzes.size() < 1 || quizzes.size() % 2 != 0 || resolution <= 0 || startTime == null || endTime == null)
+    	if(quizzes == null || quizzes.size() < 1 || resolution <= 0 || startTime == null || endTime == null)
     	{
     		System.out.println("Calculation aborted. At least one of the mandatory parameters is not set properly.");
     		return new ResultListLongObject();
@@ -85,15 +86,19 @@ public class QPerformanceHistogram extends Question{
 		{	
 	        HashMap<Long, Integer> obj = new HashMap<Long, Integer>();
 	        
+
+        
+	        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+	        Session session = dbHandler.getMiningSession();
+	        Criteria criteria;
+
 	        for(int i = 0; i < quizzes.size(); i++)
 	        {
         		obj.put(quizzes.get(i), i);
 	        }
-        
-	        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-	        Session session = dbHandler.getMiningSession();
 
-	        Criteria criteria = session.createCriteria(IRatedLogObject.class, "log");
+	        
+	        criteria = session.createCriteria(IRatedLogObject.class, "log");
 	        criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 	        if(courses != null && courses.size() > 0)
 	        	criteria.add(Restrictions.in("log.course.id", courses));

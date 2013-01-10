@@ -40,35 +40,34 @@ public class Test {
 	 * Tests the Chemgapedia-connector. Configurations have to be altered accordingly.
 	 * 
 	 */
-	public static void runChemConn()
+	public void runChemConn()
 	{
-		for(int i = 0 ; i < 5; i++)
-		{
+		String logs = "C:\\Users\\s.schwarzrock\\Desktop\\120614\\130104_lemojoin_10K_1.log";
+		//int i = 0;
+		//for(int i = 1 ; i < 6; i++)
+		//{
 			DBConfigObject sourceConf = new DBConfigObject();
-			sourceConf.addProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120614\\120614_lemo_"+i+".log");
+			sourceConf.addProperty("path.log_file", logs);
 			sourceConf.addProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
 			sourceConf.addProperty("filter_log_file", "true");
-			if(i == 0)
-				sourceConf.addProperty("process_metadata", "true");
-			else
-				sourceConf.addProperty("process_metadata", "false");
+			sourceConf.addProperty("process_metadata", "true");
 			sourceConf.addProperty("process_log_file", "true");
 			
 			ConnectorChemgapedia cm = new ConnectorChemgapedia();
 			cm.setSourceDBConfig(sourceConf);
-			cm.getData("Chemgapedia(FIZ)");
-		}
+			cm.updateData("Chemgapedia(FIZ)", 0L);
+		//}
 	}
 	
 	/**
 	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
 	 * 
 	 */
-	public static void runMoodleConn()
+	public void runMoodleConn()
 	{
 		ConnectorMoodle cm = new ConnectorMoodle();
 		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-		cm.getData("Moodle(BBW)");
+		cm.getData("Moodle(Beuth)");
 		//cm.updateData("Moodle(Beuth)", 1338000000);
 	}
 	
@@ -76,7 +75,7 @@ public class Test {
 	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
 	 * 
 	 */
-	public static void runMoodleNumericConn()
+	public void runMoodleNumericConn()
 	{
 		de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle cm = new de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle();
 		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
@@ -88,7 +87,7 @@ public class Test {
 	 * Tests the Moodle(2.3)-connector. Configurations have to be altered accordingly.
 	 * 
 	 */
-	public static void runMoodle23Conn()
+	public void runMoodle23Conn()
 	{
 		de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle cm = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle();
 		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
@@ -100,13 +99,13 @@ public class Test {
 	 * Tests the Clix(2010)-connector. Configurations have to be altered accordingly.
 	 * 
 	 */
-	public static void runClixConn()
+	public void runClixConn()
 	{
 		ConnectorClix cc = new ConnectorClix();
 		cc.getData("Clix(HTW)");
 	}
 	
-	public static void test()
+	public void test()
 	{
 		Session session = HibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
         //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
@@ -117,7 +116,7 @@ public class Test {
         System.out.println("Person tables: " + person.size()); 
 	}
 	
-	public static void calculateMeichsner()
+	public void calculateMeichsner()
 	{
 		IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
 		Session session = dbHandler.getMiningSession();
@@ -168,7 +167,7 @@ public class Test {
 //		qca.compute(courses, roles, startTime, endTime, resolution, resourceTypes);
 //	}
 	
-	public static void testViger()
+	public void testViger()
 	{
 		QFrequentPathsViger qfpv = new QFrequentPathsViger();
 		ArrayList<Long> courses = new ArrayList<Long>();
@@ -183,7 +182,7 @@ public class Test {
 		
 	}
 	
-	public static void testBide()
+	public void testBide()
 	{
 		QFrequentPathsBIDE qfpv = new QFrequentPathsBIDE();
 		ArrayList<Long> courses = new ArrayList<Long>();
@@ -198,7 +197,7 @@ public class Test {
 		
 	}
 	
-	public static void testHisto()
+	public void testHisto()
 	{
 		QPerformanceBoxPlot ph = new QPerformanceBoxPlot();
 		ArrayList<Long> quizzes = new ArrayList<Long>();
@@ -211,7 +210,7 @@ public class Test {
 		
 	}
 	
-	public static void testService()
+	public void testService()
 	{
 		ArrayList<String> res = new ArrayList<String>();
 		ArrayList<Long> courses = new ArrayList<Long>();
@@ -234,17 +233,11 @@ public class Test {
         System.out.println("Starting test");
 	}
 	
-	public static void run()
+	public void run()
 	{
 		System.out.println("Starting test");
-		runMoodleNumericConn();
+		runChemConn();
 		System.out.println("Test finished");
 	}
-
-	public static void main(String[] args)
-	{
-		run();
-	}
-	
 	
 }

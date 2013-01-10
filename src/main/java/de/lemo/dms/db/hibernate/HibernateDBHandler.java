@@ -24,7 +24,7 @@ public class HibernateDBHandler implements IDBHandler {
     @SuppressWarnings("unused")
 	private Logger logger = Logger.getLogger(getClass());
 
-    private static SessionFactory miningSessionFactory =
+    private SessionFactory miningSessionFactory =
             de.lemo.dms.db.hibernate.HibernateUtil.getSessionFactoryMining();
 
     public Session getMiningSession() {
@@ -64,9 +64,11 @@ public class HibernateDBHandler implements IDBHandler {
                      }
                 }
             System.out.println("Wrote " + classOb + " objects of class " + className + " to database.");
+            session.flush();            
             session.getTransaction().commit();
-            session.close();
-        } catch (HibernateException e)
+            session.clear();            
+            closeSession(session);
+    	} catch (HibernateException e)
         {
             e.printStackTrace();
         }
@@ -88,6 +90,7 @@ public class HibernateDBHandler implements IDBHandler {
      */
     public void closeSession(Session session) {
         try {
+        	session.clear();
             session.close();
         } catch (HibernateException he)
         {

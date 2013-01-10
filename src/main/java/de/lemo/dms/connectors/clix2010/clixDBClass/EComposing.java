@@ -7,20 +7,10 @@ public class EComposing  implements IClixMappingClass{
 	private Long id;
 	private Long composing;
 	private Long component;
+	private Long parent;
 	private String endDate;
 	private String startDate;
 	private Long composingType;
-	
-	public String getString()
-	{
-		return "EComposing$$$"
-				+this.id+"$$$"
-				+this.getEndDate()+"$$$"
-				+this.getStartDate()+"$$$"
-				+this.getComponent()+"$$$"
-				+this.getComposing()+"$$$"
-				+this.getComposingType();
-	}
 	
 	public Long getComposingType() {
 		return composingType;
@@ -73,6 +63,14 @@ public class EComposing  implements IClixMappingClass{
 
 	public void setComponent(Long component) {
 		this.component = component;
+	}
+
+	public Long getParent() {
+		return parent;
+	}
+
+	public void setParent(Long parent) {
+		this.parent = parent;
 	}
 	
 	
