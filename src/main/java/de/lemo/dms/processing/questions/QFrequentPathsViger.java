@@ -107,7 +107,8 @@ public class QFrequentPathsViger extends Question{
 			sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength, maxLength, startTime, endTime));
 				//sequenceDatabase.loadFile(generateInputFile(courseIds, userIds, startTime, endTime));
 				
-			AlgoFournierViger08 algo  = new AlgoFournierViger08(minSup, 0, 1, 0, 1000, null,  true, false);
+			AlgoFournierViger08 algo  = new AlgoFournierViger08(minSup, 0L, 1L, 0L, 1000L , null,  true, false);
+
 			
 			// execute the algorithm
 			Clock c = new Clock();
