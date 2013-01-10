@@ -69,7 +69,7 @@ public class QPerformanceHistogram extends Question{
         System.out.println("Parameter list: Start time: : "	+ startTime);
         System.out.println("Parameter list: End time: : " + endTime);
     	
-    	if(quizzes == null || quizzes.size() < 1 || quizzes.size() % 2 != 0 || resolution <= 0 || startTime == null || endTime == null)
+    	if(quizzes == null || quizzes.size() < 1 || resolution <= 0 || startTime == null || endTime == null)
     	{
     		System.out.println("Calculation aborted. At least one of the mandatory parameters is not set properly.");
     		return new ResultListLongObject();
@@ -104,13 +104,12 @@ public class QPerformanceHistogram extends Question{
 	        	criteria.add(Restrictions.in("log.course.id", courses));
 	        if(users != null && users.size() > 0)
 	        	criteria.add(Restrictions.in("log.user.id", users));
-	        boolean getAll = (quizzes == null || quizzes.size() == 0);
 	        
 	        ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 	        
 	        for(IRatedLogObject log : list)
 	        {
-	        	if((getAll || obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null ) && log.getFinalgrade() != null &&
+	        	if(obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null && log.getFinalgrade() != null &&
 	        			log.getMaxgrade() != null && log.getMaxgrade() > 0)
 	        	{
 	        		//Determine size of each interval
