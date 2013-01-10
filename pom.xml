@@ -43,8 +43,8 @@
 			<properties>
 				<lemo-system-name>lemo-stable</lemo-system-name>
 				<lemo-display-name>LeMo [stable]</lemo-display-name>
-				<tomcat-server>lemo2-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo2-tomcat-url}</tomcat-url>
+				<tomcat-server>lemo4-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo4-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
 

@@ -24,6 +24,7 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
+import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
@@ -85,26 +86,31 @@ public class QPerformanceHistogram extends Question{
 		{	
 	        HashMap<Long, Integer> obj = new HashMap<Long, Integer>();
 	        
+
+        
+	        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+	        Session session = dbHandler.getMiningSession();
+	        Criteria criteria;
+
 	        for(int i = 0; i < quizzes.size(); i++)
 	        {
         		obj.put(quizzes.get(i), i);
 	        }
-        
-	        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-	        Session session = dbHandler.getMiningSession();
 
-	        Criteria criteria = session.createCriteria(IRatedLogObject.class, "log");
+	        
+	        criteria = session.createCriteria(IRatedLogObject.class, "log");
 	        criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 	        if(courses != null && courses.size() > 0)
 	        	criteria.add(Restrictions.in("log.course.id", courses));
 	        if(users != null && users.size() > 0)
 	        	criteria.add(Restrictions.in("log.user.id", users));
+	        boolean getAll = (quizzes == null || quizzes.size() == 0);
 	        
 	        ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 	        
 	        for(IRatedLogObject log : list)
 	        {
-	        	if(obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null && log.getFinalgrade() != null &&
+	        	if((getAll || obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null ) && log.getFinalgrade() != null &&
 	        			log.getMaxgrade() != null && log.getMaxgrade() > 0)
 	        	{
 	        		//Determine size of each interval
