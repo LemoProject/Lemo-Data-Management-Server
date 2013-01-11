@@ -49,6 +49,7 @@ public class QPerformanceBoxPlot extends Question{
     		@FormParam(COURSE_IDS) List<Long> courses, 
     		@FormParam(USER_IDS) List<Long> users, 
     		@FormParam(QUIZ_IDS) List<Long> quizzes,
+    		@FormParam(RESOLUTION) int resolution,
     		@FormParam(START_TIME) Long startTime,
     		@FormParam(END_TIME) Long endTime) {
 
@@ -123,12 +124,14 @@ public class QPerformanceBoxPlot extends Question{
 	        {
 	        	Long name = Long.valueOf(log.getPrefix() + "" + log.getLearnObjId());
 	        	if(values.get(name) != null && log.getFinalgrade() != null)
-	        		values.get(name).add(log.getFinalgrade());
+	        	{
+	        		values.get(name).add(log.getFinalgrade() / (log.getMaxgrade() / resolution));
+	        	}
 	        }
 	        
 	        for(int i = 0; i < results.length; i++)
 	        {
-	        	BoxPlot plotty = calcBox(values.get(quizzes.get(i)));
+	        	BoxPlot plotty = calcBox(values.get(quizzes.get(i)), quizzes.get(i));
 	        	results[i] = plotty;
 	        }
 		}catch(Exception e)
@@ -139,8 +142,9 @@ public class QPerformanceBoxPlot extends Question{
 	}
     
   //berechnen der boxplot werte
-  	private BoxPlot calcBox(ArrayList<Double> list) {
+  	private BoxPlot calcBox(ArrayList<Double> list, Long id) {
   		BoxPlot result = new BoxPlot();
+  		result.setName(id + "");
   		//---SORTIEREN
   		Collections.sort(list);
   		//---MEDIAN
