@@ -38,7 +38,7 @@ import de.lemo.dms.db.miningDBclass.ResourceMining;
 
 
 /**
- * The Class XMLPackageParser.
+ * The Class XMLPackageParser. Created for the processing of Chemgapedia's VLU-files
  */
 public class XMLPackageParser {
 	
@@ -81,6 +81,11 @@ public class XMLPackageParser {
 	private static Long largestId;
 	
 	
+	/**
+	 * Constructor. Creates an object of XMLPackageParser.
+	 * 
+	 * @param platform Name of the Chemgapedia-platform
+	 */
 	@SuppressWarnings("unchecked")
     public XMLPackageParser(long platformId)
 	{
@@ -503,8 +508,7 @@ public class XMLPackageParser {
 	 * Saves all objects of the XMLPackageParser into the Database.
 	 * Affected tables: Resource, DepartmentDegree, DegreeCourse, CourseResource
 	 *
-	 * @param xpp this
-	 * @return true if transaction was successful, otherwise false
+	 * @return Largest id in the id-mapping-table
 	 */
 	public Long saveAllToDB()
 	{
@@ -524,7 +528,7 @@ public class XMLPackageParser {
 	}
 	
 	/**
-	 * Read all VLUs contained in the specified directory.
+	 * Reads all VLUs contained in the specified directory.
 	 *
 	 * @param directory the directory
 	 */

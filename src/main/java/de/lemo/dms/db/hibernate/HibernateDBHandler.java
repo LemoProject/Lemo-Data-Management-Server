@@ -20,7 +20,8 @@ import de.lemo.dms.db.IDBHandler;
  */
 public class HibernateDBHandler implements IDBHandler {
 
-    private Logger logger = Logger.getLogger(getClass());
+    @SuppressWarnings("unused")
+	private Logger logger = Logger.getLogger(getClass());
 
     public Session getMiningSession() {
         return MiningHibernateUtil.getSessionFactory().openSession();

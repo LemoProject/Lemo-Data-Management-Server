@@ -14,6 +14,12 @@ import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
 
+/**
+ * Connector implementation for the platform Chemgapedia
+ * 
+ * @author s.schwarzrock
+ *
+ */
 public class ConnectorChemgapedia extends AbstractConnector {
 
     private static final String PATH_LOG_FILE = "lemo.log_file_path";

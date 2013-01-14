@@ -124,10 +124,7 @@ public class ContentGenerator {
 		ArrayList<QuestionLogMining> questionLogList = new ArrayList<QuestionLogMining>();
 		ArrayList<ChatLogMining> chatLogList = new ArrayList<ChatLogMining>();
 		
-		
-		ArrayList<ArrayList<ILogMining>> logList = new ArrayList<ArrayList<ILogMining>>();
-		
-		
+			
 		String[] forumAction = new String[4];
 		forumAction[0] = "view forum";
 		forumAction[1] = "subscribe";
@@ -457,7 +454,7 @@ public class ContentGenerator {
 							qu.setId(quizUserList.size() + 1);
 							qu.setQuiz(q);
 							qu.setCourse(cou);
-							qu.setRawgrade(randy.nextInt((int)q.getMaxgrade()));
+							qu.setRawgrade(randy.nextInt(q.getMaxgrade().intValue()));
 							if(qu.getRawgrade() > 0)
 								qu.setFinalgrade(qu.getRawgrade() - randy.nextInt((int)qu.getRawgrade()));
 							else
@@ -542,8 +539,7 @@ public class ContentGenerator {
 						for(int h = 0; h < courseUserList.size(); h++)
 							if(aLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == 2 && a.getMaxgrade() > 0)
 							{
-								aLog.setGrade(a.getMaxgrade() - randy.nextInt((int)a.getMaxgrade()));
-								aLog.setFinalgrade(aLog.getGrade() - randy.nextInt(aLog.getGrade().intValue()));
+								aLog.setGrade(a.getMaxgrade() - randy.nextInt(a.getMaxgrade().intValue()));
 								aLog.setAction(assignmentActionTeacher[randy.nextInt(assignmentActionTeacher.length)]);
 								
 							}
@@ -644,8 +640,7 @@ public class ContentGenerator {
 						for(int h = 0; h < courseUserList.size(); h++)
 							if(sLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == 2 && scorm.getMaxgrade() > 0)
 							{
-								sLog.setGrade(scorm.getMaxgrade() - randy.nextInt((int)scorm.getMaxgrade()));
-								sLog.setFinalgrade(aLog.getGrade() - randy.nextInt((int)sLog.getGrade()));
+								sLog.setGrade(scorm.getMaxgrade() - randy.nextInt(scorm.getMaxgrade().intValue()));
 								sLog.setAction("report");
 								
 							}
@@ -670,8 +665,7 @@ public class ContentGenerator {
 						for(int h = 0; h < courseUserList.size(); h++)
 							if(qLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == 2 && quiz.getMaxgrade() > 0)
 							{
-								qLog.setGrade(quiz.getMaxgrade() - randy.nextInt((int)quiz.getMaxgrade()));
-								qLog.setFinalgrade(qLog.getGrade() - randy.nextInt(qLog.getGrade().intValue()));
+								qLog.setGrade(quiz.getMaxgrade() - randy.nextInt(quiz.getMaxgrade().intValue()));
 								qLog.setAction("report");
 								
 							}

@@ -5,14 +5,15 @@ import java.util.Set;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
 /**This class represents the table assignment.*/
-public class ScormMining implements IMappingClass, ILearningObject {
+public class ScormMining implements IMappingClass, ILearningObject, IRatedObject {
 
 	private long id;
 	private String type;
 	private String title;
-	private double maxgrade;
+	private Double maxgrade;
 	private long timeopen;
 	private long timeclose;	
 	private long timecreated;
@@ -109,7 +110,7 @@ public class ScormMining implements IMappingClass, ILearningObject {
 	/** standard getter for the attribut maxgrade
 	 * @return the maximum grade which is set for the scorm package
 	 */
-	public double getMaxgrade() {
+	public Double getMaxgrade() {
 		return maxgrade;
 	}
 	/** standard setter for the attribut maxgrade
@@ -173,5 +174,10 @@ public class ScormMining implements IMappingClass, ILearningObject {
 
 	public void setPlatform(Long platform) {
 		this.platform = platform;
+	}
+
+	@Override
+	public Long getPrefix() {
+		return 17L;
 	}
 }

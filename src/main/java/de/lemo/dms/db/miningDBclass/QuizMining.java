@@ -6,15 +6,16 @@ import java.util.Set;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
 /**This class represents the table quiz.*/
 @SuppressWarnings("serial")
-public class QuizMining implements Serializable , IMappingClass, ILearningObject {
+public class QuizMining implements Serializable , IMappingClass, ILearningObject, IRatedObject {
 
 	private long id;
 	private String type;	
 	private String title;
-	private double maxgrade;
+	private Double maxgrade;
 	private long timeopen;
 	private long timeclose;	
 	private Long platform;
@@ -227,7 +228,7 @@ public class QuizMining implements Serializable , IMappingClass, ILearningObject
 	/** standard getter for the attribut maxgrade
 	 * @return the maximum grade which is set for the quiz
 	 */
-	public double getMaxgrade() {
+	public Double getMaxgrade() {
 		return maxgrade;
 	}
 	/** standard setter for the attribut maxgrade
@@ -261,5 +262,11 @@ public class QuizMining implements Serializable , IMappingClass, ILearningObject
 
 	public void setPlatform(Long platform) {
 		this.platform = platform;
+	}
+
+	@Override
+	public Long getPrefix() {
+		// TODO Auto-generated method stub
+		return 14L;
 	}	
 }

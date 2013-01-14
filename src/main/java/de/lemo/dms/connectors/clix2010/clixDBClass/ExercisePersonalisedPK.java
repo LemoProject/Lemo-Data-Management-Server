@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class ExercisePersonalisedPK implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5514904557669519527L;
 	private Long exercise;
 	private Long user;
 	private Long exerciseSheet;

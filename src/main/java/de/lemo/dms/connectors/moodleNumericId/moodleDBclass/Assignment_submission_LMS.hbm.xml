@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Assignment_submissions_LMS"
-        table="assignment_submissions">
+        table="mdl_assignment_submissions">
 
         <id
             name="id"

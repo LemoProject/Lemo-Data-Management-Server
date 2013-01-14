@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class TTestSpecificationPK implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6841009607798919961L;
 	private Long task;
 	private Long test;
 	

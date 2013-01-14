@@ -99,6 +99,13 @@ public class QCourseActivity extends Question{
 	    	else logger.info("Course Activity Request - CA Selection: NO Items selected ");
 
 			
+			if(resourceTypes != null && resourceTypes.size() > 0)
+	    		for(int i = 0; i < resourceTypes.size(); i++){
+	    			logger.info("Course Activity Request - CA Selection: " + resourceTypes.get(i));
+	    		}
+	    	else logger.info("Course Activity Request - CA Selection: NO Items selected ");
+
+			
 			List<CourseUserMining> ilm = null;
 			
 			if(roles != null && roles.size() > 0)
@@ -175,8 +182,6 @@ public class QCourseActivity extends Question{
 				}
 			}
 		}
-		
-		
 		
 		ResultListHashMapObject resultObject = new ResultListHashMapObject(result);
 		   if(resultObject!=null && resultObject.getElements()!=null){

@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Wiki_LMS"
-        table="wiki">
+        table="mdl_wiki">
 
         <id
             name="id"

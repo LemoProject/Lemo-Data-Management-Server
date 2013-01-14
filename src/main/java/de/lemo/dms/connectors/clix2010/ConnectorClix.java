@@ -5,6 +5,12 @@ import org.hibernate.HibernateException;
 import de.lemo.dms.connectors.AbstractConnector;
 import de.lemo.dms.db.DBConfigObject;
 
+/**
+ * Connector implementation for Clix platforms
+ * 
+ * @author s.schwarzrock
+ *
+ */
 public class ConnectorClix extends AbstractConnector {
 
     private DBConfigObject config;
@@ -13,6 +19,7 @@ public class ConnectorClix extends AbstractConnector {
         this.config = config;
     }
 
+	
     @Override
     public boolean testConnections() {
         try {
@@ -26,12 +33,18 @@ public class ConnectorClix extends AbstractConnector {
         return true;
     }
 
+	/**
+	 * Retrieves all data from the platform and saves it to the database.
+	 */
     @Override
     public void getData() {
         ClixImporter ci = new ClixImporter(this);
         ci.getClixData(config);
     }
 
+	/**
+	 * Retrieves data from the platform that is newer then the given time 
+	 */
     @Override
     public void updateData(long fromTimestamp) {
         ClixImporter ci = new ClixImporter(this);

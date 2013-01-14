@@ -1,19 +1,18 @@
 package de.lemo.dms.connectors;
 
-
 public abstract class AbstractConnector implements IConnector {
 
     private Long id;
     private String name;
     private Long prefix;
     private ESourcePlatform platform;
-    
+
     @Override
     public Long getPlatformId() {
         return id;
     }
 
-    public void setId(Long id) {
+    protected void setId(Long id) {
         this.id = id;
     }
 
@@ -22,7 +21,7 @@ public abstract class AbstractConnector implements IConnector {
         return name;
     }
 
-    public void setName(String name) {
+    protected void setName(String name) {
         this.name = name;
     }
 
@@ -31,7 +30,7 @@ public abstract class AbstractConnector implements IConnector {
         return prefix;
     }
 
-    public void setPrefix(Long prefix) {
+    protected void setPrefix(Long prefix) {
         this.prefix = prefix;
     }
 
@@ -40,8 +39,8 @@ public abstract class AbstractConnector implements IConnector {
         return platform;
     }
 
-    public void getPlattformType(ESourcePlatform plattformType) {
-        this.platform = plattformType;
+    protected void getPlattformType(ESourcePlatform platformType) {
+        this.platform = platformType;
     }
 
     @Override

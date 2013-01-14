@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class BiTrackContentImpressionsPK implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3194079312809898488L;
 	private Long content;
 	private String dayOfAccess;
 	private Long container;

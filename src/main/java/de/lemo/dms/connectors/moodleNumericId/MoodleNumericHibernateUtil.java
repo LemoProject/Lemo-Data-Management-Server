@@ -43,6 +43,7 @@ public class MoodleNumericHibernateUtil {
 
         // add mapping classes
         cfg.addResource("de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Course_LMS.hbm.xml");
+        cfg.addResource("de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Course_Modules_LMS.hbm.xml");
         cfg.addResource("de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Forum_discussions_LMS.hbm.xml");
         cfg.addResource("de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Forum_posts_LMS.hbm.xml");
         cfg.addResource("de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Forum_LMS.hbm.xml");

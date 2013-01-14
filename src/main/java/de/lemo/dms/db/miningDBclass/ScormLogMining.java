@@ -4,16 +4,16 @@ import java.util.HashMap;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 
 /**This class represents the log table for the scorm modules.*/
-public class ScormLogMining implements ILogMining , IMappingClass{
+public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObject{
 
 	private long id;
 	private UserMining user;
 	private CourseMining course;
 	private ScormMining scorm;
-	private double grade;
-	private double finalgrade;
+	private Double grade;
 	private String action;
 	private long timestamp;
 	private Long duration;
@@ -63,19 +63,6 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 
 	}
 	
-	/** standard getter for the attribute finalgrade
-	 * @return the final grade of the user in this quiz
-	 */	
-	public double getFinalgrade() {
-		return finalgrade;
-	}
-	/** standard setter for the attribute finalgrade
-	 * @param finalgrade the final grade of the user in this quiz
-	 */	
-	public void setFinalgrade(double finalgrade) {
-		this.finalgrade = finalgrade;
-	}	
-
 	/** standard getter for the attribute id
 	 * @return the identifier of the log entry
 	 */	
@@ -151,13 +138,13 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 	/** standard getter for the attribute grade
 	 * @return the grade in this case of action
 	 */	
-	public double getGrade() {
+	public Double getGrade() {
 		return grade;
 	}
 	/** standard setter for the attribute grade
 	 * @param grade the grade in this case of action
 	 */	
-	public void setGrade(double grade) {
+	public void setGrade(Double grade) {
 		this.grade = grade;
 	}
 	/** standard getter for the attribute timestamp
@@ -226,5 +213,16 @@ public class ScormLogMining implements ILogMining , IMappingClass{
 
 	public void setPlatform(Long platform) {
 		this.platform = platform;
+	}
+
+	@Override
+	public Double getMaxgrade() {
+		return scorm.getMaxgrade();
+	}
+
+	@Override
+	public Double getFinalgrade() {
+		// TODO Auto-generated method stub
+		return grade;
 	}
 }

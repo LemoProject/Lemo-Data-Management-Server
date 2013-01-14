@@ -7,7 +7,7 @@
 
     <class
         name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLog_LMS"
-        table="chat_messages">
+        table="mdl_chat_messages">
 
         <id
             name="id"
@@ -16,12 +16,12 @@
         </id>
 
         <property
-            name="chatId"
+            name="chat_Id"
             column="chatid"
             type="long"/>
             
         <property
-            name="userId"
+            name="user_Id"
             column="userid"
             type="long"/>
             
