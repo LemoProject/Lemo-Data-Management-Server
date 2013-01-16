@@ -9,6 +9,7 @@ import static de.lemo.dms.processing.MetaParam.RESOLUTION;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -107,7 +108,23 @@ public class QPerformanceHistogram extends Question{
 	        
 	        ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 	        
-	        for(IRatedLogObject log : list)
+	        HashMap<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>(); 
+	        Collections.sort(list);
+	        
+	        //This is for making sure there is just one entry per student and test 
+	        for(int i = list.size()-1; i >= 0 ; i--)
+	        {
+	        	IRatedLogObject log = list.get(i);
+	        	
+	        	String key = log.getPrefix()+" "+log.getLearnObjId()+" "+log.getUser().getId();
+	        	
+	        	if(singleResults.get(key) == null)
+	        	{
+	        		singleResults.put(key, log);
+	        	}
+	        }
+	        
+	        for(IRatedLogObject log : singleResults.values())
 	        {
 	        	if(obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null && log.getFinalgrade() != null &&
 	        			log.getMaxgrade() != null && log.getMaxgrade() > 0)
