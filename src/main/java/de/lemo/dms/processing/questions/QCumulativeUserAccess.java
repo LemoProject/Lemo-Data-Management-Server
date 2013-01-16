@@ -57,7 +57,7 @@ public class QCumulativeUserAccess extends Question {
 		ResultListBoxPlot rlbp;
 		List<LearningObjects> los = new ArrayList<LearningObjects>();
 		
-		super.logger.info("Starting actiivty type transformation ...");
+		super.logger.info("Starting activity type transformation ...");
 		if(lol !=null && !lol.isEmpty()){
 			for(int i = 0; i<lol.size();i++) {
 				super.logger.info("Activity types: "+lol.get(i).toLowerCase());

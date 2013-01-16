@@ -78,7 +78,6 @@ public enum ServerConfigurationHardCoded implements IServerConfiguration {
             addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.username");
             addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.connection.password");
             addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.default_schema");
-
             addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.show_sql");
             addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.format_sql");
             addDBProperty(sourceDBConfig, sourcePrefix, "hibernate.use_sql_comments");

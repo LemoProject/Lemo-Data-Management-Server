@@ -1,20 +1,15 @@
 package de.lemo.dms.processing.questions;
 
 import static org.junit.Assert.*;
-
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import com.google.common.collect.Lists;
-
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 public class QCourseUsersTest {
 
     private QCourseUsers instance;
-
     private List<Long> courses;
     private Long startTime;
     private Long endTime;

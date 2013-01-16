@@ -61,6 +61,8 @@ public enum DMSRemoteServer {
             server = GrizzlyServerFactory.createHttpServer("http://" + host + ":" + port, new DMSResourceConfig());
             server.start();
             logger.info("remote server start... host: " + host + " on port " + port);
+            Version v  = new Version();
+            logger.info("version: " + v.getServerVersion());
         }
         else {
             logger.info("remote server already started... host: " + host + " on port " + port);
