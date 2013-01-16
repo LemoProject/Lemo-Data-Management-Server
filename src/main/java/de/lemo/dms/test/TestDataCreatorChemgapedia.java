@@ -33,6 +33,9 @@ import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
 import de.lemo.dms.db.miningDBclass.DegreeMining;
 import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
 import de.lemo.dms.db.miningDBclass.DepartmentMining;
+import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
+import de.lemo.dms.db.miningDBclass.LevelCourseMining;
+import de.lemo.dms.db.miningDBclass.LevelMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
 
@@ -41,14 +44,17 @@ public class TestDataCreatorChemgapedia {
 	
 	private ArrayList<ResourceLogMining> resourceLogList = new ArrayList<ResourceLogMining>();
 	private ArrayList<ResourceMining> resourceList = new ArrayList<ResourceMining>();
-	private ArrayList<DepartmentDegreeMining> departmentDegreeList = new ArrayList<DepartmentDegreeMining>();
-	private ArrayList<DegreeCourseMining> degreeCourseList = new ArrayList<DegreeCourseMining>();
+	private ArrayList<LevelAssociationMining> departmentDegreeList = new ArrayList<LevelAssociationMining>();
+	private ArrayList<LevelCourseMining> degreeCourseList = new ArrayList<LevelCourseMining>();
 	private ArrayList<CourseResourceMining> courseResourceList = new ArrayList<CourseResourceMining>();
 	
 	private HashMap<Long, CourseMining> couResMap = new HashMap<Long, CourseMining>();
-	private HashMap<Long, DegreeMining> degCouMap = new HashMap<Long, DegreeMining>();
-	private HashMap<Long, DepartmentMining> depDegMap = new HashMap<Long, DepartmentMining>();
+	private HashMap<Long, LevelMining> degCouMap = new HashMap<Long, LevelMining>();
+	private HashMap<Long, LevelMining> depDegMap = new HashMap<Long, LevelMining>();
 	
+	/**
+	 * Extracts Mining-data from the Mining-database
+	 */
 	@SuppressWarnings("unchecked")
 	public void getDataFromDB()
 	{
@@ -65,29 +71,25 @@ public class TestDataCreatorChemgapedia {
         resourceList = (ArrayList<ResourceMining>) resQuery.list();
 
         
-        Query degCouQuery = session.createQuery("from DegreeCourseMining x order by x.id asc");
-        degreeCourseList = (ArrayList<DegreeCourseMining>) degCouQuery.list();
+        Query degCouQuery = session.createQuery("from LevelCourseMining x order by x.id asc");
+        degreeCourseList = (ArrayList<LevelCourseMining>) degCouQuery.list();
         
         Query depDegQuery = session.createQuery("from DepartmentDegreeMining x order by x.id asc");
-        departmentDegreeList = (ArrayList<DepartmentDegreeMining>) depDegQuery.list();
+        departmentDegreeList = (ArrayList<LevelAssociationMining>) depDegQuery.list();
         
         Query couResQuery = session.createQuery("from CourseResourceMining x order by x.id asc");
         courseResourceList = (ArrayList<CourseResourceMining>) couResQuery.list();
         
         for(CourseResourceMining cr : courseResourceList)
         	couResMap.put(cr.getResource().getId(), cr.getCourse());
-        for(DegreeCourseMining dc : degreeCourseList)
-        	degCouMap.put(dc.getCourse().getId(), dc.getDegree());
-        for(DepartmentDegreeMining dd : departmentDegreeList)
-        	depDegMap.put(dd.getDegree().getId(), dd.getDepartment());
+        for(LevelCourseMining dc : degreeCourseList)
+        	degCouMap.put(dc.getCourse().getId(), dc.getLevel());
+        for(LevelAssociationMining dd : departmentDegreeList)
+        	depDegMap.put(dd.getLower().getId(), dd.getUpper());
 	}
 	
-	public void getData(List<Collection<?>> objects)
-	{
-		
-	}
 	
-	public void createFile(String path, String url, String title, String specialism, String name, String area, String audienceLevel, String timeValue, ArrayList<String> subResourceTitles, ArrayList<String> subResourceUrls)
+	private void createFile(String path, String url, String title, String specialism, String name, String area, String audienceLevel, String timeValue, ArrayList<String> subResourceTitles, ArrayList<String> subResourceUrls)
 	{
 		try{
 	        FileWriter out = new FileWriter(path);
@@ -114,7 +116,7 @@ public class TestDataCreatorChemgapedia {
 		}
 	}
 	
-	public void createXMLFile(String path, String url, String title, String specialism, String name, String area, String audienceLevel, String timeValue, ArrayList<String> subResourceTitles, ArrayList<String> subResourceUrls)
+	private void createXMLFile(String path, String url, String title, String specialism, String name, String area, String audienceLevel, String timeValue, ArrayList<String> subResourceTitles, ArrayList<String> subResourceUrls)
 	{
 		try {
             /////////////////////////////
@@ -198,6 +200,12 @@ public class TestDataCreatorChemgapedia {
         }
 	}
 	
+	/**
+	 * Writes the data, extracted from the Mining-database into a pseudo-server-log-file and pseudo-vlu-packages
+	 * 
+	 * @param logFile path for the pseudo-log-file
+	 * @param metaPackage path for pseudo-vlu-packages-folder
+	 */
 	public void writeDataSource(String logFile, String metaPackage)
 	{
 		try
@@ -272,8 +280,8 @@ public class TestDataCreatorChemgapedia {
 	    				subResourceUrls =  new ArrayList<String>();
 	    				
 		    			CourseMining course = couResMap.get(resource.getId());
-		    			DegreeMining degree = degCouMap.get(course.getId());
-		    			DepartmentMining department = depDegMap.get(degree.getId());
+		    			LevelMining degree = degCouMap.get(course.getId());
+		    			LevelMining department = depDegMap.get(degree.getId());
 		    			
 		    			
 
