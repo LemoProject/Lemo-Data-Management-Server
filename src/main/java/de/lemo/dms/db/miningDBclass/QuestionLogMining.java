@@ -1,7 +1,7 @@
 package de.lemo.dms.db.miningDBclass;
 
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -96,7 +96,7 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the miningdatabase, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
@@ -192,12 +192,12 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	public void setQuestion(QuestionMining question) {
 		this.question = question;
 	}
-	/** parameterized setter for the attribut question
-	 * @param question the id of the course in wich the action takes place
+	/** parameterized setter for the attribute question
+	 * @param question the id of the course in which the action takes place
 	 * @param questionMining a list of new added questions, which is searched for the question with the id submitted in the question parameter
 	 * @param oldQuestionMining a list of questions in the miningdatabase, which is searched for the question with the id submitted in the question parameter
 	 */	
-	public void setQuestion(long question, HashMap<Long, QuestionMining> questionMining, HashMap<Long, QuestionMining> oldQuestionMining) {		
+	public void setQuestion(long question, Map<Long, QuestionMining> questionMining, Map<Long, QuestionMining> oldQuestionMining) {		
         
 		if(questionMining.get(question) != null)
 		{
@@ -210,24 +210,24 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 			oldQuestionMining.get(question).addQuestion_log(this);
 		}
 	}
-	/** standard getter for the attribut quiz
+	/** standard getter for the attribute quiz
 	 * @return the quiz in which the action takes place
 	 */	
 	public QuizMining getQuiz() {
 		return quiz;
 	}
-	/** standard setter for the attribut quiz
+	/** standard setter for the attribute quiz
 	 * @param quiz the quiz in which the action takes place
 	 */	
 	public void setQuiz(QuizMining quiz) {
 		this.quiz = quiz;
 	}
-	/** parameterized setter for the attribut quiz
-	 * @param quiz the id of the quiz in wich the action takes place
+	/** parameterized setter for the attribute quiz
+	 * @param quiz the id of the quiz in which the action takes place
 	 * @param quizMining a list of new added quiz, which is searched for the quiz with the id submitted in the quiz parameter
 	 * @param oldQuizMining a list of quiz in the miningdatabase, which is searched for the quiz with the id submitted in the quiz parameter
 	 */	
-	public void setQuiz(long quiz, HashMap<Long, QuizMining> quizMining, HashMap<Long, QuizMining> oldQuizMining) {		
+	public void setQuiz(long quiz, Map<Long, QuizMining> quizMining, Map<Long, QuizMining> oldQuizMining) {		
 		
 		if(quizMining.get(quiz) != null)
 		{
@@ -257,7 +257,7 @@ public class QuestionLogMining implements ILogMining , IMappingClass{
 	 * @param userMining a list of new added user, which is searched for the user with the id submitted in the user parameter
 	 * @param oldUserMining a list of user in the miningdatabase, which is searched for the user with the id submitted in the user parameter
 	 */	
-	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {				
+	public void setUser(long user, Map<Long, UserMining> userMining, Map<Long, UserMining> oldUserMining) {				
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);

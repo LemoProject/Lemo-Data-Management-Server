@@ -2,26 +2,15 @@ package de.lemo.dms.core;
 
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.criteria.Order;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.project.MavenProject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
-import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
-import de.lemo.dms.db.miningDBclass.RoleMining;
-import de.lemo.dms.processing.resulttype.ResultListRoleObject;
-import de.lemo.dms.processing.resulttype.RoleObject;
 
 /**
  * read the version numbers from server and db

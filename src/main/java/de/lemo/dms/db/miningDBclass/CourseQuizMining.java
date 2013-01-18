@@ -3,6 +3,7 @@ package de.lemo.dms.db.miningDBclass;
 
 //import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -71,7 +72,7 @@ public class CourseQuizMining  implements IMappingClass, ICourseRatedObjectAssoc
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the miningdatabase, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
         
 		if(courseMining.get(course) != null)
 		{
@@ -98,12 +99,12 @@ public class CourseQuizMining  implements IMappingClass, ICourseRatedObjectAssoc
 	public void setQuiz(QuizMining quiz) {
 		this.quiz = quiz;
 	}
-	/** parameterized setter for the attribut quiz
+	/** parameterized setter for the attribute quiz
 	 * @param quiz the id of the quiz in which the action takes place
 	 * @param quizMining a list of new added quiz, which is searched for the quiz with the qid and qtype submitted in the other parameters
 	 * @param oldQuizMining a list of quiz in the miningdatabase, which is searched for the quiz with the qid and qtype submitted in the other parameters
 	 */	
-	public void setQuiz(long quiz, HashMap<Long, QuizMining> quizMining, HashMap<Long, QuizMining> oldQuizMining) {	
+	public void setQuiz(long quiz, Map<Long, QuizMining> quizMining, Map<Long, QuizMining> oldQuizMining) {	
 		if(quizMining.get(quiz) != null)
 		{
 			this.quiz = quizMining.get(quiz);

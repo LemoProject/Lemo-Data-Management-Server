@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import de.lemo.dms.connectors.Test;
-
 /**
  * Main entry point for running the server as Java application, i.e. not in a servlet container
  * 

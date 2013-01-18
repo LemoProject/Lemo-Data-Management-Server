@@ -5,7 +5,6 @@ import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -17,15 +16,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.ServerConfigurationHardCoded;
-import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.RoleMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
-import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
-import de.lemo.dms.processing.resulttype.ResultList;
-import de.lemo.dms.processing.resulttype.ResultListRoleObject;
 import de.lemo.dms.processing.resulttype.ResultListStringObject;
-import de.lemo.dms.processing.resulttype.RoleObject;
 
 @Path("ratedobjects")
 @Produces(MediaType.APPLICATION_JSON)

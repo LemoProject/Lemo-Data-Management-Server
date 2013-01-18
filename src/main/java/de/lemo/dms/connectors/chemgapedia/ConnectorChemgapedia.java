@@ -3,7 +3,6 @@ package de.lemo.dms.connectors.chemgapedia;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -13,7 +12,6 @@ import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
-import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.LogReader;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.XMLPackageParser;
@@ -27,12 +25,12 @@ import de.lemo.dms.core.ServerConfigurationHardCoded;
  */
 public class ConnectorChemgapedia implements IConnector{
 
-	static DBConfigObject sourceDBConf;
-	static boolean filter = false;
-	static boolean processVSC = false;
-	static boolean processLog = false;
-	static String logPath;
-	static String vscPath;
+	DBConfigObject sourceDBConf;
+	boolean filter = false;
+	boolean processVSC = false;
+	boolean processLog = false;
+	String logPath;
+	String vscPath;
 	private Logger logger = Logger.getLogger(getClass());
 	
 	/**
@@ -77,7 +75,8 @@ public class ConnectorChemgapedia implements IConnector{
         Session session = dbHandler.getMiningSession();
 		
 		Query old_platform = session.createQuery("from PlatformMining x order by x.id asc");
-        ArrayList<PlatformMining> l = (ArrayList<PlatformMining>) old_platform.list();
+		
+		ArrayList<PlatformMining> l = (ArrayList<PlatformMining>) old_platform.list();
 		
 		if(processVSC || processLog)
 		{

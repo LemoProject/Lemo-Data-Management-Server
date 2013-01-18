@@ -97,7 +97,6 @@ public class HibernateDBHandler implements IDBHandler {
         session.saveOrUpdate(data);
         tx.commit();
         session.clear();
-        // TODO Auto-generated method stub
 
     }
 

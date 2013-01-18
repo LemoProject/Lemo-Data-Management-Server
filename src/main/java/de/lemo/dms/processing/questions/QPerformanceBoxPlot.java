@@ -28,7 +28,6 @@ import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.BoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
-import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 @Path("performanceboxplot")
 public class QPerformanceBoxPlot extends Question{

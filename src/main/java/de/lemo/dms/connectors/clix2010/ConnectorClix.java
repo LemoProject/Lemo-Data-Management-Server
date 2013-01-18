@@ -43,7 +43,8 @@ public class ConnectorClix implements IConnector{
 	@Override
 	public void getData(String platformName) {
 		try{
-			ClixImporter.getClixData(platformName);
+			ClixImporter impy = new ClixImporter();
+			impy.getClixData(platformName);
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -57,7 +58,8 @@ public class ConnectorClix implements IConnector{
 	@Override
 	public void updateData(String platformName, long fromTimestamp) {
 		try{
-			ClixImporter.updateClixData(platformName, fromTimestamp);
+			ClixImporter impy = new ClixImporter();
+			impy.updateClixData(platformName, fromTimestamp);
 		}catch(Exception e)
 		{
 			e.printStackTrace();

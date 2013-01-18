@@ -1,7 +1,7 @@
 package de.lemo.dms.db.miningDBclass;
 
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -60,12 +60,12 @@ public class GroupUserMining implements IMappingClass {
 	public void setUser(UserMining user) {
 		this.user = user;
 	}
-	/** parameterized setter for the attribut user
+	/** parameterized setter for the attribute user
 	 * @param user the id of the user who is member of the group
 	 * @param userMining a list of new added user, which is searched for the user with the id submitted in the user parameter
 	 * @param oldUserMining a list of user in the miningdatabase, which is searched for the user with the id submitted in the user parameter
 	 */	
-	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {		
+	public void setUser(long user, Map<Long, UserMining> userMining, Map<Long, UserMining> oldUserMining) {		
 		
 		if(userMining.get(user) != null)
 		{
@@ -95,7 +95,7 @@ public class GroupUserMining implements IMappingClass {
 	 * @param groupMining a list of new added groups, which is searched for the group with the id submitted in the group parameter
 	 * @param oldGroupMining a list of groups in the miningdatabase, which is searched for the group with the id submitted in the group parameter
 	 */	
-	public void setGroup(long group, HashMap<Long, GroupMining> groupMining, HashMap<Long, GroupMining> oldGroupMining) {	
+	public void setGroup(long group, Map<Long, GroupMining> groupMining, Map<Long, GroupMining> oldGroupMining) {	
 		
 		if(groupMining.get(group) != null)
 		{

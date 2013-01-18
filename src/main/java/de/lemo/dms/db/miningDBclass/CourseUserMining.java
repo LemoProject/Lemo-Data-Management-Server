@@ -2,6 +2,7 @@ package de.lemo.dms.db.miningDBclass;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -54,7 +55,7 @@ public class CourseUserMining implements IMappingClass {
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the miningdatabase, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining){		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining){		
 //       	System.out.println("course id: " + course);	
 		if(courseMining.get(course) != null)
 		{
@@ -109,7 +110,7 @@ public class CourseUserMining implements IMappingClass {
 	 * @param userMining a list of new added users, which is searched for the user with the id submitted in the user parameter
 	 * @param oldUserMining a list of users in the miningdatabase, which is searched for the user with the id submitted in the user parameter
 	 */		
-	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {				
+	public void setUser(long user, Map<Long, UserMining> userMining, Map<Long, UserMining> oldUserMining) {				
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
@@ -138,7 +139,7 @@ public class CourseUserMining implements IMappingClass {
 	 * @param roleMining a list of new added roles, which is searched for the role with the id submitted in the role parameter
 	 * @param oldRoleMining a list of roles in the miningdatabase, which is searched for the role with the id submitted in the role parameter
 	 */	
-	public void setRole(long role, HashMap<Long, RoleMining> roleMining, HashMap<Long, RoleMining> oldRoleMining) {		
+	public void setRole(long role, Map<Long, RoleMining> roleMining, Map<Long, RoleMining> oldRoleMining) {		
 		if(roleMining.get(role) != null)
 		{
 			this.role = roleMining.get(role);

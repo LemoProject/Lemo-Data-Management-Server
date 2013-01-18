@@ -1,6 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -92,7 +92,7 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 	 * @param userMining a list of new added user, which is searched for the user with the id submitted in the user parameter
 	 * @param oldUserMining a list of user in the mining database, which is searched for the user with the id submitted in the user parameter
 	 */	
-	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {			
+	public void setUser(long user, Map<Long, UserMining> userMining, Map<Long, UserMining> oldUserMining) {			
 		
 		if(userMining.get(user) != null)
 		{
@@ -122,7 +122,7 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the mining database, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
 		
 		if(courseMining.get(course) != null)
 		{
@@ -176,7 +176,7 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 	 * @param scormMining a list of new added scorm packages, which is searched for the scorm package with the id submitted in the parameter
 	 * @param oldScormMining a list of scorm packages in the mining database, which is searched for the scorm package with the id submitted in the parameter
 	 */	
-	public void setScorm(long scorm, HashMap<Long, ScormMining> scormMining, HashMap<Long, ScormMining> oldScormMining) {		
+	public void setScorm(long scorm, Map<Long, ScormMining> scormMining, Map<Long, ScormMining> oldScormMining) {		
 		
 		if(scormMining.get(scorm) != null)
 		{

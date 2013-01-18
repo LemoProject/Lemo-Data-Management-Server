@@ -2,6 +2,7 @@ package de.lemo.dms.db.miningDBclass;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -46,12 +47,12 @@ public class CourseResourceMining implements IMappingClass {
 	public void setCourse(CourseMining course) {
 		this.course = course;
 	}
-	/** parameterized setter for the attribut 
+	/** parameterized setter for the attribute
 	 * @param course the id of a course in which the resource is used
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the miningdatabase, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {	
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {	
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
@@ -75,12 +76,12 @@ public class CourseResourceMining implements IMappingClass {
 	public void setResource(ResourceMining resource) {
 		this.resource = resource;
 	}
-	/** parameterized setter for the attribut resource
+	/** parameterized setter for the attribute resource
 	 * @param resource the id of the resource which is used in the course
 	 * @param resourceMining a list of new added resources, which is searched for the resource with the id submitted in the resource parameter
 	 * @param oldResourceMining a list of resource in the miningdatabase, which is searched for the resource with the id submitted in the resource parameter
 	 */	
-	public void setResource(long resource, HashMap<Long, ResourceMining> resourceMining, HashMap<Long, ResourceMining> oldResourceMining) {		
+	public void setResource(long resource, Map<Long, ResourceMining> resourceMining, Map<Long, ResourceMining> oldResourceMining) {		
         if(resourceMining.get(resource) != null)
 		{
 			this.resource = resourceMining.get(resource);

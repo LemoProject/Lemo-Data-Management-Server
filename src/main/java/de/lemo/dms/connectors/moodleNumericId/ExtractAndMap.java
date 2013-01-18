@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -30,10 +31,6 @@ import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.CourseScormMining;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.CourseWikiMining;
-import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
-import de.lemo.dms.db.miningDBclass.DegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
@@ -60,162 +57,162 @@ import de.lemo.dms.db.miningDBclass.WikiMining;
 // TODO: Auto-generated Javadoc
 /** The main class of the extraction process. 
  * Inherit from this class to make an extract class for a specific LMS. 
- * Contains bundle of static fields as container for LMS objects,
+ * Contains bundle of  fields as container for LMS objects,
  * which are used for linking the tables. */
 public abstract class ExtractAndMap{
 
 //lists of object tables which are new found in LMS DB
 	/** A List of new entries in the course table found in this run of the process. */
-	static HashMap<Long, CourseMining> course_mining;
+	 Map<Long, CourseMining> course_mining;
 	
-	static HashMap<Long, PlatformMining> platform_mining;
+	 Map<Long, PlatformMining> platform_mining;
 	
 	/** A List of entries in the new question table found in this run of the process. */
-	static HashMap<Long, QuizQuestionMining> quiz_question_mining;
+	 Map<Long, QuizQuestionMining> quiz_question_mining;
 	
-	static HashMap<Long, CourseQuizMining> course_quiz_mining;
+	 Map<Long, CourseQuizMining> course_quiz_mining;
 	
 	/** A List of new entries in the quiz table found in this run of the process. */
-	static HashMap<Long, QuizMining> quiz_mining;
+	 Map<Long, QuizMining> quiz_mining;
 	
 	/** A List of new entries in the assignment table found in this run of the process. */
-	static HashMap<Long, AssignmentMining> assignment_mining;
+	 Map<Long, AssignmentMining> assignment_mining;
 	
 	/** A List of new entries in the assignment table found in this run of the process. */
-	static HashMap<Long, ScormMining> scorm_mining;
+	 Map<Long, ScormMining> scorm_mining;
 	
 	/** A List of new entries in the forum table found in this run of the process. */
-	static HashMap<Long, ForumMining> forum_mining;
+	 Map<Long, ForumMining> forum_mining;
 	
 	/** A List of new entries in the resource table found in this run of the process. */	
-	static HashMap<Long, ResourceMining> resource_mining;
+	 Map<Long, ResourceMining> resource_mining;
 	
 	/** A List of new entries in the user table found in this run of the process. */	
-	static HashMap<Long, UserMining> user_mining;
+	 Map<Long, UserMining> user_mining;
 	
 	/** A List of new entries in the wiki table found in this run of the process. */	
-	static HashMap<Long, WikiMining> wiki_mining;
+	 Map<Long, WikiMining> wiki_mining;
 	
 	/** A List of new entries in the group table found in this run of the process. */
-	static HashMap<Long, GroupMining> group_mining;
+	 Map<Long, GroupMining> group_mining;
 	
 	/** A List of entries in the new question table found in this run of the process. */
-	static HashMap<Long, QuestionMining> question_mining;
+	 Map<Long, QuestionMining> question_mining;
 	
 	/** A List of entries in the new role table found in this run of the process. */
-	static HashMap<Long, RoleMining> role_mining;
+	 Map<Long, RoleMining> role_mining;
 	
 	/** A List of entries in the new role table found in this run of the process. */
-	static HashMap<Long, LevelMining> level_mining;
+	 Map<Long, LevelMining> level_mining;
 	
 	/** The department_mining. */
-//	static HashMap<Long, DepartmentMining> department_mining;
+//	 Map<Long, DepartmentMining> department_mining;
 	
 	/** The degree_mining. */
-	//static HashMap<Long, DegreeMining> degree_mining;
+	// Map<Long, DegreeMining> degree_mining;
 	
 	/** The chat_mining. */
-	static HashMap<Long, ChatMining> chat_mining;
+	 Map<Long, ChatMining> chat_mining;
 	
 	/** The chat_log_mining. */
-	static HashMap<Long, ChatLogMining> chat_log_mining;
+	 Map<Long, ChatLogMining> chat_log_mining;
 	
 //lists of object tables which are already in the mining DB
-	static HashMap<Long, PlatformMining> old_platform_mining;
+	 Map<Long, PlatformMining> old_platform_mining;
 	
 	/** A List of entries in the course table, needed for linking reasons in the process. */
-	static HashMap<Long, CourseMining> old_course_mining;
+	 Map<Long, CourseMining> old_course_mining;
 	
 	/** A List of entries in the quiz table, needed for linking reasons in the process. */
-	static HashMap<Long, QuizMining> old_quiz_mining;
+	 Map<Long, QuizMining> old_quiz_mining;
 		
 	/** A List of entries in the assignment table, needed for linking reasons in the process. */
-	static HashMap<Long, AssignmentMining> old_assignment_mining;
+	 Map<Long, AssignmentMining> old_assignment_mining;
 	
 	/** A List of entries in the scorm table, needed for linking reasons in the process. */
-	static HashMap<Long, ScormMining> old_scorm_mining;
+	 Map<Long, ScormMining> old_scorm_mining;
 	
 	/** A List of entries in the forum table, needed for linking reasons in the process. */
-	static HashMap<Long, ForumMining> old_forum_mining;
+	 Map<Long, ForumMining> old_forum_mining;
 	
 	/** A List of entries in the resource table, needed for linking reasons in the process. */
-	static HashMap<Long, ResourceMining> old_resource_mining;
+	 Map<Long, ResourceMining> old_resource_mining;
 	
 	/** A List of entries in the user table, needed for linking reasons in the process. */
-	static HashMap<Long, UserMining> old_user_mining;
+	 Map<Long, UserMining> old_user_mining;
 	
 	/** A List of entries in the wiki table, needed for linking reasons in the process. */
-	static HashMap<Long, WikiMining> old_wiki_mining;
+	 Map<Long, WikiMining> old_wiki_mining;
 	
 	/** A List of entries in the group table, needed for linking reasons in the process. */
-	static HashMap<Long, GroupMining> old_group_mining;
+	 Map<Long, GroupMining> old_group_mining;
 	
 	/** A List of entries in the question table, needed for linking reasons in the process. */
-	static HashMap<Long, QuestionMining> old_question_mining;
+	 Map<Long, QuestionMining> old_question_mining;
 	
 	/** A List of entries in the role table, needed for linking reasons in the process. */
-	static HashMap<Long, RoleMining> old_role_mining;
+	 Map<Long, RoleMining> old_role_mining;
 	
 	/** A List of entries in the quiz_question table, needed for linking reasons in the process. */
-	static HashMap<Long, QuizQuestionMining> old_quiz_question_mining;
+	 Map<Long, QuizQuestionMining> old_quiz_question_mining;
 	
 	/** A List of entries in the course_quiz table, needed for linking reasons in the process. */
-	static HashMap<Long, CourseQuizMining> old_course_quiz_mining;
+	 Map<Long, CourseQuizMining> old_course_quiz_mining;
 	
 	/** The old_department_mining. */
-	//static HashMap<Long, DepartmentMining> old_department_mining;
+	// Map<Long, DepartmentMining> old_department_mining;
 	
 	/** The old_level_mining. */
-	static HashMap<Long, LevelMining> old_level_mining;
+	 Map<Long, LevelMining> old_level_mining;
 	
 	/** The old_degree_mining. */
-	//static HashMap<Long, DegreeMining> old_degree_mining;
+	// Map<Long, DegreeMining> old_degree_mining;
 	
 	/** The old_chat_mining. */
-	static HashMap<Long, ChatMining> old_chat_mining;
+	 Map<Long, ChatMining> old_chat_mining;
 	
 	/** The old_chat_log_mining. */
-	static HashMap<Long, ChatLogMining> old_chat_log_mining;
+	 Map<Long, ChatLogMining> old_chat_log_mining;
 	
 
 	
 //	@SuppressWarnings("unchecked")
 	/** A list of objects used for submitting them to the DB. */
-	static List<Collection<?>> updates;
+	 List<Collection<?>> updates;
 	/** A list of time stamps of the previous runs of the extractor. */	
-	static List<Timestamp> config_mining_timestamp;
+	 List<Timestamp> config_mining_timestamp;
 //output helper
-//	static String msg;
+//	 String msg;
 	
 //timestamp variables
-//	static long readingtimestamp;
+//	 long readingtimestamp;
 	/** Designates which entries should be read from the LMS Database during the process.  */
-	static long starttime;
+	 long starttime;
 	
 	/**Database-handler**/
-	static IDBHandler dbHandler;
+	 IDBHandler dbHandler;
 	
 	/** value of the highest user-id in the data set. Used for creating new numeric ids **/
-	static Long largestId;
+	 Long largestId;
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
 	Clock c;
 	
-	static Long resourceLogMax;
-	static Long chatLogMax;
-	static Long assignmentLogMax;
-	static Long courseLogMax;
-	static Long forumLogMax;
-	static Long questionLogMax;
-	static Long quizLogMax;
-	static Long scormLogMax;
-	static Long wikiLogMax;
+	 Long resourceLogMax;
+	 Long chatLogMax;
+	 Long assignmentLogMax;
+	 Long courseLogMax;
+	 Long forumLogMax;
+	 Long questionLogMax;
+	 Long quizLogMax;
+	 Long scormLogMax;
+	 Long wikiLogMax;
 	
-	static PlatformMining platform;
+	 PlatformMining platform;
 
 	/** Session object for the mining DB access. */
-	//static Session mining_session;
+	// Session mining_session;
 	
 /**
  * Starts the extraction process by calling getLMS_tables() and saveMining_tables(). 
@@ -313,7 +310,7 @@ public abstract class ExtractAndMap{
 	 * @return The time stamp of the last run of the extractor. If this is the first run it will be set 0.
 	 * **/		
 	@SuppressWarnings("unchecked")
-	static public long getMiningInitial(String platformName){
+	 public long getMiningInitial(String platformName){
 					
 		//open a DB connection
 		//mining_session.clear();
@@ -568,7 +565,7 @@ public abstract class ExtractAndMap{
 	/**
 	 * Clears the lists of mining tables.
 	 * **/
-	static public void clearMiningTables(){
+	 public void clearMiningTables(){
 		course_mining.clear();
 		quiz_mining.clear();
 		assignment_mining.clear();
@@ -591,7 +588,7 @@ public abstract class ExtractAndMap{
 	 * Only for successive readings. This is meant to be done, when the gathered mining data has already 
 	 * been saved and before the mining tables are cleared for the next iteration.
 	 */
-	static public void prepareMiningData()
+	 public void prepareMiningData()
 	{
 		old_course_mining.putAll(course_mining);
 		old_quiz_mining.putAll(quiz_mining);
@@ -836,7 +833,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the course_user_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_user table representing class.
 	 * **/	    
-    abstract HashMap<Long, CourseUserMining> generateCourseUserMining();
+    abstract Map<Long, CourseUserMining> generateCourseUserMining();
     
 	/**
 	 * Has to create and fill the course_forum table.
@@ -845,7 +842,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the course_forum_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_forum table representing class.
 	 * **/	  
-    abstract HashMap<Long, CourseForumMining> generateCourseForumMining();
+    abstract Map<Long, CourseForumMining> generateCourseForumMining();
     
 	/**
 	 * Has to create and fill the course table.
@@ -854,7 +851,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the course_mining class to fill the tables within this method.
 	 * @return A list of instances of the course table representing class.
 	 * **/	    
-    abstract HashMap<Long, CourseMining> generateCourseMining();    
+    abstract Map<Long, CourseMining> generateCourseMining();    
     
 	/**
 	 * Has to create and fill the course_group table.
@@ -863,7 +860,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the course_group_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_group table representing class.
 	 * **/	    
-	abstract HashMap<Long, CourseGroupMining> generateCourseGroupMining();
+	abstract Map<Long, CourseGroupMining> generateCourseGroupMining();
     
 	/**
 	 * Has to create and fill the course_quiz table.
@@ -872,7 +869,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the course_quiz_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_quiz table representing class.
 	 * **/	    
-    abstract HashMap<Long, CourseQuizMining> generateCourseQuizMining();
+    abstract Map<Long, CourseQuizMining> generateCourseQuizMining();
     
 	/**
 	 * Has to create and fill the course_assignment table.
@@ -881,7 +878,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the course_assignment_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_assignment table representing class.
 	 * **/	    
-    abstract HashMap<Long, CourseAssignmentMining> generateCourseAssignmentMining();
+    abstract Map<Long, CourseAssignmentMining> generateCourseAssignmentMining();
     
 	/**
 	 * Has to create and fill the course_scorm table.
@@ -890,7 +887,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the course_scorm_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_scorm table representing class.
 	 * **/	    
-    abstract HashMap<Long, CourseScormMining> generateCourseScormMining();
+    abstract Map<Long, CourseScormMining> generateCourseScormMining();
     
 	/**
 	 * Has to create and fill the course_resource table.
@@ -899,7 +896,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the course_resource_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_resource table representing class.
 	 * **/	     
-    abstract HashMap<Long, CourseResourceMining> generateCourseResourceMining();
+    abstract Map<Long, CourseResourceMining> generateCourseResourceMining();
     
 	/**
 	 * Has to create and fill the course_log table.
@@ -908,7 +905,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the course_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_log table representing class.
 	 * **/	    
-    abstract HashMap<Long, CourseLogMining> generateCourseLogMining();
+    abstract Map<Long, CourseLogMining> generateCourseLogMining();
     
 	/**
 	 * Has to create and fill the course_wiki table.
@@ -917,7 +914,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the course_wiki_mining class to fill the tables within this method.
 	 * @return A list of instances of the course_wiki table representing class.
 	 * **/	     
-    abstract HashMap<Long, CourseWikiMining> generateCourseWikiMining();
+    abstract Map<Long, CourseWikiMining> generateCourseWikiMining();
 
 	/**
 	 * Has to create and fill the forum_log table.
@@ -926,7 +923,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the forum_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the forum_log table representing class.
 	 * **/    
-    abstract HashMap<Long, ForumLogMining> generateForumLogMining(); 
+    abstract Map<Long, ForumLogMining> generateForumLogMining(); 
     
 	/**
 	 * Has to create and fill the forum table.
@@ -935,7 +932,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the forum_mining class to fill the tables within this method.
 	 * @return A list of instances of the forum table representing class.
 	 * **/	    
-    abstract HashMap<Long, ForumMining> generateForumMining();
+    abstract Map<Long, ForumMining> generateForumMining();
 
 	/**
 	 * Has to create and fill the group_user table.
@@ -944,7 +941,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the group_user_mining class to fill the tables within this method.
 	 * @return A list of instances of the group_user table representing class.
 	 * **/	    
-	abstract HashMap<Long, GroupUserMining> generateGroupUserMining();
+	abstract Map<Long, GroupUserMining> generateGroupUserMining();
 	
 	/**
 	 * Has to create and fill the group table.
@@ -953,7 +950,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the group_mining class to fill the tables within this method.
 	 * @return A list of instances of the group table representing class.
 	 * **/		
-    abstract HashMap<Long, GroupMining> generateGroupMining();
+    abstract Map<Long, GroupMining> generateGroupMining();
     
 	/**
 	 * Has to create and fill the question_log table.
@@ -962,7 +959,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the question_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the question_log table representing class.
 	 * **/     
-    abstract HashMap<Long, QuestionLogMining> generateQuestionLogMining();
+    abstract Map<Long, QuestionLogMining> generateQuestionLogMining();
     
 	/**
 	 * Has to create and fill the quiz_log table.
@@ -971,7 +968,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the quiz_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz_log table representing class.
 	 * **/     
-    abstract HashMap<Long, QuizLogMining> generateQuizLogMining();
+    abstract Map<Long, QuizLogMining> generateQuizLogMining();
  
 	/**
 	 * Has to create and fill the assignment_log table.
@@ -980,7 +977,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the assignment_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the assignment_log table representing class.
 	 * **/     
-    abstract HashMap<Long, AssignmentLogMining> generateAssignmentLogMining();
+    abstract Map<Long, AssignmentLogMining> generateAssignmentLogMining();
     
 	/**
 	 * Has to create and fill the scorm_log table.
@@ -989,7 +986,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the scorm_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the scorm_log table representing class.
 	 * **/     
-    abstract HashMap<Long, ScormLogMining> generateScormLogMining();
+    abstract Map<Long, ScormLogMining> generateScormLogMining();
     
 	/**
 	 * Has to create and fill the quiz_user table.
@@ -998,7 +995,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the quiz_user_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz_user table representing class.
 	 * **/	 
-    abstract HashMap<Long, QuizUserMining> generateQuizUserMining();
+    abstract Map<Long, QuizUserMining> generateQuizUserMining();
     
 	/**
 	 * Has to create and fill the quiz table.
@@ -1007,7 +1004,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the quiz_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz table representing class.
 	 * **/    
-    abstract HashMap<Long, QuizMining> generateQuizMining();
+    abstract Map<Long, QuizMining> generateQuizMining();
 
 	/**
 	 * Has to create and fill the assignment table.
@@ -1016,7 +1013,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the assignment_mining class to fill the tables within this method.
 	 * @return A list of instances of the assignment table representing class.
 	 * **/    
-    abstract HashMap<Long, AssignmentMining> generateAssignmentMining();
+    abstract Map<Long, AssignmentMining> generateAssignmentMining();
     
 	/**
 	 * Has to create and fill the scorm table.
@@ -1025,7 +1022,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the scorm_mining class to fill the tables within this method.
 	 * @return A list of instances of the scorm table representing class.
 	 * **/    
-    abstract HashMap<Long, ScormMining> generateScormMining();
+    abstract Map<Long, ScormMining> generateScormMining();
     
 	/**
 	 * Has to create and fill the quiz_question table.
@@ -1034,7 +1031,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the quiz_question_mining class to fill the tables within this method.
 	 * @return A list of instances of the quiz_question table representing class.
 	 * **/    
-    abstract HashMap<Long, QuizQuestionMining> generateQuizQuestionMining(); 
+    abstract Map<Long, QuizQuestionMining> generateQuizQuestionMining(); 
 
 	/**
 	 * Has to create and fill the question table.
@@ -1043,7 +1040,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the question_mining class to fill the tables within this method.
 	 * @return A list of instances of the question table representing class.
 	 * **/     
-    abstract HashMap<Long, QuestionMining> generateQuestionMining();
+    abstract Map<Long, QuestionMining> generateQuestionMining();
     
 	/**
 	 * Has to create and fill the resource table.
@@ -1052,7 +1049,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the resource_mining class to fill the tables within this method.
 	 * @return A list of instances of the resource table representing class.
 	 * **/    
-    abstract HashMap<Long, ResourceMining> generateResourceMining();
+    abstract Map<Long, ResourceMining> generateResourceMining();
     
 	/**
 	 * Has to create and fill the resource_log table.
@@ -1061,7 +1058,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the resource_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the resource_log table representing class.
 	 * **/
-    abstract HashMap<Long, ResourceLogMining> generateResourceLogMining();
+    abstract Map<Long, ResourceLogMining> generateResourceLogMining();
     
 	/**
 	 * Has to create and fill the user table.
@@ -1070,7 +1067,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the user_mining class to fill the tables within this method.
 	 * @return A list of instances of the user table representing class.
 	 * **/
-    abstract HashMap<Long, UserMining> generateUserMining();
+    abstract Map<Long, UserMining> generateUserMining();
     
 	/**
 	 * Has to create and fill the wiki_log table.
@@ -1079,7 +1076,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the wiki_log_mining class to fill the tables within this method.
 	 * @return A list of instances of the wiki_log table representing class.
 	 * **/
-    abstract HashMap<Long, WikiLogMining> generateWikiLogMining(); 
+    abstract Map<Long, WikiLogMining> generateWikiLogMining(); 
     
 	/**
 	 * Has to create and fill the wiki table.
@@ -1088,7 +1085,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the wiki_mining class to fill the tables within this method.
 	 * @return A list of instances of the wiki table representing class.
 	 * **/
-	abstract HashMap<Long, WikiMining> generateWikiMining();
+	abstract Map<Long, WikiMining> generateWikiMining();
 	
 	/**
 	 * Has to create and fill the role table.
@@ -1097,7 +1094,7 @@ public abstract class ExtractAndMap{
 	 * Please use the getter and setter predefined in the role_mining class to fill the tables within this method.
 	 * @return A list of instances of the role table representing class.
 	 * **/
-	abstract HashMap<Long, RoleMining> generateRoleMining();
+	abstract Map<Long, RoleMining> generateRoleMining();
 	
 	
 	/**
@@ -1105,21 +1102,21 @@ public abstract class ExtractAndMap{
 	 *
 	 * @return the list
 	 */
-	//abstract HashMap<Long, DegreeMining> generateDegreeMining();
+	//abstract Map<Long, DegreeMining> generateDegreeMining();
 	
 	/**
 	 * Generate department mining.
 	 *
 	 * @return the list
 	 */
-	//abstract HashMap<Long, DepartmentMining> generateDepartmentMining();
+	//abstract Map<Long, DepartmentMining> generateDepartmentMining();
 	
 	/**
 	 * Generate level mining.
 	 *
 	 * @return the list
 	 */
-	abstract HashMap<Long, LevelMining> generateLevelMining();
+	abstract Map<Long, LevelMining> generateLevelMining();
 	
 	
 	/**
@@ -1127,42 +1124,42 @@ public abstract class ExtractAndMap{
 	 *
 	 * @return the list
 	 */
-	//abstract HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining();
+	//abstract Map<Long, DepartmentDegreeMining> generateDepartmentDegreeMining();
 	
 	/**
 	 * Generate level association mining.
 	 *
 	 * @return the list
 	 */
-	abstract HashMap<Long, LevelAssociationMining> generateLevelAssociationMining();
+	abstract Map<Long, LevelAssociationMining> generateLevelAssociationMining();
 	
 	/**
 	 * Generate degree course mining.
 	 *
 	 * @return the list
 	 */
-	//abstract HashMap<Long, DegreeCourseMining> generateDegreeCourseMining();
+	//abstract Map<Long, DegreeCourseMining> generateDegreeCourseMining();
 	
 	/**
 	 * Generate level course mining.
 	 *
 	 * @return the list
 	 */
-	abstract HashMap<Long, LevelCourseMining> generateLevelCourseMining();
+	abstract Map<Long, LevelCourseMining> generateLevelCourseMining();
 	
 	/**
 	 * Generate chat mining.
 	 *
 	 * @return the list
 	 */
-	abstract HashMap<Long, ChatMining> generateChatMining();
+	abstract Map<Long, ChatMining> generateChatMining();
 	
 	/**
 	 * Generate chat log mining.
 	 *
 	 * @return the list
 	 */
-	abstract HashMap<Long, ChatLogMining> generateChatLogMining();
+	abstract Map<Long, ChatLogMining> generateChatLogMining();
 	
 	
 	

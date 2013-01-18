@@ -18,7 +18,6 @@ import java.util.Set;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -159,7 +158,7 @@ public class QCourseActivity extends Question{
 					result.get(logs.get(i).getCourse().getId()).getElements().set(pos, result.get(logs.get(i).getCourse().getId()).getElements().get(pos) + 1);
 					if(userPerResStep.get(logs.get(i).getCourse().getId()).get(pos) == null)
 					{
-						Set s = new HashSet();
+						Set<Long> s = new HashSet<Long>();
 						s.add(logs.get(i).getUser().getId());
 						userPerResStep.get(logs.get(i).getCourse().getId()).put(pos, s);
 					}

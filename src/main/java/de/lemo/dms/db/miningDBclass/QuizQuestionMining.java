@@ -1,7 +1,7 @@
 package de.lemo.dms.db.miningDBclass;
 
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -22,37 +22,37 @@ public class QuizQuestionMining  implements IMappingClass{
 		return false;
 	}
 	
-	/** standard getter for the attribut id
-	 * @return the identifier for the assoziation between quiz and question
+	/** standard getter for the attribute id
+	 * @return the identifier for the association between quiz and question
 	 */	
 	public long getId() {
 		return id;
 	}
-	/** standard setter for the attribut id
-	 * @param id the identifier for the assoziation between quiz and question
+	/** standard setter for the attribute id
+	 * @param id the identifier for the association between quiz and question
 	 */	
 	public void setId(long id) {
 		this.id = id;
 	}
 	
-	/** standard getter for the attribut quiz
-	 * @return the quiz which is assoziated
+	/** standard getter for the attribute quiz
+	 * @return the quiz which is associated
 	 */	
 	public QuizMining getQuiz() {
 		return quiz;
 	}
-	/** standard setter for the attribut quiz
-	 * @param quiz the quiz which is assoziated
+	/** standard setter for the attribute quiz
+	 * @param quiz the quiz which is associated
 	 */	
 	public void setQuiz(QuizMining quiz) {
 		this.quiz = quiz;
 	}
-	/** parameterized setter for the attribut quiz
-	 * @param quiz the id of the quiz which is assoziated
+	/** parameterized setter for the attribute quiz
+	 * @param quiz the id of the quiz which is associated
 	 * @param quizMining a list of new added quiz, which is searched for the quiz with the id submitted in the quiz parameter
 	 * @param oldQuizMining a list of quiz in the miningdatabase, which is searched for the quiz with the id submitted in the quiz parameter
 	 */	
-	public void setQuiz(long quiz, HashMap<Long, QuizMining> quizMining, HashMap<Long, QuizMining> oldQuizMining) {		
+	public void setQuiz(long quiz, Map<Long, QuizMining> quizMining, Map<Long, QuizMining> oldQuizMining) {		
 		
 		if(quizMining.get(quiz) != null)
 		{
@@ -66,24 +66,24 @@ public class QuizQuestionMining  implements IMappingClass{
 		}
 	}
 	
-	/** standard getter for the attribut question
-	 * @return the question which is assoziated
+	/** standard getter for the attribute question
+	 * @return the question which is associated
 	 */	
 	public QuestionMining getQuestion() {
 		return question;
 	}
-	/** standard setter for the attribut question
-	 * @param question the question which is assoziated
+	/** standard setter for the attribute question
+	 * @param question the question which is associated
 	 */	
 	public void setQuestion(QuestionMining question) {
 		this.question = question;
 	}
-	/** parameterized setter for the attribut question
-	 * @param question the quiz which is assoziated
+	/** parameterized setter for the attribute question
+	 * @param question the quiz which is associated
 	 * @param questionMining a list of new added question, which is searched for the question with the id submitted in the question parameter
 	 * @param oldQuestionMining a list of question in the miningdatabase, which is searched for the question with the id submitted in the question parameter
 	 */	
-	public void setQuestion(long question, HashMap<Long, QuestionMining> questionMining, HashMap<Long, QuestionMining> oldQuestionMining) {	
+	public void setQuestion(long question, Map<Long, QuestionMining> questionMining, Map<Long, QuestionMining> oldQuestionMining) {	
 		
 		if(questionMining.get(question) != null)
 		{

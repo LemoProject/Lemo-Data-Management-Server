@@ -7,19 +7,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.proxy.HibernateProxy;
 
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.ServerConfigurationHardCoded;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
@@ -28,7 +25,6 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 
-import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.chemgapedia.fizHelper.LogLine;
 
 /**
@@ -192,7 +188,6 @@ public class LogReader {
             if(resLogId == null)
             	resLogId = 0L;
             
-	    	Query logTime = session.createQuery("select max(log.timestamp) from ResourceLogMining log where log.platform="+ this.platform.getId() +"");
             if(logCount.list().size() > 0)
             	resLogTime = ((ArrayList<Long>) logCount.list()).get(0);
             if(resLogTime == null)

@@ -1,6 +1,7 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -39,12 +40,12 @@ public class CourseScormMining  implements IMappingClass, ICourseRatedObjectAsso
 	public void setCourse(CourseMining course) {
 		this.course = course;
 	}
-	/** parameterized setter for the attribut course
+	/** parameterized setter for the attribute course
 	 * @param course the id of a course in which the quiz is used
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the miningdatabase, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {	
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {	
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
@@ -73,7 +74,7 @@ public class CourseScormMining  implements IMappingClass, ICourseRatedObjectAsso
 	 * @param scormMining a list of new added quiz, which is searched for the quiz with the qid and qtype submitted in the other parameters
 	 * @param oldScormMining a list of quiz in the miningdatabase, which is searched for the quiz with the qid and qtype submitted in the other parameters
 	 */	
-	public void setScorm(long scorm, HashMap<Long, ScormMining> scormMining, HashMap<Long, ScormMining> oldScormMining) {		
+	public void setScorm(long scorm, Map<Long, ScormMining> scormMining, Map<Long, ScormMining> oldScormMining) {		
 		if(scormMining.get(scorm) != null)
 		{
 			this.scorm = scormMining.get(scorm);

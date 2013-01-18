@@ -2,6 +2,7 @@ package de.lemo.dms.db.miningDBclass;
 
 //import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -73,7 +74,7 @@ public class CourseAssignmentMining  implements IMappingClass, ICourseRatedObjec
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the miningdatabase, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
         
 		if(courseMining.get(course) != null)
 		{
@@ -104,7 +105,7 @@ public class CourseAssignmentMining  implements IMappingClass, ICourseRatedObjec
 	 * @param assignmentMining a list of new added quiz, which is searched for the quiz with the qid and qtype submitted in the other parameters
 	 * @param oldAssignmentMining a list of quiz in the miningdatabase, which is searched for the quiz with the qid and qtype submitted in the other parameters
 	 */	
-	public void setAssignment(long assignment, HashMap<Long, AssignmentMining> assignmentMining, HashMap<Long, AssignmentMining> oldAssignmentMining) {		
+	public void setAssignment(long assignment, Map<Long, AssignmentMining> assignmentMining, Map<Long, AssignmentMining> oldAssignmentMining) {		
        
 		if(assignmentMining.get(assignment) != null)
 		{

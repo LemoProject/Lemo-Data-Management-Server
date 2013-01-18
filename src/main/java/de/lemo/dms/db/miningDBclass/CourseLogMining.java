@@ -1,6 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -106,12 +106,12 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 	public void setCourse(CourseMining course) {
 		this.course = course;
 	}	
-	/** parameterized setter for the attribut course
+	/** parameterized setter for the attribute course
 	 * @param course the id of the course in which the action takes place
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the miningdatabase, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
@@ -140,7 +140,7 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 	 * @param userMining a list of new added user, which is searched for the user with the id submitted in the user parameter
 	 * @param oldUserMining a list of user in the mining database, which is searched for the user with the id submitted in the user parameter
 	 */	
-	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {			
+	public void setUser(long user, Map<Long, UserMining> userMining, Map<Long, UserMining> oldUserMining) {			
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);

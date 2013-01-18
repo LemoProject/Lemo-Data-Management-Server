@@ -16,10 +16,6 @@ import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.CourseScormMining;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.CourseWikiMining;
-import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
-import de.lemo.dms.db.miningDBclass.DegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
@@ -84,37 +80,35 @@ import java.util.*;
 public class ExtractAndMapMoodle extends ExtractAndMap{//Versionsnummer in Namen einf�gen
 
 //LMS tables instances lists
-	private static List<Log_LMS> log_lms;
-	private static List<Resource_LMS> resource_lms;
-	private static List<Course_LMS> course_lms;
-	private static List<Forum_LMS> forum_lms;
-	private static List<Wiki_LMS> wiki_lms;
-	private static List<User_LMS> user_lms;
-	private static List<Quiz_LMS> quiz_lms;
-	private static List<Quiz_question_instances_LMS> quiz_question_instances_lms;
-	private static List<Question_LMS> question_lms;
-	private static List<Groups_LMS> group_lms;
-	private static List<Groups_members_LMS> group_members_lms;
-	private static List<Question_states_LMS> question_states_lms;
-	private static List<Forum_posts_LMS> forum_posts_lms;
-	private static List<Role_LMS> role_lms;
-	private static List<Context_LMS> context_lms;
-	private static List<Role_assignments_LMS> role_assignments_lms;
-	private static List<Assignment_LMS> assignment_lms;	
-	private static List<Assignment_submissions_LMS> assignment_submission_lms;
-	private static List<Quiz_grades_LMS> quiz_grades_lms;
-	private static List<Forum_discussions_LMS> forum_discussions_lms;
-	private static List<Scorm_LMS> scorm_lms;
-	private static List<Grade_grades_LMS> grade_grades_lms;
-	private static List<Grade_items_LMS> grade_items_lms;
-	private static List<Chat_LMS> chat_lms;
-	private static List<ChatLog_LMS> chat_log_lms;
-	private static List<CourseCategories_LMS> course_categories_lms;
-	private static List<Course_Modules_LMS> course_modules_lms;
+	private  List<Log_LMS> log_lms;
+	private  List<Resource_LMS> resource_lms;
+	private  List<Course_LMS> course_lms;
+	private  List<Forum_LMS> forum_lms;
+	private  List<Wiki_LMS> wiki_lms;
+	private  List<User_LMS> user_lms;
+	private  List<Quiz_LMS> quiz_lms;
+	private  List<Quiz_question_instances_LMS> quiz_question_instances_lms;
+	private  List<Question_LMS> question_lms;
+	private  List<Groups_LMS> group_lms;
+	private  List<Groups_members_LMS> group_members_lms;
+	private  List<Question_states_LMS> question_states_lms;
+	private  List<Forum_posts_LMS> forum_posts_lms;
+	private  List<Role_LMS> role_lms;
+	private  List<Context_LMS> context_lms;
+	private  List<Role_assignments_LMS> role_assignments_lms;
+	private  List<Assignment_LMS> assignment_lms;	
+	private  List<Assignment_submissions_LMS> assignment_submission_lms;
+	private  List<Quiz_grades_LMS> quiz_grades_lms;
+	private  List<Forum_discussions_LMS> forum_discussions_lms;
+	private  List<Scorm_LMS> scorm_lms;
+	private  List<Grade_grades_LMS> grade_grades_lms;
+	private  List<Grade_items_LMS> grade_items_lms;
+	private  List<Chat_LMS> chat_lms;
+	private  List<ChatLog_LMS> chat_log_lms;
+	private  List<CourseCategories_LMS> course_categories_lms;
+	private  List<Course_Modules_LMS> course_modules_lms;
 	
-	
-	private static boolean numericUserId = false;
-	
+		
 	private Logger logger = Logger.getLogger(getClass());
 	
 	@SuppressWarnings("unchecked")	

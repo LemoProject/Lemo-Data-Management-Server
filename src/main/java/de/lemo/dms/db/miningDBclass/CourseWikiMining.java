@@ -2,6 +2,7 @@ package de.lemo.dms.db.miningDBclass;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 /**This class represents the relationship between courses and wikis.*/
@@ -44,7 +45,7 @@ public class CourseWikiMining implements IMappingClass {
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of courses in the miningdatabase, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
 		
 		if(courseMining.get(course) != null)
 		{
@@ -80,7 +81,7 @@ public class CourseWikiMining implements IMappingClass {
 	 * @param wikiMining a list of new added wikis, which is searched for the wiki with the id submitted in the wiki parameter
 	 * @param oldWikiMining a list of wikis in the miningdatabase, which is searched for the wiki with the id submitted in the wiki parameter
 	 */	
-	public void setWiki(long wiki, HashMap<Long, WikiMining> wikiMining, HashMap<Long, WikiMining> oldWikiMining) {		
+	public void setWiki(long wiki, Map<Long, WikiMining> wikiMining, Map<Long, WikiMining> oldWikiMining) {		
        
 		if(wikiMining.get(wiki) != null)
 		{

@@ -1,6 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -40,7 +40,7 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		this.duration = duration;
 	}
 	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
 		
 		if(courseMining.get(course) != null)
 		{
@@ -89,7 +89,7 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		this.message = message;
 	}
 	
-	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {		
+	public void setUser(long user, Map<Long, UserMining> userMining, Map<Long, UserMining> oldUserMining) {		
 		
 		if(userMining.get(user) != null)
 		{
@@ -103,7 +103,7 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		}
 	}
 	
-	public void setChat(long chat, HashMap<Long, ChatMining> chatMining, HashMap<Long, ChatMining> oldChatMining) 
+	public void setChat(long chat, Map<Long, ChatMining> chatMining, Map<Long, ChatMining> oldChatMining) 
 	{		
 		
 		if(chatMining.get(chat) != null)

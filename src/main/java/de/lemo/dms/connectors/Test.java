@@ -16,12 +16,6 @@ import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsViger;
-import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
-import de.lemo.dms.processing.questions.QPerformanceHistogram;
-import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
-import de.lemo.dms.processing.resulttype.ResultListLongObject;
-import de.lemo.dms.processing.resulttype.ResultListStringObject;
-import de.lemo.dms.service.ServiceRatedObjects;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.connectors.clix2010.HibernateUtil;
@@ -197,19 +191,7 @@ public class Test {
 		
 	}
 	
-	public void testHisto()
-	{
-		QPerformanceBoxPlot ph = new QPerformanceBoxPlot();
-		ArrayList<Long> quizzes = new ArrayList<Long>();
-		quizzes.add(11114861L);
-		quizzes.add(11114282L);
-		quizzes.add(1411888L);
 		
-		ResultListBoxPlot res = ph.compute(new ArrayList<Long>(), new ArrayList<Long>(), quizzes, 0L, 1500000000L);
-		System.out.println(res.getElements().size());
-		
-	}
-	
 	public void testService()
 	{
 		ArrayList<String> res = new ArrayList<String>();
@@ -238,6 +220,12 @@ public class Test {
 		System.out.println("Starting test");
 		runChemConn();
 		System.out.println("Test finished");
+	}
+	
+	public static void main(String[] args)
+	{
+		Test t = new Test();
+		t.runClixConn();
 	}
 	
 }

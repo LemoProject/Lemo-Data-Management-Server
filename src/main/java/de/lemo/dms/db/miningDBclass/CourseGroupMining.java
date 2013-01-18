@@ -2,6 +2,7 @@ package de.lemo.dms.db.miningDBclass;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -51,7 +52,7 @@ public class CourseGroupMining  implements IMappingClass{
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the miningdatabase, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
@@ -68,7 +69,7 @@ public class CourseGroupMining  implements IMappingClass{
 	 * @param groupMining a list of new added groups, which is searched for the group with the id submitted in the group parameter
 	 * @param oldGroupMining a list of groups in the miningdatabase, which is searched for the group with the id submitted in the group parameter
 	 */	
-	public void setGroup(long group, HashMap<Long, GroupMining> groupMining, HashMap<Long, GroupMining> oldGroupMining) {
+	public void setGroup(long group, Map<Long, GroupMining> groupMining, Map<Long, GroupMining> oldGroupMining) {
 		if(groupMining.get(group) != null)
 		{
 			this.group = groupMining.get(group);
