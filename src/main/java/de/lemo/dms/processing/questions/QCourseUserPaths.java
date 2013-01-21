@@ -64,7 +64,7 @@ public class QCourseUserPaths extends Question {
         stopWatch.start();
 
         /* A criteria is created from the session. */
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
         Session session = dbHandler.getMiningSession();
 
         /*

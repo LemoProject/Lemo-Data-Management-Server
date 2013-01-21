@@ -22,7 +22,7 @@ public class ConnectorMoodle extends AbstractConnector {
             Session session = HibernateUtil.getSessionFactory(config).openSession();
             session.close();
 
-            IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+            IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
             dbHandler.closeSession(dbHandler.getMiningSession());
         } catch (HibernateException he)
         {

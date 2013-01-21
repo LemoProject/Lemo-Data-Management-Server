@@ -82,26 +82,26 @@ public class ConnectorChemgapedia extends AbstractConnector {
     public void getData() {
         Long starttime = System.currentTimeMillis() / 1000;
 
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
-
         Long largestId = -1L;
         if(processVSC || processLog)
         {
-
+            IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+            Session session = dbHandler.getMiningSession();
+            
             if(processVSC)
             {
-                XMLPackageParser x = new XMLPackageParser(getPlatformId());
+                XMLPackageParser x = new XMLPackageParser(this);
                 x.readAllVlus(vscPath);
                 largestId = x.saveAllToDB();
             }
             if(processLog)
             {
-                LogReader logR = new LogReader(getPlatformId(), largestId);
+                LogReader logR = new LogReader(this, largestId, session);
                 logR.loadServerLogData(logPath);
                 if(filter)
                     logR.filterServerLogFile();
 
-                largestId = logR.save();
+                largestId = logR.save(session);
             }
 
             Long endtime = System.currentTimeMillis() / 1000;
@@ -110,8 +110,8 @@ public class ConnectorChemgapedia extends AbstractConnector {
             config.setElapsed_time((endtime) - (starttime));
             config.setLargestId(largestId);
             config.setPlatform(getPlatformId());
-
-            Session session = dbHandler.getMiningSession();
+           
+          
             dbHandler.saveToDB(session, config);
             dbHandler.closeSession(session);
         }
@@ -124,22 +124,24 @@ public class ConnectorChemgapedia extends AbstractConnector {
         Long largestId = -1L;
         if(processVSC || processLog)
         {
+            IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+            Session session = dbHandler.getMiningSession();
 
             if(processVSC)
             {
-                XMLPackageParser x = new XMLPackageParser(getPlatformId());
+                XMLPackageParser x = new XMLPackageParser(this);
                 x.readAllVlus(vscPath);
                 largestId = x.saveAllToDB();
             }
             if(processLog)
             {
-                LogReader logR = new LogReader(getPlatformId(), largestId);
+                LogReader logR = new LogReader(this, largestId, session);
 
                 logR.loadServerLogData(logPath);
                 if(filter)
                     logR.filterServerLogFile();
 
-                largestId = logR.save();
+                largestId = logR.save(session);
             }
 
             Long endtime = System.currentTimeMillis() / 1000;
@@ -149,8 +151,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
             config.setLargestId(largestId);
             config.setPlatform(getPlatformId());
 
-            IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
-            Session session = dbHandler.getMiningSession();
+
             dbHandler.saveToDB(session, config);
             dbHandler.closeSession(session);
         }

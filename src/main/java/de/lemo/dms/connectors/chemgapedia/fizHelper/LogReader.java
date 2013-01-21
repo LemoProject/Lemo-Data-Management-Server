@@ -15,6 +15,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.proxy.HibernateProxy;
 
+import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.EQueryType;
@@ -23,7 +24,6 @@ import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
-import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
@@ -33,40 +33,24 @@ import de.lemo.dms.db.miningDBclass.UserMining;
  */
 public class LogReader {
 	
-	//private ArrayList<LogObject> logList = new ArrayList<LogObject>();
-	
-	long startIndex = 0;
-
 	private HashMap<Long, UserMining> oldUsers = new HashMap<Long, UserMining>();
-	
 	private HashMap<Long, UserMining> newUsers = new HashMap<Long, UserMining>();
 	/** The resources. */
-	private HashMap<String, ResourceMining> oldResources = new HashMap<String, ResourceMining>();
-	
+	private HashMap<String, ResourceMining> oldResources = new HashMap<String, ResourceMining>();	
 	private HashMap<String, ResourceMining> newResources = new HashMap<String, ResourceMining>();
-	
 	private HashMap<String, CourseResourceMining> courseResources = new HashMap<String, CourseResourceMining>();
-	
-	static HashMap<String, IDMappingMining> id_mapping;
-	
-	static HashMap<String, IDMappingMining> new_id_mapping;
-	
+	private HashMap<String, IDMappingMining> id_mapping;
+	private HashMap<String, IDMappingMining> new_id_mapping;
 	private HashMap<Long, ArrayList<LogObject>> userHistories = new HashMap<Long, ArrayList<LogObject>>();
-	
 	private HashMap<String, CourseMining> oldCourses = new HashMap<String, CourseMining>();
+	private ArrayList<ResourceLogMining> resourceLog = new ArrayList<ResourceLogMining>();
 	
-	ArrayList<ResourceLogMining> resourceLog = new ArrayList<ResourceLogMining>();
-	
-	Clock clock = new Clock();
-	
-	IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
-	Session session;
-	
-	Long largestId;
-	
-	Long lastTimestamp = 0L;
-	
-	PlatformMining pf;
+	private Clock clock = new Clock();
+
+    private Long largestId;
+    private Long lastTimestamp = 0L;
+
+    private IConnector connector;
 	
 	/**
 	 * Constructor. Creates a new LogReader-object. 
@@ -75,17 +59,14 @@ public class LogReader {
 	 * @param idcount	
 	 */
 	@SuppressWarnings("unchecked")
-    public LogReader(long platformId, Long idcount)
+    public LogReader(IConnector connector, Long idcount, Session session)
 	{
-	 
+	    this.connector = connector;
+	    long platformId = connector.getPlatformId();
 		try{
-			
 			new_id_mapping = new HashMap<String, IDMappingMining>();
-					
-			session = dbHandler.getMiningSession();
 	    	
 	    	Criteria c = session.createCriteria(IDMappingMining.class, "idmap");
-	    	
 	    	c.add(Restrictions.eq("idmap.platform", platformId));
 			
 			List<IDMappingMining> ids = c.list();
@@ -93,7 +74,7 @@ public class LogReader {
 			id_mapping = new HashMap<String, IDMappingMining>();
 			for(int i = 0; i < ids.size(); i++)
 			{
-				ids.get(i).setPlatform(pf.getId());
+				ids.get(i).setPlatform(connector.getPlatformId());
 				id_mapping.put(ids.get(i).getHash(), ids.get(i));
 			}
 			System.out.println("Read "+ids.size() + " IDMappings from database.");
@@ -163,7 +144,7 @@ public class LogReader {
 	 * @param inFile
 	 * @return
 	 */
-	public Long update(String inFile)
+	public Long update(String inFile, Session session)
 	{
 		for(ResourceMining resource : newResources.values())
 			oldResources.put(resource.getUrl(), resource);
@@ -183,7 +164,7 @@ public class LogReader {
 		
 		loadServerLogData(inFile);
 		filterServerLogFile();
-		return save();
+		return save(session);
 		
 	}
 	
@@ -225,7 +206,7 @@ public class LogReader {
 		}
 		
 		double cutUsePerc = (old - Long.valueOf(""+tempUsers.size())) / (old / 100);
-		double cutLinPerc = linesDeleted / (totalLines / 100);
+		double cutLinPerc = linesDeleted / (totalLines / 100.);
 		System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users  out of " + old + " (" + new DecimalFormat("0.00").format(cutUsePerc) + "%), eliminating " + linesDeleted + " log lines (" + new DecimalFormat("0.00").format(cutLinPerc) + "%).");
 		this.newUsers = tempUsers;
 	}
@@ -269,9 +250,9 @@ public class LogReader {
        	       			{
        	       				id = largestId + 1;
        	       				largestId = id;
-       	       				id_mapping.put(name, new IDMappingMining(Long.valueOf(pf.getPrefix() + "" + id), name, pf.getId()));
-       	       				new_id_mapping.put(name, new IDMappingMining(Long.valueOf(pf.getPrefix() + "" + id), name, pf.getId()));
-       	       				lo.setId(Long.valueOf(pf.getPrefix() + "" + id));
+       	       				id_mapping.put(name, new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), name, connector.getPlatformId()));
+       	       				new_id_mapping.put(name, new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + id), name, connector.getPlatformId()));
+       	       				lo.setId(Long.valueOf(connector.getPrefix() + "" + id));
        	       			}
        	       			
        	       			//Set timestamp
@@ -330,7 +311,7 @@ public class LogReader {
 		    					  u.setCurrentlogin(lo.getTime());
 		    					  u.setLastaccess(lo.getTime());
 		    				  }
-		    				  u.setPlatform(pf.getId());
+		    				  u.setPlatform(connector.getPlatformId());
 		    				  newUsers.put(u.getId(), u);
 		    				  lo.setUser(u);
 		    			  }
@@ -344,7 +325,7 @@ public class LogReader {
 			    				  u.setCurrentlogin(lo.getTime());
 			    			  else
 			    				  u.setCurrentlogin(0);  
-			    			  u.setPlatform(pf.getId());
+			    			  u.setPlatform(connector.getPlatformId());
 			    			  newUsers.put(lo.getId(), u);
 			    			  oldUsers.put(u.getId(), u);
 			    			  lo.setUser(u);
@@ -365,9 +346,9 @@ public class LogReader {
 		       	       			{
 		       	       				resource_id = largestId + 1;
 		       	       				largestId = resource_id;
-		       	       				id_mapping.put(lo.getUrl(), new IDMappingMining(Long.valueOf(pf.getPrefix() + "" + resource_id), lo.getUrl(), pf.getId()));
-		       	       				new_id_mapping.put(lo.getUrl(), new IDMappingMining(Long.valueOf(pf.getPrefix() + "" + resource_id), lo.getUrl(), pf.getId()));
-		       	       				resource_id = Long.valueOf(pf.getPrefix() + "" + resource_id);
+		       	       				id_mapping.put(lo.getUrl(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + resource_id), lo.getUrl(), connector.getPlatformId()));
+		       	       				new_id_mapping.put(lo.getUrl(), new IDMappingMining(Long.valueOf(connector.getPrefix() + "" + resource_id), lo.getUrl(), connector.getPlatformId()));
+		       	       				resource_id = Long.valueOf(connector.getPrefix() + "" + resource_id);
 		       	       				lo.setId(resource_id);
 		       	       			}
 		    				  
@@ -412,7 +393,7 @@ public class LogReader {
 		    				  if(r.getUrl().contains("/mindmap/"))
 		    					  r.setType("Mindmap");
 		    				  
-		    				  r.setPlatform(pf.getId());
+		    				  r.setPlatform(connector.getPlatformId());
 		    				  this.newResources.put(r.getUrl(), r);
 		    			  }
 		    			  
@@ -452,7 +433,7 @@ public class LogReader {
 	/**
 	 * Writes the data to the database.
 	 */
-	public Long save()
+	public Long save(Session session)
 	{
 		List<Collection<?>> l = new ArrayList<Collection<?>>();
 		ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
@@ -461,12 +442,12 @@ public class LogReader {
 		System.out.println("Found " + it.size() + " users.");
 		l.add(it);
 		l.add(idmap);
-		
-		Session session = dbHandler.getMiningSession();
-		
-		long li = (Long)(dbHandler.performQuery(session, EQueryType.HQL, "Select count(*) from ResourceLogMining").get(0));
+
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+        long li = (Long)(dbHandler.performQuery(session, EQueryType.HQL, "Select count(*) from ResourceLogMining").get(0));
+		long startIndex = 0;
 		if (li > 0)
-		startIndex = 1 + li;
+		    startIndex = 1 + li;
 		for(Iterator<ArrayList<LogObject>> iter = this.userHistories.values().iterator(); iter.hasNext();)
 		{
 			ArrayList<LogObject> loadedItem = iter.next();
@@ -487,20 +468,20 @@ public class LogReader {
 					rl.setTimestamp(loadedItem.get(i).getTime());
 					rl.setDuration(loadedItem.get(i).getDuration());
 					rl.setAction("View");
-					rl.setPlatform(pf.getId());
+					rl.setPlatform(connector.getPlatformId());
 					
 					resourceLogMining.add(rl);
 				}
 			}
 		}
 		Collections.sort(resourceLogMining);
+	
 		for(int i = 0; i < resourceLogMining.size(); i++)
 		{
 			startIndex++;
 			resourceLogMining.get(i).setId(startIndex);
 		}
-		session.close();
-		session = dbHandler.getMiningSession();
+		
 		l.add(this.newResources.values());
 		l.add(resourceLogMining);			
 		

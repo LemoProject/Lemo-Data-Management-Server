@@ -232,7 +232,7 @@ public class QFrequentPathsBIDE extends Question {
     {
 		LinkedList<String> result = new LinkedList<String>();
 		try{
-			IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+			IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 			
             Session session = dbHandler.getMiningSession();
 
@@ -358,7 +358,7 @@ public class QFrequentPathsBIDE extends Question {
 		boolean hasBorders = minLength != null && maxLength != null && maxLength > 0 && minLength < maxLength;
 		boolean hasTypes = types != null && types.size() > 0;
 		try{
-			IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+			IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 			
             Session session = dbHandler.getMiningSession();
 

@@ -62,7 +62,7 @@ public class QLearningObjectUsage extends Question {
 
         ResultListResourceRequestInfo result = new ResultListResourceRequestInfo();
         // DB-initialization
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
         Session session = dbHandler.getMiningSession();
         
         // Create criteria for log-file-search

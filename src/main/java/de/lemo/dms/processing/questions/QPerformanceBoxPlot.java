@@ -88,7 +88,7 @@ public class QPerformanceBoxPlot extends Question{
         		values.put(quizzes.get(i), v);
 	        }
         
-	        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+	        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 	        Session session = dbHandler.getMiningSession();
 
 	        Criteria criteria = session.createCriteria(IRatedLogObject.class, "log");

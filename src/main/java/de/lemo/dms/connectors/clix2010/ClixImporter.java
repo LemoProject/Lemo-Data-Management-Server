@@ -277,7 +277,7 @@ public class ClixImporter {
 	    config.setLargestId(0L);
 	    config.setPlatform(connector.getPlatformId());
 	    
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
         Session miningSession = dbHandler.getMiningSession();
         dbHandler.saveToDB(miningSession, config);
         dbHandler.closeSession(miningSession);
@@ -317,7 +317,7 @@ public class ClixImporter {
 	    config.setLargestId(-1L);
 	    config.setPlatform(connector.getPlatformId());
 	    
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
         Session session = dbHandler.getMiningSession();
         dbHandler.saveToDB(session, config);
         dbHandler.closeSession(session);
@@ -439,7 +439,7 @@ public class ClixImporter {
 			if(objects > 0)
 			{
 				
-				IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+				IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		        Session session = dbHandler.getMiningSession();
 		        System.out.println("Writing to DB");
 				dbHandler.saveCollectionToDB(session, updates);
@@ -495,7 +495,7 @@ public class ClixImporter {
 	private void initialize()
 	{
 		try{
-			IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+			IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 			
 			//accessing DB by creating a session and a transaction using HibernateUtil
 	        Session session = dbHandler.getMiningSession();

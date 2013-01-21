@@ -12,26 +12,39 @@ public enum ESourcePlatform {
     Chemgaroo,
     Dummy, ;
 
-    public IConnector newConnector(DBConfigObject config) {
+    public IConnector newConnector(Long id, String name, DBConfigObject config) {
+        AbstractConnector connector;
         switch(this) {
+
         case Chemgaroo:
-            return new ConnectorChemgapedia(config);
+            connector = new ConnectorChemgapedia(config);
+            break;
 
         case Clix:
-            return new ConnectorClix(config);
+            connector = new ConnectorClix(config);
+            break;
 
         case Dummy:
-            return new ConnectorDummy();
+            connector = new ConnectorDummy();
+            break;
 
         case Moodle_1_9:
-            return new de.lemo.dms.connectors.moodle.ConnectorMoodle(config);
+            connector = new de.lemo.dms.connectors.moodle.ConnectorMoodle(config);
+            break;
 
         case Moodle_1_9_Numeric:
-            return new de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle(config);
-            
+            connector = new de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle(config);
+            break;
+
         default:
             throw new RuntimeException("No Connector implementation");
         }
+
+        connector.setPlatformId(id);
+        connector.setPlatformType(this);
+        connector.setName(name);
+
+        return connector;
 
     }
 }

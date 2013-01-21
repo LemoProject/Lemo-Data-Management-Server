@@ -23,7 +23,7 @@ public class ServiceRoles extends BaseService {
     @GET
     public ResultListRoleObject getUserRoles() {
 
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
         Session session = dbHandler.getMiningSession();
 
         @SuppressWarnings("unchecked")

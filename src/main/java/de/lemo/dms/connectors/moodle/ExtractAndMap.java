@@ -220,7 +220,7 @@ public abstract class ExtractAndMap{
      * **/	
 	public void start(String[] args, DBConfigObject sourceDBConf) {
 		
-		dbHandler = ServerConfiguration.getInstance().getDBHandler();
+		dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		c = new Clock();
 		starttime = System.currentTimeMillis()/1000;
 		Session session = dbHandler.getMiningSession();

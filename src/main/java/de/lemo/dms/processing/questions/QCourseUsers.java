@@ -37,7 +37,7 @@ public class QCourseUsers extends Question {
             return null;
 
         // Set up db-connection
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
          Session session = dbHandler.getMiningSession();
 
         Criteria criteria = session.createCriteria(CourseLogMining.class, "log");

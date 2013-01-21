@@ -12,7 +12,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -21,10 +25,12 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
@@ -32,7 +38,6 @@ import de.lemo.dms.db.miningDBclass.DegreeMining;
 import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
 import de.lemo.dms.db.miningDBclass.DepartmentMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
-import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
 
 
@@ -74,11 +79,13 @@ public class XMLPackageParser {
 	private Long depDegId = 0L;
 	private Long degCouId = 0L;
 	private Long couResId = 0L;
-	private PlatformMining pf;
+	private IConnector connector;
 	
-	private static IDBHandler dbHandler;
+	private IDBHandler dbHandler;
 	
-	private static Long largestId;
+	private long largestId;
+
+    private Logger logger = Logger.getLogger(getClass());
 	
 	
 	/**
@@ -87,11 +94,12 @@ public class XMLPackageParser {
 	 * @param platform Name of the Chemgapedia-platform
 	 */
 	@SuppressWarnings("unchecked")
-    public XMLPackageParser(long platformId)
+    public XMLPackageParser(IConnector connector)
 	{
-	 
+	    this.connector = connector;
+	    long platformId = connector.getPlatformId();
 		
-		dbHandler = ServerConfiguration.getInstance().getDBHandler();	
+		dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();	
 		Session session = dbHandler.getMiningSession();
 		
 		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(session, EQueryType.HQL, "from IDMappingMining x where x.platform=" +platformId + " order by x.id asc");
@@ -144,14 +152,15 @@ public class XMLPackageParser {
 		for(int i = 0; i < couRes.size(); i++)
     		this.courseResources.put(couRes.get(i).getResource().getId(), couRes.get(i));
 		
-    	
-		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "Select largestId from ConfigMining x where x.platform=" + platformId + " order by x.id asc"));
-		if(l != null && l.size() > 0)
-			largestId = Long.valueOf((l.get(l.size()-1) + "").substring(2));
-		else
-			largestId = 0L;
-		
-	     dbHandler.closeSession(session);
+		List<Long> l = (List<Long>) (dbHandler.performQuery(session, EQueryType.HQL, "SELECT largestId FROM ConfigMining WHERE platform=" + platformId + " ORDER BY largestId desc"));
+		if(!l.isEmpty()) {
+            logger.info("largest id for platform " + platformId + ": " + l);
+            String lv = ""+ l.get(0);
+            if(lv.length()>2) {
+                largestId = Long.valueOf(lv.substring(2));
+            }
+        }
+        dbHandler.closeSession(session);
 	}
 	
 	
@@ -218,8 +227,8 @@ public class XMLPackageParser {
 		      if(departmentObj.get(department) == null)
 		      {		    	 
 		    	  dep.setTitle(department);
-		    	  dep.setId(Long.valueOf(pf.getPrefix() + "" + (depId + 1)));
-		    	  dep.setPlatform(pf.getId());
+		    	  dep.setId(Long.valueOf(connector.getPrefix() + "" + (depId + 1)));
+		    	  dep.setPlatform(connector.getPlatformId());
 		    	  depId++;
 		    	  departmentObj.put(dep.getTitle(), dep);
 		      }
@@ -229,8 +238,8 @@ public class XMLPackageParser {
 		      {
 		    	  
 		    	  deg.setTitle(degree);
-		    	  deg.setId(Long.valueOf(pf.getPrefix() + "" + (degId + 1)));
-		    	  deg.setPlatform(pf.getId());
+		    	  deg.setId(Long.valueOf(connector.getPrefix() + "" + (degId + 1)));
+		    	  deg.setPlatform(connector.getPlatformId());
 		    	  degId++;
 		    	  degreeObj.put(deg.getTitle(), deg);
 		      }
@@ -240,8 +249,8 @@ public class XMLPackageParser {
 		      {
 		    	 
 		    	  cou.setTitle(course);
-		    	  cou.setId(Long.valueOf(pf.getPrefix() + "" + (couId + 1)));
-		    	  cou.setPlatform(pf.getId());
+		    	  cou.setId(Long.valueOf(connector.getPrefix() + "" + (couId + 1)));
+		    	  cou.setPlatform(connector.getPlatformId());
 		    	  couId++;
 		    	  courseObj.put(cou.getTitle(), cou);
 		      }
@@ -283,12 +292,12 @@ public class XMLPackageParser {
 	 	       				r_id = resId + 1;
 	 	       				resId = r_id;
 	 	       				largestId = resId;
-	 	       				r_id = Long.valueOf(pf.getPrefix() + "" + r_id);
-	 	       				id_mapping.put(resource.getUrl(), new IDMappingMining(r_id, resource.getUrl(), pf.getId()));
+	 	       				r_id = Long.valueOf(connector.getPrefix() + "" + r_id);
+	 	       				id_mapping.put(resource.getUrl(), new IDMappingMining(r_id, resource.getUrl(), connector.getPlatformId()));
 	 	       				resource.setId(r_id);
 	 	       			}
 			    	  
-	 	       			resource.setPlatform(pf.getId());
+	 	       			resource.setPlatform(connector.getPlatformId());
 			    	  this.resourceObj.put(resource.getUrl(), resource);
 			    	  this.fnames.add(filename);
 			    	  //Save department - degree relation locally
@@ -297,8 +306,8 @@ public class XMLPackageParser {
 				    	  DepartmentDegreeMining ddm = new DepartmentDegreeMining();
 				    	  ddm.setDegree(deg);
 				    	  ddm.setDepartment(dep);
-				    	  ddm.setId(Long.valueOf(pf.getPrefix() + "" + (depDegId + 1)));
-				    	  ddm.setPlatform(pf.getId());
+				    	  ddm.setId(Long.valueOf(connector.getPrefix() + "" + (depDegId + 1)));
+				    	  ddm.setPlatform(connector.getPlatformId());
 				    	  depDegId++;
 				    	  this.departmentDegrees.put(deg.getId() , ddm);			    	  
 				      }
@@ -308,8 +317,8 @@ public class XMLPackageParser {
 				    	  DegreeCourseMining dcm = new DegreeCourseMining();
 				    	  dcm.setDegree(deg);
 				    	  dcm.setCourse(cou);
-				    	  dcm.setId(Long.valueOf(pf.getPrefix() + "" + (degCouId + 1)));
-				    	  dcm.setPlatform(pf.getId());
+				    	  dcm.setId(Long.valueOf(connector.getPrefix() + "" + (degCouId + 1)));
+				    	  dcm.setPlatform(connector.getPlatformId());
 				    	  degCouId++;
 				    	  this.degreeCourses.put(cou.getId() , dcm);			    	  
 				      }
@@ -319,9 +328,9 @@ public class XMLPackageParser {
 				    	  CourseResourceMining crm = new CourseResourceMining();
 				    	  crm.setResource(resource);
 				    	  crm.setCourse(cou);
-				    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
+				    	  crm.setId(Long.valueOf(connector.getPrefix() + "" + (couResId + 1)));
 				    	  couResId++;
-				    	  crm.setPlatform(pf.getId());
+				    	  crm.setPlatform(connector.getPlatformId());
 				    	  this.courseResources.put(resource.getId(), crm);			    	  
 				      }
 				      
@@ -374,15 +383,15 @@ public class XMLPackageParser {
 			       	       				resource_id = resId + 1;
 			       	       				resId = resource_id;
 			       	       				largestId = resId;
-			       	       				resource_id = Long.valueOf(pf.getPrefix() + "" + resource_id);
-			       	       				id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(), pf.getId()));
+			       	       				resource_id = Long.valueOf(connector.getPrefix() + "" + resource_id);
+			       	       				id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(), connector.getPlatformId()));
 			       	       				
 			       	       				r1.setId(resource_id);
 			       	       			}
 				    				  
 				    				  
 				    				  r1.setPosition(pos);
-				    				  r1.setPlatform(pf.getId());
+				    				  r1.setPlatform(connector.getPlatformId());
 			    					  tempRes.add(r1);
 			    					  this.resourceObj.put(r1.getUrl(), r1);
 			    					  //this.resourceObj.add(r1);
@@ -392,9 +401,9 @@ public class XMLPackageParser {
 			    				    	  CourseResourceMining crm = new CourseResourceMining();
 			    				    	  crm.setResource(r1);
 			    				    	  crm.setCourse(cou);
-			    				    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
+			    				    	  crm.setId(Long.valueOf(connector.getPrefix() + "" + (couResId + 1)));
 			    				    	  couResId++;
-			    				    	  crm.setPlatform(pf.getId());
+			    				    	  crm.setPlatform(connector.getPlatformId());
 			    				    	  this.courseResources.put(r1.getId(), crm);			    	  
 			    					  }
 			    					  pos++;///////////
@@ -423,7 +432,7 @@ public class XMLPackageParser {
 						  
 						  if(resourceObj.get(r1.getUrl()) == null)
 						  {
-							  r1.setId(Long.valueOf(pf.getPrefix() + "" + (resId + 1)));
+							  r1.setId(Long.valueOf(connector.getPrefix() + "" + (resId + 1)));
 							  resId++;
 						  }
 						  
@@ -432,17 +441,17 @@ public class XMLPackageParser {
 						  
 						  if(this.resourceObj.get(r1.getUrl()) == null)
 						  {
-							  r1.setPlatform(pf.getId());
+							  r1.setPlatform(connector.getPlatformId());
 							  this.resourceObj.put(r1.getUrl(), r1);
-							  id_mapping.put(r1.getUrl(), new IDMappingMining(r1.getId(), r1.getUrl(), pf.getId()));
+							  id_mapping.put(r1.getUrl(), new IDMappingMining(r1.getId(), r1.getUrl(), connector.getPlatformId()));
 	     	       			  largestId = resId;
 							  this.fnames.add(filename + "*");
 	   				    	  CourseResourceMining crm = new CourseResourceMining();
 					    	  crm.setResource(r1);
 					    	  crm.setCourse(cou);
-					    	  crm.setId(Long.valueOf(pf.getPrefix() + "" + (couResId + 1)));
+					    	  crm.setId(Long.valueOf(connector.getPrefix() + "" + (couResId + 1)));
 					    	  couResId++;
-					    	  crm.setPlatform(pf.getId());
+					    	  crm.setPlatform(connector.getPlatformId());
 					    	  this.courseResources.put(r1.getId() , crm);	
 						  }
 				      }

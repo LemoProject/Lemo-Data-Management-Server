@@ -12,7 +12,7 @@ public abstract class AbstractConnector implements IConnector {
         return id;
     }
 
-    protected void setId(Long id) {
+    public void setPlatformId(Long id) {
         this.id = id;
     }
 
@@ -39,7 +39,7 @@ public abstract class AbstractConnector implements IConnector {
         return platform;
     }
 
-    protected void getPlattformType(ESourcePlatform platformType) {
+    protected void setPlatformType(ESourcePlatform platformType) {
         this.platform = platformType;
     }
 

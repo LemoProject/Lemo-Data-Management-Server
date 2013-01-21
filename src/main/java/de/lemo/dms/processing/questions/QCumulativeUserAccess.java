@@ -85,7 +85,7 @@ public class QCumulativeUserAccess extends Question {
 		super.logger.info("Query result: "+querys.toString());
 		
 		IDBHandler dbHandler = ServerConfiguration.getInstance()
-				.getDBHandler();
+				.getMiningDbHandler();
 		Session session = dbHandler.getMiningSession();
 
 		// SQL querys

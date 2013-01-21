@@ -23,8 +23,8 @@ import de.lemo.dms.connectors.ESourcePlatform;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.hibernate.HibernateDBHandler;
 import de.lemo.dms.db.hibernate.MiningHibernateUtil;
-import de.lemo.dms.test.HibernateDBHandler;
 
 /**
  * 
@@ -142,7 +142,7 @@ public enum ServerConfiguration {
 
             ESourcePlatform platform = ESourcePlatform.valueOf(connectorConfig.platformType);
             DBConfigObject config = createDBConfig(connectorConfig.properties);
-            result.add(platform.newConnector(config));
+            result.add(platform.newConnector(connectorConfig.platformId, connectorConfig.name, config));
         }
         return result;
     }
@@ -155,10 +155,6 @@ public enum ServerConfiguration {
             propertyMap.put(property.key, property.value);
         }
         return new DBConfigObject(propertyMap);
-    }
-
-    public IDBHandler getDBHandler() {
-        return miningDbHandler;
     }
 
     public long getStartTime() {

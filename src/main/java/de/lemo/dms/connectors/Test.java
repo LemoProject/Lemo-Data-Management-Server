@@ -103,7 +103,7 @@ public class Test {
 	
 	public static void calculateMeichsner()
 	{
-		IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		Session session = dbHandler.getMiningSession();
 		
 		ArrayList<Long> cids = new ArrayList<Long>();
@@ -200,7 +200,7 @@ public class Test {
 		ArrayList<String> res = new ArrayList<String>();
 		ArrayList<Long> courses = new ArrayList<Long>();
 		courses.add(11476L);
-		IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
         Session session = dbHandler.getMiningSession();
 	        
         Criteria criteria = session.createCriteria(ICourseRatedObjectAssociation.class, "aso");

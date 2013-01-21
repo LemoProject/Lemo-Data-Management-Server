@@ -14,7 +14,7 @@ public class Test {
 	{
 		ContentGenerator conGen = new ContentGenerator();
 		
-		IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		Session session = dbHandler.getMiningSession();
         dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 2, 2, 1293840000L, 1000));
         dbHandler.closeSession(session);

@@ -16,6 +16,6 @@ import de.lemo.dms.service.BaseService;
 @Produces(MediaType.APPLICATION_JSON)
 public abstract class Question extends BaseService {
 
-    protected final IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+    protected final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
 }

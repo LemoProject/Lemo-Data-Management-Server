@@ -61,7 +61,7 @@ public class QUserLogHistory extends Question {
             return null;
         }
 
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
         Session session = dbHandler.getMiningSession();
 
 

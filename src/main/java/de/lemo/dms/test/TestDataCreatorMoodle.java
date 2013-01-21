@@ -609,7 +609,7 @@ public class TestDataCreatorMoodle {
 	@SuppressWarnings("unchecked")
 	public void getDataFromDB()
 	{
-		IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		
 		//accessing DB by creating a session and a transaction using HibernateUtil
         Session session = dbHandler.getMiningSession();

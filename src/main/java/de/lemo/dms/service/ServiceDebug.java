@@ -55,7 +55,7 @@ public class ServiceDebug {
                 .append("</h2></div><dl class='dl-horizontal'>");
         IDBHandler dbHandler = null;
         try {
-            dbHandler = ServerConfiguration.getInstance().getDBHandler();
+            dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
         } catch (ExceptionInInitializerError e) {
             content.append("<div class='alert alert-error'><b>ExceptionInInitializerError</b>");
             printExceptionStack(content, e);

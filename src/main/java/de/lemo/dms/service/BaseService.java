@@ -15,6 +15,6 @@ public abstract class BaseService {
 
     protected final ServerConfiguration config = ServerConfiguration.getInstance();
     protected final Logger logger = Logger.getLogger(this.getClass());
-    IDBHandler dbHandler = config.getDBHandler();
+    IDBHandler dbHandler = config.getMiningDbHandler();
 
 }

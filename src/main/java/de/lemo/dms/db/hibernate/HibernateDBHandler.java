@@ -20,18 +20,19 @@ import de.lemo.dms.db.IDBHandler;
  */
 public class HibernateDBHandler implements IDBHandler {
 
-    @SuppressWarnings("unused")
-	private Logger logger = Logger.getLogger(getClass());
+    private static final int BATCH_SIZE = 50;
+
+    private Logger logger = Logger.getLogger(getClass());
 
     public Session getMiningSession() {
         return MiningHibernateUtil.getSessionFactory().openSession();
     }
 
-    @Override
     /**
      * Saves a list of generic objects to the database.
      * 
      */
+    @Override
     public void saveCollectionToDB(Session session, List<Collection<?>> data) {
 
         try {
@@ -51,8 +52,8 @@ public class HibernateDBHandler implements IDBHandler {
                     className = obj.getClass().getName();
                     i++;
                     classOb++;
-                    session.saveOrUpdate(obj);
-                    if(i % 50 == 0)
+                    session.merge(obj);
+                    if(i % BATCH_SIZE == 0)
                     {
                         // flush a batch of inserts and release memory:
                         session.flush();
@@ -68,10 +69,10 @@ public class HibernateDBHandler implements IDBHandler {
         }
     }
 
-    @Override
     /**
      * Save a single object to the database.
      */
+    @Override
     public void saveToDB(Session session, Object data) {
         Transaction tx = session.beginTransaction();
         session.saveOrUpdate(data);
@@ -91,22 +92,24 @@ public class HibernateDBHandler implements IDBHandler {
         }
     }
 
-    @Override
     /**
      * Performs a Hibernate query.
      */
+    @Override
     public List<?> performQuery(Session session, EQueryType queryType, String query) {
-        List<?> l = null;
         try {
-            if(queryType == EQueryType.SQL)
-                l = session.createSQLQuery(query).list();
-            else if(queryType == EQueryType.HQL)
-                l = session.createQuery(query).list();
-        } catch (HibernateException he)
-        {
+            switch(queryType) {
+            case HQL:
+                return session.createQuery(query).list();
+            case SQL:
+                return session.createSQLQuery(query).list();
+            default:
+                break;
+            }
+        } catch (HibernateException he) {
             he.printStackTrace();
         }
-        return l;
+        return null;
     }
 
 }

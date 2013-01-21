@@ -15,7 +15,7 @@ class Connector {
     public String name;
 
     @XmlAttribute(name = "platform-id", required = true)
-    public Integer platformId;
+    public Long platformId;
 
     @XmlAttribute(name = "platform-type", required = true)
     public String platformType;

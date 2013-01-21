@@ -39,8 +39,9 @@ public enum ConnectorManager {
         return connectors;
     }
 
-    public boolean addConnector(IConnector connector) {
-        return connectors.add(connector);
+    public void addConnector(IConnector connector) {
+        saveOrUpdateConnectorInfo(connector);
+        connectors.add(connector);
     }
 
     /**
@@ -50,7 +51,7 @@ public enum ConnectorManager {
      */
     public boolean startUpdateData(IConnector connector) {
         logger.info("Updating " + connector);
-        if(connectorState() == EConnectorState.ready) {
+        if(getDataThread == null || connectorState() == EConnectorState.ready) {
             getDataThread = new ConnectorGetDataWorkerThread(connector);
             getDataThread.start();
             return true;
@@ -74,21 +75,24 @@ public enum ConnectorManager {
     }
 
     public IConnector getConnectorById(Long connectorId) {
-        for(IConnector connector : connectors) {
-            if(connector.getPlatformId().equals(connectorId)) {
-                return connector;
+        if(connectorId != null) {
+            for(IConnector connector : connectors) {
+                if(connectorId.equals(connector.getPlatformId())) {
+                    return connector;
+                }
             }
         }
         return null;
     }
 
-    public void saveOrUpdateConnectorInfo(IConnector connector) {
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+    private void saveOrUpdateConnectorInfo(IConnector connector) {
+        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
         Session session = dbHandler.getMiningSession();
 
         PlatformMining platform = (PlatformMining) session.get(PlatformMining.class, connector.getPlatformId());
 
         if(platform == null) {
+            // save new platform
             Criteria criteria = session
                     .createCriteria(PlatformMining.class)
                     .setProjection(Projections.max("prefix"));
@@ -99,11 +103,16 @@ public enum ConnectorManager {
             platform = new PlatformMining();
             platform.setId(connector.getPlatformId());
             platform.setPrefix(maxPrefix + 1);
+        } else {
+            AbstractConnector ac = (AbstractConnector) connector;
+            ac.setPrefix(platform.getPrefix());
         }
 
+        // update name
         platform.setName(connector.getName());
         platform.setType(connector.getPlattformType().name());
 
-        session.save(platform);
+        dbHandler.saveToDB(session, platform);
+        dbHandler.closeSession(session);
     }
 }

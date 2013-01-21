@@ -62,7 +62,7 @@ public class QCourseActivity extends Question{
 		{
 			
 			//Set up db-connection
-			IDBHandler dbHandler = ServerConfiguration.getInstance().getDBHandler();
+			IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 			Session session = dbHandler.getMiningSession();
 			
 			//Calculate size of time intervalls
