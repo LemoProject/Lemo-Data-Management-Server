@@ -22,6 +22,7 @@ import de.lemo.dms.processing.resulttype.ResultListLongObject;
 import de.lemo.dms.processing.resulttype.ResultListStringObject;
 import de.lemo.dms.service.ServiceRatedObjects;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
+import de.lemo.dms.connectors.moodle.ConnectorMoodle;
 import de.lemo.dms.core.config.ServerConfiguration;
 
 /**
@@ -36,72 +37,81 @@ public class Test {
 	 * Tests the Chemgapedia-connector. Configurations have to be altered accordingly.
 	 * 
 	 */
-	public static void runChemConn()
+	public void runChemConn()
 	{
-		for(int i = 0 ; i < 5; i++)
-		{
+		String logs = "C:\\Users\\s.schwarzrock\\Desktop\\120614\\130104_lemojoin_10K_1.log";
+		//int i = 0;
+		//for(int i = 1 ; i < 6; i++)
+		//{
 			DBConfigObject sourceConf = new DBConfigObject();
-			sourceConf.setProperty("path.log_file", "C:\\Users\\s.schwarzrock\\Desktop\\120614\\120614_lemo_"+i+".log");
+			sourceConf.setProperty("path.log_file", logs);
 			sourceConf.setProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
 			sourceConf.setProperty("filter_log_file", "true");
-			if(i == 0)
 				sourceConf.setProperty("process_metadata", "true");
-			else
-				sourceConf.setProperty("process_metadata", "false");
 			sourceConf.setProperty("process_log_file", "true");
 			
-            ConnectorChemgapedia cm = new ConnectorChemgapedia(sourceConf);
-		//	cm.getData("Chemgapedia(FIZ)");
+			ConnectorChemgapedia cm = new ConnectorChemgapedia(sourceConf);
+			cm.updateData(0L);
 		}
+	
+	/**
+	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
+	public void runMoodleConn()
+	{
+//		ConnectorMoodle cm = new ConnectorMoodle();
+//		cm.setSourceDBConfig(ServerConfiguration.getInstance().getSourceDBConfig());
+//		cm.getData("Moodle(Beuth)");
+		//cm.updateData("Moodle(Beuth)", 1338000000);
 	}
 	
-//	/**
-//	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
-//	 * 
-//	 */
-//	public static void runMoodleConn()
-//	{
-//		ConnectorMoodle cm = new ConnectorMoodle();
-//		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-//		cm.getData("Moodle(BBW)");
-//		//cm.updateData("Moodle(Beuth)", 1338000000);
-//	}
-//	
-//	/**
-//	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
-//	 * 
-//	 */
-//	public static void runMoodleNumericConn()
-//	{
+	/**
+	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
+	public void runMoodleNumericConn()
+	{
 //		de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle cm = new de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle();
-//		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
+//		cm.setSourceDBConfig(ServerConfiguration.getInstance().getSourceDBConfig());
 //		cm.getData("Moodle(BBW)");
 //		//cm.updateData("Moodle(Beuth)", 1338000000);
-//	}
-//	
-//	/**
-//	 * Tests the Moodle(2.3)-connector. Configurations have to be altered accordingly.
-//	 * 
-//	 */
-//	public static void runMoodle23Conn()
-//	{
+	}
+	
+	/**
+	 * Tests the Moodle(2.3)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
+	public void runMoodle23Conn()
+	{
 //		de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle cm = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle();
 //		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
 //		cm.getData("Moodle 2.3(Beuth)");
-//		//cm.updateData("Moodle 2.3(Beuth)", 1338000000);
-//	}
-//	
-//	/**
-//	 * Tests the Clix(2010)-connector. Configurations have to be altered accordingly.
-//	 * 
-//	 */
-//	public static void runClixConn()
-//	{
+		//cm.updateData("Moodle 2.3(Beuth)", 1338000000);
+	}
+	
+	/**
+	 * Tests the Clix(2010)-connector. Configurations have to be altered accordingly.
+	 * 
+	 */
+	public void runClixConn()
+	{
 //		ConnectorClix cc = new ConnectorClix();
 //		cc.getData("Clix(HTW)");
-//	}
+	}
 	
-	public static void calculateMeichsner()
+	public void test()
+	{
+//		Session session = HibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
+//        //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19", "datamining", "LabDat1#").openSession();
+//        session.clear();
+//		
+//		Query pers = session.createQuery("from Person x order by x.id asc");
+//        List<?> person = pers.list();	        
+//        System.out.println("Person tables: " + person.size()); 
+	}
+	
+	public void calculateMeichsner()
 	{
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		Session session = dbHandler.getMiningSession();
@@ -152,7 +162,7 @@ public class Test {
 //		qca.compute(courses, roles, startTime, endTime, resolution, resourceTypes);
 //	}
 	
-	public static void testViger()
+	public void testViger()
 	{
 		QFrequentPathsViger qfpv = new QFrequentPathsViger();
 		ArrayList<Long> courses = new ArrayList<Long>();
@@ -167,7 +177,7 @@ public class Test {
 		
 	}
 	
-	public static void testBide()
+	public void testBide()
 	{
 		QFrequentPathsBIDE qfpv = new QFrequentPathsBIDE();
 		ArrayList<Long> courses = new ArrayList<Long>();
@@ -182,7 +192,7 @@ public class Test {
 		
 	}
 	
-	public static void testHisto()
+	public void testHisto()
 	{
 		QPerformanceBoxPlot ph = new QPerformanceBoxPlot();
 		ArrayList<Long> quizzes = new ArrayList<Long>();
@@ -195,7 +205,7 @@ public class Test {
 		
 	}
 	
-	public static void testService()
+	public void testService()
 	{
 		ArrayList<String> res = new ArrayList<String>();
 		ArrayList<Long> courses = new ArrayList<Long>();
@@ -219,17 +229,11 @@ public class Test {
         System.out.println("Starting test");
 	}
 	
-//	public static void run()
-//	{
-//		System.out.println("Starting test");
-//		runMoodleNumericConn();
-//		System.out.println("Test finished");
-//	}
-//
-//	public static void main(String[] args)
-//	{
-//		run();
-//	}
-	
+	public void run()
+	{
+		System.out.println("Starting test");
+		runChemConn();
+		System.out.println("Test finished");
+	}
 	
 }

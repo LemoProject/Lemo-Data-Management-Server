@@ -13,7 +13,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	private long id;
 	private String type;
 	private String title;
-	private Double maxgrade;
+	private double maxgrade;
 	private long timeopen;
 	private long timeclose;	
 	private long timecreated;

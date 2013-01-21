@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
-
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressions;
@@ -57,14 +55,13 @@ import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.CourseScormMining;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.CourseWikiMining;
-import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
-import de.lemo.dms.db.miningDBclass.DegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
 import de.lemo.dms.db.miningDBclass.GroupUserMining;
+import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
+import de.lemo.dms.db.miningDBclass.LevelCourseMining;
+import de.lemo.dms.db.miningDBclass.LevelMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionMining;
@@ -81,174 +78,270 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.WikiMining;
 
+// TODO: Auto-generated Javadoc
 /**
- * Class for data-retrieval from Clix platforms
- * @author s.schwarzrock
+ * Class for data-retrieval from Clix platforms.
  *
+ * @author s.schwarzrock
  */
 public class ClixImporter {
 	
-	private Long resourceLogMax = 0L;
+	/** The resource log max. */
+	private static Long resourceLogMax = 0L;
+	
+	/** The chat log max. */
 	private Long chatLogMax = 0L;
+	
+	/** The assignment log max. */
 	private Long assignmentLogMax = 0L;
+	
+	/** The course log max. */
 	private Long courseLogMax = 0L;
+	
+	/** The forum log max. */
 	private Long forumLogMax = 0L;
+	
+	/** The question log max. */
 	private Long questionLogMax = 0L;
+	
+	/** The quiz log max. */
 	private Long quizLogMax = 0L;
+	
+	/** The scorm log max. */
 	private Long scormLogMax = 0L;
+	
+	/** The wiki log max. */
 	private Long wikiLogMax = 0L;
 	
 	//List, holding the entries of the BI_TRACKCONTENT_IMPRESSIONS table of the source database
+	/** The bi track content impressions. */
 	private List<BiTrackContentImpressions> biTrackContentImpressions;
 	//List, holding the entries of the CHATPROTOCOL table of the source database
+	/** The chat protocol. */
 	private List<ChatProtocol> chatProtocol;
 	//List, holding the entries of the EXERCISE_GROUP table of the source database
+	/** The exercise group. */
 	private List<ExerciseGroup> exerciseGroup;
 	//List, holding the entries of the E_COMPONENT table of the source database
-	private List<EComponent> eComponent;
+	/** The e component. */
+//	private List<EComponent> eComponent;
+	/** The e component. */
+	private HashMap<Long, EComponent> eComponentMap;
 	//List, holding the entries of the E_COMPONENTTYPE table of the source database
-	private List<EComponentType> eComponentType;
+	/** The e component type. */
+	private  List<EComponentType> eComponentType;
 	//List, holding the entries of the E_COMPOSING table of the source database
+	/** The e composing. */
 	private List<EComposing> eComposing;
 	//List, holding the entries of the EXERCISE_PERSONALISED table of the source database
+	/** The exercise personalised. */
 	private List<ExercisePersonalised> exercisePersonalised;
 	//List, holding the entries of the FORUM_ENTRY table of the source database
+	/** The forum entry. */
 	private List<ForumEntry> forumEntry;
 	//List, holding the entries of the FORUM_ENTRY_STATE table of the source database
+	/** The forum entry state. */
 	private List<ForumEntryState> forumEntryState;
 	//List, holding the entries of the PERSON table of the source database
-	private List<Person> person;
+	/** The person. */
+	private  List<Person> person;
 	//List, holding the entries of the PERSON_COMPONENT_ASSIGNMENT table of the source database
-	private List<PersonComponentAssignment> personComponentAssignment;
+	/** The person component assignment. */
+	private  List<PersonComponentAssignment> personComponentAssignment;
 	//List, holding the entries of the PLATFORMGROUP table of the source database
-	private List<PlatformGroup> platformGroup;
+	/** The platform group. */
+	private  List<PlatformGroup> platformGroup;
 	//List, holding the entries of the PLATFORMGROUPSPECIFICATION table of the source database
-	private List<PlatformGroupSpecification> platformGroupSpecification;
+	/** The platform group specification. */
+	private  List<PlatformGroupSpecification> platformGroupSpecification;
 	//List, holding the entries of the PORTFOLIO table of the source database
-	private List<Portfolio> portfolio;
+	/** The portfolio. */
+	private  List<Portfolio> portfolio;
 	//List, holding the entries of the PORTFOLIO_LOG table of the source database
-	private List<PortfolioLog> portfolioLog;
+	/** The portfolio log. */
+	private  List<PortfolioLog> portfolioLog;
 	//List, holding the entries of the SCORM_SESSION_TIMES table of the source database
-	private List<ScormSessionTimes> scormSessionTimes;
+	/** The scorm session times. */
+	private  List<ScormSessionTimes> scormSessionTimes;
 	//List, holding the entries of the T2_TASK table of the source database
-	private List<T2Task> t2Task;
+	/** The t2 task. */
+	private  List<T2Task> t2Task;
 	//List, holding the entries of the T_ANSWERPOSITION table of the source database
-	private List<TAnswerPosition> tAnswerPosition;
+	/** The t answer position. */
+	private  List<TAnswerPosition> tAnswerPosition;
 	//List, holding the entries of the TEAM_EXERCISE_COMPOSING_EXT table of the source database
-	private List<TeamExerciseComposingExt> teamExerciseComposingExt;
+	/** The team exercise composing ext. */
+	private  List<TeamExerciseComposingExt> teamExerciseComposingExt;
 	//List, holding the entries of the TEAM_EXERCISE_GOUP table of the source database
-	private List<TeamExerciseGroup> teamExerciseGroup;
+	/** The team exercise group. */
+	private  List<TeamExerciseGroup> teamExerciseGroup;
 	//List, holding the entries of the TEAM_EXERCISE_GROUP_MEMBER table of the source database
-	private List<TeamExerciseGroupMember> teamExerciseGroupMember;
+	/** The team exercise group member. */
+	private  List<TeamExerciseGroupMember> teamExerciseGroupMember;
 	//List, holding the entries of the T_GROUPFULLSPECIFICATION table of the source database
-	private List<TGroupFullSpecification> tGroupFullSpecification;
+	/** The t group full specification. */
+	private  List<TGroupFullSpecification> tGroupFullSpecification;
 	//List, holding the entries of the T_QTI_CONTENT table of the source database
-	private List<TQtiContent> tQtiContent;
+	/** The t qti content. */
+	private  List<TQtiContent> tQtiContent;
 	//List, holding the entries of the T_QTI_EVAL_ASSESSMENT table of the source database
+	/** The t qti eval assessment. */
 	private List<TQtiEvalAssessment> tQtiEvalAssessment;
 	//List, holding the entries of the T_TESTSPECIFICATION table of the source database
-	private List<TTestSpecification> tTestSpecification;
+	/** The t test specification. */
+	private  List<TTestSpecification> tTestSpecification;
 	//List, holding the entries of the WIKI_ENTRY table of the source database
+	/** The wiki entry. */
 	private List<WikiEntry> wikiEntry;
 	//List, holding the entries of the CHATROOM table of the source database
+	/** The chatroom. */
 	private List<Chatroom> chatroom;
 	
+	/** The e composing map. */
 	private HashMap<Long, EComposing> eComposingMap = new HashMap<Long, EComposing>();
+
 	
 	//Maps of new mining-objects, found on the Clix-platform
 	
 
 	
 	//Map, holding the CourseMining objects, found in the current data extraction process
-	private	HashMap<Long, CourseMining> course_mining;
+	/** The course_mining. */
+	private	 HashMap<Long, CourseMining> course_mining;
 	
-	private HashMap<Long, PlatformMining> platform_mining;
+	/** The platform_mining. */
+	private  HashMap<Long, PlatformMining> platform_mining;
 	//Map, holding the QuizMining objects, found in the current data extraction process
-	private	HashMap<Long, QuizMining> quiz_mining;
+	/** The quiz_mining. */
+	private	 HashMap<Long, QuizMining> quiz_mining;
 	//Map, holding the AssignmentMining objects, found in the current data extraction process
+	/** The assignment_mining. */
 	private HashMap<Long, AssignmentMining> assignment_mining;
 	//Map, holding the ScormMining objects, found in the current data extraction process
+	/** The scorm_mining. */
 	private	HashMap<Long, ScormMining> scorm_mining;
 	//Map, holding the ForumMining objects, found in the current data extraction process
+	/** The forum_mining. */
 	private	HashMap<Long, ForumMining> forum_mining;
 	//Map, holding the ResourceMining objects, found in the current data extraction process
+	/** The resource_mining. */
 	private	HashMap<Long, ResourceMining> resource_mining;
 	//Map, holding the UserMining objects, found in the current data extraction process
+	/** The user_mining. */
 	private HashMap<Long, UserMining> user_mining;
 	//Map, holding the WikiMining objects, found in the current data extraction process
+	/** The wiki_mining. */
 	private HashMap<Long, WikiMining> wiki_mining;
 	//Map, holding the GroupMining objects, found in the current data extraction process
+	/** The group_mining. */
 	private HashMap<Long, GroupMining> group_mining;
 	//Map, holding the QuestionMining objects, found in the current data extraction process
+	/** The question_mining. */
 	private HashMap<Long, QuestionMining> question_mining;
 	//Map, holding the RoleMining objects, found in the current data extraction process
+	/** The role_mining. */
 	private HashMap<Long, RoleMining> role_mining;
 	//Map, holding the ChatMining objects, found in the current data extraction process
+	/** The chat_mining. */
 	private HashMap<Long, ChatMining> chat_mining;
+	//Map, holding the LevelMining objects, found in the current data extraction process
+	/** The level_mining. */
+	private HashMap<Long, LevelMining> level_mining;
+	
+	/** The level_mining. */
+	private HashMap<Long, LevelMining> old_level_mining;
+	//Map, holding the LevelAssociationMining objects, found in the current data extraction process
+	/** The level_association_mining. */
+	private HashMap<Long, LevelAssociationMining> level_association_mining;
+	//Map, holding the LevelCourseMining objects, found in the current data extraction process
+	/** The level_course_mining. */
+	private HashMap<Long, LevelCourseMining> level_course_mining;
 	//Map, holding the QuizQuestionMining objects, found in the current data extraction process
+	/** The quiz_question_mining. */
 	private HashMap<Long, QuizQuestionMining> quiz_question_mining;
 	//Map, holding the CourseQuizMining objects, found in the current data extraction process
+	/** The course_quiz_mining. */
 	private HashMap<Long, CourseQuizMining> course_quiz_mining;
 	//Map, holding the CourseAssignmentMining objects, found in the current data extraction process
+	/** The course_assignment_mining. */
 	private HashMap<Long, CourseAssignmentMining> course_assignment_mining;
 	//Map, holding the CourseScormMining objects, found in the current data extraction process
+	/** The course_scorm_mining. */
 	private HashMap<Long, CourseScormMining> course_scorm_mining;
 	//Map, holding the CourseUserMining objects, found in the current data extraction process
 	//private HashMap<Long, CourseUserMining> course_user_mining;
 	//Map, holding the CourseForumMining objects, found in the current data extraction process
+	/** The course_forum_mining. */
 	private HashMap<Long, CourseForumMining> course_forum_mining;
 	//Map, holding the CourseGroupMining objects, found in the current data extraction process
+	/** The course_group_mining. */
 	private HashMap<Long, CourseGroupMining> course_group_mining;
 	//Map, holding the CourseResourceMining objects, found in the current data extraction process
+	/** The course_resource_mining. */
 	private HashMap<Long, CourseResourceMining> course_resource_mining;
 	//Map, holding the CourseWikiMining objects, found in the current data extraction process
+	/** The course_wiki_mining. */
 	private HashMap<Long, CourseWikiMining> course_wiki_mining;
 	//Map, holding the GroupUserMining objects, found in the current data extraction process
+	/** The group_user_mining. */
 	private HashMap<Long, GroupUserMining> group_user_mining;
 	//Map, holding the QuizUserMining objects, found in the current data extraction process
+	/** The quiz_user_mining. */
 	private HashMap<Long, QuizUserMining> quiz_user_mining;
 		
 	//Maps of mining-objects that have been found in a previous extraction process
 	
 	//Map, holding the CourseMining objects, found in a previous data extraction process
+	/** The old_course_mining. */
 	private HashMap<Long, CourseMining> old_course_mining;
 		
 	//Map, holding the QuizMining objects, found in a previous data extraction process
+	/** The old_quiz_mining. */
 	private HashMap<Long, QuizMining> old_quiz_mining;
 	//Map, holding the AssignmentMining objects, found in a previous data extraction process
+	/** The old_assignment_mining. */
 	private HashMap<Long, AssignmentMining> old_assignment_mining;
 	//Map, holding the ScormMining objects, found in a previous data extraction process
+	/** The old_scorm_mining. */
 	private HashMap<Long, ScormMining> old_scorm_mining;
 	//Map, holding the ForumMining objects, found in a previous data extraction process
+	/** The old_forum_mining. */
 	private HashMap<Long, ForumMining> old_forum_mining;
 	//Map, holding the ResourceMining objects, found in a previous data extraction process
+	/** The old_resource_mining. */
 	private HashMap<Long, ResourceMining> old_resource_mining;
 	//Map, holding the UserMining objects, found in a previous data extraction process
+	/** The old_user_mining. */
 	private HashMap<Long, UserMining> old_user_mining;
 	//Map, holding the WikiMining objects, found in a previous data extraction process
+	/** The old_wiki_mining. */
 	private HashMap<Long, WikiMining> old_wiki_mining;
 	//Map, holding the GroupMining objects, found in a previous data extraction process
+	/** The old_group_mining. */
 	private HashMap<Long, GroupMining> old_group_mining;
 	//Map, holding the QuestionMining objects, found in a previous data extraction process
+	/** The old_question_mining. */
 	private HashMap<Long, QuestionMining> old_question_mining;
 	//Map, holding the RoleMining objects, found in a previous data extraction process
+	/** The old_role_mining. */
 	private HashMap<Long, RoleMining> old_role_mining;
-	//Map, holding the DepartmentMining objects, found in a previous data extraction process
-	private HashMap<Long, DepartmentMining> old_department_mining;
-	//Map, holding the DegreeMining objects, found in a previous data extraction process
-	private HashMap<Long, DegreeMining> old_degree_mining;
 	//Map, holding the ChatMining objects, found in a previous data extraction process
+	/** The old_chat_mining. */
 	private HashMap<Long, ChatMining> old_chat_mining;
-	
+		
 	private IConnector connector;
 	
-	public ClixImporter(IConnector connector) {
-        this.connector = connector;
-    }
 	
+	
+	public ClixImporter(IConnector connector) {
+		this.connector = connector;
+	}
 	
 	/**
 	 * Performs a extraction process for an entire Clix2010 database.
+	 *
+	 * @param platformName the platform name
+	 * @return the clix data
 	 */
 	public void getClixData(DBConfigObject dbConfig)
 	{
@@ -274,7 +367,7 @@ public class ClixImporter {
 		ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (starttime));	
-	    config.setLargestId(0L);
+	    config.setDatabaseModel("1.2");
 	    config.setPlatform(connector.getPlatformId());
 	    
         IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -286,6 +379,9 @@ public class ClixImporter {
 	
 	/**
 	 * Performs a data-extraction for a Clix2010 database for all objects that are newer than the given time stamp. 
+	 *
+	 * @param platformName the platform name
+	 * @param startTime the start time
 	 */
 	public void updateClixData(DBConfigObject dbConfig, Long startTime)
 	{
@@ -314,7 +410,7 @@ public class ClixImporter {
 		ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
 	    config.setElapsed_time((endtime) - (currentSysTime));	
-	    config.setLargestId(-1L);
+	    config.setDatabaseModel("1.2");
 	    config.setPlatform(connector.getPlatformId());
 	    
         IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -325,7 +421,7 @@ public class ClixImporter {
 	
 
 	/**
-	 * Generates and saves all objects
+	 * Generates and saves all objects.
 	 */
 	private void saveData()
 	{
@@ -372,7 +468,14 @@ public class ClixImporter {
 				chat_mining = generateChatMining();
 				updates.add(chat_mining.values());
 								
+				generateLevelMining();
+				updates.add(level_mining.values());
+								
 				System.out.println("\nAssociationObjects: \n");
+				
+				updates.add(level_association_mining.values());
+				
+				updates.add(level_course_mining.values());
 				
 				quiz_question_mining = generateQuizQuestionMining();
 				updates.add(quiz_question_mining.values());
@@ -382,7 +485,15 @@ public class ClixImporter {
 				
 				//
 				course_assignment_mining = generateCourseAssignmentMining();
+				updates.add(course_assignment_mining.values());
 	
+				level_association_mining = generateLevelAssociationMining();
+				updates.add(level_association_mining.values());
+	
+				level_course_mining = generateLevelCourseMining();
+				updates.add(level_course_mining.values());
+				
+				
 	
 				course_scorm_mining = generateCourseScormMining();
 				updates.add(course_scorm_mining.values());
@@ -455,14 +566,15 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Clears all data-tables
+	 * Clears all data-tables.
 	 */
 	public void clearSourceData()
 	{
 		biTrackContentImpressions.clear();
 		chatProtocol.clear();
 		exerciseGroup.clear();
-		eComponent.clear();
+		//eComponent.clear();
+		eComponentMap.clear();
 		eComponentType.clear();
 		eComposing.clear();
 		exercisePersonalised.clear();
@@ -486,10 +598,13 @@ public class ClixImporter {
 		tTestSpecification.clear();
 		wikiEntry.clear();
 		chatroom.clear();
+		
 	}
 
 	/**
-	 * Looks, if there are already values in the Mining database and loads them, if necessary 
+	 * Looks, if there are already values in the Mining database and loads them, if necessary.
+	 *
+	 * @param platformName the platform name
 	 */
 	@SuppressWarnings("unchecked")
 	private void initialize()
@@ -632,20 +747,14 @@ public class ClixImporter {
 	        	old_role_mining.put(Long.valueOf(((RoleMining)l.get(i)).getId()), (RoleMining)l.get(i));  
 	        System.out.println("Read " + old_role_mining.size() +" old RoleMinings."); 
 	        
-	        Query old_department = session.createQuery("from DepartmentMining x where x.platform=" + connector.getPlatformId() +" order by x.id asc");
-	        l = (ArrayList<DepartmentMining>) old_department.list();
-	        old_department_mining = new HashMap<Long, DepartmentMining>();
+	        Query old_level = session.createQuery("from LevelMining x where x.platform=" + connector.getPlatformId() +" order by x.id asc");
+	        l = (ArrayList<LevelMining>) old_level.list();
+	        old_level_mining = new HashMap<Long, LevelMining>();
 	        for(int i = 0; i < l.size() ; i++)
-	        	old_department_mining.put(Long.valueOf(((DepartmentMining)l.get(i)).getId()), (DepartmentMining)l.get(i));  
-	        System.out.println("Read " + old_department_mining.size() +" old DepartmentMinings."); 
+	        	old_level_mining.put(Long.valueOf(((LevelMining)l.get(i)).getId()), (LevelMining)l.get(i));  
+	        System.out.println("Read " + old_level_mining.size() +" old LevelMinings."); 
 	        
-	        Query old_degree = session.createQuery("from DegreeMining x where x.platform=" + connector.getPlatformId() +" order by x.id asc");
-	        l = (ArrayList<DegreeMining>) old_degree.list();
-	        old_degree_mining = new HashMap<Long, DegreeMining>();
-	        for(int i = 0; i < l.size() ; i++)
-	        	old_degree_mining.put(Long.valueOf(((DegreeMining)l.get(i)).getId()), (DegreeMining)l.get(i));  
-	        System.out.println("Read " + old_degree_mining.size() +" old DegreeMinings."); 
-			
+
 	        Query old_chat = session.createQuery("from ChatMining x where x.platform=" + connector.getPlatformId() +" order by x.id asc");
 	        l = (ArrayList<ChatMining>) old_chat.list();
 	        old_chat_mining = new HashMap<Long, ChatMining>();
@@ -663,7 +772,7 @@ public class ClixImporter {
 
 
 	/**
-	 * Loads all necessary tables from the Clix2010 database
+	 * Loads all necessary tables from the Clix2010 database.
 	 */
 	@SuppressWarnings("unchecked")
 	private void loadData(DBConfigObject dbConfig)
@@ -714,9 +823,15 @@ public class ClixImporter {
 	        System.out.println("EComponentType tables: " + eComponentType.size());  
 	                
 	        Query eComp = session.createQuery("from EComponent x order by x.id asc");
-	        eComponent = eComp.list();	     
+	        List<EComponent> tmp = eComp.list();	
+	        eComponentMap = new HashMap<Long, EComponent>();
+	        for(EComponent c : tmp)
+	        {
+	        	eComponentMap.put(c.getId(), c);
+	        }
+	        tmp.clear();
 
-	        System.out.println("EComponent tables: " + eComponent.size());    
+	        System.out.println("EComponent tables: " + eComponentMap.values().size());    
 	        
 	        Query exPer = session.createQuery("from ExercisePersonalised x order by x.id asc");
 	        exercisePersonalised = exPer.list();	        
@@ -803,11 +918,10 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Loads all tables needed for the data-extraction from the Clix database
+	 * Loads all tables needed for the data-extraction from the Clix database.
 	 * 
-	 * 
-	 * @param start
-	 * @param end
+	 * @param start the start
+	 * @param end the end
 	 */
 	@SuppressWarnings("unchecked")
 	private void loadData(DBConfigObject dbConfig, Long start, Long end)
@@ -847,8 +961,11 @@ public class ClixImporter {
 		        System.out.println("EComponentType tables: " + eComponentType.size());  
 		                
 		        Query eComp = session.createQuery("from EComponent x order by x.id asc");
-		        eComponent = eComp.list();	     
-		        System.out.println("EComponent tables: " + eComponent.size());    
+		        List<EComponent> tmp = eComp.list();	
+		        for(EComponent c : tmp)
+		        	eComponentMap.put(c.getId(), c);
+		        tmp.clear();    
+		        System.out.println("EComponent tables: " + eComponentMap.values().size());    
 		        
 		        Query pers = session.createQuery("from Person x order by x.id asc");
 		        person = pers.list();	        
@@ -977,7 +1094,7 @@ public class ClixImporter {
 	//Generators for "static" objects
 	
 	/**
-	 * Generates ChatMining-objects from the given data
+	 * Generates ChatMining-objects from the given data.
 	 * 
 	 * @return	HashMap with ChatMining-objects
 	 */
@@ -1008,7 +1125,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates ResourceMining-objects from the given data
+	 * Generates ResourceMining-objects from the given data.
 	 * 
 	 * @return	HashMap with ResourceMining-objects
 	 */
@@ -1023,7 +1140,7 @@ public class ClixImporter {
 					eCTypes.put(loadedItem.getComponent(), loadedItem);
 			}
 			
-			for(EComponent loadedItem : eComponent)
+			for(EComponent loadedItem : eComponentMap.values())
 			{
 				ResourceMining item = new ResourceMining();
 				if(eCTypes.get(loadedItem.getType()) != null)
@@ -1053,7 +1170,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates CourseMining-objects from the given data
+	 * Generates CourseMining-objects from the given data.
 	 * 
 	 * @return	HashMap with CourseMining-objects
 	 */
@@ -1067,7 +1184,7 @@ public class ClixImporter {
 				if(loadedItem.getCharacteristicId() == 4L || loadedItem.getCharacteristicId() == 5L || loadedItem.getCharacteristicId() == 3L)
 					eCTypes.put(loadedItem.getComponent(), loadedItem);
 			}
-			for(EComponent loadedItem : eComponent)
+			for(EComponent loadedItem : eComponentMap.values())
 			{
 				CourseMining item = new CourseMining();
 				if(eCTypes.get(loadedItem.getType()) != null)
@@ -1091,7 +1208,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates UserMining-objects from the given data
+	 * Generates UserMining-objects from the given data.
 	 * 
 	 * @return	HashMap with UserMining-objects
 	 */
@@ -1124,7 +1241,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates AssignmentMining-objects from the given data
+	 * Generates AssignmentMining-objects from the given data.
 	 * 
 	 * @return	HashMap with AssignmentMining-objects
 	 */
@@ -1137,7 +1254,7 @@ public class ClixImporter {
 				if(loadedItem.getCharacteristicId() == 8L)
 					eCTypes.put(loadedItem.getComponent(), loadedItem);
 
-			for(EComponent loadedItem : eComponent)
+			for(EComponent loadedItem : eComponentMap.values())
 			{
 				AssignmentMining item = new AssignmentMining();
 				if(eCTypes.get(loadedItem.getType()) != null)
@@ -1162,7 +1279,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates QuizMining-objects from the given data
+	 * Generates QuizMining-objects from the given data.
 	 * 
 	 * @return	HashMap with QuizMining-objects
 	 */
@@ -1181,7 +1298,7 @@ public class ClixImporter {
 			{
 				eCompo.put(loadedItem.getComposing(), loadedItem);
 			}
-			for(EComponent loadedItem : eComponent)
+			for(EComponent loadedItem : eComponentMap.values())
 			{
 				QuizMining item = new QuizMining();
 				if(eCTypes.get(loadedItem.getType()) != null)
@@ -1207,7 +1324,7 @@ public class ClixImporter {
 	
 
 	/**
-	 * Generates ForumMining-objects from the given data
+	 * Generates ForumMining-objects from the given data.
 	 * 
 	 * @return	HashMap with ForumMining-objects
 	 */
@@ -1222,7 +1339,7 @@ public class ClixImporter {
 				if(loadedItem.getCharacteristicId() == 2L)
 					eCTypes.put(loadedItem.getComponent(), loadedItem);
 			}
-			for(EComponent loadedItem : eComponent)
+			for(EComponent loadedItem : eComponentMap.values())
 			{
 				ForumMining item = new ForumMining();
 				if(eCTypes.get(loadedItem.getType()) != null && eCTypes.get(loadedItem.getType()).getUploadDir().toLowerCase().contains("forum"))
@@ -1246,7 +1363,7 @@ public class ClixImporter {
 	
 
 	/**
-	 * Generates RoleMining-objects from the given data
+	 * Generates RoleMining-objects from the given data.
 	 * 
 	 * @return	HashMap with RoleMining-objects
 	 */
@@ -1291,7 +1408,7 @@ public class ClixImporter {
 	}
 
 	/**
-	 * Generates GroupMining-objects from the given data
+	 * Generates GroupMining-objects from the given data.
 	 * 
 	 * @return	HashMap with GroupMining-objects
 	 */
@@ -1319,7 +1436,7 @@ public class ClixImporter {
 	}
 
 	/**
-	 * Generates WikiMining-objects from the given data
+	 * Generates WikiMining-objects from the given data.
 	 * 
 	 * @return	HashMap with WikiMining-objects
 	 */
@@ -1334,7 +1451,7 @@ public class ClixImporter {
 				if(loadedItem.getCharacteristicId() == 2L)
 					eCTypes.put(loadedItem.getComponent(), loadedItem);
 			}
-			for(EComponent loadedItem : eComponent)
+			for(EComponent loadedItem : eComponentMap.values())
 			{
 				WikiMining item = new WikiMining();
 				if(eCTypes.get(loadedItem.getType()) != null && eCTypes.get(loadedItem.getType()).getUploadDir().toLowerCase().contains("wiki"))
@@ -1358,11 +1475,12 @@ public class ClixImporter {
 	}
 
 	/**
-	 * Generates DepartmentMining-objects from the given data
+	 * Generates DepartmentMining-objects from the given data.
 	 * 
 	 * @return	HashMap with DepartmentMining-objects
 	 */
-	public HashMap<Long, DepartmentMining> generateDepartmentMining()
+	/*
+	public static HashMap<Long, DepartmentMining> generateDepartmentMining()
 	{
 		HashMap<Long, DepartmentMining> departments = new HashMap<Long, DepartmentMining>();
 		try{
@@ -1374,12 +1492,14 @@ public class ClixImporter {
 		}
 		return departments;
 	}
+	*/
 
 	/**
 	 * Generates DegreeMining-objects from the given data
 	 * 
 	 * @return	HashMap with DegreeMining-objects
 	 */
+	/*
 	public HashMap<Long, DegreeMining> generateDegreeMining()
 	{
 		HashMap<Long, DegreeMining> degrees = new HashMap<Long, DegreeMining>();
@@ -1392,6 +1512,7 @@ public class ClixImporter {
 		}
 		return degrees;
 	}
+	*/
 
 	/**
 	 * Generates QuestionMining-objects from the given data
@@ -1434,7 +1555,7 @@ public class ClixImporter {
 	}
 
 	/**
-	 * Generates ScormMining-objects from the given data
+	 * Generates ScormMining-objects from the given data.
 	 * 
 	 * @return	HashMap with ScormMining-objects
 	 */
@@ -1455,7 +1576,7 @@ public class ClixImporter {
 			{
 				eCompo.put(loadedItem.getComposing(), loadedItem);
 			}
-			for(EComponent loadedItem : eComponent)
+			for(EComponent loadedItem : eComponentMap.values())
 			{
 				ScormMining item = new ScormMining();
 				if(eCTypes.get(loadedItem.getType()) != null && eCTypes.get(loadedItem.getType()).getUploadDir().toLowerCase().contains("scorm"))
@@ -1484,7 +1605,7 @@ public class ClixImporter {
 	
 	//Generators for relationships
 	/**
-	 * Generates QuizQuestionMining-objects from the given data
+	 * Generates QuizQuestionMining-objects from the given data.
 	 * 
 	 * @return	HashMap with QuizQuestionMining-objects
 	 */
@@ -1515,7 +1636,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates CourseScormMining-objects from the given data
+	 * Generates CourseScormMining-objects from the given data.
 	 * 
 	 * @return	HashMap with CourseScormMining-objects
 	 */
@@ -1549,7 +1670,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates CourseAssignmentMining-objects from the given data
+	 * Generates CourseAssignmentMining-objects from the given data.
 	 * 
 	 * @return	HashMap with CourseAssignmentMining-objects
 	 */
@@ -1583,7 +1704,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates CourseResourceMining-objects from the given data
+	 * Generates CourseResourceMining-objects from the given data.
 	 * 
 	 * @return	HashMap with CourseResourceMining-objects
 	 */
@@ -1617,7 +1738,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates CourseQuizMining-objects from the given data
+	 * Generates CourseQuizMining-objects from the given data.
 	 * 
 	 * @return	HashMap with CourseQuizMining-objects
 	 */
@@ -1651,7 +1772,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates QuizUserMining-objects from the given data
+	 * Generates QuizUserMining-objects from the given data.
 	 * 
 	 * @return	HashMap with QuizUserMining-objects
 	 */
@@ -1682,7 +1803,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates CourseUserMining-objects from the given data
+	 * Generates CourseUserMining-objects from the given data.
 	 * 
 	 * @return	HashMap with CourseUserMining-objects
 	 */
@@ -1734,7 +1855,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates CourseWikiMining-objects from the given data
+	 * Generates CourseWikiMining-objects from the given data.
 	 * 
 	 * @return	HashMap with CourseWikiMining-objects
 	 */
@@ -1767,11 +1888,114 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates DegreeCourseMining-objects from the given data
+	 * Generates level mining.
 	 * 
+	 * @return the hash map
+	 */
+	public HashMap<Long, LevelAssociationMining> generateLevelAssociationMining()
+	{		
+		System.out.println("Generated " + level_association_mining.size() + " LevelAssociationMining.");
+		return level_association_mining;
+	}
+	
+	/**
+	 * Generates level association mining.
+	 *
+	 * @return the hash map
+	 */
+	public HashMap<Long, LevelMining> generateLevelMining()
+	{		
+		ArrayList<ArrayList<LevelMining>> levels = new ArrayList<ArrayList<LevelMining>>();
+		
+		ArrayList<LevelMining> tmpCList = new ArrayList<LevelMining>();
+		//Create lowest tier levels and level-course-relations
+		for(CourseMining course : course_mining.values())
+		{
+			EComposing tmp = eComposingMap.get(Long.valueOf((course.getId()+"").substring(2)));
+			if(tmp != null)
+			{
+				EComponent component = eComponentMap.get(tmp.getParent());
+				if(component != null)
+				{
+					LevelMining level = new LevelMining();
+					level.setTitle(component.getName());
+					level.setPlatform(connector.getPlatformId());
+					level.setId(Long.valueOf(connector.getPrefix() + "" + component.getId()));
+					level_mining.put(level.getId(), level);
+					tmpCList.add(level);
+					
+					LevelCourseMining levCou = new LevelCourseMining();
+					levCou.setId(Long.valueOf(connector.getPrefix() + "" + tmp.getId()));
+					levCou.setCourse(course.getId(), course_mining, old_course_mining);
+					levCou.setLevel(level.getId(), level_mining, old_level_mining);	
+					
+					level_course_mining.put(levCou.getId(), levCou);
+				}
+			}
+		}
+		levels.add(tmpCList);
+		//Create any levels above lowest tier and according level-associations 
+		while(levels.get(levels.size() - 1).size() > 0)
+		{
+			ArrayList<LevelMining> tmpList = new ArrayList<LevelMining>();
+			for(LevelMining lower : levels.get(levels.size()-1))
+			{
+				EComposing tmp = eComposingMap.get(Long.valueOf((lower.getId()+"").substring(2)));
+				if(tmp != null)
+				{
+					EComponent component = eComponentMap.get(tmp.getParent());
+					if(component != null)
+					{
+						LevelMining level = new LevelMining();
+						level.setTitle(component.getName());
+						level.setPlatform(connector.getPlatformId());
+						level.setId(Long.valueOf(connector.getPrefix() + "" + component.getId()));
+						level_mining.put(level.getId(), level);
+						tmpList.add(level);
+						
+						LevelAssociationMining levAsc = new LevelAssociationMining();
+						levAsc.setId(Long.valueOf(connector.getPrefix() + "" + tmp.getId()));
+						levAsc.setLower(lower.getId(), level_mining, old_level_mining);
+						levAsc.setUpper(level.getId(), level_mining, old_level_mining);	
+						
+						level_association_mining.put(levAsc.getId(), levAsc);
+					}
+				}
+			}
+			levels.add(tmpList);
+		}
+		
+		int n = 1;
+		for(int i = levels.size(); i >= 0; i--)
+		{
+			for(LevelMining l :levels.get(i))
+				l.setDepth(n);
+			n++;
+		}
+		
+		System.out.println("Generated " + level_mining.size() + " LevelMining.");
+		return level_mining;
+	}
+	
+	
+	/**
+	 * Generates level course mining.
+	 *
+	 * @return the hash map
+	 */
+	public HashMap<Long, LevelCourseMining> generateLevelCourseMining()
+	{
+		System.out.println("Generated " + level_course_mining.size() + " LevelCourseMining.");
+		return level_course_mining;
+	}
+	
+	/**
+	 * Generates DegreeCourseMining-objects from the given data.
+	 *
 	 * @return	HashMap with DegreeCourseMining-objects
 	 */
-	public HashMap<Long, DegreeCourseMining> generateDegreeCourseMining()
+	/*
+	public static HashMap<Long, DegreeCourseMining> generateDegreeCourseMining()
 	{
 		HashMap<Long, DegreeCourseMining> degreeCourses = new HashMap<Long, DegreeCourseMining>();
 		
@@ -1785,11 +2009,7 @@ public class ClixImporter {
 		return degreeCourses;
 	}
 	
-	/**
-	 * Generates DepartmentDegreeMining-objects from the given data
-	 * 
-	 * @return	HashMap with DepartmentDegreeMining-objects
-	 */
+	
 	public HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining()
 	{
 		HashMap<Long, DepartmentDegreeMining> departmentDegrees = new HashMap<Long, DepartmentDegreeMining>();
@@ -1802,6 +2022,7 @@ public class ClixImporter {
 		}
 		return departmentDegrees;
 	}
+	*/
 	
 	/**
 	 * Generates GroupUserMining-objects from the given data
@@ -1839,7 +2060,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates CourseGroupMining-objects from the given data
+	 * Generates CourseGroupMining-objects from the given data.
 	 * 
 	 * @return	HashMap with CourseGroupMining-objects
 	 */
@@ -1868,7 +2089,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates CourseForumMining-objects from the given data
+	 * Generates CourseForumMining-objects from the given data.
 	 * 
 	 * @return	HashMap with CourseForumMining-objects
 	 */
@@ -1907,7 +2128,7 @@ public class ClixImporter {
 	//Generators for logs
 	
 	/**
-	 * Generates ForumLogMining-objects from the given data
+	 * Generates ForumLogMining-objects from the given data.
 	 * 
 	 * @return	HashMap with ForumLogMining-objects
 	 */
@@ -1969,7 +2190,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates WikiLogMining-objects from the given data
+	 * Generates WikiLogMining-objects from the given data.
 	 * 
 	 * @return	HashMap with WikiLogMining-objects
 	 */
@@ -2005,7 +2226,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates CourseLogMining-objects from the given data
+	 * Generates CourseLogMining-objects from the given data.
 	 * 
 	 * @return	HashMap with CourseLogMining-objects
 	 */
@@ -2043,7 +2264,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates QuestionLogMining-objects from the given data
+	 * Generates QuestionLogMining-objects from the given data.
 	 * 
 	 * @return	HashMap with QuestionLogMining-objects
 	 */
@@ -2078,7 +2299,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates QuizLogMining-objects from the given data
+	 * Generates QuizLogMining-objects from the given data.
 	 * 
 	 * @return	HashMap with QuizLogMining-objects
 	 */
@@ -2117,7 +2338,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates AssignmentLogMining-objects from the given data
+	 * Generates AssignmentLogMining-objects from the given data.
 	 * 
 	 * @return	HashMap with AssignmentLogMining-objects
 	 */
@@ -2173,7 +2394,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates ScormLogMining-objects from the given data
+	 * Generates ScormLogMining-objects from the given data.
 	 * 
 	 * @return	HashMap with ScormLogMining-objects
 	 */
@@ -2223,7 +2444,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates ResourceLogMining-objects from the given data
+	 * Generates ResourceLogMining-objects from the given data.
 	 * 
 	 * @return	HashMap with ResourceLogMining-objects
 	 */
@@ -2257,7 +2478,7 @@ public class ClixImporter {
 	}
 	
 	/**
-	 * Generates ChatLogMining-objects from the given data
+	 * Generates ChatLogMining-objects from the given data.
 	 * 
 	 * @return	HashMap with ChatLogMining-objects
 	 */

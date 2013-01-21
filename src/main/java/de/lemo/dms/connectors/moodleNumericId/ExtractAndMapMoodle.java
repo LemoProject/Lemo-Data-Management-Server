@@ -4,12 +4,10 @@ package de.lemo.dms.connectors.moodleNumericId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Assignment_LMS;
@@ -54,14 +52,13 @@ import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.CourseScormMining;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.CourseWikiMining;
-import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
-import de.lemo.dms.db.miningDBclass.DegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
 import de.lemo.dms.db.miningDBclass.GroupUserMining;
+import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
+import de.lemo.dms.db.miningDBclass.LevelCourseMining;
+import de.lemo.dms.db.miningDBclass.LevelMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionMining;
 import de.lemo.dms.db.miningDBclass.QuizLogMining;
@@ -1755,7 +1752,78 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	}
 		return role_mining;
     }
+	
 
+	public HashMap<Long, LevelMining> generateLevelMining() {
+		HashMap<Long, LevelMining> level_mining = new HashMap<Long, LevelMining>();
+		
+		for( CourseCategories_LMS loadedItem : course_categories_lms)
+		{
+			LevelMining insert = new LevelMining();
+				
+			
+			insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getTitle());
+			insert.setPlatform(connector.getPlatformId());
+			insert.setDepth(loadedItem.getDepth());
+			level_mining.put(insert.getId(), insert);
+			
+		}
+		return level_mining;
+	}
+
+
+	public HashMap<Long, LevelAssociationMining> generateLevelAssociationMining() {
+		HashMap<Long, LevelAssociationMining> level_association = new HashMap<Long, LevelAssociationMining>();
+		
+		for(CourseCategories_LMS loadedItem : course_categories_lms)
+		{
+			String[] s = loadedItem.getPath().split("/");
+			if(s.length >= 3)
+			{
+				LevelAssociationMining insert = new LevelAssociationMining();
+				
+				insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+				insert.setLower(Long.valueOf(connector.getPrefix() + "" + s[s.length - 1]), level_mining, old_level_mining);
+				insert.setUpper(Long.valueOf(connector.getPrefix() + "" + s[s.length - 2]), level_mining, old_level_mining);
+				insert.setPlatform(connector.getPlatformId());
+				if(insert.getLower() != null && insert.getUpper() != null)
+					level_association.put(insert.getId(), insert);
+			}
+		}
+		return level_association;
+	}
+
+	@Override
+	public HashMap<Long, LevelCourseMining> generateLevelCourseMining() {
+		HashMap<Long, LevelCourseMining> level_course = new HashMap<Long, LevelCourseMining>();
+		
+		for( Context_LMS loadedItem : context_lms)
+		{
+			if(loadedItem.getDepth() >=4 && loadedItem.getContextlevel() == 50)
+			{
+				LevelCourseMining insert = new LevelCourseMining();
+				
+				String[] s = loadedItem.getPath().split("/");
+				insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+				insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInstanceid()), course_mining, old_course_mining);
+				insert.setPlatform(connector.getPlatformId());
+				for ( Context_LMS loadedItem2 : context_lms)
+				{
+					if(loadedItem2.getContextlevel() == 40 && loadedItem2.getId() == Integer.parseInt(s[3]))
+					{
+						insert.setLevel(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getInstanceid()), level_mining, old_level_mining);
+						break;
+					}
+				}
+				if(insert.getLevel() != null && insert.getCourse() != null)
+						level_course.put(insert.getId(), insert);
+			}
+		}
+		return level_course;
+	}
+
+	/*
 	public HashMap<Long, DegreeMining> generateDegreeMining() {
 		HashMap<Long, DegreeMining> degree_mining = new HashMap<Long, DegreeMining>();
 		
@@ -1773,7 +1841,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 		}
 		return degree_mining;
 	}
+	*/
 
+	/*
 	public HashMap<Long, DepartmentMining> generateDepartmentMining() 
 	{
 		HashMap<Long, DepartmentMining> department_mining = new HashMap<Long, DepartmentMining>();
@@ -1791,7 +1861,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 		}
 		return department_mining;
 	}
+	*/
 
+	/*
 	public HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining() 
 	{
 		HashMap<Long, DepartmentDegreeMining> department_degree = new HashMap<Long, DepartmentDegreeMining>();
@@ -1816,7 +1888,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 		}
 		return department_degree;
 	}
+	*/
 
+	/*
 	public HashMap<Long, DegreeCourseMining> generateDegreeCourseMining() {
 		
 		HashMap<Long, DegreeCourseMining> degree_course = new HashMap<Long, DegreeCourseMining>();
@@ -1845,6 +1919,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 		}
 		return degree_course;
 	}
+	*/
 
 	public HashMap<Long, ChatMining> generateChatMining() {
 		HashMap<Long, ChatMining> chat_mining = new HashMap<Long, ChatMining>();
@@ -1899,5 +1974,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
         }
 		return chatLogMining;
 	}
+
+
 	
 }

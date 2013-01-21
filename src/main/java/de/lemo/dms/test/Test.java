@@ -16,8 +16,7 @@ public class Test {
 		
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		Session session = dbHandler.getMiningSession();
-        dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 2, 2, 1293840000L, 1000));
-        dbHandler.closeSession(session);
+        dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 2, 2, 0L, 1000));
 	}
 	
 	public static void write()

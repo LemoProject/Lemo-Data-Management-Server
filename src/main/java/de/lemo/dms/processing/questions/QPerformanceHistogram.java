@@ -9,6 +9,7 @@ import static de.lemo.dms.processing.MetaParam.USER_IDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
+import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
@@ -67,7 +69,7 @@ public class QPerformanceHistogram extends Question{
         System.out.println("Parameter list: Start time: : "	+ startTime);
         System.out.println("Parameter list: End time: : " + endTime);
     	
-    	if(quizzes == null || quizzes.size() < 1 || quizzes.size() % 2 != 0 || resolution <= 0 || startTime == null || endTime == null)
+    	if(quizzes == null || quizzes.size() < 1 || resolution <= 0 || startTime == null || endTime == null)
     	{
     		System.out.println("Calculation aborted. At least one of the mandatory parameters is not set properly.");
     		return new ResultListLongObject();
@@ -102,7 +104,23 @@ public class QPerformanceHistogram extends Question{
 	        @SuppressWarnings("unchecked")
             ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 	        
-	        for(IRatedLogObject log : list)
+	        HashMap<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>(); 
+	        Collections.sort(list);
+	        
+	        //This is for making sure there is just one entry per student and test 
+	        for(int i = list.size()-1; i >= 0 ; i--)
+	        {
+	        	IRatedLogObject log = list.get(i);
+	        	
+	        	String key = log.getPrefix()+" "+log.getLearnObjId()+" "+log.getUser().getId();
+	        	
+	        	if(singleResults.get(key) == null)
+	        	{
+	        		singleResults.put(key, log);
+	        	}
+	        }
+	        
+	        for(IRatedLogObject log : singleResults.values())
 	        {
 	        	if(obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null && log.getFinalgrade() != null &&
 	        			log.getMaxgrade() != null && log.getMaxgrade() > 0)

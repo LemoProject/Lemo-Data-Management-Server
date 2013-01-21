@@ -1,13 +1,15 @@
 package de.lemo.dms.db.miningDBclass;
 import java.sql.Timestamp;
 
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+
 /** This class represents the table for configuration information of the extraction tool.*/
-public class ConfigMining {
+public class ConfigMining implements IMappingClass{
 	private Timestamp lastmodified;
 	private long extractcycle;
 	private long elapsed_time;
-	private long largestId;
 	private Long platform;
+	private String databaseModel;
 
 	public Long getPlatform() {
 		return platform;
@@ -17,19 +19,12 @@ public class ConfigMining {
 		this.platform = platform;
 	}
 
-	public long getLargestId() {
-		return largestId;
-	}
-
-	public void setLargestId(long largestId) {
-		this.largestId = largestId;
-	}
 
 	public ConfigMining() {
 		this.lastmodified = new Timestamp(0);
 	}
 	
-	/** standard getter for the attribut lastmodified
+	/** standard getter for the attribute lastmodified
 	 * @return the timestamp when the mining db was updated the last time
 	 */
 //	public long getLastmodified() {
@@ -39,8 +34,8 @@ public class ConfigMining {
 	public Timestamp getLastmodified() {
 		return lastmodified;
 	}
-	/** standard setter for the attribut lastmodified
-	 * @param  lastmodified the timestamp when the mining db was updated the last time
+	/** standard setter for the attribute lastmodified
+	 * @param  lastmodified the timestamp of the most recent db-update
 	 */
 	public void setLastmodified(long lastmodified) {
 			this.lastmodified.setTime(lastmodified);
@@ -48,23 +43,21 @@ public class ConfigMining {
 	public void setLastmodified(Timestamp lastmodified) {
 		this.lastmodified = lastmodified;
 }
-	/** standard getter for the attribut extractcycle
-	 * @return when starting updates cyclical this will be the intervall
+	/** standard getter for the attribute extractcycle
+	 * @return when starting updates cyclic this will be the interval
 	 */	
-//	public long getExtractcycle() {
-//		return extractcycle.getTime();
-//	}
+
 	public long getExtractcycle() {
 		return extractcycle;
 	}
-	/** standard setter for the attribut extractcycle
-	 * @param extractcycle when starting updates cyclical this will be the intervall
+	/** standard setter for the attribute extractcycle
+	 * @param 
 	 */	
 	public void setExtractcycle(long extractcycle) {
 		this.extractcycle = extractcycle;
 	}
-	/** standard getter for the attribut elapsed_time
-	 * @return the timespan which the last update needs to run
+	/** standard getter for the attribute elapsed_time
+	 * @return the time the last update needed to run
 	 */	
 //	public long getElapsed_time() {
 //		return elapsed_time.getTime();
@@ -72,10 +65,33 @@ public class ConfigMining {
 	public long getElapsed_time() {
 		return elapsed_time;
 	}
-	/** standard setter for the attribut elapsed_time
-	 * @param elapsed_time the timespan which the last update needs to run
+	/** standard setter for the attribute elapsed_time
+	 * @param elapsed_time the time the last update needed to run
 	 */	
 	public void setElapsed_time(long elapsed_time) {
 		this.elapsed_time = elapsed_time;
+	}
+
+	public String getDatabaseModel() {
+		return databaseModel;
+	}
+
+	public void setDatabaseModel(String databaseModel) {
+		this.databaseModel = databaseModel;
+	}
+
+	@Override
+	public long getId() {
+		return lastmodified.getTime();
+	}
+
+	@Override
+	public boolean equals(IMappingClass o)
+	{
+		if(o == null || !(o instanceof ConfigMining))
+			return false;
+		if(o.getId() == this.getId() && (o instanceof ConfigMining))
+			return true;
+		return false;
 	}
 }

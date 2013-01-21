@@ -8,7 +8,7 @@ import de.lemo.dms.connectors.Encoder;
  * @author s.schwarzrock
  *
  */
-public class LogLine {
+public class LogLine implements Comparable<LogLine>{
 	
 	/** Id, which is basically the users hashed IP-address. */
 	private String id;
@@ -27,6 +27,22 @@ public class LogLine {
 	
 	/** The is valid. */
 	private boolean isValid;
+	
+	@Override
+	public int compareTo(LogLine o) {
+		LogLine s;
+		try{
+			s = (LogLine)o;
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		if(this.timestamp > s.getTimestamp())
+			return 1;
+		if(this.timestamp < s.getTimestamp())
+			return -1;
+		return 0;
+	}
 	
 	/**
 	 * Constructor of the class. Parses the given line from the server-log-line and puts the found values into the object's fields.

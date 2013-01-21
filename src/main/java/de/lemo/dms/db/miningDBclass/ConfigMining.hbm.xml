@@ -24,16 +24,16 @@
             name="elapsed_time"
             column="elapsed_time"
             type="long"/>   
+            
+        <property
+            name="databaseModel"
+            column="database_model"
+            type="string"/>   
  
         <property
             name="platform"
             column="platform"
-            type="long"/>  
-                       
-        <property
-        	name="largestId"
-        	column="largest_id"
-        	type="long"/>         
+            type="long"/>         
                 
     </class>
 

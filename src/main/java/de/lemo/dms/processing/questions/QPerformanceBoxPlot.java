@@ -101,7 +101,23 @@ public class QPerformanceBoxPlot extends Question{
 	        @SuppressWarnings("unchecked")
             ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 	        
-	        for(IRatedLogObject log : list)
+	        HashMap<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>(); 
+	        Collections.sort(list);
+	        
+	        //This is for making sure there is just one entry per student and test 
+	        for(int i = list.size()-1; i >= 0 ; i--)
+	        {
+	        	IRatedLogObject log = list.get(i);
+	        	
+	        	String key = log.getPrefix()+" "+log.getLearnObjId()+" "+log.getUser().getId();
+	        	
+	        	if(singleResults.get(key) == null)
+	        	{
+	        		singleResults.put(key, log);
+	        	}
+	        }
+	        
+	        for(IRatedLogObject log : singleResults.values())
 	        {
 	        	Long name = Long.valueOf(log.getPrefix() + "" + log.getLearnObjId());
 	        	if(values.get(name) != null && log.getFinalgrade() != null)

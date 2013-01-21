@@ -20,6 +20,11 @@
             name="composing"
             column="COMPOSING_ID"
             type="long"/>
+            
+        <property
+            name="parent"
+            column="PARENT_ID"
+            type="long"/>
 
         <property
             name="component"

@@ -61,8 +61,10 @@ public class HibernateDBHandler implements IDBHandler {
                     }
                 }
             logger.debug("Wrote " + classOb + " objects of class " + className + " to database.");
+            session.flush();            
             session.getTransaction().commit();
-            session.close();
+            session.clear();            
+            closeSession(session);
         } catch (HibernateException e)
         {
             e.printStackTrace();
@@ -85,6 +87,7 @@ public class HibernateDBHandler implements IDBHandler {
      */
     public void closeSession(Session session) {
         try {
+        	session.clear();
             session.close();
         } catch (HibernateException he)
         {
