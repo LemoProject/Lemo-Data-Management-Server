@@ -13,35 +13,35 @@ public class UserMining  implements IMappingClass{
 	private long id;
 	private String login;
 	private Boolean gender;
-	private long lastlogin;
-	private long firstaccess;
-	private long lastaccess;
-	private long currentlogin;
+	private long lastLogin;
+	private long firstAccess;
+	private long lastAccess;
+	private long currentLogin;
 	private Long platform;
 	
-	private Set<CourseUserMining> course_user = new HashSet<CourseUserMining>();
-	private Set<GroupUserMining> group_user = new HashSet<GroupUserMining>();
-	private Set<ForumLogMining> forum_log = new HashSet<ForumLogMining>();
-	private Set<WikiLogMining> wiki_log = new HashSet<WikiLogMining>();	
-	private Set<CourseLogMining> course_log = new HashSet<CourseLogMining>();
-	private Set<QuizLogMining> quiz_log = new HashSet<QuizLogMining>();
-	private Set<ScormLogMining> scorm_log = new HashSet<ScormLogMining>();
-	private Set<AssignmentLogMining> assignment_log = new HashSet<AssignmentLogMining>();
-	private Set<QuestionLogMining> question_log = new HashSet<QuestionLogMining>();
-	private Set<QuizUserMining> quiz_user = new HashSet<QuizUserMining>();
-	private Set<ResourceLogMining> resource_log = new HashSet<ResourceLogMining>();
-	private Set<ChatLogMining> chat_log = new HashSet<ChatLogMining>();
+	private Set<CourseUserMining> courseUsers = new HashSet<CourseUserMining>();
+	private Set<GroupUserMining> groupUsers = new HashSet<GroupUserMining>();
+	private Set<ForumLogMining> forumLogs = new HashSet<ForumLogMining>();
+	private Set<WikiLogMining> wikiLogs = new HashSet<WikiLogMining>();	
+	private Set<CourseLogMining> courseLogs = new HashSet<CourseLogMining>();
+	private Set<QuizLogMining> quizLogs = new HashSet<QuizLogMining>();
+	private Set<ScormLogMining> scormLogs = new HashSet<ScormLogMining>();
+	private Set<AssignmentLogMining> assignmentLogs = new HashSet<AssignmentLogMining>();
+	private Set<QuestionLogMining> questionLogs = new HashSet<QuestionLogMining>();
+	private Set<QuizUserMining> quizUsers = new HashSet<QuizUserMining>();
+	private Set<ResourceLogMining> resourceLogs = new HashSet<ResourceLogMining>();
+	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof UserMining))
+		if(!(o instanceof UserMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof UserMining))
 			return true;
 		return false;
 	}
 	
-	/** standard ge tter for the attribut id
+	/** standard getter for the attribute id
 	 * @return the identifier of the user
 	 */		
 	public long getId() {
@@ -64,11 +64,11 @@ public class UserMining  implements IMappingClass{
 		this.gender = gender;
 	}
 
-	/** standard setter for the attribut id
+	/** standard setter for the attribute id
 	 * @param id the identifier of the user
 	 */	
-	public void setId(String id,  List<IDMappingMining> id_mapping_mining, List<IDMappingMining> old_id_mapping_mining) {
-		long id_n = UserMining.idForHash(id, id_mapping_mining, old_id_mapping_mining);
+	public void setId(String id,  List<IDMappingMining> idMappingMining, List<IDMappingMining> oldIdMappingMining) {
+		long id_n = UserMining.idForHash(id, idMappingMining, oldIdMappingMining);
 		/*if(id_n == -1)
 		{
 			id_n = largestId + 1;
@@ -77,17 +77,17 @@ public class UserMining  implements IMappingClass{
 		this.id = id_n;
 	}
 	
-	public static long idForHash(String hash1, List<IDMappingMining> id_mapping_mining, List<IDMappingMining> old_id_mapping_mining)
+	public static long idForHash(String hash1, List<IDMappingMining> idMappingMining, List<IDMappingMining> oldIdMappingMining)
 	{
 		long id_n = -1;
-		for(Iterator<IDMappingMining> iter = id_mapping_mining.iterator(); iter.hasNext();)
+		for(Iterator<IDMappingMining> iter = idMappingMining.iterator(); iter.hasNext();)
 		{
 			IDMappingMining loadedItem = iter.next();
 			if(loadedItem.getHash() == hash1)
 				id_n = loadedItem.getId();
 		}		
 		if(id_n == -1)
-			for(Iterator<IDMappingMining> iter = old_id_mapping_mining.iterator(); iter.hasNext();)
+			for(Iterator<IDMappingMining> iter = oldIdMappingMining.iterator(); iter.hasNext();)
 			{
 				IDMappingMining loadedItem = iter.next();
 				if(loadedItem.getHash() == hash1)
@@ -101,278 +101,278 @@ public class UserMining  implements IMappingClass{
 		this.id = id;
 	}
 	
-	/** standard getter for the attribut lastlogin
+	/** standard getter for the attribute lastlogin
 	 * @return the timestamp of the last time the user has logged in
 	 */	
 	public long getLastlogin() {
-		return lastlogin;
+		return lastLogin;
 	}
 	
-	/** standard setter for the attribut lastlogin
+	/** standard setter for the attribute lastlogin
 	 * @param lastlogin the timestamp of the last time the user has logged in
 	 */	
 	public void setLastlogin(long lastlogin) {
-		this.lastlogin = lastlogin;
+		this.lastLogin = lastlogin;
 	}
 	
-	/** standard getter for the attribut firstaccess
+	/** standard getter for the attribute firstaccess
 	 * @return the timestamp when the user has made his first access to the LMS
 	 */	
-	public long getFirstaccess() {
-		return firstaccess;
+	public long getFirstAccess() {
+		return firstAccess;
 	}
 	
-	/** standard setter for the attribut firstaccess
-	 * @param firstaccess the timestamp when the user has made his first access to the LMS
+	/** standard setter for the attribute firstaccess
+	 * @param firstAccess the timestamp when the user has made his first access to the LMS
 	 */	
-	public void setFirstaccess(long firstaccess) {
-		this.firstaccess = firstaccess;
+	public void setFirstAccess(long firstAccess) {
+		this.firstAccess = firstAccess;
 	}
 	
-	/** standard getter for the attribut lastaccess
+	/** standard getter for the attribute lastaccess
 	 * @return the timestamp when the user has made the last access to the LMS
 	 */	
-	public long getLastaccess() {
-		return lastaccess;
+	public long getLastAccess() {
+		return lastAccess;
 	}
 	
-	/** standard setter for the attribut lastaccess
-	 * @param lastaccess the timestamp when the user has made the last access to the LMS
+	/** standard setter for the attribute lastaccess
+	 * @param lastAccess the timestamp when the user has made the last access to the LMS
 	 */	
-	public void setLastaccess(long lastaccess) {
-		this.lastaccess = lastaccess;
+	public void setLastAccess(long lastAccess) {
+		this.lastAccess = lastAccess;
 	}
 	
-	/** standard getter for the attribut currentlogin
+	/** standard getter for the attribute currentlogin
 	 * @return the timestamp when the user has logged into the current session
 	 */	
-	public long getCurrentlogin() {
-		return currentlogin;
+	public long getCurrentLogin() {
+		return currentLogin;
 	}
 	
-	/** standard setter for the attribut currentlogin
-	 * @param currentlogin the timestamp when the user has logged into the current session
+	/** standard setter for the attribute currentlogin
+	 * @param currentLogin the timestamp when the user has logged into the current session
 	 */		
-	public void setCurrentlogin(long currentlogin) {
-		this.currentlogin = currentlogin;
+	public void setCurrentLogin(long currentLogin) {
+		this.currentLogin = currentLogin;
 	}
-	/** standard setter for the attribut course_user
-	 * @param course_user a set of entrys in the course_user table which relate the user to courses
+	/** standard setter for the attribute course_user
+	 * @param courseUsers a set of entries in the course_user table which relate the user to courses
 	 */	
-	public void setCourse_user(Set<CourseUserMining> course_user) {
-		this.course_user = course_user;
+	public void setCourseUsers(Set<CourseUserMining> courseUsers) {
+		this.courseUsers = courseUsers;
 	}
-	/** standard getter for the attribut course_user
-	 * @return a set of entrys in the course_user table which relate the user to courses
+	/** standard getter for the attribute course_user
+	 * @return a set of entries in the course_user table which relate the user to courses
 	 */	
-	public Set<CourseUserMining> getCourse_user() {
-		return course_user;
+	public Set<CourseUserMining> getCourseUsers() {
+		return courseUsers;
 	}
-	/** standard add method for the attribut course_user
-	 * @param course_user_add this entry will be added to the list of user in this quiz
+	/** standard add method for the attribute course_user
+	 * @param courseUser this entry will be added to the list of user in this quiz
 	 * */
-	public void addCourse_user(CourseUserMining course_user_add){	
-		course_user.add(course_user_add);
+	public void addCourseUser(CourseUserMining courseUser){	
+		courseUsers.add(courseUser);
 	}
-	/** standard setter for the attribut group_user
-	 * @param group_user a set of entrys in the group_user table which relate the user to groups
+	/** standard setter for the attribute group_user
+	 * @param groupUsers a set of entries in the group_user table which relate the user to groups
 	 */	
-	public void setGroup_user(Set<GroupUserMining> group_user) {
-		this.group_user = group_user;
+	public void setGroupUsers(Set<GroupUserMining> groupUsers) {
+		this.groupUsers = groupUsers;
 	}
-	/** standard getter for the attribut group_user
-	 * @return a set of entrys in the group_user table which relate the user to groups
+	/** standard getter for the attribute group_user
+	 * @return a set of entries in the group_user table which relate the user to groups
 	 */	
-	public Set<GroupUserMining> getGroup_user() {
-		return group_user;
+	public Set<GroupUserMining> getGroupUsers() {
+		return groupUsers;
 	}
-	/** standard add method for the attribut group_user
-	 * @param group_user_add this entry will be added to the list of group_user in this user
+	/** standard add method for the attribute group_user
+	 * @param groupUser this entry will be added to the list of group_user in this user
 	 * */
-	public void addGroup_user(GroupUserMining group_user_add){	
-		group_user.add(group_user_add);
+	public void addGroupUser(GroupUserMining groupUser){	
+		this.groupUsers.add(groupUser);
 	}
-	/** standard setter for the attribut forum_log
-	 * @param forum_log a set of entrys in the forum_log table which contain actions of this user
+	/** standard setter for the attribute forum_log
+	 * @param forumLogs a set of entries in the forum_log table which contain actions of this user
 	 */	
-	public void setForum_log(Set<ForumLogMining> forum_log) {
-		this.forum_log = forum_log;
+	public void setForumLogs(Set<ForumLogMining> forumLogs) {
+		this.forumLogs = forumLogs;
 	}
-	/** standard getter for the attribut forum_log
-	 * @return a set of entrys in the forum_log table which contain actions of this user
+	/** standard getter for the attribute forum_log
+	 * @return a set of entries in the forum_log table which contain actions of this user
 	 */	
-	public Set<ForumLogMining> getForum_log() {
-		return forum_log;
+	public Set<ForumLogMining> getForumLogs() {
+		return forumLogs;
 	}
-	/** standard add method for the attribut forum_log
-	 * @param forum_log_add this entry will be added to the list of forum_log in this user
+	/** standard add method for the attribute forum_log
+	 * @param forumLog this entry will be added to the list of forum_log in this user
 	 * */
-	public void addForum_log(ForumLogMining forum_log_add){	
-		forum_log.add(forum_log_add);
+	public void addForumLog(ForumLogMining forumLog){	
+		forumLogs.add(forumLog);
 	}
-	/** standard setter for the attribut wiki_log
-	 * @param wiki_log a set of entrys in the wiki_log table which contain actions of this user
+	/** standard setter for the attribute wiki_log
+	 * @param wikiLogs a set of entries in the wiki_log table which contain actions of this user
 	 */	
-	public void setWiki_log(Set<WikiLogMining> wiki_log) {
-		this.wiki_log = wiki_log;
+	public void setWikiLogs(Set<WikiLogMining> wikiLogs) {
+		this.wikiLogs = wikiLogs;
 	}
 	
-	/** standard getter for the attribut wiki_log
-	 * @return a set of entrys in the wiki_log table which contain actions of this user
+	/** standard getter for the attribute wiki_log
+	 * @return a set of entries in the wiki_log table which contain actions of this user
 	 */	
-	public Set<WikiLogMining> getWiki_log() {
-		return wiki_log;
+	public Set<WikiLogMining> getWikiLogs() {
+		return wikiLogs;
 	}
-	/** standard add method for the attribut wiki_log
-	 * @param wiki_log_add this entry will be added to the list of wiki_log in this user
+	/** standard add method for the attribute wiki_log
+	 * @param wikiLog this entry will be added to the list of wiki_log in this user
 	 * */
-	public void addWiki_log(WikiLogMining wiki_log_add){	
-		wiki_log.add(wiki_log_add);
+	public void addWikiLog(WikiLogMining wikiLog){	
+		wikiLogs.add(wikiLog);
 	}
-	/** standard setter for the attribut course_log
-	 * @param course_log a set of entrys in the course_log table which contain actions of this user
+	/** standard setter for the attribute course_log
+	 * @param courseLogs a set of entries in the course_log table which contain actions of this user
 	 */	
-	public void setCourse_log(Set<CourseLogMining> course_log) {
-		this.course_log = course_log;
+	public void setCourseLogs(Set<CourseLogMining> courseLogs) {
+		this.courseLogs = courseLogs;
 	}
-	/** standard getter for the attribut course_log
-	 * @return a set of entrys in the course_log table which contain actions of this user
+	/** standard getter for the attribute course_log
+	 * @return a set of entries in the course_log table which contain actions of this user
 	 */	
-	public Set<CourseLogMining> getCourse_log() {
-		return course_log;
+	public Set<CourseLogMining> getCourseLogs() {
+		return courseLogs;
 	}
-	/** standard add method for the attribut course_log
-	 * @param course_log_add this entry will be added to the list of course_log in this user
+	/** standard add method for the attribute course_log
+	 * @param courseLog this entry will be added to the list of course_log in this user
 	 * */
-	public void addCourse_log(CourseLogMining course_log_add){	
-		course_log.add(course_log_add);
+	public void addCourseLog(CourseLogMining courseLog){	
+		this.courseLogs.add(courseLog);
 	}
-	/** standard setter for the attribut quiz_log
-	 * @param quiz_log a set of entrys in the quiz_log table which contain actions of this user
+	/** standard setter for the attribute quiz_log
+	 * @param quizLogs a set of entries in the quiz_log table which contain actions of this user
 	 */	
-	public void setQuiz_log(Set<QuizLogMining> quiz_log) {
-		this.quiz_log = quiz_log;
+	public void setQuizLogs(Set<QuizLogMining> quizLogs) {
+		this.quizLogs = quizLogs;
 	}
-	/** standard getter for the attribut quiz_log
-	 * @return a set of entrys in the quiz_log table which contain actions of this user
+	/** standard getter for the attribute quiz_log
+	 * @return a set of entries in the quiz_log table which contain actions of this user
 	 */	
-	public Set<QuizLogMining> getQuiz_log() {
-		return quiz_log;
+	public Set<QuizLogMining> getQuizLogs() {
+		return quizLogs;
 	}
-	/** standard add method for the attribut quiz_log
-	 * @param quiz_log_add this entry will be added to the list of quiz_log in this user
+	/** standard add method for the attribute quiz_log
+	 * @param quizLog this entry will be added to the list of quiz_log in this user
 	 * */
-	public void addQuiz_log(QuizLogMining quiz_log_add){	
-		quiz_log.add(quiz_log_add);
+	public void addQuizLog(QuizLogMining quizLog){	
+		quizLogs.add(quizLog);
 	}
-	/** standard setter for the attribut question_log
-	 * @param question_log a set of entrys in the question_log table which contain actions of this user
+	/** standard setter for the attribute question_log
+	 * @param questionLogs a set of entries in the question_log table which contain actions of this user
 	 */	
-	public void setQuestion_log(Set<QuestionLogMining> question_log) {
-		this.question_log = question_log;
+	public void setQuestionLogs(Set<QuestionLogMining> questionLogs) {
+		this.questionLogs = questionLogs;
 	}
-	/** standard getter for the attribut question_log
-	 * @return a set of entrys in the question_log table which contain actions of this user
+	/** standard getter for the attribute question_log
+	 * @return a set of entries in the question_log table which contain actions of this user
 	 */	
-	public Set<QuestionLogMining> getQuestion_log() {
-		return question_log;
+	public Set<QuestionLogMining> getQuestionLogs() {
+		return questionLogs;
 	}
-	/** standard add method for the attribut question_log
-	 * @param question_log_add this entry will be added to the list of question_log in this quiz
+	/** standard add method for the attribute question_log
+	 * @param questionLog this entry will be added to the list of question_log in this quiz
 	 * */
-	public void addQuestion_log(QuestionLogMining question_log_add){	
-		question_log.add(question_log_add);	
+	public void addQuestionLog(QuestionLogMining questionLog){	
+		questionLogs.add(questionLog);	
 	}
-	/** standard setter for the attribut resource_log
-	 * @param resource_log a set of entrys in the resource_log table which contain actions of this user
+	/** standard setter for the attribute resource_log
+	 * @param resourceLogs a set of entries in the resource_log table which contain actions of this user
 	 */	
-	public void setResource_log(Set<ResourceLogMining> resource_log) {
-		this.resource_log = resource_log;
+	public void setResourceLogs(Set<ResourceLogMining> resourceLogs) {
+		this.resourceLogs = resourceLogs;
 	}
-	/** standard getter for the attribut resource_log
-	 * @return a set of entrys in the resource_log table which contain actions of this user
+	/** standard getter for the attribute resource_log
+	 * @return a set of entries in the resource_log table which contain actions of this user
 	 */	
-	public Set<ResourceLogMining> getResource_log() {
-		return resource_log;
+	public Set<ResourceLogMining> getResourceLogs() {
+		return resourceLogs;
 	}
-	/** standard add method for the attribut resource_log
-	 * @param resource_log_add this entry will be added to the list of resource_log in this quiz
+	/** standard add method for the attribute resource_log
+	 * @param resourceLog this entry will be added to the list of resource_log in this quiz
 	 * */
-	public void addResource_log(ResourceLogMining resource_log_add){	
-		resource_log.add(resource_log_add);	
+	public void addResourceLog(ResourceLogMining resourceLog){	
+		resourceLogs.add(resourceLog);	
 	}
-	/** standard setter for the attribut quiz_user
-	 * @param quiz_user a set of entrys in the quiz_user table which relate the user to the courses
+	/** standard setter for the attribute quiz_user
+	 * @param quizUsers a set of entries in the quiz_user table which relate the user to the courses
 	 */	
-	public void setQuiz_user(Set<QuizUserMining> quiz_user) {
-		this.quiz_user = quiz_user;
+	public void setQuizUsers(Set<QuizUserMining> quizUsers) {
+		this.quizUsers = quizUsers;
 	}
-	/** standard getter for the attribut quiz_user
-	 * @return a set of entrys in the quiz_user table which relate the user to the courses
+	/** standard getter for the attribute quiz_user
+	 * @return a set of entries in the quiz_user table which relate the user to the courses
 	 */	
-	public Set<QuizUserMining> getQuiz_user() {
-		return quiz_user;
+	public Set<QuizUserMining> getQuizUsers() {
+		return quizUsers;
 	}
-	/** standard add method for the attribut quiz_user
-	 * @param quiz_user_add this entry will be added to the list of quiz_user in this user
+	/** standard add method for the attribute quiz_user
+	 * @param quizUser this entry will be added to the list of quiz_user in this user
 	 * */
-	public void addQuiz_user(QuizUserMining quiz_user_add){	
-		quiz_user.add(quiz_user_add);
+	public void addQuizUser(QuizUserMining quizUser){	
+		quizUsers.add(quizUser);
 	}
-	/** standard setter for the attribut assignment_log
-	 * @param assignment_log a set of entrys in the assignment_log table which contain actions of this user
+	/** standard setter for the attribute assignment_log
+	 * @param assignmentLogs a set of entries in the assignment_log table which contain actions of this user
 	 */
-	public void setAssignment_log(Set<AssignmentLogMining> assignment_log) {
-		this.assignment_log = assignment_log;
+	public void setAssignmentLogs(Set<AssignmentLogMining> assignmentLogs) {
+		this.assignmentLogs = assignmentLogs;
 	}
-	/** standard getter for the attribut assignment_log
-	 * @return a set of entrys in the assignment_log table which contain actions of this user
+	/** standard getter for the attribute assignment_log
+	 * @return a set of entries in the assignment_log table which contain actions of this user
 	 */		
-	public Set<AssignmentLogMining> getAssignment_log() {
-		return assignment_log;
+	public Set<AssignmentLogMining> getAssignmentLogs() {
+		return assignmentLogs;
 	}
-	/** standard add method for the attribut assignment_log
-	 * @param assignment_log_add this entry will be added to the list of assignment_log in this user
+	/** standard add method for the attribute assignment_log
+	 * @param assignmentLog this entry will be added to the list of assignment_log in this user
 	 * */
-	public void addAssignment_log(AssignmentLogMining assignment_log_add){	
-		assignment_log.add(assignment_log_add);
+	public void addAssignmentLog(AssignmentLogMining assignmentLog){	
+		this.assignmentLogs.add(assignmentLog);
 	}
-	/** standard setter for the attribut scorm_log
-	 * @param scorm_log a set of entrys in the scorm_log table which contain actions of this user
+	/** standard setter for the attribute scorm_log
+	 * @param scormLogs a set of entries in the scorm_log table which contain actions of this user
 	 */
-	public void setScorm_log(Set<ScormLogMining> scorm_log) {
-		this.scorm_log = scorm_log;
+	public void setScormLogs(Set<ScormLogMining> scormLogs) {
+		this.scormLogs = scormLogs;
 	}
-	/** standard getter for the attribut scorm_log
-	 * @return a set of entrys in the scorm_log table which contain actions of this user
+	/** standard getter for the attribute scorm_log
+	 * @return a set of entries in the scorm_log table which contain actions of this user
 	 */		
-	public Set<ScormLogMining> getScorm_log() {
-		return scorm_log;
+	public Set<ScormLogMining> getScormLogs() {
+		return scormLogs;
 	}
 	
 	
-	/** standard add method for the attribut scorm_log
-	 * @param scorm_log_add this entry will be added to the list of scorm_log in this user
+	/** standard add method for the attribute scorm_log
+	 * @param scormLog this entry will be added to the list of scorm_log in this user
 	 * */
-	public void addScorm_log(ScormLogMining scorm_log_add){	
-		scorm_log.add(scorm_log_add);
+	public void addScormLog(ScormLogMining scormLog){	
+		this.scormLogs.add(scormLog);
 	}
 	
-	public void setChat_log(Set<ChatLogMining> chat_log) {
-		this.chat_log = chat_log;
+	public void setChatLogs(Set<ChatLogMining> chatLogs) {
+		this.chatLogs = chatLogs;
 	}
-	/** standard getter for the attribut scorm_log
-	 * @return a set of entrys in the scorm_log table which contain actions of this user
+	/** standard getter for the attribute scorm_log
+	 * @return a set of entries in the scorm_log table which contain actions of this user
 	 */		
-	public Set<ChatLogMining> getChat_log() {
-		return chat_log;
+	public Set<ChatLogMining> getChatLogs() {
+		return chatLogs;
 	}
 	
-	/** standard add method for the attribut scorm_log
-	 * @param chat_log_add this entry will be added to the list of scorm_log in this user
+	/** standard add method for the attribute scorm_log
+	 * @param chatLog this entry will be added to the list of scorm_log in this user
 	 * */
-	public void addChat_log(ChatLogMining chat_log_add){	
-		chat_log.add(chat_log_add);
+	public void addChatLog(ChatLogMining chatLog){	
+		chatLogs.add(chatLog);
 	}
 
 	public Long getPlatform() {

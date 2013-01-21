@@ -15,7 +15,7 @@ public class QuizQuestionMining  implements IMappingClass{
 
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof QuizQuestionMining))
+		if(!(o instanceof QuizQuestionMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof QuizQuestionMining))
 			return true;
@@ -57,12 +57,12 @@ public class QuizQuestionMining  implements IMappingClass{
 		if(quizMining.get(quiz) != null)
 		{
 			this.quiz = quizMining.get(quiz);
-			quizMining.get(quiz).addQuiz_question(this);
+			quizMining.get(quiz).addQuizQuestion(this);
 		}
 		if(this.quiz == null && oldQuizMining.get(quiz) != null)
 		{
 			this.quiz = oldQuizMining.get(quiz);
-			oldQuizMining.get(quiz).addQuiz_question(this);
+			oldQuizMining.get(quiz).addQuizQuestion(this);
 		}
 	}
 	
@@ -88,12 +88,12 @@ public class QuizQuestionMining  implements IMappingClass{
 		if(questionMining.get(question) != null)
 		{
 			this.question = questionMining.get(question);
-			questionMining.get(question).addQuiz_question(this);
+			questionMining.get(question).addQuizQuestion(this);
 		}
 		if(this.question == null && oldQuestionMining.get(question) != null)
 		{
 			this.question = oldQuestionMining.get(question);
-			oldQuestionMining.get(question).addQuiz_question(this);
+			oldQuestionMining.get(question).addQuizQuestion(this);
 		}
 	}
 

@@ -64,165 +64,165 @@ public abstract class ExtractAndMap{
 
 //lists of object tables which are new found in LMS DB
 	/** A List of new entries in the course table found in this run of the process. */
-	static Map<Long, CourseMining> courseMining;
+	Map<Long, CourseMining> courseMining;
 	
-	static Map<Long, PlatformMining> platformMining;
+	Map<Long, PlatformMining> platformMining;
 	
 	/** A List of new entries in the quiz table found in this run of the process. */
-	static Map<Long, QuizMining> quiz_mining;
+	Map<Long, QuizMining> quizMining;
 	
 	/** A List of new entries in the assignment table found in this run of the process. */
-	static Map<Long, AssignmentMining> assignment_mining;
+	Map<Long, AssignmentMining> assignmentMining;
 	
 	/** A List of new entries in the assignment table found in this run of the process. */
-	static Map<Long, ScormMining> scorm_mining;
+	Map<Long, ScormMining> scormMining;
 	
 	/** A List of new entries in the forum table found in this run of the process. */
-	static Map<Long, ForumMining> forum_mining;
+	Map<Long, ForumMining> forumMining;
 	
 	/** A List of entries in the new role table found in this run of the process. */
-	static Map<Long, LevelMining> level_mining;
+	Map<Long, LevelMining> levelMining;
 	
 	/** A List of entries in the new role table found in this run of the process. */
-	static Map<Long, LevelAssociationMining> level_association_mining;
+	Map<Long, LevelAssociationMining> levelAssociationMining;
 	
 	/** A List of new entries in the resource table found in this run of the process. */	
-	static Map<Long, ResourceMining> resource_mining;
+	Map<Long, ResourceMining> resourceMining;
 	
 	/** A List of new entries in the user table found in this run of the process. */	
-	static Map<Long, UserMining> user_mining;
+	Map<Long, UserMining> userMining;
 	
 	/** A List of new entries in the wiki table found in this run of the process. */	
-	static Map<Long, WikiMining> wiki_mining;
+	Map<Long, WikiMining> wikiMining;
 	
 	/** A List of new entries in the group table found in this run of the process. */
-	static Map<Long, GroupMining> group_mining;
+	Map<Long, GroupMining> groupMining;
 	
 	/** A List of entries in the new question table found in this run of the process. */
-	static Map<Long, QuestionMining> question_mining;
+	Map<Long, QuestionMining> questionMining;
 	
 	/** A List of entries in the new question table found in this run of the process. */
-	static Map<Long, QuizQuestionMining> quiz_question_mining;
+	Map<Long, QuizQuestionMining> quizQuestionMining;
 	
-	static Map<Long, CourseQuizMining> course_quiz_mining;
+	Map<Long, CourseQuizMining> courseQuizMining;
 	
 	/** A List of entries in the new role table found in this run of the process. */
-	static Map<Long, RoleMining> role_mining;
+	Map<Long, RoleMining> roleMining;
 	
 	/** The department_mining. */
-	//static Map<Long, DepartmentMining> department_mining;
+	//Map<Long, DepartmentMining> department_mining;
 	
 	/** The degree_mining. */
-	//static Map<Long, DegreeMining> degree_mining;
+	//Map<Long, DegreeMining> degree_mining;
 	
 	/** The chat_mining. */
-	static Map<Long, ChatMining> chat_mining;
+	Map<Long, ChatMining> chatMining;
 	
 	/** The chat_log_mining. */
-	static Map<Long, ChatLogMining> chat_log_mining;
+	Map<Long, ChatLogMining> chatLogMining;
 	
 	/** The table that maps user-ids of the source database (string) onto numeric values.*/
-	static Map<String, IDMappingMining> id_mapping;
+	Map<String, IDMappingMining> idMapping;
 	
-	static Map<Long, PlatformMining> old_platform_mining;
+	Map<Long, PlatformMining> oldPlatformMining;
 	
 	/** The table that maps user-ids of the source database (string) onto numeric values.*/
-	static Map<String, IDMappingMining> old_id_mapping;
+	Map<String, IDMappingMining> oldIdMapping;
 	
 //lists of object tables which are already in the mining DB
 	/** A List of entries in the course table, needed for linking reasons in the process. */
-	static Map<Long, CourseMining> old_course_mining;
+	Map<Long, CourseMining> oldCourseMining;
 	
 	/** A List of entries in the quiz table, needed for linking reasons in the process. */
-	static Map<Long, QuizMining> old_quiz_mining;
+	Map<Long, QuizMining> oldQuizMining;
 	
 	/** The old_department_mining. */
-	static Map<Long, LevelMining> old_level_mining;
+	Map<Long, LevelMining> oldLevelMining;
 		
 	/** A List of entries in the assignment table, needed for linking reasons in the process. */
-	static Map<Long, AssignmentMining> old_assignment_mining;
+	Map<Long, AssignmentMining> oldAssignmentMining;
 	
 	/** A List of entries in the scorm table, needed for linking reasons in the process. */
-	static Map<Long, ScormMining> old_scorm_mining;
+	Map<Long, ScormMining> oldScormMining;
 	
 	/** A List of entries in the forum table, needed for linking reasons in the process. */
-	static Map<Long, ForumMining> old_forum_mining;
+	Map<Long, ForumMining> oldForumMining;
 	
 	/** A List of entries in the resource table, needed for linking reasons in the process. */
-	static Map<Long, ResourceMining> old_resource_mining;
+	Map<Long, ResourceMining> oldResourceMining;
 	
 	/** A List of entries in the user table, needed for linking reasons in the process. */
-	static Map<Long, UserMining> old_user_mining;
+	Map<Long, UserMining> oldUserMining;
 	
 	/** A List of entries in the wiki table, needed for linking reasons in the process. */
-	static Map<Long, WikiMining> old_wiki_mining;
+	Map<Long, WikiMining> oldWikiMining;
 	
 	/** A List of entries in the group table, needed for linking reasons in the process. */
-	static Map<Long, GroupMining> old_group_mining;
+	Map<Long, GroupMining> oldGroupMining;
 	
 	/** A List of entries in the question table, needed for linking reasons in the process. */
-	static Map<Long, QuestionMining> old_question_mining;
+	Map<Long, QuestionMining> oldQuestionMining;
 	
 	/** A List of entries in the role table, needed for linking reasons in the process. */
-	static Map<Long, RoleMining> old_role_mining;
+	Map<Long, RoleMining> oldRoleMining;
 	
 	/** A List of entries in the quiz_question table, needed for linking reasons in the process. */
-	static Map<Long, QuizQuestionMining> old_quiz_question_mining;
+	Map<Long, QuizQuestionMining> oldQuizQuestionMining;
 	
 	/** A List of entries in the course_quiz table, needed for linking reasons in the process. */
-	static Map<Long, CourseQuizMining> old_course_quiz_mining;
+	Map<Long, CourseQuizMining> oldCourseQuizMining;
 	
 	/** The old_department_mining. */
-	//static Map<Long, DepartmentMining> old_department_mining;
+	//Map<Long, DepartmentMining> old_department_mining;
 	
 	/** The old_degree_mining. */
-	//static Map<Long, DegreeMining> old_degree_mining;
+	//Map<Long, DegreeMining> old_degree_mining;
 	
 	/** The old_chat_mining. */
-	static Map<Long, ChatMining> old_chat_mining;
+	Map<Long, ChatMining> oldChatMining;
 	
 	/** The old_chat_log_mining. */
-	static Map<Long, ChatLogMining> old_chat_log_mining;
+	Map<Long, ChatLogMining> oldChatLogMining;
 	
-	static Long largestId;
+	Long largestId;
 	
 //	@SuppressWarnings("unchecked")
 	/** A list of objects used for submitting them to the DB. */
-	static List<Collection<?>> updates;
+	List<Collection<?>> updates;
 	/** A list of timestamps of the previous runs of the extractor. */	
-	static List<Timestamp> config_mining_timestamp;
+	List<Timestamp> configMiningTimestamp;
 //output helper
-//	static String msg;
+//	String msg;
 	
 //timestamp variables
-//	static long readingtimestamp;
+//	long readingtimestamp;
 	/** Designates which entries should be read from the LMS Database during the process.  */
-	static long starttime;
+	long starttime;
 	
 	/**Database-handler**/
-	static IDBHandler dbHandler;
+	IDBHandler dbHandler;
 		
 	private Logger logger = Logger.getLogger(getClass());
 
-	static Long questionLogMax;
+	Long questionLogMax;
 
-	static Long forumLogMax;
+	Long forumLogMax;
 
-	static Long courseLogMax;
+	Long courseLogMax;
 
-	static Long assignmentLogMax;
+	Long assignmentLogMax;
 
-	static Long quizLogMax;
+	Long quizLogMax;
 
-	static Long scormLogMax;
+	Long scormLogMax;
 
-	static Long wikiLogMax;
+	Long wikiLogMax;
 
-	static Long chatLogMax;
+	Long chatLogMax;
 
-	static Long resourceLogMax;
+	Long resourceLogMax;
 	
-	static PlatformMining platform;
+	PlatformMining platform;
 	
 	Clock c;
 
@@ -274,7 +274,7 @@ public abstract class ExtractAndMap{
 				logger.info("parameter:" + readingtimestamp);
 
 //first read & save LMS DB tables from 0 to starttime for timestamps which are not set(which are 0)				
-				if(config_mining_timestamp.get(0) == null){
+				if(configMiningTimestamp.get(0) == null){
 					c.reset();
 					getLMStables(sourceDBConf, 0, readingtimestamp);	
 					System.out.println("Loaded data from source in " + c.getAndReset());
@@ -306,7 +306,7 @@ public abstract class ExtractAndMap{
 		long endtime = System.currentTimeMillis()/1000;		
 	    ConfigMining config = new ConfigMining();
 	    config.setLastmodified(System.currentTimeMillis());
-	    config.setElapsed_time((endtime) - (starttime));	
+	    config.setElapsedTime((endtime) - (starttime));	
 	    config.setPlatform(platform.getId());
 	    config.setDatabaseModel("1.2");
 	    dbHandler.saveToDB(session, config);
@@ -326,24 +326,24 @@ public abstract class ExtractAndMap{
 	 * @return The timestamp of the last run of the extractor. If this is the first run it will be set 0.
 	 * **/		
 	@SuppressWarnings("unchecked")
-	static public long getMiningInitial(String platformName){
+	public long getMiningInitial(String platformName){
 					
 	    Session session = dbHandler.getMiningSession();
 	    
 	    List<?> t;
 	    t = dbHandler.performQuery(session, EQueryType.HQL, "from PlatformMining x order by x.id asc");//mining_session.createQuery("from CourseMining x order by x.id asc").list();
-		old_platform_mining = new HashMap<Long, PlatformMining>();
+		oldPlatformMining = new HashMap<Long, PlatformMining>();
 		if(t!=null)
 			for(int i = 0; i < t.size(); i++)
-			old_platform_mining.put(((PlatformMining)(t.get(i))).getId(), (PlatformMining)t.get(i));
-		System.out.println("Loaded " + old_platform_mining.size() + " PlatformMining objects from the mining database.");
+			oldPlatformMining.put(((PlatformMining)(t.get(i))).getId(), (PlatformMining)t.get(i));
+		System.out.println("Loaded " + oldPlatformMining.size() + " PlatformMining objects from the mining database.");
 		
 		Long pid = 0L;
 		Long pref = 10L;
 		
 		platformMining = new HashMap<Long, PlatformMining>();
 		
-		for(PlatformMining p : old_platform_mining.values())
+		for(PlatformMining p : oldPlatformMining.values())
 		{
 			if( p.getId() > pid)
         		pid = p.getId();
@@ -365,8 +365,8 @@ public abstract class ExtractAndMap{
 			platformMining.put(platform.getId(), platform);
 		}
 		
-		if(config_mining_timestamp.get(0) == null){
-			config_mining_timestamp.set(0, new Timestamp(0));
+		if(configMiningTimestamp.get(0) == null){
+			configMiningTimestamp.set(0, new Timestamp(0));
 		}
         Query large = session.createQuery("select max(user.id) from UserMining user where user.platform="+ platform.getId() +"");
         if(large.list().size() > 0)
@@ -420,93 +420,93 @@ public abstract class ExtractAndMap{
         if(wikiLogMax == null)
         	wikiLogMax = 0L;
 		
-		long readingtimestamp = config_mining_timestamp.get(0).getTime();
+		long readingtimestamp = configMiningTimestamp.get(0).getTime();
 	
 		
 //load objects which are already in Mining DB for associations
 		
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from CourseMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from CourseMining x order by x.id asc").list();
-		old_course_mining = new HashMap<Long, CourseMining>();
+		oldCourseMining = new HashMap<Long, CourseMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_course_mining.put(((CourseMining)(t.get(i))).getId(), (CourseMining)t.get(i));
-		System.out.println("Loaded " + old_course_mining.size() + " CourseMining objects from the mining database.");
+			oldCourseMining.put(((CourseMining)(t.get(i))).getId(), (CourseMining)t.get(i));
+		System.out.println("Loaded " + oldCourseMining.size() + " CourseMining objects from the mining database.");
 		
 		
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from QuizMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from QuizMining x order by x.id asc").list();
-		old_quiz_mining = new HashMap<Long, QuizMining>();
+		oldQuizMining = new HashMap<Long, QuizMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_quiz_mining.put(((QuizMining)(t.get(i))).getId(), (QuizMining)t.get(i));
-		System.out.println("Loaded " + old_quiz_mining.size() + " QuizMining objects from the mining database.");
+			oldQuizMining.put(((QuizMining)(t.get(i))).getId(), (QuizMining)t.get(i));
+		System.out.println("Loaded " + oldQuizMining.size() + " QuizMining objects from the mining database.");
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from AssignmentMining x where x.platform="+ platform.getId() +" order by x.id asc");// mining_session.createQuery("from AssignmentMining x order by x.id asc").list();
-		old_assignment_mining = new HashMap<Long, AssignmentMining>();
+		oldAssignmentMining = new HashMap<Long, AssignmentMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_assignment_mining.put(((AssignmentMining)(t.get(i))).getId(), (AssignmentMining)t.get(i));
-		System.out.println("Loaded " + old_assignment_mining.size() + " AssignmentMining objects from the mining database.");
+			oldAssignmentMining.put(((AssignmentMining)(t.get(i))).getId(), (AssignmentMining)t.get(i));
+		System.out.println("Loaded " + oldAssignmentMining.size() + " AssignmentMining objects from the mining database.");
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from ScormMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from ScormMining x order by x.id asc").list();
-		old_scorm_mining = new HashMap<Long, ScormMining>();
+		oldScormMining = new HashMap<Long, ScormMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_scorm_mining.put(((ScormMining)(t.get(i))).getId(), (ScormMining)t.get(i));
-		System.out.println("Loaded " + old_scorm_mining.size() + " ScormMining objects from the mining database.");		
+			oldScormMining.put(((ScormMining)(t.get(i))).getId(), (ScormMining)t.get(i));
+		System.out.println("Loaded " + oldScormMining.size() + " ScormMining objects from the mining database.");		
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from ForumMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from ForumMining x order by x.id asc").list();
-		old_forum_mining = new HashMap<Long, ForumMining>();
+		oldForumMining = new HashMap<Long, ForumMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_forum_mining.put(((ForumMining)(t.get(i))).getId(), (ForumMining)t.get(i));
-		System.out.println("Loaded " + old_forum_mining.size() + " ForumMining objects from the mining database.");
+			oldForumMining.put(((ForumMining)(t.get(i))).getId(), (ForumMining)t.get(i));
+		System.out.println("Loaded " + oldForumMining.size() + " ForumMining objects from the mining database.");
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from ResourceMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from ResourceMining x order by x.id asc").list();
-		old_resource_mining = new HashMap<Long, ResourceMining>();
+		oldResourceMining = new HashMap<Long, ResourceMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_resource_mining.put(((ResourceMining)(t.get(i))).getId(), (ResourceMining)t.get(i));
-		System.out.println("Loaded " + old_resource_mining.size() + " ResourceMining objects from the mining database.");
+			oldResourceMining.put(((ResourceMining)(t.get(i))).getId(), (ResourceMining)t.get(i));
+		System.out.println("Loaded " + oldResourceMining.size() + " ResourceMining objects from the mining database.");
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from UserMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from UserMining x order by x.id asc").list();
-		old_user_mining = new HashMap<Long, UserMining>();
+		oldUserMining = new HashMap<Long, UserMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_user_mining.put(((UserMining)(t.get(i))).getId(), (UserMining)t.get(i));
-		System.out.println("Loaded " + old_user_mining.size() + " UserMining objects from the mining database.");
+			oldUserMining.put(((UserMining)(t.get(i))).getId(), (UserMining)t.get(i));
+		System.out.println("Loaded " + oldUserMining.size() + " UserMining objects from the mining database.");
 		
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from WikiMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from WikiMining x order by x.id asc").list();
-		old_wiki_mining = new HashMap<Long, WikiMining>();
+		oldWikiMining = new HashMap<Long, WikiMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_wiki_mining.put(((WikiMining)(t.get(i))).getId(), (WikiMining)t.get(i));
-		System.out.println("Loaded " + old_wiki_mining.size() + " WikiMining objects from the mining database.");
+			oldWikiMining.put(((WikiMining)(t.get(i))).getId(), (WikiMining)t.get(i));
+		System.out.println("Loaded " + oldWikiMining.size() + " WikiMining objects from the mining database.");
 		
 		t =dbHandler.performQuery(session, EQueryType.HQL, "from GroupMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from GroupMining x order by x.id asc").list();
-		old_group_mining = new HashMap<Long, GroupMining>();
+		oldGroupMining = new HashMap<Long, GroupMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_group_mining.put(((GroupMining)(t.get(i))).getId(), (GroupMining)t.get(i));
-		System.out.println("Loaded " + old_group_mining.size() + " GroupMining objects from the mining database.");
+			oldGroupMining.put(((GroupMining)(t.get(i))).getId(), (GroupMining)t.get(i));
+		System.out.println("Loaded " + oldGroupMining.size() + " GroupMining objects from the mining database.");
 		
 		
 		t =  dbHandler.performQuery(session, EQueryType.HQL, "from QuestionMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from QuestionMining x order by x.id asc").list();
-		old_question_mining = new HashMap<Long, QuestionMining>();
+		oldQuestionMining = new HashMap<Long, QuestionMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_question_mining.put(((QuestionMining)(t.get(i))).getId(), (QuestionMining)t.get(i));
-		System.out.println("Loaded " + old_quiz_mining.size() + " QuestionMining objects from the mining database.");
+			oldQuestionMining.put(((QuestionMining)(t.get(i))).getId(), (QuestionMining)t.get(i));
+		System.out.println("Loaded " + oldQuizMining.size() + " QuestionMining objects from the mining database.");
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from RoleMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from RoleMining x order by x.id asc").list();
-		old_role_mining = new HashMap<Long, RoleMining>();
+		oldRoleMining = new HashMap<Long, RoleMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_role_mining.put(((RoleMining)(t.get(i))).getId(), (RoleMining)t.get(i));
-		System.out.println("Loaded " + old_role_mining.size() + " RoleMining objects from the mining database.");
+			oldRoleMining.put(((RoleMining)(t.get(i))).getId(), (RoleMining)t.get(i));
+		System.out.println("Loaded " + oldRoleMining.size() + " RoleMining objects from the mining database.");
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from QuizQuestionMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from QuizQuestionMining x order by x.id asc").list();
-		old_quiz_question_mining = new HashMap<Long, QuizQuestionMining>();
+		oldQuizQuestionMining = new HashMap<Long, QuizQuestionMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_quiz_question_mining.put(((QuizQuestionMining)(t.get(i))).getQuestion().getId(), (QuizQuestionMining)t.get(i));
-		System.out.println("Loaded " + old_quiz_question_mining.size() + " QuizQuestionMining objects from the mining database.");
+			oldQuizQuestionMining.put(((QuizQuestionMining)(t.get(i))).getQuestion().getId(), (QuizQuestionMining)t.get(i));
+		System.out.println("Loaded " + oldQuizQuestionMining.size() + " QuizQuestionMining objects from the mining database.");
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from LevelMining x where x.platform="+ platform.getId() + " order by x.id asc");//mining_session.createQuery("from DepartmentMining x order by x.id asc").list();
-		old_level_mining = new HashMap<Long, LevelMining>();
+		oldLevelMining = new HashMap<Long, LevelMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_level_mining.put(((LevelMining)(t.get(i))).getId(), (LevelMining)t.get(i));
-		System.out.println("Loaded " + old_level_mining.size() + " LevelMining objects from the mining database.");
+			oldLevelMining.put(((LevelMining)(t.get(i))).getId(), (LevelMining)t.get(i));
+		System.out.println("Loaded " + oldLevelMining.size() + " LevelMining objects from the mining database.");
 		
 		/*
 		t =  dbHandler.performQuery(session, EQueryType.HQL, "from DepartmentMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from DepartmentMining x order by x.id asc").list();
@@ -522,26 +522,26 @@ public abstract class ExtractAndMap{
 		System.out.println("Loaded " + old_degree_mining.size() + " DegreeMining objects from the mining database.");
 		*/
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from ChatMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from ChatMining x order by x.id asc").list();
-		old_chat_mining = new HashMap<Long, ChatMining>();
+		oldChatMining = new HashMap<Long, ChatMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_chat_mining.put(((ChatMining)(t.get(i))).getId(), (ChatMining)t.get(i));
-		System.out.println("Loaded " + old_chat_mining.size() + " ChatMining objects from the mining database.");
+			oldChatMining.put(((ChatMining)(t.get(i))).getId(), (ChatMining)t.get(i));
+		System.out.println("Loaded " + oldChatMining.size() + " ChatMining objects from the mining database.");
 		
 		t = dbHandler.performQuery(session, EQueryType.HQL, "from ChatMining x where x.platform="+ platform.getId() +" order by x.id asc");//mining_session.createQuery("from ChatMining x order by x.id asc").list();
-		old_chat_mining = new HashMap<Long, ChatMining>();
+		oldChatMining = new HashMap<Long, ChatMining>();
 		for(int i = 0; i < t.size(); i++)
-			old_chat_mining.put(((ChatMining)(t.get(i))).getId(), (ChatMining)t.get(i));
-		System.out.println("Loaded " + old_chat_mining.size() + " ChatMining objects from the mining database.");
+			oldChatMining.put(((ChatMining)(t.get(i))).getId(), (ChatMining)t.get(i));
+		System.out.println("Loaded " + oldChatMining.size() + " ChatMining objects from the mining database.");
 		
 		
 		List<IDMappingMining> ids = (List<IDMappingMining>) dbHandler.performQuery(session, EQueryType.HQL, "from IDMappingMining x WHERE x.platform=" + platform.getId() + " order by x.id asc");
 		
 		dbHandler.closeSession(session);
 		
-		old_id_mapping = new HashMap<String, IDMappingMining>();
+		oldIdMapping = new HashMap<String, IDMappingMining>();
 		for(int i = 0; i < ids.size(); i++)
 		{
-			old_id_mapping.put(ids.get(i).getHash(), ids.get(i));
+			oldIdMapping.put(ids.get(i).getHash(), ids.get(i));
 		}
 		//mining_session.clear();		
 
@@ -592,50 +592,50 @@ public abstract class ExtractAndMap{
 	/**
 	 * Clears the lists of mining tables.
 	 * **/
-	static public void clearMiningTables(){
+	public void clearMiningTables(){
 		courseMining.clear();
-		quiz_mining.clear();
-		assignment_mining.clear();
-		scorm_mining.clear();
-		forum_mining.clear();
-		resource_mining.clear();
-		user_mining.clear();
-		wiki_mining.clear();
-		group_mining.clear();
-		question_mining.clear();
-		role_mining.clear();
+		quizMining.clear();
+		assignmentMining.clear();
+		scormMining.clear();
+		forumMining.clear();
+		resourceMining.clear();
+		userMining.clear();
+		wikiMining.clear();
+		groupMining.clear();
+		questionMining.clear();
+		roleMining.clear();
 		//degree_mining.clear();
 		//department_mining.clear();
-		chat_mining.clear();
-		id_mapping.clear();
-		chat_mining.clear();
-		level_mining.clear();
+		chatMining.clear();
+		idMapping.clear();
+		chatMining.clear();
+		levelMining.clear();
 	}	
 	
 	/**
 	 * Only for successive readings. This is meant to be done, when the gathered mining data has already 
 	 * been saved and before the mining tables are cleared for the next iteration.
 	 */
-	static public void prepareMiningData()
+	public void prepareMiningData()
 	{
-		old_course_mining.putAll(courseMining);
-		old_quiz_mining.putAll(quiz_mining);
-		old_assignment_mining.putAll(assignment_mining);
-		old_scorm_mining.putAll(scorm_mining);
-		old_forum_mining.putAll(forum_mining);
-		old_resource_mining.putAll(resource_mining);
-		old_user_mining.putAll(user_mining);
-		old_wiki_mining.putAll(wiki_mining);
-		old_group_mining.putAll(group_mining);
-		old_question_mining.putAll(question_mining);
-		old_role_mining.putAll(role_mining);
+		oldCourseMining.putAll(courseMining);
+		oldQuizMining.putAll(quizMining);
+		oldAssignmentMining.putAll(assignmentMining);
+		oldScormMining.putAll(scormMining);
+		oldForumMining.putAll(forumMining);
+		oldResourceMining.putAll(resourceMining);
+		oldUserMining.putAll(userMining);
+		oldWikiMining.putAll(wikiMining);
+		oldGroupMining.putAll(groupMining);
+		oldQuestionMining.putAll(questionMining);
+		oldRoleMining.putAll(roleMining);
 		//old_degree_mining.putAll(degree_mining);
 		//old_department_mining.putAll(department_mining);
-		old_chat_mining.putAll(chat_mining);
-		old_id_mapping.putAll(id_mapping);
-		old_quiz_question_mining.putAll(quiz_question_mining);
-		old_course_quiz_mining.putAll(course_quiz_mining);
-		old_level_mining.putAll(level_mining);
+		oldChatMining.putAll(chatMining);
+		oldIdMapping.putAll(idMapping);
+		oldQuizQuestionMining.putAll(quizQuestionMining);
+		oldCourseQuizMining.putAll(courseQuizMining);
+		oldLevelMining.putAll(levelMining);
 	}
 	
 	/**
@@ -652,9 +652,9 @@ public abstract class ExtractAndMap{
 		Long objects = 0L;
 		
 		//generate mining tables
-		if(user_mining == null){
+		if(userMining == null){
 			
-			id_mapping = new HashMap<String, IDMappingMining>();
+			idMapping = new HashMap<String, IDMappingMining>();
 			c.reset();
 			System.out.println("\nObject tables:\n");
 			
@@ -662,10 +662,10 @@ public abstract class ExtractAndMap{
 			objects += platformMining.size();
 			System.out.println("Generated " + platformMining.size() + " PlatformMining entries in "+ c.getAndReset() +" s. ");
 
-			assignment_mining = generateAssignmentMining();
-			objects += assignment_mining.size();
-			System.out.println("Generated " + assignment_mining.size() + " AssignmentMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(assignment_mining.values());
+			assignmentMining = generateAssignmentMining();
+			objects += assignmentMining.size();
+			System.out.println("Generated " + assignmentMining.size() + " AssignmentMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(assignmentMining.values());
 			
 			//Screwing up the alphabetical order, CourseMinings have to be calculated BEFORE ChatMinings due to the temporal foreign key "course" in ChatMining
 			courseMining = generateCourseMining();
@@ -673,15 +673,15 @@ public abstract class ExtractAndMap{
 			System.out.println("Generated " + courseMining.size() + " CourseMining entries in "+ c.getAndReset() +" s. ");
 			updates.add(courseMining.values());
 			
-			chat_mining = generateChatMining();
-			objects += chat_mining.size();
-			updates.add(chat_mining.values());
-			System.out.println("Generated " + chat_mining.size() + " ChatMining entries in "+ c.getAndReset() +" s. ");
+			chatMining = generateChatMining();
+			objects += chatMining.size();
+			updates.add(chatMining.values());
+			System.out.println("Generated " + chatMining.size() + " ChatMining entries in "+ c.getAndReset() +" s. ");
 			
-			level_mining = generateLevelMining();
-			objects += level_mining.size();
-			System.out.println("Generated " + level_mining.size() + " LevelMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(level_mining.values());
+			levelMining = generateLevelMining();
+			objects += levelMining.size();
+			System.out.println("Generated " + levelMining.size() + " LevelMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(levelMining.values());
 			
 			/*
 			degree_mining = generateDegreeMining();
@@ -695,51 +695,51 @@ public abstract class ExtractAndMap{
 			updates.add(department_mining.values());
 			*/
 			
-			forum_mining = generateForumMining();
-			objects += forum_mining.size();
-			System.out.println("Generated " + forum_mining.size() + " ForumMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(forum_mining.values());
+			forumMining = generateForumMining();
+			objects += forumMining.size();
+			System.out.println("Generated " + forumMining.size() + " ForumMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(forumMining.values());
 			
-			group_mining = generateGroupMining();
-			objects += group_mining.size();
-			System.out.println("Generated " + group_mining.size() + " GroupMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(group_mining.values());
+			groupMining = generateGroupMining();
+			objects += groupMining.size();
+			System.out.println("Generated " + groupMining.size() + " GroupMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(groupMining.values());
 			
-			question_mining = generateQuestionMining();
-			objects += question_mining.size();
-			System.out.println("Generated " + question_mining.size() + " QuestionMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(question_mining.values());
+			questionMining = generateQuestionMining();
+			objects += questionMining.size();
+			System.out.println("Generated " + questionMining.size() + " QuestionMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(questionMining.values());
 			
-			quiz_mining = generateQuizMining();
-			objects += quiz_mining.size();
-			updates.add(quiz_mining.values());
-			System.out.println("Generated " + quiz_mining.size() + " QuizMining entries in "+ c.getAndReset() +" s. ");
+			quizMining = generateQuizMining();
+			objects += quizMining.size();
+			updates.add(quizMining.values());
+			System.out.println("Generated " + quizMining.size() + " QuizMining entries in "+ c.getAndReset() +" s. ");
 
-			resource_mining = generateResourceMining();
-			objects += resource_mining.size();
-			System.out.println("Generated " + resource_mining.size() + " ResourceMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(resource_mining.values());
+			resourceMining = generateResourceMining();
+			objects += resourceMining.size();
+			System.out.println("Generated " + resourceMining.size() + " ResourceMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(resourceMining.values());
 
-			role_mining = generateRoleMining();
-			objects += role_mining.size();
-			System.out.println("Generated " + role_mining.size() + " RoleMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(role_mining.values());
+			roleMining = generateRoleMining();
+			objects += roleMining.size();
+			System.out.println("Generated " + roleMining.size() + " RoleMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(roleMining.values());
 			
-			scorm_mining = generateScormMining();
-			objects += scorm_mining.size();
-			System.out.println("Generated " + scorm_mining.size() + " ScormMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(scorm_mining.values());
+			scormMining = generateScormMining();
+			objects += scormMining.size();
+			System.out.println("Generated " + scormMining.size() + " ScormMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(scormMining.values());
 			
 			
-			user_mining = generateUserMining();
-			objects += user_mining.size();
-			System.out.println("Generated " + user_mining.size() + " UserMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(user_mining.values());
+			userMining = generateUserMining();
+			objects += userMining.size();
+			System.out.println("Generated " + userMining.size() + " UserMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(userMining.values());
 			
-			wiki_mining = generateWikiMining();
-			objects += wiki_mining.size();
-			System.out.println("Generated " + wiki_mining.size() + " WikiMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(wiki_mining.values());
+			wikiMining = generateWikiMining();
+			objects += wikiMining.size();
+			System.out.println("Generated " + wikiMining.size() + " WikiMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(wikiMining.values());
 			
 			updates.add(generateCourseAssignmentMining().values());
 			objects += updates.get(updates.size()-1).size();
@@ -768,10 +768,10 @@ public abstract class ExtractAndMap{
 			System.out.println("Generated " + updates.get(updates.size()-1).size() + " DepartmentDegreeMining entries in "+ c.getAndReset() +" s. ");
 			*/
 			
-			quiz_question_mining = generateQuizQuestionMining();
-			objects += quiz_question_mining.size();
-			System.out.println("Generated " + quiz_question_mining.size() + " QuizQuestionMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(quiz_question_mining.values());
+			quizQuestionMining = generateQuizQuestionMining();
+			objects += quizQuestionMining.size();
+			System.out.println("Generated " + quizQuestionMining.size() + " QuizQuestionMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(quizQuestionMining.values());
 			
 			System.out.println("\nAssociation tables:\n");
 			
@@ -782,12 +782,12 @@ public abstract class ExtractAndMap{
 			objects += updates.get(updates.size()-1).size();
 			System.out.println("Generated " + updates.get(updates.size()-1).size() + " CourseGroupMining entries in "+ c.getAndReset() +" s. ");
 			
-			course_quiz_mining = generateCourseQuizMining();
-			objects += course_quiz_mining.size();
+			courseQuizMining = generateCourseQuizMining();
+			objects += courseQuizMining.size();
 			//updates.add(generateCourseQuizMining().values());
 			//objects += updates.get(updates.size()-1).size();
-			System.out.println("Generated " + course_quiz_mining.size() + " CourseQuizMining entries in "+ c.getAndReset() +" s. ");
-			updates.add(course_quiz_mining.values());
+			System.out.println("Generated " + courseQuizMining.size() + " CourseQuizMining entries in "+ c.getAndReset() +" s. ");
+			updates.add(courseQuizMining.values());
 			
 			updates.add(generateCourseResourceMining().values());
 			objects += updates.get(updates.size()-1).size();
@@ -798,7 +798,7 @@ public abstract class ExtractAndMap{
 			
 			
 
-			updates.add(id_mapping.values());
+			updates.add(idMapping.values());
 			
 		}
 		

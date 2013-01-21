@@ -38,7 +38,7 @@ public class QuizLogMining implements ILogMining  , IMappingClass, IRatedLogObje
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof QuizLogMining))
+		if(!(o instanceof QuizLogMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof QuizLogMining))
 			return true;
@@ -98,12 +98,12 @@ public class QuizLogMining implements ILogMining  , IMappingClass, IRatedLogObje
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addQuiz_log(this);
+			userMining.get(user).addQuizLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addQuiz_log(this);
+			oldUserMining.get(user).addQuizLog(this);
 		}
 	}
 	/** standard getter for the attribute course
@@ -128,12 +128,12 @@ public class QuizLogMining implements ILogMining  , IMappingClass, IRatedLogObje
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addQuiz_log(this);
+			courseMining.get(course).addQuizLog(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addQuiz_log(this);
+			oldCourseMining.get(course).addQuizLog(this);
 		}
 	}
 	/** standard getter for the attribute grade
@@ -194,12 +194,12 @@ public class QuizLogMining implements ILogMining  , IMappingClass, IRatedLogObje
 		if(quizMining.get(quiz) != null)
 		{
 			this.quiz = quizMining.get(quiz);
-			quizMining.get(quiz).addQuiz_log(this);
+			quizMining.get(quiz).addQuizLog(this);
 		}
 		if(this.quiz == null && oldQuizMining.get(quiz) != null)
 		{
 			this.quiz = oldQuizMining.get(quiz);
-			oldQuizMining.get(quiz).addQuiz_log(this);
+			oldQuizMining.get(quiz).addQuizLog(this);
 		}
 		
 	}
@@ -218,12 +218,12 @@ public class QuizLogMining implements ILogMining  , IMappingClass, IRatedLogObje
 	}
 
 	@Override
-	public Double getMaxgrade() {
-		return quiz.getMaxgrade();
+	public Double getMaxGrade() {
+		return quiz.getMaxGrade();
 	}
 
 	@Override
-	public Double getFinalgrade() {
+	public Double getFinalGrade() {
 		// TODO Auto-generated method stub
 		return grade;
 	}

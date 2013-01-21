@@ -1,7 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
 //import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
@@ -21,41 +20,12 @@ public class CourseAssignmentMining  implements IMappingClass, ICourseRatedObjec
 
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof CourseAssignmentMining))
+		if(!(o instanceof CourseAssignmentMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof CourseAssignmentMining))
 			return true;
 		return false;
 	}
-	
-	
-//	public boolean equals(Object obj) {
-//		if(!(obj instanceof Course_assignment_mining)){
-//			return false;			
-//		}
-//		Course_quiz_mining a = (Course_assignment_mining)obj;
-//		if(a.assignment == this.assignment && a.course == this.course){
-//			return true;
-//		}		
-//		return false;
-//	}	
-
-//	private Integer hashcodeValue = null;
-
-//	public synchronized int hashCode(){
-//	   if( hashcodeValue == null){
-//		   if(assignment != null && course != null){
-//			   hashcodeValue = 42 + Long.bitCount(this.assignment.getQid()) +
-//			   Long.bitCount(this.course.getId() +
-//				this.assignment.getQtype().length());
-//		   }
-//		   else{
-//			   hashcodeValue = 42 * Long.bitCount(System.currentTimeMillis());  
-//		   }
-//		   return hashcodeValue;
-//	   }
-//	   return hashcodeValue.intValue();
-//	}
 	
 	/** standard getter for the attribut course
 	 * @return a course in which the quiz is used
@@ -79,12 +49,12 @@ public class CourseAssignmentMining  implements IMappingClass, ICourseRatedObjec
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addCourse_assignment(this);
+			courseMining.get(course).addCourseAssignment(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addCourse_assignment(this);
+			oldCourseMining.get(course).addCourseAssignment(this);
 		}
 	}
 	
@@ -110,12 +80,12 @@ public class CourseAssignmentMining  implements IMappingClass, ICourseRatedObjec
 		if(assignmentMining.get(assignment) != null)
 		{
 			this.assignment = assignmentMining.get(assignment);
-			assignmentMining.get(assignment).addCourse_assignment(this);
+			assignmentMining.get(assignment).addCourseAssignment(this);
 		}
 		if(this.assignment == null && oldAssignmentMining.get(assignment) != null)
 		{
 			this.assignment = oldAssignmentMining.get(assignment);
-			oldAssignmentMining.get(assignment).addCourse_assignment(this);
+			oldAssignmentMining.get(assignment).addCourseAssignment(this);
 		}
 	}
 	/** standard setter for the attribut id

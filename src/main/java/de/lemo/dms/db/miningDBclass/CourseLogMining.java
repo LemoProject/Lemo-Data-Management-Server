@@ -33,7 +33,7 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof CourseLogMining))
+		if(!(o instanceof CourseLogMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof CourseLogMining))
 			return true;
@@ -58,49 +58,49 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 		return this.course == null ? null : this.course.getId();
 	}
 	
-	/** standard getter for the attribut id
+	/** standard getter for the attribute id
 	 * @return the identifier of the log entry
 	 */	
 	public long getId() {
 		return id;
 	}
-	/** standard setter for the attribut id
+	/** standard setter for the attribute id
 	 * @param id the identifier of the log entry
 	 */	
 	public void setId(long id) {
 		this.id = id;
 	}
-	/** standard getter for the attribut timestamp
+	/** standard getter for the attribute timestamp
 	 * @return the timestamp the action did occur
 	 */	
 	public long getTimestamp() {
 		return timestamp;
 	}
-	/** standard setter for the attribut timestamp
+	/** standard setter for the attribute timestamp
 	 * @param timestamp the timestamp the action did occur
 	 */	
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
-	/** standard getter for the attribut action
+	/** standard getter for the attribute action
 	 * @return the action which occur
 	 */	
 	public String getAction() {
 		return action;
 	}
-	/** standard setter for the attribut action
+	/** standard setter for the attribute action
 	 * @param action the action which occur
 	 */	
 	public void setAction(String action) {
 		this.action = action;
 	}
-	/** standard getter for the attribut course
+	/** standard getter for the attribute course
 	 * @return the course in which the action takes place
 	 */	
 	public CourseMining getCourse() {
 		return course;
 	}
-	/** standard setter for the attribut course
+	/** standard setter for the attribute course
 	 * @param course the course in which the action takes place
 	 */		
 	public void setCourse(CourseMining course) {
@@ -115,15 +115,15 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addCourse_updates(this);
+			courseMining.get(course).addCourseUpdates(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addCourse_updates(this);
+			oldCourseMining.get(course).addCourseUpdates(this);
 		}
 	}
-	/** standard getter for the attribut user
+	/** standard getter for the attribute user
 	 * @return the user who interact with the course
 	 */	
 	public UserMining getUser() {
@@ -144,12 +144,12 @@ public class CourseLogMining implements ILogMining, IMappingClass{
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addCourse_log(this);
+			userMining.get(user).addCourseLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addCourse_log(this);
+			oldUserMining.get(user).addCourseLog(this);
 		}
 	}
 

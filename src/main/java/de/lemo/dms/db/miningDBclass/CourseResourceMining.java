@@ -1,7 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
 
-import java.util.HashMap;
 import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -16,32 +15,32 @@ public class CourseResourceMining implements IMappingClass {
 
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof CourseResourceMining))
+		if(!(o instanceof CourseResourceMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof CourseResourceMining))
 			return true;
 		return false;
 	}
 	
-	/** standard getter for the attribut id
-	 * @return the identifier for the assoziation between course and resource
+	/** standard getter for the attribute id
+	 * @return the identifier for the association between course and resource
 	 */	
 	public long getId() {
 		return id;
 	}
-	/** standard setter for the attribut id
-	 * @param id the identifier for the assoziation between course and resource
+	/** standard setter for the attribute id
+	 * @param id the identifier for the association between course and resource
 	 */	
 	public void setId(long id) {
 		this.id = id;
 	}
-	/** standard getter for the attribut 
+	/** standard getter for the attribute 
 	 * @return a course in which the resource is used
 	 */	
 	public CourseMining getCourse() {
 		return course;
 	}
-	/** standard setter for the attribut course
+	/** standard setter for the attribute course
 	 * @param course a course in which the resource is used
 	 */		
 	public void setCourse(CourseMining course) {
@@ -56,21 +55,21 @@ public class CourseResourceMining implements IMappingClass {
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addCourse_resource(this);
+			courseMining.get(course).addCourseResource(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addCourse_resource(this);
+			oldCourseMining.get(course).addCourseResource(this);
 		}
 	}
-	/** standard getter for the attribut resource
+	/** standard getter for the attribute resource
 	 * @return the resource which is used in the course
 	 */	
 	public ResourceMining getResource() {
 		return resource;
 	}
-	/** standard setter for the attribut resource
+	/** standard setter for the attribute resource
 	 * @param resource the resource which is used in the course
 	 */	
 	public void setResource(ResourceMining resource) {
@@ -85,12 +84,12 @@ public class CourseResourceMining implements IMappingClass {
         if(resourceMining.get(resource) != null)
 		{
 			this.resource = resourceMining.get(resource);
-			resourceMining.get(resource).addCourse_resource(this);
+			resourceMining.get(resource).addCourseResource(this);
 		}
         if(this.resource == null && oldResourceMining.get(resource) != null)
 		{
 			this.resource = oldResourceMining.get(resource);
-			oldResourceMining.get(resource).addCourse_resource(this);
+			oldResourceMining.get(resource).addCourseResource(this);
 		}		
 	}
 

@@ -13,9 +13,9 @@ public class LevelCourseMining implements IMappingClass {
 
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof DegreeCourseMining))
+		if(!(o instanceof LevelCourseMining))
 			return false;
-		if(o.getId() == this.getId() && (o instanceof DegreeCourseMining))
+		if(o.getId() == this.getId() && (o instanceof LevelCourseMining))
 			return true;
 		return false;
 	}

@@ -36,7 +36,7 @@ public class PlatformMining implements IMappingClass{
 
 	@Override
 	public boolean equals(IMappingClass o) {
-		if(o == null || !(o instanceof PlatformMining))
+		if(!(o instanceof PlatformMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof PlatformMining))
 			return true;

@@ -30,38 +30,38 @@
             type="string"/>
             
         <property
-            name="maxgrade"
+            name="maxGrade"
             column="maxgrade"
             type="double"/>
 
         <property
-            name="timeopen"
+            name="timeOpen"
             column="timeopen"
             type="long"/>
             
         <property
-            name="timeclose"
+            name="timeClose"
             column="timeclose"
             type="long"/>
             
         <property
-            name="timecreated"
+            name="timeCreated"
             column="timecreated"
             type="long"/>
                
         <property
-            name="timemodified"
+            name="timeModified"
             column="timemodified"
             type="long"/>        
             
-		<set name="course_quiz" inverse="true" lazy="false">
+		<set name="courseQuizzes" inverse="true" lazy="false">
 			<key>
 				<column name="quiz_id"/>
 			</key>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseQuizMining"/>
 		</set>
 
-		<set name="quiz_question" inverse="true" lazy="false">
+		<set name="quizQuestions" inverse="true" lazy="false">
 			<key>
 				<column name="quiz_id"/>
 			</key>

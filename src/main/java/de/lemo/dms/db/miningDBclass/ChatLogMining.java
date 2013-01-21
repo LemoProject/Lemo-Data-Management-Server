@@ -45,12 +45,12 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addChat_log(this);
+			courseMining.get(course).addChatLog(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addChat_log(this);
+			courseMining.get(course).addChatLog(this);
 		}
 	}
 	
@@ -94,12 +94,12 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addChat_log(this);
+			userMining.get(user).addChatLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addChat_log(this);
+			oldUserMining.get(user).addChatLog(this);
 		}
 	}
 	
@@ -109,12 +109,12 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		if(chatMining.get(chat) != null)
 		{
 			this.chat = chatMining.get(chat);
-			chatMining.get(chat).addChat_log(this);
+			chatMining.get(chat).addChatLog(this);
 		}
 		if(this.chat == null && oldChatMining.get(chat) != null)
 		{
 			this.chat = oldChatMining.get(chat);
-			oldChatMining.get(chat).addChat_log(this);
+			oldChatMining.get(chat).addChatLog(this);
 		}
 	}
 

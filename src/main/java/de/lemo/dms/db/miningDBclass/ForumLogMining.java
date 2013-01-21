@@ -140,12 +140,12 @@ public class ForumLogMining implements ILogMining , IMappingClass {
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addForum_log(this);
+			courseMining.get(course).addForumLog(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addForum_log(this);
+			oldCourseMining.get(course).addForumLog(this);
 		}
 	}
 	/** standard setter for the attribut course
@@ -164,12 +164,12 @@ public class ForumLogMining implements ILogMining , IMappingClass {
 		if(forumMining.get(forum) != null)
 		{
 			this.forum = forumMining.get(forum);
-			forumMining.get(forum).addForum_log(this);
+			forumMining.get(forum).addForumLog(this);
 		}
 		if(this.forum == null && oldForumMining.get(forum) != null)
 		{
 			this.forum = oldForumMining.get(forum);
-			oldForumMining.get(forum).addForum_log(this);
+			oldForumMining.get(forum).addForumLog(this);
 		}
 	}
 	
@@ -207,12 +207,12 @@ public class ForumLogMining implements ILogMining , IMappingClass {
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addForum_log(this);
+			userMining.get(user).addForumLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addForum_log(this);
+			oldUserMining.get(user).addForumLog(this);
 		}
 	}
 

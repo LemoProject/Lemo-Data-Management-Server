@@ -1,6 +1,5 @@
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
@@ -10,10 +9,6 @@ import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 /**This class represents the relationship between the courses and scorm packages.*/
 public class CourseScormMining  implements IMappingClass, ICourseRatedObjectAssociation{
 
-
-//public class Course_assignment_mining implements Serializable{
-
-//	private static final long serialVersionUID = 1L;
 	private long id;	
 	private CourseMining course;
 	private	ScormMining scorm;
@@ -21,20 +16,20 @@ public class CourseScormMining  implements IMappingClass, ICourseRatedObjectAsso
 
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof CourseScormMining))
+		if(!(o instanceof CourseScormMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof CourseScormMining))
 			return true;
 		return false;
 	}
 
-	/** standard getter for the attribut course
+	/** standard getter for the attribute course
 	 * @return a course in which the quiz is used
 	 */		
 	public CourseMining getCourse() {
 		return course;
 	}
-	/** standard setter for the attribut course
+	/** standard setter for the attribute course
 	 * @param course a course in which the quiz is used
 	 */	
 	public void setCourse(CourseMining course) {
@@ -49,27 +44,27 @@ public class CourseScormMining  implements IMappingClass, ICourseRatedObjectAsso
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addCourse_scorm(this);
+			courseMining.get(course).addCourseScorm(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addCourse_scorm(this);
+			oldCourseMining.get(course).addCourseScorm(this);
 		}
 	}
-	/** standard getter for the attribut scorm
+	/** standard getter for the attribute scorm
 	 * @return the scorm which is used in the course
 	 */	
 	public ScormMining getScorm() {
 		return scorm;
 	}
-	/** standard setter for the attribut scorm
+	/** standard setter for the attribute scorm
 	 * @param scorm the scorm which is used in the course
 	 */	
 	public void setScorm(ScormMining scorm) {
 		this.scorm = scorm;
 	}
-	/** parameterized setter for the attribut assignment
+	/** parameterized setter for the attribute assignment
 	 * @param id the id of the quiz in which the action takes place
 	 * @param scormMining a list of new added quiz, which is searched for the quiz with the qid and qtype submitted in the other parameters
 	 * @param oldScormMining a list of quiz in the miningdatabase, which is searched for the quiz with the qid and qtype submitted in the other parameters
@@ -78,23 +73,23 @@ public class CourseScormMining  implements IMappingClass, ICourseRatedObjectAsso
 		if(scormMining.get(scorm) != null)
 		{
 			this.scorm = scormMining.get(scorm);
-			scormMining.get(scorm).addCourse_scorm(this);
+			scormMining.get(scorm).addCourseScorm(this);
 		}
 		if(this.scorm == null && oldScormMining.get(scorm) != null)
 		{
 			this.scorm = oldScormMining.get(scorm);
-			oldScormMining.get(scorm).addCourse_scorm(this);
+			oldScormMining.get(scorm).addCourseScorm(this);
 		}
 	}
-	/** standard setter for the attribut id
-	 * @param id the identifier for the assoziation between course and scorm
+	/** standard setter for the attribute id
+	 * @param id the identifier for the association between course and scorm
 	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 	
-	/** standard getter for the attribut id
-	 * @return the identifier for the assoziation between course and scorm
+	/** standard getter for the attribute id
+	 * @return the identifier for the association between course and scorm
 	 */
 	public long getId() {
 		return id;

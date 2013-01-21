@@ -10,14 +10,14 @@ public class QuizUserMining  implements IMappingClass{
 	private UserMining user;
 	private CourseMining course;
 	private QuizMining quiz;	
-	private double rawgrade;
-	private double finalgrade;
-	private long timemodified;
+	private double rawGrade;
+	private double finalGrade;
+	private long timeModified;
 	private Long platform;
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof QuizUserMining))
+		if(!(o instanceof QuizUserMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof QuizUserMining))
 			return true;
@@ -58,12 +58,12 @@ public class QuizUserMining  implements IMappingClass{
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addQuiz_user(this);
+			userMining.get(user).addQuizUser(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addQuiz_user(this);
+			oldUserMining.get(user).addQuizUser(this);
 		}
 		
 	}
@@ -89,12 +89,12 @@ public class QuizUserMining  implements IMappingClass{
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addQuiz_user(this);
+			courseMining.get(course).addQuizUser(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addQuiz_user(this);
+			oldCourseMining.get(course).addQuizUser(this);
 		}
 	}
 	/** standard getter for the attribute quiz
@@ -119,49 +119,49 @@ public class QuizUserMining  implements IMappingClass{
 		if(quizMining.get(quiz) != null)
 		{
 			this.quiz = quizMining.get(quiz);
-			quizMining.get(quiz).addQuiz_user(this);
+			quizMining.get(quiz).addQuizUser(this);
 		}
 		if(this.quiz == null && oldQuizMining.get(quiz) != null)
 		{
 			this.quiz = oldQuizMining.get(quiz);
-			oldQuizMining.get(quiz).addQuiz_user(this);
+			oldQuizMining.get(quiz).addQuizUser(this);
 		}
 	}
 	/** standard getter for the attribute rawgrade
 	 * @return the raw grade of the user in this exercise
 	 */	
-	public double getRawgrade() {
-		return rawgrade;
+	public double getRawGrade() {
+		return rawGrade;
 	}
 	/** standard setter for the attribute rawgrade
-	 * @param rawgrade the raw grade of the user in this quiz
+	 * @param rawGrade the raw grade of the user in this quiz
 	 */	
-	public void setRawgrade(double rawgrade) {
-		this.rawgrade = rawgrade;
+	public void setRawGrade(double rawGrade) {
+		this.rawGrade = rawGrade;
 	}
 	/** standard getter for the attribute finalgrade
 	 * @return the final grade of the user in this quiz
 	 */	
-	public double getFinalgrade() {
-		return finalgrade;
+	public double getFinalGrade() {
+		return finalGrade;
 	}
 	/** standard setter for the attribute finalgrade
-	 * @param finalgrade the final grade of the user in this quiz
+	 * @param finalGrade the final grade of the user in this quiz
 	 */	
-	public void setFinalgrade(double finalgrade) {
-		this.finalgrade = finalgrade;
+	public void setFinalGrade(double finalGrade) {
+		this.finalGrade = finalGrade;
 	}
 	/** standard getter for the attribute timemodified
 	 * @return the timestamp when the grade was changed the last time
 	 */	
-	public long getTimemodified() {
-		return timemodified;
+	public long getTimeModified() {
+		return timeModified;
 	}
 	/** standard setter for the attribute timemodified
-	 * @param timemodified the timestamp when the grade was changed the last time
+	 * @param timeModified the timestamp when the grade was changed the last time
 	 */	
-	public void setTimemodified(long timemodified) {
-		this.timemodified = timemodified;
+	public void setTimeModified(long timeModified) {
+		this.timeModified = timeModified;
 	}
 
 	public Long getPlatform() {

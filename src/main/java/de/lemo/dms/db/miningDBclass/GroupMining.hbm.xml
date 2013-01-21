@@ -21,21 +21,21 @@
             type="long"/>  
                           
         <property
-            name="timecreated"
+            name="timeCreated"
             column="timecreated"
             type="long"/>  
             
         <property
-            name="timemodified"
+            name="timeModified"
             column="timemodified"
             type="long"/>
             
-		<set name="course_group" inverse="true" lazy="false">
+		<set name="courseGroups" inverse="true" lazy="false">
 			<key column="group_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseGroupMining"/>
 		</set>
 		
-		<set name="group_user" inverse="true" lazy="false">
+		<set name="groupUsers" inverse="true" lazy="false">
 			<key column="group_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.GroupUserMining"/>
 		</set>              

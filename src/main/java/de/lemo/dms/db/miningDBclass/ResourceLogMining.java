@@ -21,7 +21,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , I
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof ResourceLogMining))
+		if(!(o instanceof ResourceLogMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof ResourceLogMining))
 			return true;
@@ -111,12 +111,12 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , I
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addResource_log(this);
+			courseMining.get(course).addResourceLog(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addResource_log(this);
+			oldCourseMining.get(course).addResourceLog(this);
 		}
 	}
 	/** standard getter for the attribute action
@@ -152,12 +152,12 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , I
 		if(resourceMining.get(resource) != null)
 		{
 			this.resource = resourceMining.get(resource);
-			resourceMining.get(resource).addResource_log(this);
+			resourceMining.get(resource).addResourceLog(this);
 		}
 		if(this.resource == null && oldResourceMining.get(resource) != null)
 		{
 			this.resource = oldResourceMining.get(resource);
-			oldResourceMining.get(resource).addResource_log(this);
+			oldResourceMining.get(resource).addResourceLog(this);
 		}
 	}
 	/** standard setter for the attribute user
@@ -182,12 +182,12 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining , I
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addResource_log(this);
+			userMining.get(user).addResourceLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addResource_log(this);
+			oldUserMining.get(user).addResourceLog(this);
 		}
 	}
 

@@ -36,7 +36,7 @@
             type="text"/>
             
         <property
-            name="sortorder"
+            name="sortOrder"
             column="sortorder"
             type="long"/>
 

@@ -39,7 +39,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof AssignmentLogMining))
+		if(!(o instanceof AssignmentLogMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof AssignmentLogMining))
 			return true;
@@ -59,7 +59,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	/** standard getter for the attribute finalgrade
 	 * @return the final grade of the user in this quiz
 	 */	
-	public Double getFinalgrade() {
+	public Double getFinalGrade() {
 		return grade;
 	}
 	
@@ -99,12 +99,12 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addAssignment_log(this);
+			userMining.get(user).addAssignmentLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addAssignment_log(this);
+			oldUserMining.get(user).addAssignmentLog(this);
 		}
 	}
 	
@@ -130,12 +130,12 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addAssignment_log(this);
+			courseMining.get(course).addAssignmentLog(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addAssignment_log(this);
+			oldCourseMining.get(course).addAssignmentLog(this);
 		}
 	}
 	/** standard getter for the attribute grade
@@ -186,12 +186,12 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 		if(assignmentMining.get(assignment) != null)
 		{
 			this.assignment = assignmentMining.get(assignment);
-			assignmentMining.get(assignment).addAssignment_log(this);
+			assignmentMining.get(assignment).addAssignmentLog(this);
 		}
 		if(this.assignment == null && oldAssignmentMining.get(assignment) != null)
 		{
 			this.assignment = oldAssignmentMining.get(assignment);
-			oldAssignmentMining.get(assignment).addAssignment_log(this);
+			oldAssignmentMining.get(assignment).addAssignmentLog(this);
 		}
 	}
 	/** standard setter for the attribute assignment
@@ -230,7 +230,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	}
 
 	@Override
-	public Double getMaxgrade() {
-		return assignment.getMaxgrade();
+	public Double getMaxGrade() {
+		return assignment.getMaxGrade();
 	}
 }

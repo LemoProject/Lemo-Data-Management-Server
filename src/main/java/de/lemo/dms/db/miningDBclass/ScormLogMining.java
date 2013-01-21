@@ -37,7 +37,7 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof ScormLogMining))
+		if(!(o instanceof ScormLogMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof ScormLogMining))
 			return true;
@@ -97,12 +97,12 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addScorm_log(this);
+			userMining.get(user).addScormLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addScorm_log(this);
+			oldUserMining.get(user).addScormLog(this);
 		}
 	}
 	/** standard getter for the attribute course
@@ -127,12 +127,12 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addScorm_log(this);
+			courseMining.get(course).addScormLog(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addScorm_log(this);
+			oldCourseMining.get(course).addScormLog(this);
 		}
 	}
 	/** standard getter for the attribute grade
@@ -181,12 +181,12 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 		if(scormMining.get(scorm) != null)
 		{
 			this.scorm = scormMining.get(scorm);
-			scormMining.get(scorm).addScorm_log(this);
+			scormMining.get(scorm).addScormLog(this);
 		}
 		if(this.scorm == null && oldScormMining.get(scorm) != null)
 		{
 			this.scorm = oldScormMining.get(scorm);
-			oldScormMining.get(scorm).addScorm_log(this);
+			oldScormMining.get(scorm).addScormLog(this);
 		}
 	}
 	/** standard setter for the attribute scorm
@@ -216,12 +216,12 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 	}
 
 	@Override
-	public Double getMaxgrade() {
-		return scorm.getMaxgrade();
+	public Double getMaxGrade() {
+		return scorm.getMaxGrade();
 	}
 
 	@Override
-	public Double getFinalgrade() {
+	public Double getFinalGrade() {
 		// TODO Auto-generated method stub
 		return grade;
 	}

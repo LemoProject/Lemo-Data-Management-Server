@@ -16,7 +16,7 @@ public class CourseForumMining  implements IMappingClass{
 
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof CourseForumMining))
+		if(!(o instanceof CourseForumMining))
 			return false;
 		if(o.getId() == this.getId()&& (o instanceof CourseForumMining))
 			return true;
@@ -57,12 +57,12 @@ public class CourseForumMining  implements IMappingClass{
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addCourse_forum(this);
+			courseMining.get(course).addCourseForum(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addCourse_forum(this);
+			oldCourseMining.get(course).addCourseForum(this);
 		}
 	}	
 	
@@ -87,12 +87,12 @@ public class CourseForumMining  implements IMappingClass{
 		if(forumMining.get(forum) != null)
 		{
 			this.forum = forumMining.get(forum);
-			forumMining.get(forum).addCourse_forum(this);
+			forumMining.get(forum).addCourseForum(this);
 		}
 		if(this.forum == null && oldForumMining.get(forum) != null)
 		{
 			this.forum = oldForumMining.get(forum);
-			oldForumMining.get(forum).addCourse_forum(this);
+			oldForumMining.get(forum).addCourseForum(this);
 		}
 	}
 

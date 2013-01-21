@@ -126,7 +126,7 @@ public class ConnectorChemgapedia implements IConnector{
 			Long endtime = System.currentTimeMillis()/1000;
 			ConfigMining config = new ConfigMining();
 		    config.setLastmodified(System.currentTimeMillis());
-		    config.setElapsed_time((endtime) - (starttime));	
+		    config.setElapsedTime((endtime) - (starttime));	
 		    config.setDatabaseModel("1.2");
 		    config.setPlatform(platform.getId());
 		    
@@ -200,7 +200,7 @@ public class ConnectorChemgapedia implements IConnector{
 			Long endtime = System.currentTimeMillis()/1000;
 			ConfigMining config = new ConfigMining();
 		    config.setLastmodified(System.currentTimeMillis());
-		    config.setElapsed_time((endtime) - (starttime));	
+		    config.setElapsedTime((endtime) - (starttime));	
 		    config.setDatabaseModel("1.2");
 		    config.setPlatform(platform.getId());
 		    

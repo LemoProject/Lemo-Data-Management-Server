@@ -11,8 +11,8 @@ public class LevelMining {
 	private long depth;
 	
 	
-	private Set<LevelAssociationMining> levelAssociation = new HashSet<LevelAssociationMining>();
-	private Set<LevelCourseMining> levelCourse = new HashSet<LevelCourseMining>();
+	private Set<LevelAssociationMining> levelAssociations = new HashSet<LevelAssociationMining>();
+	private Set<LevelCourseMining> levelCourses = new HashSet<LevelCourseMining>();
 	
 	
 	public long getId() {
@@ -42,43 +42,43 @@ public class LevelMining {
 	/** standard setter for the attribute department_degreee
 	 * @param department_degree a set of entries in the department_degreee table which relate the degrees to the departments
 	 */	
-	public void setLevelAssociation(Set<LevelAssociationMining> levelAssociation) {
-		this.levelAssociation = levelAssociation;
+	public void setLevelAssociations(Set<LevelAssociationMining> levelAssociation) {
+		this.levelAssociations = levelAssociation;
 	}
 	
 	/** standard getter for the attribute 
 	 * @return a set of entries in the department_degreee table which relate the degree to the departments
 	 */	
-	public Set<LevelAssociationMining> getLevelAssociation() {
-		return this.levelAssociation;
+	public Set<LevelAssociationMining> getLevelAssociations() {
+		return this.levelAssociations;
 	}
 	
 	/** standard add method for the attribute department_degree
 	 * @param department_degree_add this entry will be added to the list of department_degree in this department
 	 * */
 	public void addLevelAssociation(LevelAssociationMining LevelAssociationAdd){	
-		levelAssociation.add(LevelAssociationAdd);	
+		levelAssociations.add(LevelAssociationAdd);	
 	}
 	
 	/** standard setter for the attribute department_degreee
 	 * @param degree_course a set of entries in the degree_course table which relate the degrees to the courses
 	 */	
-	public void setLevelCourse(Set<LevelCourseMining> levelCourse) {
-		this.levelCourse = levelCourse;
+	public void setLevelCourses(Set<LevelCourseMining> levelCourse) {
+		this.levelCourses = levelCourse;
 	}
 	
 	/** standard getter for the attribute 
 	 * @return a set of entries in the degree_course table which relate the degree to the courses
 	 */	
-	public Set<LevelCourseMining> getLevelCourse() {
-		return this.levelCourse;
+	public Set<LevelCourseMining> getLevelCourses() {
+		return this.levelCourses;
 	}
 	
 	/** standard add method for the attribute degree_course
 	 * @param degree_course_add this entry will be added to the list of degree_course in this department
 	 * */
 	public void addLevelCourse(LevelCourseMining levelCourseAdd){	
-		levelCourse.add(levelCourseAdd);	
+		levelCourses.add(levelCourseAdd);	
 	}
 	
 	public long getDepth() {

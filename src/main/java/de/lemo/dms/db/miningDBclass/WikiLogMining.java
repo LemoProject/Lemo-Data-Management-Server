@@ -37,7 +37,7 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof WikiLogMining))
+		if(!(o instanceof WikiLogMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof WikiLogMining))
 			return true;
@@ -118,12 +118,12 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addWiki_log(this);
+			courseMining.get(course).addWikiLog(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addWiki_log(this);
+			oldCourseMining.get(course).addWikiLog(this);
 		}
 	}
 	/** standard setter for the attribute course
@@ -155,12 +155,12 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addWiki_log(this);
+			userMining.get(user).addWikiLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addWiki_log(this);
+			oldUserMining.get(user).addWikiLog(this);
 		}
 	}
 	
@@ -186,12 +186,12 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 		if(wikiMining.get(wiki) != null)
 		{
 			this.wiki = wikiMining.get(wiki);
-			wikiMining.get(wiki).addWiki_log(this);
+			wikiMining.get(wiki).addWikiLog(this);
 		}
 		if(this.wiki == null && oldWikiMining.get(wiki) != null)
 		{
 			this.wiki = oldWikiMining.get(wiki);
-			oldWikiMining.get(wiki).addWiki_log(this);
+			oldWikiMining.get(wiki).addWikiLog(this);
 		}
 	}
 

@@ -122,9 +122,9 @@ public class QPerformanceBoxPlot extends Question{
 	        for(IRatedLogObject log : singleResults.values())
 	        {
 	        	Long name = Long.valueOf(log.getPrefix() + "" + log.getLearnObjId());
-	        	if(values.get(name) != null && log.getFinalgrade() != null)
+	        	if(values.get(name) != null && log.getFinalGrade() != null)
 	        	{
-	        		values.get(name).add(log.getFinalgrade() / (log.getMaxgrade() / resolution));
+	        		values.get(name).add(log.getFinalGrade() / (log.getMaxGrade() / resolution));
 	        	}
 	        }
 	        

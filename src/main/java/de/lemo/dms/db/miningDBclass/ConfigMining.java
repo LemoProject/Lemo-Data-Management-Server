@@ -5,9 +5,9 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the table for configuration information of the extraction tool.*/
 public class ConfigMining implements IMappingClass{
-	private Timestamp lastmodified;
-	private long extractcycle;
-	private long elapsed_time;
+	private Timestamp lastModified;
+	private long extractCycle;
+	private long elapsedTime;
 	private Long platform;
 	private String databaseModel;
 
@@ -21,40 +21,40 @@ public class ConfigMining implements IMappingClass{
 
 
 	public ConfigMining() {
-		this.lastmodified = new Timestamp(0);
+		this.lastModified = new Timestamp(0);
 	}
 	
-	/** standard getter for the attribute lastmodified
+	/** standard getter for the attribute lastModified
 	 * @return the timestamp when the mining db was updated the last time
 	 */
 //	public long getLastmodified() {
-//		return lastmodified.getTime();
+//		return lastModified.getTime();
 //	}
 	
 	public Timestamp getLastmodified() {
-		return lastmodified;
+		return lastModified;
 	}
-	/** standard setter for the attribute lastmodified
-	 * @param  lastmodified the timestamp of the most recent db-update
+	/** standard setter for the attribute lastModified
+	 * @param  lastModified the timestamp of the most recent db-update
 	 */
-	public void setLastmodified(long lastmodified) {
-			this.lastmodified.setTime(lastmodified);
+	public void setLastmodified(long lastModified) {
+			this.lastModified.setTime(lastModified);
 	}
-	public void setLastmodified(Timestamp lastmodified) {
-		this.lastmodified = lastmodified;
+	public void setLastmodified(Timestamp lastModified) {
+		this.lastModified = lastModified;
 }
-	/** standard getter for the attribute extractcycle
+	/** standard getter for the attribute extractCycle
 	 * @return when starting updates cyclic this will be the interval
 	 */	
 
 	public long getExtractcycle() {
-		return extractcycle;
+		return extractCycle;
 	}
-	/** standard setter for the attribute extractcycle
+	/** standard setter for the attribute extractCycle
 	 * @param 
 	 */	
 	public void setExtractcycle(long extractcycle) {
-		this.extractcycle = extractcycle;
+		this.extractCycle = extractcycle;
 	}
 	/** standard getter for the attribute elapsed_time
 	 * @return the time the last update needed to run
@@ -63,13 +63,13 @@ public class ConfigMining implements IMappingClass{
 //		return elapsed_time.getTime();
 //	}
 	public long getElapsed_time() {
-		return elapsed_time;
+		return elapsedTime;
 	}
-	/** standard setter for the attribute elapsed_time
-	 * @param elapsed_time the time the last update needed to run
+	/** standard setter for the attribute elapsedTime
+	 * @param elapsedTime the time the last update needed to run
 	 */	
-	public void setElapsed_time(long elapsed_time) {
-		this.elapsed_time = elapsed_time;
+	public void setElapsedTime(long elapsedTime) {
+		this.elapsedTime = elapsedTime;
 	}
 
 	public String getDatabaseModel() {
@@ -82,13 +82,13 @@ public class ConfigMining implements IMappingClass{
 
 	@Override
 	public long getId() {
-		return lastmodified.getTime();
+		return lastModified.getTime();
 	}
 
 	@Override
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof ConfigMining))
+		if(!(o instanceof ConfigMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof ConfigMining))
 			return true;

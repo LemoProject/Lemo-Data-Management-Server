@@ -14,7 +14,7 @@ public class LevelAssociationMining implements IMappingClass {
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof LevelAssociationMining))
+		if(!(o instanceof LevelAssociationMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof LevelAssociationMining))
 			return true;

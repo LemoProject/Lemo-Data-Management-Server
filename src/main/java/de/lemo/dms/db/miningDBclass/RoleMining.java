@@ -11,99 +11,99 @@ public class RoleMining implements IMappingClass {
 	private String name;
 	private String shortname;
 	private String description;//text
-	private long sortorder;
+	private long sortOrder;
 	private Long platform;
 
-	private Set<CourseUserMining> course_user = new HashSet<CourseUserMining>();	
+	private Set<CourseUserMining> courseUsers = new HashSet<CourseUserMining>();	
 
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof RoleMining))
+		if(!(o instanceof RoleMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof RoleMining))
 			return true;
 		return false;
 	}
 	
-	/** standard setter for the attribut id
+	/** standard setter for the attribute id
 	 * @param id the identifier of the role
 	 */	
 	public void setId(long id) {
 		this.id = id;
 	}
 	
-	/** standard getter for the attribut id
+	/** standard getter for the attribute id
 	 * @return the identifier of the role
 	 */	
 	public long getId() {
 		return id;
 	}
-	/** standard setter for the attribut name
+	/** standard setter for the attribute name
 	 * @param name the full name of the role
 	 */	
 	public void setName(String name) {
 		this.name = name;
 	}
-	/** standard getter for the attribut name
+	/** standard getter for the attribute name
 	 * @return the full name of the role
 	 */	
 	public String getName() {
 		return name;
 	}
-	/** standard setter for the attribut shortname
+	/** standard setter for the attribute shortname
 	 * @param shortname the shortname of the role
 	 */	
 	public void setShortname(String shortname) {
 		this.shortname = shortname;
 	}
-	/** standard getter for the attribut shortname
+	/** standard getter for the attribute shortname
 	 * @return the shortname of the role
 	 */	
 	public String getShortname() {
 		return shortname;
 	}
-	/** standard setter for the attribut description
+	/** standard setter for the attribute description
 	 * @param description a description of the role
 	 */	
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	/** standard getter for the attribut description
+	/** standard getter for the attribute description
 	 * @return a description of the role
 	 */	
 	public String getDescription() {
 		return description;
 	}
-	/** standard setter for the attribut sortorder
+	/** standard setter for the attribute sortorder
 	 * @param sortorder the sortorder for the roles
 	 */	
 	public void setSortorder(long sortorder) {
-		this.sortorder = sortorder;
+		this.sortOrder = sortorder;
 	}
-	/** standard getter for the attribut sortorder
+	/** standard getter for the attribute sortorder
 	 * @return the sortorder for the roles
 	 */	
 	public long getSortorder() {
-		return sortorder;
+		return sortOrder;
 	}
-	/** standard setter for the attribut course_user
-	 * @param course_user a set of entrys in the course_user table which relate this role with users
+	/** standard setter for the attribute course_user
+	 * @param courseUsers a set of entries in the course_user table which relate this role with users
 	 */	
-	public void setCourse_user(Set<CourseUserMining> course_user) {
-		this.course_user = course_user;
+	public void setCourseUsers(Set<CourseUserMining> courseUsers) {
+		this.courseUsers = courseUsers;
 	}
-	/** standard getter for the attribut course_user
-	 * @return a set of entrys in the course_user table which relate this role with users
+	/** standard getter for the attribute course_user
+	 * @return a set of entries in the course_user table which relate this role with users
 	 */	
-	public Set<CourseUserMining> getCourse_user() {
-		return course_user;
+	public Set<CourseUserMining> getCourseUsers() {
+		return courseUsers;
 	}
-	/** standard add method for the attribut course_user
-	 * @param course_user_add this entry will be added to the list of course_user in this role
+	/** standard add method for the attribute course_user
+	 * @param courseUser this entry will be added to the list of course_user in this role
 	 * */
-	public void addCourse_user(CourseUserMining course_user_add){	
-		course_user.add(course_user_add);	
+	public void addCourseUser(CourseUserMining courseUser){	
+		this.courseUsers.add(courseUser);	
 	}
 
 	public Long getPlatform() {

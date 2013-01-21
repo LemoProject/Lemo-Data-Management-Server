@@ -16,45 +16,45 @@ public class GroupUserMining implements IMappingClass {
 
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof GroupUserMining))
+		if(!(o instanceof GroupUserMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof GroupUserMining))
 			return true;
 		return false;
 	}
 	
-	/** standard getter for the attribut id
-	 * @return the identifier for the assoziation between groups and users
+	/** standard getter for the attribute id
+	 * @return the identifier for the association between groups and users
 	 */		
 	public long getId() {
 		return id;
 	}
-	/** standard setter for the attribut id
-	 * @param id the identifier for the assoziation between groups and users
+	/** standard setter for the attribute id
+	 * @param id the identifier for the association between groups and users
 	 */	
 	public void setId(long id) {
 		this.id = id;
 	}
-	/** standard getter for the attribut timestamp
+	/** standard getter for the attribute timestamp
 	 * @return the timestamp when the user enters the group
 	 */	
 	public long getTimestamp() {
 		return timestamp;
 	}
-	/** standard setter for the attribut timestamp
+	/** standard setter for the attribute timestamp
 	 * @param timestamp the timestamp when the user enters the group
 	 */	
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
 
-	/** standard getter for the attribut user
+	/** standard getter for the attribute user
 	 * @return the user who is member of the group
 	 */	
 	public UserMining getUser() {
 		return user;
 	}
-	/** standard setter for the attribut user
+	/** standard setter for the attribute user
 	 * @param user the user who is member of the group
 	 */	
 	public void setUser(UserMining user) {
@@ -70,27 +70,27 @@ public class GroupUserMining implements IMappingClass {
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addGroup_user(this);
+			userMining.get(user).addGroupUser(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addGroup_user(this);
+			oldUserMining.get(user).addGroupUser(this);
 		}
 	}
-	/** standard getter for the attribut group
+	/** standard getter for the attribute group
 	 * @return the group in which the user is member
 	 */	
 	public GroupMining getGroup() {
 		return group;
 	}
-	/** standard setter for the attribut group
+	/** standard setter for the attribute group
 	 * @param group the group in which the user is member
 	 */	
 	public void setGroup(GroupMining group) {
 		this.group = group;
 	}
-	/** parameterized setter for the attribut group
+	/** parameterized setter for the attribute group
 	 * @param group the group in which the user is member
 	 * @param groupMining a list of new added groups, which is searched for the group with the id submitted in the group parameter
 	 * @param oldGroupMining a list of groups in the miningdatabase, which is searched for the group with the id submitted in the group parameter
@@ -100,12 +100,12 @@ public class GroupUserMining implements IMappingClass {
 		if(groupMining.get(group) != null)
 		{
 			this.group = groupMining.get(group);
-			groupMining.get(group).addGroup_user(this);
+			groupMining.get(group).addGroupUser(this);
 		}
 		if(this.group == null && oldGroupMining.get(group) != null)
 		{
 			this.group = oldGroupMining.get(group);
-			oldGroupMining.get(group).addGroup_user(this);
+			oldGroupMining.get(group).addGroupUser(this);
 		}
 	}
 
