@@ -5,6 +5,7 @@ import static de.lemo.dms.processing.MetaParam.END_TIME;
 import static de.lemo.dms.processing.MetaParam.QUIZ_IDS;
 import static de.lemo.dms.processing.MetaParam.START_TIME;
 import static de.lemo.dms.processing.MetaParam.USER_IDS;
+import static de.lemo.dms.processing.MetaParam.RESOLUTION;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +47,7 @@ public class QPerformanceBoxPlot extends Question{
     		@FormParam(COURSE_IDS) List<Long> courses, 
     		@FormParam(USER_IDS) List<Long> users, 
     		@FormParam(QUIZ_IDS) List<Long> quizzes,
+    		@FormParam(RESOLUTION) int resolution,
     		@FormParam(START_TIME) Long startTime,
     		@FormParam(END_TIME) Long endTime) {
 
@@ -120,13 +122,15 @@ public class QPerformanceBoxPlot extends Question{
 	        for(IRatedLogObject log : singleResults.values())
 	        {
 	        	Long name = Long.valueOf(log.getPrefix() + "" + log.getLearnObjId());
-	        	if(values.get(name) != null && log.getFinalgrade() != null)
-	        		values.get(name).add(log.getFinalgrade());
+	        	if(values.get(name) != null && log.getFinalGrade() != null)
+	        	{
+	        		values.get(name).add(log.getFinalGrade() / (log.getMaxGrade() / resolution));
+	        	}
 	        }
 	        
 	        for(int i = 0; i < results.length; i++)
 	        {
-	        	BoxPlot plotty = calcBox(values.get(quizzes.get(i)));
+	        	BoxPlot plotty = calcBox(values.get(quizzes.get(i)), quizzes.get(i));
 	        	results[i] = plotty;
 	        }
 		}catch(Exception e)
@@ -137,8 +141,9 @@ public class QPerformanceBoxPlot extends Question{
 	}
     
   //berechnen der boxplot werte
-  	private BoxPlot calcBox(ArrayList<Double> list) {
+  	private BoxPlot calcBox(ArrayList<Double> list, Long id) {
   		BoxPlot result = new BoxPlot();
+  		result.setName(id + "");
   		//---SORTIEREN
   		Collections.sort(list);
   		//---MEDIAN

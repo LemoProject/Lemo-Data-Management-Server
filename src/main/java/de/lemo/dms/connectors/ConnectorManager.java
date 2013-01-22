@@ -98,16 +98,15 @@ public enum ConnectorManager {
                     .setProjection(Projections.max("prefix"));
             Long maxPrefix = (Long) criteria.uniqueResult();
             if(maxPrefix == null) {
-                maxPrefix = 0L;
+                maxPrefix = 10L;
             }
             platform = new PlatformMining();
             platform.setId(connector.getPlatformId());
             platform.setPrefix(maxPrefix + 1);
-        } else {
-            AbstractConnector ac = (AbstractConnector) connector;
-            ac.setPrefix(platform.getPrefix());
-        }
 
+        }
+        AbstractConnector ac = (AbstractConnector) connector;
+        ac.setPrefix(platform.getPrefix());
         // update name
         platform.setName(connector.getName());
         platform.setType(connector.getPlattformType().name());

@@ -1,6 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -13,26 +13,26 @@ public class LevelCourseMining implements IMappingClass {
 
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof DegreeCourseMining))
+		if(!(o instanceof LevelCourseMining))
 			return false;
-		if(o.getId() == this.getId() && (o instanceof DegreeCourseMining))
+		if(o.getId() == this.getId() && (o instanceof LevelCourseMining))
 			return true;
 		return false;
 	}
 	
-	/** standard getter for the attribut id
-	 * @return the identifier for the assoziation between department and resource
+	/** standard getter for the attribute id
+	 * @return the identifier for the association between department and resource
 	 */	
 	public long getId() {
 		return id;
 	}
-	/** standard setter for the attribut id
-	 * @param id the identifier for the assoziation between department and resource
+	/** standard setter for the attribute id
+	 * @param id the identifier for the association between department and resource
 	 */	
 	public void setId(long id) {
 		this.id = id;
 	}
-	/** standard getter for the attribut 
+	/** standard getter for the attribute 
 	 * @return a department in which the resource is used
 	 */	
 	public CourseMining getCourse() {
@@ -43,7 +43,7 @@ public class LevelCourseMining implements IMappingClass {
 		this.course = course;
 	}
 
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining,  Map<Long, CourseMining> oldCourseMining) {		
 		
 		if(courseMining.get(course) != null)
 		{
@@ -63,7 +63,7 @@ public class LevelCourseMining implements IMappingClass {
 		this.level = degree;
 	}
 
-	public void setLevel(long level, HashMap<Long, LevelMining> levelMining, HashMap<Long, LevelMining> oldLevelMining) {		
+	public void setLevel(long level, Map<Long, LevelMining> levelMining, Map<Long, LevelMining> oldLevelMining) {		
 		
 		if(levelMining.get(level) != null)
 		{

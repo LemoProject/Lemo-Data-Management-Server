@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.moodle.moodleDBclass.GradeGradesLMS"
+        table="grade_grades">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+        </id>
+            
+        <property
+            name="userid"
+            column="userid"
+            type="string"/>
+            
+        <property
+            name="itemid"
+            column="itemid"
+            type="long"/>
+  
+        <property
+            name="rawgrade"
+            column="rawgrade"
+            type="java.lang.Double"/>
+             
+        <property
+            name="finalgrade"
+            column="finalgrade"
+            type="java.lang.Double"/>
+
+        <property
+            name="timecreated"
+            column="timecreated"
+            type="java.lang.Long"/>    
+            
+        <property
+            name="timemodified"
+            column="timemodified"
+            type="java.lang.Long"/>   
+    </class>
+
+</hibernate-mapping>

@@ -1,7 +1,7 @@
 package de.lemo.dms.db.miningDBclass;
 
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -37,7 +37,7 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof WikiLogMining))
+		if(!(o instanceof WikiLogMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof WikiLogMining))
 			return true;
@@ -112,18 +112,18 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of courses in the mining database, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {	
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {	
 		
 		
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addWiki_log(this);
+			courseMining.get(course).addWikiLog(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addWiki_log(this);
+			oldCourseMining.get(course).addWikiLog(this);
 		}
 	}
 	/** standard setter for the attribute course
@@ -150,17 +150,17 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 	 * @param userMining a list of new added user, which is searched for the user with the id submitted in the user parameter
 	 * @param oldUserMining a list of user in the mining database, which is searched for the user with the id submitted in the user parameter
 	 */	
-	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {		
+	public void setUser(long user, Map<Long, UserMining> userMining, Map<Long, UserMining> oldUserMining) {		
 		
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addWiki_log(this);
+			userMining.get(user).addWikiLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addWiki_log(this);
+			oldUserMining.get(user).addWikiLog(this);
 		}
 	}
 	
@@ -181,17 +181,17 @@ public class WikiLogMining implements ILogMining, IMappingClass{
 	 * @param wikiMining a list of new added wiki, which is searched for the wiki with the id submitted in the wiki parameter
 	 * @param oldWikiMining a list of wiki in the mining database, which is searched for the wiki with the id submitted in the wiki parameter
 	 */	
-	public void setWiki(long wiki, HashMap<Long, WikiMining> wikiMining, HashMap<Long, WikiMining> oldWikiMining) {		
+	public void setWiki(long wiki, Map<Long, WikiMining> wikiMining, Map<Long, WikiMining> oldWikiMining) {		
 		
 		if(wikiMining.get(wiki) != null)
 		{
 			this.wiki = wikiMining.get(wiki);
-			wikiMining.get(wiki).addWiki_log(this);
+			wikiMining.get(wiki).addWikiLog(this);
 		}
 		if(this.wiki == null && oldWikiMining.get(wiki) != null)
 		{
 			this.wiki = oldWikiMining.get(wiki);
-			oldWikiMining.get(wiki).addWiki_log(this);
+			oldWikiMining.get(wiki).addWikiLog(this);
 		}
 	}
 

@@ -36,21 +36,21 @@
             type="string"/>
                
         <property
-            name="timecreated"
+            name="timeCreated"
             column="timecreated"
             type="long"/>
             
        <property
-            name="timemodified"
+            name="timeModified"
             column="timemodified"
             type="long"/>
             
-		<set name="quiz_question" inverse="true" lazy="false">
+		<set name="quizQuestions" inverse="true" lazy="false">
 			<key column="question_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizQuestionMining"/>
 		</set>
 		
-		<set name="question_log" inverse="true" lazy="false">
+		<set name="questionLogs" inverse="true" lazy="false">
 			<key column="question_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.QuestionLogMining"/>
 		</set>

@@ -32,8 +32,6 @@ import de.lemo.dms.db.miningDBclass.LevelCourseMining;
 import de.lemo.dms.db.miningDBclass.LevelMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
 
-
-
 /**
  * The Class XMLPackageParser. Created for the processing of Chemgapedia's VLU-files
  */

@@ -102,12 +102,12 @@ public class ConnectorChemgapedia extends AbstractConnector {
 
             Long endtime = System.currentTimeMillis() / 1000;
             ConfigMining config = new ConfigMining();
-            config.setLastmodified(System.currentTimeMillis());
-            config.setElapsed_time((endtime) - (starttime));
+            config.setLastModifiedLong(System.currentTimeMillis());
+            config.setElapsedTime((endtime) - (starttime));
 		    config.setDatabaseModel("1.2");
             config.setPlatform(getPlatformId());
            
-          
+            session = dbHandler.getMiningSession();
             dbHandler.saveToDB(session, config);
             dbHandler.closeSession(session);
         }
@@ -139,8 +139,8 @@ public class ConnectorChemgapedia extends AbstractConnector {
 			
             Long endtime = System.currentTimeMillis() / 1000;
             ConfigMining config = new ConfigMining();
-            config.setLastmodified(System.currentTimeMillis());
-            config.setElapsed_time((endtime) - (starttime));
+            config.setLastModifiedLong(System.currentTimeMillis());
+            config.setElapsedTime((endtime) - (starttime));
 		    config.setDatabaseModel("1.2");
             config.setPlatform(getPlatformId());
 

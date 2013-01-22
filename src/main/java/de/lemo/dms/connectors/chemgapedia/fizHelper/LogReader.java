@@ -384,19 +384,19 @@ public class LogReader {
 		    					  ArrayList<LogObject> tlo = userHistories.get(logLine.getId());
 		    					  if(tlo != null && tlo.get(tlo.size()-1).getReferrer().equals(lo.getUrl()))
 		    					  {
-		    						  userHistories.get(logLine.getId()).get(userHistories.get(logLine.getId()).size()-1).setDuration(lo.getTime() - u.getLastaccess());
+		    						  userHistories.get(logLine.getId()).get(userHistories.get(logLine.getId()).size()-1).setDuration(lo.getTime() - u.getLastAccess());
 		    					  }		    					  
-		    					  if(lo.getTime() > u.getLastaccess())
-		    					  u.setLastaccess(lo.getTime());	    					  
+		    					  if(lo.getTime() > u.getLastAccess())
+		    					  u.setLastAccess(lo.getTime());	    					  
 		    				  }
 		    				  else
 		    				  {
-		    					  u.setLastlogin(u.getCurrentlogin());
+		    					  u.setLastLogin(u.getCurrentLogin());
 		    					  
-		    					  if(u.getCurrentlogin() < lo.getTime())
-		    					  u.setCurrentlogin(lo.getTime());
-		    					  if(u.getLastaccess() < lo.getTime())
-		    					  u.setLastaccess(lo.getTime());
+		    					  if(u.getCurrentLogin() < lo.getTime())
+		    					  u.setCurrentLogin(lo.getTime());
+		    					  if(u.getLastAccess() < lo.getTime())
+		    					  u.setLastAccess(lo.getTime());
 		    				  }
 		    				  u.setPlatform(connector.getPlatformId());
 		    				  newUsers.put(u.getLogin(), u);
@@ -407,13 +407,13 @@ public class LogReader {
 		    				  //If the user is unknown, create new user-object
 			    			  UserMining u = new UserMining();
 			    			  u.setId(lo.getId());
-			    			  u.setFirstaccess(lo.getTime());
-			    			  u.setLastaccess(lo.getTime());
+			    			  u.setFirstAccess(lo.getTime());
+			    			  u.setLastAccess(lo.getTime());
 			    			  //google-referrers aren't replaced with "-" although they are external
 			    			  if(lo.getReferrer().equals("-") || lo.getReferrer().startsWith("www.google."))
-			    				  u.setCurrentlogin(lo.getTime());
+			    				  u.setCurrentLogin(lo.getTime());
 			    			  else
-			    				  u.setCurrentlogin(0);  
+			    				  u.setCurrentLogin(0);  
 			    			  u.setPlatform(connector.getPlatformId());
 			    			  u.setLogin(logLine.getId());
 			    			  newUsers.put(logLine.getId(), u);

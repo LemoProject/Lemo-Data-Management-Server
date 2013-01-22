@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.TimeZone;
 
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
@@ -25,10 +24,6 @@ import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.CourseScormMining;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.CourseWikiMining;
-import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
-import de.lemo.dms.db.miningDBclass.DegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
@@ -179,10 +174,10 @@ public class ContentGenerator {
 		{
 			UserMining user = new UserMining();
 			user.setId(Long.valueOf(platform.getPrefix() + "" + (userList.size() + 1)));
-			user.setFirstaccess(startdate + randy.nextInt(4 * week));
-			user.setLastlogin(year - week - randy.nextInt(month));
-			user.setLastaccess(user.getLastlogin() + randy.nextInt(day));
-			user.setCurrentlogin(user.getLastaccess() + randy.nextInt(week));
+			user.setFirstAccess(startdate + randy.nextInt(4 * week));
+			user.setLastLogin(year - week - randy.nextInt(month));
+			user.setLastAccess(user.getLastLogin() + randy.nextInt(day));
+			user.setCurrentLogin(user.getLastAccess() + randy.nextInt(week));
 			user.setGender(i % 2 == 0);
 			user.setLogin(Encoder.createMD5(i +" "+ df.format(dt)));
 			user.setPlatform(platform.getId());
@@ -197,7 +192,7 @@ public class ContentGenerator {
 		r0.setName("Administrator");
 		r0.setShortname("Admin");
 		r0.setDescription("Administatoren dürfen alles.");			
-		r0.setSortorder(0);
+		r0.setSortOrder(0);
 		r0.setPlatform(platform.getId());
 		
 		roleList.add(r0);
@@ -207,7 +202,7 @@ public class ContentGenerator {
 		r1.setName("Dozent");
 		r1.setShortname("Doz");
 		r1.setDescription("Dozenten dürfen in ihren Kursen alles.");			
-		r1.setSortorder(1);
+		r1.setSortOrder(1);
 		r1.setPlatform(platform.getId());
 		
 		roleList.add(r1);
@@ -217,7 +212,7 @@ public class ContentGenerator {
 		r2.setName("Student");
 		r2.setShortname("Stud");
 		r2.setDescription("Studenten dürfen alles lernen.");			
-		r2.setSortorder(2);
+		r2.setSortOrder(2);
 		r2.setPlatform(platform.getId());
 		
 		roleList.add(r2);
@@ -233,8 +228,8 @@ public class ContentGenerator {
 			else
 				offset = 0;
 			
-			gr.setTimecreated(startdate + offset + randy.nextInt(week));
-			gr.setTimemodified(gr.getTimecreated() + randy.nextInt(month));
+			gr.setTimeCreated(startdate + offset + randy.nextInt(week));
+			gr.setTimeModified(gr.getTimeCreated() + randy.nextInt(month));
 			gr.setPlatform(platform.getId());
 			
 			groupList.add(gr);
@@ -292,12 +287,12 @@ public class ContentGenerator {
 					
 					int ts = (int) (startdate + offset);
 					
-					cou.setTimecreated(ts + randy.nextInt(week));
+					cou.setTimeCreated(ts + randy.nextInt(week));
 					
-					cou.setEnrolstart(ts + 	week + randy.nextInt(week));
-					cou.setEnrolend(cou.getEnrolstart() + 3 * week);	
-					cou.setTimemodified(ts + randy.nextInt(year / 2));
-					cou.setStartdate(cou.getEnrolstart() + 2 * week);
+					cou.setEnrolStart(ts + 	week + randy.nextInt(week));
+					cou.setEnrolEnd(cou.getEnrolStart() + 3 * week);	
+					cou.setTimeModified(ts + randy.nextInt(year / 2));
+					cou.setStartDate(cou.getEnrolStart() + 2 * week);
 					cou.setShortname(i+""+j+""+k);					
 					cou.setId(Long.valueOf(platform.getPrefix() + "" + (courseList.size()+1)));
 					
@@ -325,8 +320,8 @@ public class ContentGenerator {
 							cu.setRole(roleList.get(2));
 						
 						cu.setCourse(cou);
-						cu.setEnrolstart(cou.getEnrolstart());
-						cu.setEnrolend(cou.getEnrolend());
+						cu.setEnrolstart(cou.getEnrolStart());
+						cu.setEnrolend(cou.getEnrolEnd());
 						cu.setUser(userList.get((  (courseList.size() -1) * 5 + l   ) % userList.size()));
 						cu.setPlatform(platform.getId());
 						
@@ -351,8 +346,8 @@ public class ContentGenerator {
 						r.setId(Long.valueOf(platform.getPrefix() + "" + (resourceList.size() + 1)));
 						r.setDifficulty("Level " + randy.nextInt(10));
 						r.setPosition(l);
-						r.setTimecreated(cou.getTimecreated() + randy.nextInt(week));
-						r.setTimemodified(r.getTimecreated() + randy.nextInt(year/2));
+						r.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						r.setTimeModified(r.getTimeCreated() + randy.nextInt(year/2));
 						r.setTitle("Resource "+i+"."+j+"."+k+"."+l);
 						r.setPlatform(platform.getId());
 						if(system == ESystem.fiz)
@@ -396,8 +391,8 @@ public class ContentGenerator {
 					{
 						WikiMining w = new WikiMining();
 						w.setId(Long.valueOf(platform.getPrefix() + "" + (wikiList.size() + 1)));
-						w.setTimecreated(cou.getTimecreated() + randy.nextInt(week));
-						w.setTimemodified(w.getTimecreated() + randy.nextInt(year/2));
+						w.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						w.setTimeModified(w.getTimeCreated() + randy.nextInt(year/2));
 						w.setTitle("Wiki "+i+"."+j+"."+k+"."+l);
 						w.setSummary("This is wiki " + i + "." + j + "." + k + "." + l + "'s summary.");
 						
@@ -417,12 +412,12 @@ public class ContentGenerator {
 					{
 						AssignmentMining a = new AssignmentMining();
 						a.setId(Long.valueOf(platform.getPrefix() + "" + (assignmentList.size() + 1)));
-						a.setTimecreated(cou.getTimecreated() + randy.nextInt(week));
-						a.setTimemodified(a.getTimecreated() + randy.nextInt(year/2));
+						a.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						a.setTimeModified(a.getTimeCreated() + randy.nextInt(year/2));
 						a.setTitle("Assignment "+i+"."+j+"."+k+"."+l);
-						a.setMaxgrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
-						a.setTimeopen(a.getTimecreated() + randy.nextInt(month));
-						a.setTimeclose(a.getTimeopen() + 2 * week);
+						a.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
+						a.setTimeOpen(a.getTimeCreated() + randy.nextInt(month));
+						a.setTimeClose(a.getTimeOpen() + 2 * week);
 						a.setType("Assignment");
 						a.setPlatform(platform.getId());
 						
@@ -440,8 +435,8 @@ public class ContentGenerator {
 					{
 						ForumMining f = new ForumMining();
 						f.setId(Long.valueOf(platform.getPrefix() + "" + (forumList.size() + 1)));
-						f.setTimecreated(cou.getTimecreated() + randy.nextInt(week));
-						f.setTimemodified(f.getTimecreated() + randy.nextInt(year/2));
+						f.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						f.setTimeModified(f.getTimeCreated() + randy.nextInt(year/2));
 						f.setTitle("Forum "+i+"."+j+"."+k+"."+l);
 						f.setSummary("Forum " + i + "." + j + "." + k + "." + l + "'s summary...");
 						f.setPlatform(platform.getId());
@@ -460,13 +455,13 @@ public class ContentGenerator {
 					{
 						QuizMining q = new QuizMining();
 						q.setId(Long.valueOf(platform.getPrefix() + "" + (quizList.size() + 1)));
-						q.setTimecreated(cou.getTimecreated() + randy.nextInt(week));
-						q.setTimemodified(q.getTimecreated() + randy.nextInt(year/2));
+						q.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						q.setTimeModified(q.getTimeCreated() + randy.nextInt(year/2));
 						q.setTitle("Quiz "+i+"."+j+"."+k+"."+l);
-						q.setMaxgrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
+						q.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
 						q.setQtype("QuizType " + randy.nextInt(10));
-						q.setTimeopen(q.getTimecreated() + randy.nextInt(month));
-						q.setTimeclose(q.getTimeopen() + 2 * week);
+						q.setTimeOpen(q.getTimeCreated() + randy.nextInt(month));
+						q.setTimeClose(q.getTimeOpen() + 2 * week);
 						q.setPlatform(platform.getId());
 						
 						CourseQuizMining couQui = new CourseQuizMining();
@@ -482,8 +477,8 @@ public class ContentGenerator {
 						{
 							QuestionMining que = new QuestionMining();
 							que.setId(Long.valueOf(platform.getPrefix() + "" + (questionList.size() + 1)));
-							que.setTimecreated(q.getTimecreated() + randy.nextInt(week));
-							que.setTimemodified(que.getTimecreated() + randy.nextInt(year/2));
+							que.setTimeCreated(q.getTimeCreated() + randy.nextInt(week));
+							que.setTimeModified(que.getTimeCreated() + randy.nextInt(year/2));
 							
 							que.setTitle("Question " + i + "." + j + "." + k + "." + l + "." + m);
 							que.setText("This is the text for " + que.getTitle() + " of quiz " + q.getTitle() );
@@ -507,14 +502,14 @@ public class ContentGenerator {
 							qu.setId(Long.valueOf(platform.getPrefix() + "" + (quizUserList.size() + 1)));
 							qu.setQuiz(q);
 							qu.setCourse(cou);
-							qu.setRawgrade(randy.nextInt(q.getMaxgrade().intValue()));
+							qu.setRawGrade(randy.nextInt(q.getMaxGrade().intValue()));
 							qu.setPlatform(platform.getId());
 							
-							if(qu.getRawgrade() > 0)
-								qu.setFinalgrade(qu.getRawgrade() - randy.nextInt((int)qu.getRawgrade()));
+							if(qu.getRawGrade() > 0)
+								qu.setFinalGrade(qu.getRawGrade() - randy.nextInt((int)qu.getRawGrade()));
 							else
-								qu.setFinalgrade(0.0d);
-							qu.setTimemodified(q.getTimeopen() + randy.nextInt(Integer.valueOf("" + (q.getTimeclose() - q.getTimeopen()))));
+								qu.setFinalGrade(0.0d);
+							qu.setTimeModified(q.getTimeOpen() + randy.nextInt(Integer.valueOf("" + (q.getTimeClose() - q.getTimeOpen()))));
 							qu.setUser(courseUserList.get(courseUserList.size() - m).getUser());
 					
 							quizUserList.add(qu);
@@ -529,7 +524,7 @@ public class ContentGenerator {
 						c.setCourse(cou);
 						c.setTitle("Chat "+i+"."+j+"."+k+"."+l);
 						c.setDescription("Chat " + i + "." + j + "." + k + "." + l + "'s description...");
-						c.setChattime(cou.getTimecreated() + randy.nextInt(week));
+						c.setChatTime(cou.getTimeCreated() + randy.nextInt(week));
 						c.setPlatform(platform.getId());
 						
 						chatList.add(c);
@@ -539,11 +534,11 @@ public class ContentGenerator {
 					{
 						ScormMining sco = new ScormMining();
 						sco.setId(Long.valueOf(platform.getPrefix() + "" + (scormList.size() + 1)));
-						sco.setMaxgrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
-						sco.setTimecreated(cou.getTimecreated() + randy.nextInt(week));
-						sco.setTimemodified(sco.getTimecreated() + randy.nextInt(year/2));
-						sco.setTimeopen(sco.getTimecreated() + randy.nextInt(month));
-						sco.setTimeclose(sco.getTimeopen() + 2 * week);
+						sco.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
+						sco.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						sco.setTimeModified(sco.getTimeCreated() + randy.nextInt(year/2));
+						sco.setTimeOpen(sco.getTimeCreated() + randy.nextInt(month));
+						sco.setTimeClose(sco.getTimeOpen() + 2 * week);
 						sco.setTitle("Scorm " + i + "." + j + "."  + k + "." + l);
 						sco.setType("Scormtype");
 						sco.setPlatform(platform.getId());
@@ -572,8 +567,8 @@ public class ContentGenerator {
 						rLog.setUser(userList.get(( (courseList.size() -1) * 5 + randy.nextInt(userSwitch)) % userList.size()));
 						ResourceMining r = rLog.getResource();
 						
-						int mult = (int)(startdate + year - r.getTimecreated()) / Integer.valueOf(cou.getShortname()) ;
-						int time = (int)r.getTimecreated() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+						int mult = (int)(startdate + year - r.getTimeCreated()) / Integer.valueOf(cou.getShortname()) ;
+						int time = (int)r.getTimeCreated() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 						rLog.setTimestamp(time);
 						
 						rLog.setAction("view");
@@ -590,15 +585,15 @@ public class ContentGenerator {
 						aLog.setUser(userList.get(( (courseList.size() -1) * 5 + randy.nextInt(10)) % userList.size()));
 						AssignmentMining a = aLog.getAssignment();
 						
-						mult = (int)(a.getTimeclose() - a.getTimeopen()) / Integer.valueOf(cou.getShortname()) ;
-						time = (int)a.getTimeopen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+						mult = (int)(a.getTimeClose() - a.getTimeOpen()) / Integer.valueOf(cou.getShortname()) ;
+						time = (int)a.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 						aLog.setTimestamp(time);
 						aLog.setPlatform(platform.getId());
 						
 						for(int h = 0; h < courseUserList.size(); h++)
-							if(aLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix() +"" + 2) && a.getMaxgrade() > 0)
+							if(aLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix() +"" + 2) && a.getMaxGrade() > 0)
 							{
-								aLog.setGrade(a.getMaxgrade() - randy.nextInt(a.getMaxgrade().intValue()));
+								aLog.setGrade(a.getMaxGrade() - randy.nextInt(a.getMaxGrade().intValue()));
 								aLog.setAction(assignmentActionTeacher[randy.nextInt(assignmentActionTeacher.length)]);
 								
 							}
@@ -616,8 +611,8 @@ public class ContentGenerator {
 						cLog.setChat(chatList.get((chatList.size() - 1)));
 						ChatMining chat = cLog.getChat();
 						
-						mult = (int)(startdate + year - chat.getChattime()) / Integer.valueOf(cou.getShortname()) ;
-						time = (int) chat.getChattime() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+						mult = (int)(startdate + year - chat.getChatTime()) / Integer.valueOf(cou.getShortname()) ;
+						time = (int) chat.getChatTime() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 						cLog.setTimestamp(time);
 						cLog.setMessage("Generated chat message for chat "+ cou.getShortname() + " @ " + cLog.getTimestamp());
 						cLog.setPlatform(platform.getId());
@@ -635,8 +630,8 @@ public class ContentGenerator {
 							couLog.setUser(userList.get(( (courseList.size() -1) * 5 + log) % userList.size()));
 							couLog.setAction("enrol");
 							
-							mult = (int)(cou.getEnrolend() - cou.getEnrolstart()) / Integer.valueOf(cou.getShortname()) ;
-							time = (int) cou.getEnrolstart() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+							mult = (int)(cou.getEnrolEnd() - cou.getEnrolStart()) / Integer.valueOf(cou.getShortname()) ;
+							time = (int) cou.getEnrolStart() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 							couLog.setTimestamp(time);
 						}
 						else
@@ -644,8 +639,8 @@ public class ContentGenerator {
 							couLog.setUser(userList.get(( (courseList.size() -1) * 5 + randy.nextInt(10)) % userList.size()));
 							couLog.setAction("view");
 							
-							mult = (int)(startdate + year - cou.getTimecreated()) / Integer.valueOf(cou.getShortname()) ;
-							time = (int) cou.getTimecreated() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+							mult = (int)(startdate + year - cou.getTimeCreated()) / Integer.valueOf(cou.getShortname()) ;
+							time = (int) cou.getTimeCreated() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 							couLog.setTimestamp(time);
 						}
 						couLog.setPlatform(platform.getId());
@@ -660,8 +655,8 @@ public class ContentGenerator {
 						fLog.setForum(forumList.get((forumList.size() - 1) - randy.nextInt(2)));
 						ForumMining forum = fLog.getForum();
 						
-						mult = (int)(startdate + year - forum.getTimecreated()) / Integer.valueOf(cou.getShortname()) ;
-						time = (int) forum.getTimecreated() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+						mult = (int)(startdate + year - forum.getTimeCreated()) / Integer.valueOf(cou.getShortname()) ;
+						time = (int) forum.getTimeCreated() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 						fLog.setTimestamp(time);
 
 						fLog.setAction(forumAction[randy.nextInt(forumAction.length)]);
@@ -679,8 +674,8 @@ public class ContentGenerator {
 						wLog.setWiki(wikiList.get((wikiList.size() - 1) - randy.nextInt(2)));
 						WikiMining wiki = wLog.getWiki();
 						
-						mult = (int)(startdate + year - wiki.getTimecreated()) / Integer.valueOf(cou.getShortname()) ;
-						time = (int) wiki.getTimecreated() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+						mult = (int)(startdate + year - wiki.getTimeCreated()) / Integer.valueOf(cou.getShortname()) ;
+						time = (int) wiki.getTimeCreated() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 						wLog.setTimestamp(time);
 						
 						wLog.setAction("view");
@@ -696,14 +691,14 @@ public class ContentGenerator {
 						sLog.setScorm(scormList.get((scormList.size() - 1) - randy.nextInt(2)));
 						ScormMining scorm = sLog.getScorm();
 						
-						mult = (int)(scorm.getTimeclose() - scorm.getTimeopen()) / Integer.valueOf(cou.getShortname()) ;
-						time = (int) scorm.getTimeopen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+						mult = (int)(scorm.getTimeClose() - scorm.getTimeOpen()) / Integer.valueOf(cou.getShortname()) ;
+						time = (int) scorm.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 						sLog.setTimestamp(time);
 						
 						for(int h = 0; h < courseUserList.size(); h++)
-							if(sLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix() +"" + 2) && scorm.getMaxgrade() > 0)
+							if(sLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix() +"" + 2) && scorm.getMaxGrade() > 0)
 							{
-								sLog.setGrade(scorm.getMaxgrade() - randy.nextInt(scorm.getMaxgrade().intValue()));
+								sLog.setGrade(scorm.getMaxGrade() - randy.nextInt(scorm.getMaxGrade().intValue()));
 								sLog.setAction("report");
 								
 							}
@@ -722,14 +717,14 @@ public class ContentGenerator {
 						QuizMining quiz = qLog.getQuiz();
 						
 						
-						mult = (int)(quiz.getTimeclose() - quiz.getTimeopen()) / Integer.valueOf(cou.getShortname()) ;
-						time = (int) quiz.getTimeopen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+						mult = (int)(quiz.getTimeClose() - quiz.getTimeOpen()) / Integer.valueOf(cou.getShortname()) ;
+						time = (int) quiz.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 						qLog.setTimestamp(time);
 						
 						for(int h = 0; h < courseUserList.size(); h++)
-							if(qLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix() +"" + 2) && quiz.getMaxgrade() > 0)
+							if(qLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix() +"" + 2) && quiz.getMaxGrade() > 0)
 							{
-								qLog.setGrade(quiz.getMaxgrade() - randy.nextInt(quiz.getMaxgrade().intValue()));
+								qLog.setGrade(quiz.getMaxGrade() - randy.nextInt(quiz.getMaxGrade().intValue()));
 								qLog.setAction("report");
 								
 							}
@@ -749,18 +744,18 @@ public class ContentGenerator {
 						queLog.setQuestion(questionList.get((questionList.size() - 1) - randy.nextInt(10)));
 						quiz = queLog.getQuiz();
 						
-						mult = (int)(quiz.getTimeclose() - quiz.getTimeopen()) / Integer.valueOf(cou.getShortname()) ;
-						time = (int) quiz.getTimeopen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+						mult = (int)(quiz.getTimeClose() - quiz.getTimeOpen()) / Integer.valueOf(cou.getShortname()) ;
+						time = (int) quiz.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 						queLog.setTimestamp(time);
 						
 						for(int h = 0; h < courseUserList.size(); h++)
-							if(qLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix() +"" + 2) && quiz.getMaxgrade() > 0)
+							if(qLog.getUser() == (courseUserList.get(h).getUser()) && courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix() +"" + 2) && quiz.getMaxGrade() > 0)
 							{
 								int qNumber = 10;
-								if(quiz.getMaxgrade() < qNumber)
-									queLog.setRawgrade(randy.nextDouble() * quiz.getMaxgrade() / qNumber);
-								queLog.setFinalgrade(queLog.getRawgrade() - randy.nextDouble() * queLog.getRawgrade());
-								queLog.setPenalty(queLog.getRawgrade() - queLog.getFinalgrade());
+								if(quiz.getMaxGrade() < qNumber)
+									queLog.setRawGrade(randy.nextDouble() * quiz.getMaxGrade() / qNumber);
+								queLog.setFinalGrade(queLog.getRawGrade() - randy.nextDouble() * queLog.getRawGrade());
+								queLog.setPenalty(queLog.getRawGrade() - queLog.getFinalGrade());
 								queLog.setAction("CLOSE");
 								
 							}
@@ -852,11 +847,11 @@ public class ContentGenerator {
 		
 		//Create and save config-object
 		ConfigMining config = new ConfigMining();
-	    config.setLastmodified(System.currentTimeMillis());
-	    config.setElapsed_time(1);	
+	    config.setLastModifiedLong(System.currentTimeMillis());
+	    config.setElapsedTime(1);	
 	    config.setDatabaseModel("1.2");
 	    config.setPlatform(platform.getId());
-	    config.setExtractcycle(1);
+	    config.setExtractCycle(1);
 	    
 	    ArrayList<ConfigMining> confList = new ArrayList<ConfigMining>();
 	    confList.add(config);

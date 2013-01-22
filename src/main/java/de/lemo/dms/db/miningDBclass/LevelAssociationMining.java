@@ -1,6 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -14,7 +14,7 @@ public class LevelAssociationMining implements IMappingClass {
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof LevelAssociationMining))
+		if(!(o instanceof LevelAssociationMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof LevelAssociationMining))
 			return true;
@@ -52,7 +52,7 @@ public class LevelAssociationMining implements IMappingClass {
 	 * @param departmentMining a list of new added departments, which is searched for the department with the id submitted in the department parameter
 	 * @param oldDepartmentMining a list of department in the miningdatabase, which is searched for the department with the id submitted in the department parameter
 	 */	
-	public void setUpper(long upper, HashMap<Long, LevelMining> levelMining, HashMap<Long, LevelMining> oldLevelMining) {		
+	public void setUpper(long upper, Map<Long, LevelMining> levelMining, Map<Long, LevelMining> oldLevelMining) {		
 		if(levelMining.get(upper) != null)
 		{
 			this.upper = levelMining.get(upper);
@@ -82,7 +82,7 @@ public class LevelAssociationMining implements IMappingClass {
 	 * @param levelMining a list of new added degree, which is searched for the degree with the id submitted in the degree parameter
 	 * @param oldLevelMining a list of degree in the miningdatabase, which is searched for the degree with the id submitted in the degree parameter
 	 */	
-	public void setLower(long lower, HashMap<Long, LevelMining> levelMining, HashMap<Long, LevelMining> oldLevelMining) {	
+	public void setLower(long lower, Map<Long, LevelMining> levelMining, Map<Long, LevelMining> oldLevelMining) {	
 		
 		if(levelMining.get(lower) != null)
 		{

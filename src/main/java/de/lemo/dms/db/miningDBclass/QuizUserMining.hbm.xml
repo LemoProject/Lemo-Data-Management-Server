@@ -35,17 +35,17 @@
 		</many-to-one>
 		              
         <property
-            name="finalgrade"
+            name="finalGrade"
             column="finalgrade"
             type="double"/>
             
         <property
-            name="rawgrade"
+            name="rawGrade"
             column="rawgrade"
             type="double"/>  
                
         <property
-            name="timemodified"
+            name="timeModified"
             column="timemodified"
             type="long"/>
             

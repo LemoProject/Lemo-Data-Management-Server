@@ -3,36 +3,17 @@ package de.lemo.dms.test;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
-import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
-import de.lemo.dms.db.miningDBclass.DegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentMining;
 import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
 import de.lemo.dms.db.miningDBclass.LevelCourseMining;
 import de.lemo.dms.db.miningDBclass.LevelMining;
@@ -116,89 +97,7 @@ public class TestDataCreatorChemgapedia {
 		}
 	}
 	
-	private void createXMLFile(String path, String url, String title, String specialism, String name, String area, String audienceLevel, String timeValue, ArrayList<String> subResourceTitles, ArrayList<String> subResourceUrls)
-	{
-		try {
-            /////////////////////////////
-            //Creating an empty XML Document
-
-            //We need a Document
-            DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
-            dbfac.setNamespaceAware(true);
-            DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
-            
-            DOMImplementation domImpl = docBuilder.getDOMImplementation();
-
-            
-            //Document doc = docBuilder.newDocument();
-            Document doc = domImpl.createDocument("xlink", "bla", null);
-            
-            ////////////////////////
-            //Creating the XML tree
-
-            //create the root element and add it to the document
-            Element root = doc.createElement("vlunode");
-            root.setAttribute("xlink:href", url);
-            doc.appendChild(root);
-            
-            Element titleEl = doc.createElement("title");
-            Text text = doc.createTextNode(title);
-            titleEl.appendChild(text);
-            root.appendChild(titleEl);
-
-            //create child element, add an attribute, and add to root
-            Element subject = doc.createElement("subject");
-            subject.setAttribute("area", area);
-            subject.setAttribute("name", name);
-            subject.setAttribute("specialism", specialism);
-            root.appendChild(subject);
-            
-            Element audience = doc.createElement("audience");
-            audience.setAttribute("level", audienceLevel);
-            root.appendChild(audience);
-            
-            Element time = doc.createElement("time");
-            time.setAttribute("value", timeValue);
-            root.appendChild(time);
-            
-            //Element content = doc.createElement("content");
-           /** for(int i = 0; i < subResourceTitles.size(); i++)
-            {
-            	Element page = doc.createElement("page");
-            	page.setAttribute("xlink:href", subResourceUrls.get(i));
-            	page.setAttribute("xlink:title", subResourceTitles.get(i));
-            	content.appendChild(page);
-            }
-            root.appendChild(content);
-            */
-
-            /////////////////
-            //Output the XML
-
-            //set up a transformer
-            TransformerFactory transfac = TransformerFactory.newInstance();
-            Transformer trans = transfac.newTransformer();
-            trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            trans.setOutputProperty(OutputKeys.ENCODING,"UTF-8");
-            trans.setOutputProperty(OutputKeys.METHOD, "xml");
-            trans.setOutputProperty(OutputKeys.INDENT, "yes");
-
-            //create string from xml tree
-            StringWriter sw = new StringWriter();
-            StreamResult result = new StreamResult(sw);
-            DOMSource source = new DOMSource(doc);
-            trans.transform(source, result);
-            String xmlString = sw.toString();
-
-            FileWriter out = new FileWriter(path);
-	    	PrintWriter pout = new PrintWriter(out);
-	    	pout.print(xmlString);
-	    	pout.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-	}
+	
 	
 	/**
 	 * Writes the data, extracted from the Mining-database into a pseudo-server-log-file and pseudo-vlu-packages

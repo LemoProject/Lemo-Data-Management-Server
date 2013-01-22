@@ -31,12 +31,12 @@
             type="text"/>
                
         <property
-            name="timecreated"
+            name="timeCreated"
             column="timecreated"
             type="long"/>  
             
         <property
-            name="timemodified"
+            name="timeModified"
             column="timemodified"
             type="long"/>
             
@@ -60,12 +60,12 @@
             column="position"
             type="long"/>
             
-		<set name="course_resource" inverse="true" lazy="false">
+		<set name="courseResources" inverse="true" lazy="false">
 			<key column="resource_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseResourceMining"/>
 		</set>
 		
-		<set name="resource_log" inverse="true" lazy="false">
+		<set name="resourceLogs" inverse="true" lazy="false">
 			<key column="resource_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.ResourceLogMining"/>
 		</set>

@@ -1,10 +1,9 @@
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 public class ChatMining implements IMappingClass {
@@ -13,13 +12,13 @@ public class ChatMining implements IMappingClass {
 	private long id;
 	private String title;
 	private String description;
-	private long chattime;
+	private long chatTime;
 	private CourseMining course;
 	private Long platform;
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof ChatMining))
+		if(!(o instanceof ChatMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof ChatMining))
 			return true;
@@ -35,7 +34,7 @@ public class ChatMining implements IMappingClass {
 		this.course = course;
 	}
 
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
 		
 		if(courseMining.get(course) != null)
 		{
@@ -49,7 +48,7 @@ public class ChatMining implements IMappingClass {
 		}
 	}
 	
-	private Set<ChatLogMining> chat_log = new HashSet<ChatLogMining>();
+	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
 	
 	public long getId() {
 		return id;
@@ -69,29 +68,25 @@ public class ChatMining implements IMappingClass {
 	public void setDescription(String description) {
 		this.description = description;
 	}	
-	public long getChattime() {
-		return chattime;
+	public long getChatTime() {
+		return chatTime;
 	}
-	public void setChattime(long chattime) {
-		this.chattime = chattime;
+	public void setChatTime(long chatTime) {
+		this.chatTime = chatTime;
 	}
-	public Set<ChatLogMining> getChat_log() {
-		return chat_log;
+	public Set<ChatLogMining> getChatLogs() {
+		return chatLogs;
 	}
-	public void setChat_log(Set<ChatLogMining> chat_log) {
-		this.chat_log = chat_log;
+	public void setChatLogs(Set<ChatLogMining> chatLogs) {
+		this.chatLogs = chatLogs;
 	}
-	public void addChat_log(ChatLogMining chat_log_add){	
-		chat_log.add(chat_log_add);
+	public void addChatLog(ChatLogMining chatLog){	
+		this.chatLogs.add(chatLog);
 	}
-
-
 
 	public Long getPlatform() {
 		return platform;
 	}
-
-
 
 	public void setPlatform(Long platform) {
 		this.platform = platform;

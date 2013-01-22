@@ -46,7 +46,7 @@ public class HibernateDBHandler implements IDBHandler {
 
                     if(!className.equals("") && !className.equals(obj.getClass().getName()))
                     {
-                        logger.debug("Wrote " + classOb + " objects of class " + className);
+                        logger.info("Wrote " + classOb + " objects of class " + className);
                         classOb = 0;
                     }
                     className = obj.getClass().getName();
@@ -60,7 +60,7 @@ public class HibernateDBHandler implements IDBHandler {
                         session.clear();
                     }
                 }
-            logger.debug("Wrote " + classOb + " objects of class " + className + " to database.");
+            logger.info("Wrote " + classOb + " objects of class " + className + " to database.");
             session.flush();            
             session.getTransaction().commit();
             session.clear();            

@@ -31,11 +31,11 @@
             type="text"/>
 
         <property
-            name="chattime"
+            name="chatTime"
             column="chattime"
             type="long"/>
                         
-        <set name="chat_log" inverse="true"	lazy="false">
+        <set name="chatLogs" inverse="true"	lazy="false">
         	<key column="chat_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.ChatLogMining"/>
 		</set>

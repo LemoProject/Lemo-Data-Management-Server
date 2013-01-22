@@ -9,6 +9,19 @@ public class PlatformMining implements IMappingClass{
 	private String type;
 	private Long prefix;
 	
+	public PlatformMining(Long id, String name, String type, Long prefix)
+	{
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.prefix = prefix;
+	}
+	
+	public PlatformMining()
+	{
+		
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -36,7 +49,7 @@ public class PlatformMining implements IMappingClass{
 
 	@Override
 	public boolean equals(IMappingClass o) {
-		if(o == null || !(o instanceof PlatformMining))
+		if(!(o instanceof PlatformMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof PlatformMining))
 			return true;
