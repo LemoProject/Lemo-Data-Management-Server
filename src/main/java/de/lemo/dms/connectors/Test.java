@@ -38,7 +38,7 @@ public class Test {
 	public void runChemConn()
 	{
 
-		ServerConfiguration.getInstance().loadConfig("/lemo");
+		//ServerConfiguration.getInstance().loadConfig("/lemo");
 		IConnector connector = ConnectorManager.getInstance().getConnectorById(ID_CHEM);
 		connector.getData();
 		/*
@@ -69,7 +69,7 @@ public class Test {
 	 */
 	public void runMoodleConn()
 	{
-		ServerConfiguration.getInstance().loadConfig("/lemo");
+		//ServerConfiguration.getInstance().loadConfig("/lemo");
 		IConnector connector = ConnectorManager.getInstance().getConnectorById(ID_MOODLE19);
 		connector.updateData(1338000000L);
 	}
@@ -202,13 +202,15 @@ public class Test {
 	public void testHisto()
 	{
 		QPerformanceBoxPlot ph = new QPerformanceBoxPlot();
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(11476L);
 		ArrayList<Long> quizzes = new ArrayList<Long>();
 		quizzes.add(11114861L);
 		quizzes.add(11114282L);
 		quizzes.add(1411888L);
 		
-		//ResultListBoxPlot res = ph.compute(new ArrayList<Long>(), new ArrayList<Long>(), quizzes, 0L, 1500000000L);
-		//System.out.println(res.getElements().size());
+		ResultListBoxPlot res = ph.compute(courses, new ArrayList<Long>(), new ArrayList<Long>(), 100, 0L, 1500000000L);
+		System.out.println(res.getElements().size());
 		
 	}
 	
@@ -239,13 +241,9 @@ public class Test {
 	public void run()
 	{
 		System.out.println("Starting test");
-		runChemConn();
+		ServerConfiguration.getInstance().loadConfig("/lemo");
+		testHisto();
 		System.out.println("Test finished");
 	}
-	
-	public static void main(String[] args)
-	{
-		Test t = new Test();
-		t.run();
-	}
+
 }

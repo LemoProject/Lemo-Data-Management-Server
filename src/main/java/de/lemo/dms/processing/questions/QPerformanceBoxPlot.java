@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -68,20 +69,16 @@ public class QPerformanceBoxPlot extends Question{
         System.out.println("Parameter list: Start time: : "	+ startTime);
         System.out.println("Parameter list: End time: : " + endTime);
     	
-    	if(quizzes == null || quizzes.size() == 0 || startTime == null || endTime == null)
+    	if(startTime == null || endTime == null)
     	{
     		System.out.println("Calculation aborted. At least one of the mandatory parameters is not set properly.");
-    		return new ResultListBoxPlot();
+    		//return new ResultListBoxPlot();
     	}
-    	
-    	//Determine length of result array
-    	int objects = quizzes.size();
-    	
-    	BoxPlot[] results = new BoxPlot[objects]; 
+    	if(quizzes == null)
+    		quizzes = new ArrayList<Long>();
 
-    	
     	HashMap<Long, ArrayList<Double>> values = new HashMap<Long, ArrayList<Double>>();
-    	
+        BoxPlot[] results = null;
 		try
 		{		        
 	        for(int i = 0; i < quizzes.size(); i++)
@@ -106,33 +103,52 @@ public class QPerformanceBoxPlot extends Question{
 	        HashMap<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>(); 
 	        Collections.sort(list);
 	        
+
+	        
 	        //This is for making sure there is just one entry per student and test 
 	        for(int i = list.size()-1; i >= 0 ; i--)
 	        {
 	        	IRatedLogObject log = list.get(i);
 	        	
 	        	String key = log.getPrefix()+" "+log.getLearnObjId()+" "+log.getUser().getId();
-	        	
-	        	if(singleResults.get(key) == null)
-	        	{
-	        		singleResults.put(key, log);
-	        	}
+        		if(quizzes.size() == 0 || values.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null)
+        		{
+		        	if(singleResults.get(key) == null && log.getFinalGrade() != null && log.getMaxGrade() != null)
+		        	{
+		        		singleResults.put(key, log);
+		        	}
+        		}
 	        }
 	        
 	        for(IRatedLogObject log : singleResults.values())
 	        {
 	        	Long name = Long.valueOf(log.getPrefix() + "" + log.getLearnObjId());
-	        	if(values.get(name) != null && log.getFinalGrade() != null)
-	        	{
-	        		values.get(name).add(log.getFinalGrade() / (log.getMaxGrade() / resolution));
-	        	}
+    			if(values.get(name) == null)
+    			{
+    				ArrayList<Double> v = new ArrayList<Double>();
+    				values.put(name, v);
+    			}
+    			
+    			values.get(name).add(log.getFinalGrade() / ((log.getMaxGrade() / resolution)));
 	        }
 	        
-	        for(int i = 0; i < results.length; i++)
+	        results = new BoxPlot[values.keySet().size()]; 
+	        
+	        int i = 0;
+	        for(Entry<Long, ArrayList<Double>> e :values.entrySet())
+	        {
+	        	
+	        	BoxPlot plotty = calcBox(e.getValue(), e.getKey());
+	        	results[i] = plotty;
+	        	i++;
+	        }
+	        /*
+	        for(int i = 0; i < values.keySet().size(); i++)
 	        {
 	        	BoxPlot plotty = calcBox(values.get(quizzes.get(i)), quizzes.get(i));
 	        	results[i] = plotty;
 	        }
+	        */
 		}catch(Exception e)
 		{
 			e.printStackTrace();
