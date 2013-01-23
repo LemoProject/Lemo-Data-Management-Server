@@ -1,7 +1,7 @@
 package de.lemo.dms.processing;
 
 /**
- * Common parameter names.
+ * Common parameter names used in REST services. 
  * 
  * @author Leonard Kappe
  */

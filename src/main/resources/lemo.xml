@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <config>
-  <!-- -->
+  <!--
+  This configuration file is only used in local development,
+  it won't be included in any deployed .war files.
+  -->
   <apps name="Lemo Apps">
     <!--
     You may ignore this element, it just ensures that there's

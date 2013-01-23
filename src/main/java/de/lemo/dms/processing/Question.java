@@ -8,7 +8,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.service.BaseService;
 
 /**
- * Base question, assumes default json response type.
+ * Base class for questions, sets default JSON response type.
  * 
  * @author Leonard Kappe
  */
@@ -16,6 +16,7 @@ import de.lemo.dms.service.BaseService;
 @Produces(MediaType.APPLICATION_JSON)
 public abstract class Question extends BaseService {
 
+	// TODO remove, it's already in BaseService
     protected final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
 }

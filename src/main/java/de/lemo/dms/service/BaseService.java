@@ -6,7 +6,7 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 
 /**
- * Baseclass for the service class implementation
+ * Base class for services, provides database handler and logger.
  * 
  * @author Boris Wenzlaff
  * 

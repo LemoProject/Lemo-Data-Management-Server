@@ -5,6 +5,7 @@ package de.lemo.dms.service;
  * 
  * @author Leonard Kappe
  */
+// TODO remove class, has no functionality 
 public class QuestionBaseService extends BaseService {
 
     /**
