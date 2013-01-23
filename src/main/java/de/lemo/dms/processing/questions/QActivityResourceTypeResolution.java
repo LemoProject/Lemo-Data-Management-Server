@@ -27,10 +27,10 @@ import de.lemo.dms.db.miningDBclass.QuizLogMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
+import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListRRITypes;
-import de.lemo.dms.service.ELearnObjType;
 
 @Path("activityresourcetyperesolution")
 public class QActivityResourceTypeResolution extends Question {
@@ -60,7 +60,7 @@ public class QActivityResourceTypeResolution extends Question {
 	        Session session = dbHandler.getMiningSession();
         
 			//Create and initialize array for results
-			if(resourceTypes.contains(ELearnObjType.ASSIGNMENT.toString()) || all)
+			if(resourceTypes.contains(ELearningObjectType.ASSIGNMENT.toString()) || all)
 			{
 				 Criteria criteria = session.createCriteria(AssignmentLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -77,14 +77,14 @@ public class QActivityResourceTypeResolution extends Question {
 						 
 						 if(ilm.get(i).getAssignment().getTitle().equals(""))
 							 if(rri.get(pos + "-1") == null)
-								 rri.put(pos.toString() + "-1" + "", new ResourceRequestInfo(ilm.get(i).getAssignment().getId(), ELearnObjType.ASSIGNMENT, 1L, 1L, "Unknown", pos));
+								 rri.put(pos.toString() + "-1" + "", new ResourceRequestInfo(ilm.get(i).getAssignment().getId(), ELearningObjectType.ASSIGNMENT, 1L, 1L, "Unknown", pos));
 							 else
 							 {
 								rri.get(pos.toString() + "-1").incRequests();
 							 }
 						 else
 							 if(rri.get(pos.toString() + ilm.get(i).getAssignment().getId()) == null)
-								 rri.put(pos.toString() + ilm.get(i).getAssignment().getId() + "", new ResourceRequestInfo(ilm.get(i).getAssignment().getId(), ELearnObjType.ASSIGNMENT, 1L, 1L, ilm.get(i).getAssignment().getTitle(), pos));
+								 rri.put(pos.toString() + ilm.get(i).getAssignment().getId() + "", new ResourceRequestInfo(ilm.get(i).getAssignment().getId(), ELearningObjectType.ASSIGNMENT, 1L, 1L, ilm.get(i).getAssignment().getTitle(), pos));
 							 else
 							 {
 								 
@@ -94,7 +94,7 @@ public class QActivityResourceTypeResolution extends Question {
 				 if(rri.values() != null)
 					 list.setAssignmentRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}        
-			if(resourceTypes.contains(ELearnObjType.FORUM.toString()) || all)
+			if(resourceTypes.contains(ELearningObjectType.FORUM.toString()) || all)
 			{
 				 Criteria criteria = session.createCriteria(ForumLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -112,13 +112,13 @@ public class QActivityResourceTypeResolution extends Question {
 						 if(ilm.get(i).getForum().getTitle().equals(""))
 						 {
 							 if(rri.get(pos + "-1") == null)
-								 rri.put(pos + "-1" , new ResourceRequestInfo(ilm.get(i).getForum().getId(), ELearnObjType.FORUM, 1L, 1L, "Unknown", pos));
+								 rri.put(pos + "-1" , new ResourceRequestInfo(ilm.get(i).getForum().getId(), ELearningObjectType.FORUM, 1L, 1L, "Unknown", pos));
 							 else
 								 rri.get(pos.toString() + "-1").incRequests();
 						 }
 						 else{
 							 if(rri.get(pos.toString() + ilm.get(i).getForum().getId()) == null)
-								 rri.put(pos.toString() +ilm.get(i).getForum().getId(), new ResourceRequestInfo(ilm.get(i).getForum().getId(), ELearnObjType.FORUM, 1L, 1L, ilm.get(i).getForum().getTitle(), pos));
+								 rri.put(pos.toString() +ilm.get(i).getForum().getId(), new ResourceRequestInfo(ilm.get(i).getForum().getId(), ELearningObjectType.FORUM, 1L, 1L, ilm.get(i).getForum().getTitle(), pos));
 							 else
 								 rri.get(pos.toString() + ilm.get(i).getForum().getId()).incRequests();
 						 }
@@ -126,7 +126,7 @@ public class QActivityResourceTypeResolution extends Question {
 				 if(rri.values() != null)
 					 list.setForumRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
-			if(resourceTypes.contains(ELearnObjType.QUESTION.toString()) || all)
+			if(resourceTypes.contains(ELearningObjectType.QUESTION.toString()) || all)
 			{
 				 Criteria criteria = session.createCriteria(QuestionLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -144,14 +144,14 @@ public class QActivityResourceTypeResolution extends Question {
 						 if(ilm.get(i).getQuestion().getTitle().equals(""))
 						 {
 							 if(rri.get(pos.toString() + "-1") == null)
-								 rri.put(pos + "-1" , new ResourceRequestInfo(ilm.get(i).getQuestion().getId(), ELearnObjType.QUESTION, 1L, 1L, "Unknown", pos));
+								 rri.put(pos + "-1" , new ResourceRequestInfo(ilm.get(i).getQuestion().getId(), ELearningObjectType.QUESTION, 1L, 1L, "Unknown", pos));
 							 else
 								 rri.get(pos.toString() + "-1").incRequests();
 						 }
 						 else
 						 {
 							 if(rri.get(pos.toString() + ilm.get(i).getQuestion().getId()) == null )
-								 rri.put(pos.toString() + ilm.get(i).getQuestion().getId(), new ResourceRequestInfo(ilm.get(i).getQuestion().getId(), ELearnObjType.QUESTION, 1L, 1L, ilm.get(i).getQuestion().getTitle(), pos));
+								 rri.put(pos.toString() + ilm.get(i).getQuestion().getId(), new ResourceRequestInfo(ilm.get(i).getQuestion().getId(), ELearningObjectType.QUESTION, 1L, 1L, ilm.get(i).getQuestion().getTitle(), pos));
 							 else
 								 rri.get(pos.toString() + ilm.get(i).getQuestion().getId()).incRequests();
 						 }
@@ -160,7 +160,7 @@ public class QActivityResourceTypeResolution extends Question {
 				 if(rri.values() != null)
 					 list.setQuestionRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
-			if(resourceTypes.contains(ELearnObjType.QUIZ.toString()) || all)
+			if(resourceTypes.contains(ELearningObjectType.QUIZ.toString()) || all)
 			{
 				 Criteria criteria = session.createCriteria(QuizLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -178,14 +178,14 @@ public class QActivityResourceTypeResolution extends Question {
 						 if(ilm.get(i).getQuiz().getTitle().equals(""))
 						 {
 							 if(rri.get(pos.toString() + "-1") == null)
-								 rri.put(pos.toString() + "-1" , new ResourceRequestInfo(ilm.get(i).getQuiz().getId(), ELearnObjType.QUIZ, 1L, 1L, "Unknown", pos));
+								 rri.put(pos.toString() + "-1" , new ResourceRequestInfo(ilm.get(i).getQuiz().getId(), ELearningObjectType.QUIZ, 1L, 1L, "Unknown", pos));
 							 else
 								 rri.get(pos.toString() + "-1").incRequests();
 						 }
 						 else
 						 {
 							 if(rri.get(pos.toString() + ilm.get(i).getQuiz().getId()) == null )
-								 rri.put(pos.toString() + ilm.get(i).getQuiz().getId(), new ResourceRequestInfo(ilm.get(i).getQuiz().getId(), ELearnObjType.QUIZ, 1L, 1L, ilm.get(i).getQuiz().getTitle(), pos));
+								 rri.put(pos.toString() + ilm.get(i).getQuiz().getId(), new ResourceRequestInfo(ilm.get(i).getQuiz().getId(), ELearningObjectType.QUIZ, 1L, 1L, ilm.get(i).getQuiz().getTitle(), pos));
 							 else
 								 rri.get(pos.toString() + ilm.get(i).getQuiz().getId()).incRequests();
 						 }
@@ -193,7 +193,7 @@ public class QActivityResourceTypeResolution extends Question {
 				 if(rri.values() != null)
 					 list.setQuizRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
-			if(resourceTypes.contains(ELearnObjType.RESOURCE.toString()) || all)
+			if(resourceTypes.contains(ELearningObjectType.RESOURCE.toString()) || all)
 			{
 				 Criteria criteria = session.createCriteria(ResourceLogMining.class, "log");
 				 criteria.add(Restrictions.in("log.course.id", courses))
@@ -211,14 +211,14 @@ public class QActivityResourceTypeResolution extends Question {
 						 if(ilm.get(i).getResource().getTitle().equals(""))
 						 {
 							 if(rri.get(pos.toString() + "-1") == null)
-								 rri.put(pos + "-1" , new ResourceRequestInfo(ilm.get(i).getResource().getId(), ELearnObjType.RESOURCE, 1L, 1L, "Unknown", pos));
+								 rri.put(pos + "-1" , new ResourceRequestInfo(ilm.get(i).getResource().getId(), ELearningObjectType.RESOURCE, 1L, 1L, "Unknown", pos));
 							 else
 								 rri.get(pos.toString() + "-1").incRequests();
 						 }
 						 else
 						 {
 							 if(rri.get(pos.toString() + ilm.get(i).getResource().getId()) == null )
-								 rri.put(pos.toString() + ilm.get(i).getResource().getId(), new ResourceRequestInfo(ilm.get(i).getResource().getId(), ELearnObjType.RESOURCE, 1L, 1L, ilm.get(i).getResource().getTitle(), pos));
+								 rri.put(pos.toString() + ilm.get(i).getResource().getId(), new ResourceRequestInfo(ilm.get(i).getResource().getId(), ELearningObjectType.RESOURCE, 1L, 1L, ilm.get(i).getResource().getTitle(), pos));
 							 else
 								 rri.get(pos.toString() + ilm.get(i).getResource().getId()).incRequests();
 						 }
@@ -226,7 +226,7 @@ public class QActivityResourceTypeResolution extends Question {
 				 if(rri.values() != null)
 					 list.setResourceRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
-			if(resourceTypes.contains(ELearnObjType.SCORM.toString()) || all)
+			if(resourceTypes.contains(ELearningObjectType.SCORM.toString()) || all)
 			{
 				Criteria criteria = session.createCriteria(ScormLogMining.class, "log");
 				criteria.add(Restrictions.in("log.course.id", courses))
@@ -243,14 +243,14 @@ public class QActivityResourceTypeResolution extends Question {
 					 if(ilm.get(i).getScorm().getTitle().equals(""))
 					 {
 						 if(rri.get(pos.toString() + "-1") == null)
-							 rri.put(pos + "-1" , new ResourceRequestInfo(ilm.get(i).getScorm().getId(), ELearnObjType.SCORM, 1L, 1L, "Unknown", pos));
+							 rri.put(pos + "-1" , new ResourceRequestInfo(ilm.get(i).getScorm().getId(), ELearningObjectType.SCORM, 1L, 1L, "Unknown", pos));
 						 else
 							 rri.get(pos.toString() + "-1").incRequests();
 					 }
 					 else
 					 {
 						 if(rri.get(pos.toString() + ilm.get(i).getScorm().getId()) == null )
-							 rri.put(pos.toString() + ilm.get(i).getScorm().getId(), new ResourceRequestInfo(ilm.get(i).getScorm().getId(), ELearnObjType.SCORM, 1L, 1L, ilm.get(i).getScorm().getTitle(), pos));
+							 rri.put(pos.toString() + ilm.get(i).getScorm().getId(), new ResourceRequestInfo(ilm.get(i).getScorm().getId(), ELearningObjectType.SCORM, 1L, 1L, ilm.get(i).getScorm().getTitle(), pos));
 						 else
 							 rri.get(pos.toString() + ilm.get(i).getScorm().getId()).incRequests();
 					 }
@@ -258,7 +258,7 @@ public class QActivityResourceTypeResolution extends Question {
 				 if(rri.values() != null)
 					 list.setScormRRI(new ArrayList<ResourceRequestInfo>(rri.values()));
 			}
-			if(resourceTypes.contains(ELearnObjType.WIKI.toString()) || all)
+			if(resourceTypes.contains(ELearningObjectType.WIKI.toString()) || all)
 			{
 				Criteria criteria = session.createCriteria(WikiLogMining.class, "log");
 				criteria.add(Restrictions.in("log.course.id", courses))
@@ -276,14 +276,14 @@ public class QActivityResourceTypeResolution extends Question {
 						 if(ilm.get(i).getWiki().getTitle().equals(""))
 						 {
 							 if(rri.get(pos.toString() + "-1") == null)
-								 rri.put(pos + "-1" , new ResourceRequestInfo(ilm.get(i).getWiki().getId(), ELearnObjType.WIKI, 1L, 1L, "Unknown", pos));
+								 rri.put(pos + "-1" , new ResourceRequestInfo(ilm.get(i).getWiki().getId(), ELearningObjectType.WIKI, 1L, 1L, "Unknown", pos));
 							 else
 								 rri.get(pos.toString() + "-1").incRequests();
 						 }
 						 else
 						 {
 							 if(rri.get(pos.toString() + ilm.get(i).getWiki().getId()) == null )
-								 rri.put(pos.toString() + ilm.get(i).getWiki().getId(), new ResourceRequestInfo(ilm.get(i).getWiki().getId(), ELearnObjType.WIKI, 1L, 1L, ilm.get(i).getWiki().getTitle(), pos));
+								 rri.put(pos.toString() + ilm.get(i).getWiki().getId(), new ResourceRequestInfo(ilm.get(i).getWiki().getId(), ELearningObjectType.WIKI, 1L, 1L, ilm.get(i).getWiki().getTitle(), pos));
 							 else
 								 rri.get(pos.toString() + ilm.get(i).getWiki().getId()).incRequests();
 						 }

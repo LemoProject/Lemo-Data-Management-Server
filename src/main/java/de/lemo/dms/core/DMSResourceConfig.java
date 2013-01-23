@@ -3,6 +3,7 @@ package de.lemo.dms.core;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import javax.ws.rs.Path;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableMap;
@@ -24,16 +25,12 @@ import com.sun.jersey.api.core.PackagesResourceConfig;
  */
 public class DMSResourceConfig extends DefaultResourceConfig {
 
-	// TODO constants don't need to be public
-	
-	public static final String APPLICATION_BASE_URL = "lemo/dms/";
+	private static final String BASE_URL = "lemo/dms/";
 
-	public static final String SERVICE_BASE_URL = APPLICATION_BASE_URL
-			+ "services/";
-	public static final String SERVICE_PACKAGE = "de.lemo.dms.service";
-	public static final String QUESTION_BASE_URL = APPLICATION_BASE_URL
-			+ "questions/";
-	public static final String QUESTION_PACKAGE = "de.lemo.dms.processing.questions";
+	private static final String SERVICE_BASE_URL = BASE_URL + "services/";
+	private static final String SERVICE_PACKAGE = "de.lemo.dms.service";
+	private static final String QUESTION_BASE_URL = BASE_URL + "questions/";
+	private static final String QUESTION_PACKAGE = "de.lemo.dms.processing.questions";
 
 	private Map<String, Object> resourceSingletons;
 
@@ -70,8 +67,8 @@ public class DMSResourceConfig extends DefaultResourceConfig {
 	private Map<String, Object> createResourceSingletons()
 			throws InstantiationException, IllegalAccessException {
 		Builder<String, Object> singletons = ImmutableMap.builder();
-		Iterable<Entry<String, Class<?>>> singletonResourceMappings = Iterables
-				.concat(
+		Iterable<Entry<String, Class<?>>> singletonResourceMappings =
+				Iterables.concat(
 						getResourceClasses(SERVICE_PACKAGE, SERVICE_BASE_URL)
 								.entrySet(),
 						getResourceClasses(QUESTION_PACKAGE, QUESTION_BASE_URL)
@@ -96,8 +93,9 @@ public class DMSResourceConfig extends DefaultResourceConfig {
 	private HashMap<String, Class<?>> getResourceClasses(String packagePath,
 			String baseUrl) {
 		HashMap<String, Class<?>> resourceClasses = Maps.newHashMap();
-		for (Class<?> resource : new PackagesResourceConfig(packagePath)
-				.getClasses()) {
+		Set<Class<?>> packageClasses =
+				new PackagesResourceConfig(packagePath).getClasses();
+		for (Class<?> resource : packageClasses) {
 			Path annotation = resource.getAnnotation(Path.class);
 			resourceClasses.put(
 					baseUrl + CharMatcher.is('/').trimFrom(annotation.value()),

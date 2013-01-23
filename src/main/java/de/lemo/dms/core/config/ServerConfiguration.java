@@ -34,13 +34,13 @@ public enum ServerConfiguration {
 	 */
 	INSTANCE;
 
+	private static final String DEFAULT_PATTERN = "[%p] %d{ISO8601} [%c{1}] - %m%n";
+
 	{
-		// TODO use constant
 		// the very first place where we can initialize the logger
 		Logger.getRootLogger().setLevel(Level.INFO);
 		Logger.getRootLogger().addAppender(
-				new ConsoleAppender(new PatternLayout(
-						"[%p] %d{ISO8601} [%c{1}] - %m%n")));
+				new ConsoleAppender(new PatternLayout(DEFAULT_PATTERN)));
 	}
 
 	private Logger logger = Logger.getLogger(getClass());
@@ -126,18 +126,8 @@ public enum ServerConfiguration {
 			Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(
 					LemoConfig.class).createUnmarshaller();
 			for (String fileName : fileNames) {
-				// InputStream in =
-				// getClass().getClassLoader().getResourceAsStream("/" +
-				// fileName);
-
 				URL resource = getClass().getResource("/" + fileName);
-				InputStream in = null;
-				try {
-					in = resource.openStream();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
+				InputStream in = resource.openStream();
 				if (in != null) {
 					logger.info("Using config file: " + fileName);
 					lemoConfig = (LemoConfig) jaxbUnmarshaller.unmarshal(in);
@@ -146,14 +136,16 @@ public enum ServerConfiguration {
 		} catch (JAXBException e) {
 			// no way to recover, re-throw at runtime
 			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 		if (lemoConfig == null) {
 			String files = fileNames.toString();
 			throw new RuntimeException(
-					// XXX needs better wording
-					"No config file found in the classpath. Files follow tomcat's naming convention for .war files, "
-							+
-							"in following order until a valid one is found: "
+					"No config file found in the classpath."
+							+ " Config file names are based on the context url"
+							+ " and follow tomcat's naming convention for .war"
+							+ " files. Tried to read files in following order: "
 							+ files.substring(1, files.length() - 1));
 		}
 

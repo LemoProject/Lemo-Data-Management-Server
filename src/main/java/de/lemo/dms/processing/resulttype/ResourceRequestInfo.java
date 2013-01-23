@@ -2,7 +2,7 @@ package de.lemo.dms.processing.resulttype;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import de.lemo.dms.service.ELearnObjType;
+import de.lemo.dms.processing.ELearningObjectType;
 
 @XmlRootElement
 public class ResourceRequestInfo{
@@ -50,7 +50,7 @@ public class ResourceRequestInfo{
 		return resourcetype;
 	}
 
-	public void setResourcetype(ELearnObjType resourcetype) {
+	public void setResourcetype(ELearningObjectType resourcetype) {
 		this.resourcetype = resourcetype.toString();
 	}
 
@@ -79,7 +79,7 @@ public class ResourceRequestInfo{
 		this.requests++;
 	}
 	
-	public ResourceRequestInfo(Long id, ELearnObjType resourceType, Long requests, Long users, String title, Long resolutionSlot)
+	public ResourceRequestInfo(Long id, ELearningObjectType resourceType, Long requests, Long users, String title, Long resolutionSlot)
 	{
 		this.id = id;
 		this.resourcetype = resourceType.toString();

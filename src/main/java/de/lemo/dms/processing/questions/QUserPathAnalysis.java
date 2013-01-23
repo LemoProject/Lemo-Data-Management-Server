@@ -29,12 +29,12 @@ import com.google.common.collect.Maps;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;
-import de.lemo.dms.service.ELearnObjType;
 
 @Path("userpathanalysis")
 public class QUserPathAnalysis extends Question {
@@ -44,7 +44,7 @@ public class QUserPathAnalysis extends Question {
      * Returns a list of Nodes and edges, representing the user-navigation
      * matching the requirements given by the parameters.
      * 
-     * @see ELearnObjType
+     * @see ELearningObjectType
      * 
      * @param courseIds
      *            List of course-identifiers
@@ -118,8 +118,12 @@ public class QUserPathAnalysis extends Question {
             if(!types.isEmpty()) {
                 typeOk = false;
                 for(String type : types) {
+					/*
+					 * XXX why is this checked for every log object and not a
+					 * criteria restriction?
+					 */
                     // Check if ILog-object has acceptable learningObjectType
-                    if(ELearnObjType.validate(log, type))
+                    if(ELearningObjectType.fromLogMiningType(log).toString().equals(type))
                     {
                         typeOk = true;
                         break;
@@ -155,7 +159,7 @@ public class QUserPathAnalysis extends Question {
                         skippedLogs++;
                         continue;
                     }
-                    String learnObjType = ELearnObjType.valueOf(current).toString();
+                    String learnObjType = ELearningObjectType.fromLogMiningType(current).toString();
                     String type = current.getClass().toString().substring(current.getClass().toString().lastIndexOf(".")+1, current.getClass().toString().lastIndexOf("Log"));
                     String cId = learnObjId + "-" + learnObjType;
                     // Determines whether it's a new path (no predecessor for

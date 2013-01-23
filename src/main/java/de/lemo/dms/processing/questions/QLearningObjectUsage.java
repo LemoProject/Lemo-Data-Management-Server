@@ -23,10 +23,10 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
-import de.lemo.dms.service.ELearnObjType;
 
 @Path("learningobjectusage")
 public class QLearningObjectUsage extends Question {
@@ -35,7 +35,7 @@ public class QLearningObjectUsage extends Question {
     /**
      * Returns a list of resources and their respective statistics of usage.
      * 
-     * @see ELearnObjType
+     * @see ELearningObjectType
      * 
      * @param courseIds
      *            List of course-identifiers
@@ -116,7 +116,7 @@ public class QLearningObjectUsage extends Question {
         {
         	String title = item.getKey().substring(item.getKey().indexOf("$") + 1);
         	String type = item.getKey().substring(item.getKey().indexOf("?") + 1, item.getKey().indexOf("$"));
-        	ResourceRequestInfo rri = new ResourceRequestInfo(id, ELearnObjType.valueOf(type.toUpperCase()), Long.valueOf(item.getValue().size()), Long.valueOf(new HashSet<Long>(item.getValue()).size()), title, 0L);
+        	ResourceRequestInfo rri = new ResourceRequestInfo(id, ELearningObjectType.valueOf(type.toUpperCase()), Long.valueOf(item.getValue().size()), Long.valueOf(new HashSet<Long>(item.getValue()).size()), title, 0L);
         	result.add(rri);
         }
         logger.info("Total returned entries: " + result.getResourceRequestInfos().size());

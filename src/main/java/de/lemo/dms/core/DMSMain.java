@@ -28,8 +28,7 @@ public class DMSMain {
 			System.in.read();
 
 		} catch (IOException e) {
-			logger.error("remote server could not be started... "
-					+ e.getMessage()); // XXX
+			logger.error("DMS start failed.", e);
 			System.exit(1);
 		}
 	}
