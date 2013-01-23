@@ -52,7 +52,7 @@ public class HibernateDBHandler implements IDBHandler {
                     className = obj.getClass().getName();
                     i++;
                     classOb++;
-                    session.merge(obj);
+                    session.saveOrUpdate(obj);
                     if(i % BATCH_SIZE == 0)
                     {
                         // flush a batch of inserts and release memory:

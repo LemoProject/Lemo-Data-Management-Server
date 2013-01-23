@@ -10,11 +10,9 @@
   <!-- -->
   <dms name="Lemo DMS">
     <database>
-      <!-- Maven replacement variables-->
-    <property name="hibernate.connection.url">jdbc:mysql://localhost/test?rewriteBatchedStatements=true</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost/test</property>
     <property name="hibernate.connection.username">datamining</property>
     <property name="hibernate.connection.password">LabDat1#</property>
-      <!-- main config-->
       <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
       <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
@@ -48,28 +46,6 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.default_schema=lemo_db"></property>
-      </connector>
-      <connector platform-id="3" name="Chemgaroo" platform-type="Chemgaroo">
-        <property name="lemo.log_file_path">C:\Users\s.schwarzrock\Desktop\120614\130104_lemojoin_10K_1.log</property>
-        <property name="lemo.resource_metadata_path">C:\Users\s.schwarzrock\Desktop\vsc</property>
-        <property name="lemo.process_log_file">true</property>
-        <property name="lemo.process_metadata">true</property>
-        <property name="lemo.filter_log_file">true</property>
-      </connector>
-      <connector platform-id="4" name="beuth2" platform-type="Moodle_2_3">
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.default_schema=lemo_db">public</property>
-      </connector>
-      <connector platform-id="5" name="bbw1" platform-type="Moodle_1_9">
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.default_schema=lemo_db">public</property>
-      </connector>
-      <connector platform-id="6" name="clix" platform-type="Clix_2010">
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
-        <property name="hibernate.default_schema=lemo_db">lemo_db</property>
       </connector>
     </connectors>
   </dms>
