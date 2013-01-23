@@ -2,6 +2,7 @@ package de.lemo.dms.db.miningDBclass;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -15,7 +16,7 @@ public class CourseForumMining  implements IMappingClass{
 
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof CourseForumMining))
+		if(!(o instanceof CourseForumMining))
 			return false;
 		if(o.getId() == this.getId()&& (o instanceof CourseForumMining))
 			return true;
@@ -52,16 +53,16 @@ public class CourseForumMining  implements IMappingClass{
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the miningdatabase, which is searched for the course with the id submitted in the course parameter	 
 	 */		
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addCourse_forum(this);
+			courseMining.get(course).addCourseForum(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addCourse_forum(this);
+			oldCourseMining.get(course).addCourseForum(this);
 		}
 	}	
 	
@@ -82,16 +83,16 @@ public class CourseForumMining  implements IMappingClass{
 	 * @param forumMining a list of new added forums, which is searched for the forum with the id submitted in the forum parameter
 	 * @param oldForumMining a list of forums in the miningdatabase, which is searched for the forum with the id submitted in the forum parameter	 
 	 */		
-	public void setForum(long forum, HashMap<Long, ForumMining> forumMining, HashMap<Long, ForumMining> oldForumMining) {
+	public void setForum(long forum, Map<Long, ForumMining> forumMining, Map<Long, ForumMining> oldForumMining) {
 		if(forumMining.get(forum) != null)
 		{
 			this.forum = forumMining.get(forum);
-			forumMining.get(forum).addCourse_forum(this);
+			forumMining.get(forum).addCourseForum(this);
 		}
 		if(this.forum == null && oldForumMining.get(forum) != null)
 		{
 			this.forum = oldForumMining.get(forum);
-			oldForumMining.get(forum).addCourse_forum(this);
+			oldForumMining.get(forum).addCourseForum(this);
 		}
 	}
 

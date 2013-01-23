@@ -4,8 +4,8 @@ public interface IRatedLogObject extends ILogMining{
 	
 	Double getGrade();
 	
-	Double getFinalgrade();
+	Double getFinalGrade();
 	
-	Double getMaxgrade();
+	Double getMaxGrade();
 
 }

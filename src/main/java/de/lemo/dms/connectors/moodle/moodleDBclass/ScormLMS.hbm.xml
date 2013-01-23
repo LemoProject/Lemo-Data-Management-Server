@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class
+        name="de.lemo.dms.connectors.moodle.moodleDBclass.ScormLMS"
+        table="scorm">
+
+        <id
+            name="id"
+            column="id"
+            type="long">
+        </id>
+        
+        <property
+            name="name"
+            column="name"
+            type="string"/>
+            
+        <property
+            name="course"
+            column="course"
+            type="long"/>
+  
+		<property
+            name="maxgrade"
+            column="maxgrade"
+            type="double"/>
+               
+        <property
+            name="timemodified"
+            column="timemodified"
+            type="long"/> 
+    
+    </class>
+
+</hibernate-mapping>

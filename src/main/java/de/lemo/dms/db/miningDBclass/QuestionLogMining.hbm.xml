@@ -36,12 +36,12 @@
             type="double"/>
             
         <property
-            name="rawgrade"
+            name="rawGrade"
             column="rawgrade"
             type="double"/>
              
         <property
-            name="finalgrade"
+            name="finalGrade"
             column="finalgrade"
             type="double"/>
             

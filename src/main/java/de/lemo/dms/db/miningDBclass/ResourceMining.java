@@ -13,36 +13,32 @@ public class ResourceMining implements IMappingClass, ILearningObject{
 
 	/** The id. */
 	private long id;
-	
 	/** The type. */
 	private String type;
-	
 	/** The title. */
 	private String title;
-	
-	/** The timecreated. */
-	private long timecreated;
-	
-	/** The timemodified. */
-	private long timemodified;
-	
+	/** The timeCreated. */
+	private long timeCreated;
+	/** The timeModified. */
+	private long timeModified;
 	/** The difficulty. */
 	private String difficulty;
-	
 	/** The processing time. */
 	private long processingTime;
-	
 	/** The url. */
-	private String url;
-	
+	private String url;	
 	/** The position. */
 	private long position;
 	private Long platform;
+	/** The course_resource. */
+	private Set<CourseResourceMining> courseResources = new HashSet<CourseResourceMining>();
+	/** The resource_log. */
+	private Set<ResourceLogMining> resourceLogs = new HashSet<ResourceLogMining>();
 	
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof ResourceMining))
+		if(!(o instanceof ResourceMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof ResourceMining))
 			return true;
@@ -88,11 +84,7 @@ public class ResourceMining implements IMappingClass, ILearningObject{
 		this.position = position;
 	}
 	
-	/** The course_resource. */
-	private Set<CourseResourceMining> course_resource = new HashSet<CourseResourceMining>();
-	
-	/** The resource_log. */
-	private Set<ResourceLogMining> resource_log = new HashSet<ResourceLogMining>();
+
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -102,7 +94,7 @@ public class ResourceMining implements IMappingClass, ILearningObject{
 			return false;			
 		}
 		ResourceMining r = (ResourceMining)obj;
-		if(r.id == this.id && r.timemodified == this.timemodified){
+		if(r.id == this.id && r.timeModified == this.timeModified){
 			return true;
 		}		
 		return false;
@@ -143,7 +135,7 @@ public class ResourceMining implements IMappingClass, ILearningObject{
 
 	
 	/**
-	 * standard getter for the attribut id.
+	 * standard getter for the attribute id.
 	 *
 	 * @return the identifier of the resource
 	 */	
@@ -152,7 +144,7 @@ public class ResourceMining implements IMappingClass, ILearningObject{
 	}
 	
 	/**
-	 * standard setter for the attribut id.
+	 * standard setter for the attribute id.
 	 *
 	 * @param id the identifier of the resource
 	 */	
@@ -161,61 +153,61 @@ public class ResourceMining implements IMappingClass, ILearningObject{
 	}
 	
 	/**
-	 * standard getter for the attribut type.
+	 * standard getter for the attribute type.
 	 *
-	 * @return the type of the resoure
+	 * @return the type of the resource
 	 */	
 	public String getType() {
 		return type;
 	}
 	
 	/**
-	 * standard setter for the attribut type.
+	 * standard setter for the attribute type.
 	 *
-	 * @param type the type of the resoure
+	 * @param type the type of the resource
 	 */	
 	public void setType(String type) {
 		this.type = type;
 	}
 	
 	/**
-	 * standard getter for the attribut timecreated.
+	 * standard getter for the attribute timeCreated.
 	 *
 	 * @return the timestamp when the resource was created
 	 */	
-	public long getTimecreated() {
-		return timecreated;
+	public long getTimeCreated() {
+		return timeCreated;
 	}
 	
 	/**
-	 * standard setter for the attribut timecreated.
+	 * standard setter for the attribute timeCreated.
 	 *
-	 * @param timecreated the timestamp when the resource was created
+	 * @param timeCreated the timestamp when the resource was created
 	 */	
-	public void setTimecreated(long timecreated) {
-		this.timecreated = timecreated;
+	public void setTimeCreated(long timeCreated) {
+		this.timeCreated = timeCreated;
 	}
 	
 	/**
-	 * standard getter for the attribut timemodified.
+	 * standard getter for the attribute timeModified.
 	 *
 	 * @return the timestamp when the resource was changed the last time
 	 */	
-	public long getTimemodified() {
-		return timemodified;
+	public long getTimeModified() {
+		return timeModified;
 	}
 	
 	/**
-	 * standard setter for the attribut timemodified.
+	 * standard setter for the attribute timeModified.
 	 *
-	 * @param timemodified the timestamp when the resource was changed the last time
+	 * @param timeModified the timestamp when the resource was changed the last time
 	 */	
-	public void setTimemodified(long timemodified) {
-		this.timemodified = timemodified;
+	public void setTimeModified(long timeModified) {
+		this.timeModified = timeModified;
 	}
 	
 	/**
-	 * standard setter for the attribut title.
+	 * standard setter for the attribute title.
 	 *
 	 * @param title the title of the resource
 	 */	
@@ -224,7 +216,7 @@ public class ResourceMining implements IMappingClass, ILearningObject{
 	}
 	
 	/**
-	 * standard getter for the attribut title.
+	 * standard getter for the attribute title.
 	 *
 	 * @return the title of the resource
 	 */	
@@ -233,57 +225,57 @@ public class ResourceMining implements IMappingClass, ILearningObject{
 	}
 	
 	/**
-	 * standard setter for the attribut course_resource.
+	 * standard setter for the attribute course_resource.
 	 *
-	 * @param course_resource a set of entrys in the course_resource table which relate the resource to the courses
+	 * @param courseResources a set of entries in the course_resource table which relate the resource to the courses
 	 */	
-	public void setCourse_resource(Set<CourseResourceMining> course_resource) {
-		this.course_resource = course_resource;
+	public void setCourseResources(Set<CourseResourceMining> courseResources) {
+		this.courseResources = courseResources;
 	}
 	
 	/**
-	 * standard getter for the attribut.
+	 * standard getter for the attribute.
 	 *
-	 * @return a set of entrys in the course_resource table which relate the resource to the courses
+	 * @return a set of entries in the course_resource table which relate the resource to the courses
 	 */	
-	public Set<CourseResourceMining> getCourse_resource() {
-		return course_resource;
+	public Set<CourseResourceMining> getCourseResources() {
+		return courseResources;
 	}
 	
 	/**
-	 * standard add method for the attribut course_resource.
+	 * standard add method for the attribute course_resource.
 	 *
-	 * @param course_resource_add this entry will be added to the list of course_resource in this resource
+	 * @param courseResource this entry will be added to the list of course_resource in this resource
 	 */
-	public void addCourse_resource(CourseResourceMining course_resource_add){	
-		course_resource.add(course_resource_add);	
+	public void addCourseResource(CourseResourceMining courseResource){	
+		this.courseResources.add(courseResource);	
 	}
 	
 	/**
-	 * standard setter for the attribut resource_log.
+	 * standard setter for the attribute resource_log.
 	 *
-	 * @param resource_log a set of entrys in the resource_log table which are related to this resource
+	 * @param resourceLogs a set of entries in the resource_log table which are related to this resource
 	 */	
-	public void setResource_log(Set<ResourceLogMining> resource_log) {
-		this.resource_log = resource_log;
+	public void setResourceLogs(Set<ResourceLogMining> resourceLogs) {
+		this.resourceLogs = resourceLogs;
 	}
 	
 	/**
-	 * standard getter for the attribut resource_log.
+	 * standard getter for the attribute resource_log.
 	 *
-	 * @return a set of entrys in the resource_log table which are related to this resource
+	 * @return a set of entries in the resource_log table which are related to this resource
 	 */	
-	public Set<ResourceLogMining> getResource_log() {
-		return resource_log;
+	public Set<ResourceLogMining> getResourceLogs() {
+		return this.resourceLogs;
 	}
 	
 	/**
-	 * standard add method for the attribut resource_log.
+	 * standard add method for the attribute resource_log.
 	 *
-	 * @param resource_log_add this entry will be added to the list of resource_log in this resource
+	 * @param resourceLog this entry will be added to the list of resource_log in this resource
 	 */
-	public void addResource_log(ResourceLogMining resource_log_add){	
-		resource_log.add(resource_log_add);	
+	public void addResourceLog(ResourceLogMining resourceLog){	
+		this.resourceLogs.add(resourceLog);	
 	}
 
 	public Long getPlatform() {

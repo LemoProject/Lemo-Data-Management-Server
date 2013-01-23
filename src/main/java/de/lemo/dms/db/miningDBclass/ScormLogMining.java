@@ -1,6 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -37,7 +37,7 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof ScormLogMining))
+		if(!(o instanceof ScormLogMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof ScormLogMining))
 			return true;
@@ -92,17 +92,17 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 	 * @param userMining a list of new added user, which is searched for the user with the id submitted in the user parameter
 	 * @param oldUserMining a list of user in the mining database, which is searched for the user with the id submitted in the user parameter
 	 */	
-	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {			
+	public void setUser(long user, Map<Long, UserMining> userMining, Map<Long, UserMining> oldUserMining) {			
 		
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addScorm_log(this);
+			userMining.get(user).addScormLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addScorm_log(this);
+			oldUserMining.get(user).addScormLog(this);
 		}
 	}
 	/** standard getter for the attribute course
@@ -122,17 +122,17 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the mining database, which is searched for the course with the id submitted in the course parameter
 	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
 		
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addScorm_log(this);
+			courseMining.get(course).addScormLog(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addScorm_log(this);
+			oldCourseMining.get(course).addScormLog(this);
 		}
 	}
 	/** standard getter for the attribute grade
@@ -176,17 +176,17 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 	 * @param scormMining a list of new added scorm packages, which is searched for the scorm package with the id submitted in the parameter
 	 * @param oldScormMining a list of scorm packages in the mining database, which is searched for the scorm package with the id submitted in the parameter
 	 */	
-	public void setScorm(long scorm, HashMap<Long, ScormMining> scormMining, HashMap<Long, ScormMining> oldScormMining) {		
+	public void setScorm(long scorm, Map<Long, ScormMining> scormMining, Map<Long, ScormMining> oldScormMining) {		
 		
 		if(scormMining.get(scorm) != null)
 		{
 			this.scorm = scormMining.get(scorm);
-			scormMining.get(scorm).addScorm_log(this);
+			scormMining.get(scorm).addScormLog(this);
 		}
 		if(this.scorm == null && oldScormMining.get(scorm) != null)
 		{
 			this.scorm = oldScormMining.get(scorm);
-			oldScormMining.get(scorm).addScorm_log(this);
+			oldScormMining.get(scorm).addScormLog(this);
 		}
 	}
 	/** standard setter for the attribute scorm
@@ -216,12 +216,12 @@ public class ScormLogMining implements ILogMining , IMappingClass, IRatedLogObje
 	}
 
 	@Override
-	public Double getMaxgrade() {
-		return scorm.getMaxgrade();
+	public Double getMaxGrade() {
+		return scorm.getMaxGrade();
 	}
 
 	@Override
-	public Double getFinalgrade() {
+	public Double getFinalGrade() {
 		// TODO Auto-generated method stub
 		return grade;
 	}

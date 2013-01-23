@@ -11,7 +11,7 @@ public class IDMappingMining implements IMappingClass {
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof IDMappingMining))
+		if(!(o instanceof IDMappingMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof IDMappingMining))
 			return true;

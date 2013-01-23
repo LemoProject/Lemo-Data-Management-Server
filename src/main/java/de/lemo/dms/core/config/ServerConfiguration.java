@@ -1,6 +1,8 @@
 package de.lemo.dms.core.config;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -113,14 +115,23 @@ public enum ServerConfiguration {
         try {
             Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(LemoConfig.class).createUnmarshaller();
             for(String fileName : fileNames) {
-                InputStream in = getClass().getResourceAsStream("/" + fileName);
+                //InputStream in = getClass().getClassLoader().getResourceAsStream("/" + fileName);
+                
+                URL resource = getClass().getResource("/" + fileName);
+                InputStream in = null;
+                try {
+                    in = resource.openStream();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } 
+                
                 if(in != null) {
                     logger.info("Using config file: " + fileName);
                     lemoConfig = (LemoConfig) jaxbUnmarshaller.unmarshal(in);
                 }
             }
         } catch (JAXBException e) {
-            // no way to recover, re-throw at runtime
+        	// no way to recover, re-throw at runtime
             throw new RuntimeException(e);
         }
         if(lemoConfig == null) {

@@ -24,7 +24,6 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
-import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
@@ -122,15 +121,15 @@ public class QPerformanceHistogram extends Question{
 	        
 	        for(IRatedLogObject log : singleResults.values())
 	        {
-	        	if(obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null && log.getFinalgrade() != null &&
-	        			log.getMaxgrade() != null && log.getMaxgrade() > 0)
+	        	if(obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null && log.getFinalGrade() != null &&
+	        			log.getMaxGrade() != null && log.getMaxGrade() > 0)
 	        	{
 	        		//Determine size of each interval
-	        		 Double step = log.getMaxgrade() / resolution;
+	        		 Double step = log.getMaxGrade() / resolution;
 	        		 if(step > 0d)
 	        		 {
 	        			 //Determine interval for specific grade
-		        		int pos =  (int) (log.getFinalgrade() / step);
+		        		int pos =  (int) (log.getFinalGrade() / step);
 			     		if(pos > resolution - 1)
 			     			pos = resolution - 1;
 			     		//Increase count of specified interval

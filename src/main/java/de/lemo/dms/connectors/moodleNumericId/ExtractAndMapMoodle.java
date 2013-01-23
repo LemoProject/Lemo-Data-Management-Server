@@ -80,34 +80,36 @@ import de.lemo.dms.db.miningDBclass.WikiMining;
 public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Namen einf�gen
 
 //LMS tables instances lists
-	private List<Log_LMS> log_lms;
-	private List<Resource_LMS> resource_lms;
-	private List<Course_LMS> course_lms;
-	private List<Forum_LMS> forum_lms;
-	private List<Wiki_LMS> wiki_lms;
-	private List<User_LMS> user_lms;
-	private List<Quiz_LMS> quiz_lms;
-	private List<Quiz_question_instances_LMS> quiz_question_instances_lms;
-	private List<Question_LMS> question_lms;
-	private List<Groups_LMS> group_lms;
-	private List<Groups_members_LMS> group_members_lms;
-	private List<Question_states_LMS> question_states_lms;
-	private List<Forum_posts_LMS> forum_posts_lms;
-	private List<Role_LMS> role_lms;
-	private List<Context_LMS> context_lms;
-	private List<Role_assignments_LMS> role_assignments_lms;
-	private List<Assignment_LMS> assignment_lms;	
-	private List<Assignment_submissions_LMS> assignment_submission_lms;
-	private List<Quiz_grades_LMS> quiz_grades_lms;
-	private List<Forum_discussions_LMS> forum_discussions_lms;
-	private List<Scorm_LMS> scorm_lms;
-	private List<Grade_grades_LMS> grade_grades_lms;
-	private List<Grade_items_LMS> grade_items_lms;
-	private List<Chat_LMS> chat_lms;
-	private List<ChatLog_LMS> chat_log_lms;
-	private List<CourseCategories_LMS> course_categories_lms;
-	private List<Course_Modules_LMS> course_modules_lms;
+
+	private  List<Log_LMS> logLms;
+	private  List<Resource_LMS> resourceLms;
+	private  List<Course_LMS> courseLms;
+	private  List<Forum_LMS> forumLms;
+	private  List<Wiki_LMS> wikiLms;
+	private  List<User_LMS> userLms;
+	private  List<Quiz_LMS> quizLms;
+	private  List<Quiz_question_instances_LMS> quizQuestionInstancesLms;
+	private  List<Question_LMS> questionLms;
+	private  List<Groups_LMS> groupLms;
+	private  List<Groups_members_LMS> groupMembersLms;
+	private  List<Question_states_LMS> questionStatesLms;
+	private  List<Forum_posts_LMS> forumPostsLms;
+	private  List<Role_LMS> roleLms;
+	private  List<Context_LMS> contextLms;
+	private  List<Role_assignments_LMS> roleAssignmentsLms;
+	private  List<Assignment_LMS> assignmentLms;	
+	private  List<Assignment_submissions_LMS> assignmentSubmissionLms;
+	private  List<Quiz_grades_LMS> quizGradesLms;
+	private  List<Forum_discussions_LMS> forumDiscussionsLms;
+	private  List<Scorm_LMS> scormLms;
+	private  List<Grade_grades_LMS> gradeGradesLms;
+	private  List<Grade_items_LMS> gradeItemsLms;
+	private  List<Chat_LMS> chatLms;
+	private  List<ChatLog_LMS> chatLogLms;
+	private  List<CourseCategories_LMS> courseCategoriesLms;
+	private  List<Course_Modules_LMS> courseModulesLms;
 	
+		
 	private Logger logger = Logger.getLogger(getClass());
 	private IConnector connector;
 	
@@ -129,161 +131,161 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 	        Query log = session.createQuery("from Log_LMS x where x.time>=:readingtimestamp and x.time<=:ceiling order by x.id asc");
 	        log.setParameter("readingtimestamp", readingfromtimestamp);
 	        log.setParameter("ceiling", ceiling);
-	        log_lms = log.list();	        
-	        System.out.println("log_lms tables: " + log_lms.size());       
+	        logLms = log.list();	        
+	        System.out.println("log_lms tables: " + logLms.size());       
 	        
 	    	Query resource = session.createQuery("from Resource_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	resource.setParameter("readingtimestamp", readingfromtimestamp);
 	    	resource.setParameter("ceiling", ceiling);
-	    	resource_lms = resource.list();		        
-	    	System.out.println("resource_lms tables: " + resource_lms.size());
+	    	resourceLms = resource.list();		        
+	    	System.out.println("resource_lms tables: " + resourceLms.size());
 	    	
 	      	Query courseMod = session.createQuery("from Course_Modules_LMS x order by x.id asc");
-	    	course_modules_lms = courseMod.list();		        
-	    	System.out.println("course_modules_lms tables: " + course_modules_lms.size());
+	    	courseModulesLms = courseMod.list();		        
+	    	System.out.println("course_modules_lms tables: " + courseModulesLms.size());
 	    	
 	    	
 	    	Query chat = session.createQuery("from Chat_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	chat.setParameter("readingtimestamp", readingfromtimestamp);
 	    	chat.setParameter("ceiling", ceiling);
-	    	chat_lms = chat.list();		        
-	    	System.out.println("chat_lms tables: " + chat_lms.size());
+	    	chatLms = chat.list();		        
+	    	System.out.println("chat_lms tables: " + chatLms.size());
 	    	
 	    	Query chatlog = session.createQuery("from ChatLog_LMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:ceiling order by x.id asc");
 	    	chatlog.setParameter("readingtimestamp", readingfromtimestamp);
 	    	chatlog.setParameter("ceiling", ceiling);
-	    	chat_log_lms = chatlog.list();		        
-	    	System.out.println("chat_log_lms tables: " + chat_log_lms.size());
+	    	chatLogLms = chatlog.list();		        
+	    	System.out.println("chat_log_lms tables: " + chatLogLms.size());
 	    	
 	    	Query courseCategories = session.createQuery("from CourseCategories_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	courseCategories.setParameter("readingtimestamp", readingfromtimestamp);
 	    	courseCategories.setParameter("ceiling", ceiling);
-	    	course_categories_lms = courseCategories.list();		        
-	    	System.out.println("course_categories_lms tables: " + course_categories_lms.size());
+	    	courseCategoriesLms = courseCategories.list();		        
+	    	System.out.println("course_categories_lms tables: " + courseCategoriesLms.size());
 	    	
 	    	
 	    	Query course = session.createQuery("from Course_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	course.setParameter("readingtimestamp", readingfromtimestamp);
 	    	course.setParameter("ceiling", ceiling);
-	    	course_lms = course.list();		        	        
-	    	System.out.println("course_lms tables: " + course_lms.size());
+	    	courseLms = course.list();		        	        
+	    	System.out.println("course_lms tables: " + courseLms.size());
 	    	
 	    	Query forum_posts = session.createQuery("from Forum_posts_LMS x where x.modified>=:readingtimestamp and x.modified<=:ceiling order by x.id asc");
 	    	forum_posts.setParameter("readingtimestamp", readingfromtimestamp);
 	    	forum_posts.setParameter("ceiling", ceiling);
-	    	forum_posts_lms = forum_posts.list();	
-	    	System.out.println("forum_posts_lms tables: " + forum_posts_lms.size()); 
+	    	forumPostsLms = forum_posts.list();	
+	    	System.out.println("forum_posts_lms tables: " + forumPostsLms.size()); 
 	    	
 	    	Query forum = session.createQuery("from Forum_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	forum.setParameter("readingtimestamp", readingfromtimestamp);
 	    	forum.setParameter("ceiling", ceiling);
-	    	forum_lms = forum.list();		        
-	    	System.out.println("forum_lms tables: " + forum_lms.size());
+	    	forumLms = forum.list();		        
+	    	System.out.println("forum_lms tables: " + forumLms.size());
 	    	
 	    	Query group = session.createQuery("from Groups_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	group.setParameter("readingtimestamp", readingfromtimestamp);
 	    	group.setParameter("ceiling", ceiling);
-	    	group_lms = group.list();	        
-	    	System.out.println("group_lms tables: " + group_lms.size());
+	    	groupLms = group.list();	        
+	    	System.out.println("group_lms tables: " + groupLms.size());
 	    	
 	    	Query quiz = session.createQuery("from Quiz_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	quiz.setParameter("readingtimestamp", readingfromtimestamp);
 	    	quiz.setParameter("ceiling", ceiling);
-	    	quiz_lms = quiz.list();		        
-	    	System.out.println("quiz_lms tables: " + quiz_lms.size());	
+	    	quizLms = quiz.list();		        
+	    	System.out.println("quiz_lms tables: " + quizLms.size());	
 	    	
 	    	Query wiki = session.createQuery("from Wiki_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	wiki.setParameter("readingtimestamp", readingfromtimestamp);
 	    	wiki.setParameter("ceiling", ceiling);
-	    	wiki_lms = wiki.list();		        
-	    	System.out.println("wiki_lms tables: " + wiki_lms.size());
+	    	wikiLms = wiki.list();		        
+	    	System.out.println("wiki_lms tables: " + wikiLms.size());
 	    	
 	    	Query group_members = session.createQuery("from Groups_members_LMS x where x.timeadded>=:readingtimestamp and x.timeadded<=:ceiling order by x.id asc");
 	    	group_members.setParameter("readingtimestamp", readingfromtimestamp);
 	    	group_members.setParameter("ceiling", ceiling);
-	    	group_members_lms = group_members.list();		    	
-	        System.out.println("group_members_lms tables: " + group_members_lms.size());
+	    	groupMembersLms = group_members.list();		    	
+	        System.out.println("group_members_lms tables: " + groupMembersLms.size());
 	    	
 	    	Query question_states = session.createQuery("from Question_states_LMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:ceiling order by x.id asc");
 	    	question_states.setParameter("readingtimestamp", readingfromtimestamp);
 	    	question_states.setParameter("ceiling", ceiling);
-	    	question_states_lms = question_states.list();	    	
-	        System.out.println("question_states_lms tables: " + question_states_lms.size());
+	    	questionStatesLms = question_states.list();	    	
+	        System.out.println("question_states_lms tables: " + questionStatesLms.size());
 	    	
 	    	Query quiz_question_instances = session.createQuery("from Quiz_question_instances_LMS x order by x.id asc");
-	    	quiz_question_instances_lms = quiz_question_instances.list();		    	
-	        System.out.println("quiz_question_instances_lms tables: " + quiz_question_instances_lms.size()); 
+	    	quizQuestionInstancesLms = quiz_question_instances.list();		    	
+	        System.out.println("quiz_question_instances_lms tables: " + quizQuestionInstancesLms.size()); 
 	    	
 	    	Query question = session.createQuery("from Question_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	question.setParameter("readingtimestamp", readingfromtimestamp);
 	    	question.setParameter("ceiling", ceiling);
-	    	question_lms = question.list();		    	
-	        System.out.println("question_lms tables: " + question_lms.size());
+	    	questionLms = question.list();		    	
+	        System.out.println("question_lms tables: " + questionLms.size());
 	    	
   
 	    	Query user = session.createQuery("from User_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	user.setParameter("ceiling", ceiling);
 	    	user.setParameter("readingtimestamp", readingfromtimestamp);
-	    	user_lms = user.list();		    	
-	        System.out.println("user_lms tables: " + user_lms.size());	 
+	    	userLms = user.list();		    	
+	        System.out.println("user_lms tables: " + userLms.size());	 
 	    	
 	    	Query role = session.createQuery("from Role_LMS x order by x.id asc");
-	    	role_lms = role.list();
-	        System.out.println("role_lms tables: " + role_lms.size());
+	    	roleLms = role.list();
+	        System.out.println("role_lms tables: " + roleLms.size());
 	    	
 	    	Query context = session.createQuery("from Context_LMS x order by x.id asc");
-	    	context_lms = context.list();		    	
-	        System.out.println("context_lms tables: " + context_lms.size());
+	    	contextLms = context.list();		    	
+	        System.out.println("context_lms tables: " + contextLms.size());
 	    	
 	    	Query role_assignments = session.createQuery("from Role_assignments_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	role_assignments.setParameter("ceiling", ceiling);
 	    	role_assignments.setParameter("readingtimestamp", readingfromtimestamp);
-	    	role_assignments_lms = role_assignments.list();		    	
-	        System.out.println("role_assignments_lms tables: " + role_assignments_lms.size());
+	    	roleAssignmentsLms = role_assignments.list();		    	
+	        System.out.println("role_assignments_lms tables: " + roleAssignmentsLms.size());
 	    	
 	    	Query assignments = session.createQuery("from Assignment_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	assignments.setParameter("ceiling", ceiling);
 	    	assignments.setParameter("readingtimestamp", readingfromtimestamp);
-	    	assignment_lms = assignments.list();		    	
-	        System.out.println("assignment_lms tables: " + assignment_lms.size());
+	    	assignmentLms = assignments.list();		    	
+	        System.out.println("assignment_lms tables: " + assignmentLms.size());
 	    	
 	        
 	    	Query assignment_submission = session.createQuery("from Assignment_submissions_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	assignment_submission.setParameter("ceiling", ceiling);
 	    	assignment_submission.setParameter("readingtimestamp", readingfromtimestamp);
-	    	assignment_submission_lms = assignment_submission.list();		    	
-	        System.out.println("assignment_submission_lms tables: " + assignment_submission_lms.size());
+	    	assignmentSubmissionLms = assignment_submission.list();		    	
+	        System.out.println("assignment_submission_lms tables: " + assignmentSubmissionLms.size());
 
 
 	    	Query quiz_grades = session.createQuery("from Quiz_grades_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	quiz_grades.setParameter("ceiling", ceiling);
 	    	quiz_grades.setParameter("readingtimestamp", readingfromtimestamp);
-	    	quiz_grades_lms = quiz_grades.list();		    	
-	        System.out.println("quiz_grades_lms tables: " + quiz_grades_lms.size());
+	    	quizGradesLms = quiz_grades.list();		    	
+	        System.out.println("quiz_grades_lms tables: " + quizGradesLms.size());
 	        
 	    	Query forum_discussions = session.createQuery("from Forum_discussions_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	forum_discussions.setParameter("ceiling", ceiling);
 	    	forum_discussions.setParameter("readingtimestamp", readingfromtimestamp);
-	    	forum_discussions_lms = forum_discussions.list();		    	
-	        System.out.println("forum_discussions_lms tables: " + forum_discussions_lms.size());	        
+	    	forumDiscussionsLms = forum_discussions.list();		    	
+	        System.out.println("forum_discussions_lms tables: " + forumDiscussionsLms.size());	        
 
 	    	Query scorm = session.createQuery("from Scorm_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	scorm.setParameter("ceiling", ceiling);
 	    	scorm.setParameter("readingtimestamp", readingfromtimestamp);
-	    	scorm_lms = scorm.list();		    	
-	        System.out.println("scorm_lms tables: " + scorm_lms.size());	        
+	    	scormLms = scorm.list();		    	
+	        System.out.println("scorm_lms tables: " + scormLms.size());	        
 
 	    	Query grade_grades = session.createQuery("from Grade_grades_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	grade_grades.setParameter("ceiling", ceiling);
 	    	grade_grades.setParameter("readingtimestamp", readingfromtimestamp);
-	    	grade_grades_lms = grade_grades.list();		    	
-	        System.out.println("grade_grades_lms tables: " + grade_grades_lms.size());		        
+	    	gradeGradesLms = grade_grades.list();		    	
+	        System.out.println("grade_grades_lms tables: " + gradeGradesLms.size());		        
 
 	    	Query grade_items = session.createQuery("from Grade_items_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 	    	grade_items.setParameter("ceiling", ceiling);
 	    	grade_items.setParameter("readingtimestamp", readingfromtimestamp);
-	    	grade_items_lms = grade_items.list();		    	
-	        System.out.println("grade_items_lms tables: " + grade_items_lms.size());
+	    	gradeItemsLms = grade_items.list();		    	
+	        System.out.println("grade_items_lms tables: " + gradeItemsLms.size());
 	        	        
 //hibernate session finish and close
 	        tx.commit();        
@@ -300,150 +302,150 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 
             // reading the LMS Database, create tables as lists of instances of the DB-table classes
 
-	        if(user_lms == null){
+	        if(userLms == null){
 
 	        	Query resource = session.createQuery("from Resource_LMS x order by x.id asc");
-	        	resource_lms = resource.list();		        
-	        	System.out.println("Resource tables: " + resource_lms.size());	  
+	        	resourceLms = resource.list();	
+	        	System.out.println("Resource tables: " + resourceLms.size());	  
 	    	
 	        	Query course = session.createQuery("from Course_LMS x order by x.id asc");
-	        	course_lms = course.list();		        	        
-	        	System.out.println("Course_LMS tables: " + course_lms.size());	  
+	        	courseLms = course.list();		     
+	        	System.out.println("Course_LMS tables: " + courseLms.size());	  
 	        	
 	        	Query chat = session.createQuery("from Chat_LMS x order by x.id asc");
-		    	chat_lms = chat.list();		        
-		    	System.out.println("Chat_LMS tables: " + chat_lms.size());	
+		    	chatLms = chat.list();		       
+		    	System.out.println("Chat_LMS tables: " + chatLms.size());	
 		    			    	
 		    	Query courseCategories = session.createQuery("from CourseCategories_LMS x order by x.id asc");
-		    	course_categories_lms = courseCategories.list();		        
-		    	System.out.println("CourseCategories_LMS tables: " + course_categories_lms.size());	
+		    	courseCategoriesLms = courseCategories.list();		  
+		    	System.out.println("CourseCategories_LMS tables: " + courseCategoriesLms.size());	
 	    	
 	        	Query forum = session.createQuery("from Forum_LMS x order by x.id asc");
-	        	forum_lms = forum.list();		        
-	        	System.out.println("Forum_LMS tables: " + forum_lms.size());	
-	    	
+	        	forumLms = forum.list();	
+	        	System.out.println("Forum_LMS tables: " + forumLms.size());	
+	        	
 		      	Query courseMod = session.createQuery("from Course_Modules_LMS x order by x.id asc");
-		    	course_modules_lms = courseMod.list();		        
-		    	System.out.println("course_modules_lms tables: " + course_modules_lms.size());
+		    	courseModulesLms = courseMod.list();		        
+		    	System.out.println("course_modules_lms tables: " + courseModulesLms.size());
 	    	
 	        	Query group = session.createQuery("from Groups_LMS x order by x.id asc");
-	        	group_lms = group.list();	        
-	        	System.out.println("Groups_LMS tables: " + group_lms.size());	
+	        	groupLms = group.list();	        
+	        	System.out.println("Groups_LMS tables: " + groupLms.size());	
 	    	
 	        	Query quiz = session.createQuery("from Quiz_LMS x order by x.id asc");
-	        	quiz_lms = quiz.list();		        
-	        	System.out.println("Quiz_LMS tables: " + quiz_lms.size());	
+	        	quizLms = quiz.list();		
+	        	System.out.println("Quiz_LMS tables: " + quizLms.size());	
 
 	        	Query wiki = session.createQuery("from Wiki_LMS x order by x.id asc");
-	        	wiki_lms = wiki.list();		        
-	        	System.out.println("Wiki_LMS tables: " + wiki_lms.size());	
+	        	wikiLms = wiki.list();		
+	        	System.out.println("Wiki_LMS tables: " + wikiLms.size());	
 	    	
 	        	Query quiz_question_instances = session.createQuery("from Quiz_question_instances_LMS x order by x.id asc");
-	        	quiz_question_instances_lms = quiz_question_instances.list();		    	
-	        	System.out.println("Quiz_question_instances_LMS tables: " + quiz_question_instances_lms.size());	
+	        	quizQuestionInstancesLms = quiz_question_instances.list();		 
+	        	System.out.println("Quiz_question_instances_LMS tables: " + quizQuestionInstancesLms.size());	
 	    	
 	        	Query question = session.createQuery("from Question_LMS x order by x.id asc");
-	        	question_lms = question.list();		    	
-	        	System.out.println("Question_LMS tables: " + question_lms.size());	
-	    	
+	        	questionLms = question.list();		
+	        	System.out.println("Question_LMS tables: " + questionLms.size());	
+    	
 	        	Query user = session.createQuery("from User_LMS x order by x.id asc");
-	        	user_lms = user.list();		    	
-	        	System.out.println("User_LMS tables: " + user_lms.size());	
+	        	userLms = user.list();		   
+	        	System.out.println("User_LMS tables: " + userLms.size());	
 	    	
 	        	Query role = session.createQuery("from Role_LMS x order by x.id asc");
-	        	role_lms = role.list();		    	
-	        	System.out.println("Role_LMS tables: " + role_lms.size());	
+	        	roleLms = role.list();		
+	        	System.out.println("Role_LMS tables: " + roleLms.size());	
 
 	        	session.clear();
 	    	
 	        	Query context = session.createQuery("from Context_LMS x order by x.id asc");
-	        	context_lms = context.list();
-	        	System.out.println("Context_LMS tables: " + context_lms.size());	
+	        	contextLms = context.list();
+	        	System.out.println("Context_LMS tables: " + contextLms.size());	
 	    	
 	        	Query assignments = session.createQuery("from Assignment_LMS x order by x.id asc");
-	        	assignment_lms = assignments.list();		    	
-	        	System.out.println("Assignment_LMS tables: " + assignment_lms.size());	
+	        	assignmentLms = assignments.list();	
+	        	System.out.println("Assignment_LMS tables: " + assignmentLms.size());	
 	        	
 		    	Query scorm = session.createQuery("from Scorm_LMS x order by x.id asc");
-		    	scorm_lms = scorm.list();		    	
-		    	System.out.println("Scorm_LMS tables: " + scorm_lms.size());	
+		    	scormLms = scorm.list();		
+		    	System.out.println("Scorm_LMS tables: " + scormLms.size());	
 		    	
 		    	Query grade_items = session.createQuery("from Grade_items_LMS x order by x.id asc");
-		    	grade_items_lms = grade_items.list();
-		    	System.out.println("Grade_items_LMS tables: " + grade_items_lms.size());	
+		    	gradeItemsLms = grade_items.list();
+		    	System.out.println("Grade_items_LMS tables: " + gradeItemsLms.size());	
 	        }
 	    	
 	    	Query log = session.createQuery("from Log_LMS x where x.time>=:readingtimestamp and x.time<=:readingtimestamp2 order by x.id asc");
 	        log.setParameter("readingtimestamp", readingfromtimestamp);
 	        log.setParameter("readingtimestamp2", readingtotimestamp);
-	        log_lms = log.list();	        
-	        System.out.println("Log_LMS tables: " + log_lms.size());	
+	        logLms = log.list();	  
+	        System.out.println("Log_LMS tables: " + logLms.size());	
 	        
 	    	Query chatlog = session.createQuery("from ChatLog_LMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:readingtimestamp2 order by x.id asc");
 	    	chatlog.setParameter("readingtimestamp", readingfromtimestamp);
 	    	chatlog.setParameter("readingtimestamp2", readingtotimestamp);	
-	    	chat_log_lms = chatlog.list();		        
-	    	System.out.println("ChatLog_LMS tables: " + chat_log_lms.size());	
+	    	chatLogLms = chatlog.list();	
+	    	System.out.println("ChatLog_LMS tables: " + chatLogLms.size());	
 	    	
 	    	Query forum_posts = session.createQuery("from Forum_posts_LMS x where x.created>=:readingtimestamp and x.created<=:readingtimestamp2 order by x.id asc");
 	    	forum_posts.setParameter("readingtimestamp", readingfromtimestamp);
 	    	forum_posts.setParameter("readingtimestamp2", readingtotimestamp);	    	
-	    	forum_posts_lms = forum_posts.list();
-	    	System.out.println("Forum_posts_LMS tables: " + forum_posts_lms.size());	
+	    	forumPostsLms = forum_posts.list();
+	    	System.out.println("Forum_posts_LMS tables: " + forumPostsLms.size());	
 	    	
 	    	Query forum_posts_modified = session.createQuery("from Forum_posts_LMS x where x.modified>=:readingtimestamp and x.modified<=:readingtimestamp2 order by x.id asc");
 	    	forum_posts_modified.setParameter("readingtimestamp", readingfromtimestamp);
 	    	forum_posts_modified.setParameter("readingtimestamp2", readingtotimestamp);
-	    	forum_posts_lms.addAll(forum_posts_modified.list());
-	    	System.out.println("Forum_posts_LMS tables: " + forum_posts_lms.size());	
+	    	forumPostsLms.addAll(forum_posts_modified.list());
+	    	System.out.println("Forum_posts_LMS tables: " + forumPostsLms.size());	
 
 	        session.clear();
 	    	
 	    	Query group_members = session.createQuery("from Groups_members_LMS x where x.timeadded>=:readingtimestamp and x.timeadded<=:readingtimestamp2 order by x.id asc");
 	    	group_members.setParameter("readingtimestamp", readingfromtimestamp);
 	    	group_members.setParameter("readingtimestamp2", readingtotimestamp);
-	    	group_members_lms = group_members.list();		    	
-	    	System.out.println("Groups_members_LMS tables: " + group_members_lms.size());	
+	    	groupMembersLms = group_members.list();		 
+	    	System.out.println("Groups_members_LMS tables: " + groupMembersLms.size());	
 	    	
 	    	Query question_states = session.createQuery("from Question_states_LMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:readingtimestamp2 order by x.id asc");
 	    	question_states.setParameter("readingtimestamp", readingfromtimestamp);
 	    	question_states.setParameter("readingtimestamp2", readingtotimestamp);
-	    	question_states_lms = question_states.list();	    	
-	    	System.out.println("Question_states_LMS tables: " + question_states_lms.size());	
+	    	questionStatesLms = question_states.list();	
+	    	System.out.println("Question_states_LMS tables: " + questionStatesLms.size());	
 	    	
  	
 	    	
 	    	Query role_assignments = session.createQuery("from Role_assignments_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
 	    	role_assignments.setParameter("readingtimestamp", readingfromtimestamp);
 	    	role_assignments.setParameter("readingtimestamp2", readingtotimestamp);
-	    	role_assignments_lms = role_assignments.list();		    	
-	    	System.out.println("Role_assignments_LMS tables: " + role_assignments_lms.size());	
+	    	roleAssignmentsLms = role_assignments.list();		 
+	    	System.out.println("Role_assignments_LMS tables: " + roleAssignmentsLms.size());	
 	    		    	
 	    
 	    	Query assignment_submission = session.createQuery("from Assignment_submissions_LMS x where x.timecreated>=:readingtimestamp and x.timecreated<=:readingtimestamp2 order by x.id asc");
 	    	assignment_submission.setParameter("readingtimestamp", readingfromtimestamp);
 	    	assignment_submission.setParameter("readingtimestamp2", readingtotimestamp);
-	    	assignment_submission_lms = assignment_submission.list();		    	
-	    	System.out.println("Assignment_submissions_LMS tables: " + assignment_submission_lms.size());	
+	    	assignmentSubmissionLms = assignment_submission.list();	
+	    	System.out.println("Assignment_submissions_LMS tables: " + assignmentSubmissionLms.size());	
 
 
 	    	Query quiz_grades = session.createQuery("from Quiz_grades_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
 	    	quiz_grades.setParameter("readingtimestamp", readingfromtimestamp);
 	    	quiz_grades.setParameter("readingtimestamp2", readingtotimestamp);
-	    	quiz_grades_lms = quiz_grades.list();		    	
-	    	System.out.println("Quiz_grades_LMS tables: " + quiz_grades_lms.size());	
+	    	quizGradesLms = quiz_grades.list();		  
+	    	System.out.println("Quiz_grades_LMS tables: " + quizGradesLms.size());	
 
 	    	Query forum_discussions = session.createQuery("from Forum_discussions_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
 	    	forum_discussions.setParameter("readingtimestamp", readingfromtimestamp);
 	    	forum_discussions.setParameter("readingtimestamp2", readingtotimestamp);
-	    	forum_discussions_lms = forum_discussions.list();		    	
-	    	System.out.println("Forum_discussions_LMS tables: " + forum_discussions_lms.size());
+	    	forumDiscussionsLms = forum_discussions.list();		    	
+	    	System.out.println("Forum_discussions_LMS tables: " + forumDiscussionsLms.size());
     	
 	    	Query grade_grades = session.createQuery("from Grade_grades_LMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
 	    	grade_grades.setParameter("readingtimestamp", readingfromtimestamp);
 	    	grade_grades.setParameter("readingtimestamp2", readingtotimestamp);
-	    	grade_grades_lms = grade_grades.list();
-	    	System.out.println("Grade_grades_LMS tables: " + grade_grades_lms.size());	
+	    	gradeGradesLms = grade_grades.list();
+	    	System.out.println("Grade_grades_LMS tables: " + gradeGradesLms.size());	
 	        	        
 	        session.clear();
 	        
@@ -455,21 +457,21 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 	}
 	
 	public void clearLMStables(){
-		log_lms.clear();
-		resource_lms.clear();
-		course_lms.clear();
-		forum_lms.clear();
-		wiki_lms.clear();
-		user_lms.clear();
-		quiz_lms.clear();
-		grade_grades_lms.clear();
-		group_lms.clear();
-		group_members_lms.clear();
-		question_states_lms.clear();
-		forum_posts_lms.clear();
-		role_lms.clear();
-		role_assignments_lms.clear();
-		assignment_submission_lms.clear();
+		logLms.clear();
+		resourceLms.clear();
+		courseLms.clear();
+		forumLms.clear();
+		wikiLms.clear();
+		userLms.clear();
+		quizLms.clear();
+		gradeGradesLms.clear();
+		groupLms.clear();
+		groupMembersLms.clear();
+		questionStatesLms.clear();
+		forumPostsLms.clear();
+		roleLms.clear();
+		roleAssignmentsLms.clear();
+		assignmentSubmissionLms.clear();
 	}
 	
 //methods for create and fill the mining-table instances
@@ -478,22 +480,22 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, CourseUserMining> course_user_mining = new HashMap<Long, CourseUserMining>();
     	    	
-    	for (Context_LMS loadedItem : context_lms) 
+    	for (Context_LMS loadedItem : contextLms) 
     	{
        		if(loadedItem.getContextlevel() == 50){
-       			for (Role_assignments_LMS loadedItem2 : role_assignments_lms) 
+       			for (Role_assignments_LMS loadedItem2 : roleAssignmentsLms) 
        			{
        	       		if(loadedItem2.getContextid() == loadedItem.getId()){
        	       			CourseUserMining insert = new CourseUserMining();
        	       			insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getId()));
-       	       			insert.setRole(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getRoleid()), role_mining, old_role_mining);
+       	       			insert.setRole(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getRoleid()), roleMining, oldRoleMining);
        	       			insert.setPlatform(connector.getPlatformId());
-       	       			insert.setUser(loadedItem2.getUserid(), user_mining, old_user_mining);   	       			
+       	       			insert.setUser(loadedItem2.getUserid(), userMining, oldUserMining);   	       			
        	       			insert.setEnrolstart(loadedItem2.getTimestart());
        	       			insert.setEnrolend(loadedItem2.getTimeend());
-       	                insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInstanceid()), course_mining, old_course_mining);
-       	       			if(insert.getUser()!= null && insert.getCourse() != null && insert.getRole()!= null){       	       			
-       	       				course_user_mining.put(insert.getId(), insert);
+       	                insert.setCourse(Long.valueOf(connector.getPrefix() + "" +  loadedItem.getInstanceid()), courseMining, oldCourseMining);
+       	       			if(insert.getUser()!= null && insert.getCourse() != null && insert.getRole()!= null){  
+    						course_user_mining.put(insert.getId(), insert);
        	       			}    	       			
        	       		}
        			}   			
@@ -508,13 +510,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, CourseForumMining> course_forum_mining = new HashMap<Long, CourseForumMining>();
     	    	
-    	for (Forum_LMS loadedItem : forum_lms) 
+    	for (Forum_LMS loadedItem : forumLms) 
     	{
     		CourseForumMining insert = new CourseForumMining();
         
-    		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()),course_mining, old_course_mining);
-            insert.setForum(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()),forum_mining, old_forum_mining);
+    		insert.setId(Long.valueOf(connector.getPrefix() + "" +  loadedItem.getId()));
+            insert.setCourse(Long.valueOf(connector.getPrefix() +"" + loadedItem.getCourse()),courseMining, oldCourseMining);
+            insert.setForum(Long.valueOf(connector.getPrefix() +  "" + loadedItem.getId()),forumMining, oldForumMining);
             insert.setPlatform(connector.getPlatformId());
             if(insert.getCourse()!= null && insert.getForum()!= null){
             	course_forum_mining.put(insert.getId(), insert);
@@ -527,16 +529,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     public HashMap<Long, CourseMining> generateCourseMining() {
     	
     	HashMap<Long, CourseMining> course_mining = new HashMap<Long, CourseMining>();
-       	for (Course_LMS loadedItem : course_lms) 
+       	for (Course_LMS loadedItem : courseLms) 
        	{
         	CourseMining insert = new CourseMining();
         
         	insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-        	insert.setStartdate(loadedItem.getStartdate());
-        	insert.setEnrolstart(loadedItem.getEnrolstartdate());
-        	insert.setEnrolend(loadedItem.getEnrolenddate());
-        	insert.setTimecreated(loadedItem.getTimecreated());
-        	insert.setTimemodified(loadedItem.getTimemodified());
+        	insert.setStartDate(loadedItem.getStartdate());
+        	insert.setEnrolStart(loadedItem.getEnrolstartdate());
+        	insert.setEnrolEnd(loadedItem.getEnrolenddate());
+        	insert.setTimeCreated(loadedItem.getTimecreated());
+        	insert.setTimeModified(loadedItem.getTimemodified());
         	insert.setTitle(loadedItem.getFullname());
         	insert.setShortname(loadedItem.getShortname());
         	insert.setPlatform(connector.getPlatformId());
@@ -551,13 +553,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
 		HashMap<Long, CourseGroupMining> course_group_mining = new HashMap<Long, CourseGroupMining>();
     	    	
-    	for (Groups_LMS loadedItem : group_lms) 
+    	for (Groups_LMS loadedItem : groupLms) 
     	{
     		CourseGroupMining insert = new CourseGroupMining();
         
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-            insert.setGroup(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()),group_mining, old_group_mining);
-            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourseid()),course_mining, old_course_mining);
+            insert.setGroup(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()),groupMining, oldGroupMining);
+            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourseid()),courseMining, oldCourseMining);
             insert.setPlatform(connector.getPlatformId());
             if(insert.getCourse()!= null && insert.getGroup()!= null){
             	course_group_mining.put(insert.getId(), insert);
@@ -571,13 +573,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, CourseQuizMining> course_quiz_mining = new HashMap<Long, CourseQuizMining>();
     	    	
-    	for (Quiz_LMS loadedItem : quiz_lms) 
+    	for (Quiz_LMS loadedItem : quizLms) 
     	{
     		CourseQuizMining insert = new CourseQuizMining();
     	
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-    		insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()),course_mining, old_course_mining);
-    		insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), quiz_mining, old_quiz_mining);
+    		insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()),courseMining, oldCourseMining);
+    		insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), quizMining, oldQuizMining);
     		insert.setPlatform(connector.getPlatformId());
     		if(insert.getCourse() != null && insert.getQuiz() != null){            
 					course_quiz_mining.put(insert.getQuiz().getId(), insert);
@@ -593,18 +595,18 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
 	   HashMap<Long, CourseAssignmentMining> course_assignment_mining = new HashMap<Long, CourseAssignmentMining>();
     	    	   	
-    	for (Assignment_LMS loadedItem : assignment_lms)
+    	for (Assignment_LMS loadedItem : assignmentLms)
     	{
     		CourseAssignmentMining insert = new CourseAssignmentMining();
-    		
+    	
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()),course_mining, old_course_mining);
+            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()),courseMining, oldCourseMining);
             insert.setPlatform(connector.getPlatformId());
 			if(insert.getCourse()==null){
 				logger.info("course not found for course-assignment: " + loadedItem.getId() + " and course: " + loadedItem.getCourse());
 			}
-            insert.setAssignment(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), assignment_mining, old_assignment_mining);
-            if(insert.getCourse()!= null && insert.getAssignment() != null){            
+            insert.setAssignment(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), assignmentMining, oldAssignmentMining);
+            if(insert.getCourse()!= null && insert.getAssignment() != null){    
 					
             	course_assignment_mining.put(insert.getId(), insert);
             }
@@ -618,13 +620,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
    public HashMap<Long, CourseScormMining> generateCourseScormMining(){
    	
 	   	HashMap<Long, CourseScormMining> course_scorm_mining = new HashMap<Long, CourseScormMining>();   	    	
-	   	for (Scorm_LMS loadedItem : scorm_lms) 
+	   	for (Scorm_LMS loadedItem : scormLms) 
 	   	{
 	   		CourseScormMining insert = new CourseScormMining();
 	   	
 	   		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-	   		insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()),course_mining, old_course_mining);
-	   		insert.setScorm(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), scorm_mining, old_scorm_mining);
+	   		insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()),courseMining, oldCourseMining);
+	   		insert.setScorm(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), scormMining, oldScormMining);
 	   		insert.setPlatform(connector.getPlatformId());
 	   		if(insert.getCourse()!= null && insert.getScorm() != null){            
 	   			course_scorm_mining.put(insert.getId(), insert);
@@ -640,13 +642,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, CourseResourceMining> course_resource_mining = new HashMap<Long, CourseResourceMining>();
     	    	
-    	for (Resource_LMS loadedItem : resource_lms) 
+    	for (Resource_LMS loadedItem : resourceLms) 
     	{
     		CourseResourceMining insert = new CourseResourceMining();
         
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
-            insert.setResource(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), resource_mining, old_resource_mining);
+            insert.setCourse(Long.valueOf(connector.getPrefix() + "" +  loadedItem.getCourse()), courseMining, oldCourseMining);
+            insert.setResource(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), resourceMining, oldResourceMining);
             insert.setPlatform(connector.getPlatformId());
             if(insert.getCourse()!= null && insert.getResource() != null){  
             	course_resource_mining.put(insert.getId(), insert);
@@ -660,10 +662,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	HashMap<Long, CourseLogMining> courseLogMining = new HashMap<Long, CourseLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	
-    	for (Log_LMS loadedItem : log_lms ) {
-    	
+    	for (Log_LMS loadedItem : logLms )
+    	{
+    		
     		 long uid = Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid());
-             
+     		
      		//Creates a list of time stamps for every user indicating requests
      		//We later use this lists to determine the time a user accessed a resource
              if(users.get(uid) == null)
@@ -688,9 +691,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     			CourseLogMining insert = new CourseLogMining();
     			
     			insert.setId(courseLogMining.size() + 1 + courseLogMax);
-    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+
+    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), courseMining, oldCourseMining);
     			insert.setPlatform(connector.getPlatformId());
-    			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), user_mining, old_user_mining);
+    			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), userMining, oldUserMining);
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
     			if(insert.getUser() != null && insert.getCourse() != null)
@@ -725,13 +729,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, CourseWikiMining> course_wiki_mining = new HashMap<Long, CourseWikiMining>();
     	    	
-    	for (Wiki_LMS loadedItem : wiki_lms) 
+    	for (Wiki_LMS loadedItem : wikiLms) 
     	{
     		CourseWikiMining insert = new CourseWikiMining();
         
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
-            insert.setWiki(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), wiki_mining, old_wiki_mining);
+            insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), courseMining, oldCourseMining);
+            insert.setWiki(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()), wikiMining, oldWikiMining);
             insert.setPlatform(connector.getPlatformId());
             if(insert.getCourse()!= null && insert.getWiki()!= null){
             	course_wiki_mining.put(insert.getId(), insert);
@@ -745,13 +749,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	HashMap<Long, ForumLogMining> forumLogMining = new HashMap<Long, ForumLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	HashMap<Long, Forum_discussions_LMS> forumDis = new HashMap<Long, Forum_discussions_LMS>();
-    	    		
-    	for(Forum_discussions_LMS fd : forum_discussions_lms)
+    	
+    	for(Forum_discussions_LMS fd : forumDiscussionsLms)
     	{
     		forumDis.put(fd.getId(), fd);
     	}
     	    		
-    	for (Log_LMS loadedItem : log_lms) {
+    	for (Log_LMS loadedItem : logLms) {
     		
             long uid = Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid());
     		 
@@ -781,19 +785,19 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     			
     			insert.setId(forumLogMining.size() + 1 + forumLogMax);
     			insert.setPlatform(connector.getPlatformId());
-    			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), user_mining, old_user_mining);
+    			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), userMining, oldUserMining);
     			if((loadedItem.getAction().equals("view forum") || loadedItem.getAction().equals("subscribe")) && loadedItem.getInfo().matches("[0-9]+")){
-    				insert.setForum(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), forum_mining, old_forum_mining);
+    				insert.setForum(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), forumMining, oldForumMining);
     			}
     			else{
     				if((loadedItem.getAction().equals("add discussion") || loadedItem.getAction().equals("view discussion")) && loadedItem.getInfo().matches("[0-9]+")){
    			    		if(forumDis.get(Long.valueOf(loadedItem.getId())) != null)
-    			    			insert.setForum(Long.valueOf(connector.getPrefix() + "" + forumDis.get(Long.valueOf(loadedItem.getId())).getForum()), forum_mining, old_forum_mining);
-    			    		}
-    					}
-    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+    			    			insert.setForum(Long.valueOf(connector.getPrefix() + "" + forumDis.get(Long.valueOf(loadedItem.getId())).getForum()), forumMining, oldForumMining);
+    				}
+    			}
+    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), courseMining, oldCourseMining);
     			insert.setAction(loadedItem.getAction());
-   				for (Forum_posts_LMS loadedItem2 : forum_posts_lms) 
+   				for (Forum_posts_LMS loadedItem2 : forumPostsLms) 
    				{
    					if(loadedItem2.getUserid() == loadedItem.getUserid() && (loadedItem2.getCreated() == loadedItem.getTime()||loadedItem2.getModified() == loadedItem.getTime())){
    						insert.setMessage(loadedItem2.getMessage());
@@ -832,23 +836,23 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, ForumMining> forum_mining = new HashMap<Long, ForumMining>();
 	
-    	for ( Forum_LMS loadedItem : forum_lms)
+    	for ( Forum_LMS loadedItem : forumLms)
     	{
    	    	ForumMining insert = new ForumMining();
     	
    	    	insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-            insert.setTimemodified(loadedItem.getTimemodified());
+            insert.setTimeModified(loadedItem.getTimemodified());
    	    	insert.setTitle(loadedItem.getName());
    	    	insert.setSummary(loadedItem.getIntro());   
    	    	insert.setPlatform(connector.getPlatformId());
    	    	forum_mining.put(insert.getId(), insert);  
     	} 
     	
-       	for ( Log_LMS loadedItem : log_lms) 
+       	for ( Log_LMS loadedItem : logLms) 
        	{
-           	if(forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())) != null && (forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())).getTimecreated() == 0 || forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())).getTimecreated() > loadedItem.getTime()))
+           	if(forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())) != null && (forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())).getTimeCreated() == 0 || forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())).getTimeCreated() > loadedItem.getTime()))
            	{           		
-           		forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())).setTimecreated(loadedItem.getTime());
+           		forum_mining.get(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCmid())).setTimeCreated(loadedItem.getTime());
        		}
        	}   
 		return forum_mining;
@@ -859,14 +863,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
 		HashMap<Long, GroupUserMining> group_members_mining = new HashMap<Long, GroupUserMining>();
     	    	
-    	for (Groups_members_LMS loadedItem : group_members_lms) 
+    	for (Groups_members_LMS loadedItem : groupMembersLms) 
     	{
     		GroupUserMining insert = new GroupUserMining();
         
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-           	insert.setGroup(Long.valueOf(connector.getPrefix() + "" + loadedItem.getGroupid()), group_mining, old_group_mining);
+           	insert.setGroup(Long.valueOf(connector.getPrefix() + "" + loadedItem.getGroupid()), groupMining, oldGroupMining);
            	
-           	insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), user_mining, old_user_mining);
+          	insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), userMining, oldUserMining);
            	insert.setTimestamp(loadedItem.getTimeadded());
            	insert.setPlatform(connector.getPlatformId());
            	if(insert.getUser() != null && insert.getGroup() != null)
@@ -880,13 +884,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, GroupMining> group_mining = new HashMap<Long, GroupMining>();
     	    	
-    	for (Groups_LMS loadedItem : group_lms)
+    	for (Groups_LMS loadedItem : groupLms)
     	{
     		GroupMining insert = new GroupMining();
         
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-           	insert.setTimecreated(loadedItem.getTimecreated());
-           	insert.setTimemodified(loadedItem.getTimemodified());
+           	insert.setTimeCreated(loadedItem.getTimecreated());
+           	insert.setTimeModified(loadedItem.getTimemodified());
            	insert.setPlatform(connector.getPlatformId());
            	group_mining.put(insert.getId(), insert);
         }
@@ -900,12 +904,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	HashMap<String, Long> timestampIdMap = new HashMap<String, Long>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	    	
-    	for (Question_states_LMS loadedItem : question_states_lms) {
+    	for (Question_states_LMS loadedItem : questionStatesLms) {
     		
     		QuestionLogMining insert = new QuestionLogMining();
     	
     		insert.setId(questionLogMiningtmp.size() + 1 + questionLogMax); //ID
-			insert.setQuestion(Long.valueOf(connector.getPrefix() + "" + loadedItem.getQuestion()), question_mining, old_question_mining); //Question 
+			insert.setQuestion(Long.valueOf(connector.getPrefix() + "" + loadedItem.getQuestion()), questionMining, oldQuestionMining); //Question 
 			insert.setPenalty(loadedItem.getPenalty());	
 			insert.setAnswers(loadedItem.getAnswer());
 			insert.setTimestamp(loadedItem.getTimestamp());			
@@ -914,8 +918,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 			
 			//Set Grades
 			if(loadedItem.getEvent() == 3 || loadedItem.getEvent() == 6 || loadedItem.getEvent() == 9){
-				insert.setRawgrade(loadedItem.getRaw_grade());
-				insert.setFinalgrade(loadedItem.getGrade());
+				insert.setRawGrade(loadedItem.getRaw_grade());
+				insert.setFinalGrade(loadedItem.getGrade());
 			}			
 			
             switch(loadedItem.getEvent())
@@ -945,17 +949,17 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
             }
 			
 			//Set quiz type
-            if(insert.getQuestion() != null && quiz_question_mining.get(insert.getQuestion().getId()) != null )
+            if(insert.getQuestion() != null && quizQuestionMining.get(insert.getQuestion().getId()) != null )
             {
-            	insert.setQuiz(quiz_question_mining.get(insert.getQuestion().getId()).getQuiz());
-            	if(course_quiz_mining.get(insert.getQuiz().getId()) != null)
-            		insert.setCourse(course_quiz_mining.get(insert.getQuiz().getId()).getCourse());
+            	insert.setQuiz(quizQuestionMining.get(insert.getQuestion().getId()).getQuiz());
+            	if(courseQuizMining.get(insert.getQuiz().getId()) != null)
+            		insert.setCourse(courseQuizMining.get(insert.getQuiz().getId()).getCourse());
             }
-            else if(insert.getQuestion() != null && old_quiz_question_mining.get(insert.getQuestion().getId()) != null && old_course_quiz_mining.get(insert.getQuiz().getId()) != null)
+            else if(insert.getQuestion() != null && oldQuizQuestionMining.get(insert.getQuestion().getId()) != null && oldCourseQuizMining.get(insert.getQuiz().getId()) != null)
             {
-            	insert.setQuiz(old_quiz_question_mining.get(insert.getQuestion().getId()).getQuiz());
-            	if(old_course_quiz_mining.get(insert.getQuiz().getId()) != null)
-            		insert.setCourse(course_quiz_mining.get(insert.getQuiz().getId()).getCourse());
+            	insert.setQuiz(oldQuizQuestionMining.get(insert.getQuestion().getId()).getQuiz());
+            	if(oldCourseQuizMining.get(insert.getQuiz().getId()) != null)
+            		insert.setCourse(courseQuizMining.get(insert.getQuiz().getId()).getCourse());
             }
             /*
 			for(Quiz_question_instances_LMS loadedItem1 : quiz_question_instances_lms)
@@ -977,17 +981,17 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 				*/
 			
 			//Set Type
-			for(Question_LMS loadedItem2 : question_lms)
+			for(Question_LMS loadedItem2 : questionLms)
 			{
 				if(loadedItem2.getId() == (loadedItem.getQuestion())){
 					insert.setType(loadedItem2.getQtype());//Type
 					break;
 				}
 			}			
-			if(insert.getType() == null && old_question_mining.get(loadedItem.getQuestion()) != null)
-				insert.setType(old_question_mining.get(loadedItem.getQuestion()).getType());			
+			if(insert.getType() == null && oldQuestionMining.get(loadedItem.getQuestion()) != null)
+				insert.setType(oldQuestionMining.get(loadedItem.getQuestion()).getType());			
 			if(insert.getType() == null){
-				logger.info("In Question_log_mining, type not found for question_states: " + loadedItem.getId() +" and question: " + loadedItem.getQuestion() +" question list size: "+ question_lms.size() );
+				logger.info("In Question_log_mining, type not found for question_states: " + loadedItem.getId() +" and question: " + loadedItem.getQuestion() +" question list size: "+ questionLms.size() );
 			}  	
 							
 			
@@ -1001,7 +1005,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	}	  
     	
     	//Set Course and 
-    	for(Log_LMS loadedItem : log_lms)
+    	for(Log_LMS loadedItem : logLms)
     	{
     		 long uid1 = Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid());
      		
@@ -1026,9 +1030,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     		
     		if(uid1 != -1 && loadedItem.getModule().equals("quiz") && timestampIdMap.get(loadedItem.getTime() + " " + connector.getPrefix() + "" + loadedItem.getInfo()) != null){
     			{
-    				
     				QuestionLogMining qlm = questionLogMiningtmp.get(timestampIdMap.get(loadedItem.getTime() + " " + connector.getPrefix() + "" + loadedItem.getInfo()));
-    				qlm.setUser(uid1, user_mining, old_user_mining);
+    				qlm.setUser(uid1, userMining, oldUserMining);
     				questionLogMining.put(qlm.getId(), qlm);
     			}
     		}	
@@ -1061,8 +1064,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	HashMap<Long, QuizLogMining> quizLogMining = new HashMap<Long, QuizLogMining>();
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	    	
-    	for (Log_LMS loadedItem : log_lms) {
-     		
+    	for (Log_LMS loadedItem : logLms) {
+    		
     		 long uid = Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()); 
      		
      		//Creates a list of time stamps for every user indicating requests
@@ -1091,19 +1094,19 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     			QuizLogMining insert = new QuizLogMining();
     			
     		    insert.setId(quizLogMining.size() + 1 + quizLogMax);
-    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), courseMining, oldCourseMining);
     			insert.setPlatform(connector.getPlatformId());
     			
-    			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), user_mining, old_user_mining);
+    			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), userMining, oldUserMining);
     			if(loadedItem.getInfo().matches("[0-9]+"))
     			{
-    				insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), quiz_mining, old_quiz_mining);
+    				insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), quizMining, oldQuizMining);
     			}
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
     			if(insert.getQuiz() != null && insert.getUser() != null && loadedItem.getAction() != "review")
     			{    
-    				for (Quiz_grades_LMS loadedItem2 : quiz_grades_lms) 
+    				for (Quiz_grades_LMS loadedItem2 : quizGradesLms) 
     				{
     					long id = Long.valueOf(connector.getPrefix() + "" + loadedItem2.getUserid());
     					if(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getQuiz()) == insert.getQuiz().getId() && id == insert.getUser().getId() && loadedItem2.getTimemodified() == insert.getTimestamp()){
@@ -1153,7 +1156,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	HashMap<Long, ArrayList<Assignment_submissions_LMS>> asSub = new HashMap<Long, ArrayList<Assignment_submissions_LMS>>();
     	
     	//Arranging all assignment_submissions due to performance issues
-    	for(Assignment_submissions_LMS as : assignment_submission_lms)
+    	for(Assignment_submissions_LMS as : assignmentSubmissionLms)
     	{
     		if(asSub.get(as.getAssignment()) == null)
     		{
@@ -1167,7 +1170,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	}
     		
     	
-    	for(Log_LMS loadedItem : log_lms) {
+    	for(Log_LMS loadedItem : logLms) {
     		
     		 long uid = Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid());
     				 
@@ -1193,16 +1196,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 //insert assignments in assignment_log
 			if(loadedItem.getModule().equals("assignment") && loadedItem.getInfo().matches("[0-9]++"))
 			{
-			AssignmentLogMining insert = new AssignmentLogMining();
-			insert.setId(assignmentLogMining.size() + 1 + assignmentLogMax);
-				insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+				AssignmentLogMining insert = new AssignmentLogMining();
+			    insert.setId(assignmentLogMining.size() + 1 + assignmentLogMax);
+				insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), courseMining, oldCourseMining);
 				
-				insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), user_mining, old_user_mining);
-			insert.setAction(loadedItem.getAction());
-			insert.setTimestamp(loadedItem.getTime());
-			insert.setAssignment(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), assignment_mining, old_assignment_mining);
-			
+				insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), userMining, oldUserMining);
+				insert.setAction(loadedItem.getAction());
+				insert.setTimestamp(loadedItem.getTime());
+				insert.setAssignment(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), assignmentMining, oldAssignmentMining);
 				
+	
 				if(insert.getAssignment() != null && insert.getUser() != null && insert.getCourse() != null)//&& insert.getAction().equals("upload"))
 				{   
 					if(asSub.get(Long.valueOf(loadedItem.getInfo())) != null)
@@ -1257,7 +1260,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 	  HashMap<Long, ScormLogMining> scormLogMining = new HashMap<Long, ScormLogMining>();
 	  HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
   	    	
-  	for (Log_LMS loadedItem : log_lms ) {
+  	for (Log_LMS loadedItem : logLms ) {
   		
   		 long uid = Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid());
  		
@@ -1286,14 +1289,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
   			ScormLogMining insert = new ScormLogMining();
   			
   		    insert.setId(scormLogMining.size() + 1 + scormLogMax);
-  			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+  			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), courseMining, oldCourseMining);
 			insert.setPlatform(connector.getPlatformId());
   			
-			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), user_mining, old_user_mining);
+			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), userMining, oldUserMining);
   			insert.setAction(loadedItem.getAction());
   			insert.setTimestamp(loadedItem.getTime());
   			if(loadedItem.getInfo().matches("[0-9]+")){
-  				insert.setScorm(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), scorm_mining, old_scorm_mining);
+  				insert.setScorm(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), scormMining, oldScormMining);
+
   			}
   			if(insert.getScorm() != null && insert.getCourse() != null && insert.getUser() != null)
   				scormLogMining.put(insert.getId(), insert);
@@ -1333,25 +1337,25 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, QuizMining> quiz_mining = new HashMap<Long, QuizMining>();
     	    	
-    	for (Quiz_LMS loadedItem : quiz_lms) 
+    	for (Quiz_LMS loadedItem : quizLms) 
     	{
 
     		QuizMining insert = new QuizMining();
     		
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId())); 		
     		insert.setTitle(loadedItem.getName());
-    		insert.setTimeopen(loadedItem.getTimeopen());
-    		insert.setTimeclose(loadedItem.getTimeclose());
-    		insert.setTimecreated(loadedItem.getTimecreated());
-    		insert.setTimemodified(loadedItem.getTimemodified());
+    		insert.setTimeOpen(loadedItem.getTimeopen());
+    		insert.setTimeClose(loadedItem.getTimeclose());
+    		insert.setTimeCreated(loadedItem.getTimecreated());
+    		insert.setTimeModified(loadedItem.getTimemodified());
     		insert.setQtype("quiz");
 			insert.setPlatform(connector.getPlatformId());
-        	for (Grade_items_LMS loadedItem2 : grade_items_lms) 
+        	for (Grade_items_LMS loadedItem2 : gradeItemsLms) 
         	{
         		if(loadedItem2.getIteminstance() != null && loadedItem2.getItemmodule() != null){
         			logger.info("Iteminstance"+loadedItem2.getIteminstance()+" QuizId"+loadedItem.getId());
         			if(loadedItem.getId()==loadedItem2.getIteminstance().longValue() && loadedItem2.getItemmodule().equals("quiz")){
-        				insert.setMaxgrade(loadedItem2.getGrademax());
+        				insert.setMaxGrade(loadedItem2.getGrademax());
 		    			break;
         			}
         		}
@@ -1368,23 +1372,23 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, AssignmentMining> assignment_mining = new HashMap<Long, AssignmentMining>();
     	    	
-    	for (Assignment_LMS loadedItem : assignment_lms) 
+    	for (Assignment_LMS loadedItem : assignmentLms) 
     	{
     		AssignmentMining insert = new AssignmentMining();
         
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId())); 
            	insert.setTitle(loadedItem.getName());
-           	insert.setTimeopen(loadedItem.getTimeavailable());
-           	insert.setTimeclose(loadedItem.getTimedue());
-           	insert.setTimemodified(loadedItem.getTimemodified());
+           	insert.setTimeOpen(loadedItem.getTimeavailable());
+           	insert.setTimeClose(loadedItem.getTimedue());
+           	insert.setTimeModified(loadedItem.getTimemodified());
            	insert.setPlatform(connector.getPlatformId());
-        	for (Grade_items_LMS loadedItem2 : grade_items_lms) 
+        	for (Grade_items_LMS loadedItem2 : gradeItemsLms) 
         	{
         		if(loadedItem2.getIteminstance() != null && loadedItem2.getItemmodule() != null)
         		{
         			logger.info("Iteminstance " + loadedItem2.getIteminstance() + " AssignmentId" + loadedItem.getId());
         			if(loadedItem.getId() == loadedItem2.getIteminstance().longValue() && loadedItem2.getItemmodule().equals("assignment")){
-        				insert.setMaxgrade(loadedItem2.getGrademax());
+        				insert.setMaxGrade(loadedItem2.getGrademax());
         				break;
         			}
         		}
@@ -1402,15 +1406,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
 	   HashMap<Long, ScormMining> scorm_mining = new HashMap<Long, ScormMining>();
  
-    	for (Scorm_LMS loadedItem : scorm_lms) 
+    	for (Scorm_LMS loadedItem : scormLms) 
     	{
     		ScormMining insert = new ScormMining();
         
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
            	insert.setTitle(loadedItem.getName());
-           	insert.setTimemodified(loadedItem.getTimemodified());
-    		insert.setMaxgrade(loadedItem.getMaxgrade());
+           	insert.setTimeModified(loadedItem.getTimemodified());
+    		insert.setMaxGrade(loadedItem.getMaxgrade());
 			insert.setPlatform(connector.getPlatformId());
+
     		
     		scorm_mining.put(insert.getId(), insert);
         }  
@@ -1421,13 +1426,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, QuizQuestionMining> quiz_question_mining = new HashMap<Long, QuizQuestionMining>();
     	    	
-    	for (Quiz_question_instances_LMS loadedItem : quiz_question_instances_lms) 
+    	for (Quiz_question_instances_LMS loadedItem : quizQuestionInstancesLms) 
     	{
     		QuizQuestionMining insert = new QuizQuestionMining();
         
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-           	insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem.getQuiz()), quiz_mining, old_quiz_mining);
-           	insert.setQuestion(Long.valueOf(connector.getPrefix() + "" + loadedItem.getQuestion()), question_mining, old_question_mining);
+           	insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem.getQuiz()), quizMining, oldQuizMining);
+           	insert.setQuestion(Long.valueOf(connector.getPrefix() + "" + loadedItem.getQuestion()), questionMining, oldQuestionMining);
 			insert.setPlatform(connector.getPlatformId());
             if(insert.getQuiz() != null && insert.getQuestion() != null)
             {  
@@ -1446,7 +1451,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, QuestionMining> question_mining = new HashMap<Long, QuestionMining>();
     	    	
-    	for (Question_LMS loadedItem : question_lms) 
+    	for (Question_LMS loadedItem : questionLms) 
     	{
     		QuestionMining insert = new QuestionMining();
         
@@ -1454,9 +1459,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
            	insert.setTitle(loadedItem.getName());
            	insert.setText(loadedItem.getQuestiontext());
            	insert.setType(loadedItem.getQtype());
-           	insert.setTimecreated(loadedItem.getTimecreated());
+           	insert.setTimeCreated(loadedItem.getTimecreated());
 			insert.setPlatform(connector.getPlatformId());
-           	insert.setTimemodified(loadedItem.getTimemodified());
+           	insert.setTimeModified(loadedItem.getTimemodified());
            	
            	question_mining.put(insert.getId(), insert);
         }
@@ -1466,28 +1471,28 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     public HashMap<Long, QuizUserMining> generateQuizUserMining(){
 
     	HashMap<Long, QuizUserMining> quiz_user_mining = new HashMap<Long, QuizUserMining>();
-    	for (Grade_grades_LMS loadedItem : grade_grades_lms) 
+    	for (Grade_grades_LMS loadedItem : gradeGradesLms) 
     	{
     		QuizUserMining insert = new QuizUserMining();
         
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setPlatform(connector.getPlatformId());
            	if(loadedItem.getFinalgrade()!=null){
-           		insert.setFinalgrade(loadedItem.getFinalgrade());
+           		insert.setFinalGrade(loadedItem.getFinalgrade());
            	}
            	if(loadedItem.getRawgrade()!=null){
-           		insert.setRawgrade(loadedItem.getRawgrade());	
+           		insert.setRawGrade(loadedItem.getRawgrade());	
            	}
            	if(loadedItem.getTimemodified()!=null){
-           		insert.setTimemodified(loadedItem.getTimemodified());
+           		insert.setTimeModified(loadedItem.getTimemodified());
            	}
            	
-			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), user_mining, old_user_mining);
-           	for (Grade_items_LMS loadedItem2 : grade_items_lms) 
+			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), userMining, oldUserMining);
+           	for (Grade_items_LMS loadedItem2 : gradeItemsLms) 
            	{
         		if(loadedItem2.getId() == loadedItem.getItemid() && loadedItem2.getIteminstance() != null){
-        			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getCourseid()), course_mining, old_course_mining);
-        			insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getIteminstance()), quiz_mining, old_quiz_mining);
+        			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getCourseid()), courseMining, oldCourseMining);
+        			insert.setQuiz(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getIteminstance()), quizMining, oldQuizMining);
            		   	if(insert.getQuiz()!= null && insert.getUser() != null){
            		   		
            		   	if(insert.getCourse() != null)
@@ -1506,7 +1511,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, ResourceMining> resource = new HashMap<Long, ResourceMining>();
     	
-        for ( Resource_LMS loadedItem : resource_lms) 
+        for ( Resource_LMS loadedItem : resourceLms) 
         {
             ResourceMining insert = new ResourceMining();
         
@@ -1517,16 +1522,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
            	
            	//Get time of creation
         	
-           	insert.setTimemodified(loadedItem.getTimemodified());
+           	insert.setTimeModified(loadedItem.getTimemodified());
            	
        		resource.put(insert.getId(), insert);    		
         }
         
-       	for ( Log_LMS loadedItem : log_lms) 
+       	for ( Log_LMS loadedItem : logLms) 
        	{
-           	if(resource.get(loadedItem.getCmid()) != null && (resource.get(loadedItem.getCmid()).getTimecreated() == 0 || resource.get(loadedItem.getCmid()).getTimecreated() > loadedItem.getTime()))
+           	if(resource.get(loadedItem.getCmid()) != null && (resource.get(loadedItem.getCmid()).getTimeCreated() == 0 || resource.get(loadedItem.getCmid()).getTimeCreated() > loadedItem.getTime()))
            	{           		
-           		resource.get(loadedItem.getCmid()).setTimecreated(loadedItem.getTime());
+           		resource.get(loadedItem.getCmid()).setTimeCreated(loadedItem.getTime());
        		}
        	}           
 		return resource;
@@ -1538,7 +1543,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	//A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her requests times.
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
         
-        for (Log_LMS loadedItem : log_lms) 
+        for (Log_LMS loadedItem : logLms) 
         {
             
             long uid = Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid());
@@ -1568,14 +1573,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
             	
             	insert.setId(resourceLogMining.size() + 1 + resourceLogMax);
             	
-    			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), user_mining, old_user_mining);
-            	insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+    			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), userMining, oldUserMining);
+            	insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), courseMining, oldCourseMining);
             	insert.setAction(loadedItem.getAction()); 
             	
             	
             	
             	if(loadedItem.getInfo().matches("[0-9]+")){
-    				insert.setResource(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), resource_mining, old_resource_mining);
+    				insert.setResource(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInfo()), resourceMining, oldResourceMining);
     			}    				
             	insert.setTimestamp(loadedItem.getTime());
     			if(insert.getResource()== null && !(loadedItem.getAction().equals("view all"))){
@@ -1612,16 +1617,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
     	HashMap<Long, UserMining> user_mining = new HashMap<Long, UserMining>();
     	    	
-    	for (User_LMS loadedItem : user_lms) 
+    	for (User_LMS loadedItem : userLms) 
     	{
     	
     		UserMining insert = new UserMining();
     		
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-           	insert.setLastlogin(loadedItem.getLastlogin());
-           	insert.setFirstaccess(loadedItem.getFirstaccess());
-           	insert.setLastaccess(loadedItem.getLastaccess());
-           	insert.setCurrentlogin(loadedItem.getCurrentlogin());
+           	insert.setLastLogin(loadedItem.getLastlogin());
+           	insert.setFirstAccess(loadedItem.getFirstaccess());
+           	insert.setLastAccess(loadedItem.getLastaccess());
+           	insert.setCurrentLogin(loadedItem.getCurrentlogin());
 			insert.setPlatform(connector.getPlatformId());
 			insert.setLogin(Encoder.createMD5(loadedItem.getLogin()));
            	user_mining.put(insert.getId(), insert);
@@ -1635,13 +1640,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
     	HashMap<Long, Course_Modules_LMS> couMod = new HashMap<Long, Course_Modules_LMS>();
     	
-    	for(Course_Modules_LMS cm : course_modules_lms)
-        {
+    	for(Course_Modules_LMS cm : courseModulesLms)
+    	{
     		couMod.put(cm.getId(), cm);
     	}
     	
     	
-        for (Log_LMS loadedItem : log_lms) {
+        for (Log_LMS loadedItem : logLms) {
             
             long uid = Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid());
     		
@@ -1672,13 +1677,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     			insert.setId(wikiLogMining.size() + 1 + wikiLogMax);
     			//Cannot tell, how to extract the correct wiki-id - so it'll always be null
     			if(couMod.get(loadedItem.getCmid()) != null)
-   					insert.setWiki(Long.valueOf(connector.getPrefix() + "" + couMod.get(loadedItem.getCmid()).getInstance()), wiki_mining, old_wiki_mining);
+   					insert.setWiki(Long.valueOf(connector.getPrefix() + "" + couMod.get(loadedItem.getCmid()).getInstance()), wikiMining, oldWikiMining);
+
 
     			insert.setPlatform(connector.getPlatformId());
-    			
-    			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), user_mining, old_user_mining);
-    			
-    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+    			insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUserid()), userMining, oldUserMining);
+
+    			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), courseMining, oldCourseMining);
     			insert.setAction(loadedItem.getAction());
     			insert.setTimestamp(loadedItem.getTime());
     			
@@ -1712,22 +1717,22 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     	
 		HashMap<Long, WikiMining> wiki_mining = new HashMap<Long, WikiMining>();
     	
-    	for ( Wiki_LMS loadedItem : wiki_lms) 
+    	for ( Wiki_LMS loadedItem : wikiLms) 
     	{
     		WikiMining insert = new WikiMining();
     	
     		insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
     		insert.setTitle(loadedItem.getName());
     		insert.setSummary(loadedItem.getSummary());
-    		insert.setTimemodified(loadedItem.getTimemodified());
+    		insert.setTimeModified(loadedItem.getTimemodified());
 			insert.setPlatform(connector.getPlatformId());
     		wiki_mining.put(insert.getId(), insert);
     	}
-       	for (Log_LMS loadedItem : log_lms) 
+       	for (Log_LMS loadedItem : logLms) 
        	{
-           	if(loadedItem.getModule().equals("Wiki") && wiki_mining.get(loadedItem.getCmid()) != null && (wiki_mining.get(loadedItem.getCmid()).getTimecreated() == 0 || wiki_mining.get(loadedItem.getCmid()).getTimecreated() > loadedItem.getTime()))
+           	if(loadedItem.getModule().equals("Wiki") && wiki_mining.get(loadedItem.getCmid()) != null && (wiki_mining.get(loadedItem.getCmid()).getTimeCreated() == 0 || wiki_mining.get(loadedItem.getCmid()).getTimeCreated() > loadedItem.getTime()))
            	{           		
-           		wiki_mining.get(loadedItem.getCmid()).setTimecreated(loadedItem.getTime());
+           		wiki_mining.get(loadedItem.getCmid()).setTimeCreated(loadedItem.getTime());
        		}
        	} 
     	return wiki_mining;
@@ -1737,7 +1742,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 //generate role tables
 		HashMap<Long, RoleMining> role_mining = new HashMap<Long, RoleMining>();
     	
-    	for ( Role_LMS loadedItem : role_lms)
+    	for ( Role_LMS loadedItem : roleLms)
     	{
     		RoleMining insert = new RoleMining();
     	
@@ -1745,7 +1750,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
     		insert.setName(loadedItem.getName());
     		insert.setShortname(loadedItem.getShortname());
     		insert.setDescription(loadedItem.getDescription());
-    		insert.setSortorder(loadedItem.getSortorder());
+    		insert.setSortOrder(loadedItem.getSortorder());
 			insert.setPlatform(connector.getPlatformId());
     		
     		role_mining.put(insert.getId(), insert);
@@ -1757,7 +1762,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 	public HashMap<Long, LevelMining> generateLevelMining() {
 		HashMap<Long, LevelMining> level_mining = new HashMap<Long, LevelMining>();
 		
-		for( CourseCategories_LMS loadedItem : course_categories_lms)
+		for( CourseCategories_LMS loadedItem : courseCategoriesLms)
 		{
 			LevelMining insert = new LevelMining();
 				
@@ -1776,17 +1781,17 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 	public HashMap<Long, LevelAssociationMining> generateLevelAssociationMining() {
 		HashMap<Long, LevelAssociationMining> level_association = new HashMap<Long, LevelAssociationMining>();
 		
-		for(CourseCategories_LMS loadedItem : course_categories_lms)
+		for(CourseCategories_LMS loadedItem : courseCategoriesLms)
 		{
 			String[] s = loadedItem.getPath().split("/");
 			if(s.length >= 3)
 			{
 				LevelAssociationMining insert = new LevelAssociationMining();
-				
 				insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-				insert.setLower(Long.valueOf(connector.getPrefix() + "" + s[s.length - 1]), level_mining, old_level_mining);
-				insert.setUpper(Long.valueOf(connector.getPrefix() + "" + s[s.length - 2]), level_mining, old_level_mining);
+				insert.setLower(Long.valueOf(connector.getPrefix() + "" + s[s.length - 1]), levelMining, oldLevelMining);
+				insert.setUpper(Long.valueOf(connector.getPrefix() + "" + s[s.length - 2]), levelMining, oldLevelMining);
 				insert.setPlatform(connector.getPlatformId());
+
 				if(insert.getLower() != null && insert.getUpper() != null)
 					level_association.put(insert.getId(), insert);
 			}
@@ -1798,7 +1803,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 	public HashMap<Long, LevelCourseMining> generateLevelCourseMining() {
 		HashMap<Long, LevelCourseMining> level_course = new HashMap<Long, LevelCourseMining>();
 		
-		for( Context_LMS loadedItem : context_lms)
+		for( Context_LMS loadedItem : contextLms)
 		{
 			if(loadedItem.getDepth() >=4 && loadedItem.getContextlevel() == 50)
 			{
@@ -1806,13 +1811,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 				
 				String[] s = loadedItem.getPath().split("/");
 				insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-				insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInstanceid()), course_mining, old_course_mining);
+				insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInstanceid()), courseMining, oldCourseMining);
 				insert.setPlatform(connector.getPlatformId());
-				for ( Context_LMS loadedItem2 : context_lms)
+				for ( Context_LMS loadedItem2 : contextLms)
 				{
 					if(loadedItem2.getContextlevel() == 40 && loadedItem2.getId() == Integer.parseInt(s[3]))
 					{
-						insert.setLevel(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getInstanceid()), level_mining, old_level_mining);
+						insert.setLevel(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getInstanceid()), levelMining, oldLevelMining);
 						break;
 					}
 				}
@@ -1823,117 +1828,18 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 		return level_course;
 	}
 
-	/*
-	public HashMap<Long, DegreeMining> generateDegreeMining() {
-		HashMap<Long, DegreeMining> degree_mining = new HashMap<Long, DegreeMining>();
-		
-		for( CourseCategories_LMS loadedItem : course_categories_lms)
-		{
-			if(loadedItem.getDepth() == 2)
-			{
-				DegreeMining insert = new DegreeMining();
-				
-				insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-				insert.setTitle(loadedItem.getTitle());
-				insert.setPlatform(connector.getPlatformId());
-				degree_mining.put(insert.getId(), insert);
-			}
-		}
-		return degree_mining;
-	}
-	*/
-
-	/*
-	public HashMap<Long, DepartmentMining> generateDepartmentMining() 
-	{
-		HashMap<Long, DepartmentMining> department_mining = new HashMap<Long, DepartmentMining>();
-		
-		for( CourseCategories_LMS loadedItem : course_categories_lms)
-		{
-			if(loadedItem.getDepth() == 1)
-			{
-				DepartmentMining insert = new DepartmentMining();
-				insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-				insert.setTitle(loadedItem.getTitle());
-				insert.setPlatform(connector.getPlatformId());
-				department_mining.put(insert.getId(), insert);
-			}
-		}
-		return department_mining;
-	}
-	*/
-
-	/*
-	public HashMap<Long, DepartmentDegreeMining> generateDepartmentDegreeMining() 
-	{
-		HashMap<Long, DepartmentDegreeMining> department_degree = new HashMap<Long, DepartmentDegreeMining>();
-		
-		for(CourseCategories_LMS loadedItem : course_categories_lms)
-		{
-			if(loadedItem.getDepth() == 2)
-			{
-				String[] s = loadedItem.getPath().split("/");
-				if(s.length == 3)
-				{
-					DepartmentDegreeMining insert = new DepartmentDegreeMining();
-					
-					insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-					insert.setDegree(Long.valueOf(connector.getPrefix() + "" + s[s.length - 1]), degree_mining, old_degree_mining);
-					insert.setDepartment(Long.valueOf(connector.getPrefix() + "" + s[s.length - 2]), department_mining, old_department_mining);
-					insert.setPlatform(connector.getPlatformId());
-					if(insert.getDegree() != null && insert.getDepartment() != null)
-						department_degree.put(insert.getId(), insert);
-				}
-			}
-		}
-		return department_degree;
-	}
-	*/
-
-	/*
-	public HashMap<Long, DegreeCourseMining> generateDegreeCourseMining() {
-		
-		HashMap<Long, DegreeCourseMining> degree_course = new HashMap<Long, DegreeCourseMining>();
-		
-		for( Context_LMS loadedItem : context_lms)
-		{
-			if(loadedItem.getDepth() == 4 && loadedItem.getContextlevel() == 50)
-			{
-				DegreeCourseMining insert = new DegreeCourseMining();
-				
-				String[] s = loadedItem.getPath().split("/");
-				insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-				insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getInstanceid()), course_mining, old_course_mining);
-				insert.setPlatform(connector.getPlatformId());
-				for ( Context_LMS loadedItem2 : context_lms)
-				{
-					if(loadedItem2.getContextlevel() == 40 && loadedItem2.getId() == Integer.parseInt(s[3]))
-					{
-						insert.setDegree(Long.valueOf(connector.getPrefix() + "" + loadedItem2.getInstanceid()), degree_mining, old_degree_mining);
-						break;
-					}
-				}
-				if(insert.getDegree() != null && insert.getCourse() != null)
-					degree_course.put(insert.getId(), insert);
-			}
-		}
-		return degree_course;
-	}
-	*/
-
 	public HashMap<Long, ChatMining> generateChatMining() {
 		HashMap<Long, ChatMining> chat_mining = new HashMap<Long, ChatMining>();
 		
-		for( Chat_LMS loadedItem : chat_lms)
+		for( Chat_LMS loadedItem : chatLms)
 		{
 			ChatMining insert = new ChatMining();
-		
 			insert.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setChattime(loadedItem.getChattime());
+			insert.setChatTime(loadedItem.getChattime());
 			insert.setDescription(loadedItem.getDescription());
 			insert.setTitle(loadedItem.getTitle());
 			insert.setPlatform(connector.getPlatformId());
-			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), course_mining, old_course_mining);
+			insert.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getCourse()), courseMining, oldCourseMining);
 			
 			if(insert.getCourse() != null)
 			
@@ -1947,20 +1853,19 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//Versionsnummer in Name
 	public HashMap<Long, ChatLogMining> generateChatLogMining() {
 		HashMap<Long, ChatLogMining> chatLogMining = new HashMap<Long, ChatLogMining>();
     	
-        for (ChatLog_LMS loadedItem : chat_log_lms) 
+        for (ChatLog_LMS loadedItem : chatLogLms) 
         {
         	ChatLogMining insert = new ChatLogMining();
         	insert.setId(chatLogMining.size() + 1 + chatLogMax);
-        	insert.setChat(Long.valueOf(connector.getPrefix() + "" + loadedItem.getChat_Id()), chat_mining, old_chat_mining);
+        	insert.setChat(Long.valueOf(connector.getPrefix() + "" + loadedItem.getChat_Id()), chatMining, oldChatMining);
         	insert.setMessage(loadedItem.getMessage());
         	insert.setTimestamp(loadedItem.getTimestamp());
         	insert.setPlatform(connector.getPlatformId());
         	if(insert.getChat() != null)
-        		insert.setCourse(insert.getChat().getCourse().getId(), course_mining, old_course_mining);
+        		insert.setCourse(insert.getChat().getCourse().getId(), courseMining, oldCourseMining);
         	insert.setDuration(0L);
         	
-        	
-        	insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUser_Id()), user_mining, old_user_mining);
+        	insert.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getUser_Id()), userMining, oldUserMining);
   			if(insert.getUser()==null){
   				logger.info("In Chat_log_mining(chat part), user not found for log: " + loadedItem.getId() +" and user: " + loadedItem.getUser_Id());
   			}

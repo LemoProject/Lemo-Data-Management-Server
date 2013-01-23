@@ -45,8 +45,6 @@ public class MiningHibernateUtil {
 		config.addResource("de/lemo/dms/db/miningDBclass/AssignmentMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/ChatMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/CourseMining.hbm.xml");
-		// cfg.addResource("de/lemo/dms/db/miningDBclass/DegreeMining.hbm.xml");
-		// cfg.addResource("de/lemo/dms/db/miningDBclass/DepartmentMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/ForumMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/GroupMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/QuestionMining.hbm.xml");
@@ -67,8 +65,6 @@ public class MiningHibernateUtil {
 		config.addResource("de/lemo/dms/db/miningDBclass/CourseScormMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/CourseUserMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/CourseWikiMining.hbm.xml");
-		// config.addResource("de/lemo/dms/db/miningDBclass/DegreeCourseMining.hbm.xml");
-		// config.addResource("de/lemo/dms/db/miningDBclass/DepartmentDegreeMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/GroupUserMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/QuizQuestionMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/QuizUserMining.hbm.xml");

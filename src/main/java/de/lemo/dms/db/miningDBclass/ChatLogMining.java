@@ -1,6 +1,6 @@
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -40,17 +40,17 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		this.duration = duration;
 	}
 	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
+	public void setCourse(long course, Map<Long, CourseMining> courseMining, Map<Long, CourseMining> oldCourseMining) {		
 		
 		if(courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addChat_log(this);
+			courseMining.get(course).addChatLog(this);
 		}
 		if(this.course == null && oldCourseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addChat_log(this);
+			courseMining.get(course).addChatLog(this);
 		}
 	}
 	
@@ -89,32 +89,32 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		this.message = message;
 	}
 	
-	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {		
+	public void setUser(long user, Map<Long, UserMining> userMining, Map<Long, UserMining> oldUserMining) {		
 		
 		if(userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addChat_log(this);
+			userMining.get(user).addChatLog(this);
 		}
 		if(this.user == null && oldUserMining.get(user) != null)
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addChat_log(this);
+			oldUserMining.get(user).addChatLog(this);
 		}
 	}
 	
-	public void setChat(long chat, HashMap<Long, ChatMining> chatMining, HashMap<Long, ChatMining> oldChatMining) 
+	public void setChat(long chat, Map<Long, ChatMining> chatMining, Map<Long, ChatMining> oldChatMining) 
 	{		
 		
 		if(chatMining.get(chat) != null)
 		{
 			this.chat = chatMining.get(chat);
-			chatMining.get(chat).addChat_log(this);
+			chatMining.get(chat).addChatLog(this);
 		}
 		if(this.chat == null && oldChatMining.get(chat) != null)
 		{
 			this.chat = oldChatMining.get(chat);
-			oldChatMining.get(chat).addChat_log(this);
+			oldChatMining.get(chat).addChatLog(this);
 		}
 	}
 

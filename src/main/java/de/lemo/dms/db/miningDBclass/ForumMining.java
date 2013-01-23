@@ -12,122 +12,118 @@ public class ForumMining implements IMappingClass, ILearningObject {
 	private long id;
 	private String title;
 	private String summary;
-	private long timecreated;
-	private long timemodified;
+	private long timeCreated;
+	private long timeModified;
 	private Long platform;
 	
-	private Set<CourseForumMining> course_forum = new HashSet<CourseForumMining>();
-	private Set<ForumLogMining> forum_log = new HashSet<ForumLogMining>();
+	private Set<CourseForumMining> courseForums = new HashSet<CourseForumMining>();
+	private Set<ForumLogMining> forumLogs = new HashSet<ForumLogMining>();
 
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof ForumMining))
+		if(!(o instanceof ForumMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof ForumMining))
 			return true;
 		return false;
 	}
 
-	/** standard getter for the attribut id
+	/** standard getter for the attribute id
 	 * @return the identifier of the forum
 	 */	
 	public long getId() {
 		return id;
 	}
-	/** standard setter for the attribut id
+	/** standard setter for the attribute id
 	 * @param id the identifier of the forum
 	 */	
 	public void setId(long id) {
 		this.id = id;
 	}
-	/** standard getter for the attribut title
+	/** standard getter for the attribute title
 	 * @return the title of the forum
 	 */	
 	public String getTitle() {
 		return title;
 	}
-	/** standard setter for the attribut title
+	/** standard setter for the attribute title
 	 * @param title the title of the forum
 	 */	
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	/** standard getter for the attribut summary
+	/** standard getter for the attribute summary
 	 * @return a summary of the topic in the forum
 	 */	
 	public String getSummary() {
 		return summary;
 	}
-	/** standard setter for the attribut summary
+	/** standard setter for the attribute summary
 	 * @param summary a summary of the topic in the forum
 	 */	
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
-	/** standard getter for the attribut timecreated
+	/** standard getter for the attribute timecreated
 	 * @return the timestamp when the forum was created
 	 */	
-	public long getTimecreated() {
-		return timecreated;
+	public long getTimeCreated() {
+		return timeCreated;
 	}
-	/** standard setter for the attribut timecreated
+	/** standard setter for the attribute timecreated
 	 * @param timecreated the timestamp when the forum was created
 	 */	
-	public void setTimecreated(long timecreated) {
-		this.timecreated = timecreated;
+	public void setTimeCreated(long timecreated) {
+		this.timeCreated = timecreated;
 	}
-//	public void setTimecreated(Long timecreated) {
-//		if(timecreated != null){
-//			this.timecreated = timecreated.longValue();
-//		}
-//	}
-	/** standard getter for the attribut timemodified
+
+	/** standard getter for the attribute timemodified
 	 * @return the timestamp when the forum was changed the last time
 	 */	
-	public long getTimemodified() {
-		return timemodified;
+	public long getTimeModified() {
+		return timeModified;
 	}
-	/** standard setter for the attribut timemodified
-	 * @param timemodified the timestamp when the forum was changed the last time
+	/** standard setter for the attribute timemodified
+	 * @param timeModified the timestamp when the forum was changed the last time
 	 */	
-	public void setTimemodified(long timemodified) {
-		this.timemodified = timemodified;
+	public void setTimeModified(long timeModified) {
+		this.timeModified = timeModified;
 	}
-	/** standard setter for the attribut course_forum
-	 * @param course_forum a set of entrys in the course_forum table which relate the forum to the courses
+	/** standard setter for the attribute course_forum
+	 * @param courseForums a set of entries in the course_forum table which relate the forum to the courses
 	 */	
-	public void setCourse_forum(Set<CourseForumMining> course_forum) {
-		this.course_forum = course_forum;
+	public void setCourseForums(Set<CourseForumMining> courseForums) {
+		this.courseForums = courseForums;
 	}
-	/** standard getter for the attribut course_forum
-	 * @return a set of entrys in the course_forum table which relate the forum to the courses
+	/** standard getter for the attribute course_forum
+	 * @return a set of entries in the course_forum table which relate the forum to the courses
 	 */	
-	public Set<CourseForumMining> getCourse_forum() {
-		return course_forum;
+	public Set<CourseForumMining> getCourseForums() {
+		return courseForums;
 	}
-	/** standard add method for the attribut course_forum
-	 * @param course_forum_add this entry will be added to the list of course_forum in this resource
+	/** standard add method for the attribute course_forum
+	 * @param courseForum this entry will be added to the list of course_forum in this resource
 	 * */	
-	public void addCourse_forum(CourseForumMining course_forum_add){	
-		course_forum.add(course_forum_add);	
+	public void addCourseForum(CourseForumMining courseForum){	
+		this.courseForums.add(courseForum);	
 	}
-	/** standard setter for the attribut forum_log
-	 * @param forum_log a set of entrys in the forum_log table which are related to this forum
+	/** standard setter for the attribute forum_log
+	 * @param forumLogs a set of entries in the forum_log table which are related to this forum
 	 */	
-	public void setForum_log(Set<ForumLogMining> forum_log) {
-		this.forum_log = forum_log;
+	public void setForumLogs(Set<ForumLogMining> forumLogs) {
+		this.forumLogs = forumLogs;
 	}
-	/** standard getter for the attribut forum_log
-	 * @return a set of entrys in the forum_log table which are related to this forum
+	/** standard getter for the attribute forum_log
+	 * @return a set of entries in the forum_log table which are related to this forum
 	 */	
-	public Set<ForumLogMining> getForum_log() {
-		return forum_log;
+	public Set<ForumLogMining> getForumLogs() {
+		return forumLogs;
 	}
-	/** standard add method for the attribut
-	 * @param forum_log_add this entry will be added to the list of forum_log in this forum
+	/** standard add method for the attribute
+	 * @param forumLog this entry will be added to the list of forum_log in this forum
 	 * */
-	public void addForum_log(ForumLogMining forum_log_add){	
-		forum_log.add(forum_log_add);	
+	public void addForumLog(ForumLogMining forumLog){	
+		this.forumLogs.add(forumLog);	
 	}
 
 	public Long getPlatform() {

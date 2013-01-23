@@ -12,17 +12,17 @@ public class WikiMining  implements IMappingClass, ILearningObject{
 	private long id;
 	private String title;
 	private String summary;
-	private long timecreated;
-	private long timemodified;
+	private long timeCreated;
+	private long timeModified;
 	private Long platform;
 	
-	private Set<CourseWikiMining> course_wiki = new HashSet<CourseWikiMining>();
-	private Set<WikiLogMining> wiki_log = new HashSet<WikiLogMining>();
+	private Set<CourseWikiMining> courseWikis = new HashSet<CourseWikiMining>();
+	private Set<WikiLogMining> wikiLogs = new HashSet<WikiLogMining>();
 
 	
 	public boolean equals(IMappingClass o)
 	{
-		if(o == null || !(o instanceof WikiMining))
+		if(!(o instanceof WikiMining))
 			return false;
 		if(o.getId() == this.getId() && (o instanceof WikiMining))
 			return true;
@@ -71,64 +71,64 @@ public class WikiMining  implements IMappingClass, ILearningObject{
 	/** standard getter for the attribute time created
 	 * @return the time stamp when the wiki was created
 	 */	
-	public long getTimecreated() {
-		return timecreated;
+	public long getTimeCreated() {
+		return timeCreated;
 	}
 	/** standard setter for the attribute time created
-	 * @param timecreated the time stamp when the wiki was created
+	 * @param timeCreated the time stamp when the wiki was created
 	 */
-	public void setTimecreated(long timecreated) {
-		this.timecreated = timecreated;
+	public void setTimeCreated(long timeCreated) {
+		this.timeCreated = timeCreated;
 	}
 	
 	
 	/** standard getter for the attribute time modified
 	 * @return the time stamp when the quiz was changed the last time
 	 */	
-	public long getTimemodified() {
-		return timemodified;
+	public long getTimeModified() {
+		return timeModified;
 	}
 	/** standard setter for the attribute time modified
-	 * @param timemodified the time stamp when the quiz was changed the last time
+	 * @param timeModified the time stamp when the quiz was changed the last time
 	 */
-	public void setTimemodified(long timemodified) {
-		this.timemodified = timemodified;
+	public void setTimeModified(long timeModified) {
+		this.timeModified = timeModified;
 	}
 	/** standard setter for the attribute course_wiki
-	 * @param course_wiki a set of entries in the course_wiki table which relate this wiki to courses
+	 * @param courseWikis a set of entries in the course_wiki table which relate this wiki to courses
 	 */
-	public void setCourse_wiki(Set<CourseWikiMining> course_wiki) {
-		this.course_wiki = course_wiki;
+	public void setCourseWikis(Set<CourseWikiMining> courseWikis) {
+		this.courseWikis = courseWikis;
 	}
 	/** standard getter for the attribute course_wiki
 	 * @return a set of entries in the course_wiki table which relate this wiki to courses
 	 */	
-	public Set<CourseWikiMining> getCourse_wiki() {
-		return course_wiki;
+	public Set<CourseWikiMining> getCourseWikis() {
+		return courseWikis;
 	}
 	/** standard add method for the attribute course_wiki
-	 * @param course_wiki_add this entry will be added to the list of course_wiki in this wiki
+	 * @param courseWiki this entry will be added to the list of course_wiki in this wiki
 	 * */
-	public void addCourse_wiki(CourseWikiMining course_wiki_add){	
-		course_wiki.add(course_wiki_add);
+	public void addCourseWiki(CourseWikiMining courseWiki){	
+		courseWikis.add(courseWiki);
 	}
 	/** standard setter for the attribute wiki_log
-	 * @param wiki_log a set of entries in the wiki_log table which are related to this wiki
+	 * @param wikiLogs a set of entries in the wiki_log table which are related to this wiki
 	 */
-	public void setWiki_log(Set<WikiLogMining> wiki_log) {
-		this.wiki_log = wiki_log;
+	public void setWikiLogs(Set<WikiLogMining> wikiLogs) {
+		this.wikiLogs = wikiLogs;
 	}
 	/** standard getter for the attribute wiki_log
 	 * @return a set of entries in the wiki_log table which are related to this wiki
 	 */	
-	public Set<WikiLogMining> getWiki_log() {
-		return wiki_log;
+	public Set<WikiLogMining> getWikiLogs() {
+		return wikiLogs;
 	}
 	/** standard add method for the attribute wiki_log
-	 * @param wiki_log_add this entry will be added to the list of wiki_log in this quiz
+	 * @param wikiLog this entry will be added to the list of wiki_log in this quiz
 	 * */
-	public void addWiki_log(WikiLogMining wiki_log_add){	
-		wiki_log.add(wiki_log_add);
+	public void addWikiLog(WikiLogMining wikiLog){	
+		wikiLogs.add(wikiLog);
 	}
 
 	public Long getPlatform() {

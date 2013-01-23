@@ -52,10 +52,9 @@ import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.CourseScormMining;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.CourseWikiMining;
-import de.lemo.dms.db.miningDBclass.DegreeCourseMining;
-import de.lemo.dms.db.miningDBclass.DegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentDegreeMining;
-import de.lemo.dms.db.miningDBclass.DepartmentMining;
+import de.lemo.dms.db.miningDBclass.LevelCourseMining;
+import de.lemo.dms.db.miningDBclass.LevelMining;
+import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
@@ -92,10 +91,6 @@ public class TestDataCreatorMoodle {
 	private ArrayList<CourseScormMining> courseScormList;
 	private ArrayList<CourseUserMining> courseUserList;
 	private ArrayList<CourseWikiMining> courseWikiList;
-	private ArrayList<DegreeMining> degreeList;
-	private ArrayList<DegreeCourseMining> degreeCourseList;
-	private ArrayList<DepartmentMining> departmentList;
-	private ArrayList<DepartmentDegreeMining> departmentDegreeList;
 	private ArrayList<ForumMining>forumList;
 	private ArrayList<ForumLogMining> forumLogList;
 	private ArrayList<GroupMining> groupList;
@@ -114,6 +109,10 @@ public class TestDataCreatorMoodle {
 	private ArrayList<UserMining> userList;
 	private ArrayList<WikiMining>wikiList;
 	private ArrayList<WikiLogMining> wikiLogList;
+	private ArrayList<LevelMining> departmentList;
+	private ArrayList<LevelMining> degreeList;
+	private ArrayList<LevelAssociationMining> departmentDegreeList;
+	private ArrayList<LevelCourseMining> degreeCourseList;
 
 	private static List<Log_LMS> log_lms = new ArrayList<Log_LMS>();
 	private static List<Resource_LMS> resource_lms = new ArrayList<Resource_LMS>();
@@ -152,8 +151,8 @@ public class TestDataCreatorMoodle {
 	private HashMap<Long, CourseMining> couWikMap;
 	
 	
-	private HashMap<Long, DegreeMining> degCouMap;
-	private HashMap<Long, DepartmentMining> depDegMap;
+	private HashMap<Long, LevelMining> degCouMap;
+	private HashMap<Long, LevelMining> depDegMap;
 
 
 	private void generateUserLMS()
@@ -163,10 +162,10 @@ public class TestDataCreatorMoodle {
 			User_LMS lms = new User_LMS();
 			
 			lms.setId(item.getId());
-			lms.setCurrentlogin(item.getCurrentlogin());
-			lms.setLastaccess(item.getLastaccess());
-			lms.setFirstaccess(item.getFirstaccess());
-			lms.setLastlogin(item.getLastlogin());
+			lms.setCurrentlogin(item.getCurrentLogin());
+			lms.setLastaccess(item.getLastAccess());
+			lms.setFirstaccess(item.getFirstAccess());
+			lms.setLastlogin(item.getLastLogin());
 			
 			user_lms.add(lms);
 		}
@@ -181,7 +180,7 @@ public class TestDataCreatorMoodle {
 			lms.setId(item.getId());
 			lms.setName(item.getName());
 			lms.setShortname(item.getShortname());
-			lms.setSortorder(item.getSortorder());
+			lms.setSortorder(item.getSortOrder());
 			lms.setDescription(item.getDescription());
 			
 			role_lms.add(lms);
@@ -195,7 +194,7 @@ public class TestDataCreatorMoodle {
 			Wiki_LMS lms = new Wiki_LMS();
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
-			lms.setTimemodified(item.getTimemodified());
+			lms.setTimemodified(item.getTimeModified());
 			lms.setSummary(item.getSummary());
 			lms.setCourse(couWikMap.get(item.getId()).getId());
 			
@@ -210,9 +209,9 @@ public class TestDataCreatorMoodle {
 			Scorm_LMS lms = new Scorm_LMS();
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
-			lms.setTimemodified(item.getTimemodified());
-			lms.setMaxgrade(item.getMaxgrade());
-			lms.setTimemodified(item.getTimemodified());
+			lms.setTimemodified(item.getTimeModified());
+			lms.setMaxgrade(item.getMaxGrade());
+			lms.setTimemodified(item.getTimeModified());
 			lms.setCourse(couScoMap.get(item.getId()).getId());
 			
 			scorm_lms.add(lms);
@@ -227,7 +226,7 @@ public class TestDataCreatorMoodle {
 		HashMap<Long, Context_LMS> couIdMap = new HashMap<Long, Context_LMS>();
 		
 		//Create entries (context, course_categories) for all departments
-		for(DepartmentMining item : departmentList)
+		for(LevelMining item : departmentList)
 		{
 			Context_LMS lms = new Context_LMS();
 			CourseCategories_LMS lms2 = new CourseCategories_LMS();
@@ -252,11 +251,11 @@ public class TestDataCreatorMoodle {
 		}
 		
 		//Create entries (context, course_categories) for all degrees
-		for(DegreeMining item : degreeList)
+		for(LevelMining item : degreeList)
 		{
 			CourseCategories_LMS lms2 = new CourseCategories_LMS();
 			
-			DepartmentMining dm = depDegMap.get(item.getId());
+			LevelMining dm = depDegMap.get(item.getId());
 			
 			lms2.setId(course_categories_lms.size() + 1);
 			lms2.setTitle(item.getTitle());
@@ -279,7 +278,7 @@ public class TestDataCreatorMoodle {
 			
 		}
 		//Create entries (context) for all courses
-		for(DegreeCourseMining item : degreeCourseList)
+		for(LevelCourseMining item : degreeCourseList)
 		{
 			Context_LMS lms = new Context_LMS();
 			
@@ -287,7 +286,7 @@ public class TestDataCreatorMoodle {
 			lms.setDepth(4);
 			lms.setContextlevel(50);
 			lms.setInstanceid(item.getCourse().getId());
-			Context_LMS cl = degIdMap.get(item.getDegree().getId());
+			Context_LMS cl = degIdMap.get(item.getLevel().getId());
 			lms.setPath(cl.getPath() + "/" + lms.getId());
 
 			couIdMap.put(item.getId(), lms);
@@ -496,7 +495,7 @@ public class TestDataCreatorMoodle {
 			lms.setId(item.getId());
 			lms.setType(item.getType());
 			lms.setName(item.getTitle());
-			lms.setTimemodified(item.getTimemodified());
+			lms.setTimemodified(item.getTimeModified());
 			if(couResMap.get(item.getId()) != null)
 				lms.setCourse(couResMap.get(item.getId()).getId());		
 			
@@ -516,7 +515,7 @@ public class TestDataCreatorMoodle {
 		{
 			Forum_LMS lms = new Forum_LMS();
 			lms.setId(item.getId());
-			lms.setTimemodified(item.getTimemodified());
+			lms.setTimemodified(item.getTimeModified());
 			lms.setName(item.getTitle());
 			lms.setIntro(item.getSummary());
 			lms.setCourse(cFMap.get(lms.getId()));
@@ -537,11 +536,11 @@ public class TestDataCreatorMoodle {
 			lms.setId(item.getId());
 			lms.setFullname(item.getTitle());
 			lms.setShortname(item.getShortname());
-			lms.setTimemodified(item.getTimemodified());
-			lms.setTimecreated(item.getTimecreated());
-			lms.setEnrolstartdate(item.getEnrolstart());
-			lms.setEnrolenddate(item.getEnrolend());
-			lms.setStartdate(item.getStartdate());
+			lms.setTimemodified(item.getTimeModified());
+			lms.setTimecreated(item.getTimeCreated());
+			lms.setEnrolstartdate(item.getEnrolStart());
+			lms.setEnrolenddate(item.getEnrolEnd());
+			lms.setStartdate(item.getStartDate());
 			
 			course_lms.add(lms);
 		}
@@ -574,7 +573,7 @@ public class TestDataCreatorMoodle {
 				lms.setCourse(couId.get(item.getId()));
 			lms.setTitle(item.getTitle());
 			lms.setDescription(item.getDescription());
-			lms.setChattime(item.getChattime());
+			lms.setChattime(item.getChatTime());
 			
 			
 			chat_lms.add(lms);
@@ -588,9 +587,9 @@ public class TestDataCreatorMoodle {
 			Assignment_LMS lms = new Assignment_LMS();
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
-			lms.setTimeavailable(item.getTimeopen());
-			lms.setTimedue(item.getTimeclose());
-			lms.setTimemodified(item.getTimemodified());
+			lms.setTimeavailable(item.getTimeOpen());
+			lms.setTimedue(item.getTimeClose());
+			lms.setTimemodified(item.getTimeModified());
 			lms.setDescription("description");
 			if(couAssMap.get(item.getId()) != null)
 				lms.setCourse(couAssMap.get(item.getId()).getId());
@@ -598,7 +597,7 @@ public class TestDataCreatorMoodle {
 			Grade_items_LMS lms2 = new Grade_items_LMS();
 			lms2.setIteminstance(item.getId());
 			lms2.setItemmodule("assignment");
-			lms2.setGrademax(item.getMaxgrade());
+			lms2.setGrademax(item.getMaxGrade());
 			lms2.setId(grade_items_lms.size());
 			
 			grade_items_lms.add(lms2);			
@@ -660,16 +659,16 @@ public class TestDataCreatorMoodle {
         courseWikiList = (ArrayList<CourseWikiMining>) couWikiQuery.list();
         
         Query degQuery = session.createQuery("from DegreeMining x order by x.id asc");
-        degreeList = (ArrayList<DegreeMining>) degQuery.list();
+        degreeList = (ArrayList<LevelMining>) degQuery.list();
         
         Query degCouQuery = session.createQuery("from DegreeCourseMining x order by x.id asc");
-        degreeCourseList = (ArrayList<DegreeCourseMining>) degCouQuery.list();
+        degreeCourseList = (ArrayList<LevelCourseMining>) degCouQuery.list();
         
         Query depQuery = session.createQuery("from DepartmentMining x order by x.id asc");
-        departmentList = (ArrayList<DepartmentMining>) depQuery.list();
+        departmentList = (ArrayList<LevelMining>) depQuery.list();
         
         Query depDegQuery = session.createQuery("from DepartmentDegreeMining x order by x.id asc");
-        departmentDegreeList = (ArrayList<DepartmentDegreeMining>) depDegQuery.list();
+        departmentDegreeList = (ArrayList<LevelAssociationMining>) depDegQuery.list();
                 
         Query forQuery = session.createQuery("from ForumMining x order by x.id asc");
         forumList = (ArrayList<ForumMining>) forQuery.list();
@@ -734,8 +733,8 @@ public class TestDataCreatorMoodle {
         couUseMap= new HashMap<Long, CourseMining>();
         couWikMap = new HashMap<Long, CourseMining>();
         
-        degCouMap = new HashMap<Long, DegreeMining>();
-        depDegMap = new HashMap<Long, DepartmentMining>();
+        degCouMap = new HashMap<Long, LevelMining>();
+        depDegMap = new HashMap<Long, LevelMining>();
         
         for(CourseAssignmentMining ca : courseAssignmentList)
         	couAssMap.put(ca.getAssignment().getId(), ca.getCourse());
@@ -762,11 +761,11 @@ public class TestDataCreatorMoodle {
         	couScoMap.put(cs.getScorm().getId(), cs.getCourse());
         
         
-        for(DegreeCourseMining dc : degreeCourseList)
-        	degCouMap.put(dc.getCourse().getId(), dc.getDegree());
+        for(LevelCourseMining dc : degreeCourseList)
+        	degCouMap.put(dc.getCourse().getId(), dc.getLevel());
         
-        for(DepartmentDegreeMining dd : departmentDegreeList)
-        	depDegMap.put(dd.getDegree().getId(), dd.getDepartment());
+        for(LevelAssociationMining dd : departmentDegreeList)
+        	depDegMap.put(dd.getLower().getId(), dd.getUpper());
         
 
         session.clear();
@@ -781,8 +780,8 @@ public class TestDataCreatorMoodle {
 			Groups_LMS lms = new Groups_LMS();
 			lms.setId(item.getId());
 			lms.setCourseid(couGroMap.get(item.getId()).getId());
-			lms.setTimecreated(item.getTimecreated());
-			lms.setTimemodified(item.getTimemodified());
+			lms.setTimecreated(item.getTimeCreated());
+			lms.setTimemodified(item.getTimeModified());
 			
 			group_lms.add(lms);
 			
@@ -820,14 +819,14 @@ public class TestDataCreatorMoodle {
 			lms.setId(item.getId());
 			lms.setCourse(qQMap.get(lms.getId()));
     		lms.setName(item.getTitle());
-    		lms.setTimeopen(item.getTimeopen());
-    		lms.setTimeclose(item.getTimeclose());
-    		lms.setTimecreated(item.getTimecreated());
-    		lms.setTimemodified(item.getTimemodified());
+    		lms.setTimeopen(item.getTimeOpen());
+    		lms.setTimeclose(item.getTimeClose());
+    		lms.setTimecreated(item.getTimeCreated());
+    		lms.setTimemodified(item.getTimeModified());
     		
 
     		lms2.setId(grade_items_lms.size() + 1);
-    		lms2.setGrademax(item.getMaxgrade());
+    		lms2.setGrademax(item.getMaxGrade());
     		lms2.setIteminstance(item.getId());
     		lms2.setItemmodule("quiz");
     		
@@ -846,8 +845,8 @@ public class TestDataCreatorMoodle {
 			lms.setName(item.getTitle());
 			lms.setQuestiontext(item.getText());
 			lms.setQtype(item.getType());
-			lms.setTimecreated(item.getTimecreated());
-			lms.setTimemodified(item.getTimemodified());
+			lms.setTimecreated(item.getTimeCreated());
+			lms.setTimemodified(item.getTimeModified());
 		
 			question_lms.add(lms);
 		}
@@ -879,10 +878,10 @@ public class TestDataCreatorMoodle {
 			Grade_grades_LMS lms = new Grade_grades_LMS();
 			
 			lms.setId(item.getId());
-			lms.setRawgrade(item.getRawgrade());
-			lms.setFinalgrade(item.getFinalgrade());
+			lms.setRawgrade(item.getRawGrade());
+			lms.setFinalgrade(item.getFinalGrade());
 			lms.setUserid(item.getUser().getId());
-			lms.setTimemodified(item.getTimemodified());
+			lms.setTimemodified(item.getTimeModified());
 			lms.setItemid(grade_items_lms.size() + 1);
 			
 			Grade_items_LMS lms2 = new Grade_items_LMS();

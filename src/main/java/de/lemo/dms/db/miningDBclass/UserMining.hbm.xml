@@ -31,76 +31,76 @@
             type="boolean"/>
 
         <property
-            name="lastlogin"
+            name="lastLogin"
             column="lastlogin"
             type="long"/>
             
         <property
-            name="firstaccess"
+            name="firstAccess"
             column="firstaccess"
             type="long"/>
             
         <property
-            name="lastaccess"
+            name="lastAccess"
             column="lastaccess"
             type="long"/>
                           
         <property
-            name="currentlogin"
+            name="currentLogin"
             column="currentlogin"
             type="long"/>
             
-  	<set name="course_user" inverse="true" lazy="false">
+  	<set name="courseUsers" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseUserMining"/>
 		</set>
 		
-        <set name="group_user" inverse="true" lazy="false">
+        <set name="groupUsers" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.GroupUserMining"/>
 		</set>
 		
-        <set name="forum_log" inverse="true" lazy="false">
+        <set name="forumLogs" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.ForumLogMining"/>
 		</set>				           
 
-        <set name="wiki_log" inverse="true" lazy="false">
+        <set name="wikiLogs" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.WikiLogMining"/>
 		</set>
 
-        <set name="course_log" inverse="true" lazy="false">
+        <set name="courseLogs" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseLogMining"/>
 		</set>
 		
-        <set name="quiz_log" inverse="true" lazy="false">
+        <set name="quizLogs" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizLogMining"/>
 		</set>		
 
-        <set name="quiz_user" inverse="true" lazy="false">
+        <set name="quizUsers" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizUserMining"/>
 		</set>
 
-		<set name="question_log" inverse="true" lazy="false">
+		<set name="questionLogs" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.QuestionLogMining"/>
 		</set>
 
-		<set name="resource_log" inverse="true" lazy="false">
+		<set name="resourceLogs" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.ResourceLogMining"/>
 		</set>
 		
-         <set name="assignment_log" inverse="true" lazy="false">
+         <set name="assignmentLogs" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.AssignmentLogMining"/>
 		</set>
 		
-         <set name="scorm_log" inverse="true" lazy="false">
+         <set name="scormLogs" inverse="true" lazy="false">
 			<key column="user_id"/>
 			<one-to-many class="de.lemo.dms.db.miningDBclass.ScormLogMining"/>
 		</set>

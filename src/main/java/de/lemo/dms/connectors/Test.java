@@ -3,12 +3,11 @@ package de.lemo.dms.connectors;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-
-
+import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
@@ -16,14 +15,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsViger;
 import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
-import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
-import de.lemo.dms.processing.resulttype.ResultListLongObject;
-import de.lemo.dms.processing.resulttype.ResultListStringObject;
-import de.lemo.dms.service.ServiceRatedObjects;
-import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
-import de.lemo.dms.connectors.moodle.ConnectorMoodle;
-import de.lemo.dms.core.config.ServerConfiguration;
 
 /**
  * Just a class for Connector-related tests.
@@ -33,26 +25,43 @@ import de.lemo.dms.core.config.ServerConfiguration;
  */
 public class Test {
 	
+	private static final Long ID_MOODLE23 = 4L;
+	private static final Long ID_CHEM = 3L;
+	private static final Long ID_MOODLE_NUMERIC = 5L;
+	private static final Long ID_MOODLE19 = 2L;
+	private static final Long ID_CLIX = 6L;
+
 	/**
 	 * Tests the Chemgapedia-connector. Configurations have to be altered accordingly.
 	 * 
 	 */
 	public void runChemConn()
 	{
+
+		//ServerConfiguration.getInstance().loadConfig("/lemo");
+		IConnector connector = ConnectorManager.getInstance().getConnectorById(ID_CHEM);
+		connector.getData();
+		/*
 		String logs = "C:\\Users\\s.schwarzrock\\Desktop\\120614\\130104_lemojoin_10K_1.log";
 		//int i = 0;
 		//for(int i = 1 ; i < 6; i++)
 		//{
-			DBConfigObject sourceConf = new DBConfigObject();
-			sourceConf.setProperty("path.log_file", logs);
-			sourceConf.setProperty("path.resource_metadata", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
-			sourceConf.setProperty("filter_log_file", "true");
-				sourceConf.setProperty("process_metadata", "true");
-			sourceConf.setProperty("process_log_file", "true");
-			
-			ConnectorChemgapedia cm = new ConnectorChemgapedia(sourceConf);
-			cm.updateData(0L);
-		}
+		DBConfigObject sourceConf = new DBConfigObject();
+		sourceConf.setProperty("lemo.log_file_path", logs);
+		sourceConf.setProperty("lemo.resource_metadata_path", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
+		sourceConf.setProperty("lemo.filter_log_file", "true");
+		sourceConf.setProperty("lemo.process_metadata", "true");
+		sourceConf.setProperty("lemo.process_log_file", "true");
+		
+		// IConnector connector = ConnectorManager.getInstance().getConnectorById(ID_CHEM);
+		ConnectorChemgapedia cm = new ConnectorChemgapedia(sourceConf);
+		cm.setPlatformId(100L);
+		cm.setName("chem-test");
+		cm.setPrefix(101L);
+		
+		cm.updateData(0L);
+		*/
+	}
 	
 	/**
 	 * Tests the Moodle(1.9)-connector. Configurations have to be altered accordingly.
@@ -60,10 +69,9 @@ public class Test {
 	 */
 	public void runMoodleConn()
 	{
-//		ConnectorMoodle cm = new ConnectorMoodle();
-//		cm.setSourceDBConfig(ServerConfiguration.getInstance().getSourceDBConfig());
-//		cm.getData("Moodle(Beuth)");
-		//cm.updateData("Moodle(Beuth)", 1338000000);
+		//ServerConfiguration.getInstance().loadConfig("/lemo");
+		IConnector connector = ConnectorManager.getInstance().getConnectorById(ID_MOODLE19);
+		connector.updateData(1338000000L);
 	}
 	
 	/**
@@ -72,10 +80,9 @@ public class Test {
 	 */
 	public void runMoodleNumericConn()
 	{
-//		de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle cm = new de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle();
-//		cm.setSourceDBConfig(ServerConfiguration.getInstance().getSourceDBConfig());
-//		cm.getData("Moodle(BBW)");
-//		//cm.updateData("Moodle(Beuth)", 1338000000);
+		IConnector connector = ConnectorManager.getInstance().getConnectorById(ID_MOODLE_NUMERIC);
+		connector.getData();
+				//connector.updateData(1338000000);
 	}
 	
 	/**
@@ -84,10 +91,9 @@ public class Test {
 	 */
 	public void runMoodle23Conn()
 	{
-//		de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle cm = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle();
-//		cm.setSourceDBConfig(ServerConfigurationHardCoded.getInstance().getSourceDBConfig());
-//		cm.getData("Moodle 2.3(Beuth)");
-		//cm.updateData("Moodle 2.3(Beuth)", 1338000000);
+		IConnector connector = ConnectorManager.getInstance().getConnectorById(ID_MOODLE23);
+		connector.getData();
+ 		// connector.updateData(1338000000);
 	}
 	
 	/**
@@ -96,8 +102,9 @@ public class Test {
 	 */
 	public void runClixConn()
 	{
-//		ConnectorClix cc = new ConnectorClix();
-//		cc.getData("Clix(HTW)");
+		IConnector connector = ConnectorManager.getInstance().getConnectorById(ID_CLIX);
+		connector.getData();
+ 		// connector.updateData(1338000000);
 	}
 	
 	public void test()
@@ -195,12 +202,14 @@ public class Test {
 	public void testHisto()
 	{
 		QPerformanceBoxPlot ph = new QPerformanceBoxPlot();
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(11476L);
 		ArrayList<Long> quizzes = new ArrayList<Long>();
 		quizzes.add(11114861L);
 		quizzes.add(11114282L);
 		quizzes.add(1411888L);
 		
-		ResultListBoxPlot res = ph.compute(new ArrayList<Long>(), new ArrayList<Long>(), quizzes, 0L, 1500000000L);
+		ResultListBoxPlot res = ph.compute(courses, new ArrayList<Long>(), new ArrayList<Long>(), 100, 0L, 1500000000L);
 		System.out.println(res.getElements().size());
 		
 	}
@@ -232,8 +241,9 @@ public class Test {
 	public void run()
 	{
 		System.out.println("Starting test");
-		runChemConn();
+		ServerConfiguration.getInstance().loadConfig("/lemo");
+		testHisto();
 		System.out.println("Test finished");
 	}
-	
+
 }

@@ -3,7 +3,6 @@ package de.lemo.dms.core;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-
 import de.lemo.dms.connectors.Test;
 
 /**
