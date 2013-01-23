@@ -87,7 +87,6 @@ public class LogReader {
 	/**
 	 * Database's largest timestamp used in ResourceLogMining
 	 */
-	private Long resLogTime;
 	private IConnector connector;
 	
 	/**
@@ -173,12 +172,6 @@ public class LogReader {
             	resLogId = ((ArrayList<Long>) logCount.list()).get(0);
             if(resLogId == null)
             	resLogId = 0L;
-            
-	    	Query logTime = session.createQuery("select max(log.timestamp) from ResourceLogMining log where log.platform="+ platformId +"");
-            if(logCount.list().size() > 0)
-            	resLogTime = ((ArrayList<Long>) logCount.list()).get(0);
-            if(resLogTime == null)
-            	resLogTime = 0L;
             
 		}catch(Exception e)
 		{

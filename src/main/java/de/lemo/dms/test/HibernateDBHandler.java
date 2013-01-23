@@ -14,7 +14,6 @@ import org.hibernate.Transaction;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.hibernate.MiningHibernateUtil;
-import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * Implementation of the IDBHandler interface for Hibernate.

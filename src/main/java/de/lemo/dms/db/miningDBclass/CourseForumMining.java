@@ -1,7 +1,5 @@
 package de.lemo.dms.db.miningDBclass;
 
-
-import java.util.HashMap;
 import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -23,32 +21,32 @@ public class CourseForumMining  implements IMappingClass{
 		return false;
 	}
 	
-	/** standard getter for the attribut id
-	 * @return the identifier for the assoziation between course and forum
+	/** standard getter for the attribute id
+	 * @return the identifier for the association between course and forum
 	 */	
 	public long getId() {
 		return id;
 	}
-	/** standard setter for the attribut id
-	 * @param id the identifier for the assoziation between course and forum
+	/** standard setter for the attribute id
+	 * @param id the identifier for the association between course and forum
 	 */	
 	public void setId(long id) {
 		this.id = id;
 	}
 	
-	/** standard getter for the attribut course
+	/** standard getter for the attribute course
 	 * @return a course in which the forum is used
 	 */	
 	public CourseMining getCourse() {
 		return course;
 	}
-	/** standard setter for the attribut course
+	/** standard setter for the attribute course
 	 * @param course a course in which the forum is used
 	 */		
 	public void setCourse(CourseMining course) {
 		this.course = course;
 	}	
-	/** parameterized setter for the attribut course
+	/** parameterized setter for the attribute course
 	 * @param course the id of a course in which the forum is used
 	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
 	 * @param oldCourseMining a list of course in the miningdatabase, which is searched for the course with the id submitted in the course parameter	 
@@ -66,19 +64,19 @@ public class CourseForumMining  implements IMappingClass{
 		}
 	}	
 	
-	/** standard getter for the attribut forum
+	/** standard getter for the attribute forum
 	 * @return the forum which is used in the course
 	 */		
 	public ForumMining getForum() {
 		return forum;
 	}
-	/** standard setter for the attribut forum
+	/** standard setter for the attribute  forum
 	 * @param forum the forum which is used in the course
 	 */		
 	public void setForum(ForumMining forum) {
 		this.forum = forum;
 	}	
-	/** parameterized setter for the attribut forum
+	/** parameterized setter for the attribute forum
 	 * @param forum the id of the forum which is used in the course
 	 * @param forumMining a list of new added forums, which is searched for the forum with the id submitted in the forum parameter
 	 * @param oldForumMining a list of forums in the miningdatabase, which is searched for the forum with the id submitted in the forum parameter	 
