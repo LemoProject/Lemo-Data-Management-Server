@@ -11,9 +11,9 @@
   <dms name="Lemo DMS">
     <database>
       <!-- Maven replacement variables-->
-    <property name="hibernate.connection.url">jdbc:mysql://localhost/mining_beuth_19?rewriteBatchedStatements=true</property>
-    <property name="hibernate.connection.username">datamining</property>
-    <property name="hibernate.connection.password">LabDat1#</property>
+    <property name="hibernate.connection.url">${mining-hibernate-url}</property>
+    <property name="hibernate.connection.username">${mining-hibernate-username}</property>
+    <property name="hibernate.connection.password">${mining-hibernate-password}</property>
       <!-- main config-->
       <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>

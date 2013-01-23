@@ -3,7 +3,6 @@ package de.lemo.dms.core;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import de.lemo.dms.connectors.Test;
 
 /**
  * Main entry point for running the server as Java application, i.e. not in a servlet container
@@ -18,8 +17,6 @@ public class DMSMain {
 
         try {
             DMSRemoteServer.INSTANCE.start();
-            //Test t = new Test();
-            //t.run();
             System.in.read(); // TODO every example uses this to keep the server running but there may be a better way
             
         } catch (IOException e) {

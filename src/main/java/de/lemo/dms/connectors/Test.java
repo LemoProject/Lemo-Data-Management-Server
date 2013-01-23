@@ -208,8 +208,9 @@ public class Test {
 		quizzes.add(11114861L);
 		quizzes.add(11114282L);
 		quizzes.add(1411888L);
+		quizzes.add(1411939L);
 		
-		ResultListBoxPlot res = ph.compute(courses, new ArrayList<Long>(), new ArrayList<Long>(), 100, 0L, 1500000000L);
+		ResultListBoxPlot res = ph.compute(courses, new ArrayList<Long>(), quizzes, 100, 0L, 1500000000L);
 		System.out.println(res.getElements().size());
 		
 	}
@@ -244,6 +245,12 @@ public class Test {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		testHisto();
 		System.out.println("Test finished");
+	}
+	
+	public static void main(String[] args)
+	{
+		Test t = new Test();
+		t.run();
 	}
 
 }
