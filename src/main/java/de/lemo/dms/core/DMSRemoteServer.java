@@ -1,16 +1,12 @@
 package de.lemo.dms.core;
 
 import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
-
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 
-import de.lemo.dms.core.config.ServerConfiguration;
-
 /**
- * Server instance which can be run as a java application.
+ * Server instance which can be run as a Java application.
  * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe

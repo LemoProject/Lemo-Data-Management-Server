@@ -4,13 +4,25 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
+/**
+ * Property as key/value pair. Style conforms to properties as found in
+ * hibernate.cfg.xml files.
+ * 
+ * @author Leonard Kappe
+ */
 @XmlType
 class PropertyConfig {
 
-    @XmlAttribute(name = "name", required = true)
-    public String key;
+	/**
+	 * Property name
+	 */
+	@XmlAttribute(name = "name", required = true)
+	public String key;
 
-    @XmlValue
-    public String value;
+	/**
+	 * Property value
+	 */
+	@XmlValue
+	public String value;
 
 }

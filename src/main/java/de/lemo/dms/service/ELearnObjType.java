@@ -43,7 +43,7 @@ public enum ELearnObjType {
 	}
 
 	/**
-	 * Gets the type that is used to store the Learning Object's log entries.
+	 * Gets the type that is used to store this Learning Object's log entries.
 	 * 
 	 * @return the type of the corresponding {@link ILogMining} implementation
 	 */
