@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/core/config/ServerConfiguration.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.core.config;
 
 import java.io.IOException;
@@ -40,10 +47,10 @@ public enum ServerConfiguration {
 		// the very first place where we can initialize the logger
 		Logger.getRootLogger().setLevel(Level.INFO);
 		Logger.getRootLogger().addAppender(
-				new ConsoleAppender(new PatternLayout(DEFAULT_PATTERN)));
+				new ConsoleAppender(new PatternLayout(ServerConfiguration.DEFAULT_PATTERN)));
 	}
 
-	private Logger logger = Logger.getLogger(getClass());
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private IDBHandler miningDbHandler;
 	private long startTime;
 	private String serverName;
@@ -76,20 +83,20 @@ public enum ServerConfiguration {
 	 * @param contextPath
 	 *            the application's context path (URL relative to context root)
 	 */
-	public void loadConfig(String contextPath) {
-		LemoConfig lemoConfig = readConfigFiles(contextPath);
+	public void loadConfig(final String contextPath) {
+		final LemoConfig lemoConfig = this.readConfigFiles(contextPath);
 		// TODO set log level from config
 
-		serverName = lemoConfig.dataManagementServer.name;
+		this.serverName = lemoConfig.dataManagementServer.name;
 
-		logger.info("Inititalizing mining database");
-		DBConfigObject miningDBConfig = createDBConfig(lemoConfig.dataManagementServer.databaseProperties);
+		this.logger.info("Inititalizing mining database");
+		final DBConfigObject miningDBConfig = this.createDBConfig(lemoConfig.dataManagementServer.databaseProperties);
 		MiningHibernateUtil.initSessionFactory(miningDBConfig);
-		miningDbHandler = new HibernateDBHandler();
+		this.miningDbHandler = new HibernateDBHandler();
 
-		List<IConnector> connectors = createConnectors(lemoConfig.dataManagementServer.connectors);
-		ConnectorManager connectorManager = ConnectorManager.getInstance();
-		for (IConnector connector : connectors) {
+		final List<IConnector> connectors = this.createConnectors(lemoConfig.dataManagementServer.connectors);
+		final ConnectorManager connectorManager = ConnectorManager.getInstance();
+		for (final IConnector connector : connectors) {
 			connectorManager.addConnector(connector);
 		}
 	}
@@ -103,9 +110,9 @@ public enum ServerConfiguration {
 
 		// remove leading slash, replace any slashes with hashes like Tomcat
 		// does with the war files
-		String warName = contextPath.substring(1).replace('/', '#');
+		final String warName = contextPath.substring(1).replace('/', '#');
 
-		Set<String> fileNames = new LinkedHashSet<String>();
+		final Set<String> fileNames = new LinkedHashSet<String>();
 		fileNames.add(warName + ".xml"); // default, based on war name
 
 		int lastHash;
@@ -123,24 +130,24 @@ public enum ServerConfiguration {
 
 		LemoConfig lemoConfig = null;
 		try {
-			Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(
+			final Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(
 					LemoConfig.class).createUnmarshaller();
-			for (String fileName : fileNames) {
-				URL resource = getClass().getResource("/" + fileName);
-				InputStream in = resource.openStream();
+			for (final String fileName : fileNames) {
+				final URL resource = this.getClass().getResource("/" + fileName);
+				final InputStream in = resource.openStream();
 				if (in != null) {
-					logger.info("Using config file: " + fileName);
+					this.logger.info("Using config file: " + fileName);
 					lemoConfig = (LemoConfig) jaxbUnmarshaller.unmarshal(in);
 				}
 			}
-		} catch (JAXBException e) {
+		} catch (final JAXBException e) {
 			// no way to recover, re-throw at runtime
 			throw new RuntimeException(e);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 		if (lemoConfig == null) {
-			String files = fileNames.toString();
+			final String files = fileNames.toString();
 			throw new RuntimeException(
 					"No config file found in the classpath."
 							+ " Config file names are based on the context url"
@@ -149,31 +156,31 @@ public enum ServerConfiguration {
 							+ files.substring(1, files.length() - 1));
 		}
 
-		logger.info("Config loaded for '"
+		this.logger.info("Config loaded for '"
 				+ lemoConfig.dataManagementServer.name + "'");
 		return lemoConfig;
 	}
 
 	private List<IConnector> createConnectors(
-			List<Connector> connectorConfigurations) {
-		List<IConnector> result = Lists.newArrayList();
-		for (Connector connectorConfig : connectorConfigurations) {
-			logger.info("Inititalizing connector: " + connectorConfig);
+			final List<Connector> connectorConfigurations) {
+		final List<IConnector> result = Lists.newArrayList();
+		for (final Connector connectorConfig : connectorConfigurations) {
+			this.logger.info("Inititalizing connector: " + connectorConfig);
 
-			ESourcePlatform platform = ESourcePlatform
+			final ESourcePlatform platform = ESourcePlatform
 					.valueOf(connectorConfig.platformType);
-			DBConfigObject config = createDBConfig(connectorConfig.properties);
+			final DBConfigObject config = this.createDBConfig(connectorConfig.properties);
 			result.add(platform.newConnector(connectorConfig.platformId,
 					connectorConfig.name, config));
 		}
 		return result;
 	}
 
-	private DBConfigObject createDBConfig(List<PropertyConfig> properties) {
-		HashMap<String, String> propertyMap = Maps.newHashMap();
-		logger.debug("Properties: " + propertyMap.size());
-		for (PropertyConfig property : properties) {
-			logger.debug(" " + property.key + ":\t" + property.value);
+	private DBConfigObject createDBConfig(final List<PropertyConfig> properties) {
+		final HashMap<String, String> propertyMap = Maps.newHashMap();
+		this.logger.debug("Properties: " + propertyMap.size());
+		for (final PropertyConfig property : properties) {
+			this.logger.debug(" " + property.key + ":\t" + property.value);
 			propertyMap.put(property.key, property.value);
 		}
 		return new DBConfigObject(propertyMap);
@@ -185,7 +192,7 @@ public enum ServerConfiguration {
 	 * @return timestamp of server start
 	 */
 	public long getStartTime() {
-		return startTime;
+		return this.startTime;
 	}
 
 	/**
@@ -194,7 +201,7 @@ public enum ServerConfiguration {
 	 * @param startTime
 	 *            timestamp of server start
 	 */
-	public void setStartTime(long startTime) {
+	public void setStartTime(final long startTime) {
 		this.startTime = startTime;
 	}
 
@@ -204,7 +211,7 @@ public enum ServerConfiguration {
 	 * @return a mining database handler
 	 */
 	public IDBHandler getMiningDbHandler() {
-		return miningDbHandler;
+		return this.miningDbHandler;
 	}
 
 	/**
@@ -213,7 +220,7 @@ public enum ServerConfiguration {
 	 * @return the servers/applications name
 	 */
 	public String getName() {
-		return serverName;
+		return this.serverName;
 	}
 
 }

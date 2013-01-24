@@ -5,45 +5,24 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Grade_grades_LMS"
-        table="mdl_grade_grades">
+	<class
+		name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Grade_grades_LMS"
+		table="mdl_grade_grades">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
-            
-        <property
-            name="userid"
-            column="userid"
-            type="string"/>
-            
-        <property
-            name="itemid"
-            column="itemid"
-            type="long"/>
-  
-        <property
-            name="rawgrade"
-            column="rawgrade"
-            type="java.lang.Double"/>
-             
-        <property
-            name="finalgrade"
-            column="finalgrade"
-            type="java.lang.Double"/>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="timecreated"
-            column="timecreated"
-            type="java.lang.Long"/>    
-            
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="java.lang.Long"/>   
-    </class>
+		<property name="userid" column="userid" type="string" />
+
+		<property name="itemid" column="itemid" type="long" />
+
+		<property name="rawgrade" column="rawgrade" type="java.lang.Double" />
+
+		<property name="finalgrade" column="finalgrade" type="java.lang.Double" />
+
+		<property name="timecreated" column="timecreated" type="java.lang.Long" />
+
+		<property name="timemodified" column="timemodified" type="java.lang.Long" />
+	</class>
 
 </hibernate-mapping>

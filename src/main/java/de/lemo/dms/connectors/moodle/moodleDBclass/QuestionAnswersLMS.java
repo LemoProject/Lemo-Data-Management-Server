@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle/moodleDBclass/QuestionAnswersLMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
 public class QuestionAnswersLMS {
@@ -5,23 +12,28 @@ public class QuestionAnswersLMS {
 	private long id;
 	private long question;
 	private String answer;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getQuestion() {
-		return question;
+		return this.question;
 	}
-	public void setQuestion(long question) {
+
+	public void setQuestion(final long question) {
 		this.question = question;
 	}
+
 	public String getAnswer() {
-		return answer;
+		return this.answer;
 	}
-	public void setAnswer(String answer) {
+
+	public void setAnswer(final String answer) {
 		this.answer = answer;
 	}
 }

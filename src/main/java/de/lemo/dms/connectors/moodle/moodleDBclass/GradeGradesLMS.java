@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle/moodleDBclass/GradeGradesLMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
 public class GradeGradesLMS {
@@ -9,47 +16,60 @@ public class GradeGradesLMS {
 	private Double finalgrade;
 	private Long timecreated;
 	private Long timemodified;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public String getUserid() {
-		return userid;
+		return this.userid;
 	}
-	public void setUserid(String userid) {
+
+	public void setUserid(final String userid) {
 		this.userid = userid;
 	}
+
 	public long getItemid() {
-		return itemid;
+		return this.itemid;
 	}
-	public void setItemid(long itemid) {
+
+	public void setItemid(final long itemid) {
 		this.itemid = itemid;
 	}
+
 	public Double getRawgrade() {
-		return rawgrade;
+		return this.rawgrade;
 	}
-	public void setRawgrade(Double rawgrade) {
+
+	public void setRawgrade(final Double rawgrade) {
 		this.rawgrade = rawgrade;
 	}
+
 	public Double getFinalgrade() {
-		return finalgrade;
+		return this.finalgrade;
 	}
-	public void setFinalgrade(Double finalgrade) {
+
+	public void setFinalgrade(final Double finalgrade) {
 		this.finalgrade = finalgrade;
 	}
+
 	public Long getTimecreated() {
-		return timecreated;
+		return this.timecreated;
 	}
-	public void setTimecreated(Long timecreated) {
+
+	public void setTimecreated(final Long timecreated) {
 		this.timecreated = timecreated;
 	}
+
 	public Long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(Long timemodified) {
+
+	public void setTimemodified(final Long timemodified) {
 		this.timemodified = timemodified;
 	}
 }

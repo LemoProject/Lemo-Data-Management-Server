@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle/moodleDBclass/AssignmentSubmissionsLMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
 public class AssignmentSubmissionsLMS {
@@ -10,53 +17,68 @@ public class AssignmentSubmissionsLMS {
 	private long timemodified;
 	private long teacher;
 	private long timemarked;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getAssignment() {
-		return assignment;
+		return this.assignment;
 	}
-	public void setAssignment(long assignment) {
+
+	public void setAssignment(final long assignment) {
 		this.assignment = assignment;
 	}
+
 	public String getUserid() {
-		return userid;
+		return this.userid;
 	}
-	public void setUserid(String userid) {
+
+	public void setUserid(final String userid) {
 		this.userid = userid;
 	}
+
 	public long getTimecreated() {
-		return timecreated;
+		return this.timecreated;
 	}
-	public void setTimecreated(long timecreated) {
+
+	public void setTimecreated(final long timecreated) {
 		this.timecreated = timecreated;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
+
 	public long getTeacher() {
-		return teacher;
+		return this.teacher;
 	}
-	public void setTeacher(long teacher) {
+
+	public void setTeacher(final long teacher) {
 		this.teacher = teacher;
 	}
+
 	public long getTimemarked() {
-		return timemarked;
+		return this.timemarked;
 	}
-	public void setTimemarked(long timemarked) {
+
+	public void setTimemarked(final long timemarked) {
 		this.timemarked = timemarked;
 	}
-	public void setGrade(long grade) {
+
+	public void setGrade(final long grade) {
 		this.grade = grade;
 	}
+
 	public long getGrade() {
-		return grade;
+		return this.grade;
 	}
 }

@@ -5,27 +5,19 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseGroupMember"
-        table="TEAM_EXERCISE_GROUP_MEMBER">
+	<class
+		name="de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseGroupMember"
+		table="TEAM_EXERCISE_GROUP_MEMBER">
 
-        <id
-            name="id"
-            column="EXERCISE_GROUP_MEMBER_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="EXERCISE_GROUP_MEMBER_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="portfolio"
-            column="PORTFOLIO_ID"
-            type="long"/>
+		<property name="portfolio" column="PORTFOLIO_ID" type="long" />
 
-        <property
-            name="exerciseGroup"
-            column="EXERCISE_GROUP_ID"
-            type="long"/>
-            
-    </class>
+		<property name="exerciseGroup" column="EXERCISE_GROUP_ID"
+			type="long" />
+
+	</class>
 
 </hibernate-mapping>

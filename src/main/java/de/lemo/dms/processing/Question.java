@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/Question.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing;
 
 import javax.ws.rs.Produces;

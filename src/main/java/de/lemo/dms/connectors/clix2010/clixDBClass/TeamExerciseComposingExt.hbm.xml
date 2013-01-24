@@ -5,27 +5,19 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseComposingExt"
-        table="TEAM_EXERCISE_COMPOSING_EXT">
+	<class
+		name="de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseComposingExt"
+		table="TEAM_EXERCISE_COMPOSING_EXT">
 
-        <id
-            name="id"
-            column="TEAM_EXERCISE_COMPOSING_EXT_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="TEAM_EXERCISE_COMPOSING_EXT_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="eComposingId"
-            column="E_COMPOSING_ID"
-            type="long"/>
-            
-        <property
-            name="submissionDeadline"
-            column="SUBMISSION_DEADLINE"
-            type="string"/>            
-            
-    </class>
+		<property name="eComposingId" column="E_COMPOSING_ID" type="long" />
+
+		<property name="submissionDeadline" column="SUBMISSION_DEADLINE"
+			type="string" />
+
+	</class>
 
 </hibernate-mapping>

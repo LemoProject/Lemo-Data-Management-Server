@@ -1,29 +1,35 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/resulttype/ResultListLongObject.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.resulttype;
 
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class ResultListLongObject {
 
-    private List<Long> elements;
+	private List<Long> elements;
 
-    public ResultListLongObject()
-    {
+	public ResultListLongObject()
+	{
 
-    }
+	}
 
-    public ResultListLongObject(List<Long> elements)
-    {
-        this.elements = elements;
-    }
+	public ResultListLongObject(final List<Long> elements)
+	{
+		this.elements = elements;
+	}
 
-    @XmlElement
-    public List<Long> getElements()
-    {
-        return this.elements;
-    }
+	@XmlElement
+	public List<Long> getElements()
+	{
+		return this.elements;
+	}
 
 }

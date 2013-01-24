@@ -4,32 +4,18 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.PlatformMining"
-        table="platform">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
-        
-       <property
-            name="name"
-            column="name"
-            type="string"/>
-            
-        <property
-            name="prefix"
-            column="prefix"
-            type="long"/>
-        
-        <property
-            name="type"
-            column="type"
-            type="string"/>
- 
-    </class>
+	<class name="de.lemo.dms.db.miningDBclass.PlatformMining" table="platform">
+
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="name" column="name" type="string" />
+
+		<property name="prefix" column="prefix" type="long" />
+
+		<property name="type" column="type" type="string" />
+
+	</class>
 
 </hibernate-mapping>

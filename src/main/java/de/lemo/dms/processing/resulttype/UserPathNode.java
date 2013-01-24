@@ -1,112 +1,122 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/resulttype/UserPathNode.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.resulttype;
 
 public class UserPathNode {
 
-    private String name;
-    private String title;
-    private Long value;
-    private Long group;
-    private Long pathId;
-    private String type;
-    private Long totalRequests;
-    private Long totalUsers;
+	private String name;
+	private String title;
+	private Long value;
+	private Long group;
+	private Long pathId;
+	private String type;
+	private Long totalRequests;
+	private Long totalUsers;
 
-    public Long getTotalRequests() {
-		return totalRequests;
+	public Long getTotalRequests() {
+		return this.totalRequests;
 	}
 
-	public void setTotalRequests(Long totalRequests) {
+	public void setTotalRequests(final Long totalRequests) {
 		this.totalRequests = totalRequests;
 	}
 
 	public Long getTotalUsers() {
-		return totalUsers;
+		return this.totalUsers;
 	}
 
-	public void setTotalUsers(Long totalUsers) {
+	public void setTotalUsers(final Long totalUsers) {
 		this.totalUsers = totalUsers;
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
-	public void setType(String type) {
+	public void setType(final String type) {
 		this.type = type;
 	}
 
 	public Long getPathId() {
-		return pathId;
+		return this.pathId;
 	}
 
-	public void setPathId(Long pathId) {
+	public void setPathId(final Long pathId) {
 		this.pathId = pathId;
 	}
 
 	public UserPathNode() {
-    }
+	}
 
-    public UserPathNode(UserPathObject path) {
-        this.name = path.getTitle();
-        if(name == null || name.isEmpty())
-            name = "?";
-        this.value = path.getWeight();
-        this.group = path.getGroup();
-        this.pathId = path.getPathId();
-        this.type = path.getType();
-        this.totalRequests = path.getTotalRequests();
-        this.totalUsers = path.getTotalUsers();
-    }
-    
-    public UserPathNode(UserPathObject path, Boolean directedGraph) {
-        this.name = path.getId();
-        this.title = path.getTitle();
-        if(name == null || name.isEmpty())
-            name = "?";
-        this.value = path.getWeight();
-        this.group = path.getGroup();
-        this.pathId = path.getPathId();
-        this.type = path.getType();
-        this.totalRequests = path.getTotalRequests();
-        this.totalUsers = path.getTotalUsers();
-    }
+	public UserPathNode(final UserPathObject path) {
+		this.name = path.getTitle();
+		if ((this.name == null) || this.name.isEmpty()) {
+			this.name = "?";
+		}
+		this.value = path.getWeight();
+		this.group = path.getGroup();
+		this.pathId = path.getPathId();
+		this.type = path.getType();
+		this.totalRequests = path.getTotalRequests();
+		this.totalUsers = path.getTotalUsers();
+	}
 
-    public String getName() {
-        return name;
-    }
+	public UserPathNode(final UserPathObject path, final Boolean directedGraph) {
+		this.name = path.getId();
+		this.title = path.getTitle();
+		if ((this.name == null) || this.name.isEmpty()) {
+			this.name = "?";
+		}
+		this.value = path.getWeight();
+		this.group = path.getGroup();
+		this.pathId = path.getPathId();
+		this.type = path.getType();
+		this.totalRequests = path.getTotalRequests();
+		this.totalUsers = path.getTotalUsers();
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    /**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	/**
-	 * @param title the title to set
+	 * @return the title
 	 */
-	public void setTitle(String title) {
+	public String getTitle() {
+		return this.title;
+	}
+
+	/**
+	 * @param title
+	 *            the title to set
+	 */
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
 	public Long getValue() {
-        return value;
-    }
+		return this.value;
+	}
 
-    public void setValue(Long value) {
-        this.value = value;
-    }
+	public void setValue(final Long value) {
+		this.value = value;
+	}
 
-    public Long getGroup() {
-        return group;
-    }
+	public Long getGroup() {
+		return this.group;
+	}
 
-    public void setGroup(Long group) {
-        this.group = group;
-    }
+	public void setGroup(final Long group) {
+		this.group = group;
+	}
 
 }

@@ -5,22 +5,16 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.TGroupFullSpecification"
-        table="T_GROUPFULLSPECIFICATION">
+	<class
+		name="de.lemo.dms.connectors.clix2010.clixDBClass.TGroupFullSpecification"
+		table="T_GROUPFULLSPECIFICATION">
 
-        <id
-            name="group"
-            column="GROUP_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="group" column="GROUP_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="person"
-            column="PERSON_ID"
-            type="long"/>
-            
-    </class>
+		<property name="person" column="PERSON_ID" type="long" />
+
+	</class>
 
 </hibernate-mapping>

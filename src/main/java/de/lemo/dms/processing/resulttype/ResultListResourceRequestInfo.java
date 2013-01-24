@@ -1,41 +1,46 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/resulttype/ResultListResourceRequestInfo.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.resulttype;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class ResultListResourceRequestInfo {
 
-	
 	private List<ResourceRequestInfo> rri;
 
 	public ResultListResourceRequestInfo() {
 		this.rri = new ArrayList<ResourceRequestInfo>();
 	}
-	
-	public ResultListResourceRequestInfo(List<ResourceRequestInfo> resourceRequestInfos) {
+
+	public ResultListResourceRequestInfo(final List<ResourceRequestInfo> resourceRequestInfos) {
 		this.rri = resourceRequestInfos;
-	}
-	
-	@XmlElement
-	public List<ResourceRequestInfo> getResourceRequestInfos() {
-		return rri;
 	}
 
-	public void setRoles(List<ResourceRequestInfo> resourceRequestInfos) {
+	@XmlElement
+	public List<ResourceRequestInfo> getResourceRequestInfos() {
+		return this.rri;
+	}
+
+	public void setRoles(final List<ResourceRequestInfo> resourceRequestInfos) {
 		this.rri = resourceRequestInfos;
 	}
-	
-	public void add(ResourceRequestInfo rri)
+
+	public void add(final ResourceRequestInfo rri)
 	{
 		this.rri.add(rri);
 	}
-	
-	public void addAll(Collection<ResourceRequestInfo> rri)
+
+	public void addAll(final Collection<ResourceRequestInfo> rri)
 	{
 		this.rri.addAll(rri);
 	}

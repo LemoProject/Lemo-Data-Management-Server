@@ -5,32 +5,19 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContent"
-        table="T_QTI_CONTENT">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContent"
+		table="T_QTI_CONTENT">
 
-        <id
-            name="id"
-            column="CONTENT_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="CONTENT_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="created"
-            column="CREATED"
-            type="string"/>
+		<property name="created" column="CREATED" type="string" />
 
-        <property
-            name="lastUpdated"
-            column="LASTUPDATED"
-            type="string"/>
-            
-        <property
-            name="name"
-            column="CONTENT_NAME"
-            type="string"/>
-            
-    </class>
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
+
+		<property name="name" column="CONTENT_NAME" type="string" />
+
+	</class>
 
 </hibernate-mapping>

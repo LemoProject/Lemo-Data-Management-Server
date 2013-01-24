@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/chemgapedia/ConnectorChemgapedia.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.chemgapedia;
 
 import java.io.File;
@@ -16,138 +23,141 @@ import de.lemo.dms.db.miningDBclass.ConfigMining;
  * Connector implementation for the platform Chemgapedia
  * 
  * @author s.schwarzrock
- *
  */
 public class ConnectorChemgapedia extends AbstractConnector {
 
-    private static final String PATH_LOG_FILE = "lemo.log_file_path";
-    private static final String PATH_RESOURCE_METADATA = "lemo.resource_metadata_path";
-    private static final String PROCESS_LOG_FILE = "lemo.process_log_file";
-    private static final String PROCESS_METADATA = "lemo.process_metadata";
-    private static final String FILTER_LOG_FILE = "lemo.filter_log_file";
+	private static final String PATH_LOG_FILE = "lemo.log_file_path";
+	private static final String PATH_RESOURCE_METADATA = "lemo.resource_metadata_path";
+	private static final String PROCESS_LOG_FILE = "lemo.process_log_file";
+	private static final String PROCESS_METADATA = "lemo.process_metadata";
+	private static final String FILTER_LOG_FILE = "lemo.filter_log_file";
 
-    private boolean filter;
-    private boolean processVSC;
-    private boolean processLog;
-    private String logPath;
-    private String vscPath;
-    private Logger logger = Logger.getLogger(getClass());
+	private final boolean filter;
+	private final boolean processVSC;
+	private final boolean processLog;
+	private final String logPath;
+	private final String vscPath;
+	private final Logger logger = Logger.getLogger(this.getClass());
 
-    public ConnectorChemgapedia(DBConfigObject config) {
-        HashMap<String, String> props = config.getProperties();
+	public ConnectorChemgapedia(final DBConfigObject config) {
+		final HashMap<String, String> props = config.getProperties();
 
-        // required
-        logPath = props.get(PATH_LOG_FILE);
-        if(props.get(PATH_LOG_FILE) == null)
-            logger.error("Connector Chemgapedia : No path for log file defined");
+		// required
+		this.logPath = props.get(ConnectorChemgapedia.PATH_LOG_FILE);
+		if (props.get(ConnectorChemgapedia.PATH_LOG_FILE) == null) {
+			this.logger.error("Connector Chemgapedia : No path for log file defined");
+		}
 
-        // optional
-        filter = props.containsKey(FILTER_LOG_FILE) && props.get(FILTER_LOG_FILE).toLowerCase().equals("true");
-        processVSC = props.containsKey(PROCESS_METADATA) && props.get(PROCESS_METADATA).toLowerCase().equals("true");
-        processLog = props.containsKey(PROCESS_LOG_FILE) && props.get(PROCESS_LOG_FILE).toLowerCase().equals("true");
+		// optional
+		this.filter = props.containsKey(ConnectorChemgapedia.FILTER_LOG_FILE)
+				&& props.get(ConnectorChemgapedia.FILTER_LOG_FILE).toLowerCase().equals("true");
+		this.processVSC = props.containsKey(ConnectorChemgapedia.PROCESS_METADATA)
+				&& props.get(ConnectorChemgapedia.PROCESS_METADATA).toLowerCase().equals("true");
+		this.processLog = props.containsKey(ConnectorChemgapedia.PROCESS_LOG_FILE)
+				&& props.get(ConnectorChemgapedia.PROCESS_LOG_FILE).toLowerCase().equals("true");
 
-        // conditionally required
-        vscPath = props.get(PATH_RESOURCE_METADATA);
-        if(vscPath == null && processVSC)
-            logger.error("Connector Chemgapedia : No path for resource metadata defined");
+		// conditionally required
+		this.vscPath = props.get(ConnectorChemgapedia.PATH_RESOURCE_METADATA);
+		if ((this.vscPath == null) && this.processVSC) {
+			this.logger.error("Connector Chemgapedia : No path for resource metadata defined");
+		}
 
-    }
+	}
 
-    @Override
-    public boolean testConnections() {
+	@Override
+	public boolean testConnections() {
 
-        if(logPath == null)
-        {
-            logger.error("Connector Chemgapedia : No path for log file defined");
-            return false;
-        }
-        if(vscPath == null)
-        {
-            logger.error("Connector Chemgapedia : No path for resource metadata defined");
-            return false;
-        }
-        File f = new File(logPath);
-        if(!f.exists())
-        {
-            logger.error("Connector Chemgapedia : Defined Log file doesn't exist.");
-            return false;
-        }
+		if (this.logPath == null)
+		{
+			this.logger.error("Connector Chemgapedia : No path for log file defined");
+			return false;
+		}
+		if (this.vscPath == null)
+		{
+			this.logger.error("Connector Chemgapedia : No path for resource metadata defined");
+			return false;
+		}
+		final File f = new File(this.logPath);
+		if (!f.exists())
+		{
+			this.logger.error("Connector Chemgapedia : Defined Log file doesn't exist.");
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public void getData() {
-        Long starttime = System.currentTimeMillis() / 1000;
+	@Override
+	public void getData() {
+		final Long starttime = System.currentTimeMillis() / 1000;
 
-        if(processVSC || processLog)
-        {
-            IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
-            Session session = dbHandler.getMiningSession();
-            
-            if(processVSC)
-            {
-                XMLPackageParser x = new XMLPackageParser(this);
-                x.readAllVlus(vscPath);
+		if (this.processVSC || this.processLog)
+		{
+			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+			Session session = dbHandler.getMiningSession();
+
+			if (this.processVSC)
+			{
+				final XMLPackageParser x = new XMLPackageParser(this);
+				x.readAllVlus(this.vscPath);
 				x.saveAllToDB();
 				x.clearMaps();
-            }
-            if(processLog)
-            {
-                LogReader logR = new LogReader(this, session);
-				logR.loadServerLogData(logPath, 0L, filter, session);
+			}
+			if (this.processLog)
+			{
+				final LogReader logR = new LogReader(this, session);
+				logR.loadServerLogData(this.logPath, 0L, this.filter, session);
 				logR.save(session);
 				logR.clearMaps();
-            }
+			}
 
-            Long endtime = System.currentTimeMillis() / 1000;
-            ConfigMining config = new ConfigMining();
-            config.setLastModifiedLong(System.currentTimeMillis());
-            config.setElapsedTime((endtime) - (starttime));
-		    config.setDatabaseModel("1.2");
-            config.setPlatform(getPlatformId());
-           
-            session = dbHandler.getMiningSession();
-            dbHandler.saveToDB(session, config);
-            dbHandler.closeSession(session);
-        }
-    }
+			final Long endtime = System.currentTimeMillis() / 1000;
+			final ConfigMining config = new ConfigMining();
+			config.setLastModifiedLong(System.currentTimeMillis());
+			config.setElapsedTime((endtime) - (starttime));
+			config.setDatabaseModel("1.2");
+			config.setPlatform(this.getPlatformId());
 
-    @Override
-    public void updateData(long fromTimestamp) {
-        Long starttime = System.currentTimeMillis() / 1000;
+			session = dbHandler.getMiningSession();
+			dbHandler.saveToDB(session, config);
+			dbHandler.closeSession(session);
+		}
+	}
 
-        if(processVSC || processLog)
-        {
-            IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
-            Session session = dbHandler.getMiningSession();
+	@Override
+	public void updateData(final long fromTimestamp) {
+		final Long starttime = System.currentTimeMillis() / 1000;
 
-            if(processVSC)
-            {
-                XMLPackageParser x = new XMLPackageParser(this);
-                x.readAllVlus(vscPath);
+		if (this.processVSC || this.processLog)
+		{
+			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+			final Session session = dbHandler.getMiningSession();
+
+			if (this.processVSC)
+			{
+				final XMLPackageParser x = new XMLPackageParser(this);
+				x.readAllVlus(this.vscPath);
 				x.saveAllToDB();
 				x.clearMaps();
-            }
-            if(processLog)
-            {
-                LogReader logR = new LogReader(this, session);
-				logR.loadServerLogData(logPath, 0L, filter, session);
-				logR.save(session);
-				logR.clearMaps();				
 			}
-			
-            Long endtime = System.currentTimeMillis() / 1000;
-            ConfigMining config = new ConfigMining();
-            config.setLastModifiedLong(System.currentTimeMillis());
-            config.setElapsedTime((endtime) - (starttime));
-		    config.setDatabaseModel("1.2");
-            config.setPlatform(getPlatformId());
+			if (this.processLog)
+			{
+				final LogReader logR = new LogReader(this, session);
+				logR.loadServerLogData(this.logPath, 0L, this.filter, session);
+				logR.save(session);
+				logR.clearMaps();
+			}
 
+			final Long endtime = System.currentTimeMillis() / 1000;
+			final ConfigMining config = new ConfigMining();
+			config.setLastModifiedLong(System.currentTimeMillis());
+			config.setElapsedTime((endtime) - (starttime));
+			config.setDatabaseModel("1.2");
+			config.setPlatform(this.getPlatformId());
 
-            dbHandler.saveToDB(session, config);
-            dbHandler.closeSession(session);
-        }
-    }
+			dbHandler.saveToDB(session, config);
+			dbHandler.closeSession(session);
+		}
+	}
 
 }

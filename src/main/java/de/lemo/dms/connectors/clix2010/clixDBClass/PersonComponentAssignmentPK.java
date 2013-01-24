@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/PersonComponentAssignmentPK.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
@@ -11,58 +18,62 @@ public class PersonComponentAssignmentPK implements Serializable {
 	private Long person;
 	private Long component;
 	private Long context;
-	
+
 	public Long getPerson() {
-		return person;
+		return this.person;
 	}
 
-	public void setPerson(Long person) {
+	public void setPerson(final Long person) {
 		this.person = person;
 	}
 
 	public Long getComponent() {
-		return component;
+		return this.component;
 	}
 
-	public void setComponent(Long component) {
+	public void setComponent(final Long component) {
 		this.component = component;
 	}
 
 	public Long getContext() {
-		return context;
+		return this.context;
 	}
 
-	public void setContext(Long context) {
+	public void setContext(final Long context) {
 		this.context = context;
 	}
 
 	public PersonComponentAssignmentPK()
 	{
-		
-		
+
 	}
 
-	public boolean equals(Object arg)
+	@Override
+	public boolean equals(final Object arg)
 	{
-		if(arg == null)
+		if (arg == null) {
 			return false;
-		if(!(arg instanceof PersonComponentAssignmentPK))
+		}
+		if (!(arg instanceof PersonComponentAssignmentPK)) {
 			return false;
-		PersonComponentAssignmentPK a = (PersonComponentAssignmentPK)arg;
-		if(a.getComponent() != this.component)
+		}
+		final PersonComponentAssignmentPK a = (PersonComponentAssignmentPK) arg;
+		if (a.getComponent() != this.component) {
 			return false;
-		if(a.getPerson() != this.person)
+		}
+		if (a.getPerson() != this.person) {
 			return false;
-		if(a.getContext() != this.context)
+		}
+		if (a.getContext() != this.context) {
 			return false;
+		}
 		return true;
 	}
-	
+
+	@Override
 	public int hashCode()
 	{
-		return person.hashCode() * 17 + component.hashCode() * 19 + context.hashCode() * 23;
+		return (this.person.hashCode() * 17) + (this.component.hashCode() * 19) + (this.context.hashCode() * 23);
 	}
-	
-	
-	
+
 }

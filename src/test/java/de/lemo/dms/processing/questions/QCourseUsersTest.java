@@ -1,3 +1,13 @@
+/**
+ * File ./test/java/de/lemo/dms/processing/questions/QCourseUsersTest.java
+ *
+ * Date 2013-01-24
+ *
+ * Project Lemo Learning Analytics
+ *
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.questions;
 
 import static org.junit.Assert.*;

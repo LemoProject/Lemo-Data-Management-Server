@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/ELearningObjectType.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing;
 
 import java.util.Collection;
@@ -15,8 +22,7 @@ import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 
 /**
- * <em>Learning Object</em> types with corresponding {@link ILogMining}
- * implementations.
+ * <em>Learning Object</em> types with corresponding {@link ILogMining} implementations.
  * 
  * @author Leonard Kappe
  */
@@ -36,7 +42,7 @@ public enum ELearningObjectType {
 
 	private Class<? extends ILogMining> type;
 
-	private ELearningObjectType(Class<? extends ILogMining> type) {
+	private ELearningObjectType(final Class<? extends ILogMining> type) {
 		this.type = type;
 	}
 
@@ -46,7 +52,7 @@ public enum ELearningObjectType {
 	 * @return the type of the corresponding {@link ILogMining} implementation
 	 */
 	public Class<? extends ILogMining> getLogMiningType() {
-		return type;
+		return this.type;
 	}
 
 	/**
@@ -56,8 +62,8 @@ public enum ELearningObjectType {
 	 *            an ILogMining implementation
 	 * @return the corresponding enum constant
 	 */
-	public static ELearningObjectType fromLogMiningType(ILogMining log) {
-		for (ELearningObjectType learnObjectType : ELearningObjectType.values()) {
+	public static ELearningObjectType fromLogMiningType(final ILogMining log) {
+		for (final ELearningObjectType learnObjectType : ELearningObjectType.values()) {
 			if (learnObjectType.getLogMiningType().equals(log)) {
 				return learnObjectType;
 			}
@@ -72,14 +78,14 @@ public enum ELearningObjectType {
 	 *            case-insensitive names of enum constants to get
 	 * @return the enum constants
 	 */
-	public static Set<ELearningObjectType> fromNames(Collection<String> names) {
-		EnumSet<ELearningObjectType> result =
+	public static Set<ELearningObjectType> fromNames(final Collection<String> names) {
+		final EnumSet<ELearningObjectType> result =
 				EnumSet.noneOf(ELearningObjectType.class);
-		for (String name : names) {
+		for (final String name : names) {
 			result.add(ELearningObjectType.valueOf(name.toUpperCase()));
 		}
 		if (result.remove(UNKNOWN)) {
-			logger.warn("Someone injected the string \"unknown\"!");
+			ELearningObjectType.logger.warn("Someone injected the string \"unknown\"!");
 		}
 		return result;
 	}

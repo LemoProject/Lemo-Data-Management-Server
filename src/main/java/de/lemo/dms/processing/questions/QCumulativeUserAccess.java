@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/questions/QCumulativeUserAccess.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.questions;
 
 import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
@@ -21,6 +28,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.hibernate.Session;
 import de.lemo.dms.processing.BoxPlotGeneratorForDates;
 import de.lemo.dms.processing.ELearningObjectType;
+import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.BoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
@@ -48,53 +56,54 @@ public class QCumulativeUserAccess extends Question {
 	@POST
 	// @Produces(MediaType.APPLICATION_JSON)
 	public ResultListBoxPlot compute(
-			@FormParam(COURSE_IDS) List<Long> course,
-			@FormParam(TYPES) List<String> types,
-			@FormParam(DEPARTMENT) List<Long> departments,
-			@FormParam(DEGREE) List<Long> degrees,
-			@FormParam(START_TIME) Long minTimestamp,
-			@FormParam(END_TIME) Long maxTimestamp) {
+			@FormParam(MetaParam.COURSE_IDS) final List<Long> course,
+			@FormParam(MetaParam.TYPES) final List<String> types,
+			@FormParam(MetaParam.DEPARTMENT) final List<Long> departments,
+			@FormParam(MetaParam.DEGREE) final List<Long> degrees,
+			@FormParam(MetaParam.START_TIME) final Long minTimestamp,
+			@FormParam(MetaParam.END_TIME) final Long maxTimestamp) {
 
 		super.logger.debug("call for question: cumulative user access");
 
 		super.logger.debug("Activity types: " + types);
-		Set<ELearningObjectType> learnObjectTypes =
+		final Set<ELearningObjectType> learnObjectTypes =
 				ELearningObjectType.fromNames(types);
 
 		// generiere querys
-		Map<ELearningObjectType, String> querys = generateQuerys(minTimestamp,
+		final Map<ELearningObjectType, String> querys = this.generateQuerys(minTimestamp,
 				maxTimestamp, learnObjectTypes, departments, degrees, course);
 
 		super.logger.debug("Query result: " + querys.toString());
 
-		Session session = super.dbHandler.getMiningSession();
+		final Session session = super.dbHandler.getMiningSession();
 
 		// SQL querys
 		super.logger.debug("Starting processing ....");
-		BoxPlotGeneratorForDates bpg = new BoxPlotGeneratorForDates();
+		final BoxPlotGeneratorForDates bpg = new BoxPlotGeneratorForDates();
 		try {
-			for (ELearningObjectType lo : querys.keySet()) {
+			for (final ELearningObjectType lo : querys.keySet()) {
 				super.logger.debug("Starting processing -- Entering try catch");
 				@SuppressWarnings("deprecation")
+				final
 				Statement statement = session.connection().createStatement();
-				ResultSet set = statement.executeQuery(querys.get(lo));
+				final ResultSet set = statement.executeQuery(querys.get(lo));
 
 				// durchlaufen des result sets
 				while (set.next()) {
 					bpg.addAccess(set.getLong("timestamp"));
 				}
 			}
-			BoxPlot[] bp = bpg.calculateResult();
-			List<BoxPlot> l = new ArrayList<BoxPlot>();
+			final BoxPlot[] bp = bpg.calculateResult();
+			final List<BoxPlot> l = new ArrayList<BoxPlot>();
 			for (int i = 0; i < bp.length; i++) {
 				l.add(bp[i]);
 			}
-			ResultListBoxPlot rlbp = new ResultListBoxPlot(l);
+			final ResultListBoxPlot rlbp = new ResultListBoxPlot(l);
 			super.logger.debug("Resultlist created ...." + rlbp.toString()
 					+ " Number of entries: " + rlbp.getElements().size());
 			return rlbp;
-		} catch (Exception e) {
-			logger.error(e);
+		} catch (final Exception e) {
+			this.logger.error(e);
 			return new ResultListBoxPlot();
 		}
 
@@ -113,24 +122,24 @@ public class QCumulativeUserAccess extends Question {
 	 * @return Liste mit Querys zu den LearningObjects
 	 */
 	private Map<ELearningObjectType, String> generateQuerys(
-			long timestamp_min, long timestamp_max,
-			Set<ELearningObjectType> types,
-			List<Long> departments,
-			List<Long> degrees,
-			List<Long> course) {
-		HashMap<ELearningObjectType, String> result = new HashMap<ELearningObjectType, String>();
+			final long timestamp_min, final long timestamp_max,
+			final Set<ELearningObjectType> types,
+			final List<Long> departments,
+			final List<Long> degrees,
+			final List<Long> course) {
+		final HashMap<ELearningObjectType, String> result = new HashMap<ELearningObjectType, String>();
 		boolean timeframe = false;
-		List<String> qa = new ArrayList<String>();
+		final List<String> qa = new ArrayList<String>();
 
 		// prüfen des zeitraums
-		if (timestamp_max != 0 && timestamp_min != 0
-				&& timestamp_max >= timestamp_min) {
+		if ((timestamp_max != 0) && (timestamp_min != 0)
+				&& (timestamp_max >= timestamp_min)) {
 			timeframe = true;
 		}
-		for (ELearningObjectType loType : types) {
-			String query = generateBaseQuery(loType.name().toLowerCase());
-			if (timeframe || course != null || departments != null
-					|| degrees != null) {
+		for (final ELearningObjectType loType : types) {
+			String query = this.generateBaseQuery(loType.name().toLowerCase());
+			if (timeframe || (course != null) || (departments != null)
+					|| (degrees != null)) {
 				query += " WHERE";
 			}
 			// zeitraum
@@ -139,13 +148,13 @@ public class QCumulativeUserAccess extends Question {
 						+ timestamp_max);
 			}
 			// filter departments
-			if (departments != null && !departments.isEmpty()) {
-				StringBuilder sb = new StringBuilder();
+			if ((departments != null) && !departments.isEmpty()) {
+				final StringBuilder sb = new StringBuilder();
 				sb.append(" (");
 				int i = 0;
-				for (Long dep : departments) {
+				for (final Long dep : departments) {
 					sb.append(" department.id = " + dep.toString());
-					if (i < departments.size() - 1) {
+					if (i < (departments.size() - 1)) {
 						sb.append(" OR");
 					}
 					i++;
@@ -154,13 +163,13 @@ public class QCumulativeUserAccess extends Question {
 				qa.add(sb.toString());
 			}
 			// filter degrees
-			if (degrees != null && !degrees.isEmpty()) {
-				StringBuilder sb = new StringBuilder();
+			if ((degrees != null) && !degrees.isEmpty()) {
+				final StringBuilder sb = new StringBuilder();
 				sb.append(" (");
 				int i = 0;
-				for (Long deg : degrees) {
+				for (final Long deg : degrees) {
 					sb.append(" degree.id = " + deg.toString());
-					if (i < degrees.size() - 1) {
+					if (i < (degrees.size() - 1)) {
 						sb.append(" OR");
 					}
 					i++;
@@ -169,13 +178,13 @@ public class QCumulativeUserAccess extends Question {
 				qa.add(sb.toString());
 			}
 			// filter course
-			if (course != null && !course.isEmpty()) {
-				StringBuilder sb = new StringBuilder();
+			if ((course != null) && !course.isEmpty()) {
+				final StringBuilder sb = new StringBuilder();
 				sb.append("(");
 				int i = 0;
-				for (Long co : course) {
+				for (final Long co : course) {
 					sb.append(" course.id = " + co.toString());
-					if (i < course.size() - 1) {
+					if (i < (course.size() - 1)) {
 						sb.append(" OR");
 					}
 					i++;
@@ -186,7 +195,7 @@ public class QCumulativeUserAccess extends Question {
 			// klauseln für filter hinzufügen
 			for (int i = 0; i < qa.size(); i++) {
 				query += qa.get(i);
-				if (i < qa.size() - 1) {
+				if (i < (qa.size() - 1)) {
 					query += " AND";
 				}
 			}
@@ -198,11 +207,11 @@ public class QCumulativeUserAccess extends Question {
 	}
 
 	// generiert ein einfaches query mit einem inner join für die abfrage
-	private String generateBaseQuery(String table) {
+	private String generateBaseQuery(final String table) {
 		// return "SELECT "+ table +"_log.timestamp, user_id FROM "+ table
 		// +" INNER JOIN "+ table +"_log ON " + table + ".id = " + table +
 		// "_log."+ table +"_id";
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		sb.append("SELECT timestamp, user_id, course.title as course, course.id as courseId, degree.title as degree, degree.id as degreeId, department.title AS department, department.id as departmentId");
 		sb.append(" FROM ((((" + table + "_log AS log");
 		sb.append(" LEFT JOIN course");

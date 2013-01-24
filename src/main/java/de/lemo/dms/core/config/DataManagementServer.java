@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/core/config/DataManagementServer.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.core.config;
 
 import java.util.List;
@@ -23,11 +30,10 @@ class DataManagementServer {
 	 * running multiple servers.
 	 */
 	@XmlAttribute
-	public String name = DEFAULT_NAME;
+	public String name = DataManagementServer.DEFAULT_NAME;
 
 	/**
-	 * Database settings, uses hibernate-style <code>&lt;property&gt;</code>
-	 * elements (key/value pairs).
+	 * Database settings, uses hibernate-style <code>&lt;property&gt;</code> elements (key/value pairs).
 	 */
 	@XmlElementWrapper(name = "database", required = true)
 	@XmlElement(name = "property")

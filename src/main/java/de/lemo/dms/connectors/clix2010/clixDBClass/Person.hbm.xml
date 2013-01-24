@@ -5,37 +5,21 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.Person"
-        table="PERSON">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.Person"
+		table="PERSON">
 
-        <id
-            name="id"
-            column="PERSON_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="PERSON_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="lastLoginTime"
-            column="LASTLOGINTIME"
-            type="string"/>
-            
-        <property
-            name="login"
-            column="LOGIN"
-            type="string"/>
-            
-       	<property
-            name="gender"
-            column="SALUTATION_ID"
-            type="long"/>
+		<property name="lastLoginTime" column="LASTLOGINTIME" type="string" />
 
-        <property
-            name="firstLoginTime"
-            column="FIRSTLOGINTIME"
-            type="string"/>
-            
-    </class>
+		<property name="login" column="LOGIN" type="string" />
+
+		<property name="gender" column="SALUTATION_ID" type="long" />
+
+		<property name="firstLoginTime" column="FIRSTLOGINTIME" type="string" />
+
+	</class>
 
 </hibernate-mapping>

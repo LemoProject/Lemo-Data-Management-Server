@@ -5,46 +5,31 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.PersonComponentAssignment"
-        table="PERSON_COMPONENT_ASSIGNMENT">
+	<class
+		name="de.lemo.dms.connectors.clix2010.clixDBClass.PersonComponentAssignment"
+		table="PERSON_COMPONENT_ASSIGNMENT">
 
 
-		<composite-id
-       	name="id"
-        class="de.lemo.dms.connectors.clix2010.clixDBClass.PersonComponentAssignmentPK" >
-       
-        <key-property name="component" column="COMPONENT_ID" type="long" />
-        <key-property name="context" column="CONTEXT" type="long"/>
-        <key-property name="person" column="PERSON_ID" type="long" />
-       </composite-id> 
-       
-        <property
-            name="component"
-            insert="false" 
-            update="false" 
-            column="COMPONENT_ID"
-            type="long"/>
-            
-       <property
-            name="firstEntered"
-            column="FIRST_ENTERED"
-            type="string"/>
+		<composite-id name="id"
+			class="de.lemo.dms.connectors.clix2010.clixDBClass.PersonComponentAssignmentPK">
 
-        <property
-            name="person"
-            insert="false" 
-            update="false" 
-            column="PERSON_ID"
-            type="long"/>
-            
-        <property
-            name="context"
-            insert="false" 
-            update="false" 
-            column="CONTEXT"
-            type="long"/>
-            
-    </class>
+			<key-property name="component" column="COMPONENT_ID"
+				type="long" />
+			<key-property name="context" column="CONTEXT" type="long" />
+			<key-property name="person" column="PERSON_ID" type="long" />
+		</composite-id>
+
+		<property name="component" insert="false" update="false"
+			column="COMPONENT_ID" type="long" />
+
+		<property name="firstEntered" column="FIRST_ENTERED" type="string" />
+
+		<property name="person" insert="false" update="false" column="PERSON_ID"
+			type="long" />
+
+		<property name="context" insert="false" update="false"
+			column="CONTEXT" type="long" />
+
+	</class>
 
 </hibernate-mapping>

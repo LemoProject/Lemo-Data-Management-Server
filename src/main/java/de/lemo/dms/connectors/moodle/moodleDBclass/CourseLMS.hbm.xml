@@ -5,61 +5,30 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle.moodleDBclass.CourseLMS"
-        table="course">
+	<class name="de.lemo.dms.connectors.moodle.moodleDBclass.CourseLMS"
+		table="course">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="fullname"
-            column="fullname"
-            type="string"/>  
+		<property name="fullname" column="fullname" type="string" />
 
-        <property
-            name="shortname"
-            column="shortname"
-            type="string"/> 
-            
-        <property
-            name="summary"
-            column="summary"
-            type="string"/>
-            
-      <property
-            name="startdate"
-            column="startdate"
-            type="long"/> 
-                       
-        <property
-            name="timecreated"
-            column="timecreated"
-            type="long"/>
-            
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>
-            
-        <property
-            name="enrolstartdate"
-            column="enrolstartdate"
-            type="long"/>
+		<property name="shortname" column="shortname" type="string" />
 
-        <property
-            name="enrolenddate"
-            column="enrolenddate"
-            type="long"/>
-            
-                    <property
-            name="enrolperiod"
-            column="enrolperiod"
-            type="long"/>
-    
-    </class>
+		<property name="summary" column="summary" type="string" />
+
+		<property name="startdate" column="startdate" type="long" />
+
+		<property name="timecreated" column="timecreated" type="long" />
+
+		<property name="timemodified" column="timemodified" type="long" />
+
+		<property name="enrolstartdate" column="enrolstartdate" type="long" />
+
+		<property name="enrolenddate" column="enrolenddate" type="long" />
+
+		<property name="enrolperiod" column="enrolperiod" type="long" />
+
+	</class>
 
 </hibernate-mapping>

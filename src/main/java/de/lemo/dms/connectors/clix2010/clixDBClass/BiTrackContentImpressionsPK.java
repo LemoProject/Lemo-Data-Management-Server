@@ -1,9 +1,16 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/BiTrackContentImpressionsPK.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
-public class BiTrackContentImpressionsPK implements Serializable{
-	
+public class BiTrackContentImpressionsPK implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -13,49 +20,60 @@ public class BiTrackContentImpressionsPK implements Serializable{
 	private Long container;
 	private Long user;
 	private Long characteristic;
-	
-	public boolean equals(Object arg)
+
+	@Override
+	public boolean equals(final Object arg)
 	{
-		if(arg == null)
+		if (arg == null) {
 			return false;
-		if(!(arg instanceof BiTrackContentImpressionsPK))
+		}
+		if (!(arg instanceof BiTrackContentImpressionsPK)) {
 			return false;
-		BiTrackContentImpressionsPK a = (BiTrackContentImpressionsPK)arg;
-		if(a.getUser() != this.user)
+		}
+		final BiTrackContentImpressionsPK a = (BiTrackContentImpressionsPK) arg;
+		if (a.getUser() != this.user) {
 			return false;
-		if(a.getDayOfAccess() != this.dayOfAccess)
+		}
+		if (a.getDayOfAccess() != this.dayOfAccess) {
 			return false;
-		if(a.getContainer() != this.container)
+		}
+		if (a.getContainer() != this.container) {
 			return false;
-		if(a.getContent() != this.content)
+		}
+		if (a.getContent() != this.content) {
 			return false;
-		if(a.getCharacteristic() != this.characteristic)
+		}
+		if (a.getCharacteristic() != this.characteristic) {
 			return false;
+		}
 		return true;
 	}
-	
+
+	@Override
 	public int hashCode()
 	{
-		return content.hashCode() * 17 + characteristic.hashCode() * 19 + container.hashCode() * 23 + dayOfAccess.hashCode() * 29 + user.hashCode() * 31;
-	}
-	
-	public long getContent() {
-		return content;
+		return (this.content.hashCode() * 17) + (this.characteristic.hashCode() * 19)
+				+ (this.container.hashCode() * 23) + (this.dayOfAccess.hashCode() * 29) + (this.user.hashCode() * 31);
 	}
 
-	public void setContent(long content) {
+	public long getContent() {
+		return this.content;
+	}
+
+	public void setContent(final long content) {
 		this.content = content;
 	}
 
 	public long getCharacteristic() {
-		return characteristic;
+		return this.characteristic;
 	}
 
-	public void setCharacteristic(long characteristic) {
+	public void setCharacteristic(final long characteristic) {
 		this.characteristic = characteristic;
 	}
-	
-	public BiTrackContentImpressionsPK(long characteristic, long content, String dayOfAccess, long container, long user)
+
+	public BiTrackContentImpressionsPK(final long characteristic, final long content, final String dayOfAccess,
+			final long container, final long user)
 	{
 		this.characteristic = characteristic;
 		this.content = content;
@@ -66,30 +84,30 @@ public class BiTrackContentImpressionsPK implements Serializable{
 
 	public BiTrackContentImpressionsPK()
 	{
-		
+
 	}
 
 	public String getDayOfAccess() {
-		return dayOfAccess;
+		return this.dayOfAccess;
 	}
 
-	public void setDayOfAccess(String dayOfAccess) {
+	public void setDayOfAccess(final String dayOfAccess) {
 		this.dayOfAccess = dayOfAccess;
 	}
 
 	public long getContainer() {
-		return container;
+		return this.container;
 	}
 
-	public void setContainer(long container) {
+	public void setContainer(final long container) {
 		this.container = container;
 	}
 
 	public long getUser() {
-		return user;
+		return this.user;
 	}
 
-	public void setUser(long user) {
+	public void setUser(final long user) {
 		this.user = user;
 	}
 }

@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle/moodleDBclass/CourseCategoriesLMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
 public class CourseCategoriesLMS {
@@ -7,39 +14,45 @@ public class CourseCategoriesLMS {
 	private String path;
 	private long depth;
 	private long timemodified;
-	
-	
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
-	public void setTitle(String title) {
+
+	public void setTitle(final String title) {
 		this.title = title;
 	}
+
 	public String getPath() {
-		return path;
+		return this.path;
 	}
-	public void setPath(String path) {
+
+	public void setPath(final String path) {
 		this.path = path;
 	}
+
 	public long getDepth() {
-		return depth;
+		return this.depth;
 	}
-	public void setDepth(long depth) {
+
+	public void setDepth(final long depth) {
 		this.depth = depth;
 	}
-	
-	
-	
+
 }

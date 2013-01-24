@@ -5,27 +5,18 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Course_display_LMS"
-        table="mdl_course_display">
+	<class
+		name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Course_display_LMS"
+		table="mdl_course_display">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="id" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="course"
-            column="course"
-            type="long"/>
-            
-        <property
-            name="userid"
-            column="userid"
-            type="string"/>
-                
-    </class>
+		<property name="course" column="course" type="long" />
+
+		<property name="userid" column="userid" type="string" />
+
+	</class>
 
 </hibernate-mapping>

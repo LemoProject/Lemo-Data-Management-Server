@@ -1,14 +1,18 @@
+/**
+ * File ./main/java/de/lemo/dms/service/ServiceRoles.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.service;
 
 import java.util.ArrayList;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 import org.hibernate.Session;
-
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
@@ -20,23 +24,24 @@ import de.lemo.dms.processing.resulttype.RoleObject;
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceRoles extends BaseService {
 
-    @GET
-    public ResultListRoleObject getUserRoles() {
+	@GET
+	public ResultListRoleObject getUserRoles() {
 
-        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
-        Session session = dbHandler.getMiningSession();
+		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+		final Session session = dbHandler.getMiningSession();
 
-        @SuppressWarnings("unchecked")
-        ArrayList<RoleMining> roleMining = (ArrayList<RoleMining>) dbHandler.performQuery(session, EQueryType.HQL,
-            "from RoleMining");
+		@SuppressWarnings("unchecked")
+		final ArrayList<RoleMining> roleMining = (ArrayList<RoleMining>) dbHandler.performQuery(session,
+				EQueryType.HQL,
+				"from RoleMining");
 
-        ArrayList<RoleObject> roles = new ArrayList<RoleObject>();
-        for(RoleMining role : roleMining) {
-            roles.add(new RoleObject(role.getId(), role.getName()));
-        }
+		final ArrayList<RoleObject> roles = new ArrayList<RoleObject>();
+		for (final RoleMining role : roleMining) {
+			roles.add(new RoleObject(role.getId(), role.getName()));
+		}
 
-        dbHandler.closeSession(session);
-        return new ResultListRoleObject(roles);
-    }
+		dbHandler.closeSession(session);
+		return new ResultListRoleObject(roles);
+	}
 
 }

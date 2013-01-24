@@ -5,46 +5,24 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle.moodleDBclass.UserLMS"
-        table="user">
+	<class name="de.lemo.dms.connectors.moodle.moodleDBclass.UserLMS"
+		table="user">
 
-        <id
-            name="id"
-            column="id"
-            type="string">
-        </id>
+		<id name="id" column="id" type="string">
+		</id>
 
-        <property
-            name="firstaccess"
-            column="firstaccess"
-            type="long"/>
-            
-        <property
-            name="lastaccess"
-            column="lastaccess"
-            type="long"/>
-            
-		<property
-            name="login"
-            column="username"
-            type="string"/>
-            
-        <property
-            name="lastlogin"
-            column="lastlogin"
-            type="long"/>
-  
-        <property
-            name="currentlogin"
-            column="currentlogin"
-            type="long"/>
-            
-            <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>
-    
-    </class>
+		<property name="firstaccess" column="firstaccess" type="long" />
+
+		<property name="lastaccess" column="lastaccess" type="long" />
+
+		<property name="login" column="username" type="string" />
+
+		<property name="lastlogin" column="lastlogin" type="long" />
+
+		<property name="currentlogin" column="currentlogin" type="long" />
+
+		<property name="timemodified" column="timemodified" type="long" />
+
+	</class>
 
 </hibernate-mapping>

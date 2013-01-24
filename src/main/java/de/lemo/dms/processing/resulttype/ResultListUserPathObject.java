@@ -1,36 +1,42 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/resulttype/ResultListUserPathObject.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.resulttype;
 
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class ResultListUserPathObject {
 
-    private List<UserPathObject> userPaths;
+	private List<UserPathObject> userPaths;
 
-    @XmlElement
-    public final String type = getClass().getSimpleName();
+	@XmlElement
+	public final String type = this.getClass().getSimpleName();
 
-    public ResultListUserPathObject()
-    {
+	public ResultListUserPathObject()
+	{
 
-    }
+	}
 
-    public ResultListUserPathObject(List<UserPathObject> userPaths)
-    {
-        this.userPaths = userPaths;
-    }
+	public ResultListUserPathObject(final List<UserPathObject> userPaths)
+	{
+		this.userPaths = userPaths;
+	}
 
-    @XmlElement
-    public List<UserPathObject> getUserPaths()
-    {
-        return this.userPaths;
-    }
+	@XmlElement
+	public List<UserPathObject> getUserPaths()
+	{
+		return this.userPaths;
+	}
 
-    public void setUserPaths(List<UserPathObject> userPaths)
-    {
-        this.userPaths = userPaths;
-    }
+	public void setUserPaths(final List<UserPathObject> userPaths)
+	{
+		this.userPaths = userPaths;
+	}
 }

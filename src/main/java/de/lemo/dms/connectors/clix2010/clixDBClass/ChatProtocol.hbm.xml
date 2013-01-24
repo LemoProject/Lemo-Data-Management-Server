@@ -5,37 +5,21 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.ChatProtocol"
-        table="CHATPROTOCOL">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.ChatProtocol"
+		table="CHATPROTOCOL">
 
-        <id
-            name="id"
-            column="CHATPROTOCOL_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="CHATPROTOCOL_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="lastUpdated"
-            column="LASTUPDATED"
-            type="string"/>
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
 
-        <property
-            name="chatroom"
-            column="CHATROOM_ID"
-            type="long"/>
-            
-        <property
-            name="person"
-            column="PERSON_ID"
-            type="long"/>  
-            
-        <property
-            name="chatSource"
-            column="CHAT_SOURCE"
-            type="string"/>                      
-            
-    </class>
+		<property name="chatroom" column="CHATROOM_ID" type="long" />
+
+		<property name="person" column="PERSON_ID" type="long" />
+
+		<property name="chatSource" column="CHAT_SOURCE" type="string" />
+
+	</class>
 
 </hibernate-mapping>

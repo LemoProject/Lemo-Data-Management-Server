@@ -5,56 +5,29 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Question_states_LMS"
-        table="mdl_question_states">
+	<class
+		name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Question_states_LMS"
+		table="mdl_question_states">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="attempt"
-            column="attempt"
-            type="long"/>
-            
-        <property
-            name="question"
-            column="question"
-            type="long"/>
-  
-        <property
-            name="answer"
-            column="answer"
-            type="string"/>  
+		<property name="attempt" column="attempt" type="long" />
 
-        <property
-            name="event"
-            column="event"
-            type="short"/>
-            
-      	<property
-            name="penalty"
-            column="penalty"
-            type="double"/>
-            
-        <property
-            name="raw_grade"
-            column="raw_grade"
-            type="double"/>
-             
-        <property
-            name="grade"
-            column="grade"
-            type="double"/>
-  
-		<property
-            name="timestamp"
-            column="timestamp"
-            type="long"/>
-    
-    </class>
+		<property name="question" column="question" type="long" />
+
+		<property name="answer" column="answer" type="string" />
+
+		<property name="event" column="event" type="short" />
+
+		<property name="penalty" column="penalty" type="double" />
+
+		<property name="raw_grade" column="raw_grade" type="double" />
+
+		<property name="grade" column="grade" type="double" />
+
+		<property name="timestamp" column="timestamp" type="long" />
+
+	</class>
 
 </hibernate-mapping>

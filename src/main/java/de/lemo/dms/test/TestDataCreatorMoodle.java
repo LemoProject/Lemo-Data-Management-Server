@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/test/TestDataCreatorMoodle.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.test;
 
 import java.util.ArrayList;
@@ -6,10 +13,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
-
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Assignment_LMS;
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Assignment_submissions_LMS;
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLog_LMS;
@@ -91,7 +96,7 @@ public class TestDataCreatorMoodle {
 	private ArrayList<CourseScormMining> courseScormList;
 	private ArrayList<CourseUserMining> courseUserList;
 	private ArrayList<CourseWikiMining> courseWikiList;
-	private ArrayList<ForumMining>forumList;
+	private ArrayList<ForumMining> forumList;
 	private ArrayList<ForumLogMining> forumLogList;
 	private ArrayList<GroupMining> groupList;
 	private ArrayList<GroupUserMining> groupUserList;
@@ -107,7 +112,7 @@ public class TestDataCreatorMoodle {
 	private ArrayList<ScormMining> scormList;
 	private ArrayList<ScormLogMining> scormLogList;
 	private ArrayList<UserMining> userList;
-	private ArrayList<WikiMining>wikiList;
+	private ArrayList<WikiMining> wikiList;
 	private ArrayList<WikiLogMining> wikiLogList;
 	private ArrayList<LevelMining> departmentList;
 	private ArrayList<LevelMining> degreeList;
@@ -130,17 +135,17 @@ public class TestDataCreatorMoodle {
 	private static List<Role_LMS> role_lms = new ArrayList<Role_LMS>();
 	private static List<Context_LMS> context_lms = new ArrayList<Context_LMS>();
 	private static List<Role_assignments_LMS> role_assignments_lms = new ArrayList<Role_assignments_LMS>();
-	private static List<Assignment_LMS> assignment_lms = new ArrayList<Assignment_LMS>();	
-	private static List<Assignment_submissions_LMS> assignment_submission_lms = new ArrayList<Assignment_submissions_LMS>();	
-	private static List<Quiz_grades_LMS> quiz_grades_lms= new ArrayList<Quiz_grades_LMS>();	
-	private static List<Forum_discussions_LMS> forum_discussions_lms= new ArrayList<Forum_discussions_LMS>();	
-	private static List<Scorm_LMS> scorm_lms= new ArrayList<Scorm_LMS>();	
-	private static List<Grade_grades_LMS> grade_grades_lms= new ArrayList<Grade_grades_LMS>();	
-	private static List<Grade_items_LMS> grade_items_lms= new ArrayList<Grade_items_LMS>();
-	private static List<Chat_LMS> chat_lms= new ArrayList<Chat_LMS>();
-	private static List<ChatLog_LMS> chat_log_lms= new ArrayList<ChatLog_LMS>();
-	private static List<CourseCategories_LMS> course_categories_lms= new ArrayList<CourseCategories_LMS>();
-	
+	private static List<Assignment_LMS> assignment_lms = new ArrayList<Assignment_LMS>();
+	private static List<Assignment_submissions_LMS> assignment_submission_lms = new ArrayList<Assignment_submissions_LMS>();
+	private static List<Quiz_grades_LMS> quiz_grades_lms = new ArrayList<Quiz_grades_LMS>();
+	private static List<Forum_discussions_LMS> forum_discussions_lms = new ArrayList<Forum_discussions_LMS>();
+	private static List<Scorm_LMS> scorm_lms = new ArrayList<Scorm_LMS>();
+	private static List<Grade_grades_LMS> grade_grades_lms = new ArrayList<Grade_grades_LMS>();
+	private static List<Grade_items_LMS> grade_items_lms = new ArrayList<Grade_items_LMS>();
+	private static List<Chat_LMS> chat_lms = new ArrayList<Chat_LMS>();
+	private static List<ChatLog_LMS> chat_log_lms = new ArrayList<ChatLog_LMS>();
+	private static List<CourseCategories_LMS> course_categories_lms = new ArrayList<CourseCategories_LMS>();
+
 	private HashMap<Long, CourseMining> couAssMap;
 	private HashMap<Long, CourseMining> couForMap;
 	private HashMap<Long, CourseMining> couGroMap;
@@ -149,333 +154,326 @@ public class TestDataCreatorMoodle {
 	private HashMap<Long, CourseMining> couResMap;
 	private HashMap<Long, CourseMining> couScoMap;
 	private HashMap<Long, CourseMining> couWikMap;
-	
-	
+
 	private HashMap<Long, LevelMining> degCouMap;
 	private HashMap<Long, LevelMining> depDegMap;
 
-
 	private void generateUserLMS()
 	{
-		for(UserMining item : userList)
+		for (final UserMining item : this.userList)
 		{
-			User_LMS lms = new User_LMS();
-			
+			final User_LMS lms = new User_LMS();
+
 			lms.setId(item.getId());
 			lms.setCurrentlogin(item.getCurrentLogin());
 			lms.setLastaccess(item.getLastAccess());
 			lms.setFirstaccess(item.getFirstAccess());
 			lms.setLastlogin(item.getLastLogin());
-			
-			user_lms.add(lms);
+
+			TestDataCreatorMoodle.user_lms.add(lms);
 		}
 	}
-	
+
 	private void generateRoleLMS()
 	{
-		for(RoleMining item : roleList)
+		for (final RoleMining item : this.roleList)
 		{
-			Role_LMS lms = new Role_LMS();
-			
+			final Role_LMS lms = new Role_LMS();
+
 			lms.setId(item.getId());
 			lms.setName(item.getName());
 			lms.setShortname(item.getShortname());
 			lms.setSortorder(item.getSortOrder());
 			lms.setDescription(item.getDescription());
-			
-			role_lms.add(lms);
+
+			TestDataCreatorMoodle.role_lms.add(lms);
 		}
 	}
-	
+
 	private void generateWikiLMS()
 	{
-		for(WikiMining item : wikiList)
+		for (final WikiMining item : this.wikiList)
 		{
-			Wiki_LMS lms = new Wiki_LMS();
+			final Wiki_LMS lms = new Wiki_LMS();
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
 			lms.setTimemodified(item.getTimeModified());
 			lms.setSummary(item.getSummary());
-			lms.setCourse(couWikMap.get(item.getId()).getId());
-			
-			wiki_lms.add(lms);
+			lms.setCourse(this.couWikMap.get(item.getId()).getId());
+
+			TestDataCreatorMoodle.wiki_lms.add(lms);
 		}
 	}
-	
+
 	private void generateScormLMS()
 	{
-		for(ScormMining item : scormList)
+		for (final ScormMining item : this.scormList)
 		{
-			Scorm_LMS lms = new Scorm_LMS();
+			final Scorm_LMS lms = new Scorm_LMS();
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
 			lms.setTimemodified(item.getTimeModified());
 			lms.setMaxgrade(item.getMaxGrade());
 			lms.setTimemodified(item.getTimeModified());
-			lms.setCourse(couScoMap.get(item.getId()).getId());
-			
-			scorm_lms.add(lms);
+			lms.setCourse(this.couScoMap.get(item.getId()).getId());
+
+			TestDataCreatorMoodle.scorm_lms.add(lms);
 		}
 	}
-	
+
 	private void generateContextLMS()
 	{
-		
-		HashMap<Long, Context_LMS> depIdMap = new HashMap<Long, Context_LMS>();
-		HashMap<Long, Context_LMS> degIdMap = new HashMap<Long, Context_LMS>();
-		HashMap<Long, Context_LMS> couIdMap = new HashMap<Long, Context_LMS>();
-		
-		//Create entries (context, course_categories) for all departments
-		for(LevelMining item : departmentList)
+
+		final HashMap<Long, Context_LMS> depIdMap = new HashMap<Long, Context_LMS>();
+		final HashMap<Long, Context_LMS> degIdMap = new HashMap<Long, Context_LMS>();
+		final HashMap<Long, Context_LMS> couIdMap = new HashMap<Long, Context_LMS>();
+
+		// Create entries (context, course_categories) for all departments
+		for (final LevelMining item : this.departmentList)
 		{
-			Context_LMS lms = new Context_LMS();
-			CourseCategories_LMS lms2 = new CourseCategories_LMS();
-			
-			lms2.setId(course_categories_lms.size() + 1);
+			final Context_LMS lms = new Context_LMS();
+			final CourseCategories_LMS lms2 = new CourseCategories_LMS();
+
+			lms2.setId(TestDataCreatorMoodle.course_categories_lms.size() + 1);
 			lms2.setTitle(item.getTitle());
 			lms2.setDepth(1);
 			lms2.setPath("/" + item.getId());
-			
+
 			lms.setContextlevel(40);
 			lms.setDepth(2);
 			lms.setInstanceid(lms2.getId());
-			lms.setId(context_lms.size() + 1);
-			lms.setPath("/1/"+lms.getId());
-			
-			
-			
-			course_categories_lms.add(lms2);
-			
-			context_lms.add(lms);
+			lms.setId(TestDataCreatorMoodle.context_lms.size() + 1);
+			lms.setPath("/1/" + lms.getId());
+
+			TestDataCreatorMoodle.course_categories_lms.add(lms2);
+
+			TestDataCreatorMoodle.context_lms.add(lms);
 			depIdMap.put(item.getId(), lms);
 		}
-		
-		//Create entries (context, course_categories) for all degrees
-		for(LevelMining item : degreeList)
+
+		// Create entries (context, course_categories) for all degrees
+		for (final LevelMining item : this.degreeList)
 		{
-			CourseCategories_LMS lms2 = new CourseCategories_LMS();
-			
-			LevelMining dm = depDegMap.get(item.getId());
-			
-			lms2.setId(course_categories_lms.size() + 1);
+			final CourseCategories_LMS lms2 = new CourseCategories_LMS();
+
+			final LevelMining dm = this.depDegMap.get(item.getId());
+
+			lms2.setId(TestDataCreatorMoodle.course_categories_lms.size() + 1);
 			lms2.setTitle(item.getTitle());
 			lms2.setDepth(2);
 			lms2.setPath("/" + depIdMap.get(dm.getId()).getId() + "/" + lms2.getId());
-			
-			Context_LMS lms = new Context_LMS();
+
+			final Context_LMS lms = new Context_LMS();
 			lms.setContextlevel(40);
 			lms.setDepth(3);
 			lms.setInstanceid(lms2.getId());
-			lms.setId(context_lms.size() + 1);
-			Context_LMS cl = depIdMap.get(dm.getId());
+			lms.setId(TestDataCreatorMoodle.context_lms.size() + 1);
+			final Context_LMS cl = depIdMap.get(dm.getId());
 			lms.setPath(cl.getPath() + "/" + lms.getId());
-			
+
 			degIdMap.put(item.getId(), lms);
-			context_lms.add(lms);
-			
-			course_categories_lms.add(lms2);
-			
-			
+			TestDataCreatorMoodle.context_lms.add(lms);
+
+			TestDataCreatorMoodle.course_categories_lms.add(lms2);
+
 		}
-		//Create entries (context) for all courses
-		for(LevelCourseMining item : degreeCourseList)
+		// Create entries (context) for all courses
+		for (final LevelCourseMining item : this.degreeCourseList)
 		{
-			Context_LMS lms = new Context_LMS();
-			
-			lms.setId(context_lms.size() + 1);
+			final Context_LMS lms = new Context_LMS();
+
+			lms.setId(TestDataCreatorMoodle.context_lms.size() + 1);
 			lms.setDepth(4);
 			lms.setContextlevel(50);
 			lms.setInstanceid(item.getCourse().getId());
-			Context_LMS cl = degIdMap.get(item.getLevel().getId());
+			final Context_LMS cl = degIdMap.get(item.getLevel().getId());
 			lms.setPath(cl.getPath() + "/" + lms.getId());
 
 			couIdMap.put(item.getId(), lms);
-			
-			context_lms.add(lms);
+
+			TestDataCreatorMoodle.context_lms.add(lms);
 		}
-		//Create entries (role_assignments) for all users
-		for(CourseUserMining item : courseUserList)
+		// Create entries (role_assignments) for all users
+		for (final CourseUserMining item : this.courseUserList)
 		{
-			Role_assignments_LMS lms2 = new Role_assignments_LMS();
-			
+			final Role_assignments_LMS lms2 = new Role_assignments_LMS();
+
 			lms2.setId(item.getId());
 			lms2.setRoleid(item.getRole().getId());
 			lms2.setUserid(item.getUser().getId());
 			lms2.setTimeend(item.getEnrolend());
 			lms2.setTimestart(item.getEnrolstart());
 			lms2.setContextid(couIdMap.get(item.getCourse().getId()).getId());
-			
-			role_assignments_lms.add(lms2);
+
+			TestDataCreatorMoodle.role_assignments_lms.add(lms2);
 		}
-		
-		
-		
+
 	}
-	
+
 	private void generateLogLMS()
 	{
-		List<ILogMining> logs = new ArrayList<ILogMining>();
-		logs.addAll(resourceLogList);
-		logs.addAll(assignmentLogList);
-		logs.addAll(forumLogList);
-		logs.addAll(courseLogList);
-		logs.addAll(quizLogList);
-		logs.addAll(wikiLogList);
-		logs.addAll(scormLogList);
-		
+		final List<ILogMining> logs = new ArrayList<ILogMining>();
+		logs.addAll(this.resourceLogList);
+		logs.addAll(this.assignmentLogList);
+		logs.addAll(this.forumLogList);
+		logs.addAll(this.courseLogList);
+		logs.addAll(this.quizLogList);
+		logs.addAll(this.wikiLogList);
+		logs.addAll(this.scormLogList);
+
 		Collections.sort(logs);
-		
-		for(int i = 0; i < logs.size(); i++)
+
+		for (int i = 0; i < logs.size(); i++)
 		{
 			logs.get(i).setId(i + 1);
 		}
-		
-		
-		for(ResourceLogMining item : resourceLogList)
+
+		for (final ResourceLogMining item : this.resourceLogList)
 		{
-			Log_LMS lms = new Log_LMS();
-			
+			final Log_LMS lms = new Log_LMS();
+
 			lms.setId(item.getId());
 			lms.setCourse(item.getCourse().getId());
 			lms.setModule("resource");
 			lms.setTime(item.getTimestamp());
 			lms.setAction(item.getAction());
-			lms.setInfo(item.getResource().getId()+"");
+			lms.setInfo(item.getResource().getId() + "");
 			lms.setUserid(item.getUser().getId());
-			
-			log_lms.add(lms);
+
+			TestDataCreatorMoodle.log_lms.add(lms);
 		}
-		HashMap<Long, Forum_discussions_LMS> forDisSet = new HashMap<Long, Forum_discussions_LMS>();
-		for(ForumLogMining item : forumLogList)
+		final HashMap<Long, Forum_discussions_LMS> forDisSet = new HashMap<Long, Forum_discussions_LMS>();
+		for (final ForumLogMining item : this.forumLogList)
 		{
-			Log_LMS lms = new Log_LMS();
-			Forum_posts_LMS lms2 = new Forum_posts_LMS();
-			
-			lms2.setId(forum_posts_lms.size() + 1);
+			final Log_LMS lms = new Log_LMS();
+			final Forum_posts_LMS lms2 = new Forum_posts_LMS();
+
+			lms2.setId(TestDataCreatorMoodle.forum_posts_lms.size() + 1);
 			lms2.setMessage(item.getMessage());
 			lms2.setSubject(item.getSubject());
 			lms2.setUserid(item.getUser().getId());
 			lms2.setCreated(item.getTimestamp());
 			lms2.setModified(item.getTimestamp());
-			
-			forum_posts_lms.add(lms2);
-			
-			if((item.getAction().equals("add discussion") || item.getAction().equals("view discussion")))
+
+			TestDataCreatorMoodle.forum_posts_lms.add(lms2);
+
+			if ((item.getAction().equals("add discussion") || item.getAction().equals("view discussion")))
 			{
-				Forum_discussions_LMS lms3 = new Forum_discussions_LMS();
-				
+				final Forum_discussions_LMS lms3 = new Forum_discussions_LMS();
+
 				lms3.setId(item.getForum().getId());
 				lms3.setForum(item.getForum().getId());
-				
+
 				forDisSet.put(lms3.getId(), lms3);
-				
+
 			}
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
 			lms.setModule("forum");
-			lms.setInfo(item.getForum().getId()+"");
+			lms.setInfo(item.getForum().getId() + "");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
-			
-			log_lms.add(lms);
+
+			TestDataCreatorMoodle.log_lms.add(lms);
 		}
-		forum_discussions_lms.addAll(forDisSet.values());
-		for(AssignmentLogMining item : assignmentLogList)
+		TestDataCreatorMoodle.forum_discussions_lms.addAll(forDisSet.values());
+		for (final AssignmentLogMining item : this.assignmentLogList)
 		{
-			Log_LMS lms = new Log_LMS();
-			
+			final Log_LMS lms = new Log_LMS();
+
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
 			lms.setModule("assignment");
-			lms.setInfo(item.getAssignment().getId()+"");
+			lms.setInfo(item.getAssignment().getId() + "");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
-			
-			log_lms.add(lms);
-			
-			if(item.getAction().equals("upload"))
+
+			TestDataCreatorMoodle.log_lms.add(lms);
+
+			if (item.getAction().equals("upload"))
 			{
-				Assignment_submissions_LMS lms2 = new Assignment_submissions_LMS();
-				
+				final Assignment_submissions_LMS lms2 = new Assignment_submissions_LMS();
+
 				lms2.setGrade(item.getGrade().longValue());
 				lms2.setAssignment(item.getAssignment().getId());
-				lms2.setUserid(item.getUser().getId()+"");
-				lms2.setTimemodified(item.getTimestamp());			
-				lms2.setId(assignment_submission_lms.size() + 1);
-				
-				assignment_submission_lms.add(lms2);
+				lms2.setUserid(item.getUser().getId() + "");
+				lms2.setTimemodified(item.getTimestamp());
+				lms2.setId(TestDataCreatorMoodle.assignment_submission_lms.size() + 1);
+
+				TestDataCreatorMoodle.assignment_submission_lms.add(lms2);
 			}
 		}
-		for(QuizLogMining item : quizLogList)
+		for (final QuizLogMining item : this.quizLogList)
 		{
-			Log_LMS lms = new Log_LMS();
+			final Log_LMS lms = new Log_LMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
 			lms.setModule("quiz");
-			lms.setInfo(item.getQuiz().getId()+"");
+			lms.setInfo(item.getQuiz().getId() + "");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
-			
-			if(!item.getAction().equals("review"))
+
+			if (!item.getAction().equals("review"))
 			{
-				Quiz_grades_LMS lms2 = new Quiz_grades_LMS();
+				final Quiz_grades_LMS lms2 = new Quiz_grades_LMS();
 				lms2.setGrade(item.getGrade());
 				lms2.setTimemodified(item.getTimestamp());
-				lms2.setUserid(item.getUser().getId()+"");
+				lms2.setUserid(item.getUser().getId() + "");
 				lms2.setQuiz(item.getQuiz().getId());
-				lms2.setId(quiz_grades_lms.size() + 1);
-				
-				quiz_grades_lms.add(lms2);
+				lms2.setId(TestDataCreatorMoodle.quiz_grades_lms.size() + 1);
+
+				TestDataCreatorMoodle.quiz_grades_lms.add(lms2);
 			}
-			
-			log_lms.add(lms);
+
+			TestDataCreatorMoodle.log_lms.add(lms);
 		}
 		/*
-		for(QuestionLogMining item : questionLogList)
+		 * for(QuestionLogMining item : questionLogList)
+		 * {
+		 * Log_LMS lms = new Log_LMS();
+		 * lms.setId(item.getId());
+		 * lms.setAction(item.getAction());
+		 * lms.setModule("forum");
+		 * lms.setInfo(item.getQuestion().getId()+"");
+		 * lms.setTime(item.getTimestamp());
+		 * lms.setCourse(item.getCourse().getId());
+		 * lms.setUserid(item.getUser().getId()+"");
+		 * log_lms.add(lms);
+		 * }
+		 */
+		for (final ScormLogMining item : this.scormLogList)
 		{
-			Log_LMS lms = new Log_LMS();
-			lms.setId(item.getId());
-			lms.setAction(item.getAction());
-			lms.setModule("forum");
-			lms.setInfo(item.getQuestion().getId()+"");
-			lms.setTime(item.getTimestamp());
-			lms.setCourse(item.getCourse().getId());
-			lms.setUserid(item.getUser().getId()+"");
-			log_lms.add(lms);
-		}*/
-		for(ScormLogMining item : scormLogList)
-		{
-			Log_LMS lms = new Log_LMS();
+			final Log_LMS lms = new Log_LMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
 			lms.setModule("scorm");
-			lms.setInfo(item.getScorm().getId()+"");
+			lms.setInfo(item.getScorm().getId() + "");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
-			
-			log_lms.add(lms);
+
+			TestDataCreatorMoodle.log_lms.add(lms);
 		}
-		for(WikiLogMining item : wikiLogList)
+		for (final WikiLogMining item : this.wikiLogList)
 		{
-			Log_LMS lms = new Log_LMS();
+			final Log_LMS lms = new Log_LMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
 			lms.setModule("wiki");
-			lms.setInfo(item.getWiki().getId()+"");
+			lms.setInfo(item.getWiki().getId() + "");
 			lms.setTime(item.getTimestamp());
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
 			lms.setCmid(item.getWiki().getId());
-			
-			log_lms.add(lms);
+
+			TestDataCreatorMoodle.log_lms.add(lms);
 		}
-		for(CourseLogMining item : courseLogList)
+		for (final CourseLogMining item : this.courseLogList)
 		{
-			Log_LMS lms = new Log_LMS();
+			final Log_LMS lms = new Log_LMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
 			lms.setModule("course");
@@ -483,56 +481,56 @@ public class TestDataCreatorMoodle {
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
 
-			log_lms.add(lms);
+			TestDataCreatorMoodle.log_lms.add(lms);
 		}
 	}
-	
+
 	private void generateResourceLMS()
 	{
-		for(ResourceMining item : resourceList)
+		for (final ResourceMining item : this.resourceList)
 		{
-			Resource_LMS lms = new Resource_LMS();
+			final Resource_LMS lms = new Resource_LMS();
 			lms.setId(item.getId());
 			lms.setType(item.getType());
 			lms.setName(item.getTitle());
 			lms.setTimemodified(item.getTimeModified());
-			if(couResMap.get(item.getId()) != null)
-				lms.setCourse(couResMap.get(item.getId()).getId());		
-			
-			resource_lms.add(lms);
+			if (this.couResMap.get(item.getId()) != null) {
+				lms.setCourse(this.couResMap.get(item.getId()).getId());
+			}
+
+			TestDataCreatorMoodle.resource_lms.add(lms);
 		}
 	}
-	
+
 	private void generateForumLMS()
 	{
-		HashMap<Long, Long> cFMap = new HashMap<Long, Long>();
-		for(Iterator<CourseForumMining> iter = courseForumList.iterator(); iter.hasNext();)
+		final HashMap<Long, Long> cFMap = new HashMap<Long, Long>();
+		for (final Iterator<CourseForumMining> iter = this.courseForumList.iterator(); iter.hasNext();)
 		{
-			CourseForumMining item = iter.next();
+			final CourseForumMining item = iter.next();
 			cFMap.put(item.getForum().getId(), item.getCourse().getId());
 		}
-		for(ForumMining item : forumList)
+		for (final ForumMining item : this.forumList)
 		{
-			Forum_LMS lms = new Forum_LMS();
+			final Forum_LMS lms = new Forum_LMS();
 			lms.setId(item.getId());
 			lms.setTimemodified(item.getTimeModified());
 			lms.setName(item.getTitle());
 			lms.setIntro(item.getSummary());
 			lms.setCourse(cFMap.get(lms.getId()));
-			
-			forum_lms.add(lms);
-			
+
+			TestDataCreatorMoodle.forum_lms.add(lms);
+
 		}
-		
 
 	}
-	
+
 	private void generateCourseLMS()
 	{
-		
-		for(CourseMining item : courseList)
+
+		for (final CourseMining item : this.courseList)
 		{
-			Course_LMS lms = new Course_LMS();
+			final Course_LMS lms = new Course_LMS();
 			lms.setId(item.getId());
 			lms.setFullname(item.getTitle());
 			lms.setShortname(item.getShortname());
@@ -541,455 +539,457 @@ public class TestDataCreatorMoodle {
 			lms.setEnrolstartdate(item.getEnrolStart());
 			lms.setEnrolenddate(item.getEnrolEnd());
 			lms.setStartdate(item.getStartDate());
-			
-			course_lms.add(lms);
+
+			TestDataCreatorMoodle.course_lms.add(lms);
 		}
 	}
-	
+
 	private void generateChatLogLMS()
 	{
-		HashMap<Long, Long> couId = new HashMap<Long, Long>();
-		
-		for(ChatLogMining item : chatLogList)
+		final HashMap<Long, Long> couId = new HashMap<Long, Long>();
+
+		for (final ChatLogMining item : this.chatLogList)
 		{
-			ChatLog_LMS lms = new ChatLog_LMS();
+			final ChatLog_LMS lms = new ChatLog_LMS();
 			lms.setMessage(item.getMessage());
-			
+
 			lms.setTimestamp(item.getTimestamp());
 			lms.setChat_Id(item.getChat().getId());
 			lms.setUser_Id(item.getUser().getId());
 			lms.setId(item.getId());
-			
+
 			couId.put(item.getChat().getId(), item.getCourse().getId());
-			
-			chat_log_lms.add(lms);
+
+			TestDataCreatorMoodle.chat_log_lms.add(lms);
 		}
-		
-		for(ChatMining item : chatList)
+
+		for (final ChatMining item : this.chatList)
 		{
-			Chat_LMS lms = new Chat_LMS();
+			final Chat_LMS lms = new Chat_LMS();
 			lms.setId(item.getId());
-			if(couId.get(item.getId()) != null)
+			if (couId.get(item.getId()) != null) {
 				lms.setCourse(couId.get(item.getId()));
+			}
 			lms.setTitle(item.getTitle());
 			lms.setDescription(item.getDescription());
 			lms.setChattime(item.getChatTime());
-			
-			
-			chat_lms.add(lms);
+
+			TestDataCreatorMoodle.chat_lms.add(lms);
 		}
 	}
-	
+
 	private void generateAssignmentLMS()
 	{
-		for(AssignmentMining item : assignmentList)
+		for (final AssignmentMining item : this.assignmentList)
 		{
-			Assignment_LMS lms = new Assignment_LMS();
+			final Assignment_LMS lms = new Assignment_LMS();
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
 			lms.setTimeavailable(item.getTimeOpen());
 			lms.setTimedue(item.getTimeClose());
 			lms.setTimemodified(item.getTimeModified());
 			lms.setDescription("description");
-			if(couAssMap.get(item.getId()) != null)
-				lms.setCourse(couAssMap.get(item.getId()).getId());
-			
-			Grade_items_LMS lms2 = new Grade_items_LMS();
+			if (this.couAssMap.get(item.getId()) != null) {
+				lms.setCourse(this.couAssMap.get(item.getId()).getId());
+			}
+
+			final Grade_items_LMS lms2 = new Grade_items_LMS();
 			lms2.setIteminstance(item.getId());
 			lms2.setItemmodule("assignment");
 			lms2.setGrademax(item.getMaxGrade());
-			lms2.setId(grade_items_lms.size());
-			
-			grade_items_lms.add(lms2);			
-			assignment_lms.add(lms);
+			lms2.setId(TestDataCreatorMoodle.grade_items_lms.size());
+
+			TestDataCreatorMoodle.grade_items_lms.add(lms2);
+			TestDataCreatorMoodle.assignment_lms.add(lms);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void getDataFromDB()
 	{
-		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
-		
-		//accessing DB by creating a session and a transaction using HibernateUtil
-        Session session = dbHandler.getMiningSession();
-        session.clear();	
-        
+		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
-        
-        Query assQuery = session.createQuery("from AssignmentMining x order by x.id asc");
-        assignmentList = (ArrayList<AssignmentMining>) assQuery.list();
-        
-        Query assLogQuery = session.createQuery("from AssignmentLogMining x order by x.id asc");
-        assignmentLogList = (ArrayList<AssignmentLogMining>) assLogQuery.list();
-        
-        Query chaQuery = session.createQuery("from ChatMining x order by x.id asc");
-        chatList = (ArrayList<ChatMining>) chaQuery.list();
-        
-        Query chaLogQuery = session.createQuery("from ChatLogMining x order by x.id asc");
-        chatLogList = (ArrayList<ChatLogMining>) chaLogQuery.list();
-        
-        Query couQuery = session.createQuery("from CourseMining x order by x.id asc");
-        courseList = (ArrayList<CourseMining>) couQuery.list();
-        
-        Query couLogQuery = session.createQuery("from CourseLogMining x order by x.id asc");
-        courseLogList = (ArrayList<CourseLogMining>) couLogQuery.list();
-        
-        Query couAssQuery = session.createQuery("from CourseAssignmentMining x order by x.id asc");
-        courseAssignmentList = (ArrayList<CourseAssignmentMining>) couAssQuery.list();
-        
-        Query couForumQuery = session.createQuery("from CourseForumMining x order by x.id asc");
-        courseForumList = (ArrayList<CourseForumMining>) couForumQuery.list();
-        
-        Query couGroupQuery = session.createQuery("from CourseGroupMining x order by x.id asc");
-        courseGroupList = (ArrayList<CourseGroupMining>) couGroupQuery.list();
-        
-        Query couQuizQuery = session.createQuery("from CourseQuizMining x order by x.id asc");
-        courseQuizList = (ArrayList<CourseQuizMining>) couQuizQuery.list();
-        
-        Query couResQuery = session.createQuery("from CourseResourceMining x order by x.id asc");
-        courseResourceList = (ArrayList<CourseResourceMining>) couResQuery.list();
-        
-        Query couScormQuery = session.createQuery("from CourseScormMining x order by x.id asc");
-        courseScormList = (ArrayList<CourseScormMining>) couScormQuery.list();
-        
-        Query couUserQuery = session.createQuery("from CourseUserMining x order by x.id asc");
-        courseUserList = (ArrayList<CourseUserMining>) couUserQuery.list();
-        
-        Query couWikiQuery = session.createQuery("from CourseWikiMining x order by x.id asc");
-        courseWikiList = (ArrayList<CourseWikiMining>) couWikiQuery.list();
-        
-        Query degQuery = session.createQuery("from DegreeMining x order by x.id asc");
-        degreeList = (ArrayList<LevelMining>) degQuery.list();
-        
-        Query degCouQuery = session.createQuery("from DegreeCourseMining x order by x.id asc");
-        degreeCourseList = (ArrayList<LevelCourseMining>) degCouQuery.list();
-        
-        Query depQuery = session.createQuery("from DepartmentMining x order by x.id asc");
-        departmentList = (ArrayList<LevelMining>) depQuery.list();
-        
-        Query depDegQuery = session.createQuery("from DepartmentDegreeMining x order by x.id asc");
-        departmentDegreeList = (ArrayList<LevelAssociationMining>) depDegQuery.list();
-                
-        Query forQuery = session.createQuery("from ForumMining x order by x.id asc");
-        forumList = (ArrayList<ForumMining>) forQuery.list();
-        
-        Query forLogQuery = session.createQuery("from ForumLogMining x order by x.id asc");
-        forumLogList = (ArrayList<ForumLogMining>) forLogQuery.list();
-        
-        Query groupQuery = session.createQuery("from GroupMining x order by x.id asc");
-        groupList = (ArrayList<GroupMining>) groupQuery.list();
-        
-        Query groupUserQuery = session.createQuery("from GroupUserMining x order by x.id asc");
-        groupUserList = (ArrayList<GroupUserMining>) groupUserQuery.list();
-        
-        Query queQuery = session.createQuery("from QuestionMining x order by x.id asc");
-        questionList = (ArrayList<QuestionMining>) queQuery.list();
-        
-        Query queLogQuery = session.createQuery("from QuestionLogMining x order by x.id asc");
-        questionLogList = (ArrayList<QuestionLogMining>) queLogQuery.list();
-        
-        Query quiLogQuery = session.createQuery("from QuizLogMining x order by x.id asc");
-        quizLogList = (ArrayList<QuizLogMining>) quiLogQuery.list();
-        
-        Query quiQuery = session.createQuery("from QuizMining x order by x.id asc");
-        quizList = (ArrayList<QuizMining>) quiQuery.list();
-        
-        Query quiQuestionQuery = session.createQuery("from QuizQuestionMining x order by x.id asc");
-        quizQuestionList = (ArrayList<QuizQuestionMining>) quiQuestionQuery.list();
-        
-        Query quiUserQuery = session.createQuery("from QuizUserMining x order by x.id asc");
-        quizUserList = (ArrayList<QuizUserMining>) quiUserQuery.list();
-        
-        Query resQuery = session.createQuery("from ResourceMining x order by x.id asc");
-        resourceList = (ArrayList<ResourceMining>) resQuery.list();
-        
-        Query resLogQuery = session.createQuery("from ResourceLogMining x order by x.id asc");
-        resourceLogList = (ArrayList<ResourceLogMining>) resLogQuery.list();
-        
-        Query roleQuery = session.createQuery("from RoleMining x order by x.id asc");
-        roleList = (ArrayList<RoleMining>) roleQuery.list();
-        
-        Query scormQuery = session.createQuery("from ScormMining x order by x.id asc");
-        scormList = (ArrayList<ScormMining>) scormQuery.list();
-        
-        Query scormLogQuery = session.createQuery("from ScormLogMining x order by x.id asc");
-        scormLogList = (ArrayList<ScormLogMining>) scormLogQuery.list();
-        
-        Query userQuery = session.createQuery("from UserMining x order by x.id asc");
-        userList = (ArrayList<UserMining>) userQuery.list();
+		// accessing DB by creating a session and a transaction using HibernateUtil
+		final Session session = dbHandler.getMiningSession();
+		session.clear();
 
-        Query wikQuery = session.createQuery("from WikiMining x order by x.id asc");
-        wikiList = (ArrayList<WikiMining>) wikQuery.list();
-        
-        Query wikLogQuery = session.createQuery("from WikiLogMining x order by x.id asc");
-        wikiLogList = (ArrayList<WikiLogMining>) wikLogQuery.list();
+		final Query assQuery = session.createQuery("from AssignmentMining x order by x.id asc");
+		this.assignmentList = (ArrayList<AssignmentMining>) assQuery.list();
 
-        couAssMap = new HashMap<Long, CourseMining>();
-        couForMap = new HashMap<Long, CourseMining>();
-        couGroMap = new HashMap<Long, CourseMining>();
-        couQuiMap = new HashMap<Long, CourseMining>();
-        couResMap = new HashMap<Long, CourseMining>();
-        couScoMap = new HashMap<Long, CourseMining>();
-        couUseMap= new HashMap<Long, CourseMining>();
-        couWikMap = new HashMap<Long, CourseMining>();
-        
-        degCouMap = new HashMap<Long, LevelMining>();
-        depDegMap = new HashMap<Long, LevelMining>();
-        
-        for(CourseAssignmentMining ca : courseAssignmentList)
-        	couAssMap.put(ca.getAssignment().getId(), ca.getCourse());
-        
-        for(CourseGroupMining ca : courseGroupList)
-        	couGroMap.put(ca.getGroup().getId(), ca.getCourse());
-        
-        for(CourseQuizMining ca : courseQuizList)
-        	couQuiMap.put(ca.getQuiz().getId(), ca.getCourse());
-        
-        for(CourseUserMining ca : courseUserList)
-        	couUseMap.put(ca.getUser().getId(), ca.getCourse());
-        
-        for(CourseForumMining ca : courseForumList)
-        	couForMap.put(ca.getForum().getId(), ca.getCourse());
-        
-        for(CourseResourceMining cr : courseResourceList)
-       		couResMap.put(cr.getResource().getId(), cr.getCourse());
-        
-        for(CourseWikiMining cw : courseWikiList)
-        	couWikMap.put(cw.getWiki().getId(), cw.getCourse());
-        
-        for(CourseScormMining cs : courseScormList)
-        	couScoMap.put(cs.getScorm().getId(), cs.getCourse());
-        
-        
-        for(LevelCourseMining dc : degreeCourseList)
-        	degCouMap.put(dc.getCourse().getId(), dc.getLevel());
-        
-        for(LevelAssociationMining dd : departmentDegreeList)
-        	depDegMap.put(dd.getLower().getId(), dd.getUpper());
-        
+		final Query assLogQuery = session.createQuery("from AssignmentLogMining x order by x.id asc");
+		this.assignmentLogList = (ArrayList<AssignmentLogMining>) assLogQuery.list();
 
-        session.clear();
-        session.close();
-        
+		final Query chaQuery = session.createQuery("from ChatMining x order by x.id asc");
+		this.chatList = (ArrayList<ChatMining>) chaQuery.list();
+
+		final Query chaLogQuery = session.createQuery("from ChatLogMining x order by x.id asc");
+		this.chatLogList = (ArrayList<ChatLogMining>) chaLogQuery.list();
+
+		final Query couQuery = session.createQuery("from CourseMining x order by x.id asc");
+		this.courseList = (ArrayList<CourseMining>) couQuery.list();
+
+		final Query couLogQuery = session.createQuery("from CourseLogMining x order by x.id asc");
+		this.courseLogList = (ArrayList<CourseLogMining>) couLogQuery.list();
+
+		final Query couAssQuery = session.createQuery("from CourseAssignmentMining x order by x.id asc");
+		this.courseAssignmentList = (ArrayList<CourseAssignmentMining>) couAssQuery.list();
+
+		final Query couForumQuery = session.createQuery("from CourseForumMining x order by x.id asc");
+		this.courseForumList = (ArrayList<CourseForumMining>) couForumQuery.list();
+
+		final Query couGroupQuery = session.createQuery("from CourseGroupMining x order by x.id asc");
+		this.courseGroupList = (ArrayList<CourseGroupMining>) couGroupQuery.list();
+
+		final Query couQuizQuery = session.createQuery("from CourseQuizMining x order by x.id asc");
+		this.courseQuizList = (ArrayList<CourseQuizMining>) couQuizQuery.list();
+
+		final Query couResQuery = session.createQuery("from CourseResourceMining x order by x.id asc");
+		this.courseResourceList = (ArrayList<CourseResourceMining>) couResQuery.list();
+
+		final Query couScormQuery = session.createQuery("from CourseScormMining x order by x.id asc");
+		this.courseScormList = (ArrayList<CourseScormMining>) couScormQuery.list();
+
+		final Query couUserQuery = session.createQuery("from CourseUserMining x order by x.id asc");
+		this.courseUserList = (ArrayList<CourseUserMining>) couUserQuery.list();
+
+		final Query couWikiQuery = session.createQuery("from CourseWikiMining x order by x.id asc");
+		this.courseWikiList = (ArrayList<CourseWikiMining>) couWikiQuery.list();
+
+		final Query degQuery = session.createQuery("from DegreeMining x order by x.id asc");
+		this.degreeList = (ArrayList<LevelMining>) degQuery.list();
+
+		final Query degCouQuery = session.createQuery("from DegreeCourseMining x order by x.id asc");
+		this.degreeCourseList = (ArrayList<LevelCourseMining>) degCouQuery.list();
+
+		final Query depQuery = session.createQuery("from DepartmentMining x order by x.id asc");
+		this.departmentList = (ArrayList<LevelMining>) depQuery.list();
+
+		final Query depDegQuery = session.createQuery("from DepartmentDegreeMining x order by x.id asc");
+		this.departmentDegreeList = (ArrayList<LevelAssociationMining>) depDegQuery.list();
+
+		final Query forQuery = session.createQuery("from ForumMining x order by x.id asc");
+		this.forumList = (ArrayList<ForumMining>) forQuery.list();
+
+		final Query forLogQuery = session.createQuery("from ForumLogMining x order by x.id asc");
+		this.forumLogList = (ArrayList<ForumLogMining>) forLogQuery.list();
+
+		final Query groupQuery = session.createQuery("from GroupMining x order by x.id asc");
+		this.groupList = (ArrayList<GroupMining>) groupQuery.list();
+
+		final Query groupUserQuery = session.createQuery("from GroupUserMining x order by x.id asc");
+		this.groupUserList = (ArrayList<GroupUserMining>) groupUserQuery.list();
+
+		final Query queQuery = session.createQuery("from QuestionMining x order by x.id asc");
+		this.questionList = (ArrayList<QuestionMining>) queQuery.list();
+
+		final Query queLogQuery = session.createQuery("from QuestionLogMining x order by x.id asc");
+		this.questionLogList = (ArrayList<QuestionLogMining>) queLogQuery.list();
+
+		final Query quiLogQuery = session.createQuery("from QuizLogMining x order by x.id asc");
+		this.quizLogList = (ArrayList<QuizLogMining>) quiLogQuery.list();
+
+		final Query quiQuery = session.createQuery("from QuizMining x order by x.id asc");
+		this.quizList = (ArrayList<QuizMining>) quiQuery.list();
+
+		final Query quiQuestionQuery = session.createQuery("from QuizQuestionMining x order by x.id asc");
+		this.quizQuestionList = (ArrayList<QuizQuestionMining>) quiQuestionQuery.list();
+
+		final Query quiUserQuery = session.createQuery("from QuizUserMining x order by x.id asc");
+		this.quizUserList = (ArrayList<QuizUserMining>) quiUserQuery.list();
+
+		final Query resQuery = session.createQuery("from ResourceMining x order by x.id asc");
+		this.resourceList = (ArrayList<ResourceMining>) resQuery.list();
+
+		final Query resLogQuery = session.createQuery("from ResourceLogMining x order by x.id asc");
+		this.resourceLogList = (ArrayList<ResourceLogMining>) resLogQuery.list();
+
+		final Query roleQuery = session.createQuery("from RoleMining x order by x.id asc");
+		this.roleList = (ArrayList<RoleMining>) roleQuery.list();
+
+		final Query scormQuery = session.createQuery("from ScormMining x order by x.id asc");
+		this.scormList = (ArrayList<ScormMining>) scormQuery.list();
+
+		final Query scormLogQuery = session.createQuery("from ScormLogMining x order by x.id asc");
+		this.scormLogList = (ArrayList<ScormLogMining>) scormLogQuery.list();
+
+		final Query userQuery = session.createQuery("from UserMining x order by x.id asc");
+		this.userList = (ArrayList<UserMining>) userQuery.list();
+
+		final Query wikQuery = session.createQuery("from WikiMining x order by x.id asc");
+		this.wikiList = (ArrayList<WikiMining>) wikQuery.list();
+
+		final Query wikLogQuery = session.createQuery("from WikiLogMining x order by x.id asc");
+		this.wikiLogList = (ArrayList<WikiLogMining>) wikLogQuery.list();
+
+		this.couAssMap = new HashMap<Long, CourseMining>();
+		this.couForMap = new HashMap<Long, CourseMining>();
+		this.couGroMap = new HashMap<Long, CourseMining>();
+		this.couQuiMap = new HashMap<Long, CourseMining>();
+		this.couResMap = new HashMap<Long, CourseMining>();
+		this.couScoMap = new HashMap<Long, CourseMining>();
+		this.couUseMap = new HashMap<Long, CourseMining>();
+		this.couWikMap = new HashMap<Long, CourseMining>();
+
+		this.degCouMap = new HashMap<Long, LevelMining>();
+		this.depDegMap = new HashMap<Long, LevelMining>();
+
+		for (final CourseAssignmentMining ca : this.courseAssignmentList) {
+			this.couAssMap.put(ca.getAssignment().getId(), ca.getCourse());
+		}
+
+		for (final CourseGroupMining ca : this.courseGroupList) {
+			this.couGroMap.put(ca.getGroup().getId(), ca.getCourse());
+		}
+
+		for (final CourseQuizMining ca : this.courseQuizList) {
+			this.couQuiMap.put(ca.getQuiz().getId(), ca.getCourse());
+		}
+
+		for (final CourseUserMining ca : this.courseUserList) {
+			this.couUseMap.put(ca.getUser().getId(), ca.getCourse());
+		}
+
+		for (final CourseForumMining ca : this.courseForumList) {
+			this.couForMap.put(ca.getForum().getId(), ca.getCourse());
+		}
+
+		for (final CourseResourceMining cr : this.courseResourceList) {
+			this.couResMap.put(cr.getResource().getId(), cr.getCourse());
+		}
+
+		for (final CourseWikiMining cw : this.courseWikiList) {
+			this.couWikMap.put(cw.getWiki().getId(), cw.getCourse());
+		}
+
+		for (final CourseScormMining cs : this.courseScormList) {
+			this.couScoMap.put(cs.getScorm().getId(), cs.getCourse());
+		}
+
+		for (final LevelCourseMining dc : this.degreeCourseList) {
+			this.degCouMap.put(dc.getCourse().getId(), dc.getLevel());
+		}
+
+		for (final LevelAssociationMining dd : this.departmentDegreeList) {
+			this.depDegMap.put(dd.getLower().getId(), dd.getUpper());
+		}
+
+		session.clear();
+		session.close();
+
 	}
-	
+
 	private void generateGroupLMS()
 	{
-		for(GroupMining item : groupList)
+		for (final GroupMining item : this.groupList)
 		{
-			Groups_LMS lms = new Groups_LMS();
+			final Groups_LMS lms = new Groups_LMS();
 			lms.setId(item.getId());
-			lms.setCourseid(couGroMap.get(item.getId()).getId());
+			lms.setCourseid(this.couGroMap.get(item.getId()).getId());
 			lms.setTimecreated(item.getTimeCreated());
 			lms.setTimemodified(item.getTimeModified());
-			
-			group_lms.add(lms);
-			
+
+			TestDataCreatorMoodle.group_lms.add(lms);
+
 		}
 	}
-	
+
 	private void generateGroupMembersLMS()
 	{
-		for(GroupUserMining item : groupUserList)
+		for (final GroupUserMining item : this.groupUserList)
 		{
-			Groups_members_LMS lms = new Groups_members_LMS();
-			
+			final Groups_members_LMS lms = new Groups_members_LMS();
+
 			lms.setId(item.getId());
 			lms.setGroupid(item.getGroup().getId());
 			lms.setUserid(item.getUser().getId());
 			lms.setTimeadded(item.getTimestamp());
-			
-			group_members_lms.add(lms);
+
+			TestDataCreatorMoodle.group_members_lms.add(lms);
 		}
 	}
-	
+
 	private void generateQuizLMS()
 	{
-		HashMap<Long, Long> qQMap = new HashMap<Long, Long>();
-		for(Iterator<CourseQuizMining> iter = courseQuizList.iterator(); iter.hasNext();)
+		final HashMap<Long, Long> qQMap = new HashMap<Long, Long>();
+		for (final Iterator<CourseQuizMining> iter = this.courseQuizList.iterator(); iter.hasNext();)
 		{
-			CourseQuizMining item = iter.next();
+			final CourseQuizMining item = iter.next();
 			qQMap.put(item.getQuiz().getId(), item.getCourse().getId());
 		}
-		for(QuizMining item : quizList)
+		for (final QuizMining item : this.quizList)
 		{
-			Quiz_LMS lms = new Quiz_LMS();
-			Grade_items_LMS lms2 = new Grade_items_LMS();
-			
+			final Quiz_LMS lms = new Quiz_LMS();
+			final Grade_items_LMS lms2 = new Grade_items_LMS();
+
 			lms.setId(item.getId());
 			lms.setCourse(qQMap.get(lms.getId()));
-    		lms.setName(item.getTitle());
-    		lms.setTimeopen(item.getTimeOpen());
-    		lms.setTimeclose(item.getTimeClose());
-    		lms.setTimecreated(item.getTimeCreated());
-    		lms.setTimemodified(item.getTimeModified());
-    		
+			lms.setName(item.getTitle());
+			lms.setTimeopen(item.getTimeOpen());
+			lms.setTimeclose(item.getTimeClose());
+			lms.setTimecreated(item.getTimeCreated());
+			lms.setTimemodified(item.getTimeModified());
 
-    		lms2.setId(grade_items_lms.size() + 1);
-    		lms2.setGrademax(item.getMaxGrade());
-    		lms2.setIteminstance(item.getId());
-    		lms2.setItemmodule("quiz");
-    		
-    		grade_items_lms.add(lms2);
-    		quiz_lms.add(lms);
+			lms2.setId(TestDataCreatorMoodle.grade_items_lms.size() + 1);
+			lms2.setGrademax(item.getMaxGrade());
+			lms2.setIteminstance(item.getId());
+			lms2.setItemmodule("quiz");
+
+			TestDataCreatorMoodle.grade_items_lms.add(lms2);
+			TestDataCreatorMoodle.quiz_lms.add(lms);
 		}
 	}
-	
+
 	private void generateQuestionLMS()
 	{
-		for(QuestionMining item : questionList)
+		for (final QuestionMining item : this.questionList)
 		{
-			Question_LMS lms = new Question_LMS();
-			
+			final Question_LMS lms = new Question_LMS();
+
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
 			lms.setQuestiontext(item.getText());
 			lms.setQtype(item.getType());
 			lms.setTimecreated(item.getTimeCreated());
 			lms.setTimemodified(item.getTimeModified());
-		
-			question_lms.add(lms);
+
+			TestDataCreatorMoodle.question_lms.add(lms);
 		}
 	}
-	
+
 	private void generateQuizQuestionInstancesLMS()
 	{
-		//HashMap<Long, Quiz_question_instances_LMS> tempMap = new HashMap<Long, Quiz_question_instances_LMS>(); 
-		for(QuizQuestionMining item : quizQuestionList)
+		// HashMap<Long, Quiz_question_instances_LMS> tempMap = new HashMap<Long, Quiz_question_instances_LMS>();
+		for (final QuizQuestionMining item : this.quizQuestionList)
 		{
-			Quiz_question_instances_LMS lms = new Quiz_question_instances_LMS();
-			
+			final Quiz_question_instances_LMS lms = new Quiz_question_instances_LMS();
+
 			lms.setId(item.getId());
 			lms.setQuestion(item.getQuestion().getId());
 			lms.setQuiz(item.getQuiz().getId());
 
-			//tempMap.put(lms.getId(), lms);
-			quiz_question_instances_lms.add(lms);
-			
-			
+			// tempMap.put(lms.getId(), lms);
+			TestDataCreatorMoodle.quiz_question_instances_lms.add(lms);
+
 		}
-		//quiz_question_instances_lms.addAll(tempMap.values());
+		// quiz_question_instances_lms.addAll(tempMap.values());
 	}
-	
+
 	private void generateGradeGradesLMS()
 	{
-		for(QuizUserMining item : quizUserList)
+		for (final QuizUserMining item : this.quizUserList)
 		{
-			Grade_grades_LMS lms = new Grade_grades_LMS();
-			
+			final Grade_grades_LMS lms = new Grade_grades_LMS();
+
 			lms.setId(item.getId());
 			lms.setRawgrade(item.getRawGrade());
 			lms.setFinalgrade(item.getFinalGrade());
 			lms.setUserid(item.getUser().getId());
 			lms.setTimemodified(item.getTimeModified());
-			lms.setItemid(grade_items_lms.size() + 1);
-			
-			Grade_items_LMS lms2 = new Grade_items_LMS();
+			lms.setItemid(TestDataCreatorMoodle.grade_items_lms.size() + 1);
+
+			final Grade_items_LMS lms2 = new Grade_items_LMS();
 			lms2.setCourseid(item.getCourse().getId());
 			lms2.setIteminstance(item.getQuiz().getId());
 			lms2.setId(lms.getItemid());
-			
-			grade_items_lms.add(lms2);
-			grade_grades_lms.add(lms);
+
+			TestDataCreatorMoodle.grade_items_lms.add(lms2);
+			TestDataCreatorMoodle.grade_grades_lms.add(lms);
 		}
 	}
-	
+
 	private void generateQuestionStatesLMS()
 	{
-		for(QuestionLogMining item : questionLogList)
+		for (final QuestionLogMining item : this.questionLogList)
 		{
-			Question_states_LMS lms = new Question_states_LMS();
-			
+			final Question_states_LMS lms = new Question_states_LMS();
+
 			lms.setId(item.getId());
 			lms.setAnswer(item.getAnswers());
 			lms.setQuestion(item.getQuestion().getId());
 			lms.setPenalty(item.getPenalty());
 			lms.setTimestamp(item.getTimestamp());
-			
 
-			if(item.getAction().equals("OPEN"))
+			if (item.getAction().equals("OPEN")) {
 				lms.setEvent((short) 0);
-			else if(item.getAction().equals("NAVIGATE"))
+			} else if (item.getAction().equals("NAVIGATE")) {
 				lms.setEvent((short) 1);
-			else if(item.getAction().equals("SAVE"))
+			} else if (item.getAction().equals("SAVE")) {
 				lms.setEvent((short) 2);
-			else if(item.getAction().equals("GRADE"))
+			} else if (item.getAction().equals("GRADE")) {
 				lms.setEvent((short) 3);
-			else if(item.getAction().equals("DUPLICATE"))
+			} else if (item.getAction().equals("DUPLICATE")) {
 				lms.setEvent((short) 4);
-			else if(item.getAction().equals("VALIDATE"))
+			} else if (item.getAction().equals("VALIDATE")) {
 				lms.setEvent((short) 5);
-			else if(item.getAction().equals("CLOSEANDGRADE"))
+			} else if (item.getAction().equals("CLOSEANDGRADE")) {
 				lms.setEvent((short) 6);
-			else if(item.getAction().equals("SUBMIT"))
+			} else if (item.getAction().equals("SUBMIT")) {
 				lms.setEvent((short) 7);
-			else if(item.getAction().equals("CLOSE"))
+			} else if (item.getAction().equals("CLOSE")) {
 				lms.setEvent((short) 8);
-			else if(item.getAction().equals("MANUALGRADE"))
+			} else if (item.getAction().equals("MANUALGRADE")) {
 				lms.setEvent((short) 9);
-			
-			question_states_lms.add(lms);
+			}
+
+			TestDataCreatorMoodle.question_states_lms.add(lms);
 		}
 	}
-	
+
 	public void writeSourceDB()
 	{
-		List<Collection<?>> all = new ArrayList<Collection<?>>();
-		
-		generateUserLMS();
-		generateAssignmentLMS();
-		generateResourceLMS();
-		generateForumLMS();
-		generateCourseLMS();
-		generateGroupLMS();
-		generateRoleLMS();
-		
-		generateScormLMS();
-		generateWikiLMS();
-		generateGroupMembersLMS();
-		generateQuizLMS();
-		generateQuestionLMS();
-		generateQuizQuestionInstancesLMS();
-		generateGradeGradesLMS();
-		generateQuestionStatesLMS();
-		
-		
-		
-		generateLogLMS();
-		generateContextLMS();
-		generateChatLogLMS();
-		
-		
-		all.add(user_lms);
-		all.add(quiz_lms);
-		all.add(quiz_question_instances_lms);
-		all.add(question_lms);
-		all.add(assignment_lms);
-		all.add(chat_lms);
-		all.add(group_members_lms);
-		all.add(group_lms);
-		all.add(resource_lms);
-		all.add(role_lms);
-		
-		all.add(forum_lms);
-		all.add(course_lms);
-		all.add(scorm_lms);
-		all.add(wiki_lms);
-		all.add(chat_log_lms);
-		all.add(log_lms);
-		all.add(forum_posts_lms);
-		all.add(forum_discussions_lms);
-		all.add(context_lms);
-		all.add(course_categories_lms);
-		all.add(role_assignments_lms);
-		all.add(grade_items_lms);
-		all.add(grade_grades_lms);
-		all.add(question_states_lms);
-		all.add(quiz_grades_lms);
-		all.add(assignment_submission_lms);
-		
-		IDBHandler dbHandler = new HibernateDBHandler();
-		Session session = dbHandler.getMiningSession();
+		final List<Collection<?>> all = new ArrayList<Collection<?>>();
+
+		this.generateUserLMS();
+		this.generateAssignmentLMS();
+		this.generateResourceLMS();
+		this.generateForumLMS();
+		this.generateCourseLMS();
+		this.generateGroupLMS();
+		this.generateRoleLMS();
+
+		this.generateScormLMS();
+		this.generateWikiLMS();
+		this.generateGroupMembersLMS();
+		this.generateQuizLMS();
+		this.generateQuestionLMS();
+		this.generateQuizQuestionInstancesLMS();
+		this.generateGradeGradesLMS();
+		this.generateQuestionStatesLMS();
+
+		this.generateLogLMS();
+		this.generateContextLMS();
+		this.generateChatLogLMS();
+
+		all.add(TestDataCreatorMoodle.user_lms);
+		all.add(TestDataCreatorMoodle.quiz_lms);
+		all.add(TestDataCreatorMoodle.quiz_question_instances_lms);
+		all.add(TestDataCreatorMoodle.question_lms);
+		all.add(TestDataCreatorMoodle.assignment_lms);
+		all.add(TestDataCreatorMoodle.chat_lms);
+		all.add(TestDataCreatorMoodle.group_members_lms);
+		all.add(TestDataCreatorMoodle.group_lms);
+		all.add(TestDataCreatorMoodle.resource_lms);
+		all.add(TestDataCreatorMoodle.role_lms);
+
+		all.add(TestDataCreatorMoodle.forum_lms);
+		all.add(TestDataCreatorMoodle.course_lms);
+		all.add(TestDataCreatorMoodle.scorm_lms);
+		all.add(TestDataCreatorMoodle.wiki_lms);
+		all.add(TestDataCreatorMoodle.chat_log_lms);
+		all.add(TestDataCreatorMoodle.log_lms);
+		all.add(TestDataCreatorMoodle.forum_posts_lms);
+		all.add(TestDataCreatorMoodle.forum_discussions_lms);
+		all.add(TestDataCreatorMoodle.context_lms);
+		all.add(TestDataCreatorMoodle.course_categories_lms);
+		all.add(TestDataCreatorMoodle.role_assignments_lms);
+		all.add(TestDataCreatorMoodle.grade_items_lms);
+		all.add(TestDataCreatorMoodle.grade_grades_lms);
+		all.add(TestDataCreatorMoodle.question_states_lms);
+		all.add(TestDataCreatorMoodle.quiz_grades_lms);
+		all.add(TestDataCreatorMoodle.assignment_submission_lms);
+
+		final IDBHandler dbHandler = new HibernateDBHandler();
+		final Session session = dbHandler.getMiningSession();
 		dbHandler.saveCollectionToDB(session, all);
 		dbHandler.closeSession(session);
 	}

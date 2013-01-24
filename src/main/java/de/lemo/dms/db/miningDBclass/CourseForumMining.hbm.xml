@@ -5,33 +5,22 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.db.miningDBclass.CourseForumMining"
-        table="course_forum">
+	<class name="de.lemo.dms.db.miningDBclass.CourseForumMining"
+		table="course_forum">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-           
-		<many-to-one 
-       		name="course" 
-       		class="de.lemo.dms.db.miningDBclass.CourseMining"
-       		cascade="save-update" 
-            column="course_id" />
-            
-		<many-to-one 
-       		name="forum" 
-       		class="de.lemo.dms.db.miningDBclass.ForumMining"
-       		cascade="save-update" 
-            column="forum_id" />
+		<id name="id" column="id" type="long">
+		</id>
 
-    </class>
+		<property name="platform" column="platform" type="long" />
+
+		<many-to-one name="course"
+			class="de.lemo.dms.db.miningDBclass.CourseMining" cascade="save-update"
+			column="course_id" />
+
+		<many-to-one name="forum"
+			class="de.lemo.dms.db.miningDBclass.ForumMining" cascade="save-update"
+			column="forum_id" />
+
+	</class>
 
 </hibernate-mapping>

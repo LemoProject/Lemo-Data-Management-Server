@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Chat_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
 public class Chat_LMS {
@@ -8,41 +15,52 @@ public class Chat_LMS {
 	private long chattime;
 	private long timemodified;
 	private long course;
-	
+
 	public long getCourse() {
-		return course;
+		return this.course;
 	}
-	public void setCourse(long course) {
+
+	public void setCourse(final long course) {
 		this.course = course;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
-	public void setTitle(String title) {
+
+	public void setTitle(final String title) {
 		this.title = title;
 	}
+
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
-	public void setDescription(String description) {
+
+	public void setDescription(final String description) {
 		this.description = description;
 	}
+
 	public long getChattime() {
-		return chattime;
+		return this.chattime;
 	}
-	public void setChattime(long chattime) {
+
+	public void setChattime(final long chattime) {
 		this.chattime = chattime;
-	}	
+	}
 }

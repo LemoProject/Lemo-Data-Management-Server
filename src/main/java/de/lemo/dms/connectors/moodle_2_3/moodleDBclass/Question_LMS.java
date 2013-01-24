@@ -1,7 +1,14 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Question_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Question_LMS {
-	
+
 	private long id;
 	private long category;
 	private String name;
@@ -9,47 +16,60 @@ public class Question_LMS {
 	private String qtype;
 	private long timecreated;
 	private long timemodified;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getCategory() {
-		return category;
+		return this.category;
 	}
-	public void setCategory(long category) {
+
+	public void setCategory(final long category) {
 		this.category = category;
 	}
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	public void setName(String name) {
+
+	public void setName(final String name) {
 		this.name = name;
 	}
+
 	public String getQuestiontext() {
-		return questiontext;
+		return this.questiontext;
 	}
-	public void setQuestiontext(String questiontext) {
+
+	public void setQuestiontext(final String questiontext) {
 		this.questiontext = questiontext;
 	}
+
 	public String getQtype() {
-		return qtype;
+		return this.qtype;
 	}
-	public void setQtype(String qtype) {
+
+	public void setQtype(final String qtype) {
 		this.qtype = qtype;
 	}
+
 	public long getTimecreated() {
-		return timecreated;
+		return this.timecreated;
 	}
-	public void setTimecreated(long timecreated) {
+
+	public void setTimecreated(final long timecreated) {
 		this.timecreated = timecreated;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
 }

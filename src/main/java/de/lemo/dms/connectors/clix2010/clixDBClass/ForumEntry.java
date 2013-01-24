@@ -1,8 +1,15 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/ForumEntry.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class ForumEntry  implements IClixMappingClass{
+public class ForumEntry implements IClixMappingClass {
 
 	private Long id;
 	private Long forum;
@@ -10,68 +17,68 @@ public class ForumEntry  implements IClixMappingClass{
 	private String lastUpdated;
 	private String title;
 	private String content;
-	
+
 	public ForumEntry()
-	{}
-	
+	{
+	}
+
 	public String getString()
 	{
 		return "ForumEntry$$$"
-				+this.id+"$$$"
-				+this.getContent()+"$$$"
-				+this.getForum()+"$$$"
-				+this.getLastUpdated()+"$$$"
-				+this.getTitle()+"$$$"
-				+this.getLastUpdater();
+				+ this.id + "$$$"
+				+ this.getContent() + "$$$"
+				+ this.getForum() + "$$$"
+				+ this.getLastUpdated() + "$$$"
+				+ this.getTitle() + "$$$"
+				+ this.getLastUpdater();
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
 	public long getForum() {
-		return forum;
+		return this.forum;
 	}
 
-	public void setForum(Long forum) {
+	public void setForum(final Long forum) {
 		this.forum = forum;
 	}
 
 	public Long getLastUpdater() {
-		return lastUpdater;
+		return this.lastUpdater;
 	}
 
-	public void setLastUpdater(Long lastUpdater) {
+	public void setLastUpdater(final Long lastUpdater) {
 		this.lastUpdater = lastUpdater;
 	}
 
 	public String getLastUpdated() {
-		return lastUpdated;
+		return this.lastUpdated;
 	}
 
-	public void setLastUpdated(String lastUpdated) {
+	public void setLastUpdated(final String lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
-	public void setContent(String content) {
+	public void setContent(final String content) {
 		this.content = content;
 	}
-	
-	
+
 }

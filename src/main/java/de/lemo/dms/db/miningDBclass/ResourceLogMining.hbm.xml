@@ -5,54 +5,32 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.db.miningDBclass.ResourceLogMining"
-        table="resource_log">
+	<class name="de.lemo.dms.db.miningDBclass.ResourceLogMining"
+		table="resource_log">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-             
-        <property
-            name="action"
-            column="action"
-            type="string"/>
-  
-        <property
-            name="timestamp"
-            column="timestamp"
-            type="long"/>
-            
-        <property
-            name="duration"
-            column="duration"
-            type="long"/>   
-         
-		<many-to-one 
-       		name="course" 
-       		class="de.lemo.dms.db.miningDBclass.CourseMining"
-       		cascade="save-update" 
-            column="course_id" />
+		<id name="id" column="id" type="long">
+		</id>
 
-		<many-to-one 
-       		name="resource" 
-       		class="de.lemo.dms.db.miningDBclass.ResourceMining"
-       		cascade="save-update" 
-            column="resource_id" />
+		<property name="platform" column="platform" type="long" />
 
-       <many-to-one 
-       		name="user" 
-       		class="de.lemo.dms.db.miningDBclass.UserMining"
-       		cascade="save-update" 
-            column="user_id" />
-                
-    </class>
-    
+		<property name="action" column="action" type="string" />
+
+		<property name="timestamp" column="timestamp" type="long" />
+
+		<property name="duration" column="duration" type="long" />
+
+		<many-to-one name="course"
+			class="de.lemo.dms.db.miningDBclass.CourseMining" cascade="save-update"
+			column="course_id" />
+
+		<many-to-one name="resource"
+			class="de.lemo.dms.db.miningDBclass.ResourceMining" cascade="save-update"
+			column="resource_id" />
+
+		<many-to-one name="user"
+			class="de.lemo.dms.db.miningDBclass.UserMining" cascade="save-update"
+			column="user_id" />
+
+	</class>
+
 </hibernate-mapping>

@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/core/DMSRemoteServer.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.core;
 
 import java.io.IOException;
@@ -13,51 +20,52 @@ import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
  */
 public enum DMSRemoteServer {
 
-    INSTANCE;
+	INSTANCE;
 
-    private int port = 8081;
-    private String host = "localhost";
-    private Logger logger = Logger.getLogger(getClass());
-    private HttpServer server;
+	private final int port = 8081;
+	private final String host = "localhost";
+	private final Logger logger = Logger.getLogger(this.getClass());
+	private HttpServer server;
 
-    /**
-     * Stop it.
-     */
-    private void stop() {
-        if(server != null) {
-            server.stop();
-            logger.info("remote server stopped...");
-            server = null;
-        }
-    }
+	/**
+	 * Stop it.
+	 */
+	private void stop() {
+		if (this.server != null) {
+			this.server.stop();
+			this.logger.info("remote server stopped...");
+			this.server = null;
+		}
+	}
 
-    /**
-     * Stop and start the server again.
-     * 
-     * @throws IllegalArgumentException
-     * @throws IOException
-     */
-    protected void restart() throws IOException {
-        this.stop();
-        this.start();
-    }
+	/**
+	 * Stop and start the server again.
+	 * 
+	 * @throws IllegalArgumentException
+	 * @throws IOException
+	 */
+	protected void restart() throws IOException {
+		this.stop();
+		this.start();
+	}
 
-    /**
-     * Start and initialize the server if it isn't already running.
-     * 
-     * @throws IllegalArgumentException
-     * @throws IOException
-     */
-    protected void start() throws IOException {
-        if(server == null) {
-            server = GrizzlyServerFactory.createHttpServer("http://" + host + ":" + port, new DMSResourceConfig());
-            server.start();
-            
-            Version v  = new Version();
-            logger.info("DMS started on " + host + ":" + port + ", Version: " + v.getServerVersion());
-        }
-        else {
-            logger.info("DMS already running on " + host + ":" + port);
-        }
-    }
+	/**
+	 * Start and initialize the server if it isn't already running.
+	 * 
+	 * @throws IllegalArgumentException
+	 * @throws IOException
+	 */
+	protected void start() throws IOException {
+		if (this.server == null) {
+			this.server = GrizzlyServerFactory.createHttpServer("http://" + this.host + ":" + this.port,
+					new DMSResourceConfig());
+			this.server.start();
+
+			final Version v = new Version();
+			this.logger.info("DMS started on " + this.host + ":" + this.port + ", Version: " + v.getServerVersion());
+		}
+		else {
+			this.logger.info("DMS already running on " + this.host + ":" + this.port);
+		}
+	}
 }

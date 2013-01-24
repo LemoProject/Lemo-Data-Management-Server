@@ -5,36 +5,21 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.CourseCategories_LMS"
-        table="mdl_course_categories">
+	<class
+		name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.CourseCategories_LMS"
+		table="mdl_course_categories">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="title"
-            column="name"
-            type="string"/>
-            
-        <property
-            name="path"
-            column="path"
-            type="string"/>
+		<property name="title" column="name" type="string" />
 
-        <property
-            name="depth"
-            column="depth"
-            type="long"/>
-            
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>
+		<property name="path" column="path" type="string" />
 
-    </class>
+		<property name="depth" column="depth" type="long" />
+
+		<property name="timemodified" column="timemodified" type="long" />
+
+	</class>
 
 </hibernate-mapping>

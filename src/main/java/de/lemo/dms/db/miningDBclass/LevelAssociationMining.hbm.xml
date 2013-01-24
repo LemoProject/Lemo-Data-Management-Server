@@ -4,36 +4,25 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.LevelAssociationMining"
-        table="level_association">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-                                     
+	<class name="de.lemo.dms.db.miningDBclass.LevelAssociationMining"
+		table="level_association">
 
-		<many-to-one 
-       		name="upper" 
-       		class="de.lemo.dms.db.miningDBclass.LevelMining"
-       		cascade="save-update" 
-            column="upper_id" />
-            
-       <many-to-one 
-       		name="lower" 
-       		class="de.lemo.dms.db.miningDBclass.LevelMining"
-       		cascade="save-update" 
-            column="lower_id" />            
+		<id name="id" column="id" type="long">
+		</id>
 
-                
-    </class>
+		<property name="platform" column="platform" type="long" />
+
+
+		<many-to-one name="upper"
+			class="de.lemo.dms.db.miningDBclass.LevelMining" cascade="save-update"
+			column="upper_id" />
+
+		<many-to-one name="lower"
+			class="de.lemo.dms.db.miningDBclass.LevelMining" cascade="save-update"
+			column="lower_id" />
+
+
+	</class>
 
 </hibernate-mapping>

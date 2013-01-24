@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/db/hibernate/MiningHibernateUtil.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.hibernate;
 
 import java.util.Map.Entry;
@@ -12,8 +19,8 @@ public class MiningHibernateUtil {
 
 	private static SessionFactory sessionFactory;
 
-	public static void initSessionFactory(DBConfigObject dbConfig) {
-		sessionFactory = createSessionFactory(dbConfig);
+	public static void initSessionFactory(final DBConfigObject dbConfig) {
+		MiningHibernateUtil.sessionFactory = MiningHibernateUtil.createSessionFactory(dbConfig);
 	}
 
 	/**
@@ -22,17 +29,17 @@ public class MiningHibernateUtil {
 	 * @return a session Factory for Mining DB sessions
 	 */
 	public static SessionFactory getSessionFactory() {
-		if (sessionFactory == null) {
+		if (MiningHibernateUtil.sessionFactory == null) {
 			throw new IllegalStateException("No mining config set.");
 		}
-		return sessionFactory;
+		return MiningHibernateUtil.sessionFactory;
 	}
 
-	private static SessionFactory createSessionFactory(DBConfigObject dbConfig) {
-		Configuration config = new Configuration();
+	private static SessionFactory createSessionFactory(final DBConfigObject dbConfig) {
+		final Configuration config = new Configuration();
 
 		// add properties from files
-		for (Entry<String, String> entry : dbConfig.getProperties().entrySet()) {
+		for (final Entry<String, String> entry : dbConfig.getProperties().entrySet()) {
 			config.setProperty(entry.getKey(), entry.getValue());
 		}
 

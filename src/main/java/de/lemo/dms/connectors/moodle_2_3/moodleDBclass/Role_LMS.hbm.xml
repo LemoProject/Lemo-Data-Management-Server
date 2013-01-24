@@ -4,37 +4,21 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Role_LMS"
-        table="mdl_role">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+	<class name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Role_LMS"
+		table="mdl_role">
 
-        <property
-            name="name"
-            column="name"
-            type="string"/>
-            
-        <property
-            name="shortname"
-            column="shortname"
-            type="string"/>
-                        
-        <property
-            name="description"
-            column="description"
-            type="text"/>
-            
-        <property
-            name="sortorder"
-            column="sortorder"
-            type="long"/>
-                
-    </class>
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="name" column="name" type="string" />
+
+		<property name="shortname" column="shortname" type="string" />
+
+		<property name="description" column="description" type="text" />
+
+		<property name="sortorder" column="sortorder" type="long" />
+
+	</class>
 
 </hibernate-mapping>

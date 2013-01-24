@@ -1,6 +1,14 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Log_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Log_LMS {
+
 	private long id;
 	private long time;
 	private long userid;
@@ -9,53 +17,68 @@ public class Log_LMS {
 	private String module;
 	private String action;
 	private String info;
-	
+
 	public String getModule() {
-		return module;
+		return this.module;
 	}
-	public void setModule(String module) {
+
+	public void setModule(final String module) {
 		this.module = module;
 	}
+
 	public String getAction() {
-		return action;
+		return this.action;
 	}
-	public void setAction(String action) {
+
+	public void setAction(final String action) {
 		this.action = action;
 	}
+
 	public String getInfo() {
-		return info;
+		return this.info;
 	}
-	public void setInfo(String info) {
+
+	public void setInfo(final String info) {
 		this.info = info;
 	}
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getTime() {
-		return time;
+		return this.time;
 	}
-	public void setTime(long time) {
+
+	public void setTime(final long time) {
 		this.time = time;
 	}
+
 	public long getUserid() {
-		return userid;
+		return this.userid;
 	}
-	public void setUserid(long userid) {
+
+	public void setUserid(final long userid) {
 		this.userid = userid;
 	}
+
 	public long getCourse() {
-		return course;
+		return this.course;
 	}
-	public void setCourse(long course) {
+
+	public void setCourse(final long course) {
 		this.course = course;
 	}
-	public void setCmid(long cmid) {
+
+	public void setCmid(final long cmid) {
 		this.cmid = cmid;
 	}
+
 	public long getCmid() {
-		return cmid;
+		return this.cmid;
 	}
 }

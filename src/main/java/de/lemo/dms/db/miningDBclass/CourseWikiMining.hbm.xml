@@ -4,34 +4,23 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.CourseWikiMining"
-        table="course_wiki">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-                
-       <many-to-one 
-       		name="course" 
-       		class="de.lemo.dms.db.miningDBclass.CourseMining"
-       		cascade="save-update" 
-            column="course_id" />
-            
-       <many-to-one 
-       		name="wiki" 
-       		class="de.lemo.dms.db.miningDBclass.WikiMining"
-       		cascade="save-update" 
-            column="wiki_id" />
-                                            
-    </class>
+	<class name="de.lemo.dms.db.miningDBclass.CourseWikiMining"
+		table="course_wiki">
+
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="platform" column="platform" type="long" />
+
+		<many-to-one name="course"
+			class="de.lemo.dms.db.miningDBclass.CourseMining" cascade="save-update"
+			column="course_id" />
+
+		<many-to-one name="wiki"
+			class="de.lemo.dms.db.miningDBclass.WikiMining" cascade="save-update"
+			column="wiki_id" />
+
+	</class>
 
 </hibernate-mapping>

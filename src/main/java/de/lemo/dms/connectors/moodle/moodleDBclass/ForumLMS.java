@@ -1,56 +1,76 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle/moodleDBclass/ForumLMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
 public class ForumLMS {
 
 	private long id;
 	private long course;
-//	private String type; //enum('single','news','general','social','eachuser','teacher','qanda')
+	// private String type; //enum('single','news','general','social','eachuser','teacher','qanda')
 	private String name;
 	private String intro;
 	private long assesstimestart;
 	private long assesstimefinish;
 	private long timemodified;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getCourse() {
-		return course;
+		return this.course;
 	}
-	public void setCourse(long course) {
+
+	public void setCourse(final long course) {
 		this.course = course;
 	}
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	public void setName(String name) {
+
+	public void setName(final String name) {
 		this.name = name;
 	}
+
 	public String getIntro() {
-		return intro;
+		return this.intro;
 	}
-	public void setIntro(String intro) {
+
+	public void setIntro(final String intro) {
 		this.intro = intro;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
+
 	public long getAssesstimestart() {
-		return assesstimestart;
+		return this.assesstimestart;
 	}
-	public void setAssesstimestart(long assesstimestart) {
+
+	public void setAssesstimestart(final long assesstimestart) {
 		this.assesstimestart = assesstimestart;
 	}
+
 	public long getAssesstimefinish() {
-		return assesstimefinish;
+		return this.assesstimefinish;
 	}
-	public void setAssesstimefinish(long assesstimetfinish) {
+
+	public void setAssesstimefinish(final long assesstimetfinish) {
 		this.assesstimefinish = assesstimetfinish;
 	}
 }

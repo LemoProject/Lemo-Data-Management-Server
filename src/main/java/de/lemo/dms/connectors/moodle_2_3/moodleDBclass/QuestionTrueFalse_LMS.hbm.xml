@@ -5,36 +5,21 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.QuestionTrueFalse_LMS"
-        table="mdl_question_truefalse">
+	<class
+		name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.QuestionTrueFalse_LMS"
+		table="mdl_question_truefalse">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-                  </id>
-  
-        <property
-            name="question"
-            column="question"
-            type="long"/>
-            
-        <property
-            name="questiontext"
-            column="questiontext"
-            type="string"/>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="trueanswer"
-            column="trueanswer"
-            type="long"/>
-            
-        <property
-            name="falseanswer"
-            column="falseanswer"
-            type="long"/>
-  
-    </class>
+		<property name="question" column="question" type="long" />
+
+		<property name="questiontext" column="questiontext" type="string" />
+
+		<property name="trueanswer" column="trueanswer" type="long" />
+
+		<property name="falseanswer" column="falseanswer" type="long" />
+
+	</class>
 
 </hibernate-mapping>

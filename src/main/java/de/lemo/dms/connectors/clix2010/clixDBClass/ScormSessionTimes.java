@@ -1,8 +1,15 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/ScormSessionTimes.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class ScormSessionTimes  implements IClixMappingClass{
+public class ScormSessionTimes implements IClixMappingClass {
 
 	private ScormSessionTimesPK id;
 
@@ -11,70 +18,68 @@ public class ScormSessionTimes  implements IClixMappingClass{
 	private String score;
 	private String lastUpdated;
 	private String status;
-	
+
 	public ScormSessionTimesPK getId() {
-		return id;
+		return this.id;
 	}
-	
+
 	public String getString()
 	{
 		return "ScormSessionTimes$$$"
-				+this.getLastUpdated()+"$$$"
-				+this.getScore()+"$$$"
-				+this.getStatus()+"$$$"
-				+this.getComponent()+"$$$"
-				+this.getPerson();
+				+ this.getLastUpdated() + "$$$"
+				+ this.getScore() + "$$$"
+				+ this.getStatus() + "$$$"
+				+ this.getComponent() + "$$$"
+				+ this.getPerson();
 	}
 
-	public void setId(ScormSessionTimesPK id) {
+	public void setId(final ScormSessionTimesPK id) {
 		this.id = id;
 	}
 
 	public ScormSessionTimes()
 	{
-		
+
 	}
 
 	public Long getComponent() {
-		return component;
+		return this.component;
 	}
 
-	public void setComponent(Long component) {
+	public void setComponent(final Long component) {
 		this.component = component;
 	}
 
 	public Long getPerson() {
-		return person;
+		return this.person;
 	}
 
-	public void setPerson(Long person) {
+	public void setPerson(final Long person) {
 		this.person = person;
 	}
 
 	public String getScore() {
-		return score;
+		return this.score;
 	}
 
-	public void setScore(String score) {
+	public void setScore(final String score) {
 		this.score = score;
 	}
 
 	public String getLastUpdated() {
-		return lastUpdated;
+		return this.lastUpdated;
 	}
 
-	public void setLastUpdated(String lastUpdated) {
+	public void setLastUpdated(final String lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
 
 	public String getStatus() {
-		return status;
+		return this.status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(final String status) {
 		this.status = status;
 	}
-	
-	
-	
+
 }

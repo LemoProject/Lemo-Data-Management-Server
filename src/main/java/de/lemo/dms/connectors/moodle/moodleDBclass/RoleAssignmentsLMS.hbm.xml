@@ -5,51 +5,26 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle.moodleDBclass.RoleAssignmentsLMS"
-        table="role_assignments">
+	<class name="de.lemo.dms.connectors.moodle.moodleDBclass.RoleAssignmentsLMS"
+		table="role_assignments">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="roleid"
-            column="roleid"
-            type="long"/>
+		<property name="roleid" column="roleid" type="long" />
 
-        <property
-            name="contextid"
-            column="contextid"
-            type="long"/>
+		<property name="contextid" column="contextid" type="long" />
 
-        <property
-            name="userid"
-            column="userid"
-            type="string"/>    
+		<property name="userid" column="userid" type="string" />
 
-        <property
-            name="timestart"
-            column="timestart"
-            type="long"/>
-            
-        <property
-            name="timeend"
-            column="timeend"
-            type="long"/>
+		<property name="timestart" column="timestart" type="long" />
 
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>
+		<property name="timeend" column="timeend" type="long" />
 
-        <property
-            name="modifierid"
-            column="modifierid"
-            type="long"/>
+		<property name="timemodified" column="timemodified" type="long" />
 
-    </class>
+		<property name="modifierid" column="modifierid" type="long" />
+
+	</class>
 
 </hibernate-mapping>

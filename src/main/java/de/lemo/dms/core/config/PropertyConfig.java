@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/core/config/PropertyConfig.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.core.config;
 
 import javax.xml.bind.annotation.XmlAttribute;

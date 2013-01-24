@@ -4,39 +4,24 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.GroupUserMining"
-        table="group_user">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-           
-        <property
-            name="timestamp"
-            column="timestamp"
-            type="long"/>
+	<class name="de.lemo.dms.db.miningDBclass.GroupUserMining" table="group_user">
 
-       <many-to-one 
-       		name="group" 
-       		class="de.lemo.dms.db.miningDBclass.GroupMining"
-       		cascade="save-update" 
-            column="group_id" />            
+		<id name="id" column="id" type="long">
+		</id>
 
-       <many-to-one 
-       		name="user" 
-       		class="de.lemo.dms.db.miningDBclass.UserMining"
-       		cascade="save-update" 
-            column="user_id" />
-                
-    </class>
+		<property name="platform" column="platform" type="long" />
+
+		<property name="timestamp" column="timestamp" type="long" />
+
+		<many-to-one name="group"
+			class="de.lemo.dms.db.miningDBclass.GroupMining" cascade="save-update"
+			column="group_id" />
+
+		<many-to-one name="user"
+			class="de.lemo.dms.db.miningDBclass.UserMining" cascade="save-update"
+			column="user_id" />
+
+	</class>
 
 </hibernate-mapping>

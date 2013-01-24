@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/core/DMSServletContextListener.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.core;
 
 import java.util.Date;
@@ -18,22 +25,22 @@ public class DMSServletContextListener implements ServletContextListener {
 	private Logger logger;
 
 	@Override
-	public void contextInitialized(ServletContextEvent sce) {
-		ServletContext servletContext = sce.getServletContext();
-		ServerConfiguration config = ServerConfiguration.getInstance();
+	public void contextInitialized(final ServletContextEvent sce) {
+		final ServletContext servletContext = sce.getServletContext();
+		final ServerConfiguration config = ServerConfiguration.getInstance();
 
-		logger = Logger.getLogger(getClass());
-		logger.info("Context initialized");
-		logger.info("ServerInfo:  " + servletContext.getServerInfo());
-		logger.info("ContextPath: " + servletContext.getContextPath());
+		this.logger = Logger.getLogger(this.getClass());
+		this.logger.info("Context initialized");
+		this.logger.info("ServerInfo:  " + servletContext.getServerInfo());
+		this.logger.info("ContextPath: " + servletContext.getContextPath());
 
 		config.loadConfig(servletContext.getContextPath());
 		config.setStartTime(new Date().getTime());
 	}
 
 	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
-		logger.info("Context destroyed");
+	public void contextDestroyed(final ServletContextEvent sce) {
+		this.logger.info("Context destroyed");
 	}
 
 }

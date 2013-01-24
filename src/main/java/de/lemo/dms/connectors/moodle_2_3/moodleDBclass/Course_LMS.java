@@ -1,7 +1,14 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Course_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Course_LMS {
-	
+
 	private long id;
 	private String fullname;
 	private String summary;
@@ -12,65 +19,84 @@ public class Course_LMS {
 	private long enrolstartdate;
 	private long enrolenddate;
 	private long enrolperiod;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public String getFullname() {
-		return fullname;
+		return this.fullname;
 	}
-	public void setFullname(String fullname) {
+
+	public void setFullname(final String fullname) {
 		this.fullname = fullname;
 	}
+
 	public String getSummary() {
-		return summary;
+		return this.summary;
 	}
-	public void setSummary(String summary) {
+
+	public void setSummary(final String summary) {
 		this.summary = summary;
 	}
+
 	public long getTimecreated() {
-		return timecreated;
+		return this.timecreated;
 	}
-	public void setTimecreated(long timecreated) {
+
+	public void setTimecreated(final long timecreated) {
 		this.timecreated = timecreated;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
+
 	public long getEnrolstartdate() {
-		return enrolstartdate;
+		return this.enrolstartdate;
 	}
-	public void setEnrolstartdate(long enrolstartdate) {
+
+	public void setEnrolstartdate(final long enrolstartdate) {
 		this.enrolstartdate = enrolstartdate;
 	}
+
 	public long getEnrolenddate() {
-		return enrolenddate;
+		return this.enrolenddate;
 	}
-	public void setEnrolenddate(long enrolenddate) {
+
+	public void setEnrolenddate(final long enrolenddate) {
 		this.enrolenddate = enrolenddate;
 	}
+
 	public long getStartdate() {
-		return startdate;
+		return this.startdate;
 	}
-	public void setStartdate(long startdate) {
+
+	public void setStartdate(final long startdate) {
 		this.startdate = startdate;
 	}
+
 	public long getEnrolperiod() {
-		return enrolperiod;
+		return this.enrolperiod;
 	}
-	public void setEnrolperiod(long enrolperiod) {
+
+	public void setEnrolperiod(final long enrolperiod) {
 		this.enrolperiod = enrolperiod;
 	}
-	public void setShortname(String shortname) {
+
+	public void setShortname(final String shortname) {
 		this.shortname = shortname;
 	}
+
 	public String getShortname() {
-		return shortname;
+		return this.shortname;
 	}
 }

@@ -5,44 +5,30 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.EComponentType"
-        table="E_COMPONENTTYPE">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.EComponentType"
+		table="E_COMPONENTTYPE">
 
 
-       	<composite-id
-       	name="id"
-        class="de.lemo.dms.connectors.clix2010.clixDBClass.EComponentTypePK" >
-       
-        <key-property name="component" column="COMPONENTTYPE_ID" type="long" />
-        <key-property name="language" column="LANGUAGE_ID" type="long"/>
-       
-       </composite-id> 
+		<composite-id name="id"
+			class="de.lemo.dms.connectors.clix2010.clixDBClass.EComponentTypePK">
 
-        <property
-            name="component"
-            insert="false" 
-            update="false" 
-            column="COMPONENTTYPE_ID"
-            type="long"/>
-            
-        <property
-            name="language"
-            insert="false" 
-            update="false" 
-            column="LANGUAGE_ID"
-            type="long"/>          
+			<key-property name="component" column="COMPONENTTYPE_ID"
+				type="long" />
+			<key-property name="language" column="LANGUAGE_ID" type="long" />
 
-        <property
-            name="characteristic"
-            column="CHARACTERISTIC_ID"
-            type="long"/>          
+		</composite-id>
 
-        <property
-            name="uploadDir"
-            column="UPLOADDIRECTORY"
-            type="string"/>
-            
-    </class>
+		<property name="component" insert="false" update="false"
+			column="COMPONENTTYPE_ID" type="long" />
+
+		<property name="language" insert="false" update="false"
+			column="LANGUAGE_ID" type="long" />
+
+		<property name="characteristic" column="CHARACTERISTIC_ID"
+			type="long" />
+
+		<property name="uploadDir" column="UPLOADDIRECTORY" type="string" />
+
+	</class>
 
 </hibernate-mapping>

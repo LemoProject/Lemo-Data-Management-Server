@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/abstractions/ILogMining.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.miningDBclass.abstractions;
 
 import de.lemo.dms.db.miningDBclass.CourseMining;
@@ -5,26 +12,26 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 
 public interface ILogMining extends Comparable<ILogMining> {
 
-    long getId();
+	long getId();
 
-    long getTimestamp();
+	long getTimestamp();
 
-    UserMining getUser();
+	UserMining getUser();
 
-    CourseMining getCourse();
+	CourseMining getCourse();
 
-    String getAction();
+	String getAction();
 
-    String getTitle();
+	String getTitle();
 
-    Long getLearnObjId();
+	Long getLearnObjId();
 
-    Long getDuration();
+	Long getDuration();
 
-    void setDuration(Long duration);
+	void setDuration(Long duration);
 
-    Long getPrefix();
+	Long getPrefix();
 
-    void setId(long id);
+	void setId(long id);
 
 }

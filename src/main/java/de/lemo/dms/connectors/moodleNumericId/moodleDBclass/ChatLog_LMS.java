@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/ChatLog_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
 public class ChatLog_LMS {
@@ -7,40 +14,45 @@ public class ChatLog_LMS {
 	private long user_Id;
 	private String message;
 	private long timestamp;
-	
-	
-	
-	
+
 	public long getUser_Id() {
-		return user_Id;
+		return this.user_Id;
 	}
-	public void setUser_Id(long userid) {
+
+	public void setUser_Id(final long userid) {
 		this.user_Id = userid;
 	}
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getChat_Id() {
-		return chat_Id;
+		return this.chat_Id;
 	}
-	public void setChat_Id(long chat_id) {
+
+	public void setChat_Id(final long chat_id) {
 		this.chat_Id = chat_id;
 	}
+
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
-	public void setMessage(String message) {
+
+	public void setMessage(final String message) {
 		this.message = message;
 	}
+
 	public long getTimestamp() {
-		return timestamp;
+		return this.timestamp;
 	}
-	public void setTimestamp(long timestamp) {
+
+	public void setTimestamp(final long timestamp) {
 		this.timestamp = timestamp;
 	}
-	
-	
+
 }

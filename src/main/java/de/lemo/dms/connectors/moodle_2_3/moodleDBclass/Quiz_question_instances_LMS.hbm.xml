@@ -5,26 +5,17 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Quiz_question_instances_LMS"
-        table="mdl_quiz_question_instances">
+	<class
+		name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Quiz_question_instances_LMS"
+		table="mdl_quiz_question_instances">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="quiz"
-            column="quiz"
-            type="long"/>
-            
-        <property
-            name="question"
-            column="question"
-            type="long"/>
+		<property name="quiz" column="quiz" type="long" />
 
-    </class>
+		<property name="question" column="question" type="long" />
+
+	</class>
 
 </hibernate-mapping>

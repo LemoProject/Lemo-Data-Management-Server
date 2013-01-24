@@ -5,61 +5,40 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalised"
-        table="EXERCISE_PERSONALISED">
+	<class
+		name="de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalised"
+		table="EXERCISE_PERSONALISED">
 
 
-		<composite-id
-       	name="id"
-        class="de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalisedPK" >
-       
-        <key-property name="exercise" column="EXERCISE_ID" type="long" />
-        <key-property name="user" column="USER_ID" type="long"/>
-        <key-property name="community" column="COMMUNITY_ID" type="long" />
-        <key-property name="exerciseSheet" column="EXERCISESHEET_ID" type="long"/>
-       
-       </composite-id> 
-       
-        <property
-            name="exercise"
-            insert="false" 
-            update="false" 
-            column="EXERCISE_ID"
-            type="long"/>
+		<composite-id name="id"
+			class="de.lemo.dms.connectors.clix2010.clixDBClass.ExercisePersonalisedPK">
 
-        <property
-            name="user"
-            insert="false" 
-            update="false" 
-            column="USER_ID"
-            type="long"/>
-            
-                    <property
-            name="community"
-            insert="false" 
-            update="false" 
-            column="COMMUNITY_ID"
-            type="long"/>
+			<key-property name="exercise" column="EXERCISE_ID" type="long" />
+			<key-property name="user" column="USER_ID" type="long" />
+			<key-property name="community" column="COMMUNITY_ID"
+				type="long" />
+			<key-property name="exerciseSheet" column="EXERCISESHEET_ID"
+				type="long" />
 
-        <property
-            name="exerciseSheet"
-            insert="false" 
-            update="false" 
-            column="EXERCISESHEET_ID"
-            type="long"/>
+		</composite-id>
 
-        <property
-            name="points"
-            column="POINTS"
-            type="long"/>
+		<property name="exercise" insert="false" update="false"
+			column="EXERCISE_ID" type="long" />
 
-            
-        <property
-            name="uploadDate"
-            column="UPLOAD_DATE"
-            type="string"/>         
+		<property name="user" insert="false" update="false" column="USER_ID"
+			type="long" />
 
-    </class>
+		<property name="community" insert="false" update="false"
+			column="COMMUNITY_ID" type="long" />
+
+		<property name="exerciseSheet" insert="false" update="false"
+			column="EXERCISESHEET_ID" type="long" />
+
+		<property name="points" column="POINTS" type="long" />
+
+
+		<property name="uploadDate" column="UPLOAD_DATE" type="string" />
+
+	</class>
 
 </hibernate-mapping>

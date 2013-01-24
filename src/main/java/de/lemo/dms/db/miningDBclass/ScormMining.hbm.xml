@@ -4,71 +4,42 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.ScormMining"
-        table="scorm">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-                   
-       <property
-            name="type"
-            column="type"
-            type="string"/>
-        
-        <property
-            name="title"
-            column="title"
-            type="string"/>
-            
-        <property
-            name="maxGrade"
-            column="maxgrade"
-            type="double"/>
+	<class name="de.lemo.dms.db.miningDBclass.ScormMining" table="scorm">
 
-        <property
-            name="timeOpen"
-            column="timeopen"
-            type="long"/>
-            
-        <property
-            name="timeClose"
-            column="timeclose"
-            type="long"/>
-            
-        <property
-            name="timeCreated"
-            column="timecreated"
-            type="long"/>
-               
-        <property
-            name="timeModified"
-            column="timemodified"
-            type="long"/>
-            
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="platform" column="platform" type="long" />
+
+		<property name="type" column="type" type="string" />
+
+		<property name="title" column="title" type="string" />
+
+		<property name="maxGrade" column="maxgrade" type="double" />
+
+		<property name="timeOpen" column="timeopen" type="long" />
+
+		<property name="timeClose" column="timeclose" type="long" />
+
+		<property name="timeCreated" column="timecreated" type="long" />
+
+		<property name="timeModified" column="timemodified" type="long" />
+
 		<set name="scormLogs" inverse="true" lazy="false">
 			<key>
-				<column name="scorm_id"/>
+				<column name="scorm_id" />
 			</key>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.ScormLogMining"/>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.ScormLogMining" />
 		</set>
- 
-  		<set name="courseScorms" inverse="true" lazy="false">
+
+		<set name="courseScorms" inverse="true" lazy="false">
 			<key>
-				<column name="scorm_id"/>
+				<column name="scorm_id" />
 			</key>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseScormMining"/>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseScormMining" />
 		</set>
-                
-    </class>
+
+	</class>
 
 </hibernate-mapping>

@@ -5,21 +5,14 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Modules_LMS"
-        table="mdl_modules">
+	<class name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Modules_LMS"
+		table="mdl_modules">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="name"
-            column="name"
-            type="string"/>
-            
-    </class>
+		<property name="name" column="name" type="string" />
+
+	</class>
 
 </hibernate-mapping>

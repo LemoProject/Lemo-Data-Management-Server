@@ -1,61 +1,54 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/PlatformGroupSpecification.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class PlatformGroupSpecification  implements IClixMappingClass{
-	
+public class PlatformGroupSpecification implements IClixMappingClass {
+
 	private Long group;
 	private Long person;
 	private PlatformGroupSpecificationPK id;
-	
-	
-	
+
 	public PlatformGroupSpecificationPK getId() {
-		return id;
+		return this.id;
 	}
-	
+
 	public String getString()
 	{
 		return "PlatformGroupSpecification$$$"
-				+this.getGroup()+"$$$"+
+				+ this.getGroup() + "$$$" +
 				this.getPerson();
 	}
 
-
-
-	public void setId(PlatformGroupSpecificationPK id) {
+	public void setId(final PlatformGroupSpecificationPK id) {
 		this.id = id;
 	}
 
-
-
 	public Long getGroup() {
-		return group;
+		return this.group;
 	}
 
-
-
-	public void setGroup(Long group) {
+	public void setGroup(final Long group) {
 		this.group = group;
 	}
 
-
-
 	public Long getPerson() {
-		return person;
+		return this.person;
 	}
 
-
-
-	public void setPerson(Long person) {
+	public void setPerson(final Long person) {
 		this.person = person;
 	}
 
-
-
 	public PlatformGroupSpecification()
 	{
-		
+
 	}
 
 }

@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/User_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class User_LMS {
@@ -9,47 +16,60 @@ public class User_LMS {
 	private long currentlogin;
 	private long timemodified;
 	private String username;
-	
+
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
-	public void setUsername(String username) {
+
+	public void setUsername(final String username) {
 		this.username = username;
 	}
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getFirstaccess() {
-		return firstaccess;
+		return this.firstaccess;
 	}
-	public void setFirstaccess(long firstaccess) {
+
+	public void setFirstaccess(final long firstaccess) {
 		this.firstaccess = firstaccess;
 	}
+
 	public long getLastaccess() {
-		return lastaccess;
+		return this.lastaccess;
 	}
-	public void setLastaccess(long lastaccess) {
+
+	public void setLastaccess(final long lastaccess) {
 		this.lastaccess = lastaccess;
 	}
+
 	public long getLastlogin() {
-		return lastlogin;
+		return this.lastlogin;
 	}
-	public void setLastlogin(long lastlogin) {
+
+	public void setLastlogin(final long lastlogin) {
 		this.lastlogin = lastlogin;
 	}
+
 	public long getCurrentlogin() {
-		return currentlogin;
+		return this.currentlogin;
 	}
-	public void setCurrentlogin(long currentlogin) {
+
+	public void setCurrentlogin(final long currentlogin) {
 		this.currentlogin = currentlogin;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
 }

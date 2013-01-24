@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle/moodleDBclass/AssignmentLMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
 public class AssignmentLMS {
@@ -10,53 +17,68 @@ public class AssignmentLMS {
 	private long timeavailable;
 	private long timedue;
 	private String description;
-	
+
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
-	public void setDescription(String description) {
+
+	public void setDescription(final String description) {
 		this.description = description;
 	}
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getCourse() {
-		return course;
+		return this.course;
 	}
-	public void setCourse(long course) {
+
+	public void setCourse(final long course) {
 		this.course = course;
 	}
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	public void setName(String name) {
+
+	public void setName(final String name) {
 		this.name = name;
 	}
+
 	public String getAssignmenttype() {
-		return assignmenttype;
+		return this.assignmenttype;
 	}
-	public void setAssignmenttype(String assignmenttype) {
+
+	public void setAssignmenttype(final String assignmenttype) {
 		this.assignmenttype = assignmenttype;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
+
 	public long getTimeavailable() {
-		return timeavailable;
+		return this.timeavailable;
 	}
-	public void setTimeavailable(long timeavailable) {
+
+	public void setTimeavailable(final long timeavailable) {
 		this.timeavailable = timeavailable;
 	}
+
 	public long getTimedue() {
-		return timedue;
+		return this.timedue;
 	}
-	public void setTimedue(long timedue) {
+
+	public void setTimedue(final long timedue) {
 		this.timedue = timedue;
 	}
 }

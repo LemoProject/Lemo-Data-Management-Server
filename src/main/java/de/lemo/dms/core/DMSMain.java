@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/core/DMSMain.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.core;
 
 import java.io.IOException;
@@ -13,8 +20,8 @@ import org.apache.log4j.Logger;
  */
 public class DMSMain {
 
-	public static void main(String[] args) {
-		Logger logger = Logger.getLogger(DMSMain.class);
+	public static void main(final String[] args) {
+		final Logger logger = Logger.getLogger(DMSMain.class);
 
 		try {
 			DMSRemoteServer.INSTANCE.start();
@@ -27,7 +34,7 @@ public class DMSMain {
 			 */
 			System.in.read();
 
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			logger.error("DMS start failed.", e);
 			System.exit(1);
 		}

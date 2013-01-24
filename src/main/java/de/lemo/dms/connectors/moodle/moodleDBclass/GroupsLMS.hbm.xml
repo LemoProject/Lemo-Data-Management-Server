@@ -5,36 +5,20 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle.moodleDBclass.GroupsLMS"
-        table="groups">
+	<class name="de.lemo.dms.connectors.moodle.moodleDBclass.GroupsLMS"
+		table="groups">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
-           
-        <property
-            name="courseid"
-            column="courseid"
-            type="long"/>
-  
-        <property
-            name="name"
-            column="name"
-            type="string"/>  
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="timecreated"
-            column="timecreated"
-            type="long"/>
-            
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>
-    
-    </class>
+		<property name="courseid" column="courseid" type="long" />
+
+		<property name="name" column="name" type="string" />
+
+		<property name="timecreated" column="timecreated" type="long" />
+
+		<property name="timemodified" column="timemodified" type="long" />
+
+	</class>
 
 </hibernate-mapping>

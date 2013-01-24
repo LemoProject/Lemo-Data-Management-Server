@@ -1,37 +1,49 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Course_Modules_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
 public class Course_Modules_LMS {
-	
+
 	private long id;
 	private long course;
 	private long module;
 	private long instance;
-	
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getCourse() {
-		return course;
+		return this.course;
 	}
-	public void setCourse(long course) {
+
+	public void setCourse(final long course) {
 		this.course = course;
 	}
+
 	public long getModule() {
-		return module;
+		return this.module;
 	}
-	public void setModule(long module) {
+
+	public void setModule(final long module) {
 		this.module = module;
 	}
+
 	public long getInstance() {
-		return instance;
+		return this.instance;
 	}
-	public void setInstance(long instance) {
+
+	public void setInstance(final long instance) {
 		this.instance = instance;
-	}	
-	
+	}
 
 }

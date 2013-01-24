@@ -4,142 +4,113 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.CourseMining"
-        table="course">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-           
-        <property
-            name="startDate"
-            column="startDate"
-            type="long"/>
-            
-        <property
-            name="enrolStart"
-            column="enrolStart"
-            type="long"/>
-            
-        <property
-            name="enrolEnd"
-            column="enrolEnd"
-            type="long"/>
-            
-        <property
-            name="timeCreated"
-            column="timeCreated"
-            type="long"/>
-               
-        <property
-            name="timeModified"
-            column="timeModified"
-            type="long"/>
+	<class name="de.lemo.dms.db.miningDBclass.CourseMining" table="course">
 
-        <property
-            name="title"
-            column="title"
-            type="string"/>
-            
-        <property
-            name="shortname"
-            column="shortname"
-            type="string"/>
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="platform" column="platform" type="long" />
+
+		<property name="startDate" column="startDate" type="long" />
+
+		<property name="enrolStart" column="enrolStart" type="long" />
+
+		<property name="enrolEnd" column="enrolEnd" type="long" />
+
+		<property name="timeCreated" column="timeCreated" type="long" />
+
+		<property name="timeModified" column="timeModified" type="long" />
+
+		<property name="title" column="title" type="string" />
+
+		<property name="shortname" column="shortname" type="string" />
 
 		<set name="courseGroups" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseGroupMining"/>
-		</set> 
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseGroupMining" />
+		</set>
 
 		<set name="courseForums" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseForumMining"/>
-		</set> 
-		
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseForumMining" />
+		</set>
+
 		<set name="courseWikis" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseWikiMining"/>
-		</set> 
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseWikiMining" />
+		</set>
 
 		<set name="courseUsers" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseUserMining"/>
-		</set> 
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseUserMining" />
+		</set>
 
 		<set name="courseQuizzes" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseQuizMining"/>
-		</set> 
-		
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseQuizMining" />
+		</set>
+
 		<set name="courseAssignments" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseAssignmentMining"/>
-		</set> 
-		
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseAssignmentMining" />
+		</set>
+
 		<set name="courseResources" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseResourceMining"/>
-		</set> 
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseResourceMining" />
+		</set>
 
 		<set name="wikiLogs" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.WikiLogMining"/>
-		</set> 
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.WikiLogMining" />
+		</set>
 
 		<set name="courseLogs" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseLogMining"/>
-		</set> 
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseLogMining" />
+		</set>
 
 		<set name="quizLogs" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizLogMining"/>
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizLogMining" />
 		</set>
-		
+
 		<set name="questionLogs" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.QuestionLogMining"/>
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.QuestionLogMining" />
 		</set>
-		
+
 		<set name="quizUsers" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizUserMining"/>
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.QuizUserMining" />
 		</set>
-		
+
 		<set name="resourceLogs" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.ResourceLogMining"/>
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.ResourceLogMining" />
 		</set>
 
 		<set name="chatLogs" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.ChatLogMining"/>
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.ChatLogMining" />
 		</set>
 
 		<set name="courseScorms" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseScormMining"/>
-		</set> 
-		
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseScormMining" />
+		</set>
+
 		<set name="scormLogs" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.ScormLogMining"/>
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.ScormLogMining" />
 		</set>
 
 		<set name="assignmentLogs" inverse="true" lazy="false">
-			<key column="course_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.AssignmentLogMining"/>
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.AssignmentLogMining" />
 		</set>
-		                
-    </class>
+
+	</class>
 
 </hibernate-mapping>

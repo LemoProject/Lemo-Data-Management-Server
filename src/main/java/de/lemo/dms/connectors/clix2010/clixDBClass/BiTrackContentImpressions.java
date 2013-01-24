@@ -1,9 +1,16 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/BiTrackContentImpressions.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class BiTrackContentImpressions implements IClixMappingClass{
-	
+public class BiTrackContentImpressions implements IClixMappingClass {
+
 	private BiTrackContentImpressionsPK id;
 
 	private Long content;
@@ -12,80 +19,77 @@ public class BiTrackContentImpressions implements IClixMappingClass{
 	private Long user;
 	private Long totalImpressions;
 	private Long characteristic;
-	
-	
+
 	public BiTrackContentImpressionsPK getId() {
-		return id;
+		return this.id;
 	}
-	
+
 	public String getString()
 	{
 		return "BiTrackContentImpressions$$$"
-				+this.getContainer()+"$$$"
-				+this.getDayOfAccess()+"$$$"
-				+this.getCharacteristic()+"$$$"
-				+this.getContent()+"$$$"
-				+this.getTotalImpressions()+"$$$"
-				+this.getUser();
+				+ this.getContainer() + "$$$"
+				+ this.getDayOfAccess() + "$$$"
+				+ this.getCharacteristic() + "$$$"
+				+ this.getContent() + "$$$"
+				+ this.getTotalImpressions() + "$$$"
+				+ this.getUser();
 	}
 
-	public void setId(BiTrackContentImpressionsPK id) {
+	public void setId(final BiTrackContentImpressionsPK id) {
 		this.id = id;
 	}
 
 	public Long getContent() {
-		return content;
+		return this.content;
 	}
 
-	public void setContent(Long content) {
+	public void setContent(final Long content) {
 		this.content = content;
 	}
 
 	public Long getCharacteristic() {
-		return characteristic;
+		return this.characteristic;
 	}
 
-	public void setCharacteristic(Long characteristic) {
+	public void setCharacteristic(final Long characteristic) {
 		this.characteristic = characteristic;
 	}
 
 	public BiTrackContentImpressions()
 	{
-		
+
 	}
 
 	public String getDayOfAccess() {
-		return dayOfAccess;
+		return this.dayOfAccess;
 	}
 
-	public void setDayOfAccess(String dayOfAccess) {
+	public void setDayOfAccess(final String dayOfAccess) {
 		this.dayOfAccess = dayOfAccess;
 	}
 
 	public long getContainer() {
-		return container;
+		return this.container;
 	}
 
-	public void setContainer(Long container) {
+	public void setContainer(final Long container) {
 		this.container = container;
 	}
 
 	public Long getUser() {
-		return user;
+		return this.user;
 	}
 
-	public void setUser(Long user) {
+	public void setUser(final Long user) {
 		this.user = user;
 	}
 
 	public Long getTotalImpressions() {
-		return totalImpressions;
+		return this.totalImpressions;
 	}
 
-	public void setTotalImpressions(long totalImpressions) {
+	public void setTotalImpressions(final long totalImpressions) {
 		this.totalImpressions = totalImpressions;
 	}
-	
-	
 
 }

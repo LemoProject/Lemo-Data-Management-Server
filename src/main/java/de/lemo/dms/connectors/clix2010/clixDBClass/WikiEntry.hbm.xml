@@ -5,52 +5,28 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.WikiEntry"
-        table="WIKI_ENTRY">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.WikiEntry"
+		table="WIKI_ENTRY">
 
-        <id
-            name="id"
-            column="ENTRY_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="ENTRY_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="lastUpdated"
-            column="LASTUPDATED"
-            type="string"/>
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
 
-        <property
-            name="created"
-            column="CREATED"
-            type="string"/>
+		<property name="created" column="CREATED" type="string" />
 
-        <property
-            name="component"
-            column="COMPONENT_ID"
-            type="long"/>
-            
-        <property
-            name="creator"
-            column="CREATOR_ID"
-            type="long"/>   
-            
-        <property
-            name="lastProcessor"
-            column="LASTPROCESSOR_ID"
-            type="long"/>   
-            
-        <property
-            name="publisher"
-            column="PUBLISHER_ID"
-            type="long"/>   
-            
-        <property
-            name="publishingDate"
-            column="PUBLISHINGDATE"
-            type="string"/>      
-            
-    </class>
+		<property name="component" column="COMPONENT_ID" type="long" />
+
+		<property name="creator" column="CREATOR_ID" type="long" />
+
+		<property name="lastProcessor" column="LASTPROCESSOR_ID"
+			type="long" />
+
+		<property name="publisher" column="PUBLISHER_ID" type="long" />
+
+		<property name="publishingDate" column="PUBLISHINGDATE" type="string" />
+
+	</class>
 
 </hibernate-mapping>

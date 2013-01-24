@@ -1,3 +1,13 @@
+/**
+ * File ./test/java/de/lemo/dms/core/VersionTest.java
+ *
+ * Date 2013-01-24
+ *
+ * Project Lemo Learning Analytics
+ *
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.core;
 
 import static org.junit.Assert.*;

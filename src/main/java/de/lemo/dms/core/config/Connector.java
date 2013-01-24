@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/core/config/Connector.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.core.config;
 
 import java.util.List;
@@ -43,6 +50,6 @@ class Connector {
 
 	@Override
 	public String toString() {
-		return platformId + "-" + platformType + "-" + name;
+		return this.platformId + "-" + this.platformType + "-" + this.name;
 	}
 }
