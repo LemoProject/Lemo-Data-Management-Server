@@ -61,7 +61,6 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.CourseQuizMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.CourseScormMining;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.CourseWikiMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
@@ -247,18 +246,8 @@ public class ClixImporter {
 	// Map, holding the ChatMining objects, found in the current data extraction process
 	/** The chat_mining. */
 	private Map<Long, ChatMining> chatMining;
-	// Map, holding the LevelMining objects, found in the current data extraction process
-	/** The level_mining. */
-	private Map<Long, LevelMining> levelMining;
-
 	/** The level_mining. */
 	private Map<Long, LevelMining> oldLevelMining;
-	// Map, holding the LevelAssociationMining objects, found in the current data extraction process
-	/** The level_association_mining. */
-	private Map<Long, LevelAssociationMining> levelAssociationMining;
-	// Map, holding the LevelCourseMining objects, found in the current data extraction process
-	/** The level_course_mining. */
-	private Map<Long, LevelCourseMining> levelCourseMining;
 	// Map, holding the QuizQuestionMining objects, found in the current data extraction process
 	/** The quiz_question_mining. */
 	private Map<Long, QuizQuestionMining> quizQuestionMining;

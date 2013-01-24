@@ -130,7 +130,8 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	 *            a list of user in the mining database, which is searched for the user with the id submitted in the
 	 *            user parameter
 	 */
-	public void setUser(final long user, final Map<Long, UserMining> userMining, final Map<Long, UserMining> oldUserMining) {
+	public void setUser(final long user, final Map<Long, UserMining> userMining,
+			final Map<Long, UserMining> oldUserMining) {
 
 		if (userMining.get(user) != null)
 		{
@@ -176,7 +177,8 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	 *            a list of course in the mining database, which is searched for the course with the id submitted in the
 	 *            course parameter
 	 */
-	public void setCourse(final long course, final Map<Long, CourseMining> courseMining, final Map<Long, CourseMining> oldCourseMining) {
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
 
 		if (courseMining.get(course) != null)
 		{
@@ -262,7 +264,8 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	 *            a list of scorm packages in the mining database, which is searched for the scorm package with the id
 	 *            submitted in the parameter
 	 */
-	public void setScorm(final long scorm, final Map<Long, ScormMining> scormMining, final Map<Long, ScormMining> oldScormMining) {
+	public void setScorm(final long scorm, final Map<Long, ScormMining> scormMining,
+			final Map<Long, ScormMining> oldScormMining) {
 
 		if (scormMining.get(scorm) != null)
 		{

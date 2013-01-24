@@ -158,7 +158,8 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	 *            a list of courses in the mining database, which is searched for the course with the id submitted in
 	 *            the course parameter
 	 */
-	public void setCourse(final long course, final Map<Long, CourseMining> courseMining, final Map<Long, CourseMining> oldCourseMining) {
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
 
 		if (courseMining.get(course) != null)
 		{
@@ -213,7 +214,8 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	 *            a list of user in the mining database, which is searched for the user with the id submitted in the
 	 *            user parameter
 	 */
-	public void setUser(final long user, final Map<Long, UserMining> userMining, final Map<Long, UserMining> oldUserMining) {
+	public void setUser(final long user, final Map<Long, UserMining> userMining,
+			final Map<Long, UserMining> oldUserMining) {
 
 		if (userMining.get(user) != null)
 		{
@@ -257,7 +259,8 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	 *            a list of wiki in the mining database, which is searched for the wiki with the id submitted in the
 	 *            wiki parameter
 	 */
-	public void setWiki(final long wiki, final Map<Long, WikiMining> wikiMining, final Map<Long, WikiMining> oldWikiMining) {
+	public void setWiki(final long wiki, final Map<Long, WikiMining> wikiMining,
+			final Map<Long, WikiMining> oldWikiMining) {
 
 		if (wikiMining.get(wiki) != null)
 		{

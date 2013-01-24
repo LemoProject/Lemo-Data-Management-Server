@@ -80,7 +80,8 @@ public class LevelAssociationMining implements IMappingClass {
 	 *            a list of department in the miningdatabase, which is searched for the department with the id submitted
 	 *            in the department parameter
 	 */
-	public void setUpper(final long upper, final Map<Long, LevelMining> levelMining, final Map<Long, LevelMining> oldLevelMining) {
+	public void setUpper(final long upper, final Map<Long, LevelMining> levelMining,
+			final Map<Long, LevelMining> oldLevelMining) {
 		if (levelMining.get(upper) != null)
 		{
 			this.upper = levelMining.get(upper);
@@ -124,7 +125,8 @@ public class LevelAssociationMining implements IMappingClass {
 	 *            a list of degree in the miningdatabase, which is searched for the degree with the id submitted in the
 	 *            degree parameter
 	 */
-	public void setLower(final long lower, final Map<Long, LevelMining> levelMining, final Map<Long, LevelMining> oldLevelMining) {
+	public void setLower(final long lower, final Map<Long, LevelMining> levelMining,
+			final Map<Long, LevelMining> oldLevelMining) {
 
 		if (levelMining.get(lower) != null)
 		{

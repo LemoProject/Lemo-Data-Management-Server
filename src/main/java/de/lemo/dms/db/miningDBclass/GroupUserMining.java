@@ -100,7 +100,8 @@ public class GroupUserMining implements IMappingClass {
 	 *            a list of user in the miningdatabase, which is searched for the user with the id submitted in the user
 	 *            parameter
 	 */
-	public void setUser(final long user, final Map<Long, UserMining> userMining, final Map<Long, UserMining> oldUserMining) {
+	public void setUser(final long user, final Map<Long, UserMining> userMining,
+			final Map<Long, UserMining> oldUserMining) {
 
 		if (userMining.get(user) != null)
 		{
@@ -145,7 +146,8 @@ public class GroupUserMining implements IMappingClass {
 	 *            a list of groups in the miningdatabase, which is searched for the group with the id submitted in the
 	 *            group parameter
 	 */
-	public void setGroup(final long group, final Map<Long, GroupMining> groupMining, final Map<Long, GroupMining> oldGroupMining) {
+	public void setGroup(final long group, final Map<Long, GroupMining> groupMining,
+			final Map<Long, GroupMining> oldGroupMining) {
 
 		if (groupMining.get(group) != null)
 		{

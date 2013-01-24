@@ -81,7 +81,8 @@ public class CourseGroupMining implements IMappingClass {
 	 *            a list of course in the miningdatabase, which is searched for the course with the id submitted in the
 	 *            course parameter
 	 */
-	public void setCourse(final long course, final Map<Long, CourseMining> courseMining, final Map<Long, CourseMining> oldCourseMining) {
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
 		if (courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
@@ -106,7 +107,8 @@ public class CourseGroupMining implements IMappingClass {
 	 *            a list of groups in the miningdatabase, which is searched for the group with the id submitted in the
 	 *            group parameter
 	 */
-	public void setGroup(final long group, final Map<Long, GroupMining> groupMining, final Map<Long, GroupMining> oldGroupMining) {
+	public void setGroup(final long group, final Map<Long, GroupMining> groupMining,
+			final Map<Long, GroupMining> oldGroupMining) {
 		if (groupMining.get(group) != null)
 		{
 			this.group = groupMining.get(group);

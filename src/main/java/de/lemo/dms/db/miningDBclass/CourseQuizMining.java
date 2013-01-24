@@ -67,7 +67,8 @@ public class CourseQuizMining implements IMappingClass, ICourseRatedObjectAssoci
 	 *            a list of course in the miningdatabase, which is searched for the course with the id submitted in the
 	 *            course parameter
 	 */
-	public void setCourse(final long course, final Map<Long, CourseMining> courseMining, final Map<Long, CourseMining> oldCourseMining) {
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
 
 		if (courseMining.get(course) != null)
 		{
@@ -112,7 +113,8 @@ public class CourseQuizMining implements IMappingClass, ICourseRatedObjectAssoci
 	 *            a list of quiz in the miningdatabase, which is searched for the quiz with the qid and qtype submitted
 	 *            in the other parameters
 	 */
-	public void setQuiz(final long quiz, final Map<Long, QuizMining> quizMining, final Map<Long, QuizMining> oldQuizMining) {
+	public void setQuiz(final long quiz, final Map<Long, QuizMining> quizMining,
+			final Map<Long, QuizMining> oldQuizMining) {
 		if (quizMining.get(quiz) != null)
 		{
 			this.quiz = quizMining.get(quiz);

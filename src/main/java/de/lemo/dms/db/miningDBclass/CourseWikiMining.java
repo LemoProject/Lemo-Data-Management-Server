@@ -71,7 +71,8 @@ public class CourseWikiMining implements IMappingClass {
 	 *            a list of courses in the miningdatabase, which is searched for the course with the id submitted in the
 	 *            course parameter
 	 */
-	public void setCourse(final long course, final Map<Long, CourseMining> courseMining, final Map<Long, CourseMining> oldCourseMining) {
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
 
 		if (courseMining.get(course) != null)
 		{
@@ -125,7 +126,8 @@ public class CourseWikiMining implements IMappingClass {
 	 *            a list of wikis in the miningdatabase, which is searched for the wiki with the id submitted in the
 	 *            wiki parameter
 	 */
-	public void setWiki(final long wiki, final Map<Long, WikiMining> wikiMining, final Map<Long, WikiMining> oldWikiMining) {
+	public void setWiki(final long wiki, final Map<Long, WikiMining> wikiMining,
+			final Map<Long, WikiMining> oldWikiMining) {
 
 		if (wikiMining.get(wiki) != null)
 		{

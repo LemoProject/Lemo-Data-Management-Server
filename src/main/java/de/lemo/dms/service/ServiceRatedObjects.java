@@ -7,7 +7,6 @@
 
 package de.lemo.dms.service;
 
-import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;

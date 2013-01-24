@@ -49,7 +49,8 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 		this.duration = duration;
 	}
 
-	public void setCourse(final long course, final Map<Long, CourseMining> courseMining, final Map<Long, CourseMining> oldCourseMining) {
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
 
 		if (courseMining.get(course) != null)
 		{
@@ -107,7 +108,8 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 		this.message = message;
 	}
 
-	public void setUser(final long user, final Map<Long, UserMining> userMining, final Map<Long, UserMining> oldUserMining) {
+	public void setUser(final long user, final Map<Long, UserMining> userMining,
+			final Map<Long, UserMining> oldUserMining) {
 
 		if (userMining.get(user) != null)
 		{
@@ -121,7 +123,8 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 		}
 	}
 
-	public void setChat(final long chat, final Map<Long, ChatMining> chatMining, final Map<Long, ChatMining> oldChatMining)
+	public void setChat(final long chat, final Map<Long, ChatMining> chatMining,
+			final Map<Long, ChatMining> oldChatMining)
 	{
 
 		if (chatMining.get(chat) != null)

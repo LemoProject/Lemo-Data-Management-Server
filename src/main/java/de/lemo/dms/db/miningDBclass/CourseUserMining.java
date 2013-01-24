@@ -84,7 +84,8 @@ public class CourseUserMining implements IMappingClass {
 	 *            a list of course in the miningdatabase, which is searched for the course with the id submitted in the
 	 *            course parameter
 	 */
-	public void setCourse(final long course, final Map<Long, CourseMining> courseMining, final Map<Long, CourseMining> oldCourseMining) {
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
 		// System.out.println("course id: " + course);
 		if (courseMining.get(course) != null)
 		{
@@ -166,7 +167,8 @@ public class CourseUserMining implements IMappingClass {
 	 *            a list of users in the miningdatabase, which is searched for the user with the id submitted in the
 	 *            user parameter
 	 */
-	public void setUser(final long user, final Map<Long, UserMining> userMining, final Map<Long, UserMining> oldUserMining) {
+	public void setUser(final long user, final Map<Long, UserMining> userMining,
+			final Map<Long, UserMining> oldUserMining) {
 		if (userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
@@ -209,7 +211,8 @@ public class CourseUserMining implements IMappingClass {
 	 *            a list of roles in the miningdatabase, which is searched for the role with the id submitted in the
 	 *            role parameter
 	 */
-	public void setRole(final long role, final Map<Long, RoleMining> roleMining, final Map<Long, RoleMining> oldRoleMining) {
+	public void setRole(final long role, final Map<Long, RoleMining> roleMining,
+			final Map<Long, RoleMining> oldRoleMining) {
 		if (roleMining.get(role) != null)
 		{
 			this.role = roleMining.get(role);

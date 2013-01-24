@@ -7,12 +7,6 @@
 
 package de.lemo.dms.processing.questions;
 
-import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
-import static de.lemo.dms.processing.MetaParam.DEGREE;
-import static de.lemo.dms.processing.MetaParam.DEPARTMENT;
-import static de.lemo.dms.processing.MetaParam.END_TIME;
-import static de.lemo.dms.processing.MetaParam.START_TIME;
-import static de.lemo.dms.processing.MetaParam.TYPES;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -84,8 +78,7 @@ public class QCumulativeUserAccess extends Question {
 			for (final ELearningObjectType lo : querys.keySet()) {
 				super.logger.debug("Starting processing -- Entering try catch");
 				@SuppressWarnings("deprecation")
-				final
-				Statement statement = session.connection().createStatement();
+				final Statement statement = session.connection().createStatement();
 				final ResultSet set = statement.executeQuery(querys.get(lo));
 
 				// durchlaufen des result sets

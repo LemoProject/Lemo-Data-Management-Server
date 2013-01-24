@@ -7,12 +7,6 @@
 
 package de.lemo.dms.processing.questions;
 
-import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
-import static de.lemo.dms.processing.MetaParam.END_TIME;
-import static de.lemo.dms.processing.MetaParam.QUIZ_IDS;
-import static de.lemo.dms.processing.MetaParam.START_TIME;
-import static de.lemo.dms.processing.MetaParam.USER_IDS;
-import static de.lemo.dms.processing.MetaParam.RESOLUTION;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

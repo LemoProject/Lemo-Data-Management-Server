@@ -64,7 +64,8 @@ public class CourseScormMining implements IMappingClass, ICourseRatedObjectAssoc
 	 *            a list of course in the miningdatabase, which is searched for the course with the id submitted in the
 	 *            course parameter
 	 */
-	public void setCourse(final long course, final Map<Long, CourseMining> courseMining, final Map<Long, CourseMining> oldCourseMining) {
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
 		if (courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
@@ -108,7 +109,8 @@ public class CourseScormMining implements IMappingClass, ICourseRatedObjectAssoc
 	 *            a list of quiz in the miningdatabase, which is searched for the quiz with the qid and qtype submitted
 	 *            in the other parameters
 	 */
-	public void setScorm(final long scorm, final Map<Long, ScormMining> scormMining, final Map<Long, ScormMining> oldScormMining) {
+	public void setScorm(final long scorm, final Map<Long, ScormMining> scormMining,
+			final Map<Long, ScormMining> oldScormMining) {
 		if (scormMining.get(scorm) != null)
 		{
 			this.scorm = scormMining.get(scorm);

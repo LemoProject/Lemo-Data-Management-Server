@@ -198,7 +198,8 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 *            a list of course in the miningdatabase, which is searched for the course with the id submitted in the
 	 *            course parameter
 	 */
-	public void setCourse(final long course, final Map<Long, CourseMining> courseMining, final Map<Long, CourseMining> oldCourseMining) {
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
 
 		if (courseMining.get(course) != null)
 		{
@@ -234,7 +235,8 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 *            a list of forum in the miningdatabase, which is searched for the forum with the id submitted in the
 	 *            forum parameter
 	 */
-	public void setForum(final long forum, final Map<Long, ForumMining> forumMining, final Map<Long, ForumMining> oldForumMining) {
+	public void setForum(final long forum, final Map<Long, ForumMining> forumMining,
+			final Map<Long, ForumMining> oldForumMining) {
 
 		if (forumMining.get(forum) != null)
 		{
@@ -298,7 +300,8 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 *            a list of user in the miningdatabase, which is searched for the user with the id submitted in the user
 	 *            parameter
 	 */
-	public void setUser(final long user, final Map<Long, UserMining> userMining, final Map<Long, UserMining> oldUserMining) {
+	public void setUser(final long user, final Map<Long, UserMining> userMining,
+			final Map<Long, UserMining> oldUserMining) {
 
 		if (userMining.get(user) != null)
 		{

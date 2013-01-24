@@ -84,7 +84,8 @@ public class QuizUserMining implements IMappingClass {
 	 *            a list of user in the miningdatabase, which is searched for the user with the id submitted in the user
 	 *            parameter
 	 */
-	public void setUser(final long user, final Map<Long, UserMining> userMining, final Map<Long, UserMining> oldUserMining) {
+	public void setUser(final long user, final Map<Long, UserMining> userMining,
+			final Map<Long, UserMining> oldUserMining) {
 
 		if (userMining.get(user) != null)
 		{
@@ -130,7 +131,8 @@ public class QuizUserMining implements IMappingClass {
 	 *            a list of course in the miningdatabase, which is searched for the course with the id submitted in the
 	 *            course parameter
 	 */
-	public void setCourse(final long course, final Map<Long, CourseMining> courseMining, final Map<Long, CourseMining> oldCourseMining) {
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
 
 		if (courseMining.get(course) != null)
 		{
@@ -175,7 +177,8 @@ public class QuizUserMining implements IMappingClass {
 	 *            a list of quiz in the miningdatabase, which is searched for the quiz with the qid and qtype submitted
 	 *            in the other parameters
 	 */
-	public void setQuiz(final long quiz, final Map<Long, QuizMining> quizMining, final Map<Long, QuizMining> oldQuizMining) {
+	public void setQuiz(final long quiz, final Map<Long, QuizMining> quizMining,
+			final Map<Long, QuizMining> oldQuizMining) {
 
 		if (quizMining.get(quiz) != null)
 		{
