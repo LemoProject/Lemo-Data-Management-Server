@@ -81,12 +81,6 @@ public class QPerformanceBoxPlot extends Question{
         BoxPlot[] results = null;
 		try
 		{		        
-	        for(int i = 0; i < quizzes.size(); i++)
-	        {
-        		ArrayList<Double> v = new ArrayList<Double>();
-        		values.put(quizzes.get(i), v);
-	        }
-        
 	        IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 	        Session session = dbHandler.getMiningSession();
 
@@ -111,10 +105,15 @@ public class QPerformanceBoxPlot extends Question{
 	        	IRatedLogObject log = list.get(i);
 	        	
 	        	String key = log.getPrefix()+" "+log.getLearnObjId()+" "+log.getUser().getId();
-        		if(quizzes.size() == 0 || values.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null)
+        		if(quizzes.size() == 0 || quizzes.contains(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())))
         		{
 		        	if(singleResults.get(key) == null && log.getFinalGrade() != null && log.getMaxGrade() != null)
 		        	{
+		        		if(values.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) == null)
+		        		{
+		        			ArrayList<Double> v = new ArrayList<Double>();
+		        			values.put(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId()), v);
+		        		}
 		        		singleResults.put(key, log);
 		        	}
         		}

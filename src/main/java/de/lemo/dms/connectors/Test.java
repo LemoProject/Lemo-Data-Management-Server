@@ -6,9 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.core.config.ServerConfiguration;
-import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
@@ -208,8 +206,9 @@ public class Test {
 		quizzes.add(11114861L);
 		quizzes.add(11114282L);
 		quizzes.add(1411888L);
+		quizzes.add(1411939L);
 		
-		ResultListBoxPlot res = ph.compute(courses, new ArrayList<Long>(), new ArrayList<Long>(), 100, 0L, 1500000000L);
+		ResultListBoxPlot res = ph.compute(courses, new ArrayList<Long>(), quizzes, 100, 0L, 1500000000L);
 		System.out.println(res.getElements().size());
 		
 	}
@@ -244,6 +243,12 @@ public class Test {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		testHisto();
 		System.out.println("Test finished");
+	}
+	
+	public static void main(String[] args)
+	{
+		Test t = new Test();
+		t.run();
 	}
 
 }
