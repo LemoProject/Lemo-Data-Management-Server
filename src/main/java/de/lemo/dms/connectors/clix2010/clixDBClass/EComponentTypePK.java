@@ -1,8 +1,15 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/EComponentTypePK.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
-public class EComponentTypePK implements Serializable{
+public class EComponentTypePK implements Serializable {
 
 	/**
 	 * 
@@ -11,46 +18,52 @@ public class EComponentTypePK implements Serializable{
 	private Long component;
 	private Long language;
 
-	public boolean equals(Object arg)
+	@Override
+	public boolean equals(final Object arg)
 	{
-		if(arg == null)
+		if (arg == null) {
 			return false;
-		if(!(arg instanceof EComponentTypePK))
+		}
+		if (!(arg instanceof EComponentTypePK)) {
 			return false;
-		EComponentTypePK a = (EComponentTypePK)arg;
-		if(a.getComponent() != this.component)
+		}
+		final EComponentTypePK a = (EComponentTypePK) arg;
+		if (a.getComponent() != this.component) {
 			return false;
-		if(a.getLanguage() != this.language)
+		}
+		if (a.getLanguage() != this.language) {
 			return false;
+		}
 		return true;
 	}
-	
+
+	@Override
 	public int hashCode()
 	{
 		int hc;
-		hc = language.hashCode();
-		hc = 17 * hc + component.hashCode();
+		hc = this.language.hashCode();
+		hc = (17 * hc) + this.component.hashCode();
 		return hc;
 	}
-	
+
 	public long getLanguage() {
-		return language;
+		return this.language;
 	}
 
-	public void setLanguage(long language) {
+	public void setLanguage(final long language) {
 		this.language = language;
 	}
 
 	public EComponentTypePK()
 	{
-		
+
 	}
 
 	public long getComponent() {
-		return component;
+		return this.component;
 	}
 
-	public void setComponent(long component) {
+	public void setComponent(final long component) {
 		this.component = component;
 	}
 

@@ -1,108 +1,160 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/GroupMining.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/**This class represents the table group.*/
+/** This class represents the table group. */
 public class GroupMining implements IMappingClass {
 
 	private long id;
-	private long timecreated;
-	private long timemodified;
+	private long timeCreated;
+	private long timeModified;
 	private Long platform;
 
-	private Set<CourseGroupMining> course_group = new HashSet<CourseGroupMining>();
-	private Set<GroupUserMining> group_user = new HashSet<GroupUserMining>();
+	private Set<CourseGroupMining> courseGroups = new HashSet<CourseGroupMining>();
+	private Set<GroupUserMining> groupUsers = new HashSet<GroupUserMining>();
 
-	public boolean equals(IMappingClass o)
+	@Override
+	public boolean equals(final IMappingClass o)
 	{
-		if(o == null || !(o instanceof GroupMining))
+		if (!(o instanceof GroupMining)) {
 			return false;
-		if(o.getId() == this.getId() && (o instanceof GroupMining))
+		}
+		if ((o.getId() == this.getId()) && (o instanceof GroupMining)) {
 			return true;
+		}
 		return false;
 	}
-	
-	/** standard getter for the attribut id
+
+	/**
+	 * standard getter for the attribute id
+	 * 
 	 * @return the identifier of the group
-	 */	
-	public long getId() {
-		return id;
-	}
-	/** standard setter for the attribut id
-	 * @param id the identifier of the group
 	 */
-	public void setId(long id) {
+	@Override
+	public long getId() {
+		return this.id;
+	}
+
+	/**
+	 * standard setter for the attribute id
+	 * 
+	 * @param id
+	 *            the identifier of the group
+	 */
+	public void setId(final long id) {
 		this.id = id;
 	}
-	/** standard getter for the attribut timecreated
+
+	/**
+	 * standard getter for the attribute timecreated
+	 * 
 	 * @return the timestamp when the group was created
 	 */
-	public long getTimecreated() {
-		return timecreated;
+	public long getTimeCreated() {
+		return this.timeCreated;
 	}
-	/** standard setter for the attribut timecreated
-	 * @param timecreated the timestamp when the group was created
+
+	/**
+	 * standard setter for the attribute timecreated
+	 * 
+	 * @param timeCreated
+	 *            the timestamp when the group was created
 	 */
-	public void setTimecreated(long timecreated) {
-		this.timecreated = timecreated;
+	public void setTimeCreated(final long timeCreated) {
+		this.timeCreated = timeCreated;
 	}
-	/** standard getter for the attribut timemodified
+
+	/**
+	 * standard getter for the attribute timemodified
+	 * 
 	 * @return the timestamp when the group was changed the last time
-	 */	
-	public long getTimemodified() {
-		return timemodified;
+	 */
+	public long getTimeModified() {
+		return this.timeModified;
 	}
-	/** standard setter for the attribut timemodified
-	 * @param timemodified the timestamp when the group was changed the last time
-	 */	
-	public void setTimemodified(long timemodified) {
-		this.timemodified = timemodified;
+
+	/**
+	 * standard setter for the attribute timemodified
+	 * 
+	 * @param timeModified
+	 *            the timestamp when the group was changed the last time
+	 */
+	public void setTimeModified(final long timeModified) {
+		this.timeModified = timeModified;
 	}
-	/** standard setter for the attribut course_groups
-	 * @param course_group a set of entrys in the course_group table which relate the group to the courses
-	 */	
-	public void setCourse_group(Set<CourseGroupMining> course_group) {
-		this.course_group = course_group;
+
+	/**
+	 * standard setter for the attribute course_groups
+	 * 
+	 * @param courseGroup
+	 *            a set of entries in the course_group table which relate the group to the courses
+	 */
+	public void setCourseGroups(final Set<CourseGroupMining> courseGroup) {
+		this.courseGroups = courseGroup;
 	}
-	/** standard getter for the attribut course_groups
-	 * @return a set of entrys in the course_group table which relate the group to the courses
-	 */	
-	public Set<CourseGroupMining> getCourse_group() {
-		return course_group;
+
+	/**
+	 * standard getter for the attribute course_groups
+	 * 
+	 * @return a set of entries in the course_group table which relate the group to the courses
+	 */
+	public Set<CourseGroupMining> getCourseGroups() {
+		return this.courseGroups;
 	}
-	/** standard add method for the attribut course_group
-	 * @param course_group_add this entry will be added to the list of course_group in this group
-	 * */		
-	public void addCourse_group(CourseGroupMining course_group_add){	
-		course_group.add(course_group_add);
+
+	/**
+	 * standard add method for the attribute course_group
+	 * 
+	 * @param courseGroup
+	 *            this entry will be added to the list of course_group in this group
+	 */
+	public void addCourseGroup(final CourseGroupMining courseGroup) {
+		this.courseGroups.add(courseGroup);
 	}
-	/** standard setter for the attribut group_enrol
-	 * @param group_user a set of entrys in the group_user table which relate the group to the users
-	 */	
-	public void setGroup_user(Set<GroupUserMining> group_user) {
-		this.group_user = group_user;
+
+	/**
+	 * standard setter for the attribute group_enrol
+	 * 
+	 * @param groupUsers
+	 *            a set of entries in the group_user table which relate the group to the users
+	 */
+	public void setGroupUsers(final Set<GroupUserMining> groupUsers) {
+		this.groupUsers = groupUsers;
 	}
-	/** standard getter for the attribut group_user
-	 * @return a set of entrys in the group_user table which relate the group to the users
-	 */	
-	public Set<GroupUserMining> getGroup_user() {
-		return group_user;
+
+	/**
+	 * standard getter for the attribute group_user
+	 * 
+	 * @return a set of entries in the group_user table which relate the group to the users
+	 */
+	public Set<GroupUserMining> getGroupUsers() {
+		return this.groupUsers;
 	}
-	/** standard add method for the attribut group_user
-	 * @param group_user_add this entry will be added to the list of group_user in this group
-	 * */	
-	public void addGroup_user(GroupUserMining group_user_add){	
-		group_user.add(group_user_add);
+
+	/**
+	 * standard add method for the attribute group_user
+	 * 
+	 * @param groupUser
+	 *            this entry will be added to the list of group_user in this group
+	 */
+	public void addGroupUser(final GroupUserMining groupUser) {
+		this.groupUsers.add(groupUser);
 	}
 
 	public Long getPlatform() {
-		return platform;
+		return this.platform;
 	}
 
-	public void setPlatform(Long platform) {
+	public void setPlatform(final Long platform) {
 		this.platform = platform;
 	}
 }

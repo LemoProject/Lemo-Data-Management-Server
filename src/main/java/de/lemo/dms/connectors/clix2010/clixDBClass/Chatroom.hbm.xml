@@ -5,27 +5,17 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.Chatroom"
-        table="CHATROOM">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.Chatroom"
+		table="CHATROOM">
 
-        <id
-            name="id"
-            column="CHATROOM_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="CHATROOM_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="lastUpdated"
-            column="LASTUPDATED"
-            type="string"/>
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
 
-        <property
-            name="title"
-            column="CHATROOM_NAME"
-            type="string"/>
-            
-    </class>
+		<property name="title" column="CHATROOM_NAME" type="string" />
+
+	</class>
 
 </hibernate-mapping>

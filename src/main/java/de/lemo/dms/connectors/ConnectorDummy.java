@@ -1,23 +1,23 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/ConnectorDummy.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors;
 
 import org.apache.log4j.Logger;
 
-import de.lemo.dms.db.DBConfigObject;
-
 /**
  * dummy connector with sleep function for connector tests
+ * 
  * @author Boris Wenzlaff
- *
  */
-public class ConnectorDummy implements IConnector {
-	private final int SLEEP = (60*1000);
-	private Logger logger = Logger.getLogger(getClass());
-	
-	@Override
-	public void setSourceDBConfig(DBConfigObject dbConf) {
-		// TODO Auto-generated method stub
-	}
+public class ConnectorDummy extends AbstractConnector {
 
+	private final int SLEEP = (60 * 1000);
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
 	public boolean testConnections() {
@@ -26,23 +26,23 @@ public class ConnectorDummy implements IConnector {
 	}
 
 	@Override
-	public void getData(String platformName) {
+	public void getData() {
 		try {
-			logger.info("connector dummy will load whole database");
-			Thread.sleep(SLEEP);
-		} catch (InterruptedException e) {
+			this.logger.info("connector dummy will load whole database");
+			Thread.sleep(this.SLEEP);
+		} catch (final InterruptedException e) {
 
-			logger.warn("connector dummy throws exception at getData()");
+			this.logger.warn("connector dummy throws exception at getData()");
 		}
 	}
 
 	@Override
-	public void updateData(String platformName, long fromTimestamp) {
+	public void updateData(final long fromTimestamp) {
 		try {
-			logger.info("connector dummy will update whole database");
-			Thread.sleep(SLEEP);
-		} catch (InterruptedException e) {
-			logger.warn("connector dummy throws exception at updateData()");
+			this.logger.info("connector dummy will update whole database");
+			Thread.sleep(this.SLEEP);
+		} catch (final InterruptedException e) {
+			this.logger.warn("connector dummy throws exception at updateData()");
 		}
 	}
 }

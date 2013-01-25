@@ -4,47 +4,27 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.RoleMining"
-        table="role">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+	<class name="de.lemo.dms.db.miningDBclass.RoleMining" table="role">
 
-        <property
-            name="name"
-            column="name"
-            type="string"/>
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-                       
-        <property
-            name="shortname"
-            column="shortname"
-            type="string"/>
-                        
-        <property
-            name="description"
-            column="description"
-            type="text"/>
-            
-        <property
-            name="sortorder"
-            column="sortorder"
-            type="long"/>
+		<id name="id" column="id" type="long">
+		</id>
 
-		<set name="course_user" inverse="true" lazy="false">
-			<key column="role_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseUserMining"/>
-		</set> 
-                
-    </class>
+		<property name="name" column="name" type="string" />
+
+		<property name="platform" column="platform" type="long" />
+
+		<property name="shortname" column="shortname" type="string" />
+
+		<property name="description" column="description" type="text" />
+
+		<property name="sortOrder" column="sortorder" type="long" />
+
+		<set name="courseUsers" inverse="true" lazy="false">
+			<key column="role_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseUserMining" />
+		</set>
+
+	</class>
 
 </hibernate-mapping>

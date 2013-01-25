@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Quiz_grades_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
 public class Quiz_grades_LMS {
@@ -7,35 +14,44 @@ public class Quiz_grades_LMS {
 	private long quiz;
 	private double grade;
 	private long timemodified;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public String getUserid() {
-		return userid;
+		return this.userid;
 	}
-	public void setUserid(String userid) {
+
+	public void setUserid(final String userid) {
 		this.userid = userid;
 	}
+
 	public double getGrade() {
-		return grade;
+		return this.grade;
 	}
-	public void setGrade(double grade) {
+
+	public void setGrade(final double grade) {
 		this.grade = grade;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
-	public void setQuiz(long quiz) {
+
+	public void setQuiz(final long quiz) {
 		this.quiz = quiz;
 	}
+
 	public long getQuiz() {
-		return quiz;
+		return this.quiz;
 	}
 }

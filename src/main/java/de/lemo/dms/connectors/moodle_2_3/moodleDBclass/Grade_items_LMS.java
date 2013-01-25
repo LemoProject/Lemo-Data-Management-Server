@@ -1,6 +1,14 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Grade_items_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Grade_items_LMS {
+
 	private long id;
 	private long courseid;
 	private String itemname;
@@ -9,55 +17,69 @@ public class Grade_items_LMS {
 	private double grademax;
 	private long timecreated;
 	private long timemodified;
-	
 
 	public Long getIteminstance() {
-		return iteminstance;
+		return this.iteminstance;
 	}
-	public void setIteminstance(Long iteminstance) {
+
+	public void setIteminstance(final Long iteminstance) {
 		this.iteminstance = iteminstance;
 	}
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public String getItemmodule() {
-		return itemmodule;
+		return this.itemmodule;
 	}
-	public void setItemmodule(String itemmodule) {
+
+	public void setItemmodule(final String itemmodule) {
 		this.itemmodule = itemmodule;
 	}
+
 	public long getTimecreated() {
-		return timecreated;
+		return this.timecreated;
 	}
-	public void setTimecreated(long timecreated) {
+
+	public void setTimecreated(final long timecreated) {
 		this.timecreated = timecreated;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
+
 	public long getCourseid() {
-		return courseid;
+		return this.courseid;
 	}
-	public void setCourseid(long courseid) {
+
+	public void setCourseid(final long courseid) {
 		this.courseid = courseid;
 	}
+
 	public String getItemname() {
-		return itemname;
+		return this.itemname;
 	}
-	public void setItemname(String itemname) {
+
+	public void setItemname(final String itemname) {
 		this.itemname = itemname;
 	}
-	public void setGrademax(double grademax) {
+
+	public void setGrademax(final double grademax) {
 		this.grademax = grademax;
 	}
+
 	public double getGrademax() {
-		return grademax;
+		return this.grademax;
 	}
 
 }

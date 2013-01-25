@@ -5,31 +5,19 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.User_Enrolments_LMS"
-        table="mdl_user_enrolments">
+	<class
+		name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.User_Enrolments_LMS"
+		table="mdl_user_enrolments">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="enrolid"
-            column="enrolid"
-            type="long"/>  
+		<property name="enrolid" column="enrolid" type="long" />
 
-      <property
-            name="timestart"
-            column="timestart"
-            type="long"/> 
-            
-      <property
-            name="timeend"
-            column="timeend"
-            type="long"/> 
-    
-    </class>
+		<property name="timestart" column="timestart" type="long" />
+
+		<property name="timeend" column="timeend" type="long" />
+
+	</class>
 
 </hibernate-mapping>

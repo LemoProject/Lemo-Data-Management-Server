@@ -5,36 +5,21 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Quiz_grades_LMS"
-        table="mdl_quiz_grades">
+	<class
+		name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Quiz_grades_LMS"
+		table="mdl_quiz_grades">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
-            
-        <property
-            name="userid"
-            column="userid"
-            type="long"/>
-            
-        <property
-            name="quiz"
-            column="quiz"
-            type="long"/> 
-            
-        <property
-            name="grade"
-            column="grade"
-            type="double"/> 
-            
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>
-      
-    </class>
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="userid" column="userid" type="long" />
+
+		<property name="quiz" column="quiz" type="long" />
+
+		<property name="grade" column="grade" type="double" />
+
+		<property name="timemodified" column="timemodified" type="long" />
+
+	</class>
 
 </hibernate-mapping>

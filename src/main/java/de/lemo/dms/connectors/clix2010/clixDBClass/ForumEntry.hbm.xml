@@ -5,42 +5,23 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntry"
-        table="FORUM_ENTRY">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntry"
+		table="FORUM_ENTRY">
 
-        <id
-            name="id"
-            column="ENTRY_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="ENTRY_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="title"
-            column="TITLE"
-            type="string"/>
+		<property name="title" column="TITLE" type="string" />
 
-        <property
-            name="forum"
-            column="FORUM_ID"
-            type="long"/>
-            
-        <property
-            name="lastUpdater"
-            column="LASTUPDATER_ID"
-            type="long"/>    
-            
-        <property
-            name="lastUpdated"
-            column="LASTUPDATED"
-            type="string"/>                        
+		<property name="forum" column="FORUM_ID" type="long" />
 
-        <property
-            name="content"
-            column="CONTENT"
-            type="string"/>   
-            
-    </class>
+		<property name="lastUpdater" column="LASTUPDATER_ID" type="long" />
+
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
+
+		<property name="content" column="CONTENT" type="string" />
+
+	</class>
 
 </hibernate-mapping>

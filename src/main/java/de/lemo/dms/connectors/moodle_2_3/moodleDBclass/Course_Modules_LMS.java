@@ -1,53 +1,67 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Course_Modules_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Course_Modules_LMS {
-	
+
 	private long id;
 	private long course;
 	private long module;
 	private long instance;
 	private long availablefrom;
 	private long availableuntil;
-	
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getCourse() {
-		return course;
+		return this.course;
 	}
-	public void setCourse(long course) {
+
+	public void setCourse(final long course) {
 		this.course = course;
 	}
+
 	public long getModule() {
-		return module;
+		return this.module;
 	}
-	public void setModule(long module) {
+
+	public void setModule(final long module) {
 		this.module = module;
 	}
+
 	public long getInstance() {
-		return instance;
+		return this.instance;
 	}
-	public void setInstance(long instance) {
+
+	public void setInstance(final long instance) {
 		this.instance = instance;
 	}
+
 	public long getAvailablefrom() {
-		return availablefrom;
+		return this.availablefrom;
 	}
-	public void setAvailablefrom(long availablefrom) {
+
+	public void setAvailablefrom(final long availablefrom) {
 		this.availablefrom = availablefrom;
 	}
+
 	public long getAvailableuntil() {
-		return availableuntil;
+		return this.availableuntil;
 	}
-	public void setAvailableuntil(long availableuntil) {
+
+	public void setAvailableuntil(final long availableuntil) {
 		this.availableuntil = availableuntil;
 	}
-	
-	
-	
 
 }

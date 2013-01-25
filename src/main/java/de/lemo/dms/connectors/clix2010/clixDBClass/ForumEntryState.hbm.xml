@@ -5,43 +5,27 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntryState"
-        table="FORUM_ENTRY_STATE">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntryState"
+		table="FORUM_ENTRY_STATE">
 
-		<composite-id
-       	name="id"
-        class="de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntryStatePK" >
-       
-        <key-property name="user" column="USER_ID" type="long" />
-        <key-property name="entry" column="ENTRY_ID" type="long"/>
-       
-       </composite-id> 
-       
-        <property
-            name="forum"
-            column="FORUM_ID"
-            type="long"/>
+		<composite-id name="id"
+			class="de.lemo.dms.connectors.clix2010.clixDBClass.ForumEntryStatePK">
 
-        <property
-            name="user"
-            insert="false" 
-            update="false" 
-            column="USER_ID"
-            type="long"/>
-            
-        <property
-            name="entry"
-            insert="false" 
-            update="false" 
-            column="ENTRY_ID"
-            type="long"/>     
-            
-        <property
-            name="lastUpdated"
-            column="LASTUPDATED"
-            type="string"/>                   
-            
-    </class>
+			<key-property name="user" column="USER_ID" type="long" />
+			<key-property name="entry" column="ENTRY_ID" type="long" />
+
+		</composite-id>
+
+		<property name="forum" column="FORUM_ID" type="long" />
+
+		<property name="user" insert="false" update="false" column="USER_ID"
+			type="long" />
+
+		<property name="entry" insert="false" update="false" column="ENTRY_ID"
+			type="long" />
+
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
+
+	</class>
 
 </hibernate-mapping>

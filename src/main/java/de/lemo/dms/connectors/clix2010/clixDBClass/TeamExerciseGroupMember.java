@@ -1,54 +1,54 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/TeamExerciseGroupMember.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class TeamExerciseGroupMember  implements IClixMappingClass{
+public class TeamExerciseGroupMember implements IClixMappingClass {
 
 	private Long id;
 	private Long portfolio;
 	private Long exerciseGroup;
-	
-	
+
 	public Long getId() {
-		return id;
+		return this.id;
 	}
-	
+
 	public String getString()
 	{
 		return "TeamExerciseGroupMember$$$"
-				+this.id+"$$$"
-				+this.getExerciseGroup()+"$$$"
-				+this.getPortfolio();
+				+ this.id + "$$$"
+				+ this.getExerciseGroup() + "$$$"
+				+ this.getPortfolio();
 	}
-	
 
-
-	public void setId(Long id) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
-
 	public long getPortfolio() {
-		return portfolio;
+		return this.portfolio;
 	}
 
-
-	public void setPortfolio(Long portfolio) {
+	public void setPortfolio(final Long portfolio) {
 		this.portfolio = portfolio;
 	}
 
-
 	public long getExerciseGroup() {
-		return exerciseGroup;
+		return this.exerciseGroup;
 	}
 
-
-	public void setExerciseGroup(Long exerciseGroup) {
+	public void setExerciseGroup(final Long exerciseGroup) {
 		this.exerciseGroup = exerciseGroup;
 	}
 
-
 	public TeamExerciseGroupMember()
-	{}
-	
+	{
+	}
+
 }

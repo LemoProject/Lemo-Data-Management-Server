@@ -5,31 +5,19 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Groups_members_LMS"
-        table="mdl_groups_members">
+	<class
+		name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Groups_members_LMS"
+		table="mdl_groups_members">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="groupid"
-            column="groupid"
-            type="long"/>
-            
-        <property
-            name="userid"
-            column="userid"
-            type="long"/>
-            
-        <property
-            name="timeadded"
-            column="timeadded"
-            type="long"/>
-    
-    </class>
+		<property name="groupid" column="groupid" type="long" />
+
+		<property name="userid" column="userid" type="long" />
+
+		<property name="timeadded" column="timeadded" type="long" />
+
+	</class>
 
 </hibernate-mapping>

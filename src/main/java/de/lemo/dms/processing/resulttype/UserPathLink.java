@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/resulttype/UserPathLink.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.resulttype;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -5,76 +12,81 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class UserPathLink {
 
-    private String source;
-    private String target;
-    private String value;
+	private String source;
+	private String target;
+	private String value;
 
-    private Long pathId;
+	private Long pathId;
 
-    public Long getPathId() {
-		return pathId;
+	public Long getPathId() {
+		return this.pathId;
 	}
 
-	public void setPathId(Long pathId) {
+	public void setPathId(final Long pathId) {
 		this.pathId = pathId;
 	}
 
 	public UserPathLink() {
-        // TODO Auto-generated constructor stub
-    }
-    
-    public UserPathLink(String source, String target) {
-        this.source = source;
-        this.target = target;
-    }
+		// TODO Auto-generated constructor stub
+	}
 
-    public String getSource() {
-        return source;
-    }
+	public UserPathLink(final String source, final String target) {
+		this.source = source;
+		this.target = target;
+	}
 
-    public void setSource(String source) {
-        this.source = source;
-    }
+	public String getSource() {
+		return this.source;
+	}
 
-    public String getTarget() {
-        return target;
-    }
+	public void setSource(final String source) {
+		this.source = source;
+	}
 
-    public void setTarget(String target) {
-        this.target = target;
-    }
+	public String getTarget() {
+		return this.target;
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (source.length() ^ (source.length() >>> 32));
-        result = prime * result + (int) (target.length() ^ (target.length() >>> 32));
-        return result;
-    }
+	public void setTarget(final String target) {
+		this.target = target;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if(this == obj)
-            return true;
-        if(obj == null)
-            return false;
-        if(getClass() != obj.getClass())
-            return false;
-        UserPathLink other = (UserPathLink) obj;
-        if(source != other.source)
-            return false;
-        if(target != other.target)
-            return false;
-        return true;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + (this.source.length() ^ (this.source.length() >>> 32));
+		result = (prime * result) + (this.target.length() ^ (this.target.length() >>> 32));
+		return result;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final UserPathLink other = (UserPathLink) obj;
+		if (this.source != other.source) {
+			return false;
+		}
+		if (this.target != other.target) {
+			return false;
+		}
+		return true;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public String getValue() {
+		return this.value;
+	}
+
+	public void setValue(final String value) {
+		this.value = value;
+	}
 
 }

@@ -1,182 +1,269 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/AssignmentMining.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
-/**This class represents the table assignment.*/
-public class AssignmentMining implements IMappingClass, ILearningObject, IRatedObject{
+/** This class represents the table assignment. */
+public class AssignmentMining implements IMappingClass, ILearningObject, IRatedObject {
 
 	private long id;
 	private String type;
 	private String title;
-	private double maxgrade;
-	private long timeopen;
-	private long timeclose;	
-	private long timecreated;
-	private long timemodified;
+	private double maxGrade;
+	private long timeOpen;
+	private long timeClose;
+	private long timeCreated;
+	private long timeModified;
 	private Long platform;
-	
-	private Set<AssignmentLogMining> assignment_log = new HashSet<AssignmentLogMining>();
-	private Set<CourseAssignmentMining> course_assignment = new HashSet<CourseAssignmentMining>();
 
-	public boolean equals(IMappingClass o)
+	private Set<AssignmentLogMining> assignmentLogs = new HashSet<AssignmentLogMining>();
+	private Set<CourseAssignmentMining> courseAssignments = new HashSet<CourseAssignmentMining>();
+
+	@Override
+	public boolean equals(final IMappingClass o)
 	{
-		if(o == null || !(o instanceof AssignmentMining))
+		if (!(o instanceof AssignmentMining)) {
 			return false;
-		if(o.getId() == this.getId() && (o instanceof AssignmentMining))
+		}
+		if ((o.getId() == this.getId()) && (o instanceof AssignmentMining)) {
 			return true;
+		}
 		return false;
 	}
-	
-	/** standard getter for the attribute timestamp
+
+	/**
+	 * standard getter for the attribute timestamp
+	 * 
 	 * @return the timestamp the assignment will be accessible after by students
 	 */
-	public long getTimeopen() {
-		return timeopen;
+	public long getTimeOpen() {
+		return this.timeOpen;
 	}
-	/** standard setter for the attribute timestamp
-	 * @param timeopen the timestamp the assignment will be accessible after by students
-	 * */		
-	public void setTimeopen(long timeopen) {
-		this.timeopen = timeopen;
+
+	/**
+	 * standard setter for the attribute timestamp
+	 * 
+	 * @param timeOpen
+	 *            the timestamp the assignment will be accessible after by students
+	 */
+	public void setTimeOpen(final long timeOpen) {
+		this.timeOpen = timeOpen;
 	}
-	/** standard getter for the attribute timeclose
+
+	/**
+	 * standard getter for the attribute timeclose
+	 * 
 	 * @return the timestamp after that the assignment will be not accessible any more by students
-	 */	
-	public long getTimeclose() {
-		return timeclose;
+	 */
+	public long getTimeClose() {
+		return this.timeClose;
 	}
-	/** standard setter for the attribute timeclose
-	 * @param timeclose the timestamp after that the assignment will be not accessible any more by students
-	 * */		
-	public void setTimeclose(long timeclose) {
-		this.timeclose = timeclose;
+
+	/**
+	 * standard setter for the attribute timeclose
+	 * 
+	 * @param timeClose
+	 *            the timestamp after that the assignment will be not accessible any more by students
+	 */
+	public void setTimeClose(final long timeClose) {
+		this.timeClose = timeClose;
 	}
-	/** standard getter for the attribute timecreated
+
+	/**
+	 * standard getter for the attribute timecreated
+	 * 
 	 * @return the timestamp when the assignment was created
-	 */	
-	public long getTimecreated() {
-		return timecreated;
+	 */
+	public long getTimeCreated() {
+		return this.timeCreated;
 	}
-	/** standard setter for the attribute timecreated
-	 * @param timecreated the timestamp when the assignment was created
-	 * */	
-	public void setTimecreated(long timecreated) {
-		this.timecreated = timecreated;
+
+	/**
+	 * standard setter for the attribute timecreated
+	 * 
+	 * @param timeCreated
+	 *            the timestamp when the assignment was created
+	 */
+	public void setTimeCreated(final long timeCreated) {
+		this.timeCreated = timeCreated;
 	}
-	/** standard getter for the attribute timemodified
+
+	/**
+	 * standard getter for the attribute timemodified
+	 * 
 	 * @return the timestamp when the assignment was changed the last time
-	 */	
-	public long getTimemodified() {
-		return timemodified;
+	 */
+	public long getTimeModified() {
+		return this.timeModified;
 	}
-	/** standard setter for the attribute timemodified
-	 * @param timemodified the timestamp when the assignment was changed the last time
-	 * */	
-	public void setTimemodified(long timemodified) {
-		this.timemodified = timemodified;
+
+	/**
+	 * standard setter for the attribute timemodified
+	 * 
+	 * @param timeModified
+	 *            the timestamp when the assignment was changed the last time
+	 */
+	public void setTimeModified(final long timeModified) {
+		this.timeModified = timeModified;
 	}
-	/** standard setter for the attribute title
-	 * @param title the title of the assignment
-	 * */	
-	public void setTitle(String title) {
+
+	/**
+	 * standard setter for the attribute title
+	 * 
+	 * @param title
+	 *            the title of the assignment
+	 */
+	public void setTitle(final String title) {
 		this.title = title;
 	}
-	/** standard getter for the attribute title
+
+	/**
+	 * standard getter for the attribute title
+	 * 
 	 * @return the title of the assignment
-	 */	
+	 */
+	@Override
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
-	
-	/** standard getter for the attribute id
+
+	/**
+	 * standard getter for the attribute id
+	 * 
 	 * @return the identifier of the assignment
-	 */	
+	 */
+	@Override
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	/** standard setter for the attribute id
-	 * @param id the identifier of the assignment
-	 */		
-	public void setId(long id) {
+
+	/**
+	 * standard setter for the attribute id
+	 * 
+	 * @param id
+	 *            the identifier of the assignment
+	 */
+	public void setId(final long id) {
 		this.id = id;
 	}
-	/** standard getter for the attribute maxgrade
+
+	/**
+	 * standard getter for the attribute maxgrade
+	 * 
 	 * @return the maximum grade which is set for the assignment
 	 */
-	public Double getMaxgrade() {
-		return maxgrade;
+	@Override
+	public Double getMaxGrade() {
+		return this.maxGrade;
 	}
-	/** standard setter for the attribute maxgrade
-	 * @param maxgrade the maximum grade which is set for the assignment
-	 * */
-	public void setMaxgrade(double maxgrade) {
-		this.maxgrade = maxgrade;
+
+	/**
+	 * standard setter for the attribute maxgrade
+	 * 
+	 * @param maxGrade
+	 *            the maximum grade which is set for the assignment
+	 */
+	public void setMaxGrade(final double maxGrade) {
+		this.maxGrade = maxGrade;
 	}
-	/** standard setter for the attribute type
-	 * @param type the type of this assignment
-	 * */	
-	public void setType(String type) {
+
+	/**
+	 * standard setter for the attribute type
+	 * 
+	 * @param type
+	 *            the type of this assignment
+	 */
+	public void setType(final String type) {
 		this.type = type;
 	}
-	/** standard getter for the attribute type
+
+	/**
+	 * standard getter for the attribute type
+	 * 
 	 * @return the type of this assignment
-	 * */
+	 */
 	public String getType() {
-		return type;
+		return this.type;
 	}
-	/** standard setter for the attribute assignment_log
-	 * @param assignment_log a set of entries in the assignment_log table which are related with this assignment
-	 * */	
-	public void setAssignment_log(Set<AssignmentLogMining> assignment_log) {
-		this.assignment_log = assignment_log;
+
+	/**
+	 * standard setter for the attribute assignment_log
+	 * 
+	 * @param assignmentLog
+	 *            a set of entries in the assignment_log table which are related with this assignment
+	 */
+	public void setAssignmentLogs(final Set<AssignmentLogMining> assignmentLog) {
+		this.assignmentLogs = assignmentLog;
 	}
-	/** standard getter for the attribute assignment_log
+
+	/**
+	 * standard getter for the attribute assignment_log
+	 * 
 	 * @return a set of entries in the quiz_log table which are related with this assignment
-	 */	
-	public Set<AssignmentLogMining> getAssignment_log() {
-		return assignment_log;
+	 */
+	public Set<AssignmentLogMining> getAssignmentLogs() {
+		return this.assignmentLogs;
 	}
-	/** standard setter for the attribute assignment_log
-	 * @param assignment_log_add this entry will be added to the list of assignment_log in this assignment
-	 * */	
-	public void addAssignment_log(AssignmentLogMining assignment_log_add){	
-		assignment_log.add(assignment_log_add);
+
+	/**
+	 * standard setter for the attribute assignment_log
+	 * 
+	 * @param assignmentLog
+	 *            this entry will be added to the list of assignment_log in this assignment
+	 */
+	public void addAssignmentLog(final AssignmentLogMining assignmentLog) {
+		this.assignmentLogs.add(assignmentLog);
 	}
-	/** standard setter for the attribute course_assignment
-	 * @param course_assignment a set of entries in the course_assignment table which are related with this assignment
-	 * */	
-	public void setCourse_assignment(Set<CourseAssignmentMining> course_assignment) {
-		this.course_assignment = course_assignment;
+
+	/**
+	 * standard setter for the attribute course_assignment
+	 * 
+	 * @param courseAssignment
+	 *            a set of entries in the course_assignment table which are related with this assignment
+	 */
+	public void setCourseAssignments(final Set<CourseAssignmentMining> courseAssignment) {
+		this.courseAssignments = courseAssignment;
 	}
-	/** standard getter for the attribute course_assignment
+
+	/**
+	 * standard getter for the attribute course_assignment
+	 * 
 	 * @return a set of entries in the course_assignment table which are related with this assignment
-	 */	
-	public Set<CourseAssignmentMining> getCourse_assignment() {
-		return course_assignment;
+	 */
+	public Set<CourseAssignmentMining> getCourseAssignments() {
+		return this.courseAssignments;
 	}
-	/** standard setter for the attribute course_assignment
-	 * @param course_assignment_add this entry will be added to the list of course_assignment in this assignment
-	 * */	
-	public void addCourse_assignment(CourseAssignmentMining course_assignment_add){	
-		course_assignment.add(course_assignment_add);
+
+	/**
+	 * standard setter for the attribute course_assignment
+	 * 
+	 * @param courseAssignment
+	 *            this entry will be added to the list of course_assignment in this assignment
+	 */
+	public void addCourseAssignment(final CourseAssignmentMining courseAssignment) {
+		this.courseAssignments.add(courseAssignment);
 	}
 
 	public Long getPlatform() {
-		return platform;
+		return this.platform;
 	}
 
-	public void setPlatform(Long platform) {
+	public void setPlatform(final Long platform) {
 		this.platform = platform;
 	}
 
 	@Override
 	public Long getPrefix() {
-		// TODO Auto-generated method stub
 		return 11L;
 	}
 }

@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_question_instances_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Quiz_question_instances_LMS {
@@ -5,24 +12,29 @@ public class Quiz_question_instances_LMS {
 	public long id;
 	public long quiz;
 	public long question;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getQuiz() {
-		return quiz;
+		return this.quiz;
 	}
-	public void setQuiz(long quiz) {
+
+	public void setQuiz(final long quiz) {
 		this.quiz = quiz;
 	}
+
 	public long getQuestion() {
-		return question;
+		return this.question;
 	}
-	public void setQuestion(long question) {
+
+	public void setQuestion(final long question) {
 		this.question = question;
 	}
-	
+
 }

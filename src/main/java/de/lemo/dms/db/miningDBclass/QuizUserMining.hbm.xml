@@ -4,51 +4,31 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.QuizUserMining"
-        table="quiz_user">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
-  
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-                  
-		<many-to-one 
-       		name="course" 
-       		class="de.lemo.dms.db.miningDBclass.CourseMining"
-            column="course_id" />
+	<class name="de.lemo.dms.db.miningDBclass.QuizUserMining" table="quiz_user">
 
-		<many-to-one 
-       		name="user" 
-       		class="de.lemo.dms.db.miningDBclass.UserMining"
-            column="user_id" />
-            
-		<many-to-one name="quiz" class="de.lemo.dms.db.miningDBclass.QuizMining"> 
-       		<column name="quiz_id"/>
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="platform" column="platform" type="long" />
+
+		<many-to-one name="course"
+			class="de.lemo.dms.db.miningDBclass.CourseMining" column="course_id" />
+
+		<many-to-one name="user"
+			class="de.lemo.dms.db.miningDBclass.UserMining" column="user_id" />
+
+		<many-to-one name="quiz"
+			class="de.lemo.dms.db.miningDBclass.QuizMining">
+			<column name="quiz_id" />
 		</many-to-one>
-		              
-        <property
-            name="finalgrade"
-            column="finalgrade"
-            type="double"/>
-            
-        <property
-            name="rawgrade"
-            column="rawgrade"
-            type="double"/>  
-               
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>
-            
-    </class>
+
+		<property name="finalGrade" column="finalgrade" type="double" />
+
+		<property name="rawGrade" column="rawgrade" type="double" />
+
+		<property name="timeModified" column="timemodified" type="long" />
+
+	</class>
 
 </hibernate-mapping>

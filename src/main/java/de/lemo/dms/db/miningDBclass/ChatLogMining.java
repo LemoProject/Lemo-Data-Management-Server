@@ -1,12 +1,17 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/ChatLogMining.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
-
+import java.util.Map;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-
-public class ChatLogMining implements IMappingClass, ILogMining{
+public class ChatLogMining implements IMappingClass, ILogMining {
 
 	private long id;
 	private ChatMining chat;
@@ -16,121 +21,139 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 	private CourseMining course;
 	private Long duration;
 	private Long platform;
-	
+
+	@Override
 	public CourseMining getCourse() {
-		return course;
+		return this.course;
 	}
 
-	public void setCourse(CourseMining course) {
+	public void setCourse(final CourseMining course) {
 		this.course = course;
 	}
 
 	@Override
-	public boolean equals(IMappingClass o)
+	public boolean equals(final IMappingClass o)
 	{
-		if(o == null || !(o instanceof ChatLogMining))
+		if ((o == null) || !(o instanceof ChatLogMining)) {
 			return false;
-		if(o.getId() == this.getId() && (o instanceof ChatLogMining))
+		}
+		if ((o.getId() == this.getId()) && (o instanceof ChatLogMining)) {
 			return true;
+		}
 		return false;
 	}
-	
-	public void setDuration(Long duration)
+
+	@Override
+	public void setDuration(final Long duration)
 	{
 		this.duration = duration;
 	}
-	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
-		
-		if(courseMining.get(course) != null)
+
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
+
+		if (courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addChat_log(this);
+			courseMining.get(course).addChatLog(this);
 		}
-		if(this.course == null && oldCourseMining.get(course) != null)
+		if ((this.course == null) && (oldCourseMining.get(course) != null))
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addChat_log(this);
-		}
-	}
-	
-	public long getTimestamp() {
-		return timestamp;
-	}
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-	}
-	
-	public ChatMining getChat() {
-		return chat;
-	}
-	public void setChat(ChatMining chat) {
-		this.chat = chat;
-	}
-
-	public UserMining getUser() {
-		return user;
-	}
-	public void setUser(UserMining user) {
-		this.user = user;
-	}
-	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	public void setUser(long user, HashMap<Long, UserMining> userMining, HashMap<Long, UserMining> oldUserMining) {		
-		
-		if(userMining.get(user) != null)
-		{
-			this.user = userMining.get(user);
-			userMining.get(user).addChat_log(this);
-		}
-		if(this.user == null && oldUserMining.get(user) != null)
-		{
-			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addChat_log(this);
-		}
-	}
-	
-	public void setChat(long chat, HashMap<Long, ChatMining> chatMining, HashMap<Long, ChatMining> oldChatMining) 
-	{		
-		
-		if(chatMining.get(chat) != null)
-		{
-			this.chat = chatMining.get(chat);
-			chatMining.get(chat).addChat_log(this);
-		}
-		if(this.chat == null && oldChatMining.get(chat) != null)
-		{
-			this.chat = oldChatMining.get(chat);
-			oldChatMining.get(chat).addChat_log(this);
+			courseMining.get(course).addChatLog(this);
 		}
 	}
 
 	@Override
-	public int compareTo(ILogMining o) {
+	public long getTimestamp() {
+		return this.timestamp;
+	}
+
+	public void setTimestamp(final long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public ChatMining getChat() {
+		return this.chat;
+	}
+
+	public void setChat(final ChatMining chat) {
+		this.chat = chat;
+	}
+
+	@Override
+	public UserMining getUser() {
+		return this.user;
+	}
+
+	public void setUser(final UserMining user) {
+		this.user = user;
+	}
+
+	@Override
+	public long getId() {
+		return this.id;
+	}
+
+	@Override
+	public void setId(final long id) {
+		this.id = id;
+	}
+
+	public String getMessage() {
+		return this.message;
+	}
+
+	public void setMessage(final String message) {
+		this.message = message;
+	}
+
+	public void setUser(final long user, final Map<Long, UserMining> userMining,
+			final Map<Long, UserMining> oldUserMining) {
+
+		if (userMining.get(user) != null)
+		{
+			this.user = userMining.get(user);
+			userMining.get(user).addChatLog(this);
+		}
+		if ((this.user == null) && (oldUserMining.get(user) != null))
+		{
+			this.user = oldUserMining.get(user);
+			oldUserMining.get(user).addChatLog(this);
+		}
+	}
+
+	public void setChat(final long chat, final Map<Long, ChatMining> chatMining,
+			final Map<Long, ChatMining> oldChatMining)
+	{
+
+		if (chatMining.get(chat) != null)
+		{
+			this.chat = chatMining.get(chat);
+			chatMining.get(chat).addChatLog(this);
+		}
+		if ((this.chat == null) && (oldChatMining.get(chat) != null))
+		{
+			this.chat = oldChatMining.get(chat);
+			oldChatMining.get(chat).addChatLog(this);
+		}
+	}
+
+	@Override
+	public int compareTo(final ILogMining o) {
 		ILogMining s;
-		try{
+		try {
 			s = o;
-		}catch(Exception e)
+		} catch (final Exception e)
 		{
 			return 0;
 		}
-		if(this.timestamp > s.getTimestamp())
+		if (this.timestamp > s.getTimestamp()) {
 			return 1;
-		if(this.timestamp < s.getTimestamp())
+		}
+		if (this.timestamp < s.getTimestamp()) {
 			return -1;
+		}
 		return 0;
 	}
 
@@ -149,9 +172,9 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 		return this.getChat().getId();
 	}
 
-	
+	@Override
 	public Long getDuration() {
-		return duration;
+		return this.duration;
 	}
 
 	@Override
@@ -160,11 +183,11 @@ public class ChatLogMining implements IMappingClass, ILogMining{
 	}
 
 	public Long getPlatform() {
-		return platform;
+		return this.platform;
 	}
 
-	public void setPlatform(Long platform) {
+	public void setPlatform(final Long platform) {
 		this.platform = platform;
 	}
-	
+
 }

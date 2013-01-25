@@ -1,3 +1,13 @@
+/**
+ * File ./test/java/de/lemo/dms/core/DMSMainTest.java
+ *
+ * Date 2013-01-24
+ *
+ * Project Lemo Learning Analytics
+ *
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.core;
 
 import static org.junit.Assert.*;
@@ -11,13 +21,14 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 
 class TestUserThread extends Thread {
 
-    Exception exeption;
-    private IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
+	Exception exeption;
+    private IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
     @Override
     public void run() {

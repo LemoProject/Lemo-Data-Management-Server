@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Forum_posts_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Forum_posts_LMS {
@@ -8,41 +15,52 @@ public class Forum_posts_LMS {
 	private long modified;
 	private String subject;
 	private String message;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getUserid() {
-		return userid;
+		return this.userid;
 	}
-	public void setUserid(long userid) {
+
+	public void setUserid(final long userid) {
 		this.userid = userid;
 	}
+
 	public long getCreated() {
-		return created;
+		return this.created;
 	}
-	public void setCreated(long created) {
+
+	public void setCreated(final long created) {
 		this.created = created;
 	}
+
 	public long getModified() {
-		return modified;
+		return this.modified;
 	}
-	public void setModified(long modified) {
+
+	public void setModified(final long modified) {
 		this.modified = modified;
 	}
+
 	public String getSubject() {
-		return subject;
+		return this.subject;
 	}
-	public void setSubject(String subject) {
+
+	public void setSubject(final String subject) {
 		this.subject = subject;
 	}
+
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
-	public void setMessage(String message) {
+
+	public void setMessage(final String message) {
 		this.message = message;
 	}
 }

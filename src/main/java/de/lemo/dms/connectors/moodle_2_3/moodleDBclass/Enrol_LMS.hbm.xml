@@ -5,22 +5,15 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Enrol_LMS"
-        table="mdl_enrol">
+	<class name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Enrol_LMS"
+		table="mdl_enrol">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="courseid"
-            column="courseid"
-            type="long"/>  
+		<property name="courseid" column="courseid" type="long" />
 
-   
-    </class>
+
+	</class>
 
 </hibernate-mapping>

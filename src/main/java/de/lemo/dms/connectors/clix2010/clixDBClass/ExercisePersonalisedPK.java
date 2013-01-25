@@ -1,9 +1,16 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/ExercisePersonalisedPK.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
 public class ExercisePersonalisedPK implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -12,65 +19,74 @@ public class ExercisePersonalisedPK implements Serializable {
 	private Long user;
 	private Long exerciseSheet;
 	private Long community;
-	
-	public boolean equals(Object arg)
+
+	@Override
+	public boolean equals(final Object arg)
 	{
-		if(arg == null)
+		if (arg == null) {
 			return false;
-		if(!(arg instanceof ExercisePersonalisedPK))
+		}
+		if (!(arg instanceof ExercisePersonalisedPK)) {
 			return false;
-		ExercisePersonalisedPK a = (ExercisePersonalisedPK)arg;
-		if(a.getUser() != this.user)
+		}
+		final ExercisePersonalisedPK a = (ExercisePersonalisedPK) arg;
+		if (a.getUser() != this.user) {
 			return false;
-		if(a.getExercise() != this.exercise)
+		}
+		if (a.getExercise() != this.exercise) {
 			return false;
-		if(a.getExerciseSheet() != this.exerciseSheet)
+		}
+		if (a.getExerciseSheet() != this.exerciseSheet) {
 			return false;
-		if(a.getCommunity() != this.community)
+		}
+		if (a.getCommunity() != this.community) {
 			return false;
+		}
 		return true;
 	}
-	
+
+	@Override
 	public int hashCode()
 	{
-		return community.hashCode() * 17 + exercise.hashCode() * 19 + exerciseSheet.hashCode() * 23 + user.hashCode() * 29;
-	}
-	
-	public long getExerciseSheet() {
-		return exerciseSheet;
+		return (this.community.hashCode() * 17) + (this.exercise.hashCode() * 19)
+				+ (this.exerciseSheet.hashCode() * 23) + (this.user.hashCode() * 29);
 	}
 
-	public void setExerciseSheet(long exerciseSheet) {
+	public long getExerciseSheet() {
+		return this.exerciseSheet;
+	}
+
+	public void setExerciseSheet(final long exerciseSheet) {
 		this.exerciseSheet = exerciseSheet;
 	}
 
 	public long getCommunity() {
-		return community;
+		return this.community;
 	}
 
-	public void setCommunity(long community) {
+	public void setCommunity(final long community) {
 		this.community = community;
 	}
 
 	public long getExercise() {
-		return exercise;
+		return this.exercise;
 	}
 
-	public void setExercise(long exercise) {
+	public void setExercise(final long exercise) {
 		this.exercise = exercise;
 	}
 
 	public long getUser() {
-		return user;
+		return this.user;
 	}
 
-	public void setUser(long user) {
+	public void setUser(final long user) {
 		this.user = user;
 	}
 
 	public ExercisePersonalisedPK()
 	{
-		
+
 	}
 
 }

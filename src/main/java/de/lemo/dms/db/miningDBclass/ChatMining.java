@@ -1,100 +1,114 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/ChatMining.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.miningDBclass;
 
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-
-import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 public class ChatMining implements IMappingClass {
 
-	
 	private long id;
 	private String title;
 	private String description;
-	private long chattime;
+	private long chatTime;
 	private CourseMining course;
 	private Long platform;
-	
-	public boolean equals(IMappingClass o)
+
+	@Override
+	public boolean equals(final IMappingClass o)
 	{
-		if(o == null || !(o instanceof ChatMining))
+		if (!(o instanceof ChatMining)) {
 			return false;
-		if(o.getId() == this.getId() && (o instanceof ChatMining))
+		}
+		if ((o.getId() == this.getId()) && (o instanceof ChatMining)) {
 			return true;
+		}
 		return false;
 	}
 
-
-	
 	public CourseMining getCourse() {
-		return course;
+		return this.course;
 	}
-	public void setCourse(CourseMining course) {
+
+	public void setCourse(final CourseMining course) {
 		this.course = course;
 	}
 
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
-		
-		if(courseMining.get(course) != null)
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
+
+		if (courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
 			courseMining.get(course).addChat(this);
 		}
-		if(this.course == null && oldCourseMining.get(course) != null)
+		if ((this.course == null) && (oldCourseMining.get(course) != null))
 		{
 			this.course = courseMining.get(course);
 			courseMining.get(course).addChat(this);
 		}
 	}
-	
-	private Set<ChatLogMining> chat_log = new HashSet<ChatLogMining>();
-	
+
+	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
+
+	@Override
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
-	public void setTitle(String title) {
+
+	public void setTitle(final String title) {
 		this.title = title;
 	}
+
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
-	public void setDescription(String description) {
+
+	public void setDescription(final String description) {
 		this.description = description;
-	}	
-	public long getChattime() {
-		return chattime;
-	}
-	public void setChattime(long chattime) {
-		this.chattime = chattime;
-	}
-	public Set<ChatLogMining> getChat_log() {
-		return chat_log;
-	}
-	public void setChat_log(Set<ChatLogMining> chat_log) {
-		this.chat_log = chat_log;
-	}
-	public void addChat_log(ChatLogMining chat_log_add){	
-		chat_log.add(chat_log_add);
 	}
 
+	public long getChatTime() {
+		return this.chatTime;
+	}
 
+	public void setChatTime(final long chatTime) {
+		this.chatTime = chatTime;
+	}
+
+	public Set<ChatLogMining> getChatLogs() {
+		return this.chatLogs;
+	}
+
+	public void setChatLogs(final Set<ChatLogMining> chatLogs) {
+		this.chatLogs = chatLogs;
+	}
+
+	public void addChatLog(final ChatLogMining chatLog) {
+		this.chatLogs.add(chatLog);
+	}
 
 	public Long getPlatform() {
-		return platform;
+		return this.platform;
 	}
 
-
-
-	public void setPlatform(Long platform) {
+	public void setPlatform(final Long platform) {
 		this.platform = platform;
 	}
-	
+
 }

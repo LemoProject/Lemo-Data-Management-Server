@@ -5,33 +5,23 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.TTestSpecification"
-        table="T_TESTSPECIFICATION">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.TTestSpecification"
+		table="T_TESTSPECIFICATION">
 
-       <composite-id
-       	name="id"
-        class="de.lemo.dms.connectors.clix2010.clixDBClass.TTestSpecificationPK" >
-       
-        <key-property name="task" column="TASK_ID" type="long" />
-        <key-property name="test" column="TEST_ID" type="long"/>
-       
-       </composite-id> 
+		<composite-id name="id"
+			class="de.lemo.dms.connectors.clix2010.clixDBClass.TTestSpecificationPK">
 
-        <property
-            name="task"
-            insert="false" 
-            update="false" 
-            column="TASK_ID"
-            type="long"/>
+			<key-property name="task" column="TASK_ID" type="long" />
+			<key-property name="test" column="TEST_ID" type="long" />
 
-        <property
-            name="test"
-            insert="false" 
-            update="false" 
-            column="TEST_ID"
-            type="long"/>
-            
-    </class>
+		</composite-id>
+
+		<property name="task" insert="false" update="false" column="TASK_ID"
+			type="long" />
+
+		<property name="test" insert="false" update="false" column="TEST_ID"
+			type="long" />
+
+	</class>
 
 </hibernate-mapping>

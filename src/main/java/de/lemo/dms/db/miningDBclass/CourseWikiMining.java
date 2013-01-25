@@ -1,104 +1,151 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/CourseWikiMining.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.miningDBclass;
 
-
-import java.util.HashMap;
-
+import java.util.Map;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
-/**This class represents the relationship between courses and wikis.*/
+
+/** This class represents the relationship between courses and wikis. */
 public class CourseWikiMining implements IMappingClass {
 
 	private long id;
 	private CourseMining course;
-	private	WikiMining wiki;
+	private WikiMining wiki;
 	private Long platform;
 
-	public boolean equals(IMappingClass o)
+	@Override
+	public boolean equals(final IMappingClass o)
 	{
-		if(o == null || !(o instanceof CourseWikiMining))
+		if (!(o instanceof CourseWikiMining)) {
 			return false;
-		if(o.getId() == this.getId() && (o instanceof CourseWikiMining))
+		}
+		if ((o.getId() == this.getId()) && (o instanceof CourseWikiMining)) {
 			return true;
+		}
 		return false;
 	}
-	
-	/** standard getter for the attribut id
-	 * @return the identifier for the assoziation between course and wiki
+
+	/**
+	 * standard getter for the attribute id
+	 * 
+	 * @return the identifier for the association between course and wiki
 	 */
+	@Override
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	/** standard setter for the attribut id
-	 * @param id the identifier for the assoziation between course and wiki
-	 */	
-	public void setId(long id) {
+
+	/**
+	 * standard setter for the attribute id
+	 * 
+	 * @param id
+	 *            the identifier for the association between course and wiki
+	 */
+	public void setId(final long id) {
 		this.id = id;
 	}
-	/** standard getter for the attribut course
+
+	/**
+	 * standard getter for the attribute course
+	 * 
 	 * @return a course in which the wiki is used in
 	 */
 	public CourseMining getCourse() {
-		return course;
+		return this.course;
 	}
-	/** parameterized setter for the attribut course
-	 * @param course the id of a course in which the wiki is used in
-	 * @param courseMining a list of new added courses, which is searched for the course with the id submitted in the course parameter
-	 * @param oldCourseMining a list of courses in the miningdatabase, which is searched for the course with the id submitted in the course parameter
-	 */	
-	public void setCourse(long course, HashMap<Long, CourseMining> courseMining, HashMap<Long, CourseMining> oldCourseMining) {		
-		
-		if(courseMining.get(course) != null)
+
+	/**
+	 * parameterized setter for the attribute course
+	 * 
+	 * @param course
+	 *            the id of a course in which the wiki is used in
+	 * @param courseMining
+	 *            a list of new added courses, which is searched for the course with the id submitted in the course
+	 *            parameter
+	 * @param oldCourseMining
+	 *            a list of courses in the miningdatabase, which is searched for the course with the id submitted in the
+	 *            course parameter
+	 */
+	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
+			final Map<Long, CourseMining> oldCourseMining) {
+
+		if (courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addCourse_wiki(this);
+			courseMining.get(course).addCourseWiki(this);
 		}
-		if(this.course == null && oldCourseMining.get(course) != null)
+		if ((this.course == null) && (oldCourseMining.get(course) != null))
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addCourse_wiki(this);
+			oldCourseMining.get(course).addCourseWiki(this);
 		}
 	}
-	/** standard setter for the attribut course
-	 * @param course a course in which the wiki is used in
-	 */	
-	public void setCourse(CourseMining course) {
+
+	/**
+	 * standard setter for the attribute course
+	 * 
+	 * @param course
+	 *            a course in which the wiki is used in
+	 */
+	public void setCourse(final CourseMining course) {
 		this.course = course;
 	}
-	/** standard getter for the attribut wiki
+
+	/**
+	 * standard getter for the attribute wiki
+	 * 
 	 * @return the wiki which is used in the course in this entry
 	 */
 	public WikiMining getWiki() {
-		return wiki;
+		return this.wiki;
 	}
-	/** standard setter for the attribut wiki
-	 * @param wiki the wiki which is used in the course in this entry
-	 */	
-	public void setWiki(WikiMining wiki) {
+
+	/**
+	 * standard setter for the attribute wiki
+	 * 
+	 * @param wiki
+	 *            the wiki which is used in the course in this entry
+	 */
+	public void setWiki(final WikiMining wiki) {
 		this.wiki = wiki;
 	}
-	/** parameterized setter for the attribut wiki
-	 * @param wiki the id of the wiki which is used in the course in this entry
-	 * @param wikiMining a list of new added wikis, which is searched for the wiki with the id submitted in the wiki parameter
-	 * @param oldWikiMining a list of wikis in the miningdatabase, which is searched for the wiki with the id submitted in the wiki parameter
-	 */	
-	public void setWiki(long wiki, HashMap<Long, WikiMining> wikiMining, HashMap<Long, WikiMining> oldWikiMining) {		
-       
-		if(wikiMining.get(wiki) != null)
+
+	/**
+	 * parameterized setter for the attribute wiki
+	 * 
+	 * @param wiki
+	 *            the id of the wiki which is used in the course in this entry
+	 * @param wikiMining
+	 *            a list of new added wikis, which is searched for the wiki with the id submitted in the wiki parameter
+	 * @param oldWikiMining
+	 *            a list of wikis in the miningdatabase, which is searched for the wiki with the id submitted in the
+	 *            wiki parameter
+	 */
+	public void setWiki(final long wiki, final Map<Long, WikiMining> wikiMining,
+			final Map<Long, WikiMining> oldWikiMining) {
+
+		if (wikiMining.get(wiki) != null)
 		{
 			this.wiki = wikiMining.get(wiki);
-			wikiMining.get(wiki).addCourse_wiki(this);
+			wikiMining.get(wiki).addCourseWiki(this);
 		}
-		if(this.wiki == null && oldWikiMining.get(wiki) != null)
+		if ((this.wiki == null) && (oldWikiMining.get(wiki) != null))
 		{
 			this.wiki = oldWikiMining.get(wiki);
-			oldWikiMining.get(wiki).addCourse_wiki(this);
+			oldWikiMining.get(wiki).addCourseWiki(this);
 		}
 	}
 
 	public Long getPlatform() {
-		return platform;
+		return this.platform;
 	}
 
-	public void setPlatform(Long platform) {
+	public void setPlatform(final Long platform) {
 		this.platform = platform;
 	}
 }

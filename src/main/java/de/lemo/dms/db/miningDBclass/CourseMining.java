@@ -1,522 +1,767 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/CourseMining.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/**This class represents the table course.*/
+/** This class represents the table course. */
 public class CourseMining implements IMappingClass, ILearningObject {
 
 	private long id;
-	private long startdate;	
-	private long enrolstart;
-	private long enrolend;
-	private long timecreated;
-	private long timemodified;
+	private long startDate;
+	private long enrolStart;
+	private long enrolEnd;
+	private long timeCreated;
+	private long timeModified;
 	private String title;
 	private String shortname;
 	private Long platform;
-	
-	private Set<CourseGroupMining> course_group = new HashSet<CourseGroupMining>();
-	private Set<ChatMining> chat = new HashSet<ChatMining>();
-	private Set<ChatLogMining> chat_log = new HashSet<ChatLogMining>();
-	private Set<CourseForumMining> course_forum = new HashSet<CourseForumMining>();
-	private Set<CourseWikiMining> course_wiki = new HashSet<CourseWikiMining>();
-	private Set<CourseUserMining> course_user = new HashSet<CourseUserMining>();
-	private Set<CourseQuizMining> course_quiz = new HashSet<CourseQuizMining>();
-	private Set<CourseAssignmentMining> course_assignment = new HashSet<CourseAssignmentMining>();
-	private Set<CourseResourceMining> course_resource = new HashSet<CourseResourceMining>();
-	private Set<ForumLogMining> forum_log = new HashSet<ForumLogMining>();
-	private Set<WikiLogMining> wiki_log = new HashSet<WikiLogMining>();	
-	private Set<CourseLogMining> course_log = new HashSet<CourseLogMining>();
-	private Set<QuizLogMining> quiz_log = new HashSet<QuizLogMining>();
-	private Set<AssignmentLogMining> assignment_log = new HashSet<AssignmentLogMining>();
-	private Set<QuizUserMining> quiz_user = new HashSet<QuizUserMining>();
-	private Set<QuestionLogMining> question_log = new HashSet<QuestionLogMining>();
-	private Set<ResourceLogMining> resource_log = new HashSet<ResourceLogMining>();
-	private Set<ScormLogMining> scorm_log = new HashSet<ScormLogMining>();
-	private Set<CourseScormMining> course_scorm = new HashSet<CourseScormMining>();	
-	//private Set<DegreeCourseMining> degree_course = new HashSet<DegreeCourseMining>();
-	private Set<LevelCourseMining> levelCourse = new HashSet<LevelCourseMining>();
-	
-	public boolean equals(IMappingClass o)
+
+	private Set<CourseGroupMining> courseGroupSet = new HashSet<CourseGroupMining>();
+	private Set<ChatMining> chats = new HashSet<ChatMining>();
+	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
+	private Set<CourseForumMining> courseForums = new HashSet<CourseForumMining>();
+	private Set<CourseWikiMining> courseWikis = new HashSet<CourseWikiMining>();
+	private Set<CourseUserMining> courseUsers = new HashSet<CourseUserMining>();
+	private Set<CourseQuizMining> courseQuizzes = new HashSet<CourseQuizMining>();
+	private Set<CourseAssignmentMining> courseAssignments = new HashSet<CourseAssignmentMining>();
+	private Set<CourseResourceMining> courseResources = new HashSet<CourseResourceMining>();
+	private Set<ForumLogMining> forumLogs = new HashSet<ForumLogMining>();
+	private Set<WikiLogMining> wikiLogs = new HashSet<WikiLogMining>();
+	private Set<CourseLogMining> courseLogs = new HashSet<CourseLogMining>();
+	private Set<QuizLogMining> quizLogs = new HashSet<QuizLogMining>();
+	private Set<AssignmentLogMining> assignmentLogs = new HashSet<AssignmentLogMining>();
+	private Set<QuizUserMining> quizUsers = new HashSet<QuizUserMining>();
+	private Set<QuestionLogMining> questionLogs = new HashSet<QuestionLogMining>();
+	private Set<ResourceLogMining> resourceLogs = new HashSet<ResourceLogMining>();
+	private Set<ScormLogMining> scormLogs = new HashSet<ScormLogMining>();
+	private Set<CourseScormMining> courseScorms = new HashSet<CourseScormMining>();
+	private Set<LevelCourseMining> levelCourses = new HashSet<LevelCourseMining>();
+
+	@Override
+	public boolean equals(final IMappingClass o)
 	{
-		if(o == null || !(o instanceof CourseMining))
+		if (!(o instanceof CourseMining)) {
 			return false;
-		if(o.getId() == this.getId() && (o instanceof CourseMining))
+		}
+		if ((o.getId() == this.getId()) && (o instanceof CourseMining)) {
 			return true;
+		}
 		return false;
 	}
-	
-	/** standard getter for the attribut id
+
+	/**
+	 * standard getter for the attribute id
+	 * 
 	 * @return the identifier of the course
-	 */		
+	 */
+	@Override
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	/** standard setter for the attribut id
-	 * @param id the identifier of the course
-	 */	
-	public void setId(long id) {
+
+	/**
+	 * standard setter for the attribute id
+	 * 
+	 * @param id
+	 *            the identifier of the course
+	 */
+	public void setId(final long id) {
 		this.id = id;
 	}
-	/** standard getter for the attribut startdate
+
+	/**
+	 * standard getter for the attribute startdate
+	 * 
 	 * @return the timestamp when the course starts
-	 */		
-	public long getStartdate() {
-		return startdate;
+	 */
+	public long getStartDate() {
+		return this.startDate;
 	}
-	/** standard setter for the attribut startdate
-	 * @param startdate the timestamp when the course starts
-	 */	
-	public void setStartdate(long startdate) {
-		this.startdate = startdate;
+
+	/**
+	 * standard setter for the attribute startdate
+	 * 
+	 * @param startDate
+	 *            the timestamp when the course starts
+	 */
+	public void setStartDate(final long startDate) {
+		this.startDate = startDate;
 	}
-	/** standard getter for the attribut enrolstart
+
+	/**
+	 * standard getter for the attribute enrolstart
+	 * 
 	 * @return the timestamp after that the students can enrol themselfs to the course
-	 */	
-	public long getEnrolstart() {
-		return enrolstart;
+	 */
+	public long getEnrolStart() {
+		return this.enrolStart;
 	}
-	/** standard setter for the attribut enrolstart
-	 * @param enrolstart the timestamp after that the students can enrol themselfs to the course
-	 */	
-	public void setEnrolstart(long enrolstart) {
-		this.enrolstart = enrolstart;
+
+	/**
+	 * standard setter for the attribute enrolstart
+	 * 
+	 * @param enrolStart
+	 *            the timestamp after that the students can enrol themselfs to the course
+	 */
+	public void setEnrolStart(final long enrolStart) {
+		this.enrolStart = enrolStart;
 	}
-	/** standard getter for the attribut enrolend
+
+	/**
+	 * standard getter for the attribute enrolend
+	 * 
 	 * @return the timestamp after that the students can not enrol themself any more
-	 */	
-	public long getEnrolend() {
-		return enrolend;
+	 */
+	public long getEnrolEnd() {
+		return this.enrolEnd;
 	}
-	/** standard setter for the attribut enrolend
-	 * @param enrolend
-	 */	
-	public void setEnrolend(long enrolend) {
-		this.enrolend = enrolend;
+
+	/**
+	 * standard setter for the attribute enrolend
+	 * 
+	 * @param enrolEnd
+	 */
+	public void setEnrolEnd(final long enrolEnd) {
+		this.enrolEnd = enrolEnd;
 	}
-	/** standard getter for the attribut timecreated
+
+	/**
+	 * standard getter for the attribute timecreated
+	 * 
 	 * @return the timestamp when the course was created
-	 */	
-	public long getTimecreated() {
-		return timecreated;
+	 */
+	public long getTimeCreated() {
+		return this.timeCreated;
 	}
-	/** standard setter for the attribut timecreated
-	 * @param timecreated the timestamp when the course was created
-	 */	
-	public void setTimecreated(long timecreated) {
-		this.timecreated = timecreated;
+
+	/**
+	 * standard setter for the attribute timecreated
+	 * 
+	 * @param timeCreated
+	 *            the timestamp when the course was created
+	 */
+	public void setTimeCreated(final long timeCreated) {
+		this.timeCreated = timeCreated;
 	}
-	/** standard getter for the attribut timemodified
+
+	/**
+	 * standard getter for the attribute timemodified
+	 * 
 	 * @return the timestamp when the course was changes for the last time
-	 */	
-	public long getTimemodified() {
-		return timemodified;
+	 */
+	public long getTimeModified() {
+		return this.timeModified;
 	}
-	/** standard setter for the attribut timemodified
-	 * @param timemodified the timestamp when the course was changes for the last time
-	 */	
-	public void setTimemodified(long timemodified) {
-		this.timemodified = timemodified;
+
+	/**
+	 * standard setter for the attribute timemodified
+	 * 
+	 * @param timeModified
+	 *            the timestamp when the course was changes for the last time
+	 */
+	public void setTimeModified(final long timeModified) {
+		this.timeModified = timeModified;
 	}
-	/** standard getter for the attribut course_group
-	 * @return a set of entrys in the course_group table which shows the groups in this course
-	 */	
-	public Set<CourseGroupMining> getCourse_group() {
-		return course_group;
+
+	/**
+	 * standard getter for the attribute course_group
+	 * 
+	 * @return a set of entries in the course_group table which shows the groups in this course
+	 */
+	public Set<CourseGroupMining> getCourseGroups() {
+		return this.courseGroupSet;
 	}
-	/** standard setter for the attribut course_group
-	 * @param course_group a set of entrys in the course_group table which shows the groups in this course
-	 */	
-	public void setCourse_group(Set<CourseGroupMining> course_group) {
-		this.course_group = course_group;
+
+	/**
+	 * standard setter for the attribute course_group
+	 * 
+	 * @param courseGroup
+	 *            a set of entries in the course_group table which shows the groups in this course
+	 */
+	public void setCourseGroups(final Set<CourseGroupMining> courseGroup) {
+		this.courseGroupSet = courseGroup;
 	}
-	/** standard add method for the attribut course_group
-	 * @param course_group_add this entry of the course_group table will be added to this course
-	 * */		
-	public void addCourse_group(CourseGroupMining course_group_add){	
-		this.course_group.add(course_group_add);	
+
+	/**
+	 * standard add method for the attribute course_group
+	 * 
+	 * @param courseGroup
+	 *            this entry of the course_group table will be added to this course
+	 */
+	public void addCourseGroup(final CourseGroupMining courseGroup) {
+		this.courseGroupSet.add(courseGroup);
 	}
-	/** standard setter for the attribut course_forum
-	 * @param course_forum a set of entrys in the course_forum table which shows the forums in this course
-	 */	
-	public void setCourse_forum(Set<CourseForumMining> course_forum) {
-		this.course_forum = course_forum;
+
+	/**
+	 * standard setter for the attribute course_forum
+	 * 
+	 * @param courseForum
+	 *            a set of entries in the course_forum table which shows the forums in this course
+	 */
+	public void setCourseForums(final Set<CourseForumMining> courseForum) {
+		this.courseForums = courseForum;
 	}
-	/** standard getter for the attribut course_forum
-	 * @return a set of entrys in the course_forum table which relate the course to the forums
-	 */	
-	public Set<CourseForumMining> getCourse_forum() {
-		return course_forum;
+
+	/**
+	 * standard getter for the attribute course_forum
+	 * 
+	 * @return a set of entries in the course_forum table which relate the course to the forums
+	 */
+	public Set<CourseForumMining> getCourseForums() {
+		return this.courseForums;
 	}
-	/** standard add method for the attribut course_forum
-	 * @param course_forum_add this entry of the course_forum table will be added to this course
-	 * */		
-	public void addCourse_forum(CourseForumMining course_forum_add){	
-		course_forum.add(course_forum_add);	
+
+	/**
+	 * standard add method for the attribute course_forum
+	 * 
+	 * @param courseForum
+	 *            this entry of the course_forum table will be added to this course
+	 */
+	public void addCourseForum(final CourseForumMining courseForum) {
+		this.courseForums.add(courseForum);
 	}
-	/** standard setter for the attribut wiki
-	 * @param course_wiki a set of entrys in the course_wiki table which shows the wikis in this course
-	 */	
-	public void setCourse_wiki(Set<CourseWikiMining> course_wiki) {
-		this.course_wiki = course_wiki;
+
+	/**
+	 * standard setter for the attribute wiki
+	 * 
+	 * @param courseWiki
+	 *            a set of entries in the course_wiki table which shows the wikis in this course
+	 */
+	public void setCourseWikis(final Set<CourseWikiMining> courseWiki) {
+		this.courseWikis = courseWiki;
 	}
-	/** standard getter for the attribut wiki
-	 * @return a set of entrys in the course_wiki table which shows the wikis in this course
-	 */	
-	public Set<CourseWikiMining> getCourse_wiki() {
-		return course_wiki;
+
+	/**
+	 * standard getter for the attribute wiki
+	 * 
+	 * @return a set of entries in the course_wiki table which shows the wikis in this course
+	 */
+	public Set<CourseWikiMining> getCourseWikis() {
+		return this.courseWikis;
 	}
-	/** standard add method for the attribut wiki
-	 * @param course_wiki_add this entry of the course_wiki table will be added to this course
-	 * */		
-	public void addCourse_wiki(CourseWikiMining course_wiki_add){	
-		course_wiki.add(course_wiki_add);	
+
+	/**
+	 * standard add method for the attribute wiki
+	 * 
+	 * @param courseWiki
+	 *            this entry of the course_wiki table will be added to this course
+	 */
+	public void addCourseWiki(final CourseWikiMining courseWiki) {
+		this.courseWikis.add(courseWiki);
 	}
-	/** standard setter for the attribut course_user
-	 * @param course_user a set of entrys in the course_user table which shows the enroled users
-	 */	
-	public void setCourse_user(Set<CourseUserMining> course_user) {
-		this.course_user = course_user;
+
+	/**
+	 * standard setter for the attribute course_user
+	 * 
+	 * @param courseUser
+	 *            a set of entries in the course_user table which shows the enroled users
+	 */
+	public void setCourseUsers(final Set<CourseUserMining> courseUser) {
+		this.courseUsers = courseUser;
 	}
-	/** standard getter for the attribut course_user
-	 * @return a set of entrys in the course_user table which shows the enroled users
-	 */	
-	public Set<CourseUserMining> getCourse_user() {
-		return course_user;
+
+	/**
+	 * standard getter for the attribute course_user
+	 * 
+	 * @return a set of entries in the course_user table which shows the enroled users
+	 */
+	public Set<CourseUserMining> getCourseUsers() {
+		return this.courseUsers;
 	}
-	/** standard add method for the attribut course_user
-	 * @param course_user_add this entry of the course_user table will be added to this course
-	 * */		
-	public void addCourse_user(CourseUserMining course_user_add){	
-		course_user.add(course_user_add);	
+
+	/**
+	 * standard add method for the attribute course_user
+	 * 
+	 * @param courseUser
+	 *            this entry of the course_user table will be added to this course
+	 */
+	public void addCourseUser(final CourseUserMining courseUser) {
+		this.courseUsers.add(courseUser);
 	}
-	/** standard setter for the attribut course_quiz
-	 * @param course_quiz a set of entrys in the course_quiz table which shows the quiz used in the course
-	 */	
-	public void setCourse_quiz(Set<CourseQuizMining> course_quiz) {
-		this.course_quiz = course_quiz;
+
+	/**
+	 * standard setter for the attribute course_quiz
+	 * 
+	 * @param courseQuiz
+	 *            a set of entries in the course_quiz table which shows the quiz used in the course
+	 */
+	public void setCourseQuizzes(final Set<CourseQuizMining> courseQuiz) {
+		this.courseQuizzes = courseQuiz;
 	}
-	/** standard getter for the attribut course_quiz
-	 * @return a set of entrys in the course_quiz table which shows the quiz used in the course
-	 */	
-	public Set<CourseQuizMining> getCourse_quiz() {
-		return course_quiz;
+
+	/**
+	 * standard getter for the attribute course_quiz
+	 * 
+	 * @return a set of entries in the course_quiz table which shows the quiz used in the course
+	 */
+	public Set<CourseQuizMining> getCourseQuizzes() {
+		return this.courseQuizzes;
 	}
-	/** standard add method for the attribut course_quiz
-	 * @param course_quiz_add this entry of the course_quiz table will be added to this course
-	 * */		
-	public void addCourse_quiz(CourseQuizMining course_quiz_add){	
-		course_quiz.add(course_quiz_add);	
+
+	/**
+	 * standard add method for the attribute course_quiz
+	 * 
+	 * @param courseQuiz
+	 *            this entry of the course_quiz table will be added to this course
+	 */
+	public void addCourseQuiz(final CourseQuizMining courseQuiz) {
+		this.courseQuizzes.add(courseQuiz);
 	}
-	/** standard setter for the attribut course_resource
-	 * @param course_resource a set of entrys in the course_resource table which shows the resources in this course
-	 */	
-	public void setCourse_resource(Set<CourseResourceMining> course_resource) {
-		this.course_resource = course_resource;
+
+	/**
+	 * standard setter for the attribute course_resource
+	 * 
+	 * @param courseResource
+	 *            a set of entries in the course_resource table which shows the resources in this course
+	 */
+	public void setCourseResources(final Set<CourseResourceMining> courseResource) {
+		this.courseResources = courseResource;
 	}
-	
-	/** standard getter for the attribut course_resource
-	 * @return a set of entrys in the course_resource table which shows the resources in this course
-	 */	
-	public Set<CourseResourceMining> getCourse_resource() {
-		return course_resource;
+
+	/**
+	 * standard getter for the attribute course_resource
+	 * 
+	 * @return a set of entries in the course_resource table which shows the resources in this course
+	 */
+	public Set<CourseResourceMining> getCourseResources() {
+		return this.courseResources;
 	}
-	/** standard add method for the attribut course_resource
-	 * @param course_resource_add this entry of the course_resource table will be added to this course
-	 * */		
-	public void addCourse_resource(CourseResourceMining course_resource_add){	
-		course_resource.add(course_resource_add);	
+
+	/**
+	 * standard add method for the attribute course_resource
+	 * 
+	 * @param courseResource
+	 *            this entry of the course_resource table will be added to this course
+	 */
+	public void addCourseResource(final CourseResourceMining courseResource) {
+		this.courseResources.add(courseResource);
 	}
-	/** standard setter for the attribut course_log
-	 * @param course_log a set of entrys in the course_log table which represent actions on this course
-	 */	
-	public void setCourse_log(Set<CourseLogMining> course_log) {
-		this.course_log = course_log;
+
+	/**
+	 * standard setter for the attribute course_log
+	 * 
+	 * @param courseLog
+	 *            a set of entries in the course_log table which represent actions on this course
+	 */
+	public void setCourseLogs(final Set<CourseLogMining> courseLog) {
+		this.courseLogs = courseLog;
 	}
-	/** standard getter for the attribut course_log
-	 * @return a set of entrys in the course_log table which represent actions on this course
-	 */	
-	public Set<CourseLogMining> getCourse_log() {
-		return course_log;
+
+	/**
+	 * standard getter for the attribute course_log
+	 * 
+	 * @return a set of entries in the course_log table which represent actions on this course
+	 */
+	public Set<CourseLogMining> getCourseLogs() {
+		return this.courseLogs;
 	}
-	/** standard add method for the attribut course_log
-	 * @param course_log_add this entry of the course_log table will be added to this course
-	 * */	
-	public void addCourse_updates(CourseLogMining course_log_add){	
-		course_log.add(course_log_add);	
+
+	/**
+	 * standard add method for the attribute course_log
+	 * 
+	 * @param courseLog
+	 *            this entry of the course_log table will be added to this course
+	 */
+	public void addCourseUpdates(final CourseLogMining courseLog) {
+		this.courseLogs.add(courseLog);
 	}
-	/** standard setter for the attribut quiz_log
-	 * @param quiz_log a set of entrys in the quiz_log table which are related to quiz in this course
-	 */	
-	public void setQuiz_log(Set<QuizLogMining> quiz_log) {
-		this.quiz_log = quiz_log;
+
+	/**
+	 * standard setter for the attribute quiz_log
+	 * 
+	 * @param quizLog
+	 *            a set of entries in the quiz_log table which are related to quiz in this course
+	 */
+	public void setQuizLogs(final Set<QuizLogMining> quizLog) {
+		this.quizLogs = quizLog;
 	}
-	/** standard getter for the attribut quiz_log
-	 * @return a set of entrys in the quiz_log table which are related to quiz in this course
-	 */	
-	public Set<QuizLogMining> getQuiz_log() {
-		return quiz_log;
+
+	/**
+	 * standard getter for the attribute quiz_log
+	 * 
+	 * @return a set of entries in the quiz_log table which are related to quiz in this course
+	 */
+	public Set<QuizLogMining> getQuizLogs() {
+		return this.quizLogs;
 	}
-	/** standard add method for the attribut quiz_log
-	 * @param quiz_log_add this entry of the quiz_log table will be added to this course
-	 * */		
-	public void addQuiz_log(QuizLogMining quiz_log_add){	
-		quiz_log.add(quiz_log_add);	
+
+	/**
+	 * standard add method for the attribute quiz_log
+	 * 
+	 * @param quizLog
+	 *            this entry of the quiz_log table will be added to this course
+	 */
+	public void addQuizLog(final QuizLogMining quizLog) {
+		this.quizLogs.add(quizLog);
 	}
-	/** standard setter for the attribut wiki_log
-	 * @param wiki_log a set of entrys in the wiki_log table which are related to wikis in this course
-	 */	
-	public void setWiki_log(Set<WikiLogMining> wiki_log) {
-		this.wiki_log = wiki_log;
+
+	/**
+	 * standard setter for the attribute wiki_log
+	 * 
+	 * @param wikiLog
+	 *            a set of entries in the wiki_log table which are related to wikis in this course
+	 */
+	public void setWikiLogs(final Set<WikiLogMining> wikiLog) {
+		this.wikiLogs = wikiLog;
 	}
-	/** standard getter for the attribut wiki_log
-	 * @return a set of entrys in the wiki_log table which are related to wikis in this course
-	 */	
-	public Set<WikiLogMining> getWiki_log() {
-		return wiki_log;
+
+	/**
+	 * standard getter for the attribute wiki_log
+	 * 
+	 * @return a set of entries in the wiki_log table which are related to wikis in this course
+	 */
+	public Set<WikiLogMining> getWikiLogs() {
+		return this.wikiLogs;
 	}
-	/** standard add method for the attribut wiki_log
-	 * @param wiki_log_add this entry of the wiki_log table will be added to this course
-	 * */		
-	public void addWiki_log(WikiLogMining wiki_log_add){	
-		wiki_log.add(wiki_log_add);	
+
+	/**
+	 * standard add method for the attribute wiki_log
+	 * 
+	 * @param wikiLog
+	 *            this entry of the wiki_log table will be added to this course
+	 */
+	public void addWikiLog(final WikiLogMining wikiLog) {
+		this.wikiLogs.add(wikiLog);
 	}
-	/** standard setter for the attribut question_log
-	 * @param question_log a set of entrys in the question_log table which are related to questions in this course
-	 */	
-	public void setQuestion_log(Set<QuestionLogMining> question_log) {
-		this.question_log = question_log;
+
+	/**
+	 * standard setter for the attribute question_log
+	 * 
+	 * @param questionLog
+	 *            a set of entries in the question_log table which are related to questions in this course
+	 */
+	public void setQuestionLogs(final Set<QuestionLogMining> questionLog) {
+		this.questionLogs = questionLog;
 	}
-	/** standard getter for the attribut question_log
-	 * @return a set of entrys in the question_log table which are related to questions in this course
-	 */	
-	public Set<QuestionLogMining> getQuestion_log() {
-		return question_log;
+
+	/**
+	 * standard getter for the attribute question_log
+	 * 
+	 * @return a set of entries in the question_log table which are related to questions in this course
+	 */
+	public Set<QuestionLogMining> getQuestionLogs() {
+		return this.questionLogs;
 	}
-	/** standard add method for the attribut question_log
-	 * @param question_log_add this entry of the question_log table will be added to this course
-	 * */		
-	public void addQuestion_log(QuestionLogMining question_log_add){	
-		question_log.add(question_log_add);	
+
+	/**
+	 * standard add method for the attribute question_log
+	 * 
+	 * @param questionLog
+	 *            this entry of the question_log table will be added to this course
+	 */
+	public void addQuestionLog(final QuestionLogMining questionLog) {
+		this.questionLogs.add(questionLog);
 	}
-	/** standard setter for the attribut resource_log
-	 * @param resource_log a set of entrys in the resource_log table which are related to resources in this course
-	 */	
-	public void setResource_log(Set<ResourceLogMining> resource_log) {
-		this.resource_log = resource_log;
+
+	/**
+	 * standard setter for the attribute resource_log
+	 * 
+	 * @param resourceLog
+	 *            a set of entries in the resource_log table which are related to resources in this course
+	 */
+	public void setResourceLogs(final Set<ResourceLogMining> resourceLog) {
+		this.resourceLogs = resourceLog;
 	}
-	/** standard getter for the attribut resource_log
-	 * @return a set of entrys in the resource_log table which are related to resources in this course
-	 */	
-	public Set<ResourceLogMining> getResource_log() {
-		return resource_log;
+
+	/**
+	 * standard getter for the attribute resource_log
+	 * 
+	 * @return a set of entries in the resource_log table which are related to resources in this course
+	 */
+	public Set<ResourceLogMining> getResourceLogs() {
+		return this.resourceLogs;
 	}
-	/** standard add method for the attribut resource_log
-	 * @param resource_log_add this entry of the resource_log table will be added to this course
-	 * */		
-	public void addResource_log(ResourceLogMining resource_log_add){	
-		resource_log.add(resource_log_add);	
+
+	/**
+	 * standard add method for the attribute resource_log
+	 * 
+	 * @param resourceLog
+	 *            this entry of the resource_log table will be added to this course
+	 */
+	public void addResourceLog(final ResourceLogMining resourceLog) {
+		this.resourceLogs.add(resourceLog);
 	}
-	/** standard setter for the attribut forum_log
-	 * @param forum_log a set of entrys in the forum_log table which are related to forums in this course
-	 */	
-	public void setForum_log(Set<ForumLogMining> forum_log) {
-		this.forum_log = forum_log;
+
+	/**
+	 * standard setter for the attribute forum_log
+	 * 
+	 * @param forumLog
+	 *            a set of entries in the forum_log table which are related to forums in this course
+	 */
+	public void setForumLogs(final Set<ForumLogMining> forumLog) {
+		this.forumLogs = forumLog;
 	}
-	/** standard getter for the attribut forum_log
-	 * @return a set of entrys in the forum_log table which are related to forums in this course
-	 */	
-	public Set<ForumLogMining> getForum_log() {
-		return forum_log;
+
+	/**
+	 * standard getter for the attribute forum_log
+	 * 
+	 * @return a set of entries in the forum_log table which are related to forums in this course
+	 */
+	public Set<ForumLogMining> getForumLogs() {
+		return this.forumLogs;
 	}
-	/** standard add method for the attribut forum_log
-	 * @param forum_log_add this entry of the forum_log table will be added to this course
-	 * */		
-	public void addForum_log(ForumLogMining forum_log_add){	
-		forum_log.add(forum_log_add);	
+
+	/**
+	 * standard add method for the attribute forum_log
+	 * 
+	 * @param forumLog
+	 *            this entry of the forum_log table will be added to this course
+	 */
+	public void addForumLog(final ForumLogMining forumLog) {
+		this.forumLogs.add(forumLog);
 	}
-	/** standard setter for the attribut title
-	 * @param title the title of this course
-	 */	
-	public void setTitle(String title) {
+
+	/**
+	 * standard setter for the attribute title
+	 * 
+	 * @param title
+	 *            the title of this course
+	 */
+	public void setTitle(final String title) {
 		this.title = title;
 	}
-	/** standard getter for the attribut title
+
+	/**
+	 * standard getter for the attribute title
+	 * 
 	 * @return the title of this course
-	 */	
+	 */
+	@Override
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
-	/** standard setter for the attribut shortname
-	 * @param shortname a shortname for this course
-	 */	
-	public void setShortname(String shortname) {
+
+	/**
+	 * standard setter for the attribute shortname
+	 * 
+	 * @param shortname
+	 *            a shortname for this course
+	 */
+	public void setShortname(final String shortname) {
 		this.shortname = shortname;
 	}
-	/** standard getter for the attribut shortname
+
+	/**
+	 * standard getter for the attribute shortname
+	 * 
 	 * @return a shortname for this course
-	 */	
+	 */
 	public String getShortname() {
-		return shortname;
-	}
-	/** standard getter for the attribut quiz_user
-	 * @return a set of entrys in the quiz_user table which are related to this course
-	 */	
-	public Set<QuizUserMining> getQuiz_user() {
-		return quiz_user;
-	}
-	/** standard setter for the attribut quiz_user
-	 * @param quiz_user a set of entrys in the quiz_user table which are related to this course
-	 */	
-	public void setQuiz_user(Set<QuizUserMining> quiz_user) {
-		this.quiz_user = quiz_user;
-	}
-	/** standard add method for the attribut quiz_user
-	 * @param quiz_user_add this entry of the quiz_user table will be added to this course
-	 * */		
-	public void addQuiz_user(QuizUserMining quiz_user_add){	
-		quiz_user.add(quiz_user_add);	
-	}
-	/** standard setter for the attribut assignment_log
-	 * @param assignment_log a set of entrys in the assignment_log table which are related to assignment in this course
-	 */		
-	public void setAssignment_log(Set<AssignmentLogMining> assignment_log) {
-		this.assignment_log = assignment_log;
-	}
-	/** standard getter for the attribut assignment_log
-	 * @return a set of entrys in the assignment_log table which are related to assignment in this course
-	 */		
-	public Set<AssignmentLogMining> getAssignment_log() {
-		return assignment_log;
-	}
-	/** standard add method for the attribut assignment_log
-	 * @param assignment_log_add this entry of the assignment_log table will be added to this course
-	 * */		
-	public void addAssignment_log(AssignmentLogMining assignment_log_add){	
-		assignment_log.add(assignment_log_add);	
-	}
-	/** standard setter for the attribut course_assignment
-	 * @param course_assignment a set of entrys in the course_assignment table which shows the assignments used in the course
-	 */	
-	public void setCourse_assignment(Set<CourseAssignmentMining> course_assignment) {
-		this.course_assignment = course_assignment;
-	}
-	/** standard getter for the attribut course_assignment
-	 * @return a set of entrys in the course_assignment table which shows the assignment used in the course
-	 */	
-	public Set<CourseAssignmentMining> getCourse_assignment() {
-		return course_assignment;
-	}
-	/** standard add method for the attribut course_assignment
-	 * @param course_assignment_add this entry of the course_assignment table will be added to this course
-	 * */		
-	public void addCourse_assignment(CourseAssignmentMining course_assignment_add){	
-		course_assignment.add(course_assignment_add);	
-	}
-	
-	public void addChat(ChatMining chat_add){	
-		chat.add(chat_add);	
-	}
-	
-	public void addChat_log(ChatLogMining chat_log_add){	
-		chat_log.add(chat_log_add);	
-	}
-	
-	public Set<ChatMining> getChat() {
-		return chat;
+		return this.shortname;
 	}
 
-	public void setChat(Set<ChatMining> chat) {
-		this.chat = chat;
+	/**
+	 * standard getter for the attribute quiz_user
+	 * 
+	 * @return a set of entries in the quiz_user table which are related to this course
+	 */
+	public Set<QuizUserMining> getQuizUsers() {
+		return this.quizUsers;
 	}
 
-	public Set<ChatLogMining> getChat_log() {
-		return chat_log;
+	/**
+	 * standard setter for the attribute quiz_user
+	 * 
+	 * @param quizUser
+	 *            a set of entries in the quiz_user table which are related to this course
+	 */
+	public void setQuizUsers(final Set<QuizUserMining> quizUser) {
+		this.quizUsers = quizUser;
 	}
 
-	public void setChat_log(Set<ChatLogMining> chat_log) {
-		this.chat_log = chat_log;
+	/**
+	 * standard add method for the attribute quiz_user
+	 * 
+	 * @param quizUser
+	 *            this entry of the quiz_user table will be added to this course
+	 */
+	public void addQuizUser(final QuizUserMining quizUser) {
+		this.quizUsers.add(quizUser);
 	}
 
-	/** standard setter for the attribut scorm_log
-	 * @param scorm_log a set of entrys in the scorm_log table which are related to scorm packages in this course
-	 */		
-	public void setScorm_log(Set<ScormLogMining> scorm_log) {
-		this.scorm_log = scorm_log;
-	}
-	/** standard getter for the attribut scorm_log
-	 * @return a set of entrys in the scorm_log table which are related to scorm packages in this course
-	 */		
-	public Set<ScormLogMining> getScorm_log() {
-		return scorm_log;
-	}
-	/** standard add method for the attribut scorm_log
-	 * @param scorm_log_add this entry of the scorm_log table will be added to this course
-	 * */		
-	public void addScorm_log(ScormLogMining scorm_log_add){	
-		scorm_log.add(scorm_log_add);	
-	}
-	/** standard setter for the attribut course_scorm
-	 * @param course_scorm a set of entrys in the course_scorm table which shows the assignments used in the course
-	 */	
-	public void setCourse_scorm(Set<CourseScormMining> course_scorm) {
-		this.course_scorm = course_scorm;
-	}
-	/** standard getter for the attribut course_scorm
-	 * @return a set of entrys in the course_scorm table which shows the scorm used in the course
-	 */	
-	public Set<CourseScormMining> getCourse_scorm() {
-		return course_scorm;
-	}
-	/** standard add method for the attribut course_scorm
-	 * @param course_scorm_add this entry of the course_scorm table will be added to this course
-	 * */		
-	public void addCourse_scorm(CourseScormMining course_scorm_add){	
-		course_scorm.add(course_scorm_add);	
+	/**
+	 * standard setter for the attribute assignment_log
+	 * 
+	 * @param assignmentLog
+	 *            a set of entries in the assignment_log table which are related to assignment in this course
+	 */
+	public void setAssignmentLogs(final Set<AssignmentLogMining> assignmentLog) {
+		this.assignmentLogs = assignmentLog;
 	}
 
-	/*
-	public void setDegree_course(Set<DegreeCourseMining> degree_course) {
-		this.degree_course = degree_course;
+	/**
+	 * standard getter for the attribute assignment_log
+	 * 
+	 * @return a set of entries in the assignment_log table which are related to assignment in this course
+	 */
+	public Set<AssignmentLogMining> getAssignmentLogs() {
+		return this.assignmentLogs;
 	}
-		
-	public Set<DegreeCourseMining> getDegree_course() {
-		return degree_course;
+
+	/**
+	 * standard add method for the attribute assignment_log
+	 * 
+	 * @param assignmentLog
+	 *            this entry of the assignment_log table will be added to this course
+	 */
+	public void addAssignmentLog(final AssignmentLogMining assignmentLog) {
+		this.assignmentLogs.add(assignmentLog);
 	}
-			
-	public void addDegree_course(DegreeCourseMining degree_course_add){	
-		degree_course.add(degree_course_add);	
+
+	/**
+	 * standard setter for the attribute course_assignment
+	 * 
+	 * @param courseAssignment
+	 *            a set of entries in the course_assignment table which shows the assignments used in the course
+	 */
+	public void setCourseAssignments(final Set<CourseAssignmentMining> courseAssignment) {
+		this.courseAssignments = courseAssignment;
 	}
-	*/
-	
-	/** standard setter for the attribut course_scorm
-	 * @param degree_course a set of entrys in the course_scorm table which shows the assignments used in the course
-	 */	
-	public void setLevelCourse(Set<LevelCourseMining> levelCourse) {
-		this.levelCourse = levelCourse;
+
+	/**
+	 * standard getter for the attribute course_assignment
+	 * 
+	 * @return a set of entries in the course_assignment table which shows the assignment used in the course
+	 */
+	public Set<CourseAssignmentMining> getCourseAssignments() {
+		return this.courseAssignments;
 	}
-	/** standard getter for the attribut course_scorm
-	 * @return a set of entrys in the course_scorm table which shows the scorm used in the course
-	 */	
-	public Set<LevelCourseMining> getLevelCourse() {
-		return levelCourse;
+
+	/**
+	 * standard add method for the attribute course_assignment
+	 * 
+	 * @param courseAssignment
+	 *            this entry of the course_assignment table will be added to this course
+	 */
+	public void addCourseAssignment(final CourseAssignmentMining courseAssignment) {
+		this.courseAssignments.add(courseAssignment);
 	}
-	/** standard add method for the attribut course_scorm
-	 * @param degree_course_add this entry of the course_scorm table will be added to this course
-	 * */		
-	public void addLevelCourse(LevelCourseMining levelCourseAdd){	
-		levelCourse.add(levelCourseAdd);	
+
+	public void addChat(final ChatMining chat) {
+		this.chats.add(chat);
+	}
+
+	public void addChatLog(final ChatLogMining chatLog) {
+		this.chatLogs.add(chatLog);
+	}
+
+	public Set<ChatMining> getChats() {
+		return this.chats;
+	}
+
+	public void setChats(final Set<ChatMining> chat) {
+		this.chats = chat;
+	}
+
+	public Set<ChatLogMining> getChatLogs() {
+		return this.chatLogs;
+	}
+
+	public void setChatLogs(final Set<ChatLogMining> chatLog) {
+		this.chatLogs = chatLog;
+	}
+
+	/**
+	 * standard setter for the attribute scorm_log
+	 * 
+	 * @param scormLog
+	 *            a set of entries in the scorm_log table which are related to scorm packages in this course
+	 */
+	public void setScormLogs(final Set<ScormLogMining> scormLog) {
+		this.scormLogs = scormLog;
+	}
+
+	/**
+	 * standard getter for the attribute scorm_log
+	 * 
+	 * @return a set of entries in the scorm_log table which are related to scorm packages in this course
+	 */
+	public Set<ScormLogMining> getScormLogs() {
+		return this.scormLogs;
+	}
+
+	/**
+	 * standard add method for the attribute scorm_log
+	 * 
+	 * @param scormLog
+	 *            this entry of the scorm_log table will be added to this course
+	 */
+	public void addScormLog(final ScormLogMining scormLog) {
+		this.scormLogs.add(scormLog);
+	}
+
+	/**
+	 * standard setter for the attribute course_scorm
+	 * 
+	 * @param courseScorm
+	 *            a set of entries in the course_scorm table which shows the assignments used in the course
+	 */
+	public void setCourseScorms(final Set<CourseScormMining> courseScorm) {
+		this.courseScorms = courseScorm;
+	}
+
+	/**
+	 * standard getter for the attribute course_scorm
+	 * 
+	 * @return a set of entries in the course_scorm table which shows the scorm used in the course
+	 */
+	public Set<CourseScormMining> getCourseScorms() {
+		return this.courseScorms;
+	}
+
+	/**
+	 * standard add method for the attribute course_scorm
+	 * 
+	 * @param courseScorm
+	 *            this entry of the course_scorm table will be added to this course
+	 */
+	public void addCourseScorm(final CourseScormMining courseScorm) {
+		this.courseScorms.add(courseScorm);
+	}
+
+	/**
+	 * standard setter for the attribute course_scorm
+	 * 
+	 * @param degree_course
+	 *            a set of entries in the course_scorm table which shows the assignments used in the course
+	 */
+	public void setLevelCourses(final Set<LevelCourseMining> levelCourse) {
+		this.levelCourses = levelCourse;
+	}
+
+	/**
+	 * standard getter for the attribute course_scorm
+	 * 
+	 * @return a set of entries in the course_scorm table which shows the scorm used in the course
+	 */
+	public Set<LevelCourseMining> getLevelCourses() {
+		return this.levelCourses;
+	}
+
+	/**
+	 * standard add method for the attribute course_scorm
+	 * 
+	 * @param degree_course_add
+	 *            this entry of the course_scorm table will be added to this course
+	 */
+	public void addLevelCourse(final LevelCourseMining levelCourse) {
+		this.levelCourses.add(levelCourse);
 	}
 
 	public Long getPlatform() {
-		return platform;
+		return this.platform;
 	}
 
-	public void setPlatform(Long platform) {
+	public void setPlatform(final Long platform) {
 		this.platform = platform;
 	}
 }

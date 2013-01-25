@@ -5,50 +5,26 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Grade_items_LMS"
-        table="mdl_grade_items">
+	<class
+		name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Grade_items_LMS"
+		table="mdl_grade_items">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
-            
-        <property
-            name="courseid"
-            column="courseid"
-            type="long"/>
-            
-        <property
-            name="itemname"
-            column="itemname"
-            type="string"/>
-  
-        <property
-            name="itemmodule"
-            column="itemmodule"
-            type="string"/>
-            
-        <property
-            name="iteminstance"
-            column="iteminstance"
-            type="java.lang.Long"/>
-            
-        <property
-            name="grademax"
-            column="grademax"
-            type="double"/>
-            
-        <property
-            name="timecreated"
-            column="timecreated"
-            type="long"/>    
-            
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>   
-    </class>
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="courseid" column="courseid" type="long" />
+
+		<property name="itemname" column="itemname" type="string" />
+
+		<property name="itemmodule" column="itemmodule" type="string" />
+
+		<property name="iteminstance" column="iteminstance" type="java.lang.Long" />
+
+		<property name="grademax" column="grademax" type="double" />
+
+		<property name="timecreated" column="timecreated" type="long" />
+
+		<property name="timemodified" column="timemodified" type="long" />
+	</class>
 
 </hibernate-mapping>

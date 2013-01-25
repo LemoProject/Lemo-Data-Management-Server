@@ -1,46 +1,45 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/TGroupFullSpecification.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class TGroupFullSpecification  implements IClixMappingClass{
-	
+public class TGroupFullSpecification implements IClixMappingClass {
+
 	private Long group;
 	private Long person;
-	
-	
-	
+
 	public Long getGroup() {
-		return group;
+		return this.group;
 	}
 
 	public String getString()
 	{
 		return "TGroupFullSpecification$$$"
-				+this.getGroup()+"$$$"
-				+this.getPerson();
+				+ this.getGroup() + "$$$"
+				+ this.getPerson();
 	}
 
-	public void setGroup(Long group) {
+	public void setGroup(final Long group) {
 		this.group = group;
 	}
 
-
-
 	public Long getPerson() {
-		return person;
+		return this.person;
 	}
 
-
-
-	public void setPerson(Long person) {
+	public void setPerson(final Long person) {
 		this.person = person;
 	}
 
-
-
 	public TGroupFullSpecification()
 	{
-		
+
 	}
 
 }

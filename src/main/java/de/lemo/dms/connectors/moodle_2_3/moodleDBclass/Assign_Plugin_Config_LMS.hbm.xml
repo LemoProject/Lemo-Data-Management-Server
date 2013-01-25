@@ -5,26 +5,17 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Assign_Plugin_Config_LMS"
-        table="mdl_assign_plugin_config">
+	<class
+		name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Assign_Plugin_Config_LMS"
+		table="mdl_assign_plugin_config">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="assignment"
-            column="assignment"
-            type="long"/>  
+		<property name="assignment" column="assignment" type="long" />
 
-      <property
-            name="subtype"
-            column="subtype"
-            type="string"/> 
-   
-    </class>
+		<property name="subtype" column="subtype" type="string" />
+
+	</class>
 
 </hibernate-mapping>

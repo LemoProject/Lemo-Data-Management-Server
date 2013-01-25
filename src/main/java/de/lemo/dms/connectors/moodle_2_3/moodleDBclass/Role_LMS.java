@@ -1,42 +1,58 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Role_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Role_LMS {
-	
+
 	private long id;
 	private String name;
 	private String shortname;
-	private String description;//text
+	private String description;// text
 	private long sortorder;
-	
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setName(String name) {
+
+	public void setName(final String name) {
 		this.name = name;
 	}
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
+
 	public String getShortname() {
-		return shortname;
+		return this.shortname;
 	}
-	public void setShortname(String shortname) {
+
+	public void setShortname(final String shortname) {
 		this.shortname = shortname;
 	}
+
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
-	public void setDescription(String description) {
+
+	public void setDescription(final String description) {
 		this.description = description;
 	}
+
 	public long getSortorder() {
-		return sortorder;
+		return this.sortorder;
 	}
-	public void setSortorder(long sortorder) {
+
+	public void setSortorder(final long sortorder) {
 		this.sortorder = sortorder;
 	}
-	
+
 }

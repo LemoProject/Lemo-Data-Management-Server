@@ -1,83 +1,65 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/Portfolio.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class Portfolio implements IClixMappingClass{
-	
+public class Portfolio implements IClixMappingClass {
+
 	private Long id;
 	private Long component;
 	private Long person;
 	private String startDate;
 	private String endDate;
-	
+
 	public String getStartDate() {
-		return startDate;
+		return this.startDate;
 	}
 
-
-
-	public void setStartDate(String startDate) {
+	public void setStartDate(final String startDate) {
 		this.startDate = startDate;
 	}
 
-
-
 	public String getEndDate() {
-		return endDate;
+		return this.endDate;
 	}
 
-
-
-	public void setEndDate(String endDate) {
+	public void setEndDate(final String endDate) {
 		this.endDate = endDate;
 	}
 
-
-
 	public Portfolio()
 	{
-		
+
 	}
-	
-	
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
-
-
-	public void setId(Long id) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
-
-
 	public Long getComponent() {
-		return component;
+		return this.component;
 	}
 
-
-
-	public void setComponent(Long component) {
+	public void setComponent(final Long component) {
 		this.component = component;
 	}
 
-
-
 	public Long getPerson() {
-		return person;
+		return this.person;
 	}
 
-
-
-	public void setPerson(Long person) {
+	public void setPerson(final Long person) {
 		this.person = person;
 	}
-
-
-
-	
-	
 
 }

@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Question_states_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
 public class Question_states_LMS {
@@ -11,59 +18,76 @@ public class Question_states_LMS {
 	private double raw_grade;
 	private double grade;
 	private long timestamp;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getAttempt() {
-		return attempt;
+		return this.attempt;
 	}
-	public void setAttempt(long attempt) {
+
+	public void setAttempt(final long attempt) {
 		this.attempt = attempt;
 	}
+
 	public long getQuestion() {
-		return question;
+		return this.question;
 	}
-	public void setQuestion(long question) {
+
+	public void setQuestion(final long question) {
 		this.question = question;
 	}
+
 	public String getAnswer() {
-		return answer;
+		return this.answer;
 	}
-	public void setAnswer(String answer) {
+
+	public void setAnswer(final String answer) {
 		this.answer = answer;
 	}
+
 	public short getEvent() {
-		return event;
+		return this.event;
 	}
-	public void setEvent(short event) {
+
+	public void setEvent(final short event) {
 		this.event = event;
 	}
+
 	public double getPenalty() {
-		return penalty;
+		return this.penalty;
 	}
-	public void setPenalty(double penalty) {
+
+	public void setPenalty(final double penalty) {
 		this.penalty = penalty;
 	}
+
 	public double getRaw_grade() {
-		return raw_grade;
+		return this.raw_grade;
 	}
-	public void setRaw_grade(double rawGrade) {
-		raw_grade = rawGrade;
+
+	public void setRaw_grade(final double rawGrade) {
+		this.raw_grade = rawGrade;
 	}
+
 	public double getGrade() {
-		return grade;
+		return this.grade;
 	}
-	public void setGrade(double grade) {
+
+	public void setGrade(final double grade) {
 		this.grade = grade;
 	}
+
 	public long getTimestamp() {
-		return timestamp;
+		return this.timestamp;
 	}
-	public void setTimestamp(long timestamp) {
+
+	public void setTimestamp(final long timestamp) {
 		this.timestamp = timestamp;
 	}
 }

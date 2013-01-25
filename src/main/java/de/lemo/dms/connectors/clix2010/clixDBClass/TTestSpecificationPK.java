@@ -1,61 +1,75 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/TTestSpecificationPK.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
 public class TTestSpecificationPK implements Serializable {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6841009607798919961L;
 	private Long task;
 	private Long test;
-	
+
 	public TTestSpecificationPK()
-	{}
-	
-	public TTestSpecificationPK(Long task, Long test)
+	{
+	}
+
+	public TTestSpecificationPK(final Long task, final Long test)
 	{
 		this.task = task;
 		this.test = test;
-		
+
 	}
 
 	public Long getTask() {
-		return task;
+		return this.task;
 	}
 
-	public void setTask(Long task) {
+	public void setTask(final Long task) {
 		this.task = task;
 	}
 
 	public Long getTest() {
-		return test;
+		return this.test;
 	}
 
-	public void setTest(Long test) {
+	public void setTest(final Long test) {
 		this.test = test;
 	}
-	
-	public boolean equals(Object arg)
+
+	@Override
+	public boolean equals(final Object arg)
 	{
-		if(arg == null)
+		if (arg == null) {
 			return false;
-		if(!(arg instanceof TTestSpecificationPK))
+		}
+		if (!(arg instanceof TTestSpecificationPK)) {
 			return false;
-		TTestSpecificationPK a = (TTestSpecificationPK)arg;
-		if(a.getTask() != this.task)
+		}
+		final TTestSpecificationPK a = (TTestSpecificationPK) arg;
+		if (a.getTask() != this.task) {
 			return false;
-		if(a.getTest() != this.test)
+		}
+		if (a.getTest() != this.test) {
 			return false;
+		}
 		return true;
 	}
-	
+
+	@Override
 	public int hashCode()
 	{
 		int hc;
-		hc = test.hashCode();
-		hc = 17 * hc + test.hashCode();
+		hc = this.test.hashCode();
+		hc = (17 * hc) + this.test.hashCode();
 		return hc;
 	}
 

@@ -4,49 +4,28 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.CourseLogMining"
-        table="course_log">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-                       
-        <property
-            name="duration"
-            column="duration"
-            type="long"/>   
-  
-        <property
-            name="action"
-            column="action"
-            type="string"/>
-               
-        <property
-            name="timestamp"
-            column="timestamp"
-            type="long"/>
-            
-		<many-to-one 
-       		name="course" 
-       		class="de.lemo.dms.db.miningDBclass.CourseMining"
-       		cascade="save-update" 
-            column="course_id" />              
+	<class name="de.lemo.dms.db.miningDBclass.CourseLogMining" table="course_log">
 
-		<many-to-one 
-       		name="user" 
-       		class="de.lemo.dms.db.miningDBclass.UserMining"
-       		cascade="save-update" 
-            column="user_id" />
-                
-    </class>
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="platform" column="platform" type="long" />
+
+		<property name="duration" column="duration" type="long" />
+
+		<property name="action" column="action" type="string" />
+
+		<property name="timestamp" column="timestamp" type="long" />
+
+		<many-to-one name="course"
+			class="de.lemo.dms.db.miningDBclass.CourseMining" cascade="save-update"
+			column="course_id" />
+
+		<many-to-one name="user"
+			class="de.lemo.dms.db.miningDBclass.UserMining" cascade="save-update"
+			column="user_id" />
+
+	</class>
 
 </hibernate-mapping>

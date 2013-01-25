@@ -1,43 +1,55 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/Chatroom.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class Chatroom implements IClixMappingClass{
+public class Chatroom implements IClixMappingClass {
 
 	private long id;
 	private String title;
 	private String lastUpdated;
-	
+
 	public Chatroom()
 	{
-		
+
 	}
-	
+
 	public String getString()
 	{
 		return "Chatroom$$$"
-				+this.id+"$$$"
-				+this.getLastUpdated()+"$$$"
-				+this.getTitle();
+				+ this.id + "$$$"
+				+ this.getLastUpdated() + "$$$"
+				+ this.getTitle();
 	}
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(Long id) {
+
+	public void setId(final Long id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
-	public void setTitle(String title) {
+
+	public void setTitle(final String title) {
 		this.title = title;
 	}
+
 	public String getLastUpdated() {
-		return lastUpdated;
+		return this.lastUpdated;
 	}
-	public void setLastUpdated(String lastUpdated) {
+
+	public void setLastUpdated(final String lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
-	
-	
+
 }

@@ -4,52 +4,32 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.WikiMining"
-        table="wiki">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
-   
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-                     
-        <property
-            name="title"
-            column="title"
-            type="string"/>
-            
-        <property
-            name="summary"
-            column="summary"
-            type="text"/>
-               
-        <property
-            name="timecreated"
-            column="timecreated"
-            type="long"/>  
-            
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>
-            
-        <set name="course_wiki" inverse="true" lazy="false">
-			<key column="wiki_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseWikiMining"/>
-		</set>  
-		
-        <set name="wiki_log" inverse="true" lazy="false">
-			<key column="wiki_id"/>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.WikiLogMining"/>
-		</set>		   
-                             
-    </class>
+	<class name="de.lemo.dms.db.miningDBclass.WikiMining" table="wiki">
+
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="platform" column="platform" type="long" />
+
+		<property name="title" column="title" type="string" />
+
+		<property name="summary" column="summary" type="text" />
+
+		<property name="timeCreated" column="timecreated" type="long" />
+
+		<property name="timeModified" column="timemodified" type="long" />
+
+		<set name="courseWikis" inverse="true" lazy="false">
+			<key column="wiki_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseWikiMining" />
+		</set>
+
+		<set name="wikiLogs" inverse="true" lazy="false">
+			<key column="wiki_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.WikiLogMining" />
+		</set>
+
+	</class>
 
 </hibernate-mapping>

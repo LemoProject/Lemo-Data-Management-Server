@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/resulttype/ResultListBoxPlot.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.resulttype;
 
 import java.util.List;
@@ -13,7 +20,7 @@ public class ResultListBoxPlot {
 
 	}
 
-	public ResultListBoxPlot(List<BoxPlot> elements) {
+	public ResultListBoxPlot(final List<BoxPlot> elements) {
 		this.elements = elements;
 	}
 

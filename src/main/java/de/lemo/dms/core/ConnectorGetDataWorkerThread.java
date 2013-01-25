@@ -1,19 +1,27 @@
+/**
+ * File ./main/java/de/lemo/dms/core/ConnectorGetDataWorkerThread.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.core;
 
 import org.apache.log4j.Logger;
-
 import de.lemo.dms.connectors.IConnector;
 
 public class ConnectorGetDataWorkerThread extends Thread {
-	private IConnector connector;
-	private Logger logger = Logger.getLogger(getClass());
-	
-	public ConnectorGetDataWorkerThread(IConnector connector) {
+
+	private final IConnector connector;
+	private final Logger logger = Logger.getLogger(this.getClass());
+
+	public ConnectorGetDataWorkerThread(final IConnector connector) {
 		this.connector = connector;
 	}
-	
+
+	@Override
 	public void run() {
-		logger.info("connector start to load whole database");
-		this.connector.getData("Moodle_1_9"); // XXX 
-	}	
+		this.logger.info("Running connector" + this.connector);
+		this.connector.getData();
+	}
 }

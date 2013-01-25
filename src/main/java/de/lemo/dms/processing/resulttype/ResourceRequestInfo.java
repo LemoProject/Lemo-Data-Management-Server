@@ -1,85 +1,89 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/resulttype/ResourceRequestInfo.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.resulttype;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
-import de.lemo.dms.service.ELearnObjType;
+import de.lemo.dms.processing.ELearningObjectType;
 
 @XmlRootElement
-public class ResourceRequestInfo{
+public class ResourceRequestInfo {
 
 	private Long id;
-	//private EResourceType resourcetype;
+	// private EResourceType resourcetype;
 	private String resourcetype;
 	private Long requests;
 	private Long users;
 	private String title;
 	private Long resolutionSlot;
-	
-	
+
 	public Long getUsers() {
-		return users;
+		return this.users;
 	}
 
-	public void setUsers(Long users) {
+	public void setUsers(final Long users) {
 		this.users = users;
 	}
 
-
-	
 	public Long getResolutionSlot() {
-		return resolutionSlot;
+		return this.resolutionSlot;
 	}
 
-	public void setResolutionSlot(Long resolutionSlot) {
+	public void setResolutionSlot(final Long resolutionSlot) {
 		this.resolutionSlot = resolutionSlot;
 	}
 
-	public void setResourcetype(String resourcetype) {
+	public void setResourcetype(final String resourcetype) {
 		this.resourcetype = resourcetype;
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
 	public String getResourcetype() {
-		return resourcetype;
+		return this.resourcetype;
 	}
 
-	public void setResourcetype(ELearnObjType resourcetype) {
+	public void setResourcetype(final ELearningObjectType resourcetype) {
 		this.resourcetype = resourcetype.toString();
 	}
 
 	public Long getRequests() {
-		return requests;
+		return this.requests;
 	}
 
-	public void setRequests(Long requests) {
+	public void setRequests(final Long requests) {
 		this.requests = requests;
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
 	public ResourceRequestInfo()
 	{
 	}
-	
+
 	public void incRequests()
 	{
 		this.requests++;
 	}
-	
-	public ResourceRequestInfo(Long id, ELearnObjType resourceType, Long requests, Long users, String title, Long resolutionSlot)
+
+	public ResourceRequestInfo(final Long id, final ELearningObjectType resourceType, final Long requests,
+			final Long users, final String title, final Long resolutionSlot)
 	{
 		this.id = id;
 		this.resourcetype = resourceType.toString();
@@ -89,7 +93,4 @@ public class ResourceRequestInfo{
 		this.users = users;
 	}
 
-
-	
-	
 }

@@ -1,10 +1,16 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/abstractions/IRatedObject.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.miningDBclass.abstractions;
 
-public interface IRatedObject extends ILearningObject{
+public interface IRatedObject extends ILearningObject {
 
-	
-	public Double getMaxgrade();
-	
+	public Double getMaxGrade();
+
 	public Long getPrefix();
-	
+
 }

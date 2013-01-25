@@ -1,31 +1,51 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/PlatformMining.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.miningDBclass;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-public class PlatformMining implements IMappingClass{
+public class PlatformMining implements IMappingClass {
 
 	private Long id;
 	private String name;
 	private String type;
 	private Long prefix;
-	
-	public String getName() {
-		return name;
+
+	public PlatformMining(final Long id, final String name, final String type, final Long prefix)
+	{
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.prefix = prefix;
 	}
 
-	public void setName(String name) {
+	public PlatformMining()
+	{
+
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(final String name) {
 		this.name = name;
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
-	public void setType(String type) {
+	public void setType(final String type) {
 		this.type = type;
 	}
 
-	public void setId(Long id) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -35,19 +55,21 @@ public class PlatformMining implements IMappingClass{
 	}
 
 	@Override
-	public boolean equals(IMappingClass o) {
-		if(o == null || !(o instanceof PlatformMining))
+	public boolean equals(final IMappingClass o) {
+		if (!(o instanceof PlatformMining)) {
 			return false;
-		if(o.getId() == this.getId() && (o instanceof PlatformMining))
+		}
+		if ((o.getId() == this.getId()) && (o instanceof PlatformMining)) {
 			return true;
+		}
 		return false;
 	}
 
 	public Long getPrefix() {
-		return prefix;
+		return this.prefix;
 	}
 
-	public void setPrefix(Long prefix) {
+	public void setPrefix(final Long prefix) {
 		this.prefix = prefix;
 	}
 

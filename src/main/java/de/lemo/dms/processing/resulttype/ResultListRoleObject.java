@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/resulttype/ResultListRoleObject.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.resulttype;
 
 import java.util.List;
@@ -5,19 +12,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class ResultListRoleObject {
+
 	private List<RoleObject> roles;
 
-	public ResultListRoleObject() {}
-	
-	public ResultListRoleObject(List<RoleObject> roles) {
-		this.roles = roles;
-	}
-	
-	public List<RoleObject> getRoles() {
-		return roles;
+	public ResultListRoleObject() {
 	}
 
-	public void setRoles(List<RoleObject> roles) {
+	public ResultListRoleObject(final List<RoleObject> roles) {
+		this.roles = roles;
+	}
+
+	public List<RoleObject> getRoles() {
+		return this.roles;
+	}
+
+	public void setRoles(final List<RoleObject> roles) {
 		this.roles = roles;
 	}
 }

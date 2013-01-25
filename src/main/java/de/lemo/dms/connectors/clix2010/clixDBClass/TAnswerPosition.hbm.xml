@@ -5,54 +5,33 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPosition"
-        table="T_ANSWERPOSITION">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPosition"
+		table="T_ANSWERPOSITION">
 
-		<composite-id
-       	name="id"
-        class="de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPositionPK" >
-       
-        <key-property name="person" column="PERSON_ID" type="long" />
-        <key-property name="test" column="TEST_ID" type="long"/>
-        <key-property name="question" column="QUESTION_ID" type="long" />
-        <key-property name="task" column="TASK_ID" type="long"/>
-       
-       </composite-id> 
+		<composite-id name="id"
+			class="de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPositionPK">
 
-        <property
-            name="person"
-            insert="false" 
-            update="false" 
-            column="PERSON_ID"
-            type="long"/>
+			<key-property name="person" column="PERSON_ID" type="long" />
+			<key-property name="test" column="TEST_ID" type="long" />
+			<key-property name="question" column="QUESTION_ID" type="long" />
+			<key-property name="task" column="TASK_ID" type="long" />
 
-        <property
-            name="test"
-            insert="false" 
-            update="false" 
-            column="TEST_ID"
-            type="long"/>
-            
-        <property
-            name="task"
-            insert="false" 
-            update="false" 
-            column="TASK_ID"
-            type="long"/>    
-            
-        <property
-            name="question"
-            insert="false" 
-            update="false" 
-            column="QUESTION_ID"
-            type="long"/>         
-            
-        <property
-            name="evaluated"
-            column="EVALUATED"
-            type="string"/>                             
-            
-    </class>
+		</composite-id>
+
+		<property name="person" insert="false" update="false" column="PERSON_ID"
+			type="long" />
+
+		<property name="test" insert="false" update="false" column="TEST_ID"
+			type="long" />
+
+		<property name="task" insert="false" update="false" column="TASK_ID"
+			type="long" />
+
+		<property name="question" insert="false" update="false"
+			column="QUESTION_ID" type="long" />
+
+		<property name="evaluated" column="EVALUATED" type="string" />
+
+	</class>
 
 </hibernate-mapping>

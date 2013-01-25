@@ -4,37 +4,20 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.ConfigMining"
-        table="config">
 
-        <id
-            name="lastmodified"
-            column="lastmodified"
-            type="timestamp">
-        </id>
+	<class name="de.lemo.dms.db.miningDBclass.ConfigMining" table="config">
 
-        <property
-            name="extractcycle"
-            column="extractcycle"
-            type="long"/>
-              
-        <property
-            name="elapsed_time"
-            column="elapsed_time"
-            type="long"/>   
-            
-        <property
-            name="databaseModel"
-            column="database_model"
-            type="string"/>   
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>         
-                
-    </class>
+		<id name="lastModified" column="lastmodified" type="timestamp">
+		</id>
+
+		<property name="extractCycle" column="extractcycle" type="long" />
+
+		<property name="elapsedTime" column="elapsed_time" type="long" />
+
+		<property name="databaseModel" column="database_model" type="string" />
+
+		<property name="platform" column="platform" type="long" />
+
+	</class>
 
 </hibernate-mapping>

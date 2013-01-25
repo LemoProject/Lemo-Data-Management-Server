@@ -5,36 +5,20 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Context_LMS"
-        table="mdl_context">
+	<class name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Context_LMS"
+		table="mdl_context">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="contextlevel"
-            column="contextlevel"
-            type="long"/>
+		<property name="contextlevel" column="contextlevel" type="long" />
 
-        <property
-            name="instanceid"
-            column="instanceid"
-            type="long"/>
-            
-        <property
-            name="path"
-            column="path"
-            type="string"/>
-            
-        <property
-            name="depth"
-            column="depth"
-            type="long"/>
+		<property name="instanceid" column="instanceid" type="long" />
 
-    </class>
+		<property name="path" column="path" type="string" />
+
+		<property name="depth" column="depth" type="long" />
+
+	</class>
 
 </hibernate-mapping>

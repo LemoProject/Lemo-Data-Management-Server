@@ -1,7 +1,14 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Context_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Context_LMS {
-	
+
 	private long id;
 	private long contextlevel;
 	private long instanceid;
@@ -9,33 +16,42 @@ public class Context_LMS {
 	private long depth;
 
 	public long getDepth() {
-		return depth;
+		return this.depth;
 	}
-	public void setDepth(long depth) {
+
+	public void setDepth(final long depth) {
 		this.depth = depth;
 	}
+
 	public String getPath() {
-		return path;
+		return this.path;
 	}
-	public void setPath(String path) {
+
+	public void setPath(final String path) {
 		this.path = path;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setContextlevel(long contextlevel) {
+
+	public void setContextlevel(final long contextlevel) {
 		this.contextlevel = contextlevel;
 	}
+
 	public long getContextlevel() {
-		return contextlevel;
+		return this.contextlevel;
 	}
-	public void setInstanceid(long instanceid) {
+
+	public void setInstanceid(final long instanceid) {
 		this.instanceid = instanceid;
 	}
+
 	public long getInstanceid() {
-		return instanceid;
-	}		
+		return this.instanceid;
+	}
 }

@@ -1,116 +1,170 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/RoleMining.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/**This class represents the table quiz.*/
+/** This class represents the table quiz. */
 public class RoleMining implements IMappingClass {
+
 	private long id;
 	private String name;
 	private String shortname;
-	private String description;//text
-	private long sortorder;
+	private String description;// text
+	private long sortOrder;
 	private Long platform;
 
-	private Set<CourseUserMining> course_user = new HashSet<CourseUserMining>();	
+	private Set<CourseUserMining> courseUsers = new HashSet<CourseUserMining>();
 
-	
-	public boolean equals(IMappingClass o)
+	@Override
+	public boolean equals(final IMappingClass o)
 	{
-		if(o == null || !(o instanceof RoleMining))
+		if (!(o instanceof RoleMining)) {
 			return false;
-		if(o.getId() == this.getId() && (o instanceof RoleMining))
+		}
+		if ((o.getId() == this.getId()) && (o instanceof RoleMining)) {
 			return true;
+		}
 		return false;
 	}
-	
-	/** standard setter for the attribut id
-	 * @param id the identifier of the role
-	 */	
-	public void setId(long id) {
+
+	/**
+	 * standard setter for the attribute id
+	 * 
+	 * @param id
+	 *            the identifier of the role
+	 */
+	public void setId(final long id) {
 		this.id = id;
 	}
-	
-	/** standard getter for the attribut id
+
+	/**
+	 * standard getter for the attribute id
+	 * 
 	 * @return the identifier of the role
-	 */	
+	 */
+	@Override
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	/** standard setter for the attribut name
-	 * @param name the full name of the role
-	 */	
-	public void setName(String name) {
+
+	/**
+	 * standard setter for the attribute name
+	 * 
+	 * @param name
+	 *            the full name of the role
+	 */
+	public void setName(final String name) {
 		this.name = name;
 	}
-	/** standard getter for the attribut name
+
+	/**
+	 * standard getter for the attribute name
+	 * 
 	 * @return the full name of the role
-	 */	
+	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	/** standard setter for the attribut shortname
-	 * @param shortname the shortname of the role
-	 */	
-	public void setShortname(String shortname) {
+
+	/**
+	 * standard setter for the attribute shortname
+	 * 
+	 * @param shortname
+	 *            the shortname of the role
+	 */
+	public void setShortname(final String shortname) {
 		this.shortname = shortname;
 	}
-	/** standard getter for the attribut shortname
+
+	/**
+	 * standard getter for the attribute shortname
+	 * 
 	 * @return the shortname of the role
-	 */	
+	 */
 	public String getShortname() {
-		return shortname;
+		return this.shortname;
 	}
-	/** standard setter for the attribut description
-	 * @param description a description of the role
-	 */	
-	public void setDescription(String description) {
+
+	/**
+	 * standard setter for the attribute description
+	 * 
+	 * @param description
+	 *            a description of the role
+	 */
+	public void setDescription(final String description) {
 		this.description = description;
 	}
-	/** standard getter for the attribut description
+
+	/**
+	 * standard getter for the attribute description
+	 * 
 	 * @return a description of the role
-	 */	
+	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
-	/** standard setter for the attribut sortorder
-	 * @param sortorder the sortorder for the roles
-	 */	
-	public void setSortorder(long sortorder) {
-		this.sortorder = sortorder;
+
+	/**
+	 * standard setter for the attribute sortorder
+	 * 
+	 * @param sortorder
+	 *            the sortorder for the roles
+	 */
+	public void setSortOrder(final long sortorder) {
+		this.sortOrder = sortorder;
 	}
-	/** standard getter for the attribut sortorder
+
+	/**
+	 * standard getter for the attribute sortorder
+	 * 
 	 * @return the sortorder for the roles
-	 */	
-	public long getSortorder() {
-		return sortorder;
+	 */
+	public long getSortOrder() {
+		return this.sortOrder;
 	}
-	/** standard setter for the attribut course_user
-	 * @param course_user a set of entrys in the course_user table which relate this role with users
-	 */	
-	public void setCourse_user(Set<CourseUserMining> course_user) {
-		this.course_user = course_user;
+
+	/**
+	 * standard setter for the attribute course_user
+	 * 
+	 * @param courseUsers
+	 *            a set of entries in the course_user table which relate this role with users
+	 */
+	public void setCourseUsers(final Set<CourseUserMining> courseUsers) {
+		this.courseUsers = courseUsers;
 	}
-	/** standard getter for the attribut course_user
-	 * @return a set of entrys in the course_user table which relate this role with users
-	 */	
-	public Set<CourseUserMining> getCourse_user() {
-		return course_user;
+
+	/**
+	 * standard getter for the attribute course_user
+	 * 
+	 * @return a set of entries in the course_user table which relate this role with users
+	 */
+	public Set<CourseUserMining> getCourseUsers() {
+		return this.courseUsers;
 	}
-	/** standard add method for the attribut course_user
-	 * @param course_user_add this entry will be added to the list of course_user in this role
-	 * */
-	public void addCourse_user(CourseUserMining course_user_add){	
-		course_user.add(course_user_add);	
+
+	/**
+	 * standard add method for the attribute course_user
+	 * 
+	 * @param courseUser
+	 *            this entry will be added to the list of course_user in this role
+	 */
+	public void addCourseUser(final CourseUserMining courseUser) {
+		this.courseUsers.add(courseUser);
 	}
 
 	public Long getPlatform() {
-		return platform;
+		return this.platform;
 	}
 
-	public void setPlatform(Long platform) {
+	public void setPlatform(final Long platform) {
 		this.platform = platform;
 	}
 }

@@ -1,10 +1,16 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/EComponent.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class EComponent  implements IClixMappingClass{
+public class EComponent implements IClixMappingClass {
 
-	
 	private Long id;
 	private Long type;
 	private String name;
@@ -15,73 +21,74 @@ public class EComponent  implements IClixMappingClass{
 
 	public EComponent()
 	{
-		
+
 	}
-	
+
 	public String getString()
 	{
 		return "EComponent$$$"
-				+this.id+"$$$"
-				+this.getCreationDate()+"$$$"
-				+this.getDescription()+"$$$"
-				+this.getLastUpdated()+"$$$"
-				+this.getName()+"$$$"
-				+this.getStartDate()+"$$$"
-				+this.getType();
-	}
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public Long getType() {
-		return type;
-	}
-	
-	public void setType(Long type) {
-		this.type = type;
-	}
-	
-	public String getName() {
-		return name;
+				+ this.id + "$$$"
+				+ this.getCreationDate() + "$$$"
+				+ this.getDescription() + "$$$"
+				+ this.getLastUpdated() + "$$$"
+				+ this.getName() + "$$$"
+				+ this.getStartDate() + "$$$"
+				+ this.getType();
 	}
 
-	public void setName(String name) {
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(final Long id) {
+		this.id = id;
+	}
+
+	public Long getType() {
+		return this.type;
+	}
+
+	public void setType(final Long type) {
+		this.type = type;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(final String name) {
 		this.name = name;
 	}
 
 	public String getCreationDate() {
-		return creationDate;
+		return this.creationDate;
 	}
 
-	public void setCreationDate(String creationDate) {
+	public void setCreationDate(final String creationDate) {
 		this.creationDate = creationDate;
 	}
 
 	public String getLastUpdated() {
-		return lastUpdated;
+		return this.lastUpdated;
 	}
 
-	public void setLastUpdated(String lastUpdated) {
+	public void setLastUpdated(final String lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
 
 	public String getStartDate() {
-		return startDate;
+		return this.startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(final String startDate) {
 		this.startDate = startDate;
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 

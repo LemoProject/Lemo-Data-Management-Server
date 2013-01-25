@@ -1,23 +1,31 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/resulttype/CourseObject.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.resulttype;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 @XmlRootElement
 public class CourseObject {
 
-	private Long id;	
+	private Long id;
 	private String title;
 	private String description;
 	private Long participants;
 	private Long lastRequest;
 	private Long firstRequest;
-	
+
 	public CourseObject()
-	{}
-	
-	public CourseObject(Long id, String title, String description, Long participants, Long lastRequest, Long firstRequest)
+	{
+	}
+
+	public CourseObject(final Long id, final String title, final String description, final Long participants,
+			final Long lastRequest, final Long firstRequest)
 	{
 		this.id = id;
 		this.title = title;
@@ -26,59 +34,59 @@ public class CourseObject {
 		this.lastRequest = lastRequest;
 		this.firstRequest = firstRequest;
 	}
-	
-	public void setId(Long id) {
+
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public void setParticipants(Long participants) {
+	public void setParticipants(final Long participants) {
 		this.participants = participants;
 	}
 
-	public void setLastRequest(Long lastRequest) {
+	public void setLastRequest(final Long lastRequest) {
 		this.lastRequest = lastRequest;
 	}
-	
-	public void setFirstRequest(Long firstRequest) {
+
+	public void setFirstRequest(final Long firstRequest) {
 		this.firstRequest = firstRequest;
 	}
 
 	@XmlElement
 	public Long getId() {
-		return id;
+		return this.id;
 	}
-	
+
 	@XmlElement
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
-	
+
 	@XmlElement
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
-	
+
 	@XmlElement
 	public Long getParticipants() {
-		return participants;
+		return this.participants;
 	}
-	
+
 	@XmlElement
 	public Long getLastRequest() {
-		return lastRequest;
-		
+		return this.lastRequest;
+
 	}
-	
+
 	@XmlElement
 	public Long getFirstRequest() {
-		return firstRequest;
+		return this.firstRequest;
 	}
 }

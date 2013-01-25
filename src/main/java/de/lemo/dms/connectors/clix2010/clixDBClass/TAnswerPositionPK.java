@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/TAnswerPositionPK.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
@@ -12,70 +19,70 @@ public class TAnswerPositionPK implements Serializable {
 	private Long question;
 	private Long task;
 	private Long test;
-	
-	public boolean equals(Object arg)
+
+	@Override
+	public boolean equals(final Object arg)
 	{
-		if(arg == null)
+		if (arg == null) {
 			return false;
-		if(!(arg instanceof TAnswerPositionPK))
+		}
+		if (!(arg instanceof TAnswerPositionPK)) {
 			return false;
-		TAnswerPositionPK a = (TAnswerPositionPK)arg;
-		if(a.getPerson() != this.person)
+		}
+		final TAnswerPositionPK a = (TAnswerPositionPK) arg;
+		if (a.getPerson() != this.person) {
 			return false;
-		if(a.getQuestion() != this.question)
+		}
+		if (a.getQuestion() != this.question) {
 			return false;
-		if(a.getTask() != this.task)
+		}
+		if (a.getTask() != this.task) {
 			return false;
-		if(a.getTest() != this.test)
+		}
+		if (a.getTest() != this.test) {
 			return false;
+		}
 		return true;
 	}
-	
+
+	@Override
 	public int hashCode()
 	{
-		return person.hashCode() * 17 + question.hashCode() * 19 + task.hashCode() * 23 + test.hashCode() * 29;
+		return (this.person.hashCode() * 17) + (this.question.hashCode() * 19) + (this.task.hashCode() * 23)
+				+ (this.test.hashCode() * 29);
 	}
-		
+
 	public Long getPerson() {
-		return person;
+		return this.person;
 	}
 
-
-	public void setPerson(Long person) {
+	public void setPerson(final Long person) {
 		this.person = person;
 	}
 
-
 	public Long getQuestion() {
-		return question;
+		return this.question;
 	}
 
-
-	public void setQuestion(Long question) {
+	public void setQuestion(final Long question) {
 		this.question = question;
 	}
 
-
 	public Long getTask() {
-		return task;
+		return this.task;
 	}
 
-
-	public void setTask(Long task) {
+	public void setTask(final Long task) {
 		this.task = task;
 	}
 
-
 	public Long getTest() {
-		return test;
+		return this.test;
 	}
 
-
-	public void setTest(Long test) {
+	public void setTest(final Long test) {
 		this.test = test;
 	}
-
-
 
 	public TAnswerPositionPK()
 	{

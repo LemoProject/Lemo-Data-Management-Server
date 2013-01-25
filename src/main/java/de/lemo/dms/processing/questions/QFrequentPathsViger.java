@@ -1,3 +1,4 @@
+
 package de.lemo.dms.processing.questions;
 
 import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
@@ -459,4 +460,3 @@ public class QFrequentPathsViger extends Question{
 		return result;
 	}
 	
-}

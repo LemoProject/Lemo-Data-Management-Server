@@ -1,7 +1,14 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_attempts_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Quiz_attempts_LMS {
-	
+
 	private long id;
 	private long uniqueid;
 	private Double sumgrades;
@@ -11,59 +18,76 @@ public class Quiz_attempts_LMS {
 	private long timestart;
 	private long timefinish;
 	private long timemodified;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getUniqueid() {
-		return uniqueid;
+		return this.uniqueid;
 	}
-	public void setUniqueid(long uniqueid) {
+
+	public void setUniqueid(final long uniqueid) {
 		this.uniqueid = uniqueid;
 	}
+
 	public long getAttempt() {
-		return attempt;
+		return this.attempt;
 	}
-	public void setAttempt(long attempt) {
+
+	public void setAttempt(final long attempt) {
 		this.attempt = attempt;
 	}
+
 	public String getUserid() {
-		return userid;
+		return this.userid;
 	}
-	public void setUserid(String userid) {
+
+	public void setUserid(final String userid) {
 		this.userid = userid;
 	}
+
 	public long getQuiz() {
-		return quiz;
+		return this.quiz;
 	}
-	public void setQuiz(long quiz) {
+
+	public void setQuiz(final long quiz) {
 		this.quiz = quiz;
 	}
+
 	public long getTimestart() {
-		return timestart;
+		return this.timestart;
 	}
-	public void setTimestart(long timestart) {
+
+	public void setTimestart(final long timestart) {
 		this.timestart = timestart;
 	}
+
 	public long getTimefinish() {
-		return timefinish;
+		return this.timefinish;
 	}
-	public void setTimefinish(long timefinish) {
+
+	public void setTimefinish(final long timefinish) {
 		this.timefinish = timefinish;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
-	public void setSumgrades(Double sumgrades) {
+
+	public void setSumgrades(final Double sumgrades) {
 		this.sumgrades = sumgrades;
 	}
+
 	public Double getSumgrades() {
-		return sumgrades;
+		return this.sumgrades;
 	}
 }

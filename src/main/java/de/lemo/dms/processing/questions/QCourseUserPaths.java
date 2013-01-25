@@ -1,8 +1,11 @@
-package de.lemo.dms.processing.questions;
+/**
+ * File ./main/java/de/lemo/dms/processing/questions/QCourseUserPaths.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
 
-import static de.lemo.dms.processing.MetaParam.COURSE_IDS;
-import static de.lemo.dms.processing.MetaParam.END_TIME;
-import static de.lemo.dms.processing.MetaParam.START_TIME;
+package de.lemo.dms.processing.questions;
 
 import java.util.Date;
 import java.util.List;
@@ -10,193 +13,193 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
-import de.lemo.dms.core.ServerConfigurationHardCoded;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 
 @Path("courseuserpaths")
 public class QCourseUserPaths extends Question {
 
-    @POST
-    public JSONObject compute(
-            @FormParam(COURSE_IDS) List<Long> courseIds,
-            @FormParam(START_TIME) Long startTime,
-            @FormParam(END_TIME) Long endTime) throws JSONException {
+	@POST
+	public JSONObject compute(
+			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
+			@FormParam(MetaParam.START_TIME) final Long startTime,
+			@FormParam(MetaParam.END_TIME) Long endTime) throws JSONException {
 
-        /*
-         * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to
-         * serve as example implementation for other analyses.
-         */
+		/*
+		 * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to
+		 * serve as example implementation for other analyses.
+		 */
 
-        if(endTime == null) {
-            endTime = new Date().getTime();
-        }
+		if (endTime == null) {
+			endTime = new Date().getTime();
+		}
 
-        if(startTime >= endTime || courseIds == null || courseIds.isEmpty()) {
-            return null;
-        }
+		if ((startTime >= endTime) || (courseIds == null) || courseIds.isEmpty()) {
+			return null;
+		}
 
-        Stopwatch stopWatch = new Stopwatch();
+		final Stopwatch stopWatch = new Stopwatch();
 
-        stopWatch.start();
+		stopWatch.start();
 
-        /* A criteria is created from the session. */
-        IDBHandler dbHandler = ServerConfigurationHardCoded.getInstance().getDBHandler();
-        Session session = dbHandler.getMiningSession();
+		/* A criteria is created from the session. */
+		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+		final Session session = dbHandler.getMiningSession();
 
-        /*
-         * HQL-like equivalent: "Select from ILogMining". ILogMining is an interface, so Hibernate will load all classes
-         * implementing it. The string argument is an alias.
-         */
-        Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		/*
+		 * HQL-like equivalent: "Select from ILogMining". ILogMining is an interface, so Hibernate will load all classes
+		 * implementing it. The string argument is an alias.
+		 */
+		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
 
-        /*
-         * Restrictions equivalent to HQL where:
-         * 
-         * where course in ( ... ) and timestamp between " + startTime + " AND " + endTime;
-         */
-        criteria.add(Restrictions.in("log.course.id", courseIds))
-                .add(Restrictions.between("log.timestamp", startTime, endTime))
-                .add(Restrictions.eq("log.action", "view"));
+		/*
+		 * Restrictions equivalent to HQL where:
+		 * 
+		 * where course in ( ... ) and timestamp between " + startTime + " AND " + endTime;
+		 */
+		criteria.add(Restrictions.in("log.course.id", courseIds))
+				.add(Restrictions.between("log.timestamp", startTime, endTime))
+				.add(Restrictions.eq("log.action", "view"));
 
-        /* Calling list() eventually performs the query */
-        @SuppressWarnings("unchecked")
-        List<ILogMining> logs = criteria.list();
+		/* Calling list() eventually performs the query */
+		@SuppressWarnings("unchecked")
+		final List<ILogMining> logs = criteria.list();
 
-        Set<Long/* user id */> users = Sets.newHashSet();
-        for(ILogMining log : logs) {
-            UserMining user = log.getUser();
-            if(user == null)
-                continue;
-            users.add(user.getId());
-        }
+		final Set<Long/* user id */> users = Sets.newHashSet();
+		for (final ILogMining log : logs) {
+			final UserMining user = log.getUser();
+			if (user == null) {
+				continue;
+			}
+			users.add(user.getId());
+		}
 
-        logger.info("Found " + users.size() + " actions. " + +stopWatch.elapsedTime(TimeUnit.SECONDS));
+		this.logger.info("Found " + users.size() + " actions. " + +stopWatch.elapsedTime(TimeUnit.SECONDS));
 
-        if(users.isEmpty())
-            return new JSONObject();
-      
-            Criteria exdendedCriteria = session.createCriteria(ILogMining.class, "log");
-            exdendedCriteria.add(Restrictions.in("log.user.id", users))
-                    .add(Restrictions.between("log.timestamp", startTime, endTime))
-                    .add(Restrictions.eq("log.action", "view"));
-            @SuppressWarnings("unchecked")
-            List<ILogMining> extendedLogs = exdendedCriteria.list();
-    
-      
-        long courseCount = 0;
-        BiMap<CourseMining, Long> courseNodePositions = HashBiMap.create();
-        Map<Long/* user id */, List<Long/* course id */>> userPaths = Maps.newHashMap();
+		if (users.isEmpty()) {
+			return new JSONObject();
+		}
 
-        logger.info("Paths fetched: " + extendedLogs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
+		final Criteria exdendedCriteria = session.createCriteria(ILogMining.class, "log");
+		exdendedCriteria.add(Restrictions.in("log.user.id", users))
+				.add(Restrictions.between("log.timestamp", startTime, endTime))
+				.add(Restrictions.eq("log.action", "view"));
+		@SuppressWarnings("unchecked")
+		final List<ILogMining> extendedLogs = exdendedCriteria.list();
 
-        for(ILogMining log : extendedLogs) {
-            UserMining user = log.getUser();
-            if(user == null || log.getCourse() == null)
-                continue;
+		long courseCount = 0;
+		final BiMap<CourseMining, Long> courseNodePositions = HashBiMap.create();
+		final Map<Long/* user id */, List<Long/* course id */>> userPaths = Maps.newHashMap();
 
-            CourseMining course = log.getCourse();
-            Long nodeID = courseNodePositions.get(course);
-            if(nodeID == null) {
-                nodeID = courseCount++;
-                courseNodePositions.put(course, nodeID);
-            }
+		this.logger.info("Paths fetched: " + extendedLogs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
 
-            long userId = log.getUser().getId();
+		for (final ILogMining log : extendedLogs) {
+			final UserMining user = log.getUser();
+			if ((user == null) || (log.getCourse() == null)) {
+				continue;
+			}
 
-            List<Long> nodeIDs = userPaths.get(userId);
-            if(nodeIDs == null) {
-                nodeIDs = Lists.newArrayList();
-                userPaths.put(userId, nodeIDs);
-            }
-            nodeIDs.add(nodeID);
-        }
+			final CourseMining course = log.getCourse();
+			Long nodeID = courseNodePositions.get(course);
+			if (nodeID == null) {
+				nodeID = courseCount++;
+				courseNodePositions.put(course, nodeID);
+			}
 
-        logger.info("userPaths: " + userPaths.size());
+			final long userId = log.getUser().getId();
 
-        Map<Long /* node id */, List<UserPathLink>> coursePaths = Maps.newHashMap();
+			List<Long> nodeIDs = userPaths.get(userId);
+			if (nodeIDs == null) {
+				nodeIDs = Lists.newArrayList();
+				userPaths.put(userId, nodeIDs);
+			}
+			nodeIDs.add(nodeID);
+		}
 
-        for(Entry<Long, List<Long>> userEntry : userPaths.entrySet()) {
+		this.logger.info("userPaths: " + userPaths.size());
 
-            UserPathLink lastLink = null;
-            // Long userID = userEntry.getKey();
+		final Map<Long /* node id */, List<UserPathLink>> coursePaths = Maps.newHashMap();
 
-            for(Long nodeID : userEntry.getValue()) {
-                List<UserPathLink> links = coursePaths.get(nodeID);
-                if(links == null) {
-                    links = Lists.newArrayList();
-                    coursePaths.put(nodeID, links);
-                }
-                UserPathLink link = new UserPathLink(String.valueOf(nodeID), "0");
-                links.add(link);
+		for (final Entry<Long, List<Long>> userEntry : userPaths.entrySet()) {
 
-                if(lastLink != null) {
-                    lastLink.setTarget(String.valueOf(nodeID));
-                }
-                lastLink = link;
-            }
-        }
-        stopWatch.stop();
-        logger.info("coursePaths: " + coursePaths.size());
-        logger.info("Total Fetched log entries: " + (logs.size() + extendedLogs.size()) + " log entries."
-                + stopWatch.elapsedTime(TimeUnit.SECONDS));
+			UserPathLink lastLink = null;
+			// Long userID = userEntry.getKey();
 
-        Set<UserPathLink> links = Sets.newHashSet();
+			for (final Long nodeID : userEntry.getValue()) {
+				List<UserPathLink> links = coursePaths.get(nodeID);
+				if (links == null) {
+					links = Lists.newArrayList();
+					coursePaths.put(nodeID, links);
+				}
+				final UserPathLink link = new UserPathLink(String.valueOf(nodeID), "0");
+				links.add(link);
 
-        JSONObject result = new JSONObject();
-        JSONArray nodes = new JSONArray();
-        JSONArray edges = new JSONArray();
+				if (lastLink != null) {
+					lastLink.setTarget(String.valueOf(nodeID));
+				}
+				lastLink = link;
+			}
+		}
+		stopWatch.stop();
+		this.logger.info("coursePaths: " + coursePaths.size());
+		this.logger.info("Total Fetched log entries: " + (logs.size() + extendedLogs.size()) + " log entries."
+				+ stopWatch.elapsedTime(TimeUnit.SECONDS));
 
-        for(Entry<Long, List<UserPathLink>> courseEntry : coursePaths.entrySet()) {
-            JSONObject node = new JSONObject();
-            node.put("name", courseNodePositions.inverse().get(courseEntry.getKey()).getTitle());
-            //node.put("name", "");
-            node.put("value", courseEntry.getValue().size());
-            node.put("group", courseIds.contains(courseNodePositions.inverse().get(courseEntry.getKey())) ? 1 : 2);
-            nodes.put(node);
+		final Set<UserPathLink> links = Sets.newHashSet();
 
-            for(UserPathLink edge : courseEntry.getValue()) {
-                if(edge.getTarget() == edge.getSource())
-                    continue;
-                links.add(edge);
-            }
-        }
+		final JSONObject result = new JSONObject();
+		final JSONArray nodes = new JSONArray();
+		final JSONArray edges = new JSONArray();
 
-        for(UserPathLink link : links) {
-            JSONObject edgeJSON = new JSONObject();
-            edgeJSON.put("target", link.getTarget());
-            edgeJSON.put("source", link.getSource());
-            edges.put(edgeJSON);
-        }
+		for (final Entry<Long, List<UserPathLink>> courseEntry : coursePaths.entrySet()) {
+			final JSONObject node = new JSONObject();
+			node.put("name", courseNodePositions.inverse().get(courseEntry.getKey()).getTitle());
+			// node.put("name", "");
+			node.put("value", courseEntry.getValue().size());
+			node.put("group", courseIds.contains(courseNodePositions.inverse().get(courseEntry.getKey())) ? 1 : 2);
+			nodes.put(node);
 
-        logger.info("Nodes: " + nodes.length() + ", Links: " + edges.length() + "   / time: "
-                + stopWatch.elapsedTime(TimeUnit.SECONDS));
+			for (final UserPathLink edge : courseEntry.getValue()) {
+				if (edge.getTarget() == edge.getSource()) {
+					continue;
+				}
+				links.add(edge);
+			}
+		}
 
-        result.put("nodes", nodes);
-        result.put("links", edges);
-        return result;
-    }
+		for (final UserPathLink link : links) {
+			final JSONObject edgeJSON = new JSONObject();
+			edgeJSON.put("target", link.getTarget());
+			edgeJSON.put("source", link.getSource());
+			edges.put(edgeJSON);
+		}
+
+		this.logger.info("Nodes: " + nodes.length() + ", Links: " + edges.length() + "   / time: "
+				+ stopWatch.elapsedTime(TimeUnit.SECONDS));
+
+		result.put("nodes", nodes);
+		result.put("links", edges);
+		return result;
+	}
 }

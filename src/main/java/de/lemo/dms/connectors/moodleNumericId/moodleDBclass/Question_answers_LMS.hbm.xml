@@ -5,27 +5,18 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Question_answers_LMS"
-        table="mdl_question_answers">
+	<class
+		name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Question_answers_LMS"
+		table="mdl_question_answers">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="id" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="question"
-            column="question"
-            type="long"/>            
-  
-        <property
-            name="answer"
-            column="answer"
-            type="string"/>  
-                
-    </class>
+		<property name="question" column="question" type="long" />
+
+		<property name="answer" column="answer" type="string" />
+
+	</class>
 
 </hibernate-mapping>

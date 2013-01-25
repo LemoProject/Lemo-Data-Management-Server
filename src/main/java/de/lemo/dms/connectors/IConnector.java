@@ -1,42 +1,45 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/IConnector.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors;
 
-
-import de.lemo.dms.db.DBConfigObject;
 // TODO: Auto-generated Javadoc
-/**
- * The Interface IConnector.
- */
 public interface IConnector {
-	
-	
-	/**
-	 * Sets the parameters for the source database via a DBConfigObject.
-	 * @param dbConf
-	 */
-	public void setSourceDBConfig(DBConfigObject dbConf);
-	
+
 	/**
 	 * Tests the configured connection.
-	 *
-	 * @param conf the database configuration object, holding connection settings
+	 * 
+	 * @param conf
+	 *            the database configuration object, holding connection settings
 	 * @return true, if successful
 	 */
-	public boolean testConnections();
-	
+	boolean testConnections();
+
 	/**
 	 * Gets the data.
-	 *
-	 * @param conf the database configuration object, holding connection settings
-	 * @return the data
 	 */
-	public void getData(String platformName);
-	
+	void getData();
+
 	/**
 	 * Update data.
-	 *
-	 * @param conf the database configuration object, holding connection settings
-	 * @param fromTimestamp the from timestamp
+	 * 
+	 * @param conf
+	 *            the database configuration object, holding connection settings
+	 * @param fromTimestamp
+	 *            the from timestamp
 	 */
-	public void updateData(String platformName, long fromTimestamp);
+	void updateData(long fromTimestamp);
+
+	Long getPlatformId();
+
+	Long getPrefix();
+
+	String getName();
+
+	ESourcePlatform getPlattformType();
 
 }

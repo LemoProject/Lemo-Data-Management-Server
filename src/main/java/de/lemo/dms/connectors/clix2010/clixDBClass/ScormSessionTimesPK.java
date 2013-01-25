@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/ScormSessionTimesPK.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
@@ -10,55 +17,60 @@ public class ScormSessionTimesPK implements Serializable {
 	private static final long serialVersionUID = -1333399944075685332L;
 	private Long component;
 	private Long person;
-	
-	
-	public boolean equals(Object arg)
+
+	@Override
+	public boolean equals(final Object arg)
 	{
-		if(arg == null)
+		if (arg == null) {
 			return false;
-		if(!(arg instanceof ScormSessionTimesPK))
+		}
+		if (!(arg instanceof ScormSessionTimesPK)) {
 			return false;
-		ScormSessionTimesPK a = (ScormSessionTimesPK)arg;
-		if(a.getComponent() != this.component)
+		}
+		final ScormSessionTimesPK a = (ScormSessionTimesPK) arg;
+		if (a.getComponent() != this.component) {
 			return false;
-		if(a.getPerson() != this.person)
+		}
+		if (a.getPerson() != this.person) {
 			return false;
+		}
 		return true;
 	}
-	
+
+	@Override
 	public int hashCode()
 	{
 		int hc;
-		hc = person.hashCode();
-		hc = 17 * hc + component.hashCode();
+		hc = this.person.hashCode();
+		hc = (17 * hc) + this.component.hashCode();
 		return hc;
 	}
-	
+
 	public ScormSessionTimesPK()
 	{
-		
+
 	}
-	
-	public ScormSessionTimesPK(Long component, long person)
+
+	public ScormSessionTimesPK(final Long component, final long person)
 	{
 		this.component = component;
 		this.person = person;
 	}
 
 	public Long getComponent() {
-		return component;
+		return this.component;
 	}
 
-	public void setComponent(Long component) {
+	public void setComponent(final Long component) {
 		this.component = component;
 	}
 
 	public Long getPerson() {
-		return person;
+		return this.person;
 	}
 
-	public void setPerson(Long person) {
+	public void setPerson(final Long person) {
 		this.person = person;
 	}
-	
+
 }

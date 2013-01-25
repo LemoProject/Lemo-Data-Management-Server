@@ -5,36 +5,21 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLog_LMS"
-        table="mdl_chat_messages">
+	<class
+		name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLog_LMS"
+		table="mdl_chat_messages">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="chat_Id"
-            column="chatid"
-            type="long"/>
-            
-        <property
-            name="user_Id"
-            column="userid"
-            type="long"/>
-            
-        <property
-            name="message"
-            column="message"
-            type="string"/>
-  
-        <property
-            name="timestamp"
-            column="timestamp"
-            type="long"/>  
-                
-    </class>
+		<property name="chat_Id" column="chatid" type="long" />
+
+		<property name="user_Id" column="userid" type="long" />
+
+		<property name="message" column="message" type="string" />
+
+		<property name="timestamp" column="timestamp" type="long" />
+
+	</class>
 
 </hibernate-mapping>

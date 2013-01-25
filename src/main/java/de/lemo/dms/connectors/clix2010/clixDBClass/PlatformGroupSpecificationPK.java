@@ -1,74 +1,76 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/PlatformGroupSpecificationPK.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
 public class PlatformGroupSpecificationPK implements Serializable {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5700969997735490626L;
 	private Long group;
 	private Long person;
-	
-	
-	
+
 	public Long getGroup() {
-		return group;
+		return this.group;
 	}
 
-
-
-	public void setGroup(Long group) {
+	public void setGroup(final Long group) {
 		this.group = group;
 	}
 
-
-
 	public long getPerson() {
-		return person;
+		return this.person;
 	}
 
-
-
-	public void setPerson(Long person) {
+	public void setPerson(final Long person) {
 		this.person = person;
 	}
-
-
 
 	public PlatformGroupSpecificationPK()
 	{
-		
+
 	}
-	
-	public PlatformGroupSpecificationPK(Long person, Long group)
+
+	public PlatformGroupSpecificationPK(final Long person, final Long group)
 	{
 		this.group = group;
 		this.person = person;
 	}
-	
-	public boolean equals(Object arg)
+
+	@Override
+	public boolean equals(final Object arg)
 	{
-		if(arg == null)
+		if (arg == null) {
 			return false;
-		if(!(arg instanceof PlatformGroupSpecificationPK))
+		}
+		if (!(arg instanceof PlatformGroupSpecificationPK)) {
 			return false;
-		PlatformGroupSpecificationPK a = (PlatformGroupSpecificationPK)arg;
-		if(a.getGroup() != this.group)
+		}
+		final PlatformGroupSpecificationPK a = (PlatformGroupSpecificationPK) arg;
+		if (a.getGroup() != this.group) {
 			return false;
-		if(a.getPerson() != this.person)
+		}
+		if (a.getPerson() != this.person) {
 			return false;
+		}
 		return true;
 	}
-	
+
+	@Override
 	public int hashCode()
 	{
 		int hc;
-		hc = group.hashCode();
-		hc = 17 * hc + person.hashCode();
+		hc = this.group.hashCode();
+		hc = (17 * hc) + this.person.hashCode();
 		return hc;
 	}
-
 
 }

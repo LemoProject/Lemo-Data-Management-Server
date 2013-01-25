@@ -4,72 +4,44 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class
-        name="de.lemo.dms.db.miningDBclass.AssignmentMining"
-        table="assignment">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
-        
-       <property
-            name="type"
-            column="type"
-            type="string"/>
-        
-        <property
-            name="title"
-            column="title"
-            type="string"/>
- 
-        <property
-            name="platform"
-            column="platform"
-            type="long"/>  
-                       
-            
-        <property
-            name="maxgrade"
-            column="maxgrade"
-            type="double"/>
+	<class name="de.lemo.dms.db.miningDBclass.AssignmentMining"
+		table="assignment">
 
-        <property
-            name="timeopen"
-            column="timeopen"
-            type="long"/>
-            
-        <property
-            name="timeclose"
-            column="timeclose"
-            type="long"/>
-            
-        <property
-            name="timecreated"
-            column="timecreated"
-            type="long"/>
-               
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>
-            
-		<set name="assignment_log" inverse="true" lazy="false">
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="type" column="type" type="string" />
+
+		<property name="title" column="title" type="string" />
+
+		<property name="platform" column="platform" type="long" />
+
+
+		<property name="maxGrade" column="maxgrade" type="double" />
+
+		<property name="timeOpen" column="timeopen" type="long" />
+
+		<property name="timeClose" column="timeclose" type="long" />
+
+		<property name="timeCreated" column="timecreated" type="long" />
+
+		<property name="timeModified" column="timemodified" type="long" />
+
+		<set name="assignmentLogs" inverse="true" lazy="false">
 			<key>
-				<column name="assignment_id"/>
+				<column name="assignment_id" />
 			</key>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.AssignmentLogMining"/>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.AssignmentLogMining" />
 		</set>
- 
- 		<set name="course_assignment" inverse="true" lazy="false">
+
+		<set name="courseAssignments" inverse="true" lazy="false">
 			<key>
-				<column name="assignment_id"/>
+				<column name="assignment_id" />
 			</key>
-			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseAssignmentMining"/>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseAssignmentMining" />
 		</set>
-                
-    </class>
+
+	</class>
 
 </hibernate-mapping>

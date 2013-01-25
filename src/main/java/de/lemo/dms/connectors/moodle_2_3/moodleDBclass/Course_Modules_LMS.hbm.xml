@@ -5,41 +5,23 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Course_Modules_LMS"
-        table="mdl_course_modules">
+	<class
+		name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.Course_Modules_LMS"
+		table="mdl_course_modules">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="module"
-            column="module"
-            type="long"/>
+		<property name="module" column="module" type="long" />
 
-        <property
-            name="instance"
-            column="instance"
-            type="long"/>
-            
-        <property
-            name="course"
-            column="course"
-            type="long"/>
-           
-        <property
-            name="availablefrom"
-            column="availablefrom"
-            type="long"/>
-            
-       	<property
-            name="availableuntil"
-            column="availableuntil"
-            type="long"/>
-            
-    </class>
+		<property name="instance" column="instance" type="long" />
+
+		<property name="course" column="course" type="long" />
+
+		<property name="availablefrom" column="availablefrom" type="long" />
+
+		<property name="availableuntil" column="availableuntil" type="long" />
+
+	</class>
 
 </hibernate-mapping>

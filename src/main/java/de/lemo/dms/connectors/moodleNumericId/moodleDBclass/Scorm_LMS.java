@@ -1,41 +1,57 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Scorm_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
 public class Scorm_LMS {
-	
+
 	private long id;
 	private String name;
 	private long course;
 	private double maxgrade;
 	private long timemodified;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	public void setName(String name) {
+
+	public void setName(final String name) {
 		this.name = name;
 	}
+
 	public long getCourse() {
-		return course;
+		return this.course;
 	}
-	public void setCourse(long course) {
+
+	public void setCourse(final long course) {
 		this.course = course;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
+
 	public double getMaxgrade() {
-		return maxgrade;
+		return this.maxgrade;
 	}
-	public void setMaxgrade(double maxgrade) {
+
+	public void setMaxgrade(final double maxgrade) {
 		this.maxgrade = maxgrade;
 	}
 

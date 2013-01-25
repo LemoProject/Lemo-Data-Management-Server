@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Quiz_LMS {
@@ -13,72 +20,93 @@ public class Quiz_LMS {
 	private long grade;
 	private long timecreated;
 	private long timemodified;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getCourse() {
-		return course;
+		return this.course;
 	}
-	public void setCourse(long course) {
+
+	public void setCourse(final long course) {
 		this.course = course;
 	}
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	public void setName(String name) {
+
+	public void setName(final String name) {
 		this.name = name;
 	}
+
 	public String getIntro() {
-		return intro;
+		return this.intro;
 	}
-	public void setIntro(String intro) {
+
+	public void setIntro(final String intro) {
 		this.intro = intro;
 	}
+
 	public String getQuestions() {
-		return questions;
+		return this.questions;
 	}
-	public void setQuestions(String questions) {
+
+	public void setQuestions(final String questions) {
 		this.questions = questions;
 	}
+
 	public long getTimeopen() {
-		return timeopen;
+		return this.timeopen;
 	}
-	public void setTimeopen(long timeopen) {
+
+	public void setTimeopen(final long timeopen) {
 		this.timeopen = timeopen;
 	}
+
 	public long getTimeclose() {
-		return timeclose;
+		return this.timeclose;
 	}
-	public void setTimeclose(long timeclose) {
+
+	public void setTimeclose(final long timeclose) {
 		this.timeclose = timeclose;
 	}
+
 	public long getSumgrade() {
-		return sumgrade;
+		return this.sumgrade;
 	}
-	public void setSumgrade(long sumgrade) {
+
+	public void setSumgrade(final long sumgrade) {
 		this.sumgrade = sumgrade;
 	}
+
 	public long getGrade() {
-		return grade;
+		return this.grade;
 	}
-	public void setGrade(long grade) {
+
+	public void setGrade(final long grade) {
 		this.grade = grade;
 	}
+
 	public long getTimecreated() {
-		return timecreated;
+		return this.timecreated;
 	}
-	public void setTimecreated(long timecreated) {
+
+	public void setTimecreated(final long timecreated) {
 		this.timecreated = timecreated;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
-	
+
 }

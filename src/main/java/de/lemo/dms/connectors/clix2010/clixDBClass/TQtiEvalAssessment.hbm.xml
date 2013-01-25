@@ -5,47 +5,26 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiEvalAssessment"
-        table="T_QTI_EVAL_ASSESSMENT">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiEvalAssessment"
+		table="T_QTI_EVAL_ASSESSMENT">
 
-        <id
-            name="id"
-            column="EVALASS_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="EVALASS_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="lastInvocation"
-            column="LASTINVOCATION"
-            type="string"/>
+		<property name="lastInvocation" column="LASTINVOCATION" type="string" />
 
-        <property
-            name="component"
-            column="COMPONENT_ID"
-            type="long"/>
+		<property name="component" column="COMPONENT_ID" type="long" />
 
-        <property
-            name="candidate"
-            column="CANDIDATE_ID"
-            type="long"/>
-            
-        <property
-            name="assessment"
-            column="ASSESSMENT_ID"
-            type="long"/>         
-            
-        <property
-            name="evaluatedScore"
-            column="EVALUATED_SCORE"
-            type="long"/>
+		<property name="candidate" column="CANDIDATE_ID" type="long" />
 
-        <property
-            name="evalCount"
-            column="EVAL_COUNT"
-            type="long"/>   
-            
-    </class>
+		<property name="assessment" column="ASSESSMENT_ID" type="long" />
+
+		<property name="evaluatedScore" column="EVALUATED_SCORE"
+			type="long" />
+
+		<property name="evalCount" column="EVAL_COUNT" type="long" />
+
+	</class>
 
 </hibernate-mapping>

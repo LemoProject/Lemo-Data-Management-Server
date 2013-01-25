@@ -1,3 +1,10 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Forum_discussions_LMS.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
 public class Forum_discussions_LMS {
@@ -11,59 +18,76 @@ public class Forum_discussions_LMS {
 	private String usermodified;
 	private long timestart;
 	private long timeend;
-	
+
 	public long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(long id) {
+
+	public void setId(final long id) {
 		this.id = id;
 	}
+
 	public long getForum() {
-		return forum;
+		return this.forum;
 	}
-	public void setForum(long forum) {
+
+	public void setForum(final long forum) {
 		this.forum = forum;
 	}
+
 	public String getUserid() {
-		return userid;
+		return this.userid;
 	}
-	public void setUserid(String userid) {
+
+	public void setUserid(final String userid) {
 		this.userid = userid;
 	}
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	public void setName(String name) {
+
+	public void setName(final String name) {
 		this.name = name;
 	}
+
 	public long getFirstpost() {
-		return firstpost;
+		return this.firstpost;
 	}
-	public void setFirstpost(long firstpost) {
+
+	public void setFirstpost(final long firstpost) {
 		this.firstpost = firstpost;
 	}
+
 	public long getTimemodified() {
-		return timemodified;
+		return this.timemodified;
 	}
-	public void setTimemodified(long timemodified) {
+
+	public void setTimemodified(final long timemodified) {
 		this.timemodified = timemodified;
 	}
+
 	public String getUsermodified() {
-		return usermodified;
+		return this.usermodified;
 	}
-	public void setUsermodified(String usermodified) {
+
+	public void setUsermodified(final String usermodified) {
 		this.usermodified = usermodified;
 	}
+
 	public long getTimestart() {
-		return timestart;
+		return this.timestart;
 	}
-	public void setTimestart(long timestart) {
+
+	public void setTimestart(final long timestart) {
 		this.timestart = timestart;
 	}
+
 	public long getTimeend() {
-		return timeend;
+		return this.timeend;
 	}
-	public void setTimeend(long timeend) {
+
+	public void setTimeend(final long timeend) {
 		this.timeend = timeend;
 	}
 }

@@ -1,35 +1,35 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/ConnectorClix.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010;
 
 import org.hibernate.HibernateException;
-
-import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.AbstractConnector;
 import de.lemo.dms.db.DBConfigObject;
 
 /**
- * Implementation of the IConnector for Clix platforms
+ * Connector implementation for Clix platforms
  * 
  * @author s.schwarzrock
- *
  */
-public class ConnectorClix implements IConnector{
+public class ConnectorClix extends AbstractConnector {
 
-	/**
-	 * 
-	 * Use for configuration of the database connection.
-	 */
-	@Override
-	public void setSourceDBConfig(DBConfigObject dbConf) {
-		// TODO Auto-generated method stub
-		
+	private final DBConfigObject config;
+
+	public ConnectorClix(final DBConfigObject config) {
+		this.config = config;
 	}
 
-	
 	@Override
 	public boolean testConnections() {
-		try{
-			
-			//ToDo - TestImpl
-		}catch(HibernateException he)
+		try {
+
+			// ToDo - TestImpl
+		} catch (final HibernateException he)
 		{
 			he.printStackTrace();
 			return false;
@@ -41,28 +41,18 @@ public class ConnectorClix implements IConnector{
 	 * Retrieves all data from the platform and saves it to the database.
 	 */
 	@Override
-	public void getData(String platformName) {
-		try{
-			ClixImporter.getClixData(platformName);
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
+	public void getData() {
+		final ClixImporter ci = new ClixImporter(this);
+		ci.getClixData(this.config);
 	}
 
 	/**
-	 * Retrieves data from the platform that is newer then the given time 
+	 * Retrieves data from the platform that is newer then the given time
 	 */
 	@Override
-	public void updateData(String platformName, long fromTimestamp) {
-		try{
-			ClixImporter.updateClixData(platformName, fromTimestamp);
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
+	public void updateData(final long fromTimestamp) {
+		final ClixImporter ci = new ClixImporter(this);
+		ci.updateClixData(this.config, fromTimestamp);
 	}
 
 }

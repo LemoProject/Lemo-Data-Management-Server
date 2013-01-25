@@ -5,51 +5,27 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Assignment_submissions_LMS"
-        table="mdl_assignment_submissions">
+	<class
+		name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Assignment_submissions_LMS"
+		table="mdl_assignment_submissions">
 
-        <id
-            name="id"
-            column="id"
-            type="long">
-        </id>
+		<id name="id" column="id" type="long">
+		</id>
 
-        <property
-            name="assignment"
-            column="assignment"
-            type="long"/>
+		<property name="assignment" column="assignment" type="long" />
 
-        <property
-            name="userid"
-            column="userid"
-            type="string"/>
+		<property name="userid" column="userid" type="string" />
 
-        <property
-            name="grade"
-            column="grade"
-            type="long"/>
+		<property name="grade" column="grade" type="long" />
 
-        <property
-            name="timecreated"
-            column="timecreated"
-            type="long"/>
-            
-        <property
-            name="timemodified"
-            column="timemodified"
-            type="long"/>
-            
-        <property
-            name="teacher"
-            column="teacher"
-            type="long"/>                        
+		<property name="timecreated" column="timecreated" type="long" />
 
-        <property
-            name="timemarked"
-            column="timemarked"
-            type="long"/> 
-            
-    </class>
+		<property name="timemodified" column="timemodified" type="long" />
+
+		<property name="teacher" column="teacher" type="long" />
+
+		<property name="timemarked" column="timemarked" type="long" />
+
+	</class>
 
 </hibernate-mapping>

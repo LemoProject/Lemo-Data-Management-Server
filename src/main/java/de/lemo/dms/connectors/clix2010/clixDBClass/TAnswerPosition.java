@@ -1,87 +1,81 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/TAnswerPosition.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
-public class TAnswerPosition  implements IClixMappingClass{
+public class TAnswerPosition implements IClixMappingClass {
 
 	private TAnswerPositionPK id;
 	private Long person;
 	private Long question;
 	private Long task;
 	private Long test;
-	
+
 	public TAnswerPositionPK getId() {
-		return id;
+		return this.id;
 	}
-	
+
 	public String getString()
 	{
 		return "TAnswerPosition$$$"
-				+this.getEvaluated()+"$$$"
-				+this.getPerson()+"$$$"
-				+this.getQuestion()+"$$$"
-				+this.getTask()+"$$$"
-				+this.getTest();
+				+ this.getEvaluated() + "$$$"
+				+ this.getPerson() + "$$$"
+				+ this.getQuestion() + "$$$"
+				+ this.getTask() + "$$$"
+				+ this.getTest();
 	}
 
-
-	public void setId(TAnswerPositionPK id) {
+	public void setId(final TAnswerPositionPK id) {
 		this.id = id;
 	}
 
-
 	private String evaluated;
-	
-	
+
 	public Long getPerson() {
-		return person;
+		return this.person;
 	}
 
-
-	public void setPerson(Long person) {
+	public void setPerson(final Long person) {
 		this.person = person;
 	}
 
-
 	public Long getQuestion() {
-		return question;
+		return this.question;
 	}
 
-
-	public void setQuestion(Long question) {
+	public void setQuestion(final Long question) {
 		this.question = question;
 	}
 
-
 	public Long getTask() {
-		return task;
+		return this.task;
 	}
 
-
-	public void setTask(Long task) {
+	public void setTask(final Long task) {
 		this.task = task;
 	}
 
-
 	public Long getTest() {
-		return test;
+		return this.test;
 	}
 
-
-	public void setTest(Long test) {
+	public void setTest(final Long test) {
 		this.test = test;
 	}
 
-
 	public String getEvaluated() {
-		return evaluated;
+		return this.evaluated;
 	}
 
-
-	public void setEvaluated(String evaluated) {
+	public void setEvaluated(final String evaluated) {
 		this.evaluated = evaluated;
 	}
-
 
 	public TAnswerPosition()
 	{

@@ -1,12 +1,18 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/resulttype/UserLogObject.java
+ * Date 2013-01-24
+ * Project Lemo Learning Analytics
+ * Copyright TODO (INSERT COPYRIGHT)
+ */
+
 package de.lemo.dms.processing.resulttype;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 @XmlRootElement
-public class UserLogObject implements Comparable<UserLogObject>{
-	
+public class UserLogObject implements Comparable<UserLogObject> {
+
 	private Long userId;
 	private Long timestamp;
 	private String title;
@@ -14,40 +20,41 @@ public class UserLogObject implements Comparable<UserLogObject>{
 	private Long course;
 	private String type;
 	private String info;
-	
+
 	@XmlElement
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
-	public void setType(String type) {
+	public void setType(final String type) {
 		this.type = type;
 	}
 
 	@XmlElement
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
 	@XmlElement
 	public Long getGroup() {
-		return course;
+		return this.course;
 	}
 
-	public void setGroup(Long group) {
+	public void setGroup(final Long group) {
 		this.course = group;
 	}
 
 	public UserLogObject()
 	{
-		
+
 	}
-	
-	public UserLogObject(Long userId, long timestamp, String title, Long objectId, String type, Long course, String info)
+
+	public UserLogObject(final Long userId, final long timestamp, final String title, final Long objectId,
+			final String type, final Long course, final String info)
 	{
 		this.userId = userId;
 		this.timestamp = timestamp;
@@ -56,68 +63,70 @@ public class UserLogObject implements Comparable<UserLogObject>{
 		this.course = course;
 		this.type = type;
 		this.setInfo(info);
-		
-	}
-	
-	@XmlElement
-	public Long getTimestamp() {
-		return timestamp;
+
 	}
 
-	public void setTimestamp(Long timestamp) {
+	@XmlElement
+	public Long getTimestamp() {
+		return this.timestamp;
+	}
+
+	public void setTimestamp(final Long timestamp) {
 		this.timestamp = timestamp;
 	}
 
 	@XmlElement
 	public Long getObjectId() {
-		return objectId;
+		return this.objectId;
 	}
 
-	public void setObjectId(Long objectId) {
+	public void setObjectId(final Long objectId) {
 		this.objectId = objectId;
 	}
 
 	@XmlElement
 	public String getInfo() {
-		return info;
+		return this.info;
 	}
 
-	public void setInfo(String info) {
+	public void setInfo(final String info) {
 		this.info = info;
 	}
 
 	@Override
-	public int compareTo(UserLogObject arg0) {
+	public int compareTo(final UserLogObject arg0) {
 		UserLogObject s;
-		try{
-			s = (UserLogObject)arg0;
-		}catch(Exception e)
+		try {
+			s = arg0;
+		} catch (final Exception e)
 		{
 			return 0;
 		}
-		if(this.getUserId() > s.getUserId())
+		if (this.getUserId() > s.getUserId()) {
 			return 1;
-		if(this.getUserId() < s.getUserId())
+		}
+		if (this.getUserId() < s.getUserId()) {
 			return -1;
-		if(this.getUserId() == s.getUserId())
+		}
+		if (this.getUserId() == s.getUserId())
 		{
-			if(this.getTimestamp() > s.getTimestamp())
+			if (this.getTimestamp() > s.getTimestamp()) {
 				return 1;
-			if(this.getTimestamp() < s.getTimestamp())
+			}
+			if (this.getTimestamp() < s.getTimestamp()) {
 				return -1;
+			}
 		}
 		return 0;
 	}
 
 	@XmlElement
 	public Long getUserId() {
-		return userId;
+		return this.userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(final Long userId) {
 		this.userId = userId;
 	}
-	
-	
 
 }

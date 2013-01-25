@@ -5,47 +5,25 @@
 
 <hibernate-mapping>
 
-    <class
-        name="de.lemo.dms.connectors.clix2010.clixDBClass.EComponent"
-        table="E_COMPONENT">
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.EComponent"
+		table="E_COMPONENT">
 
-        <id
-            name="id"
-            column="COMPONENT_ID"
-            type="long">
-            <generator class="native"/>
-        </id>
+		<id name="id" column="COMPONENT_ID" type="long">
+			<generator class="native" />
+		</id>
 
-        <property
-            name="type"
-            column="TYPE_ID"
-            type="long"/>
+		<property name="type" column="TYPE_ID" type="long" />
 
-        <property
-            name="name"
-            column="NAME"
-            type="string"/>
-            
-        <property
-            name="creationDate"
-            column="CREATIONDATE"
-            type="string"/>
-            
-        <property
-            name="lastUpdated"
-            column="LASTUPDATED"
-            type="string"/>
-            
-        <property
-            name="startDate"
-            column="STARTDATE"
-            type="string"/>
-            
-        <property
-            name="description"
-            column="DESCRIPTION"
-            type="string"/>
-            
-    </class>
+		<property name="name" column="NAME" type="string" />
+
+		<property name="creationDate" column="CREATIONDATE" type="string" />
+
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
+
+		<property name="startDate" column="STARTDATE" type="string" />
+
+		<property name="description" column="DESCRIPTION" type="string" />
+
+	</class>
 
 </hibernate-mapping>
