@@ -118,7 +118,7 @@ public class QFrequentPathsViger extends Question{
 			LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 			Long pathId = 0L;
 			System.out.println();
-			for(int i = 0; i < res.getLevelCount(); i++)
+			for(int i = res.getLevelCount()-1; i >= 0; i--)
 			{
 				for(int j = 0; j < res.getLevel(i).size(); j++)
 				{
