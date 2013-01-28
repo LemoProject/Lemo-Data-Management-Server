@@ -134,7 +134,13 @@ public enum ServerConfiguration {
 					LemoConfig.class).createUnmarshaller();
 			for (final String fileName : fileNames) {
 				final URL resource = this.getClass().getResource("/" + fileName);
-				final InputStream in = resource.openStream();
+				InputStream in = null;
+				try {
+					in = resource.openStream();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (in != null) {
 					this.logger.info("Using config file: " + fileName);
 					lemoConfig = (LemoConfig) jaxbUnmarshaller.unmarshal(in);
@@ -143,8 +149,8 @@ public enum ServerConfiguration {
 		} catch (final JAXBException e) {
 			// no way to recover, re-throw at runtime
 			throw new RuntimeException(e);
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
+		} catch (final Exception e) {
+			e.printStackTrace();
 		}
 		if (lemoConfig == null) {
 			final String files = fileNames.toString();
