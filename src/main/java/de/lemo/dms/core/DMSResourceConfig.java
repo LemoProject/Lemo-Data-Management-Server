@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import javax.ws.rs.Path;
+import org.apache.log4j.Logger;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
@@ -32,11 +33,11 @@ import com.sun.jersey.api.core.PackagesResourceConfig;
 public class DMSResourceConfig extends DefaultResourceConfig {
 
 	private static final String BASE_URL = "lemo/dms/";
-
 	private static final String SERVICE_BASE_URL = DMSResourceConfig.BASE_URL + "services/";
 	private static final String SERVICE_PACKAGE = "de.lemo.dms.service";
 	private static final String QUESTION_BASE_URL = DMSResourceConfig.BASE_URL + "questions/";
 	private static final String QUESTION_PACKAGE = "de.lemo.dms.processing.questions";
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private Map<String, Object> resourceSingletons;
 
@@ -55,9 +56,11 @@ public class DMSResourceConfig extends DefaultResourceConfig {
 			try {
 				this.resourceSingletons = this.createResourceSingletons();
 			} catch (final InstantiationException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
+				logger.error(e.getStackTrace());
 			} catch (final IllegalAccessException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
+				logger.error(e.getStackTrace());
 			}
 		}
 		return this.resourceSingletons;
