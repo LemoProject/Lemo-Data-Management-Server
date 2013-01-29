@@ -12,6 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
+/** 
+ * This class represents the table chatmining. 
+ * @author Sebastian Schwarzrock
+ */
 public class ChatMining implements IMappingClass {
 
 	private long id;

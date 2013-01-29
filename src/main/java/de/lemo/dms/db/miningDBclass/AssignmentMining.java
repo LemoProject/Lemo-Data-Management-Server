@@ -13,7 +13,10 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
-/** This class represents the table assignment. */
+/** 
+ * This class represents the table assignment. 
+ * @author Sebastian Schwarzrock
+ */
 public class AssignmentMining implements IMappingClass, ILearningObject, IRatedObject {
 
 	private long id;

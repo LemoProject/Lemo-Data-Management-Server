@@ -10,7 +10,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.sql.Timestamp;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/** This class represents the table for configuration information of the extraction tool. */
+/** 
+ * This class represents the table for configuration information of the extraction tool.
+ * @author Sebastian Schwarzrock
+ */
 public class ConfigMining implements IMappingClass {
 
 	private Timestamp lastModified;
@@ -36,10 +39,6 @@ public class ConfigMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the mining db was updated the last time
 	 */
-	// public long getLastmodified() {
-	// return lastModified.getTime();
-	// }
-
 	public Timestamp getLastModified() {
 		return this.lastModified;
 	}
@@ -76,9 +75,6 @@ public class ConfigMining implements IMappingClass {
 	 * 
 	 * @return the time the last update needed to run
 	 */
-	// public long getElapsed_time() {
-	// return elapsed_time.getTime();
-	// }
 	public long getElapsedTime() {
 		return this.elapsedTime;
 	}

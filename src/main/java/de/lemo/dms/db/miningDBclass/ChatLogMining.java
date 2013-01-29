@@ -11,6 +11,10 @@ import java.util.Map;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
+/** 
+ * This class represents the table chatlog. 
+ * @author Sebastian Schwarzrock
+ */
 public class ChatLogMining implements IMappingClass, ILogMining {
 
 	private long id;
