@@ -10,7 +10,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.Map;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/** This class represents the relationship between courses and wikis. */
+/**
+ * This class represents the relationship between courses and wikis.
+ * @author Sebastian Schwarzrock
+ */
 public class CourseWikiMining implements IMappingClass {
 
 	private long id;

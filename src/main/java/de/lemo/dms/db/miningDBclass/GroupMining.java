@@ -11,7 +11,10 @@ import java.util.HashSet;
 import java.util.Set;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/** This class represents the table group. */
+/**
+ * This class represents the table group.
+ * @author Sebastian Schwarzrock
+ */
 public class GroupMining implements IMappingClass {
 
 	private long id;

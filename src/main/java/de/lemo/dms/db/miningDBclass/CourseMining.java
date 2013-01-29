@@ -12,7 +12,10 @@ import java.util.Set;
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/** This class represents the table course. */
+/**
+ * This class represents the table course.
+ * @author Sebastian Schwarzrock
+ */
 public class CourseMining implements IMappingClass, ILearningObject {
 
 	private long id;

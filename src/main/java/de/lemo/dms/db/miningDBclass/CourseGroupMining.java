@@ -10,7 +10,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.Map;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/** This class represents the relationship between the courses and groups. */
+/**
+ * This class represents the relationship between the courses and groups.
+ * @author Sebastian Schwarzrock
+ */
 public class CourseGroupMining implements IMappingClass {
 
 	private long id;
