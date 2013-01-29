@@ -10,6 +10,12 @@ package de.lemo.dms.db.miningDBclass.abstractions;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 
+/**
+ * Interface to make an ILogMining class comparable
+ * @author Boris Wenzlaff
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ */
 public interface ILogMining extends Comparable<ILogMining> {
 
 	long getId();
