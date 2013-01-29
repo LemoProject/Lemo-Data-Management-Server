@@ -9,6 +9,7 @@ package de.lemo.dms.connectors.chemgapedia;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import de.lemo.dms.connectors.AbstractConnector;
@@ -40,7 +41,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	public ConnectorChemgapedia(final DBConfigObject config) {
-		final HashMap<String, String> props = config.getProperties();
+		final Map<String, String> props = config.getProperties();
 
 		// required
 		this.logPath = props.get(ConnectorChemgapedia.PATH_LOG_FILE);
