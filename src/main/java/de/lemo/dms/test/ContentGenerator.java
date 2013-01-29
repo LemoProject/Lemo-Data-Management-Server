@@ -81,7 +81,7 @@ public class ContentGenerator {
 	}
 
 	public List<Collection<?>> generateMiningDB(final Integer topLevels, final Integer levelPerTopLevel,
-			final Integer coursesPerLevel, final Long startdate, final int logsPerLearnObject)
+			final Integer coursesPerLevel, final Integer users, final Long startdate, final int logsPerLearnObject)
 	{
 
 		this.system = ESystem.moodle;
@@ -167,7 +167,7 @@ public class ContentGenerator {
 		platformList.add(platform);
 
 		// Create users
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < users; i++)
 		{
 			final UserMining user = new UserMining();
 			user.setId(Long.valueOf(platform.getPrefix() + "" + (userList.size() + 1)));
@@ -557,7 +557,7 @@ public class ContentGenerator {
 
 					// Create log-entries
 					// Create AssignmentLogs
-					final int logSwitch = 500 + ((((k - 1) / 9) % 3) * 500);
+					final int logSwitch = logsPerLearnObject + ((((k - 1) / 9) % 3) * logsPerLearnObject);
 					for (int log = 0; log < logSwitch; log++)
 					{
 
