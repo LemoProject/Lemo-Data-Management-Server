@@ -32,6 +32,7 @@ import de.lemo.dms.db.hibernate.HibernateDBHandler;
 import de.lemo.dms.db.hibernate.MiningHibernateUtil;
 
 /**
+ * Class with the configuration parameter for the server
  * @author Leonard Kappe
  */
 public enum ServerConfiguration {
