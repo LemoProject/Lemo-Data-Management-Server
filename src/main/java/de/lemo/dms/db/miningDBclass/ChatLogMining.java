@@ -21,6 +21,7 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 	private CourseMining course;
 	private Long duration;
 	private Long platform;
+	private static final Long PREFIX = 19L;
 
 	@Override
 	public CourseMining getCourse() {
@@ -179,7 +180,7 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 
 	@Override
 	public Long getPrefix() {
-		return 19L;
+		return PREFIX;
 	}
 
 	public Long getPlatform() {
