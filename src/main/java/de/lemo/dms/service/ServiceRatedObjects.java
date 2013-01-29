@@ -54,7 +54,8 @@ public class ServiceRatedObjects extends BaseService {
 
 			for (final ICourseRatedObjectAssociation obj : list)
 			{
-				res.add(obj.getRatedObject().getClass().getSimpleName());
+				//Simple name is not needed so far - will break App-server implementation !!!
+				//res.add(obj.getRatedObject().getClass().getSimpleName());
 				res.add(obj.getRatedObject().getPrefix().toString());
 				res.add(obj.getRatedObject().getId() + "");
 				res.add(obj.getRatedObject().getTitle());
