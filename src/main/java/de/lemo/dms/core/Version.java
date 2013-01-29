@@ -25,10 +25,10 @@ import de.lemo.dms.db.miningDBclass.ConfigMining;
  */
 public class Version {
 
-	private final String pom = "pom.xml";
+	private final static String pom = "pom.xml";
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final ServerConfiguration config = ServerConfiguration.getInstance();
-	IDBHandler dbHandler = this.config.getMiningDbHandler();
+	private IDBHandler dbHandler = this.config.getMiningDbHandler();
 
 	/**
 	 * read the version number from the pom.xml
@@ -37,7 +37,7 @@ public class Version {
 	 */
 	public String getServerVersion() {
 		String version = "unknown";
-		final File pomfile = new File(this.pom);
+		final File pomfile = new File(Version.pom);
 		Model model = null;
 		FileReader reader = null;
 		final MavenXpp3Reader mavenreader = new MavenXpp3Reader();
@@ -62,22 +62,12 @@ public class Version {
 		try {
 			final Session session = this.dbHandler.getMiningSession();
 
-			/*
-			 * @SuppressWarnings("unchecked")
-			 * ArrayList<String> dbversion = (ArrayList<String>) dbHandler
-			 * .performQuery(session, EQueryType.HQL,
-			 * "SELECT platform FROM config ORDER BY lastmodified DESC LIMIT 1");
-			 * version = dbversion.get(0);
-			 * dbHandler.closeSession(session);
-			 */
 			final Criteria criteria = session.createCriteria(ConfigMining.class, "config");
 			criteria.setMaxResults(1);
+			//TODO use correct table row in the new database version
 			criteria.addOrder(org.hibernate.criterion.Order.desc("lastmodified"));
 			final ConfigMining prop = (ConfigMining) criteria.list().get(0);
 			version = prop.getPlatform().toString();
-			// SELECT platform FROM config ORDER BY lastmodified DESC LIMIT 1
-			// ConfigMining prop = (ConfigMining) criteria.list().get(0);
-			// prop.getPlatf
 
 		} catch (final Exception ex) {
 			this.logger.warn("cant read version from db\n" + ex.getMessage());

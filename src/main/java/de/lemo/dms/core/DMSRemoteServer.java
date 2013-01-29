@@ -22,8 +22,8 @@ public enum DMSRemoteServer {
 
 	INSTANCE;
 
-	private final int port = 8081;
-	private final String host = "localhost";
+	private final static int port = 8081;
+	private final static String host = "localhost";
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private HttpServer server;
 
@@ -57,15 +57,17 @@ public enum DMSRemoteServer {
 	 */
 	protected void start() throws IOException {
 		if (this.server == null) {
-			this.server = GrizzlyServerFactory.createHttpServer("http://" + this.host + ":" + this.port,
+			this.server = GrizzlyServerFactory.createHttpServer("http://" + DMSRemoteServer.host + ":"
+					+ DMSRemoteServer.port,
 					new DMSResourceConfig());
 			this.server.start();
 
 			final Version v = new Version();
-			this.logger.info("DMS started on " + this.host + ":" + this.port + ", Version: " + v.getServerVersion());
+			this.logger.info("DMS started on " + DMSRemoteServer.host + ":" + DMSRemoteServer.port + ", Version: "
+					+ v.getServerVersion());
 		}
 		else {
-			this.logger.info("DMS already running on " + this.host + ":" + this.port);
+			this.logger.info("DMS already running on " + DMSRemoteServer.host + ":" + DMSRemoteServer.port);
 		}
 	}
 }

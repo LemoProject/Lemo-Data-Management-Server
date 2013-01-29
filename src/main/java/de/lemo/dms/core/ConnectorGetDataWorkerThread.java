@@ -10,6 +10,13 @@ package de.lemo.dms.core;
 import org.apache.log4j.Logger;
 import de.lemo.dms.connectors.IConnector;
 
+/**
+ * Backround worker thread for the connectors.
+ * @author Boris Wenzlaff
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ *
+ */
 public class ConnectorGetDataWorkerThread extends Thread {
 
 	private final IConnector connector;

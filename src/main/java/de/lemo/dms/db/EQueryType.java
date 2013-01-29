@@ -7,6 +7,13 @@
 
 package de.lemo.dms.db;
 
+/**
+ * Enum for Hibernate querys
+ * @author Boris Wenzlaff
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ *
+ */
 public enum EQueryType {
 	SQL,
 	HQL
