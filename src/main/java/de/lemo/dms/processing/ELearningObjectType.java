@@ -66,8 +66,10 @@ public enum ELearningObjectType {
 	 */
 	public static ELearningObjectType fromLogMiningType(final ILogMining log) {
 		for (final ELearningObjectType learnObjectType : ELearningObjectType.values()) {
-			if (learnObjectType.getLogMiningType().equals(log)) {
-				return learnObjectType;
+			if (learnObjectType.getLogMiningType()!= null && log != null) {
+				if(learnObjectType.getLogMiningType().equals(log.getClass())) {
+					return learnObjectType;
+				} 
 			}
 		}
 		return UNKNOWN;
