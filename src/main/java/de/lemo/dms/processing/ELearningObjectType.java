@@ -12,6 +12,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import org.apache.log4j.Logger;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
+import de.lemo.dms.db.miningDBclass.ChatLogMining;
 import de.lemo.dms.db.miningDBclass.CourseLogMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
@@ -30,6 +31,7 @@ public enum ELearningObjectType {
 
 	ASSIGNMENT(AssignmentLogMining.class),
 	COURSE(CourseLogMining.class),
+	CHAT(ChatLogMining.class),
 	FORUM(ForumLogMining.class),
 	QUESTION(QuestionLogMining.class),
 	QUIZ(QuizLogMining.class),
