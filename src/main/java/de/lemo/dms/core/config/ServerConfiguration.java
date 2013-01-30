@@ -129,7 +129,6 @@ public enum ServerConfiguration {
 
 		// eventually try generic lemo.xml for use in local development
 		fileNames.add("lemo.xml");
-
 		LemoConfig lemoConfig = null;
 		try {
 			final Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(
@@ -141,7 +140,8 @@ public enum ServerConfiguration {
 					in = resource.openStream();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
+					this.logger.info("Looking for config file .... "+fileName+" not found!");
 				}
 				if (in != null) {
 					this.logger.info("Using config file: " + fileName);
