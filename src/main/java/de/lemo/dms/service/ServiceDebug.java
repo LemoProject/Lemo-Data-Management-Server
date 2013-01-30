@@ -24,10 +24,17 @@ import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 
+/**
+ * Service for debugging messages
+ * @author Boris Wenzlaff
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("/debug")
 public class ServiceDebug {
 
-	private static final void appendItem(final StringBuilder sb, final String itemName, final Object item) {
+	private static void appendItem(final StringBuilder sb, final String itemName, final Object item) {
 		sb.append("<dt>");
 		if (item == null) {
 			sb.append("<i class='icon-exclamation-sign'></i> ")
@@ -40,7 +47,7 @@ public class ServiceDebug {
 		sb.append("</dt><dd><code>").append(item).append("</code></dt>");
 	}
 
-	private static final void appendUnkownItem(final StringBuilder sb, final String itemName) {
+	private static void appendUnkownItem(final StringBuilder sb, final String itemName) {
 		sb.append("<dt>")
 				.append("<i class='icon-question-sign'></i> ")
 				.append("<span class='label'>").append(itemName).append("</span> ")

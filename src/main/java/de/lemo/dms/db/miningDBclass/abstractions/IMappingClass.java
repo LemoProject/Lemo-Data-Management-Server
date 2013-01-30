@@ -7,9 +7,15 @@
 
 package de.lemo.dms.db.miningDBclass.abstractions;
 
+/**
+ * Interface for mapping class to control equality
+ * @author Boris Wenzlaff
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ */
 public interface IMappingClass {
 
-	public long getId();
+	long getId();
 
 	boolean equals(IMappingClass o);
 

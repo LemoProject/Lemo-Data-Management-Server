@@ -32,6 +32,7 @@ import de.lemo.dms.db.hibernate.HibernateDBHandler;
 import de.lemo.dms.db.hibernate.MiningHibernateUtil;
 
 /**
+ * Class with the configuration parameter for the server
  * @author Leonard Kappe
  */
 public enum ServerConfiguration {
@@ -85,7 +86,6 @@ public enum ServerConfiguration {
 	 */
 	public void loadConfig(final String contextPath) {
 		final LemoConfig lemoConfig = this.readConfigFiles(contextPath);
-		// TODO set log level from config
 
 		this.serverName = lemoConfig.dataManagementServer.name;
 
@@ -102,18 +102,20 @@ public enum ServerConfiguration {
 	}
 
 	private LemoConfig readConfigFiles(String contextPath) {
-		if (contextPath.isEmpty()) {
-			// empty means root context, Tomcat convention for root context war
-			// files is 'ROOT.war'
-			contextPath = "/ROOT";
+		String contextPathTMP = contextPath;
+		if (contextPathTMP.isEmpty()) {
+			// empty means root context, Tomcat convention for root context war files is 'ROOT.war'
+			contextPathTMP = "/ROOT";
 		}
 
 		// remove leading slash, replace any slashes with hashes like Tomcat
 		// does with the war files
-		final String warName = contextPath.substring(1).replace('/', '#');
+		final String warName = contextPathTMP.substring(1).replace('/', '#');
 
 		final Set<String> fileNames = new LinkedHashSet<String>();
-		fileNames.add(warName + ".xml"); // default, based on war name
+		
+		// default, based on war name
+		fileNames.add(warName + ".xml");
 
 		int lastHash;
 		String warPath = warName;

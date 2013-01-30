@@ -7,6 +7,12 @@
 
 package de.lemo.dms.db.miningDBclass.abstractions;
 
+/**
+ * Interface for rated objects as log
+ * @author Boris Wenzlaff
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ */
 public interface IRatedLogObject extends ILogMining {
 
 	Double getGrade();

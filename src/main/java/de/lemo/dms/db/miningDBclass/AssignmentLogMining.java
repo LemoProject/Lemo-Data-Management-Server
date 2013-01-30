@@ -12,7 +12,11 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 
-/** This class represents the log table for the assignment modules. */
+/** 
+ * This class represents the log table for the assignment modules. 
+ * @author Sebastian Schwarzrock
+ *
+ */
 public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLogObject {
 
 	private long id;

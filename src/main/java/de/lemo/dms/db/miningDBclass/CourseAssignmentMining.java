@@ -7,18 +7,17 @@
 
 package de.lemo.dms.db.miningDBclass;
 
-// import java.io.Serializable;
 import java.util.Map;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
-/** This class represents the relationship between the courses and assignments. */
+/** 
+ * This class represents the relationship between the courses and assignments. 
+ * @author Sebastian Schwarzrock
+ */
 public class CourseAssignmentMining implements IMappingClass, ICourseRatedObjectAssociation {
 
-	// public class Course_assignment_mining implements Serializable{
-
-	// private static final long serialVersionUID = 1L;
 	private long id;
 	private CourseMining course;
 	private AssignmentMining assignment;

@@ -11,7 +11,10 @@ import java.util.Map;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/** This class represents the log table for the course object. */
+/**
+ * This class represents the log table for the course object.
+ * @author Sebastian Schwarzrock
+ */
 public class CourseLogMining implements ILogMining, IMappingClass {
 
 	private long id;

@@ -7,10 +7,16 @@
 
 package de.lemo.dms.db.miningDBclass.abstractions;
 
+/**
+ * Interface for rated objects
+ * @author Boris Wenzlaff
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ */
 public interface IRatedObject extends ILearningObject {
 
-	public Double getMaxGrade();
+	Double getMaxGrade();
 
-	public Long getPrefix();
+	Long getPrefix();
 
 }

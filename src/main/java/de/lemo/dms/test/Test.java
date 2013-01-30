@@ -16,10 +16,10 @@ public class Test {
 	public static void gen()
 	{
 		final ContentGenerator conGen = new ContentGenerator();
-
+		ServerConfiguration.getInstance().loadConfig("/lemo");
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
-		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 2, 2, 0L, 1000));
+		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 2, 2, 251, 0L, 500));
 	}
 
 	public static void write()

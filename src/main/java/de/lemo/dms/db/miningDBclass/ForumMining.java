@@ -12,7 +12,10 @@ import java.util.Set;
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/** This class represents the forum table. */
+/**
+ * This class represents the forum table.
+ * @author Sebastian Schwarzrock
+ */
 public class ForumMining implements IMappingClass, ILearningObject {
 
 	private long id;

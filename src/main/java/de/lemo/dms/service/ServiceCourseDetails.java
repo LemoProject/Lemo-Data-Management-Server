@@ -47,19 +47,19 @@ public class ServiceCourseDetails extends BaseService {
 			@SuppressWarnings("unchecked")
 			final ArrayList<Long> first = (ArrayList<Long>) this.dbHandler.performQuery(session, EQueryType.HQL,
 					"Select min(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(0).getId());
-			Long c_pa = 0L;
+			Long cpan = 0L;
 			if ((parti.size() > 0) && (parti.get(0) != null)) {
-				c_pa = parti.get(0);
+				cpan = parti.get(0);
 			}
-			Long c_la = 0L;
+			Long cla = 0L;
 			if ((latest.size() > 0) && (latest.get(0) != null)) {
-				c_la = latest.get(0);
+				cla = latest.get(0);
 			}
-			Long c_fi = 0L;
+			Long cfin = 0L;
 			if ((first.size() > 0) && (first.get(0) != null)) {
-				c_fi = first.get(0);
+				cfin = first.get(0);
 			}
-			co = new CourseObject(ci.get(0).getId(), ci.get(0).getShortname(), ci.get(0).getTitle(), c_pa, c_la, c_fi);
+			co = new CourseObject(ci.get(0).getId(), ci.get(0).getShortname(), ci.get(0).getTitle(), cpan, cla, cfin);
 		}
 		this.dbHandler.closeSession(session);
 		return co;
@@ -104,21 +104,21 @@ public class ServiceCourseDetails extends BaseService {
 			@SuppressWarnings("unchecked")
 			final ArrayList<Long> first = (ArrayList<Long>) this.dbHandler.performQuery(session, EQueryType.HQL,
 					"Select min(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(i).getId());
-			Long c_pa = 0L;
+			Long cpan = 0L;
 			if ((parti.size() > 0) && (parti.get(0) != null)) {
-				c_pa = parti.get(0);
+				cpan = parti.get(0);
 			}
-			Long c_la = 0L;
+			Long clan = 0L;
 			if ((latest.size() > 0) && (latest.get(0) != null)) {
-				c_la = latest.get(0);
+				clan = latest.get(0);
 			}
-			Long c_fi = 0L;
+			Long cfin = 0L;
 			if ((first.size() > 0) && (first.get(0) != null)) {
-				c_fi = first.get(0);
+				cfin = first.get(0);
 			}
 			final CourseObject co = new CourseObject(ci.get(i).getId(), ci.get(i).getShortname(), ci.get(i).getTitle(),
-					c_pa,
-					c_la, c_fi);
+					cpan,
+					clan, cfin);
 			courses.add(co);
 		}
 		return new ResultListCourseObject(courses);

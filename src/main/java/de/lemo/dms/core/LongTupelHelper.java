@@ -7,6 +7,11 @@
 
 package de.lemo.dms.core;
 
+/**
+ * helper class for Long tupel values
+ * @author Boris Wenzlaff
+ *
+ */
 public class LongTupelHelper {
 
 	private Long id;

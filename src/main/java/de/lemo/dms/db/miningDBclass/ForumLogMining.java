@@ -11,7 +11,10 @@ import java.util.Map;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-/** This class represents the log table for the forum object. */
+/** 
+ * This class represents the log table for the forum object.
+ * @author Sebastian Schwarzrock
+ */
 public class ForumLogMining implements ILogMining, IMappingClass {
 
 	private long id;

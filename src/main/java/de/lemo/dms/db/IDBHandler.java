@@ -23,7 +23,7 @@ public interface IDBHandler {
 	 * 
 	 * @return a session
 	 */
-	public Session getMiningSession();
+	Session getMiningSession();
 
 	/**
 	 * Saves a collection of lists of mapped objects to the database.
@@ -31,7 +31,7 @@ public interface IDBHandler {
 	 * @param data
 	 *            list containing collections, containing objects
 	 */
-	public void saveCollectionToDB(Session session, List<Collection<?>> data);
+	void saveCollectionToDB(Session session, List<Collection<?>> data);
 
 	/**
 	 * Writes a single object to the database.
@@ -39,7 +39,7 @@ public interface IDBHandler {
 	 * @param data
 	 *            Object
 	 */
-	public void saveToDB(Session session, Object data);
+	void saveToDB(Session session, Object data);
 
 	/**
 	 * Perfoms a query on the database.
@@ -49,7 +49,7 @@ public interface IDBHandler {
 	 *            because the type of the query is database-specific.
 	 * @return list, containing the results of the query
 	 */
-	public List<?> performQuery(Session session, EQueryType queryType, String query);
+	List<?> performQuery(Session session, EQueryType queryType, String query);
 
-	public void closeSession(Session session);
+	void closeSession(Session session);
 }

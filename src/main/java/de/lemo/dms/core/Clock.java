@@ -14,6 +14,8 @@ package de.lemo.dms.core;
  */
 public class Clock {
 
+	private final static int SECONDS = 60;
+	private final static int DIVIDOR = 1000;
 	private long start;
 
 	/**
@@ -40,8 +42,9 @@ public class Clock {
 	public String get()
 	{
 		final long g = System.currentTimeMillis();
-		return (((g - this.start) / 1000) / 60) + " m " + (((g - this.start) / 1000) % 60) + " s "
-				+ (((g - this.start) % 1000)) + "ms";
+		return (((g - this.start) / Clock.DIVIDOR) / Clock.SECONDS) + " m "
+				+ (((g - this.start) / Clock.DIVIDOR) % Clock.SECONDS) + " s "
+				+ (((g - this.start) % Clock.DIVIDOR)) + "ms";
 	}
 
 	/**

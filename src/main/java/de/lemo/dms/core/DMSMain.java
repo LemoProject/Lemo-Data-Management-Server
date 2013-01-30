@@ -20,13 +20,21 @@ import org.apache.log4j.Logger;
  */
 public class DMSMain {
 
+	/**
+	 * Main entry point for running the server as Java application, i.e. not in a
+	 * servlet container like tomcat.
+	 * 
+	 * @author Boris Wenzlaff
+	 * @author Leonard Kappe
+	 * @see DMSRemoteServer
+	 * @param args
+	 *            not in use
+	 */
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger(DMSMain.class);
 
 		try {
 			DMSRemoteServer.INSTANCE.start();
-
-			// new de.lemo.dms.connectors.Test().run();
 
 			/*
 			 * TODO every example uses 'read' to keep the server running but
