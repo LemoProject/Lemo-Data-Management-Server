@@ -139,7 +139,7 @@ public enum ServerConfiguration {
 				InputStream in = null;
 				try {
 					in = resource.openStream();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
