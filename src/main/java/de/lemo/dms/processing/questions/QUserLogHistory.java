@@ -155,7 +155,8 @@ public class QUserLogHistory extends Question {
 									.getCourse().getId(), ""));
 				}
 			} else {
-				System.out.println();
+				//TODO wozu das else statement?
+				//System.out.println();
 			}
 		}
 
@@ -168,7 +169,7 @@ public class QUserLogHistory extends Question {
 		// Sort the list (first by user and time stamp)
 		Collections.sort(l);
 		for (int i = 0; i < l.size(); i++) {
-			System.out.println(l.get(i).getType());
+			logger.info(l.get(i).getType());
 		}
 
 		final ResultListUserLogObject rlupo = new ResultListUserLogObject(l);
