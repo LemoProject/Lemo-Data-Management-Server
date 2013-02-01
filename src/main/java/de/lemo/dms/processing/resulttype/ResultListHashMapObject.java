@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.apache.log4j.Logger;
 
 @XmlRootElement
 public class ResultListHashMapObject {
@@ -21,6 +22,7 @@ public class ResultListHashMapObject {
 	private HashMap<Long, ResultListLongObject> elements;
 	private List<ResultListLongObject> entries;
 	private Long[] keys;
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	public ResultListHashMapObject()
 	{
@@ -51,7 +53,7 @@ public class ResultListHashMapObject {
 				this.elements.put(this.keys[i], this.entries.get(i));
 			}
 		} else {
-			System.out.println("ResultListHashMap ---  Empty Resultset !!!");
+			logger.warn("ResultListHashMap mpty Resultset");
 		}
 
 		return this.elements;
