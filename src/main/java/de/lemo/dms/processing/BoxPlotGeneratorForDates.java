@@ -166,13 +166,6 @@ public class BoxPlotGeneratorForDates {
 			}
 			final BoxPlot bp = this.calcBox(days);
 			bp.setName(this.getNameForDay(i));
-			System.out.println("BoxPlotGenerator: Calculation results: " + this.getNameForDay(i) +
-					" LQ: " + bp.getLowerQuartil() +
-					" LW: " + bp.getLowerWhisker() +
-					" UQ: " + bp.getUpperQuartil() +
-					" UW: " + bp.getUpperWhisker() +
-					" MED: " + bp.getMedian()
-					);
 			resultList[i] = bp;
 		}
 		return resultList;
