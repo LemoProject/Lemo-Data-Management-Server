@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -28,6 +29,7 @@ import ca.pfv.spmf.sequentialpatterns.Sequences;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import de.lemo.dms.core.Clock;
+import de.lemo.dms.core.DMSMain;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
@@ -45,6 +47,7 @@ public class QFrequentPathsBIDE extends Question {
 	private static HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
 	private static HashMap<String, Integer> idToInternalId = new HashMap<String, Integer>();
 	private static HashMap<Integer, String> internalIdToId = new HashMap<Integer, String>();
+	private static Logger logger = Logger.getLogger(QFrequentPathsBIDE.class);
 
 	@POST
 	public ResultListUserPathGraph compute(
@@ -61,39 +64,42 @@ public class QFrequentPathsBIDE extends Question {
 		final ArrayList<UserPathNode> nodes = Lists.newArrayList();
 		final ArrayList<UserPathLink> links = Lists.newArrayList();
 
+		StringBuffer buffer = new StringBuffer();
 		if ((courses != null) && (courses.size() > 0))
 		{
-			System.out.print("Parameter list: Courses: " + courses.get(0));
+			buffer.append("Parameter list: Courses: " + courses.get(0));
 			for (int i = 1; i < courses.size(); i++) {
-				System.out.print(", " + courses.get(i));
+				buffer.append(", " + courses.get(i));
 			}
-			System.out.println();
+			logger.debug(buffer.toString());
 		}
 		if ((users != null) && (users.size() > 0))
 		{
-			System.out.print("Parameter list: Users: " + users.get(0));
+			logger.debug("Parameter list: Users: " + users.get(0));
+			buffer = new StringBuffer();
 			for (int i = 1; i < users.size(); i++) {
-				System.out.print(", " + users.get(i));
+				buffer.append(", " + users.get(i));
 			}
-			System.out.println();
+			logger.debug(buffer.toString());
 		}
 		if ((types != null) && (types.size() > 0))
 		{
-			System.out.print("Parameter list: Types: : " + types.get(0));
+			buffer = new StringBuffer();
+			buffer.append("Parameter list: Types: : " + types.get(0));
 			for (int i = 1; i < types.size(); i++) {
-				System.out.print(", " + types.get(i));
+				buffer.append(", " + types.get(i));
 			}
-			System.out.println();
+			logger.debug(buffer.toString());
 		}
 		if ((minLength != null) && (maxLength != null) && (minLength < maxLength))
 		{
-			System.out.println("Parameter list: Minimum path length: : " + minLength);
-			System.out.println("Parameter list: Maximum path length: : " + maxLength);
+			logger.debug("Parameter list: Minimum path length: : " + minLength);
+			logger.debug("Parameter list: Maximum path length: : " + maxLength);
 		}
-		System.out.println("Parameter list: Minimum Support: : " + minSup);
-		System.out.println("Parameter list: Session Wise: : " + sessionWise);
-		System.out.println("Parameter list: Start time: : " + startTime);
-		System.out.println("Parameter list: End time: : " + endTime);
+		logger.debug("Parameter list: Minimum Support: : " + minSup);
+		logger.debug("Parameter list: Session Wise: : " + sessionWise);
+		logger.debug("Parameter list: Start time: : " + startTime);
+		logger.debug("Parameter list: End time: : " + endTime);
 
 		try {
 
@@ -125,11 +131,10 @@ public class QFrequentPathsBIDE extends Question {
 			// execute the algorithm
 			final Clock c = new Clock();
 			final Sequences res = algo.runAlgorithm(sequenceDatabase);
-			System.out.println("Time for BIDE-calculation: " + c.get());
+			logger.debug("Time for BIDE-calculation: " + c.get());
 
 			final LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 			Long pathId = 0L;
-			System.out.println();
 			for (int i = 0; i < res.getLevelCount(); i++)
 			{
 				for (int j = 0; j < res.getLevel(i).size(); j++)
@@ -137,7 +142,7 @@ public class QFrequentPathsBIDE extends Question {
 					String predecessor = null;
 					final Long absSup = Long.valueOf(res.getLevel(i).get(j).getAbsoluteSupport());
 					pathId++;
-					System.out.println("New " + i + "-Sequence. Support : "
+					logger.debug("New " + i + "-Sequence. Support : "
 							+ res.getLevel(i).get(j).getAbsoluteSupport());
 					for (int k = 0; k < res.getLevel(i).get(j).size(); k++)
 					{
@@ -179,7 +184,6 @@ public class QFrequentPathsBIDE extends Question {
 
 				}
 			}
-			System.out.println("\n");
 
 			for (final UserPathObject pathEntry : pathObjects.values()) {
 
@@ -246,7 +250,7 @@ public class QFrequentPathsBIDE extends Question {
 			criteria.add(Restrictions.between("log.timestamp", starttime, endtime));
 			final ArrayList<ILogMining> list = (ArrayList<ILogMining>) criteria.list();
 
-			System.out.println("Read " + list.size() + " logs.");
+			logger.debug("Read " + list.size() + " logs.");
 			final ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>();
 
 			final HashMap<Long, ArrayList<ILogMining>> logMap = new HashMap<Long, ArrayList<ILogMining>>();
@@ -295,11 +299,11 @@ public class QFrequentPathsBIDE extends Question {
 			for (int i = 0; i < lengths.length; i++) {
 				if (lengths[i] != 0)
 				{
-					System.out.println("Paths of length " + i + "0 - " + (i + 1) + "0: " + lengths[i]);
+					logger.debug("Paths of length " + i + "0 - " + (i + 1) + "0: " + lengths[i]);
 				}
 			}
 
-			System.out.println("Generated " + uhis.size() + " user histories. Max length @ " + max);
+			logger.debug("Generated " + uhis.size() + " user histories. Max length @ " + max);
 
 			int z = 0;
 
@@ -335,7 +339,7 @@ public class QFrequentPathsBIDE extends Question {
 				}
 
 			}
-			System.out.println("Wrote " + z + " user histories.");
+			logger.debug("Wrote " + z + " user histories.");
 
 		} catch (final Exception e)
 		{
@@ -381,7 +385,7 @@ public class QFrequentPathsBIDE extends Question {
 			criteria.add(Restrictions.between("log.timestamp", starttime, endtime));
 			final ArrayList<ILogMining> list = (ArrayList<ILogMining>) criteria.list();
 
-			System.out.println("Read " + list.size() + " logs.");
+			logger.debug("Read " + list.size() + " logs.");
 
 			int max = 0;
 
@@ -468,11 +472,11 @@ public class QFrequentPathsBIDE extends Question {
 			for (int i = 0; i < lengths.length; i++) {
 				if (lengths[i] != 0)
 				{
-					System.out.println("Paths of length " + i + "0 - " + (i + 1) + "0: " + lengths[i]);
+					logger.debug("Paths of length " + i + "0 - " + (i + 1) + "0: " + lengths[i]);
 				}
 			}
 
-			System.out.println("Generated " + uhis.size() + " user histories. Max length @ " + max);
+			logger.debug("Generated " + uhis.size() + " user histories. Max length @ " + max);
 
 			int z = 0;
 			// Convert all user histories or "paths" into the format, that is requested by the BIDE-algorithm-class
@@ -502,11 +506,11 @@ public class QFrequentPathsBIDE extends Question {
 							.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
 				}
 				line += "-2";
-				System.out.println(line);
+				logger.debug(line);
 				result.add(line);
 				z++;
 			}
-			System.out.println("Wrote " + z + " logs.");
+			logger.debug("Wrote " + z + " logs.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
