@@ -63,7 +63,7 @@ public class QActivityResourceType extends Question {
 				for (int i = 0; i < ilm.size(); i++) {
 					if (ilm.get(i).getAssignment() != null)
 					{
-						System.out.println(ilm.get(i).getAssignment().getId());
+						logger.info(ilm.get(i).getAssignment().getId());
 						if (rri.get(ilm.get(i).getAssignment().getId()) == null) {
 							rri.put(ilm.get(i).getAssignment().getId(), new ResourceRequestInfo(ilm.get(i)
 									.getAssignment().getId(), ELearningObjectType.ASSIGNMENT, 1L, 1L, ilm.get(i)

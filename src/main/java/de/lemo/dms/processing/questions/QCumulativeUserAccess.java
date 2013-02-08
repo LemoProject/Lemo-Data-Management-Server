@@ -205,6 +205,7 @@ public class QCumulativeUserAccess extends Question {
 		// +" INNER JOIN "+ table +"_log ON " + table + ".id = " + table +
 		// "_log."+ table +"_id";
 		final StringBuilder sb = new StringBuilder();
+		//TODO INSERT Chat for Objects
 		sb.append("SELECT timestamp, user_id, course.title as course, course.id as courseId, degree.title as degree, degree.id as degreeId, department.title AS department, department.id as departmentId");
 		sb.append(" FROM ((((" + table + "_log AS log");
 		sb.append(" LEFT JOIN course");

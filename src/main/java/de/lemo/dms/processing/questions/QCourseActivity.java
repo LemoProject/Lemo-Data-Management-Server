@@ -182,7 +182,7 @@ public class QCourseActivity extends Question {
 			for (final Long c : courses)
 			{
 				for (final Integer i : userPerResStep.get(c).keySet()) {
-					System.out.println(i + "  ,");
+					logger.info(i + "  ,");
 				}
 				for (int i = 0; i < resolution; i++)
 				{

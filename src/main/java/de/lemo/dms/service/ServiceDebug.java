@@ -26,7 +26,6 @@ import de.lemo.dms.db.miningDBclass.WikiLogMining;
 
 /**
  * Service for debugging messages
- * @author Boris Wenzlaff
  * @author Leonard Kappe
  * @author Sebastian Schwarzrock
  *

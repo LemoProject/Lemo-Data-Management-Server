@@ -20,6 +20,10 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 
+/**
+ * Service for user information. Provide all courses for a user
+ *
+ */
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceUserInformation extends BaseService {
@@ -67,21 +71,21 @@ public class ServiceUserInformation extends BaseService {
 				@SuppressWarnings("unchecked")
 				final ArrayList<Long> first = (ArrayList<Long>) this.dbHandler.performQuery(session, EQueryType.HQL,
 						"Select min(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(i).getId());
-				Long c_pa = 0L;
+				Long cpa = 0L;
 				if ((parti.size() > 0) && (parti.get(0) != null)) {
-					c_pa = parti.get(0);
+					cpa = parti.get(0);
 				}
-				Long c_la = 0L;
+				Long cla = 0L;
 				if ((latest.size() > 0) && (latest.get(0) != null)) {
-					c_la = latest.get(0);
+					cla = latest.get(0);
 				}
-				Long c_fi = 0L;
+				Long cfi = 0L;
 				if ((first.size() > 0) && (first.get(0) != null)) {
-					c_fi = first.get(0);
+					cfi = first.get(0);
 				}
 				final CourseObject co = new CourseObject(ci.get(i).getId(), ci.get(i).getShortname(), ci.get(i)
 						.getTitle(),
-						c_pa, c_la, c_fi);
+						cpa, cla, cfi);
 				courses.add(co);
 			}
 		}
