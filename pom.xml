@@ -106,6 +106,17 @@
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
+		
+		<profile>
+			<id>clix-forte</id>
+			<properties>
+				<lemo-system-name>clix-forte</lemo-system-name>
+				<lemo-display-name>Clix Fortenbacher</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+			</properties>
+		</profile>
+		
 	</profiles>
 
 	<dependencies>
