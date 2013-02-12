@@ -22,6 +22,7 @@ import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsViger;
 import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
+import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 /**
  * Just a class for Connector-related tests.
@@ -37,7 +38,7 @@ public class Test {
 	private static final Long ID_CLIX = 6L;
 
 	
-	public boolean authetificateUser(String login) {
+	public ResultListLongObject authentificateUser(String login) {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
@@ -49,10 +50,17 @@ public class Test {
 		
 		ArrayList<UserMining> results = (ArrayList<UserMining>) criteria.list();
 
+		ResultListLongObject res;
+		
 		if(results != null && results.size() > 0)
-			return true;
+		{
+			ArrayList<Long> l = new ArrayList<Long>();
+			l.add(results.get(0).getId());
+			res = new ResultListLongObject(l);
+		}
 		else
-			return false;
+			res = new ResultListLongObject();
+		return res;
 	}
 	
 	/**
@@ -265,7 +273,7 @@ public class Test {
 	{
 		System.out.println("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		System.out.println(this.authetificateUser("e"));
+		ResultListLongObject l =  this.authentificateUser("e");
 		System.out.println("Test finished");
 	}
 

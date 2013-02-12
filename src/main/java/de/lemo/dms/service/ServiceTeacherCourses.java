@@ -20,36 +20,29 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
-import de.lemo.dms.processing.resulttype.ResultListLongObject;
-@Path("authentification")
+@Path("teachercourses")
 @Produces(MediaType.APPLICATION_JSON)
-public class ServiceLoginAuthentification extends BaseService {
+public class ServiceTeacherCourses extends BaseService {
 
 	@GET
-	public ResultListLongObject authentificateUser(String login) {
+	public boolean authetificateUser(String login) {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 		
 		final String loginHash = Encoder.createMD5(login);
 
-		final Criteria criteria = session.createCriteria(UserMining.class, "users");
+		final Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
 		criteria.add(Restrictions.eq("users.login", loginHash));
 		
 		ArrayList<UserMining> results = (ArrayList<UserMining>) criteria.list();
 
-		ResultListLongObject res;
-		
 		if(results != null && results.size() > 0)
-		{
-			ArrayList<Long> l = new ArrayList<Long>();
-			l.add(results.get(0).getId());
-			res = new ResultListLongObject(l);
-		}
+			return true;
 		else
-			res = new ResultListLongObject();
-		return res;
+			return false;
 	}
 
 }
