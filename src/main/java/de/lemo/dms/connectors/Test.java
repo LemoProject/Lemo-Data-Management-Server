@@ -16,6 +16,7 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsViger;
@@ -35,6 +36,25 @@ public class Test {
 	private static final Long ID_MOODLE19 = 2L;
 	private static final Long ID_CLIX = 6L;
 
+	
+	public boolean authetificateUser(String login) {
+
+		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+		final Session session = dbHandler.getMiningSession();
+		
+		final String loginHash = Encoder.createMD5(login);
+
+		final Criteria criteria = session.createCriteria(UserMining.class, "users");
+		criteria.add(Restrictions.eq("users.login", loginHash));
+		
+		ArrayList<UserMining> results = (ArrayList<UserMining>) criteria.list();
+
+		if(results != null && results.size() > 0)
+			return true;
+		else
+			return false;
+	}
+	
 	/**
 	 * Tests the Chemgapedia-connector. Configurations have to be altered accordingly.
 	 */
@@ -245,7 +265,7 @@ public class Test {
 	{
 		System.out.println("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.testHisto();
+		System.out.println(this.authetificateUser("e"));
 		System.out.println("Test finished");
 	}
 
