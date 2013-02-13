@@ -27,6 +27,11 @@ import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
 
+/**
+ * Use of learning objects
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("learningobjectusage")
 public class QLearningObjectUsage extends Question {
 
