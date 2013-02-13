@@ -47,40 +47,39 @@ public class HibernateUtil {
 
 		// Add mapping classes
 
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Assign_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Assign_Plugin_Config_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Enrol_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/User_Enrolments_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Modules_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Course_Modules_LMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/AssignLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/EnrolLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/UserEnrolmentsLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ModulesLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/CourseModulesLMS.hbm.xml");
 
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Course_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Forum_discussions_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Forum_posts_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Forum_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Grade_grades_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Groups_members_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Groups_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Log_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Question_states_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Question_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_grades_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_attempts_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Quiz_question_instances_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Wiki_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Resource_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/User_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Role_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Context_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Role_assignments_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Assignment_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Assignment_submission_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Scorm_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Grade_items_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/Chat_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ChatLog_LMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/CourseCategories_LMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/CourseLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ForumDiscussionsLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ForumPostsLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ForumLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/GradeGradesLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/GroupsMembersLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/GroupsLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/LogLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/QuestionStatesLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/QuestionLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/QuizGradesLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/QuizLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/QuizAttemptsLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/QuizQuestionInstancesLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/WikiLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ResourceLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/UserLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/RoleLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ContextLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/RoleAssignmentsLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/AssignmentLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/AssignmentSubmissionLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ScormLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/GradeItemsLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ChatLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ChatLogLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/CourseCategoriesLMS.hbm.xml");
 
 		return cfg.buildSessionFactory();
 	}

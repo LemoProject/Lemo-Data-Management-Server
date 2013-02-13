@@ -5,19 +5,13 @@
 
 <hibernate-mapping>
 
-	<class name="de.lemo.dms.connectors.moodle.moodleDBclass.RoleLMS"
-		table="role">
+	<class name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.ModulesLMS"
+		table="mdl_modules">
 
 		<id name="id" column="id" type="long">
 		</id>
 
 		<property name="name" column="name" type="string" />
-		
-		<property name="shortname" column="shortname" type="string" />
-
-		<property name="description" column="description" type="text" />
-
-		<property name="sortorder" column="sortorder" type="long" />
 
 	</class>
 

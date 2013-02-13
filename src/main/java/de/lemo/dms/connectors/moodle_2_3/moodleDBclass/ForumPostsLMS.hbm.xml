@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class
+		name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.ForumPostsLMS"
+		table="mdl_forum_posts">
+
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="userid" column="userid" type="long" />
+
+		<property name="created" column="created" type="long" />
+
+		<property name="modified" column="modified" type="long" />
+
+		<property name="subject" column="subject" type="string" />
+
+		<property name="message" column="message" type="string" />
+
+	</class>
+
+</hibernate-mapping>

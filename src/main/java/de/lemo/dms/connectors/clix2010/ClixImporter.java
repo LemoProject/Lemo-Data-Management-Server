@@ -1410,7 +1410,7 @@ public class ClixImporter {
 			for (final PlatformGroup loadedItem : this.platformGroup)
 			{
 				final RoleMining item = new RoleMining();
-				item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getTypeId()));
+				item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 				item.setPlatform(this.connector.getPlatformId());
 				switch (Integer.valueOf(item.getId() + ""))
 				{
@@ -1418,17 +1418,20 @@ public class ClixImporter {
 						item.setName("Standard");
 						item.setShortname("Standard");
 						item.setSortOrder(1L);
+						item.setType(1);
 						break;
 					}
 					case 2:
 						item.setName("Admininstrator");
 						item.setShortname("Administrator");
 						item.setSortOrder(0L);
+						item.setType(0);
 						break;
 					default:
 						item.setName("Portal (extern)");
 						item.setShortname("Portal");
 						item.setSortOrder(2L);
+						item.setType(2);
 						break;
 				}
 

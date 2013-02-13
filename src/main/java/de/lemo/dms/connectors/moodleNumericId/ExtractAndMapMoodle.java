@@ -629,7 +629,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				course_quiz_mining.put(insert.getQuiz().getId(), insert);
 			}
 			if (insert.getQuiz() == null) {
-				this.logger.info("In Course_quiz_mining, quiz(quiz) not found: " + loadedItem.getId());
+				this.logger.debug("In Course_quiz_mining, quiz(quiz) not found: " + loadedItem.getId());
 			}
 		}
 		return course_quiz_mining;
@@ -649,7 +649,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 					this.oldCourseMining);
 			insert.setPlatform(this.connector.getPlatformId());
 			if (insert.getCourse() == null) {
-				this.logger.info("course not found for course-assignment: " + loadedItem.getId() + " and course: "
+				this.logger.debug("course not found for course-assignment: " + loadedItem.getId() + " and course: "
 						+ loadedItem.getCourse());
 			}
 			insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()),
@@ -659,7 +659,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				course_assignment_mining.put(insert.getId(), insert);
 			}
 			if (insert.getAssignment() == null) {
-				this.logger.info("In Course_assignment_mining, assignment not found: " + loadedItem.getId());
+				this.logger.debug("In Course_assignment_mining, assignment not found: " + loadedItem.getId());
 			}
 		}
 		return course_assignment_mining;
@@ -683,7 +683,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				course_scorm_mining.put(insert.getId(), insert);
 			}
 			if (insert.getScorm() == null) {
-				this.logger.info("In Course_scorm_mining, scorm not found: " + loadedItem.getId());
+				this.logger.debug("In Course_scorm_mining, scorm not found: " + loadedItem.getId());
 			}
 		}
 		return course_scorm_mining;
@@ -1096,7 +1096,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				insert.setType(this.oldQuestionMining.get(loadedItem.getQuestion()).getType());
 			}
 			if (insert.getType() == null) {
-				this.logger.info("In Question_log_mining, type not found for question_states: " + loadedItem.getId()
+				this.logger.debug("In Question_log_mining, type not found for question_states: " + loadedItem.getId()
 						+ " and question: " + loadedItem.getQuestion() + " question list size: "
 						+ this.questionLms.size());
 			}
@@ -1235,16 +1235,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 					}
 				}
 				if ((insert.getQuiz() == null) && !(loadedItem.getAction().equals("view all"))) {
-					this.logger.info("In Quiz_log_mining, quiz(quiz) not found for log: " + loadedItem.getId()
+					this.logger.debug("In Quiz_log_mining, quiz(quiz) not found for log: " + loadedItem.getId()
 							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
 							+ " and action: " + loadedItem.getAction());
 				}
 				if (insert.getUser() == null) {
-					this.logger.info("In Quiz_log_mining(quiz), user not found for log: " + loadedItem.getId()
+					this.logger.debug("In Quiz_log_mining(quiz), user not found for log: " + loadedItem.getId()
 							+ " and user: " + loadedItem.getUserid());
 				}
 				if (insert.getCourse() == null) {
-					this.logger.info("In Quiz_log_mining(quiz), course not found for log: " + loadedItem.getId()
+					this.logger.debug("In Quiz_log_mining(quiz), course not found for log: " + loadedItem.getId()
 							+ " and course: " + loadedItem.getCourse());
 				}
 				if ((insert.getCourse() != null) && (insert.getQuiz() != null) && (insert.getUser() != null)) {
@@ -1360,15 +1360,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				}
 
 				if (insert.getAssignment() == null) {
-					this.logger.info("In Assignment_log_mining, assignment not found for log: " + loadedItem.getId()
+					this.logger.debug("In Assignment_log_mining, assignment not found for log: " + loadedItem.getId()
 							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo());
 				}
 				if (insert.getCourse() == null) {
-					this.logger.info("In Assignment_log_mining, course not found for log: " + loadedItem.getId()
+					this.logger.debug("In Assignment_log_mining, course not found for log: " + loadedItem.getId()
 							+ " and course: " + loadedItem.getCourse());
 				}
 				if (insert.getUser() == null) {
-					this.logger.info("In Assignment_log_mining, user not found for log: " + loadedItem.getId()
+					this.logger.debug("In Assignment_log_mining, user not found for log: " + loadedItem.getId()
 							+ " and user: " + loadedItem.getUserid());
 				}
 				insert.setPlatform(this.connector.getPlatformId());
@@ -1454,15 +1454,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 					scormLogMining.put(insert.getId(), insert);
 				}
 				if (insert.getScorm() == null) {
-					this.logger.info("In Scorm_log_mining, scorm package not found for log: " + loadedItem.getId()
+					this.logger.debug("In Scorm_log_mining, scorm package not found for log: " + loadedItem.getId()
 							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo());
 				}
 				if (insert.getCourse() == null) {
-					this.logger.info("In Scorm_log_mining(scorm part), course not found for log: " + loadedItem.getId()
+					this.logger.debug("In Scorm_log_mining(scorm part), course not found for log: " + loadedItem.getId()
 							+ " and course: " + loadedItem.getCourse());
 				}
 				if (insert.getUser() == null) {
-					this.logger.info("In Scorm_log_mining(scorm part), user not found for log: " + loadedItem.getId()
+					this.logger.debug("In Scorm_log_mining(scorm part), user not found for log: " + loadedItem.getId()
 							+ " and user: " + loadedItem.getUserid());
 				}
 			}
@@ -1512,7 +1512,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			for (final Grade_items_LMS loadedItem2 : this.gradeItemsLms)
 			{
 				if ((loadedItem2.getIteminstance() != null) && (loadedItem2.getItemmodule() != null)) {
-					this.logger.info("Iteminstance" + loadedItem2.getIteminstance() + " QuizId" + loadedItem.getId());
+					this.logger.debug("Iteminstance" + loadedItem2.getIteminstance() + " QuizId" + loadedItem.getId());
 					if ((loadedItem.getId() == loadedItem2.getIteminstance().longValue())
 							&& loadedItem2.getItemmodule().equals("quiz")) {
 						insert.setMaxGrade(loadedItem2.getGrademax());
@@ -1520,7 +1520,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 					}
 				}
 				else {
-					this.logger.info("Iteminstance or Itemmodule not found for QuizId" + loadedItem.getId()
+					this.logger.debug("Iteminstance or Itemmodule not found for QuizId" + loadedItem.getId()
 							+ " and type quiz and Iteminstance " + loadedItem2.getIteminstance() + " Itemmodule:"
 							+ loadedItem2.getItemmodule());
 				}
@@ -1549,7 +1549,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			{
 				if ((loadedItem2.getIteminstance() != null) && (loadedItem2.getItemmodule() != null))
 				{
-					this.logger.info("Iteminstance " + loadedItem2.getIteminstance() + " AssignmentId"
+					this.logger.debug("Iteminstance " + loadedItem2.getIteminstance() + " AssignmentId"
 							+ loadedItem.getId());
 					if ((loadedItem.getId() == loadedItem2.getIteminstance().longValue())
 							&& loadedItem2.getItemmodule().equals("assignment")) {
@@ -1558,7 +1558,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 					}
 				}
 				else {
-					this.logger.info("Iteminstance or Itemmodule not found for AssignmentId" + loadedItem.getId()
+					this.logger.debug("Iteminstance or Itemmodule not found for AssignmentId" + loadedItem.getId()
 							+ " and type quiz and Iteminstance " + loadedItem2.getIteminstance() + " Itemmodule:"
 							+ loadedItem2.getItemmodule());
 				}
@@ -1610,7 +1610,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			}
 			else
 			{
-				this.logger.info("In Quiz_question_mining, quiz not found: " + loadedItem.getQuiz());
+				this.logger.debug("In Quiz_question_mining, quiz not found: " + loadedItem.getQuiz());
 			}
 		}
 		return quiz_question_mining;
@@ -1674,7 +1674,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 						}
 					}
 					else {
-						this.logger.info("In Quiz_user_mining, quiz not found for: Iteminstance: "
+						this.logger.debug("In Quiz_user_mining, quiz not found for: Iteminstance: "
 								+ loadedItem2.getIteminstance() + " Itemmodule: " + loadedItem2.getItemmodule()
 								+ " course: " + loadedItem2.getCourseid() + " user: " + loadedItem.getUserid());
 					}
@@ -1768,7 +1768,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				}
 				insert.setTimestamp(loadedItem.getTime());
 				if ((insert.getResource() == null) && !(loadedItem.getAction().equals("view all"))) {
-					this.logger.info("In Resource_log_mining, resource not found for log: " + loadedItem.getId()
+					this.logger.debug("In Resource_log_mining, resource not found for log: " + loadedItem.getId()
 							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
 							+ " and action: " + loadedItem.getAction());
 				}
@@ -1955,6 +1955,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			insert.setDescription(loadedItem.getDescription());
 			insert.setSortOrder(loadedItem.getSortorder());
 			insert.setPlatform(this.connector.getPlatformId());
+			if(loadedItem.getShortname().contains("admin") || loadedItem.getShortname().equals("manager") ||  loadedItem.getShortname().equals("coursecreator"))
+				insert.setType(0);
+			else if(loadedItem.getShortname().contains("teacher"))
+				insert.setType(1);
+			else
+				insert.setType(2);
 
 			role_mining.put(insert.getId(), insert);
 		}
@@ -2080,11 +2086,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser_Id()), this.userMining,
 					this.oldUserMining);
 			if (insert.getUser() == null) {
-				this.logger.info("In Chat_log_mining(chat part), user not found for log: " + loadedItem.getId()
+				this.logger.debug("In Chat_log_mining(chat part), user not found for log: " + loadedItem.getId()
 						+ " and user: " + loadedItem.getUser_Id());
 			}
 			if (insert.getChat() == null) {
-				this.logger.info("In Chat_log_mining(chat part), chat not found for log: " + loadedItem.getId()
+				this.logger.debug("In Chat_log_mining(chat part), chat not found for log: " + loadedItem.getId()
 						+ " and chat: " + loadedItem.getChat_Id());
 			}
 			if ((insert.getChat() != null) && (insert.getUser() != null) && (insert.getCourse() != null)) {

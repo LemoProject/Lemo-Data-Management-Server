@@ -321,7 +321,7 @@ public abstract class ExtractAndMap {
 		List<?> t;
 
 		this.configMiningTimestamp = (List<Timestamp>) this.dbHandler.performQuery(session, EQueryType.HQL,
-				"select max(lastmodified) from ConfigMining x where x.platform=" + this.connector.getPlatformId()
+				"select max(lastModified) from ConfigMining x where x.platform=" + this.connector.getPlatformId()
 						+ " order by x.id asc");// mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
 		if (this.configMiningTimestamp.get(0) == null) {
 			this.configMiningTimestamp.set(0, new Timestamp(0));
@@ -630,10 +630,10 @@ public abstract class ExtractAndMap {
 			this.c.reset();
 			System.out.println("\nObject tables:\n");
 
-			this.updates.add(this.platformMining.values());
-			objects += this.platformMining.size();
-			System.out.println("Generated " + this.platformMining.size() + " PlatformMining entries in "
-					+ this.c.getAndReset() + " s. ");
+			//this.updates.add(this.platformMining.values());
+			//objects += this.platformMining.size();
+			//System.out.println("Generated " + this.platformMining.size() + " PlatformMining entries in "
+			//		+ this.c.getAndReset() + " s. ");
 
 			this.assignmentMining = this.generateAssignmentMining();
 			objects += this.assignmentMining.size();

@@ -19,6 +19,8 @@
 		<property name="description" column="description" type="text" />
 
 		<property name="sortOrder" column="sortorder" type="long" />
+		
+		<property name="type" column="type" type="long" />
 
 		<set name="courseUsers" inverse="true" lazy="false">
 			<key column="role_id" />

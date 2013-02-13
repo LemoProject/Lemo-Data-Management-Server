@@ -20,6 +20,7 @@ public class RoleMining implements IMappingClass {
 	private String description;// text
 	private long sortOrder;
 	private Long platform;
+	private long type;
 
 	private Set<CourseUserMining> courseUsers = new HashSet<CourseUserMining>();
 
@@ -166,5 +167,13 @@ public class RoleMining implements IMappingClass {
 
 	public void setPlatform(final Long platform) {
 		this.platform = platform;
+	}
+
+	public long getType() {
+		return type;
+	}
+
+	public void setType(long type) {
+		this.type = type;
 	}
 }

@@ -32,8 +32,13 @@ public class ServiceTeacherCourses extends BaseService {
 		final Session session = dbHandler.getMiningSession();
 		ResultListLongObject result;
 		
+		ArrayList<Long> types = new ArrayList<Long>();
+		types.add(0L);
+		types.add(1L);
+		
 		final Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
 		criteria.add(Restrictions.eq("cu.user.id", id));
+		criteria.add(Restrictions.in("cu.role.type", types));
 		
 		ArrayList<CourseUserMining> results = (ArrayList<CourseUserMining>) criteria.list();
 

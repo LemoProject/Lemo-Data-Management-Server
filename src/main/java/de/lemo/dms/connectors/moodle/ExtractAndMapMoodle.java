@@ -2263,6 +2263,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			insert.setDescription(loadedItem.getDescription());
 			insert.setSortOrder(loadedItem.getSortorder());
 			insert.setPlatform(this.connector.getPlatformId());
+			if(loadedItem.getShortname().contains("admin") || loadedItem.getShortname().equals("manager") ||  loadedItem.getShortname().equals("coursecreator"))
+				insert.setType(0);
+			else if(loadedItem.getShortname().contains("teacher"))
+				insert.setType(1);
+			else
+				insert.setType(2);
 
 			role_mining.put(insert.getId(), insert);
 		}
