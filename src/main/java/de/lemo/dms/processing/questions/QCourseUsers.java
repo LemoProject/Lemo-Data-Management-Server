@@ -24,6 +24,11 @@ import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
+/**
+ * All members of a course
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("activecourseusers")
 public class QCourseUsers extends Question {
 
