@@ -1098,7 +1098,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 
 			// Set Grades
 			if ((loadedItem.getEvent() == 3) || (loadedItem.getEvent() == 6) || (loadedItem.getEvent() == 9)) {
-				insert.setRawGrade(loadedItem.getRaw_grade());
+				insert.setRawGrade(loadedItem.getRawGrade());
 				insert.setFinalGrade(loadedItem.getGrade());
 			}
 
@@ -2209,7 +2209,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 		{
 			final ChatLogMining insert = new ChatLogMining();
 			insert.setId(chatLogMining.size() + 1 + this.chatLogMax);
-			insert.setChat(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getChat_id()), this.chatMining,
+			insert.setChat(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getChat()), this.chatMining,
 					this.oldChatMining);
 			insert.setMessage(loadedItem.getMessage());
 			insert.setTimestamp(loadedItem.getTimestamp());
@@ -2218,16 +2218,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				insert.setCourse(insert.getChat().getCourse().getId(), this.courseMining, this.oldCourseMining);
 			}
 			insert.setDuration(0L);
-			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
 					this.oldUserMining);
 
 			if (insert.getUser() == null) {
 				this.logger.info("In Chat_log_mining(chat part), user not found for log: " + loadedItem.getId()
-						+ " and user: " + loadedItem.getUserid());
+						+ " and user: " + loadedItem.getUser());
 			}
 			if (insert.getChat() == null) {
 				this.logger.info("In Chat_log_mining(chat part), chat not found for log: " + loadedItem.getId()
-						+ " and chat: " + loadedItem.getChat_id());
+						+ " and chat: " + loadedItem.getChat());
 			}
 			if ((insert.getChat() != null) && (insert.getUser() != null) && (insert.getCourse() != null)) {
 				chatLogMining.put(insert.getId(), insert);

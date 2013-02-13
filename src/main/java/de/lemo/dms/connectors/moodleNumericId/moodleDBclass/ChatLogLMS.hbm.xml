@@ -5,7 +5,8 @@
 
 <hibernate-mapping>
 
-	<class name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.ChatLogLMS"
+	<class
+		name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLogLMS"
 		table="mdl_chat_messages">
 
 		<id name="id" column="id" type="long">
@@ -13,7 +14,7 @@
 
 		<property name="chat" column="chatid" type="long" />
 
-		<property name="user" column="userid" type="string" />
+		<property name="user" column="userid" type="long" />
 
 		<property name="message" column="message" type="string" />
 

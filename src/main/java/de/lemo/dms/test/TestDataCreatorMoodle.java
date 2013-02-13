@@ -15,32 +15,32 @@ import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Assignment_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Assignment_submissions_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLog_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Chat_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Context_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.CourseCategories_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Course_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Forum_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Forum_discussions_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Forum_posts_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Grade_grades_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Grade_items_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Groups_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Groups_members_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Log_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Question_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Question_states_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Quiz_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Quiz_grades_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Quiz_question_instances_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Resource_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Role_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Role_assignments_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Scorm_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.User_LMS;
-import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.Wiki_LMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.AssignmentLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.AssignmentSubmissionsLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLogLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ContextLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.CourseCategoriesLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.CourseLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ForumLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ForumDiscussionsLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ForumPostsLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.GradeGradesLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.GradeItemsLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.GroupsLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.GroupsMembersLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.LogLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.QuestionLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.QuestionStatesLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.QuizLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.QuizGradesLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.QuizQuestionInstancesLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ResourceLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.RoleLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.RoleAssignmentsLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ScormLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.UserLMS;
+import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.WikiLMS;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
@@ -119,32 +119,32 @@ public class TestDataCreatorMoodle {
 	private ArrayList<LevelAssociationMining> departmentDegreeList;
 	private ArrayList<LevelCourseMining> degreeCourseList;
 
-	private static List<Log_LMS> log_lms = new ArrayList<Log_LMS>();
-	private static List<Resource_LMS> resource_lms = new ArrayList<Resource_LMS>();
-	private static List<Course_LMS> course_lms = new ArrayList<Course_LMS>();
-	private static List<Forum_LMS> forum_lms = new ArrayList<Forum_LMS>();
-	private static List<Wiki_LMS> wiki_lms = new ArrayList<Wiki_LMS>();
-	private static List<User_LMS> user_lms = new ArrayList<User_LMS>();
-	private static List<Quiz_LMS> quiz_lms = new ArrayList<Quiz_LMS>();
-	private static List<Quiz_question_instances_LMS> quiz_question_instances_lms = new ArrayList<Quiz_question_instances_LMS>();
-	private static List<Question_LMS> question_lms = new ArrayList<Question_LMS>();
-	private static List<Groups_LMS> group_lms = new ArrayList<Groups_LMS>();
-	private static List<Groups_members_LMS> group_members_lms = new ArrayList<Groups_members_LMS>();
-	private static List<Question_states_LMS> question_states_lms = new ArrayList<Question_states_LMS>();
-	private static List<Forum_posts_LMS> forum_posts_lms = new ArrayList<Forum_posts_LMS>();
-	private static List<Role_LMS> role_lms = new ArrayList<Role_LMS>();
-	private static List<Context_LMS> context_lms = new ArrayList<Context_LMS>();
-	private static List<Role_assignments_LMS> role_assignments_lms = new ArrayList<Role_assignments_LMS>();
-	private static List<Assignment_LMS> assignment_lms = new ArrayList<Assignment_LMS>();
-	private static List<Assignment_submissions_LMS> assignment_submission_lms = new ArrayList<Assignment_submissions_LMS>();
-	private static List<Quiz_grades_LMS> quiz_grades_lms = new ArrayList<Quiz_grades_LMS>();
-	private static List<Forum_discussions_LMS> forum_discussions_lms = new ArrayList<Forum_discussions_LMS>();
-	private static List<Scorm_LMS> scorm_lms = new ArrayList<Scorm_LMS>();
-	private static List<Grade_grades_LMS> grade_grades_lms = new ArrayList<Grade_grades_LMS>();
-	private static List<Grade_items_LMS> grade_items_lms = new ArrayList<Grade_items_LMS>();
-	private static List<Chat_LMS> chat_lms = new ArrayList<Chat_LMS>();
-	private static List<ChatLog_LMS> chat_log_lms = new ArrayList<ChatLog_LMS>();
-	private static List<CourseCategories_LMS> course_categories_lms = new ArrayList<CourseCategories_LMS>();
+	private static List<LogLMS> log_lms = new ArrayList<LogLMS>();
+	private static List<ResourceLMS> resource_lms = new ArrayList<ResourceLMS>();
+	private static List<CourseLMS> course_lms = new ArrayList<CourseLMS>();
+	private static List<ForumLMS> forum_lms = new ArrayList<ForumLMS>();
+	private static List<WikiLMS> wiki_lms = new ArrayList<WikiLMS>();
+	private static List<UserLMS> user_lms = new ArrayList<UserLMS>();
+	private static List<QuizLMS> quiz_lms = new ArrayList<QuizLMS>();
+	private static List<QuizQuestionInstancesLMS> quiz_question_instances_lms = new ArrayList<QuizQuestionInstancesLMS>();
+	private static List<QuestionLMS> question_lms = new ArrayList<QuestionLMS>();
+	private static List<GroupsLMS> group_lms = new ArrayList<GroupsLMS>();
+	private static List<GroupsMembersLMS> group_members_lms = new ArrayList<GroupsMembersLMS>();
+	private static List<QuestionStatesLMS> question_states_lms = new ArrayList<QuestionStatesLMS>();
+	private static List<ForumPostsLMS> forum_posts_lms = new ArrayList<ForumPostsLMS>();
+	private static List<RoleLMS> role_lms = new ArrayList<RoleLMS>();
+	private static List<ContextLMS> context_lms = new ArrayList<ContextLMS>();
+	private static List<RoleAssignmentsLMS> role_assignments_lms = new ArrayList<RoleAssignmentsLMS>();
+	private static List<AssignmentLMS> assignment_lms = new ArrayList<AssignmentLMS>();
+	private static List<AssignmentSubmissionsLMS> assignment_submission_lms = new ArrayList<AssignmentSubmissionsLMS>();
+	private static List<QuizGradesLMS> quiz_grades_lms = new ArrayList<QuizGradesLMS>();
+	private static List<ForumDiscussionsLMS> forum_discussions_lms = new ArrayList<ForumDiscussionsLMS>();
+	private static List<ScormLMS> scorm_lms = new ArrayList<ScormLMS>();
+	private static List<GradeGradesLMS> grade_grades_lms = new ArrayList<GradeGradesLMS>();
+	private static List<GradeItemsLMS> grade_items_lms = new ArrayList<GradeItemsLMS>();
+	private static List<ChatLMS> chat_lms = new ArrayList<ChatLMS>();
+	private static List<ChatLogLMS> chat_log_lms = new ArrayList<ChatLogLMS>();
+	private static List<CourseCategoriesLMS> course_categories_lms = new ArrayList<CourseCategoriesLMS>();
 
 	private HashMap<Long, CourseMining> couAssMap;
 	private HashMap<Long, CourseMining> couForMap;
@@ -162,7 +162,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final UserMining item : this.userList)
 		{
-			final User_LMS lms = new User_LMS();
+			final UserLMS lms = new UserLMS();
 
 			lms.setId(item.getId());
 			lms.setCurrentlogin(item.getCurrentLogin());
@@ -178,7 +178,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final RoleMining item : this.roleList)
 		{
-			final Role_LMS lms = new Role_LMS();
+			final RoleLMS lms = new RoleLMS();
 
 			lms.setId(item.getId());
 			lms.setName(item.getName());
@@ -194,7 +194,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final WikiMining item : this.wikiList)
 		{
-			final Wiki_LMS lms = new Wiki_LMS();
+			final WikiLMS lms = new WikiLMS();
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
 			lms.setTimemodified(item.getTimeModified());
@@ -209,7 +209,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final ScormMining item : this.scormList)
 		{
-			final Scorm_LMS lms = new Scorm_LMS();
+			final ScormLMS lms = new ScormLMS();
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
 			lms.setTimemodified(item.getTimeModified());
@@ -224,15 +224,15 @@ public class TestDataCreatorMoodle {
 	private void generateContextLMS()
 	{
 
-		final HashMap<Long, Context_LMS> depIdMap = new HashMap<Long, Context_LMS>();
-		final HashMap<Long, Context_LMS> degIdMap = new HashMap<Long, Context_LMS>();
-		final HashMap<Long, Context_LMS> couIdMap = new HashMap<Long, Context_LMS>();
+		final HashMap<Long, ContextLMS> depIdMap = new HashMap<Long, ContextLMS>();
+		final HashMap<Long, ContextLMS> degIdMap = new HashMap<Long, ContextLMS>();
+		final HashMap<Long, ContextLMS> couIdMap = new HashMap<Long, ContextLMS>();
 
 		// Create entries (context, course_categories) for all departments
 		for (final LevelMining item : this.departmentList)
 		{
-			final Context_LMS lms = new Context_LMS();
-			final CourseCategories_LMS lms2 = new CourseCategories_LMS();
+			final ContextLMS lms = new ContextLMS();
+			final CourseCategoriesLMS lms2 = new CourseCategoriesLMS();
 
 			lms2.setId(TestDataCreatorMoodle.course_categories_lms.size() + 1);
 			lms2.setTitle(item.getTitle());
@@ -254,7 +254,7 @@ public class TestDataCreatorMoodle {
 		// Create entries (context, course_categories) for all degrees
 		for (final LevelMining item : this.degreeList)
 		{
-			final CourseCategories_LMS lms2 = new CourseCategories_LMS();
+			final CourseCategoriesLMS lms2 = new CourseCategoriesLMS();
 
 			final LevelMining dm = this.depDegMap.get(item.getId());
 
@@ -263,12 +263,12 @@ public class TestDataCreatorMoodle {
 			lms2.setDepth(2);
 			lms2.setPath("/" + depIdMap.get(dm.getId()).getId() + "/" + lms2.getId());
 
-			final Context_LMS lms = new Context_LMS();
+			final ContextLMS lms = new ContextLMS();
 			lms.setContextlevel(40);
 			lms.setDepth(3);
 			lms.setInstanceid(lms2.getId());
 			lms.setId(TestDataCreatorMoodle.context_lms.size() + 1);
-			final Context_LMS cl = depIdMap.get(dm.getId());
+			final ContextLMS cl = depIdMap.get(dm.getId());
 			lms.setPath(cl.getPath() + "/" + lms.getId());
 
 			degIdMap.put(item.getId(), lms);
@@ -280,13 +280,13 @@ public class TestDataCreatorMoodle {
 		// Create entries (context) for all courses
 		for (final LevelCourseMining item : this.degreeCourseList)
 		{
-			final Context_LMS lms = new Context_LMS();
+			final ContextLMS lms = new ContextLMS();
 
 			lms.setId(TestDataCreatorMoodle.context_lms.size() + 1);
 			lms.setDepth(4);
 			lms.setContextlevel(50);
 			lms.setInstanceid(item.getCourse().getId());
-			final Context_LMS cl = degIdMap.get(item.getLevel().getId());
+			final ContextLMS cl = degIdMap.get(item.getLevel().getId());
 			lms.setPath(cl.getPath() + "/" + lms.getId());
 
 			couIdMap.put(item.getId(), lms);
@@ -296,7 +296,7 @@ public class TestDataCreatorMoodle {
 		// Create entries (role_assignments) for all users
 		for (final CourseUserMining item : this.courseUserList)
 		{
-			final Role_assignments_LMS lms2 = new Role_assignments_LMS();
+			final RoleAssignmentsLMS lms2 = new RoleAssignmentsLMS();
 
 			lms2.setId(item.getId());
 			lms2.setRoleid(item.getRole().getId());
@@ -330,7 +330,7 @@ public class TestDataCreatorMoodle {
 
 		for (final ResourceLogMining item : this.resourceLogList)
 		{
-			final Log_LMS lms = new Log_LMS();
+			final LogLMS lms = new LogLMS();
 
 			lms.setId(item.getId());
 			lms.setCourse(item.getCourse().getId());
@@ -342,11 +342,11 @@ public class TestDataCreatorMoodle {
 
 			TestDataCreatorMoodle.log_lms.add(lms);
 		}
-		final HashMap<Long, Forum_discussions_LMS> forDisSet = new HashMap<Long, Forum_discussions_LMS>();
+		final HashMap<Long, ForumDiscussionsLMS> forDisSet = new HashMap<Long, ForumDiscussionsLMS>();
 		for (final ForumLogMining item : this.forumLogList)
 		{
-			final Log_LMS lms = new Log_LMS();
-			final Forum_posts_LMS lms2 = new Forum_posts_LMS();
+			final LogLMS lms = new LogLMS();
+			final ForumPostsLMS lms2 = new ForumPostsLMS();
 
 			lms2.setId(TestDataCreatorMoodle.forum_posts_lms.size() + 1);
 			lms2.setMessage(item.getMessage());
@@ -359,7 +359,7 @@ public class TestDataCreatorMoodle {
 
 			if ((item.getAction().equals("add discussion") || item.getAction().equals("view discussion")))
 			{
-				final Forum_discussions_LMS lms3 = new Forum_discussions_LMS();
+				final ForumDiscussionsLMS lms3 = new ForumDiscussionsLMS();
 
 				lms3.setId(item.getForum().getId());
 				lms3.setForum(item.getForum().getId());
@@ -380,7 +380,7 @@ public class TestDataCreatorMoodle {
 		TestDataCreatorMoodle.forum_discussions_lms.addAll(forDisSet.values());
 		for (final AssignmentLogMining item : this.assignmentLogList)
 		{
-			final Log_LMS lms = new Log_LMS();
+			final LogLMS lms = new LogLMS();
 
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
@@ -394,7 +394,7 @@ public class TestDataCreatorMoodle {
 
 			if (item.getAction().equals("upload"))
 			{
-				final Assignment_submissions_LMS lms2 = new Assignment_submissions_LMS();
+				final AssignmentSubmissionsLMS lms2 = new AssignmentSubmissionsLMS();
 
 				lms2.setGrade(item.getGrade().longValue());
 				lms2.setAssignment(item.getAssignment().getId());
@@ -407,7 +407,7 @@ public class TestDataCreatorMoodle {
 		}
 		for (final QuizLogMining item : this.quizLogList)
 		{
-			final Log_LMS lms = new Log_LMS();
+			final LogLMS lms = new LogLMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
 			lms.setModule("quiz");
@@ -418,7 +418,7 @@ public class TestDataCreatorMoodle {
 
 			if (!item.getAction().equals("review"))
 			{
-				final Quiz_grades_LMS lms2 = new Quiz_grades_LMS();
+				final QuizGradesLMS lms2 = new QuizGradesLMS();
 				lms2.setGrade(item.getGrade());
 				lms2.setTimemodified(item.getTimestamp());
 				lms2.setUserid(item.getUser().getId() + "");
@@ -446,7 +446,7 @@ public class TestDataCreatorMoodle {
 		 */
 		for (final ScormLogMining item : this.scormLogList)
 		{
-			final Log_LMS lms = new Log_LMS();
+			final LogLMS lms = new LogLMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
 			lms.setModule("scorm");
@@ -459,7 +459,7 @@ public class TestDataCreatorMoodle {
 		}
 		for (final WikiLogMining item : this.wikiLogList)
 		{
-			final Log_LMS lms = new Log_LMS();
+			final LogLMS lms = new LogLMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
 			lms.setModule("wiki");
@@ -473,7 +473,7 @@ public class TestDataCreatorMoodle {
 		}
 		for (final CourseLogMining item : this.courseLogList)
 		{
-			final Log_LMS lms = new Log_LMS();
+			final LogLMS lms = new LogLMS();
 			lms.setId(item.getId());
 			lms.setAction(item.getAction());
 			lms.setModule("course");
@@ -489,7 +489,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final ResourceMining item : this.resourceList)
 		{
-			final Resource_LMS lms = new Resource_LMS();
+			final ResourceLMS lms = new ResourceLMS();
 			lms.setId(item.getId());
 			lms.setType(item.getType());
 			lms.setName(item.getTitle());
@@ -512,7 +512,7 @@ public class TestDataCreatorMoodle {
 		}
 		for (final ForumMining item : this.forumList)
 		{
-			final Forum_LMS lms = new Forum_LMS();
+			final ForumLMS lms = new ForumLMS();
 			lms.setId(item.getId());
 			lms.setTimemodified(item.getTimeModified());
 			lms.setName(item.getTitle());
@@ -530,7 +530,7 @@ public class TestDataCreatorMoodle {
 
 		for (final CourseMining item : this.courseList)
 		{
-			final Course_LMS lms = new Course_LMS();
+			final CourseLMS lms = new CourseLMS();
 			lms.setId(item.getId());
 			lms.setFullname(item.getTitle());
 			lms.setShortname(item.getShortname());
@@ -550,12 +550,12 @@ public class TestDataCreatorMoodle {
 
 		for (final ChatLogMining item : this.chatLogList)
 		{
-			final ChatLog_LMS lms = new ChatLog_LMS();
+			final ChatLogLMS lms = new ChatLogLMS();
 			lms.setMessage(item.getMessage());
 
 			lms.setTimestamp(item.getTimestamp());
-			lms.setChat_Id(item.getChat().getId());
-			lms.setUser_Id(item.getUser().getId());
+			lms.setChat(item.getChat().getId());
+			lms.setUser(item.getUser().getId());
 			lms.setId(item.getId());
 
 			couId.put(item.getChat().getId(), item.getCourse().getId());
@@ -565,7 +565,7 @@ public class TestDataCreatorMoodle {
 
 		for (final ChatMining item : this.chatList)
 		{
-			final Chat_LMS lms = new Chat_LMS();
+			final ChatLMS lms = new ChatLMS();
 			lms.setId(item.getId());
 			if (couId.get(item.getId()) != null) {
 				lms.setCourse(couId.get(item.getId()));
@@ -582,7 +582,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final AssignmentMining item : this.assignmentList)
 		{
-			final Assignment_LMS lms = new Assignment_LMS();
+			final AssignmentLMS lms = new AssignmentLMS();
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
 			lms.setTimeavailable(item.getTimeOpen());
@@ -593,7 +593,7 @@ public class TestDataCreatorMoodle {
 				lms.setCourse(this.couAssMap.get(item.getId()).getId());
 			}
 
-			final Grade_items_LMS lms2 = new Grade_items_LMS();
+			final GradeItemsLMS lms2 = new GradeItemsLMS();
 			lms2.setIteminstance(item.getId());
 			lms2.setItemmodule("assignment");
 			lms2.setGrademax(item.getMaxGrade());
@@ -782,7 +782,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final GroupMining item : this.groupList)
 		{
-			final Groups_LMS lms = new Groups_LMS();
+			final GroupsLMS lms = new GroupsLMS();
 			lms.setId(item.getId());
 			lms.setCourseid(this.couGroMap.get(item.getId()).getId());
 			lms.setTimecreated(item.getTimeCreated());
@@ -797,7 +797,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final GroupUserMining item : this.groupUserList)
 		{
-			final Groups_members_LMS lms = new Groups_members_LMS();
+			final GroupsMembersLMS lms = new GroupsMembersLMS();
 
 			lms.setId(item.getId());
 			lms.setGroupid(item.getGroup().getId());
@@ -818,8 +818,8 @@ public class TestDataCreatorMoodle {
 		}
 		for (final QuizMining item : this.quizList)
 		{
-			final Quiz_LMS lms = new Quiz_LMS();
-			final Grade_items_LMS lms2 = new Grade_items_LMS();
+			final QuizLMS lms = new QuizLMS();
+			final GradeItemsLMS lms2 = new GradeItemsLMS();
 
 			lms.setId(item.getId());
 			lms.setCourse(qQMap.get(lms.getId()));
@@ -843,7 +843,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final QuestionMining item : this.questionList)
 		{
-			final Question_LMS lms = new Question_LMS();
+			final QuestionLMS lms = new QuestionLMS();
 
 			lms.setId(item.getId());
 			lms.setName(item.getTitle());
@@ -861,7 +861,7 @@ public class TestDataCreatorMoodle {
 		// HashMap<Long, Quiz_question_instances_LMS> tempMap = new HashMap<Long, Quiz_question_instances_LMS>();
 		for (final QuizQuestionMining item : this.quizQuestionList)
 		{
-			final Quiz_question_instances_LMS lms = new Quiz_question_instances_LMS();
+			final QuizQuestionInstancesLMS lms = new QuizQuestionInstancesLMS();
 
 			lms.setId(item.getId());
 			lms.setQuestion(item.getQuestion().getId());
@@ -878,7 +878,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final QuizUserMining item : this.quizUserList)
 		{
-			final Grade_grades_LMS lms = new Grade_grades_LMS();
+			final GradeGradesLMS lms = new GradeGradesLMS();
 
 			lms.setId(item.getId());
 			lms.setRawgrade(item.getRawGrade());
@@ -887,7 +887,7 @@ public class TestDataCreatorMoodle {
 			lms.setTimemodified(item.getTimeModified());
 			lms.setItemid(TestDataCreatorMoodle.grade_items_lms.size() + 1);
 
-			final Grade_items_LMS lms2 = new Grade_items_LMS();
+			final GradeItemsLMS lms2 = new GradeItemsLMS();
 			lms2.setCourseid(item.getCourse().getId());
 			lms2.setIteminstance(item.getQuiz().getId());
 			lms2.setId(lms.getItemid());
@@ -901,7 +901,7 @@ public class TestDataCreatorMoodle {
 	{
 		for (final QuestionLogMining item : this.questionLogList)
 		{
-			final Question_states_LMS lms = new Question_states_LMS();
+			final QuestionStatesLMS lms = new QuestionStatesLMS();
 
 			lms.setId(item.getId());
 			lms.setAnswer(item.getAnswers());

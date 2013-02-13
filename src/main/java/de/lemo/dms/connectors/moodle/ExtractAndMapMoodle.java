@@ -1118,7 +1118,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 
 			// Set Grades
 			if ((loadedItem.getEvent() == 3) || (loadedItem.getEvent() == 6) || (loadedItem.getEvent() == 9)) {
-				insert.setRawGrade(loadedItem.getRaw_grade());
+				insert.setRawGrade(loadedItem.getRawGrade());
 				insert.setFinalGrade(loadedItem.getGrade());
 			}
 
@@ -2380,7 +2380,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 		{
 			final ChatLogMining insert = new ChatLogMining();
 			insert.setId(chatLogMining.size() + 1 + this.chatLogMax);
-			insert.setChat(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getChat_id()), this.chatMining,
+			insert.setChat(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getChat()), this.chatMining,
 					this.oldChatMining);
 			insert.setMessage(loadedItem.getMessage());
 			insert.setTimestamp(loadedItem.getTimestamp());
@@ -2393,15 +2393,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			if (!this.numericUserId)
 			{
 				long id = -1;
-				if (this.idMapping.get(loadedItem.getUserid()) != null)
+				if (this.idMapping.get(loadedItem.getUser()) != null)
 				{
-					id = this.idMapping.get(loadedItem.getUserid()).getId();
+					id = this.idMapping.get(loadedItem.getUser()).getId();
 					insert.setUser(id, this.userMining, this.oldUserMining);
 
 				}
-				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUser()) != null))
 				{
-					id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+					id = this.oldIdMapping.get(loadedItem.getUser()).getId();
 					insert.setUser(id, this.userMining, this.oldUserMining);
 
 				}
@@ -2410,9 +2410,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 					id = this.largestId + 1;
 					this.largestId = id;
 					this.idMapping.put(
-							loadedItem.getUserid(),
+							loadedItem.getUser(),
 							new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
-									.getUserid(), this.connector.getPlatformId()));
+									.getUser(), this.connector.getPlatformId()));
 					insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
 							this.oldUserMining);
 				}
@@ -2420,11 +2420,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			}
 			if (insert.getUser() == null) {
 				this.logger.debug("In Chat_log_mining(chat part), user not found for log: " + loadedItem.getId()
-						+ " and user: " + loadedItem.getUserid());
+						+ " and user: " + loadedItem.getUser());
 			}
 			if (insert.getChat() == null) {
 				this.logger.debug("In Chat_log_mining(chat part), chat not found for log: " + loadedItem.getId()
-						+ " and chat: " + loadedItem.getChat_id());
+						+ " and chat: " + loadedItem.getChat());
 			}
 			if ((insert.getChat() != null) && (insert.getUser() != null) && (insert.getCourse() != null)) {
 				chatLogMining.put(insert.getId(), insert);

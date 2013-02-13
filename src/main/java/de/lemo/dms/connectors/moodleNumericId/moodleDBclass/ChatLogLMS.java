@@ -1,25 +1,25 @@
 /**
- * File ./main/java/de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ChatLog_LMS.java
+ * File ./main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/ChatLog_LMS.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  * Copyright TODO (INSERT COPYRIGHT)
  */
 
-package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
+package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
 public class ChatLogLMS {
 
 	private long id;
 	private long chat;
-	private String user;
+	private long user;
 	private String message;
 	private long timestamp;
 
-	public String getUser() {
+	public long getUser() {
 		return this.user;
 	}
 
-	public void setUser(final String user) {
+	public void setUser(final long user) {
 		this.user = user;
 	}
 

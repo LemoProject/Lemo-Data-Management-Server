@@ -22,7 +22,7 @@
 
 		<property name="penalty" column="penalty" type="double" />
 
-		<property name="raw_grade" column="raw_grade" type="double" />
+		<property name="rawGrade" column="raw_grade" type="double" />
 
 		<property name="grade" column="grade" type="double" />
 

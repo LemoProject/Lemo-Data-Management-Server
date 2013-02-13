@@ -5,8 +5,9 @@
 
 <hibernate-mapping>
 
-	<class name="de.lemo.dms.connectors.moodle.moodleDBclass.QuestionStatesLMS"
-		table="question_states">
+	<class
+		name="de.lemo.dms.connectors.moodleNumericId.moodleDBclass.QuestionStatesLMS"
+		table="mdl_question_states">
 
 		<id name="id" column="id" type="long">
 		</id>

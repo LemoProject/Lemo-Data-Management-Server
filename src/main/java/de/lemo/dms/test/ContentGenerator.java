@@ -190,6 +190,7 @@ public class ContentGenerator {
 		r0.setShortname("Admin");
 		r0.setDescription("Administatoren dürfen alles.");
 		r0.setSortOrder(0);
+		r0.setType(0);
 		r0.setPlatform(platform.getId());
 
 		roleList.add(r0);
@@ -200,6 +201,7 @@ public class ContentGenerator {
 		r1.setShortname("Doz");
 		r1.setDescription("Dozenten dürfen in ihren Kursen alles.");
 		r1.setSortOrder(1);
+		r1.setType(1);
 		r1.setPlatform(platform.getId());
 
 		roleList.add(r1);
@@ -210,6 +212,7 @@ public class ContentGenerator {
 		r2.setShortname("Stud");
 		r2.setDescription("Studenten dürfen alles lernen.");
 		r2.setSortOrder(2);
+		r2.setType(2);
 		r2.setPlatform(platform.getId());
 
 		roleList.add(r2);

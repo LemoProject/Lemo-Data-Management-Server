@@ -1,11 +1,11 @@
 /**
- * File ./main/java/de/lemo/dms/connectors/moodle/moodleDBclass/QuestionStatesLMS.java
+ * File ./main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Question_states_LMS.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  * Copyright TODO (INSERT COPYRIGHT)
  */
 
-package de.lemo.dms.connectors.moodle.moodleDBclass;
+package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
 public class QuestionStatesLMS {
 
