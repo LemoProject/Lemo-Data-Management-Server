@@ -31,7 +31,6 @@ import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
 /**
  * Checks which resources are used in certain courses
  * 
- * @author Boris Wenzlaff
  * @author Leonard Kappe
  * @author Sebastian Schwarzrock
  *

@@ -31,6 +31,13 @@ import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListRRITypes;
 
+/**
+ * Checks which resources are used in certain courses
+ * an extra parameter specifies the resolution of the data
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("activityresourcetyperesolution")
 public class QActivityResourceTypeResolution extends Question {
 
@@ -44,7 +51,6 @@ public class QActivityResourceTypeResolution extends Question {
 	{
 		boolean all = false;
 		final ResultListRRITypes list = new ResultListRRITypes();
-		// List<EResourceType> resourceTypes = new ArrayList<EResourceType>();
 		if (resourceTypes.size() == 0) {
 			all = true;
 		}
