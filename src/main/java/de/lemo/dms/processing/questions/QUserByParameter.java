@@ -32,6 +32,12 @@ import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
+/**
+ * Service for retrieval of user-identifiers (Long) that are filtered by the given restrictions.
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("userbyparameter")
 public class QUserByParameter extends Question {
 
