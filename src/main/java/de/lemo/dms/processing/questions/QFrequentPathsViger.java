@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -37,13 +38,19 @@ import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;
 
+/**
+ * Read ther path data from the database and using the Bide algorithm to generates the frequent paths
+ * without interruptions
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("frequentPathsViger")
 public class QFrequentPathsViger extends Question {
 
-	private static HashMap<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
-	private static HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
-	private static HashMap<String, Integer> idToInternalId = new HashMap<String, Integer>();
-	private static HashMap<Integer, String> internalIdToId = new HashMap<Integer, String>();
+	private static Map<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
+	private static Map<String, List<Long>> requests = new HashMap<String, List<Long>>();
+	private static Map<String, Integer> idToInternalId = new HashMap<String, Integer>();
+	private static Map<Integer, String> internalIdToId = new HashMap<Integer, String>();
 
 	@POST
 	public ResultListUserPathGraph compute(
