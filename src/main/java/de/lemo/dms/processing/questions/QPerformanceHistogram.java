@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -25,6 +26,11 @@ import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
+/**
+ * Results for the perfromance (test) of student
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("performanceHistogram")
 public class QPerformanceHistogram extends Question {
 
@@ -89,7 +95,7 @@ public class QPerformanceHistogram extends Question {
 		}
 		try
 		{
-			final HashMap<Long, Integer> obj = new HashMap<Long, Integer>();
+			final Map<Long, Integer> obj = new HashMap<Long, Integer>();
 
 			for (int i = 0; i < quizzes.size(); i++)
 			{
@@ -111,7 +117,7 @@ public class QPerformanceHistogram extends Question {
 			@SuppressWarnings("unchecked")
 			final ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 
-			final HashMap<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>();
+			final Map<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>();
 			Collections.sort(list);
 
 			// This is for making sure there is just one entry per student and test
