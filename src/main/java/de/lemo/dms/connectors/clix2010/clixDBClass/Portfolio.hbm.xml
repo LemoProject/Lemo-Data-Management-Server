@@ -17,6 +17,8 @@
 		<property name="component" column="COMPONENT_ID" type="long" />
 
 		<property name="endDate" column="ENDDATE" type="string" />
+		
+		<property name="course" column="COURSE_ID" type="long" />
 
 		<property name="startDate" column="STARTDATE" type="string" />
 

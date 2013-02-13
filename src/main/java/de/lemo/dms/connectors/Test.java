@@ -297,7 +297,7 @@ public class Test {
 	{
 		System.out.println("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodle23Conn();
+		this.runClixConn();
 		System.out.println("Test finished");
 	}
 

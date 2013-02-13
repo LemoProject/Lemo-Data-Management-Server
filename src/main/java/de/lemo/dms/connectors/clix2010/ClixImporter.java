@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import de.lemo.dms.connectors.Encoder;
@@ -323,6 +324,8 @@ public class ClixImporter {
 	// Map, holding the ChatMining objects, found in a previous data extraction process
 	/** The old_chat_mining. */
 	private HashMap<Long, ChatMining> oldChatMining;
+	
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private final IConnector connector;
 
@@ -347,12 +350,12 @@ public class ClixImporter {
 
 		this.initialize();
 
-		System.out.println("\n" + c.getAndReset() + " (initializing)" + "\n");
+		this.logger.info("\n" + c.getAndReset() + " (initializing)" + "\n");
 
 		this.loadData(dbConfig);
-		System.out.println("\n" + c.getAndReset() + " (loading data)" + "\n");
+		this.logger.info("\n" + c.getAndReset() + " (loading data)" + "\n");
 		this.saveData();
-		System.out.println("\n" + c.getAndReset() + " (saving data)" + "\n");
+		this.logger.info("\n" + c.getAndReset() + " (saving data)" + "\n");
 
 		// Create and save config-object
 		final Long endtime = System.currentTimeMillis() / 1000;
@@ -462,7 +465,7 @@ public class ClixImporter {
 				// generateLevelMining();
 				// updates.add(level_mining.values());
 
-				System.out.println("\nAssociationObjects: \n");
+				this.logger.info("\nAssociationObjects: \n");
 
 				// updates.add(level_association_mining.values());
 
@@ -510,7 +513,7 @@ public class ClixImporter {
 
 			}
 
-			System.out.println("\nLogObjects: \n");
+			this.logger.info("\nLogObjects: \n");
 
 			updates.add(this.generateAssignmentLogMining().values());
 
@@ -544,10 +547,10 @@ public class ClixImporter {
 
 				final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 				final Session session = dbHandler.getMiningSession();
-				System.out.println("Writing to DB");
+				this.logger.info("Writing to DB");
 				dbHandler.saveCollectionToDB(session, updates);
 			} else {
-				System.out.println("No new objects found.");
+				this.logger.info("No new objects found.");
 			}
 
 			this.clearSourceData();
@@ -674,125 +677,125 @@ public class ClixImporter {
 				this.wikiLogMax = 0L;
 			}
 
-			final Query old_course = session.createQuery("from CourseMining x where x.platform="
+			final Query oldCourse = session.createQuery("from CourseMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<CourseMining>) old_course.list();
+			l = (ArrayList<CourseMining>) oldCourse.list();
 			this.oldCourseMining = new HashMap<Long, CourseMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldCourseMining.put(Long.valueOf(((CourseMining) l.get(i)).getId()), (CourseMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldCourseMining.size() + " old CourseMinings.");
+			this.logger.info("Read " + this.oldCourseMining.size() + " old CourseMinings.");
 
-			final Query old_quiz = session.createQuery("from QuizMining x where x.platform="
+			final Query oldQuiz = session.createQuery("from QuizMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<QuizMining>) old_quiz.list();
+			l = (ArrayList<QuizMining>) oldQuiz.list();
 			this.oldQuizMining = new HashMap<Long, QuizMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldQuizMining.put(Long.valueOf(((QuizMining) l.get(i)).getId()), (QuizMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldQuizMining.size() + " old QuizMinings.");
+			this.logger.info("Read " + this.oldQuizMining.size() + " old QuizMinings.");
 
-			final Query old_assignment = session.createQuery("from AssignmentMining x where x.platform="
+			final Query oldAssignment = session.createQuery("from AssignmentMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<AssignmentMining>) old_assignment.list();
+			l = (ArrayList<AssignmentMining>) oldAssignment.list();
 			this.oldAssignmentMining = new HashMap<Long, AssignmentMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldAssignmentMining.put(Long.valueOf(((AssignmentMining) l.get(i)).getId()),
 						(AssignmentMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldAssignmentMining.size() + " old AssignmentMinings.");
+			this.logger.info("Read " + this.oldAssignmentMining.size() + " old AssignmentMinings.");
 
-			final Query old_scorm = session.createQuery("from ScormMining x where x.platform="
+			final Query oldScorm = session.createQuery("from ScormMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<ScormMining>) old_scorm.list();
+			l = (ArrayList<ScormMining>) oldScorm.list();
 			this.oldScormMining = new HashMap<Long, ScormMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldScormMining.put(Long.valueOf(((ScormMining) l.get(i)).getId()), (ScormMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldScormMining.size() + " old ScormMinings.");
+			this.logger.info("Read " + this.oldScormMining.size() + " old ScormMinings.");
 
-			final Query old_forum = session.createQuery("from ForumMining x where x.platform="
+			final Query oldForum = session.createQuery("from ForumMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<ForumMining>) old_forum.list();
+			l = (ArrayList<ForumMining>) oldForum.list();
 			this.oldForumMining = new HashMap<Long, ForumMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldForumMining.put(Long.valueOf(((ForumMining) l.get(i)).getId()), (ForumMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldForumMining.size() + " old ForumMinings.");
+			this.logger.info("Read " + this.oldForumMining.size() + " old ForumMinings.");
 
-			final Query old_resource = session.createQuery("from ResourceMining x where x.platform="
+			final Query oldResource = session.createQuery("from ResourceMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<ResourceMining>) old_resource.list();
+			l = (ArrayList<ResourceMining>) oldResource.list();
 			this.oldResourceMining = new HashMap<Long, ResourceMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldResourceMining
 						.put(Long.valueOf(((ResourceMining) l.get(i)).getId()), (ResourceMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldResourceMining.size() + " old ForumMinings.");
+			this.logger.info("Read " + this.oldResourceMining.size() + " old ForumMinings.");
 
-			final Query old_user = session.createQuery("from UserMining x where x.platform="
+			final Query oldUser = session.createQuery("from UserMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<UserMining>) old_user.list();
+			l = (ArrayList<UserMining>) oldUser.list();
 			this.oldUserMining = new HashMap<Long, UserMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldUserMining.put(Long.valueOf(((UserMining) l.get(i)).getId()), (UserMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldUserMining.size() + " old UserMinings.");
+			this.logger.info("Read " + this.oldUserMining.size() + " old UserMinings.");
 
-			final Query old_wiki = session.createQuery("from WikiMining x where x.platform="
+			final Query oldWiki = session.createQuery("from WikiMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<WikiMining>) old_wiki.list();
+			l = (ArrayList<WikiMining>) oldWiki.list();
 			this.oldWikiMining = new HashMap<Long, WikiMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldWikiMining.put(Long.valueOf(((WikiMining) l.get(i)).getId()), (WikiMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldWikiMining.size() + " old WikiMinings.");
+			this.logger.info("Read " + this.oldWikiMining.size() + " old WikiMinings.");
 
-			final Query old_group = session.createQuery("from GroupMining x where x.platform="
+			final Query oldGroup = session.createQuery("from GroupMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<GroupMining>) old_group.list();
+			l = (ArrayList<GroupMining>) oldGroup.list();
 			this.oldGroupMining = new HashMap<Long, GroupMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldGroupMining.put(Long.valueOf(((GroupMining) l.get(i)).getId()), (GroupMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldGroupMining.size() + " old GroupMinings.");
+			this.logger.info("Read " + this.oldGroupMining.size() + " old GroupMinings.");
 
-			final Query old_question = session.createQuery("from QuestionMining x where x.platform="
+			final Query oldQuestion = session.createQuery("from QuestionMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<QuestionMining>) old_question.list();
+			l = (ArrayList<QuestionMining>) oldQuestion.list();
 			this.oldQuestionMining = new HashMap<Long, QuestionMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldQuestionMining
 						.put(Long.valueOf(((QuestionMining) l.get(i)).getId()), (QuestionMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldQuestionMining.size() + " old QuestionMinings.");
+			this.logger.info("Read " + this.oldQuestionMining.size() + " old QuestionMinings.");
 
-			final Query old_role = session.createQuery("from RoleMining x where x.platform="
+			final Query oldRole = session.createQuery("from RoleMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<RoleMining>) old_role.list();
+			l = (ArrayList<RoleMining>) oldRole.list();
 			this.oldRoleMining = new HashMap<Long, RoleMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldRoleMining.put(Long.valueOf(((RoleMining) l.get(i)).getId()), (RoleMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldRoleMining.size() + " old RoleMinings.");
+			this.logger.info("Read " + this.oldRoleMining.size() + " old RoleMinings.");
 
-			final Query old_level = session.createQuery("from LevelMining x where x.platform="
+			final Query oldLevel = session.createQuery("from LevelMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<LevelMining>) old_level.list();
+			l = (ArrayList<LevelMining>) oldLevel.list();
 			this.oldLevelMining = new HashMap<Long, LevelMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldLevelMining.put(Long.valueOf(((LevelMining) l.get(i)).getId()), (LevelMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldLevelMining.size() + " old LevelMinings.");
+			this.logger.info("Read " + this.oldLevelMining.size() + " old LevelMinings.");
 
-			final Query old_chat = session.createQuery("from ChatMining x where x.platform="
+			final Query oldChat = session.createQuery("from ChatMining x where x.platform="
 					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<ChatMining>) old_chat.list();
+			l = (ArrayList<ChatMining>) oldChat.list();
 			this.oldChatMining = new HashMap<Long, ChatMining>();
 			for (int i = 0; i < l.size(); i++) {
 				this.oldChatMining.put(Long.valueOf(((ChatMining) l.get(i)).getId()), (ChatMining) l.get(i));
 			}
-			System.out.println("Read " + this.oldChatMining.size() + " old ChatMinings.");
+			this.logger.info("Read " + this.oldChatMining.size() + " old ChatMinings.");
 
 		} catch (final Exception e)
 		{
@@ -812,19 +815,19 @@ public class ClixImporter {
 			final Session session = ClixHibernateUtil.getSessionFactory(dbConfig).openSession();
 			session.clear();
 
-			System.out.println("Starting data extraction.");
+			this.logger.info("Starting data extraction.");
 
 			final Query pers = session.createQuery("from Person x order by x.id asc");
 			this.person = pers.list();
-			System.out.println("Person tables: " + this.person.size());
+			this.logger.info("Person tables: " + this.person.size());
 
 			final Query chatro = session.createQuery("from Chatroom x order by x.id asc");
 			this.chatroom = chatro.list();
-			System.out.println("Chatroom tables: " + this.chatroom.size());
+			this.logger.info("Chatroom tables: " + this.chatroom.size());
 
 			final Query eCompo = session.createQuery("from EComposing x order by x.id asc");
 			this.eComposing = eCompo.list();
-			System.out.println("EComposing tables: " + this.eComposing.size());
+			this.logger.info("EComposing tables: " + this.eComposing.size());
 			for (int i = 0; i < this.eComposing.size(); i++)
 			{
 				this.eComposingMap.put(this.eComposing.get(i).getComponent(), this.eComposing.get(i));
@@ -832,23 +835,23 @@ public class ClixImporter {
 
 			final Query portf = session.createQuery("from Portfolio x order by x.id asc");
 			this.portfolio = portf.list();
-			System.out.println("Portfolio tables: " + this.portfolio.size());
+			this.logger.info("Portfolio tables: " + this.portfolio.size());
 
 			final Query biTrack = session.createQuery("from BiTrackContentImpressions x order by x.id asc");
 			this.biTrackContentImpressions = biTrack.list();
-			System.out.println("biTrackContentImpressions tables: " + this.biTrackContentImpressions.size());
+			this.logger.info("biTrackContentImpressions tables: " + this.biTrackContentImpressions.size());
 
 			final Query chatProt = session.createQuery("from ChatProtocol x order by x.id asc");
 			this.chatProtocol = chatProt.list();
-			System.out.println("ChatProtocol tables: " + this.chatProtocol.size());
+			this.logger.info("ChatProtocol tables: " + this.chatProtocol.size());
 
 			final Query perComAss = session.createQuery("from PersonComponentAssignment x order by x.id asc");
 			this.personComponentAssignment = perComAss.list();
-			System.out.println("PersonComponentAssignment tables: " + this.personComponentAssignment.size());
+			this.logger.info("PersonComponentAssignment tables: " + this.personComponentAssignment.size());
 
 			final Query eCompTy = session.createQuery("from EComponentType x order by x.id asc");
 			this.eComponentType = eCompTy.list();
-			System.out.println("EComponentType tables: " + this.eComponentType.size());
+			this.logger.info("EComponentType tables: " + this.eComponentType.size());
 
 			final Query eComp = session.createQuery("from EComponent x order by x.id asc");
 			final List<EComponent> tmp = eComp.list();
@@ -859,79 +862,79 @@ public class ClixImporter {
 			}
 			tmp.clear();
 
-			System.out.println("EComponent tables: " + this.eComponentMap.values().size());
+			this.logger.info("EComponent tables: " + this.eComponentMap.values().size());
 
 			final Query exPer = session.createQuery("from ExercisePersonalised x order by x.id asc");
 			this.exercisePersonalised = exPer.list();
-			System.out.println("ExercisePersonalised tables: " + this.exercisePersonalised.size());
+			this.logger.info("ExercisePersonalised tables: " + this.exercisePersonalised.size());
 
 			final Query exGro = session.createQuery("from ExerciseGroup x order by x.id asc");
 			this.exerciseGroup = exGro.list();
-			System.out.println("ExerciseGroup tables: " + this.exerciseGroup.size());
+			this.logger.info("ExerciseGroup tables: " + this.exerciseGroup.size());
 
 			final Query foEnt = session.createQuery("from ForumEntry x order by x.id asc");
 			this.forumEntry = foEnt.list();
-			System.out.println("ForumEntry tables: " + this.forumEntry.size());
+			this.logger.info("ForumEntry tables: " + this.forumEntry.size());
 
 			final Query foEntS = session.createQuery("from ForumEntryState x order by x.id asc");
 			this.forumEntryState = foEntS.list();
-			System.out.println("ForumEntryState tables: " + this.forumEntryState.size());
+			this.logger.info("ForumEntryState tables: " + this.forumEntryState.size());
 
 			final Query plGrSp = session.createQuery("from PlatformGroupSpecification x order by x.id asc");
 			this.platformGroupSpecification = plGrSp.list();
-			System.out.println("PlatformGroupSpecification tables: " + this.platformGroupSpecification.size());
+			this.logger.info("PlatformGroupSpecification tables: " + this.platformGroupSpecification.size());
 
 			final Query plGr = session.createQuery("from PlatformGroup x order by x.id asc");
 			this.platformGroup = plGr.list();
-			System.out.println("PlatformGroup tables: " + this.platformGroup.size());
+			this.logger.info("PlatformGroup tables: " + this.platformGroup.size());
 
 			final Query porLo = session.createQuery("from PortfolioLog x order by x.id asc");
 			this.portfolioLog = porLo.list();
-			System.out.println("PortfolioLog tables: " + this.portfolioLog.size());
+			this.logger.info("PortfolioLog tables: " + this.portfolioLog.size());
 
 			final Query scoSes = session.createQuery("from ScormSessionTimes x order by x.id asc");
 			this.scormSessionTimes = scoSes.list();
-			System.out.println("ScormSession tables: " + this.scormSessionTimes.size());
+			this.logger.info("ScormSession tables: " + this.scormSessionTimes.size());
 
 			final Query t2Ta = session.createQuery("from T2Task x order by x.id asc");
 			this.t2Task = t2Ta.list();
-			System.out.println("T2Task tables: " + this.t2Task.size());
+			this.logger.info("T2Task tables: " + this.t2Task.size());
 
 			final Query tAnPos = session.createQuery("from TAnswerPosition x order by x.id asc");
 			this.tAnswerPosition = tAnPos.list();
-			System.out.println("TAnswerPosition tables: " + this.tAnswerPosition.size());
+			this.logger.info("TAnswerPosition tables: " + this.tAnswerPosition.size());
 
 			final Query tECEx = session.createQuery("from TeamExerciseComposingExt x order by x.id asc");
 			this.teamExerciseComposingExt = tECEx.list();
-			System.out.println("TeamExerciseComposingExt tables: " + this.teamExerciseComposingExt.size());
+			this.logger.info("TeamExerciseComposingExt tables: " + this.teamExerciseComposingExt.size());
 
 			final Query tEG = session.createQuery("from TeamExerciseGroup x order by x.id asc");
 			this.teamExerciseGroup = tEG.list();
-			System.out.println("TeamExerciseGroup tables: " + this.teamExerciseGroup.size());
+			this.logger.info("TeamExerciseGroup tables: " + this.teamExerciseGroup.size());
 
 			final Query tEGMem = session.createQuery("from TeamExerciseGroupMember x order by x.id asc");
 			this.teamExerciseGroupMember = tEGMem.list();
-			System.out.println("TeamExerciseGroupMember tables: " + this.teamExerciseGroupMember.size());
+			this.logger.info("TeamExerciseGroupMember tables: " + this.teamExerciseGroupMember.size());
 
 			final Query tGFSpec = session.createQuery("from TGroupFullSpecification x order by x.id asc");
 			this.tGroupFullSpecification = tGFSpec.list();
-			System.out.println("TGroupFullSpecification tables: " + this.tGroupFullSpecification.size());
+			this.logger.info("TGroupFullSpecification tables: " + this.tGroupFullSpecification.size());
 
 			final Query tQC = session.createQuery("from TQtiContent x order by x.id asc");
 			this.tQtiContent = tQC.list();
-			System.out.println("TQtiContent tables: " + this.tQtiContent.size());
+			this.logger.info("TQtiContent tables: " + this.tQtiContent.size());
 
 			final Query tQEA = session.createQuery("from TQtiEvalAssessment x order by x.id asc");
 			this.tQtiEvalAssessment = tQEA.list();
-			System.out.println("TQtiEvalAssessment tables: " + this.tQtiEvalAssessment.size());
+			this.logger.info("TQtiEvalAssessment tables: " + this.tQtiEvalAssessment.size());
 
 			final Query tTS = session.createQuery("from TTestSpecification x order by x.id asc");
 			this.tTestSpecification = tTS.list();
-			System.out.println("TTestSpecification tables: " + this.tTestSpecification.size());
+			this.logger.info("TTestSpecification tables: " + this.tTestSpecification.size());
 
 			final Query wE = session.createQuery("from WikiEntry x order by x.id asc");
 			this.wikiEntry = wE.list();
-			System.out.println("WikiEntry tables: " + this.wikiEntry.size());
+			this.logger.info("WikiEntry tables: " + this.wikiEntry.size());
 
 			// writeToFile();
 			// loadFromFile();
@@ -959,18 +962,18 @@ public class ClixImporter {
 			final Session session = ClixHibernateUtil.getSessionFactory(dbConfig).openSession();
 			session.clear();
 
-			System.out.println("Starting data extraction.");
+			this.logger.info("Starting data extraction.");
 
 			// Read the tables that don't refer to log-entries once
 			if (this.userMining == null)
 			{
 				final Query chatro = session.createQuery("from Chatroom x order by x.id asc");
 				this.chatroom = chatro.list();
-				System.out.println("Chatroom tables: " + this.chatroom.size());
+				this.logger.info("Chatroom tables: " + this.chatroom.size());
 
 				final Query eCompo = session.createQuery("from EComposing x order by x.id asc");
 				this.eComposing = eCompo.list();
-				System.out.println("EComposing tables: " + this.eComposing.size());
+				this.logger.info("EComposing tables: " + this.eComposing.size());
 				for (int i = 0; i < this.eComposing.size(); i++)
 				{
 					this.eComposingMap.put(this.eComposing.get(i).getComponent(), this.eComposing.get(i));
@@ -978,15 +981,15 @@ public class ClixImporter {
 
 				final Query portf = session.createQuery("from Portfolio x order by x.id asc");
 				this.portfolio = portf.list();
-				System.out.println("Portfolio tables: " + this.portfolio.size());
+				this.logger.info("Portfolio tables: " + this.portfolio.size());
 
 				final Query perComAss = session.createQuery("from PersonComponentAssignment x order by x.id asc");
 				this.personComponentAssignment = perComAss.list();
-				System.out.println("PersonComponentAssignment tables: " + this.personComponentAssignment.size());
+				this.logger.info("PersonComponentAssignment tables: " + this.personComponentAssignment.size());
 
 				final Query eCompTy = session.createQuery("from EComponentType x order by x.id asc");
 				this.eComponentType = eCompTy.list();
-				System.out.println("EComponentType tables: " + this.eComponentType.size());
+				this.logger.info("EComponentType tables: " + this.eComponentType.size());
 
 				final Query eComp = session.createQuery("from EComponent x order by x.id asc");
 				final List<EComponent> tmp = eComp.list();
@@ -994,51 +997,51 @@ public class ClixImporter {
 					this.eComponentMap.put(c.getId(), c);
 				}
 				tmp.clear();
-				System.out.println("EComponent tables: " + this.eComponentMap.values().size());
+				this.logger.info("EComponent tables: " + this.eComponentMap.values().size());
 
 				final Query pers = session.createQuery("from Person x order by x.id asc");
 				this.person = pers.list();
-				System.out.println("Person tables: " + this.person.size());
+				this.logger.info("Person tables: " + this.person.size());
 
 				final Query plGrSp = session.createQuery("from PlatformGroupSpecification x order by x.id asc");
 				this.platformGroupSpecification = plGrSp.list();
-				System.out.println("PlatformGroupSpecification tables: " + this.platformGroupSpecification.size());
+				this.logger.info("PlatformGroupSpecification tables: " + this.platformGroupSpecification.size());
 
 				final Query plGr = session.createQuery("from PlatformGroup x order by x.id asc");
 				this.platformGroup = plGr.list();
-				System.out.println("PlatformGroup tables: " + this.platformGroup.size());
+				this.logger.info("PlatformGroup tables: " + this.platformGroup.size());
 
 				final Query porLo = session.createQuery("from PortfolioLog x order by x.id asc");
 				this.portfolioLog = porLo.list();
-				System.out.println("PortfolioLog tables: " + this.portfolioLog.size());
+				this.logger.info("PortfolioLog tables: " + this.portfolioLog.size());
 
 				final Query t2Ta = session.createQuery("from T2Task x order by x.id asc");
 				this.t2Task = t2Ta.list();
-				System.out.println("T2Task tables: " + this.t2Task.size());
+				this.logger.info("T2Task tables: " + this.t2Task.size());
 
 				final Query tECEx = session.createQuery("from TeamExerciseComposingExt x order by x.id asc");
 				this.teamExerciseComposingExt = tECEx.list();
-				System.out.println("TeamExerciseComposingExt tables: " + this.teamExerciseComposingExt.size());
+				this.logger.info("TeamExerciseComposingExt tables: " + this.teamExerciseComposingExt.size());
 
 				final Query tEG = session.createQuery("from TeamExerciseGroup x order by x.id asc");
 				this.teamExerciseGroup = tEG.list();
-				System.out.println("TeamExerciseGroup tables: " + this.teamExerciseGroup.size());
+				this.logger.info("TeamExerciseGroup tables: " + this.teamExerciseGroup.size());
 
 				final Query tEGMem = session.createQuery("from TeamExerciseGroupMember x order by x.id asc");
 				this.teamExerciseGroupMember = tEGMem.list();
-				System.out.println("TeamExerciseGroupMember tables: " + this.teamExerciseGroupMember.size());
+				this.logger.info("TeamExerciseGroupMember tables: " + this.teamExerciseGroupMember.size());
 
 				final Query tGFSpec = session.createQuery("from TGroupFullSpecification x order by x.id asc");
 				this.tGroupFullSpecification = tGFSpec.list();
-				System.out.println("TGroupFullSpecification tables: " + this.tGroupFullSpecification.size());
+				this.logger.info("TGroupFullSpecification tables: " + this.tGroupFullSpecification.size());
 
 				final Query tQC = session.createQuery("from TQtiContent x order by x.id asc");
 				this.tQtiContent = tQC.list();
-				System.out.println("TQtiContent tables: " + this.tQtiContent.size());
+				this.logger.info("TQtiContent tables: " + this.tQtiContent.size());
 
 				final Query tTS = session.createQuery("from TTestSpecification x order by x.id asc");
 				this.tTestSpecification = tTS.list();
-				System.out.println("TTestSpecification tables: " + this.tTestSpecification.size());
+				this.logger.info("TTestSpecification tables: " + this.tTestSpecification.size());
 
 			}
 
@@ -1054,57 +1057,57 @@ public class ClixImporter {
 			chatProt.setParameter("start", startStr);
 			chatProt.setParameter("end", endStr);
 			this.chatProtocol = chatProt.list();
-			System.out.println("ChatProtocol tables: " + this.chatProtocol.size());
+			this.logger.info("ChatProtocol tables: " + this.chatProtocol.size());
 
 			final Query foEnt = session
 					.createQuery("from ForumEntry x where x.lastUpdated>=:start and x.lastUpdated<=:end order by x.id asc");
 			foEnt.setParameter("start", startStr);
 			foEnt.setParameter("end", endStr);
 			this.forumEntry = foEnt.list();
-			System.out.println("ForumEntry tables: " + this.forumEntry.size());
+			this.logger.info("ForumEntry tables: " + this.forumEntry.size());
 
 			final Query foEntS = session
 					.createQuery("from ForumEntryState x where x.lastUpdated>=:start and x.lastUpdated<=:end order by x.id asc");
 			foEntS.setParameter("start", startStr);
 			foEntS.setParameter("end", endStr);
 			this.forumEntryState = foEntS.list();
-			System.out.println("ForumEntryState tables: " + this.forumEntryState.size());
+			this.logger.info("ForumEntryState tables: " + this.forumEntryState.size());
 
 			final Query tAnPos = session.createQuery("from TAnswerPosition x order by x.id asc");
 			this.tAnswerPosition = tAnPos.list();
-			System.out.println("TAnswerPosition tables: " + this.tAnswerPosition.size());
+			this.logger.info("TAnswerPosition tables: " + this.tAnswerPosition.size());
 
 			final Query tQEA = session
 					.createQuery("from TQtiEvalAssessment x where x.lastInvocation>=:start and x.lastInvocation<=:end order by x.id asc");
 			tQEA.setParameter("start", startStr);
 			tQEA.setParameter("end", endStr);
 			this.tQtiEvalAssessment = tQEA.list();
-			System.out.println("TQtiEvalAssessment tables: " + this.tQtiEvalAssessment.size());
+			this.logger.info("TQtiEvalAssessment tables: " + this.tQtiEvalAssessment.size());
 
 			final Query scoSes = session
 					.createQuery("from ScormSessionTimes x where x.lastUpdated>=:start and x.lastUpdated<=:end order by x.id asc");
 			scoSes.setParameter("start", startStr);
 			scoSes.setParameter("end", endStr);
 			this.scormSessionTimes = scoSes.list();
-			System.out.println("ScormSession tables: " + this.scormSessionTimes.size());
+			this.logger.info("ScormSession tables: " + this.scormSessionTimes.size());
 
 			final Query wE = session
 					.createQuery("from WikiEntry x where x.lastUpdated>=:start and x.lastUpdated<=:end order by x.id asc");
 			wE.setParameter("start", startStr);
 			wE.setParameter("end", endStr);
 			this.wikiEntry = wE.list();
-			System.out.println("WikiEntry tables: " + this.wikiEntry.size());
+			this.logger.info("WikiEntry tables: " + this.wikiEntry.size());
 
 			final Query exPer = session
 					.createQuery("from ExercisePersonalised x  where x.uploadDate>=:start and x.uploadDate<=:end order by x.id asc");
 			exPer.setParameter("start", startStr);
 			exPer.setParameter("end", endStr);
 			this.exercisePersonalised = exPer.list();
-			System.out.println("ExercisePersonalised tables: " + this.exercisePersonalised.size());
+			this.logger.info("ExercisePersonalised tables: " + this.exercisePersonalised.size());
 
 			final Query exGro = session.createQuery("from ExerciseGroup x order by x.id asc");
 			this.exerciseGroup = exGro.list();
-			System.out.println("ExerciseGroup tables: " + this.exerciseGroup.size());
+			this.logger.info("ExerciseGroup tables: " + this.exerciseGroup.size());
 
 			// The date-strings have to be modified, because the date format of the table BiTrackContentImpressions is
 			// different
@@ -1116,7 +1119,7 @@ public class ClixImporter {
 			biTrack.setParameter("start", startStr);
 			biTrack.setParameter("end", endStr);
 			this.biTrackContentImpressions = biTrack.list();
-			System.out.println("biTrackContentImpressions tables: " + this.biTrackContentImpressions.size());
+			this.logger.info("biTrackContentImpressions tables: " + this.biTrackContentImpressions.size());
 
 			// writeToFile();
 			// loadFromFile();
@@ -1148,7 +1151,7 @@ public class ClixImporter {
 				chats.put(item.getId(), item);
 			}
 
-			System.out.println("Generated " + chats.size() + " ChatMining");
+			this.logger.info("Generated " + chats.size() + " ChatMining");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1196,7 +1199,7 @@ public class ClixImporter {
 				}
 
 			}
-			System.out.println("Generated " + resources.size() + " ResourceMining.");
+			this.logger.info("Generated " + resources.size() + " ResourceMining.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1236,7 +1239,7 @@ public class ClixImporter {
 					courses.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + courses.size() + " CourseMining.");
+			this.logger.info("Generated " + courses.size() + " CourseMining.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1270,7 +1273,7 @@ public class ClixImporter {
 
 				users.put(item.getId(), item);
 			}
-			System.out.println("Generated " + users.size() + " UserMining.");
+			this.logger.info("Generated " + users.size() + " UserMining.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1310,7 +1313,7 @@ public class ClixImporter {
 					assignments.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + assignments.size() + " AssignmentMinings.");
+			this.logger.info("Generated " + assignments.size() + " AssignmentMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1356,7 +1359,7 @@ public class ClixImporter {
 					quizzes.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + quizzes.size() + " QuizMinings.");
+			this.logger.info("Generated " + quizzes.size() + " QuizMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1396,7 +1399,7 @@ public class ClixImporter {
 					forums.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + forums.size() + " ForumMinings.");
+			this.logger.info("Generated " + forums.size() + " ForumMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1416,31 +1419,34 @@ public class ClixImporter {
 			for (final PlatformGroup loadedItem : this.platformGroup)
 			{
 				final RoleMining item = new RoleMining();
-				item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getTypeId()));
+				item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 				item.setPlatform(this.connector.getPlatformId());
-				switch (Integer.valueOf(item.getId() + ""))
+				switch (Integer.valueOf(loadedItem.getTypeId() + ""))
 				{
 					case 1: {
 						item.setName("Standard");
 						item.setShortname("Standard");
 						item.setSortOrder(1L);
+						item.setType(1);
 						break;
 					}
 					case 2:
 						item.setName("Admininstrator");
 						item.setShortname("Administrator");
 						item.setSortOrder(0L);
+						item.setType(0);
 						break;
 					default:
 						item.setName("Portal (extern)");
 						item.setShortname("Portal");
 						item.setSortOrder(2L);
+						item.setType(2);
 						break;
 				}
 
 				roles.put(item.getId(), item);
 			}
-			System.out.println("Generated " + roles.size() + " RoleMinings.");
+			this.logger.info("Generated " + roles.size() + " RoleMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1468,7 +1474,7 @@ public class ClixImporter {
 
 				groups.put(item.getId(), item);
 			}
-			System.out.println("Generated " + groups.size() + " GroupMinings.");
+			this.logger.info("Generated " + groups.size() + " GroupMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1509,7 +1515,7 @@ public class ClixImporter {
 					wikis.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + wikis.size() + " WikiMinings.");
+			this.logger.info("Generated " + wikis.size() + " WikiMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1528,7 +1534,7 @@ public class ClixImporter {
 	 * HashMap<Long, DepartmentMining> departments = new HashMap<Long, DepartmentMining>();
 	 * try{
 	 * 
-	 * System.out.println("Generated " + departments.size() + " DepartmentMinings.");
+	 * this.logger.info("Generated " + departments.size() + " DepartmentMinings.");
 	 * }catch(Exception e)
 	 * {
 	 * e.printStackTrace();
@@ -1552,7 +1558,7 @@ public class ClixImporter {
 	 * HashMap<Long, DegreeMining> degrees = new HashMap<Long, DegreeMining>();
 	 * try{
 	 * 
-	 * System.out.println("Generated " + degrees.size() + " DegreeMinings.");
+	 * this.logger.info("Generated " + degrees.size() + " DegreeMinings.");
 	 * }catch(Exception e)
 	 * {
 	 * e.printStackTrace();
@@ -1593,7 +1599,7 @@ public class ClixImporter {
 
 				questions.put(item.getId(), item);
 			}
-			System.out.println("Generated " + questions.size() + " QuestionMinings.");
+			this.logger.info("Generated " + questions.size() + " QuestionMinings.");
 
 		} catch (final Exception e)
 		{
@@ -1645,7 +1651,7 @@ public class ClixImporter {
 					scorms.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + scorms.size() + " ScormMinings.");
+			this.logger.info("Generated " + scorms.size() + " ScormMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1680,7 +1686,7 @@ public class ClixImporter {
 				}
 			}
 
-			System.out.println("Generated " + quizQuestions.size() + " QuizQuestionMinings.");
+			this.logger.info("Generated " + quizQuestions.size() + " QuizQuestionMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1721,7 +1727,7 @@ public class ClixImporter {
 
 			}
 
-			System.out.println("Generated " + courseScorms.size() + " CourseScormMinings.");
+			this.logger.info("Generated " + courseScorms.size() + " CourseScormMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1761,7 +1767,7 @@ public class ClixImporter {
 				}
 
 			}
-			System.out.println("Generated " + courseAssignments.size() + " CourseAssignmentMinings.");
+			this.logger.info("Generated " + courseAssignments.size() + " CourseAssignmentMinings.");
 
 		} catch (final Exception e)
 		{
@@ -1802,7 +1808,7 @@ public class ClixImporter {
 				}
 
 			}
-			System.out.println("Generated " + courseResources.size() + " CourseResourceMinings.");
+			this.logger.info("Generated " + courseResources.size() + " CourseResourceMinings.");
 
 		} catch (final Exception e)
 		{
@@ -1843,7 +1849,7 @@ public class ClixImporter {
 				}
 
 			}
-			System.out.println("Generated " + courseQuizzes.size() + " CourseQuizMinings.");
+			this.logger.info("Generated " + courseQuizzes.size() + " CourseQuizMinings.");
 
 		} catch (final Exception e)
 		{
@@ -1879,7 +1885,7 @@ public class ClixImporter {
 					quizUsers.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + quizUsers.size() + " QuizUserMinings.");
+			this.logger.info("Generated " + quizUsers.size() + " QuizUserMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1919,7 +1925,7 @@ public class ClixImporter {
 				}
 			}
 
-			System.out.println("Generated " + courseWikis.size() + " CourseWikiMinings.");
+			this.logger.info("Generated " + courseWikis.size() + " CourseWikiMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -1938,7 +1944,7 @@ public class ClixImporter {
 	 * HashMap<Long, DegreeCourseMining> degreeCourses = new HashMap<Long, DegreeCourseMining>();
 	 * 
 	 * try{
-	 * System.out.println("Generated " + degreeCourses.size() + " DegreeCourseMinings.");
+	 * this.logger.info("Generated " + degreeCourses.size() + " DegreeCourseMinings.");
 	 * 
 	 * }catch(Exception e)
 	 * {
@@ -1993,7 +1999,7 @@ public class ClixImporter {
 				}
 			}
 
-			System.out.println("Generated " + groupUsers.size() + " GroupUserMinings.");
+			this.logger.info("Generated " + groupUsers.size() + " GroupUserMinings.");
 
 		} catch (final Exception e)
 		{
@@ -2026,7 +2032,7 @@ public class ClixImporter {
 				}
 
 			}
-			System.out.println("Generated " + courseGroups.size() + " CourseGroupMinings.");
+			this.logger.info("Generated " + courseGroups.size() + " CourseGroupMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -2038,6 +2044,20 @@ public class ClixImporter {
 	{
 		final HashMap<Long, CourseUserMining> courseUser = new HashMap<Long, CourseUserMining>();
 		try{
+			
+			RoleMining teacher = null;
+			RoleMining student = null;
+			for(RoleMining r : roleMining.values())
+			{
+				if(r.getType() == 1)
+					teacher = r;
+				else if(r.getType() == 2)
+					student = r;
+				if(teacher != null && student != null)
+					break;
+					
+			}
+			
 			/** Students **/
 			for(Portfolio loadedItem : this.portfolio)
 			{
@@ -2045,10 +2065,10 @@ public class ClixImporter {
 				{
 					CourseUserMining item = new CourseUserMining();
 					
-					item.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+					item.setId(Long.valueOf(connector.getPrefix() + "0" + loadedItem.getId()));
 					item.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent()), courseMining, oldCourseMining);
 					item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining, oldUserMining);
-					//item.setRole(role, roleMining, oldRoleMining);
+					item.setRole(student.getId(), roleMining, oldRoleMining);
 					item.setPlatform(connector.getPlatformId());
 					item.setEnrolend(TimeConverter.getTimestamp(loadedItem.getEndDate()));
 					item.setEnrolstart(TimeConverter.getTimestamp(loadedItem.getStartDate()));
@@ -2062,16 +2082,16 @@ public class ClixImporter {
 			{
 				CourseUserMining item = new CourseUserMining();
 				//TODO ids can be duplicated
-				item.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+				item.setId(Long.valueOf(connector.getPrefix() + "1" + loadedItem.getLongId()));
 				item.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent()), courseMining, oldCourseMining);
 				item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining, oldUserMining);
-				//item.setRole(role, roleMining, oldRoleMining);
+				item.setRole(teacher.getId(), roleMining, oldRoleMining);
 				item.setPlatform(connector.getPlatformId());
 				
 				if(item.getCourse() != null && item.getUser() != null)
 					courseUser.put(item.getId(), item);
 			}
-			System.out.println("Generated " + courseUser.size() + " CourseUserMinings.");
+			this.logger.info("Generated " + courseUser.size() + " CourseUserMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -2114,7 +2134,7 @@ public class ClixImporter {
 				}
 			}
 
-			System.out.println("Generated " + courseForum.size() + " CourseForumMinings.");
+			this.logger.info("Generated " + courseForum.size() + " CourseForumMinings.");
 
 		} catch (final Exception e)
 		{
@@ -2198,7 +2218,7 @@ public class ClixImporter {
 					forumLogs.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + forumLogs.size() + " ForumLogMinings.");
+			this.logger.info("Generated " + forumLogs.size() + " ForumLogMinings.");
 
 		} catch (final Exception e)
 		{
@@ -2240,7 +2260,7 @@ public class ClixImporter {
 				}
 
 			}
-			System.out.println("Generated " + wikiLogs.size() + " WikiLogMinings.");
+			this.logger.info("Generated " + wikiLogs.size() + " WikiLogMinings.");
 
 		} catch (final Exception e)
 		{
@@ -2274,15 +2294,9 @@ public class ClixImporter {
 				if ((item.getCourse() != null) && (item.getUser() != null))
 				{
 					courseLogs.put(item.getId(), item);
-					if (item.getId() == 20438) {
-						System.out.println();
-					}
-				}
-				if (item.getId() == 22746) {
-					System.out.println();
 				}
 			}
-			System.out.println("Generated " + courseLogs.size() + " CourseLogMinings.");
+			this.logger.info("Generated " + courseLogs.size() + " CourseLogMinings.");
 
 		} catch (final Exception e)
 		{
@@ -2323,7 +2337,7 @@ public class ClixImporter {
 					questionLogs.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + questionLogs.size() + " QuestionLogMinings.");
+			this.logger.info("Generated " + questionLogs.size() + " QuestionLogMinings.");
 
 		} catch (final Exception e)
 		{
@@ -2367,7 +2381,7 @@ public class ClixImporter {
 				}
 
 			}
-			System.out.println("Generated " + quizLogs.size() + " QuizLogMinings.");
+			this.logger.info("Generated " + quizLogs.size() + " QuizLogMinings.");
 
 		} catch (final Exception e)
 		{
@@ -2428,7 +2442,7 @@ public class ClixImporter {
 					}
 				}
 			}
-			System.out.println("Generated " + assignmentLogs.size() + " AssignmentLogMinings.");
+			this.logger.info("Generated " + assignmentLogs.size() + " AssignmentLogMinings.");
 
 		} catch (final Exception e)
 		{
@@ -2482,11 +2496,11 @@ public class ClixImporter {
 
 				} catch (final NullPointerException e)
 				{
-					System.out.println("Couldn't parse grade: " + loadedItem.getScore());
+					this.logger.info("Couldn't parse grade: " + loadedItem.getScore());
 				}
 
 			}
-			System.out.println("Generated " + scormLogs.size() + " ScormLogMinings.");
+			this.logger.info("Generated " + scormLogs.size() + " ScormLogMinings.");
 
 		} catch (final Exception e)
 		{
@@ -2524,7 +2538,7 @@ public class ClixImporter {
 					resourceLogs.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + resourceLogs.size() + " ResourceLogMinings.");
+			this.logger.info("Generated " + resourceLogs.size() + " ResourceLogMinings.");
 
 		} catch (final Exception e)
 		{
@@ -2561,7 +2575,7 @@ public class ClixImporter {
 					chatLogs.put(item.getId(), item);
 				}
 			}
-			System.out.println("Generated " + chatLogs.size() + " ChatLogMinings.");
+			this.logger.info("Generated " + chatLogs.size() + " ChatLogMinings.");
 
 		} catch (final Exception e)
 		{
