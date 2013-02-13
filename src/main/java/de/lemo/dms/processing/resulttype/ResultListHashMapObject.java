@@ -16,6 +16,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.log4j.Logger;
 
+/**
+ * represents a list for HashMapObject's which is use to transfer data from
+ * the dms to the app-server
+ * @author Sebastian Schwarzrock
+ *
+ */
 @XmlRootElement
 public class ResultListHashMapObject {
 

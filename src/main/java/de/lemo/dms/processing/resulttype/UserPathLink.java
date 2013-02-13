@@ -9,6 +9,12 @@ package de.lemo.dms.processing.resulttype;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Represent a link between two nodes which are objects that have been uses
+ * by users
+ * @author Boris Wenzlaff
+ *
+ */
 @XmlRootElement
 public class UserPathLink {
 

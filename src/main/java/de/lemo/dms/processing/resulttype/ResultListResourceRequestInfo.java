@@ -13,6 +13,12 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * represents a list for ResourceRequestInfo objects which is use to transfer data from
+ * the dms to the app-server
+ * @author Sebastian Schwarzrock
+ *
+ */
 @XmlRootElement
 public class ResultListResourceRequestInfo {
 

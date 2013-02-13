@@ -15,6 +15,12 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 
+/**
+ * represents a list for Log objects which is use to transfer data from
+ * the dms to the app-server
+ * @author Sebastian Schwarzrock
+ *
+ */
 @XmlRootElement
 public class ResultListLog {
 
