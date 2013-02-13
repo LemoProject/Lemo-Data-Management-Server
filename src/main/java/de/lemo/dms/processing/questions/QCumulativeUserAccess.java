@@ -8,7 +8,6 @@
 package de.lemo.dms.processing.questions;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +17,6 @@ import java.util.Set;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import org.codehaus.jettison.json.JSONException;
 import org.hibernate.Session;
 import de.lemo.dms.processing.BoxPlotGeneratorForDates;
 import de.lemo.dms.processing.ELearningObjectType;
@@ -27,6 +25,11 @@ import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.BoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
 
+/**
+ * Accumulates the requests of the users to the objects over a period
+ * @author Boris Wenzlaff
+ *
+ */
 @Path("cumulative")
 public class QCumulativeUserAccess extends Question {
 
@@ -106,16 +109,16 @@ public class QCumulativeUserAccess extends Question {
 	 * Generiert die Querys für die Zusammenfassung der LearningObjects
 	 * Insbesondere der WHERE Klausel
 	 * 
-	 * @param timestamp_min
+	 * @param timestampMin
 	 *            Untergrenze für den Zeitraum
-	 * @param timestamp_max
+	 * @param timestampMax
 	 *            Obergrenze für den Zeitraum
 	 * @param types
 	 *            Learning Objects die erfasst werden sollen
 	 * @return Liste mit Querys zu den LearningObjects
 	 */
 	private Map<ELearningObjectType, String> generateQuerys(
-			final long timestamp_min, final long timestamp_max,
+			final long timestampMin, final long timestampMax,
 			final Set<ELearningObjectType> types,
 			final List<Long> departments,
 			final List<Long> degrees,
@@ -125,8 +128,8 @@ public class QCumulativeUserAccess extends Question {
 		final List<String> qa = new ArrayList<String>();
 
 		// prüfen des zeitraums
-		if ((timestamp_max != 0) && (timestamp_min != 0)
-				&& (timestamp_max >= timestamp_min)) {
+		if ((timestampMax != 0) && (timestampMin != 0)
+				&& (timestampMax >= timestampMin)) {
 			timeframe = true;
 		}
 		for (final ELearningObjectType loType : types) {
@@ -137,8 +140,8 @@ public class QCumulativeUserAccess extends Question {
 			}
 			// zeitraum
 			if (timeframe) {
-				qa.add(" timestamp >= " + timestamp_min + " AND timestamp<= "
-						+ timestamp_max);
+				qa.add(" timestamp >= " + timestampMin + " AND timestamp<= "
+						+ timestampMax);
 			}
 			// filter departments
 			if ((departments != null) && !departments.isEmpty()) {
@@ -201,9 +204,6 @@ public class QCumulativeUserAccess extends Question {
 
 	// generiert ein einfaches query mit einem inner join für die abfrage
 	private String generateBaseQuery(final String table) {
-		// return "SELECT "+ table +"_log.timestamp, user_id FROM "+ table
-		// +" INNER JOIN "+ table +"_log ON " + table + ".id = " + table +
-		// "_log."+ table +"_id";
 		final StringBuilder sb = new StringBuilder();
 		//TODO INSERT Chat for Objects
 		sb.append("SELECT timestamp, user_id, course.title as course, course.id as courseId, degree.title as degree, degree.id as degreeId, department.title AS department, department.id as departmentId");
