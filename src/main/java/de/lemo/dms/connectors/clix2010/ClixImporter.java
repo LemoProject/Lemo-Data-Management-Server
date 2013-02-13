@@ -61,6 +61,7 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.CourseQuizMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
 import de.lemo.dms.db.miningDBclass.CourseScormMining;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.CourseWikiMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
@@ -254,6 +255,8 @@ public class ClixImporter {
 	// Map, holding the CourseQuizMining objects, found in the current data extraction process
 	/** The course_quiz_mining. */
 	private Map<Long, CourseQuizMining> courseQuizMining;
+	/** The course_user_mining. */
+	private Map<Long, CourseUserMining> courseUserMining;
 	// Map, holding the CourseAssignmentMining objects, found in the current data extraction process
 	/** The course_assignment_mining. */
 	private Map<Long, CourseAssignmentMining> courseAssignmentMining;
@@ -465,6 +468,9 @@ public class ClixImporter {
 
 				// updates.add(level_course_mining.values());
 
+				this.courseUserMining = this.generateCourseUserMining();
+				updates.add(this.courseUserMining.values());
+				
 				this.quizQuestionMining = this.generateQuizQuestionMining();
 				updates.add(this.quizQuestionMining.values());
 
@@ -1410,7 +1416,7 @@ public class ClixImporter {
 			for (final PlatformGroup loadedItem : this.platformGroup)
 			{
 				final RoleMining item = new RoleMining();
-				item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+				item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getTypeId()));
 				item.setPlatform(this.connector.getPlatformId());
 				switch (Integer.valueOf(item.getId() + ""))
 				{
@@ -1418,20 +1424,17 @@ public class ClixImporter {
 						item.setName("Standard");
 						item.setShortname("Standard");
 						item.setSortOrder(1L);
-						item.setType(1);
 						break;
 					}
 					case 2:
 						item.setName("Admininstrator");
 						item.setShortname("Administrator");
 						item.setSortOrder(0L);
-						item.setType(0);
 						break;
 					default:
 						item.setName("Portal (extern)");
 						item.setShortname("Portal");
 						item.setSortOrder(2L);
-						item.setType(2);
 						break;
 				}
 
@@ -1697,8 +1700,11 @@ public class ClixImporter {
 		try {
 			for (final EComposing loadedItem : this.eComposing)
 			{
-				if ((this.scormMining.get(loadedItem.getComponent()) != null)
-						|| (this.oldScormMining.get(loadedItem.getComponent()) != null))
+				long id = 0;
+				if(loadedItem.getComponent() >= 0)
+					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
+				if ((this.scormMining.get(id) != null)
+						|| (this.oldScormMining.get(id) != null))
 				{
 					final CourseScormMining item = new CourseScormMining();
 					item.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getComposing()),
@@ -1734,8 +1740,11 @@ public class ClixImporter {
 		try {
 			for (final EComposing loadedItem : this.eComposing)
 			{
-				if ((this.assignmentMining.get(loadedItem.getComponent()) != null)
-						|| (this.oldAssignmentMining.get(loadedItem.getComponent()) != null))
+				long id = 0;
+				if(loadedItem.getComponent() >= 0)
+					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
+				if ((this.assignmentMining.get(id) != null)
+						|| (this.oldAssignmentMining.get(id) != null))
 				{
 					final CourseAssignmentMining item = new CourseAssignmentMining();
 
@@ -1773,8 +1782,11 @@ public class ClixImporter {
 		try {
 			for (final EComposing loadedItem : this.eComposing)
 			{
-				if ((this.resourceMining.get(loadedItem.getComponent()) != null)
-						|| (this.oldResourceMining.get(loadedItem.getComponent()) != null))
+				long id = 0;
+				if(loadedItem.getComponent() >= 0)
+					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
+				if ((this.resourceMining.get(id) != null)
+						|| (this.oldResourceMining.get(id) != null))
 				{
 					final CourseResourceMining item = new CourseResourceMining();
 					item.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getComposing()),
@@ -1811,8 +1823,11 @@ public class ClixImporter {
 		try {
 			for (final EComposing loadedItem : this.eComposing)
 			{
-				if ((this.quizMining.get(loadedItem.getComponent()) != null)
-						|| (this.oldQuizMining.get(loadedItem.getComponent()) != null))
+				long id = 0;
+				if(loadedItem.getComponent() >= 0)
+					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
+				if ((this.quizMining.get(id) != null)
+						|| (this.oldQuizMining.get(id) != null))
 				{
 					final CourseQuizMining item = new CourseQuizMining();
 					item.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getComposing()),
@@ -1884,8 +1899,11 @@ public class ClixImporter {
 
 			for (final EComposing loadedItem : this.eComposing)
 			{
-				if ((this.wikiMining.get(loadedItem.getComponent()) != null)
-						|| (this.oldWikiMining.get(loadedItem.getComponent()) != null))
+				long id = 0;
+				if(loadedItem.getComponent() >= 0)
+					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
+				if ((this.wikiMining.get(id) != null)
+						|| (this.oldWikiMining.get(id) != null))
 				{
 					final CourseWikiMining item = new CourseWikiMining();
 					item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
@@ -1956,6 +1974,24 @@ public class ClixImporter {
 				}
 
 			}
+			
+			for(TGroupFullSpecification loadedItem : this.tGroupFullSpecification)
+			{
+				GroupUserMining item = new GroupUserMining();
+				item.setGroup(Long.valueOf(connector.getPrefix() + "" + loadedItem.getGroup()), groupMining, oldGroupMining);
+				item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining, oldUserMining);
+				if(item.getGroup() != null && item.getUser() != null)
+				{
+					long id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getGroup() + "" + loadedItem.getPerson());
+					item.setId(id);
+					if(groupUsers.get(id) == null)
+						groupUsers.put(id, item);
+				}
+				
+				if ((item.getUser() != null) && (item.getGroup() != null)) {
+					groupUsers.put(item.getId(), item);
+				}
+			}
 
 			System.out.println("Generated " + groupUsers.size() + " GroupUserMinings.");
 
@@ -1997,6 +2033,53 @@ public class ClixImporter {
 		}
 		return courseGroups;
 	}
+	
+	private Map<Long, CourseUserMining> generateCourseUserMining()
+	{
+		final HashMap<Long, CourseUserMining> courseUser = new HashMap<Long, CourseUserMining>();
+		try{
+			/** Students **/
+			for(Portfolio loadedItem : this.portfolio)
+			{
+				if(loadedItem.getCourse() == 0)
+				{
+					CourseUserMining item = new CourseUserMining();
+					
+					item.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+					item.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent()), courseMining, oldCourseMining);
+					item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining, oldUserMining);
+					//item.setRole(role, roleMining, oldRoleMining);
+					item.setPlatform(connector.getPlatformId());
+					item.setEnrolend(TimeConverter.getTimestamp(loadedItem.getEndDate()));
+					item.setEnrolstart(TimeConverter.getTimestamp(loadedItem.getStartDate()));
+					
+					if(item.getCourse() != null && item.getUser() != null)
+						courseUser.put(item.getId(), item);
+				}
+			}
+			/** Tutors **/
+			for(PersonComponentAssignment loadedItem : this.personComponentAssignment)
+			{
+				CourseUserMining item = new CourseUserMining();
+				//TODO ids can be duplicated
+				item.setId(Long.valueOf(connector.getPrefix() + "" + loadedItem.getId()));
+				item.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent()), courseMining, oldCourseMining);
+				item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining, oldUserMining);
+				//item.setRole(role, roleMining, oldRoleMining);
+				item.setPlatform(connector.getPlatformId());
+				
+				if(item.getCourse() != null && item.getUser() != null)
+					courseUser.put(item.getId(), item);
+			}
+			System.out.println("Generated " + courseUser.size() + " CourseUserMinings.");
+		} catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return courseUser;
+	}
 
 	/**
 	 * Generates CourseForumMining-objects from the given data.
@@ -2010,8 +2093,11 @@ public class ClixImporter {
 
 			for (final EComposing loadedItem : this.eComposing)
 			{
-				if ((this.forumMining.get(loadedItem.getComponent()) != null)
-						|| (this.oldForumMining.get(loadedItem.getComponent()) != null))
+				long id = 0;
+				if(loadedItem.getComponent() >= 0)
+					id = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getComponent());
+				if ((this.forumMining.get(id) != null)
+						|| (this.oldForumMining.get(id) != null))
 				{
 					final CourseForumMining item = new CourseForumMining();
 					item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
@@ -2077,7 +2163,7 @@ public class ClixImporter {
 									+ ecMap.get(loadedItem.getForum()).getComposing()), this.courseMining,
 							this.oldCourseMining);
 				}
-
+				
 				if ((item.getUser() != null) && (item.getForum() != null)) {
 					forumLogs.put(item.getId(), item);
 				}
@@ -2100,7 +2186,14 @@ public class ClixImporter {
 					item.setCourse(ecMap.get(loadedItem.getForum()).getComposing(), this.courseMining,
 							this.oldCourseMining);
 				}
-
+				
+/*				if(item.getCourse() != null)
+				{
+					CourseForumMining cfm = new CourseForumMining();
+					cfm.setForum(item.getForum().getId(), this.forumMining, this.oldForumMining);
+					cfm.setCourse(item.getCourse().getId(), this.courseMining, this.oldCourseMining);
+				}
+*/
 				if ((item.getUser() != null) && (item.getForum() != null)) {
 					forumLogs.put(item.getId(), item);
 				}
@@ -2462,7 +2555,7 @@ public class ClixImporter {
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);
-				item.setCourse(item.getChat().getCourse());
+				//item.setCourse(item.getChat().getCourse());
 
 				if ((item.getChat() != null) && (item.getUser() != null)) {
 					chatLogs.put(item.getId(), item);
