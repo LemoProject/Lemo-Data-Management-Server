@@ -80,6 +80,11 @@ import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.WikiMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 
+/**
+ * Class to test the moodle data creator
+ * @author Sebastian Schwarzrock
+ *
+ */
 public class TestDataCreatorMoodle {
 
 	private ArrayList<AssignmentMining> assignmentList;
@@ -119,32 +124,32 @@ public class TestDataCreatorMoodle {
 	private ArrayList<LevelAssociationMining> departmentDegreeList;
 	private ArrayList<LevelCourseMining> degreeCourseList;
 
-	private static List<Log_LMS> log_lms = new ArrayList<Log_LMS>();
-	private static List<Resource_LMS> resource_lms = new ArrayList<Resource_LMS>();
-	private static List<Course_LMS> course_lms = new ArrayList<Course_LMS>();
-	private static List<Forum_LMS> forum_lms = new ArrayList<Forum_LMS>();
-	private static List<Wiki_LMS> wiki_lms = new ArrayList<Wiki_LMS>();
-	private static List<User_LMS> user_lms = new ArrayList<User_LMS>();
-	private static List<Quiz_LMS> quiz_lms = new ArrayList<Quiz_LMS>();
-	private static List<Quiz_question_instances_LMS> quiz_question_instances_lms = new ArrayList<Quiz_question_instances_LMS>();
-	private static List<Question_LMS> question_lms = new ArrayList<Question_LMS>();
-	private static List<Groups_LMS> group_lms = new ArrayList<Groups_LMS>();
-	private static List<Groups_members_LMS> group_members_lms = new ArrayList<Groups_members_LMS>();
-	private static List<Question_states_LMS> question_states_lms = new ArrayList<Question_states_LMS>();
-	private static List<Forum_posts_LMS> forum_posts_lms = new ArrayList<Forum_posts_LMS>();
-	private static List<Role_LMS> role_lms = new ArrayList<Role_LMS>();
-	private static List<Context_LMS> context_lms = new ArrayList<Context_LMS>();
-	private static List<Role_assignments_LMS> role_assignments_lms = new ArrayList<Role_assignments_LMS>();
-	private static List<Assignment_LMS> assignment_lms = new ArrayList<Assignment_LMS>();
-	private static List<Assignment_submissions_LMS> assignment_submission_lms = new ArrayList<Assignment_submissions_LMS>();
-	private static List<Quiz_grades_LMS> quiz_grades_lms = new ArrayList<Quiz_grades_LMS>();
-	private static List<Forum_discussions_LMS> forum_discussions_lms = new ArrayList<Forum_discussions_LMS>();
-	private static List<Scorm_LMS> scorm_lms = new ArrayList<Scorm_LMS>();
-	private static List<Grade_grades_LMS> grade_grades_lms = new ArrayList<Grade_grades_LMS>();
-	private static List<Grade_items_LMS> grade_items_lms = new ArrayList<Grade_items_LMS>();
-	private static List<Chat_LMS> chat_lms = new ArrayList<Chat_LMS>();
-	private static List<ChatLog_LMS> chat_log_lms = new ArrayList<ChatLog_LMS>();
-	private static List<CourseCategories_LMS> course_categories_lms = new ArrayList<CourseCategories_LMS>();
+	private static List<Log_LMS> logLms = new ArrayList<Log_LMS>();
+	private static List<Resource_LMS> resourceLms = new ArrayList<Resource_LMS>();
+	private static List<Course_LMS> courseLms = new ArrayList<Course_LMS>();
+	private static List<Forum_LMS> forumLms = new ArrayList<Forum_LMS>();
+	private static List<Wiki_LMS> wikiLms = new ArrayList<Wiki_LMS>();
+	private static List<User_LMS> userLms = new ArrayList<User_LMS>();
+	private static List<Quiz_LMS> quizLms = new ArrayList<Quiz_LMS>();
+	private static List<Quiz_question_instances_LMS> quizQuestionInstancesLms = new ArrayList<Quiz_question_instances_LMS>();
+	private static List<Question_LMS> questionLms = new ArrayList<Question_LMS>();
+	private static List<Groups_LMS> groupLms = new ArrayList<Groups_LMS>();
+	private static List<Groups_members_LMS> groupMembersLms = new ArrayList<Groups_members_LMS>();
+	private static List<Question_states_LMS> questionStatesLms = new ArrayList<Question_states_LMS>();
+	private static List<Forum_posts_LMS> forumPostsLms = new ArrayList<Forum_posts_LMS>();
+	private static List<Role_LMS> roleLms = new ArrayList<Role_LMS>();
+	private static List<Context_LMS> contextLms = new ArrayList<Context_LMS>();
+	private static List<Role_assignments_LMS> roleAssignmentsLms = new ArrayList<Role_assignments_LMS>();
+	private static List<Assignment_LMS> assignmentLMS = new ArrayList<Assignment_LMS>();
+	private static List<Assignment_submissions_LMS> assignmentSubmissionLms = new ArrayList<Assignment_submissions_LMS>();
+	private static List<Quiz_grades_LMS> quizGradesLms = new ArrayList<Quiz_grades_LMS>();
+	private static List<Forum_discussions_LMS> forumDiscussionsLms = new ArrayList<Forum_discussions_LMS>();
+	private static List<Scorm_LMS> scormLms = new ArrayList<Scorm_LMS>();
+	private static List<Grade_grades_LMS> gradeGradesLms = new ArrayList<Grade_grades_LMS>();
+	private static List<Grade_items_LMS> gradeItemsLms = new ArrayList<Grade_items_LMS>();
+	private static List<Chat_LMS> chatLms = new ArrayList<Chat_LMS>();
+	private static List<ChatLog_LMS> chatLogLms = new ArrayList<ChatLog_LMS>();
+	private static List<CourseCategories_LMS> courseCategoriesLms = new ArrayList<CourseCategories_LMS>();
 
 	private HashMap<Long, CourseMining> couAssMap;
 	private HashMap<Long, CourseMining> couForMap;
@@ -170,7 +175,7 @@ public class TestDataCreatorMoodle {
 			lms.setFirstaccess(item.getFirstAccess());
 			lms.setLastlogin(item.getLastLogin());
 
-			TestDataCreatorMoodle.user_lms.add(lms);
+			TestDataCreatorMoodle.userLms.add(lms);
 		}
 	}
 
@@ -186,7 +191,7 @@ public class TestDataCreatorMoodle {
 			lms.setSortorder(item.getSortOrder());
 			lms.setDescription(item.getDescription());
 
-			TestDataCreatorMoodle.role_lms.add(lms);
+			TestDataCreatorMoodle.roleLms.add(lms);
 		}
 	}
 
@@ -201,7 +206,7 @@ public class TestDataCreatorMoodle {
 			lms.setSummary(item.getSummary());
 			lms.setCourse(this.couWikMap.get(item.getId()).getId());
 
-			TestDataCreatorMoodle.wiki_lms.add(lms);
+			TestDataCreatorMoodle.wikiLms.add(lms);
 		}
 	}
 
@@ -217,7 +222,7 @@ public class TestDataCreatorMoodle {
 			lms.setTimemodified(item.getTimeModified());
 			lms.setCourse(this.couScoMap.get(item.getId()).getId());
 
-			TestDataCreatorMoodle.scorm_lms.add(lms);
+			TestDataCreatorMoodle.scormLms.add(lms);
 		}
 	}
 
@@ -234,7 +239,7 @@ public class TestDataCreatorMoodle {
 			final Context_LMS lms = new Context_LMS();
 			final CourseCategories_LMS lms2 = new CourseCategories_LMS();
 
-			lms2.setId(TestDataCreatorMoodle.course_categories_lms.size() + 1);
+			lms2.setId(TestDataCreatorMoodle.courseCategoriesLms.size() + 1);
 			lms2.setTitle(item.getTitle());
 			lms2.setDepth(1);
 			lms2.setPath("/" + item.getId());
@@ -242,12 +247,12 @@ public class TestDataCreatorMoodle {
 			lms.setContextlevel(40);
 			lms.setDepth(2);
 			lms.setInstanceid(lms2.getId());
-			lms.setId(TestDataCreatorMoodle.context_lms.size() + 1);
+			lms.setId(TestDataCreatorMoodle.contextLms.size() + 1);
 			lms.setPath("/1/" + lms.getId());
 
-			TestDataCreatorMoodle.course_categories_lms.add(lms2);
+			TestDataCreatorMoodle.courseCategoriesLms.add(lms2);
 
-			TestDataCreatorMoodle.context_lms.add(lms);
+			TestDataCreatorMoodle.contextLms.add(lms);
 			depIdMap.put(item.getId(), lms);
 		}
 
@@ -258,7 +263,7 @@ public class TestDataCreatorMoodle {
 
 			final LevelMining dm = this.depDegMap.get(item.getId());
 
-			lms2.setId(TestDataCreatorMoodle.course_categories_lms.size() + 1);
+			lms2.setId(TestDataCreatorMoodle.courseCategoriesLms.size() + 1);
 			lms2.setTitle(item.getTitle());
 			lms2.setDepth(2);
 			lms2.setPath("/" + depIdMap.get(dm.getId()).getId() + "/" + lms2.getId());
@@ -267,14 +272,14 @@ public class TestDataCreatorMoodle {
 			lms.setContextlevel(40);
 			lms.setDepth(3);
 			lms.setInstanceid(lms2.getId());
-			lms.setId(TestDataCreatorMoodle.context_lms.size() + 1);
+			lms.setId(TestDataCreatorMoodle.contextLms.size() + 1);
 			final Context_LMS cl = depIdMap.get(dm.getId());
 			lms.setPath(cl.getPath() + "/" + lms.getId());
 
 			degIdMap.put(item.getId(), lms);
-			TestDataCreatorMoodle.context_lms.add(lms);
+			TestDataCreatorMoodle.contextLms.add(lms);
 
-			TestDataCreatorMoodle.course_categories_lms.add(lms2);
+			TestDataCreatorMoodle.courseCategoriesLms.add(lms2);
 
 		}
 		// Create entries (context) for all courses
@@ -282,7 +287,7 @@ public class TestDataCreatorMoodle {
 		{
 			final Context_LMS lms = new Context_LMS();
 
-			lms.setId(TestDataCreatorMoodle.context_lms.size() + 1);
+			lms.setId(TestDataCreatorMoodle.contextLms.size() + 1);
 			lms.setDepth(4);
 			lms.setContextlevel(50);
 			lms.setInstanceid(item.getCourse().getId());
@@ -291,7 +296,7 @@ public class TestDataCreatorMoodle {
 
 			couIdMap.put(item.getId(), lms);
 
-			TestDataCreatorMoodle.context_lms.add(lms);
+			TestDataCreatorMoodle.contextLms.add(lms);
 		}
 		// Create entries (role_assignments) for all users
 		for (final CourseUserMining item : this.courseUserList)
@@ -305,7 +310,7 @@ public class TestDataCreatorMoodle {
 			lms2.setTimestart(item.getEnrolstart());
 			lms2.setContextid(couIdMap.get(item.getCourse().getId()).getId());
 
-			TestDataCreatorMoodle.role_assignments_lms.add(lms2);
+			TestDataCreatorMoodle.roleAssignmentsLms.add(lms2);
 		}
 
 	}
@@ -340,7 +345,7 @@ public class TestDataCreatorMoodle {
 			lms.setInfo(item.getResource().getId() + "");
 			lms.setUserid(item.getUser().getId());
 
-			TestDataCreatorMoodle.log_lms.add(lms);
+			TestDataCreatorMoodle.logLms.add(lms);
 		}
 		final HashMap<Long, Forum_discussions_LMS> forDisSet = new HashMap<Long, Forum_discussions_LMS>();
 		for (final ForumLogMining item : this.forumLogList)
@@ -348,14 +353,14 @@ public class TestDataCreatorMoodle {
 			final Log_LMS lms = new Log_LMS();
 			final Forum_posts_LMS lms2 = new Forum_posts_LMS();
 
-			lms2.setId(TestDataCreatorMoodle.forum_posts_lms.size() + 1);
+			lms2.setId(TestDataCreatorMoodle.forumPostsLms.size() + 1);
 			lms2.setMessage(item.getMessage());
 			lms2.setSubject(item.getSubject());
 			lms2.setUserid(item.getUser().getId());
 			lms2.setCreated(item.getTimestamp());
 			lms2.setModified(item.getTimestamp());
 
-			TestDataCreatorMoodle.forum_posts_lms.add(lms2);
+			TestDataCreatorMoodle.forumPostsLms.add(lms2);
 
 			if ((item.getAction().equals("add discussion") || item.getAction().equals("view discussion")))
 			{
@@ -375,9 +380,9 @@ public class TestDataCreatorMoodle {
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
 
-			TestDataCreatorMoodle.log_lms.add(lms);
+			TestDataCreatorMoodle.logLms.add(lms);
 		}
-		TestDataCreatorMoodle.forum_discussions_lms.addAll(forDisSet.values());
+		TestDataCreatorMoodle.forumDiscussionsLms.addAll(forDisSet.values());
 		for (final AssignmentLogMining item : this.assignmentLogList)
 		{
 			final Log_LMS lms = new Log_LMS();
@@ -390,7 +395,7 @@ public class TestDataCreatorMoodle {
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
 
-			TestDataCreatorMoodle.log_lms.add(lms);
+			TestDataCreatorMoodle.logLms.add(lms);
 
 			if (item.getAction().equals("upload"))
 			{
@@ -400,9 +405,9 @@ public class TestDataCreatorMoodle {
 				lms2.setAssignment(item.getAssignment().getId());
 				lms2.setUserid(item.getUser().getId() + "");
 				lms2.setTimemodified(item.getTimestamp());
-				lms2.setId(TestDataCreatorMoodle.assignment_submission_lms.size() + 1);
+				lms2.setId(TestDataCreatorMoodle.assignmentSubmissionLms.size() + 1);
 
-				TestDataCreatorMoodle.assignment_submission_lms.add(lms2);
+				TestDataCreatorMoodle.assignmentSubmissionLms.add(lms2);
 			}
 		}
 		for (final QuizLogMining item : this.quizLogList)
@@ -423,12 +428,12 @@ public class TestDataCreatorMoodle {
 				lms2.setTimemodified(item.getTimestamp());
 				lms2.setUserid(item.getUser().getId() + "");
 				lms2.setQuiz(item.getQuiz().getId());
-				lms2.setId(TestDataCreatorMoodle.quiz_grades_lms.size() + 1);
+				lms2.setId(TestDataCreatorMoodle.quizGradesLms.size() + 1);
 
-				TestDataCreatorMoodle.quiz_grades_lms.add(lms2);
+				TestDataCreatorMoodle.quizGradesLms.add(lms2);
 			}
 
-			TestDataCreatorMoodle.log_lms.add(lms);
+			TestDataCreatorMoodle.logLms.add(lms);
 		}
 		/*
 		 * for(QuestionLogMining item : questionLogList)
@@ -455,7 +460,7 @@ public class TestDataCreatorMoodle {
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
 
-			TestDataCreatorMoodle.log_lms.add(lms);
+			TestDataCreatorMoodle.logLms.add(lms);
 		}
 		for (final WikiLogMining item : this.wikiLogList)
 		{
@@ -469,7 +474,7 @@ public class TestDataCreatorMoodle {
 			lms.setUserid(item.getUser().getId());
 			lms.setCmid(item.getWiki().getId());
 
-			TestDataCreatorMoodle.log_lms.add(lms);
+			TestDataCreatorMoodle.logLms.add(lms);
 		}
 		for (final CourseLogMining item : this.courseLogList)
 		{
@@ -481,7 +486,7 @@ public class TestDataCreatorMoodle {
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
 
-			TestDataCreatorMoodle.log_lms.add(lms);
+			TestDataCreatorMoodle.logLms.add(lms);
 		}
 	}
 
@@ -498,7 +503,7 @@ public class TestDataCreatorMoodle {
 				lms.setCourse(this.couResMap.get(item.getId()).getId());
 			}
 
-			TestDataCreatorMoodle.resource_lms.add(lms);
+			TestDataCreatorMoodle.resourceLms.add(lms);
 		}
 	}
 
@@ -519,7 +524,7 @@ public class TestDataCreatorMoodle {
 			lms.setIntro(item.getSummary());
 			lms.setCourse(cFMap.get(lms.getId()));
 
-			TestDataCreatorMoodle.forum_lms.add(lms);
+			TestDataCreatorMoodle.forumLms.add(lms);
 
 		}
 
@@ -540,7 +545,7 @@ public class TestDataCreatorMoodle {
 			lms.setEnrolenddate(item.getEnrolEnd());
 			lms.setStartdate(item.getStartDate());
 
-			TestDataCreatorMoodle.course_lms.add(lms);
+			TestDataCreatorMoodle.courseLms.add(lms);
 		}
 	}
 
@@ -560,7 +565,7 @@ public class TestDataCreatorMoodle {
 
 			couId.put(item.getChat().getId(), item.getCourse().getId());
 
-			TestDataCreatorMoodle.chat_log_lms.add(lms);
+			TestDataCreatorMoodle.chatLogLms.add(lms);
 		}
 
 		for (final ChatMining item : this.chatList)
@@ -574,7 +579,7 @@ public class TestDataCreatorMoodle {
 			lms.setDescription(item.getDescription());
 			lms.setChattime(item.getChatTime());
 
-			TestDataCreatorMoodle.chat_lms.add(lms);
+			TestDataCreatorMoodle.chatLms.add(lms);
 		}
 	}
 
@@ -597,10 +602,10 @@ public class TestDataCreatorMoodle {
 			lms2.setIteminstance(item.getId());
 			lms2.setItemmodule("assignment");
 			lms2.setGrademax(item.getMaxGrade());
-			lms2.setId(TestDataCreatorMoodle.grade_items_lms.size());
+			lms2.setId(TestDataCreatorMoodle.gradeItemsLms.size());
 
-			TestDataCreatorMoodle.grade_items_lms.add(lms2);
-			TestDataCreatorMoodle.assignment_lms.add(lms);
+			TestDataCreatorMoodle.gradeItemsLms.add(lms2);
+			TestDataCreatorMoodle.assignmentLMS.add(lms);
 		}
 	}
 
@@ -788,7 +793,7 @@ public class TestDataCreatorMoodle {
 			lms.setTimecreated(item.getTimeCreated());
 			lms.setTimemodified(item.getTimeModified());
 
-			TestDataCreatorMoodle.group_lms.add(lms);
+			TestDataCreatorMoodle.groupLms.add(lms);
 
 		}
 	}
@@ -804,7 +809,7 @@ public class TestDataCreatorMoodle {
 			lms.setUserid(item.getUser().getId());
 			lms.setTimeadded(item.getTimestamp());
 
-			TestDataCreatorMoodle.group_members_lms.add(lms);
+			TestDataCreatorMoodle.groupMembersLms.add(lms);
 		}
 	}
 
@@ -829,13 +834,13 @@ public class TestDataCreatorMoodle {
 			lms.setTimecreated(item.getTimeCreated());
 			lms.setTimemodified(item.getTimeModified());
 
-			lms2.setId(TestDataCreatorMoodle.grade_items_lms.size() + 1);
+			lms2.setId(TestDataCreatorMoodle.gradeItemsLms.size() + 1);
 			lms2.setGrademax(item.getMaxGrade());
 			lms2.setIteminstance(item.getId());
 			lms2.setItemmodule("quiz");
 
-			TestDataCreatorMoodle.grade_items_lms.add(lms2);
-			TestDataCreatorMoodle.quiz_lms.add(lms);
+			TestDataCreatorMoodle.gradeItemsLms.add(lms2);
+			TestDataCreatorMoodle.quizLms.add(lms);
 		}
 	}
 
@@ -852,7 +857,7 @@ public class TestDataCreatorMoodle {
 			lms.setTimecreated(item.getTimeCreated());
 			lms.setTimemodified(item.getTimeModified());
 
-			TestDataCreatorMoodle.question_lms.add(lms);
+			TestDataCreatorMoodle.questionLms.add(lms);
 		}
 	}
 
@@ -868,7 +873,7 @@ public class TestDataCreatorMoodle {
 			lms.setQuiz(item.getQuiz().getId());
 
 			// tempMap.put(lms.getId(), lms);
-			TestDataCreatorMoodle.quiz_question_instances_lms.add(lms);
+			TestDataCreatorMoodle.quizQuestionInstancesLms.add(lms);
 
 		}
 		// quiz_question_instances_lms.addAll(tempMap.values());
@@ -885,15 +890,15 @@ public class TestDataCreatorMoodle {
 			lms.setFinalgrade(item.getFinalGrade());
 			lms.setUserid(item.getUser().getId());
 			lms.setTimemodified(item.getTimeModified());
-			lms.setItemid(TestDataCreatorMoodle.grade_items_lms.size() + 1);
+			lms.setItemid(TestDataCreatorMoodle.gradeItemsLms.size() + 1);
 
 			final Grade_items_LMS lms2 = new Grade_items_LMS();
 			lms2.setCourseid(item.getCourse().getId());
 			lms2.setIteminstance(item.getQuiz().getId());
 			lms2.setId(lms.getItemid());
 
-			TestDataCreatorMoodle.grade_items_lms.add(lms2);
-			TestDataCreatorMoodle.grade_grades_lms.add(lms);
+			TestDataCreatorMoodle.gradeItemsLms.add(lms2);
+			TestDataCreatorMoodle.gradeGradesLms.add(lms);
 		}
 	}
 
@@ -931,7 +936,7 @@ public class TestDataCreatorMoodle {
 				lms.setEvent((short) 9);
 			}
 
-			TestDataCreatorMoodle.question_states_lms.add(lms);
+			TestDataCreatorMoodle.questionStatesLms.add(lms);
 		}
 	}
 
@@ -960,33 +965,33 @@ public class TestDataCreatorMoodle {
 		this.generateContextLMS();
 		this.generateChatLogLMS();
 
-		all.add(TestDataCreatorMoodle.user_lms);
-		all.add(TestDataCreatorMoodle.quiz_lms);
-		all.add(TestDataCreatorMoodle.quiz_question_instances_lms);
-		all.add(TestDataCreatorMoodle.question_lms);
-		all.add(TestDataCreatorMoodle.assignment_lms);
-		all.add(TestDataCreatorMoodle.chat_lms);
-		all.add(TestDataCreatorMoodle.group_members_lms);
-		all.add(TestDataCreatorMoodle.group_lms);
-		all.add(TestDataCreatorMoodle.resource_lms);
-		all.add(TestDataCreatorMoodle.role_lms);
+		all.add(TestDataCreatorMoodle.userLms);
+		all.add(TestDataCreatorMoodle.quizLms);
+		all.add(TestDataCreatorMoodle.quizQuestionInstancesLms);
+		all.add(TestDataCreatorMoodle.questionLms);
+		all.add(TestDataCreatorMoodle.assignmentLMS);
+		all.add(TestDataCreatorMoodle.chatLms);
+		all.add(TestDataCreatorMoodle.groupMembersLms);
+		all.add(TestDataCreatorMoodle.groupLms);
+		all.add(TestDataCreatorMoodle.resourceLms);
+		all.add(TestDataCreatorMoodle.roleLms);
 
-		all.add(TestDataCreatorMoodle.forum_lms);
-		all.add(TestDataCreatorMoodle.course_lms);
-		all.add(TestDataCreatorMoodle.scorm_lms);
-		all.add(TestDataCreatorMoodle.wiki_lms);
-		all.add(TestDataCreatorMoodle.chat_log_lms);
-		all.add(TestDataCreatorMoodle.log_lms);
-		all.add(TestDataCreatorMoodle.forum_posts_lms);
-		all.add(TestDataCreatorMoodle.forum_discussions_lms);
-		all.add(TestDataCreatorMoodle.context_lms);
-		all.add(TestDataCreatorMoodle.course_categories_lms);
-		all.add(TestDataCreatorMoodle.role_assignments_lms);
-		all.add(TestDataCreatorMoodle.grade_items_lms);
-		all.add(TestDataCreatorMoodle.grade_grades_lms);
-		all.add(TestDataCreatorMoodle.question_states_lms);
-		all.add(TestDataCreatorMoodle.quiz_grades_lms);
-		all.add(TestDataCreatorMoodle.assignment_submission_lms);
+		all.add(TestDataCreatorMoodle.forumLms);
+		all.add(TestDataCreatorMoodle.courseLms);
+		all.add(TestDataCreatorMoodle.scormLms);
+		all.add(TestDataCreatorMoodle.wikiLms);
+		all.add(TestDataCreatorMoodle.chatLogLms);
+		all.add(TestDataCreatorMoodle.logLms);
+		all.add(TestDataCreatorMoodle.forumPostsLms);
+		all.add(TestDataCreatorMoodle.forumDiscussionsLms);
+		all.add(TestDataCreatorMoodle.contextLms);
+		all.add(TestDataCreatorMoodle.courseCategoriesLms);
+		all.add(TestDataCreatorMoodle.roleAssignmentsLms);
+		all.add(TestDataCreatorMoodle.gradeItemsLms);
+		all.add(TestDataCreatorMoodle.gradeGradesLms);
+		all.add(TestDataCreatorMoodle.questionStatesLms);
+		all.add(TestDataCreatorMoodle.quizGradesLms);
+		all.add(TestDataCreatorMoodle.assignmentSubmissionLms);
 
 		final IDBHandler dbHandler = new HibernateDBHandler();
 		final Session session = dbHandler.getMiningSession();
