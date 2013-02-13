@@ -54,6 +54,11 @@ import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.WikiMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 
+/**
+ * Generates data for an test db system
+ * @author Sebastian Schwarzrock
+ *
+ */
 public class ContentGenerator {
 
 	private ESystem system;
