@@ -253,7 +253,7 @@ public class ClixImporter {
 	private Map<Long, QuizQuestionMining> quizQuestionMining;
 	// Map, holding the CourseQuizMining objects, found in the current data extraction process
 	/** The course_quiz_mining. */
-	private Map<Long, CourseQuizMining> course_quiz_mining;
+	private Map<Long, CourseQuizMining> courseQuizMining;
 	// Map, holding the CourseAssignmentMining objects, found in the current data extraction process
 	/** The course_assignment_mining. */
 	private Map<Long, CourseAssignmentMining> courseAssignmentMining;
@@ -468,8 +468,8 @@ public class ClixImporter {
 				this.quizQuestionMining = this.generateQuizQuestionMining();
 				updates.add(this.quizQuestionMining.values());
 
-				this.course_quiz_mining = this.generateCourseQuizMining();
-				updates.add(this.course_quiz_mining.values());
+				this.courseQuizMining = this.generateCourseQuizMining();
+				updates.add(this.courseQuizMining.values());
 
 				//
 				this.courseAssignmentMining = this.generateCourseAssignmentMining();
