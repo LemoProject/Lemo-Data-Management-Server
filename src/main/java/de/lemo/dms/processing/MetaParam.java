@@ -31,5 +31,6 @@ public interface MetaParam {
 	String TYPES = "types";
 	String UNIQUE_USER = "unique_user";
 	String USER_IDS = "uid";
+	String USER_NAME = "uname";
 	String QUIZ_IDS = "quiz_ids";
 }

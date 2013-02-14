@@ -19,17 +19,18 @@ import de.lemo.dms.core.Version;
  * @author Boris Wenzlaff
  */
 @Produces(MediaType.APPLICATION_JSON)
+@Path("version")
 public class ServiceVersion extends BaseService {
 
 	@GET
-	@Path("dmsversion")
+	@Path("dms")
 	public String getDMSVersion() {
 		final Version v = new Version();
 		return v.getServerVersion();
 	}
 
 	@GET
-	@Path("dbversion")
+	@Path("db")
 	public String getDBVersion() {
 		final Version v = new Version();
 		return v.getDBVersion();

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.hibernate.Criteria;
@@ -20,13 +21,14 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
+import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 @Path("teachercourses")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceTeacherCourses extends BaseService {
 
 	@GET
-	public ResultListLongObject getTeachersCourses(Long id) {
+	public ResultListLongObject getTeachersCourses(@QueryParam(MetaParam.USER_IDS) Long id) {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
