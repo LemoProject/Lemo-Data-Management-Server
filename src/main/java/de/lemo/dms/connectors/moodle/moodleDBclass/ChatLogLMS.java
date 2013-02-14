@@ -10,17 +10,17 @@ package de.lemo.dms.connectors.moodle.moodleDBclass;
 public class ChatLogLMS {
 
 	private long id;
-	private long chat_id;
-	private String userid;
+	private long chat;
+	private String user;
 	private String message;
 	private long timestamp;
 
-	public String getUserid() {
-		return this.userid;
+	public String getUser() {
+		return this.user;
 	}
 
-	public void setUserid(final String userid) {
-		this.userid = userid;
+	public void setUser(final String user) {
+		this.user = user;
 	}
 
 	public long getId() {
@@ -31,12 +31,12 @@ public class ChatLogLMS {
 		this.id = id;
 	}
 
-	public long getChat_id() {
-		return this.chat_id;
+	public long getChat() {
+		return this.chat;
 	}
 
-	public void setChat_id(final long chat_id) {
-		this.chat_id = chat_id;
+	public void setChat(final long chat) {
+		this.chat = chat;
 	}
 
 	public String getMessage() {

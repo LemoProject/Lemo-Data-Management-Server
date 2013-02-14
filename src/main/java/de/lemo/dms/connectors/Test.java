@@ -297,8 +297,7 @@ public class Test {
 	{
 		System.out.println("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		ResultListLongObject l =  this.authentificateUser("forte");
-		ResultListLongObject l1 = this.getTeachersCourses(l.getElements().get(0));
+		this.runClixConn();
 		System.out.println("Test finished");
 	}
 

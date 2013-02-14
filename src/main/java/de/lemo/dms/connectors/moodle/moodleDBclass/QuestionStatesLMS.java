@@ -15,7 +15,7 @@ public class QuestionStatesLMS {
 	private String answer;
 	private short event;
 	private double penalty;
-	private double raw_grade;
+	private double rawGrade;
 	private double grade;
 	private long timestamp;
 
@@ -67,12 +67,12 @@ public class QuestionStatesLMS {
 		this.penalty = penalty;
 	}
 
-	public double getRaw_grade() {
-		return this.raw_grade;
+	public double getRawGrade() {
+		return this.rawGrade;
 	}
 
-	public void setRaw_grade(final double rawGrade) {
-		this.raw_grade = rawGrade;
+	public void setRawGrade(final double rawGrade) {
+		this.rawGrade = rawGrade;
 	}
 
 	public double getGrade() {

@@ -11,9 +11,9 @@
 		<id name="id" column="id" type="long">
 		</id>
 
-		<property name="chat_id" column="chatid" type="long" />
+		<property name="chat" column="chatid" type="long" />
 
-		<property name="userid" column="userid" type="string" />
+		<property name="user" column="userid" type="string" />
 
 		<property name="message" column="message" type="string" />
 

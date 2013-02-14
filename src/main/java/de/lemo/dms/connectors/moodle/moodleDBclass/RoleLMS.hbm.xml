@@ -12,7 +12,7 @@
 		</id>
 
 		<property name="name" column="name" type="string" />
-
+		
 		<property name="shortname" column="shortname" type="string" />
 
 		<property name="description" column="description" type="text" />

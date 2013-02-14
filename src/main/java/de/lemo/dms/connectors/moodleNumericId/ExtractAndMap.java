@@ -330,13 +330,8 @@ public abstract class ExtractAndMap {
 		this.platformMining = new HashMap<Long, PlatformMining>();
 
 		this.configMiningTimestamp = this.dbHandler.getMiningSession()
-				.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();// mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
+				.createQuery("select max(lastModified) from ConfigMining x order by x.id asc").list();// mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
 
-		final Query large = session.createQuery("select max(user.id) from UserMining user where user.platform="
-				+ this.connector.getPlatformId() + "");
-		if (large.list().size() > 0) {
-			this.largestId = ((ArrayList<Long>) large.list()).get(0);
-		}
 
 		if (this.configMiningTimestamp.get(0) == null) {
 			this.configMiningTimestamp.set(0, new Timestamp(0));
@@ -346,7 +341,7 @@ public abstract class ExtractAndMap {
 
 		// load objects which are already in Mining DB for associations
 
-		Query logCount = session.createQuery("select max(log.id) from resource_log where platform="
+		Query logCount = session.createQuery("select max(id) from ResourceLogMining where platform="
 				+ this.connector.getPlatformId());
 		this.resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.resourceLogMax == null) {

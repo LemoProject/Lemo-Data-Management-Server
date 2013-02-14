@@ -28,6 +28,11 @@ public class PersonComponentAssignment implements IClixMappingClass {
 	public PersonComponentAssignmentPK getId() {
 		return this.id;
 	}
+	
+	public Long getLongId()
+	{
+		return Long.valueOf(component + "" + person);
+	}
 
 	public void setId(final PersonComponentAssignmentPK id) {
 		this.id = id;

@@ -42,9 +42,9 @@
     </database>
     <connectors>
       <connector platform-id="2" name="beuth1" platform-type="Moodle_1_9">
-        <property name="hibernate.connection.url">jdbc:mysql://localhost/moodle</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost/lmsmoodle?rewriteBatchedStatements=true</property>
     	<property name="hibernate.connection.username">user</property>
-    	<property name="hibernate.connection.password">password</property>
+	<property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.default_schema=lemo_db"></property>

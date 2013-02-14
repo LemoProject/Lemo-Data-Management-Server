@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class
+		name="de.lemo.dms.connectors.moodle_2_3.moodleDBclass.UserEnrolmentsLMS"
+		table="mdl_user_enrolments">
+
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="enrolid" column="enrolid" type="long" />
+
+		<property name="timestart" column="timestart" type="long" />
+
+		<property name="timeend" column="timeend" type="long" />
+
+	</class>
+
+</hibernate-mapping>
