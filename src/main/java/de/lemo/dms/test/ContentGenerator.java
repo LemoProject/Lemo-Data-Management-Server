@@ -80,8 +80,19 @@ public class ContentGenerator {
 		clix
 	}
 
+	/**
+	 * 
+	 * @param topLevels
+	 * @param levelPerTopLevel
+	 * @param coursesPerLevel
+	 * @param users
+	 * @param startdate
+	 * @param logsPerLearnObject
+	 * @param characteristic	1=semi-authentic, 2=squares
+	 * @return
+	 */
 	public List<Collection<?>> generateMiningDB(final Integer topLevels, final Integer levelPerTopLevel,
-			final Integer coursesPerLevel, final Integer users, final Long startdate, final int logsPerLearnObject)
+			final Integer coursesPerLevel, final Integer users, final Long startdate, final int logsPerLearnObject, int characteristic)
 	{
 
 		this.system = ESystem.moodle;
@@ -190,9 +201,9 @@ public class ContentGenerator {
 		r0.setShortname("Admin");
 		r0.setDescription("Administatoren dürfen alles.");
 		r0.setSortOrder(0);
-		r0.setType(0);
 		r0.setPlatform(platform.getId());
-
+		r0.setType(0);
+		
 		roleList.add(r0);
 
 		final RoleMining r1 = new RoleMining();
@@ -201,9 +212,9 @@ public class ContentGenerator {
 		r1.setShortname("Doz");
 		r1.setDescription("Dozenten dürfen in ihren Kursen alles.");
 		r1.setSortOrder(1);
-		r1.setType(1);
 		r1.setPlatform(platform.getId());
-
+		r1.setType(1);
+		
 		roleList.add(r1);
 
 		final RoleMining r2 = new RoleMining();
@@ -230,6 +241,8 @@ public class ContentGenerator {
 			}
 
 			gr.setTimeCreated(startdate + offset + randy.nextInt(week));
+			if(characteristic != 1)
+				gr.setTimeCreated(startdate);
 			gr.setTimeModified(gr.getTimeCreated() + randy.nextInt(month));
 			gr.setPlatform(platform.getId());
 
@@ -289,6 +302,8 @@ public class ContentGenerator {
 					final int ts = (int) (startdate + offset);
 
 					cou.setTimeCreated(ts + randy.nextInt(week));
+					if(characteristic != 1)
+						cou.setTimeCreated(startdate);
 
 					cou.setEnrolStart(ts + week + randy.nextInt(week));
 					cou.setEnrolEnd(cou.getEnrolStart() + (3 * week));
@@ -349,6 +364,8 @@ public class ContentGenerator {
 						r.setDifficulty("Level " + randy.nextInt(10));
 						r.setPosition(l);
 						r.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						if(characteristic != 1)
+							r.setTimeCreated(startdate);
 						r.setTimeModified(r.getTimeCreated() + randy.nextInt(year / 2));
 						r.setTitle("Resource " + i + "." + j + "." + k + "." + l);
 						r.setPlatform(platform.getId());
@@ -396,6 +413,8 @@ public class ContentGenerator {
 						final WikiMining w = new WikiMining();
 						w.setId(Long.valueOf(platform.getPrefix() + "" + (wikiList.size() + 1)));
 						w.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						if(characteristic != 1)
+							w.setTimeCreated(startdate);
 						w.setTimeModified(w.getTimeCreated() + randy.nextInt(year / 2));
 						w.setTitle("Wiki " + i + "." + j + "." + k + "." + l);
 						w.setSummary("This is wiki " + i + "." + j + "." + k + "." + l + "'s summary.");
@@ -417,6 +436,8 @@ public class ContentGenerator {
 						final AssignmentMining a = new AssignmentMining();
 						a.setId(Long.valueOf(platform.getPrefix() + "" + (assignmentList.size() + 1)));
 						a.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						if(characteristic != 1)
+							a.setTimeCreated(startdate);
 						a.setTimeModified(a.getTimeCreated() + randy.nextInt(year / 2));
 						a.setTitle("Assignment " + i + "." + j + "." + k + "." + l);
 						a.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
@@ -440,6 +461,8 @@ public class ContentGenerator {
 						final ForumMining f = new ForumMining();
 						f.setId(Long.valueOf(platform.getPrefix() + "" + (forumList.size() + 1)));
 						f.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						if(characteristic != 1)
+							f.setTimeCreated(startdate);
 						f.setTimeModified(f.getTimeCreated() + randy.nextInt(year / 2));
 						f.setTitle("Forum " + i + "." + j + "." + k + "." + l);
 						f.setSummary("Forum " + i + "." + j + "." + k + "." + l + "'s summary...");
@@ -460,6 +483,8 @@ public class ContentGenerator {
 						final QuizMining q = new QuizMining();
 						q.setId(Long.valueOf(platform.getPrefix() + "" + (quizList.size() + 1)));
 						q.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						if(characteristic != 1)
+							q.setTimeCreated(startdate);
 						q.setTimeModified(q.getTimeCreated() + randy.nextInt(year / 2));
 						q.setTitle("Quiz " + i + "." + j + "." + k + "." + l);
 						q.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
@@ -482,6 +507,8 @@ public class ContentGenerator {
 							final QuestionMining que = new QuestionMining();
 							que.setId(Long.valueOf(platform.getPrefix() + "" + (questionList.size() + 1)));
 							que.setTimeCreated(q.getTimeCreated() + randy.nextInt(week));
+							if(characteristic != 1)
+								que.setTimeCreated(startdate);
 							que.setTimeModified(que.getTimeCreated() + randy.nextInt(year / 2));
 
 							que.setTitle("Question " + i + "." + j + "." + k + "." + l + "." + m);
@@ -541,6 +568,8 @@ public class ContentGenerator {
 						sco.setId(Long.valueOf(platform.getPrefix() + "" + (scormList.size() + 1)));
 						sco.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
 						sco.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
+						if(characteristic != 1)
+							sco.setTimeCreated(startdate);
 						sco.setTimeModified(sco.getTimeCreated() + randy.nextInt(year / 2));
 						sco.setTimeOpen(sco.getTimeCreated() + randy.nextInt(month));
 						sco.setTimeClose(sco.getTimeOpen() + (2 * week));
@@ -564,241 +593,504 @@ public class ContentGenerator {
 					for (int log = 0; log < logSwitch; log++)
 					{
 
+						
 						// _________________ResourceLogs___________________________________________________
-						final ResourceLogMining rLog = new ResourceLogMining();
-						// rLog.setId(resourceLogList.size() + 1);
-						rLog.setCourse(cou);
-						rLog.setResource(resourceList.get((resourceList.size() - 1) - randy.nextInt(10)));
-						rLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(userSwitch))
-								% userList.size()));
-						final ResourceMining r = rLog.getResource();
-
-						int mult = (int) ((startdate + year) - r.getTimeCreated())
-								/ Integer.valueOf(cou.getShortname());
-						int time = (int) r.getTimeCreated()
-								+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
-						rLog.setTimestamp(time);
-
-						rLog.setAction("view");
-						rLog.setPlatform(platform.getId());
-
-						resourceLogList.add(rLog);
-
-						// _________________AssignmentLogs___________________________________________________
-
-						final AssignmentLogMining aLog = new AssignmentLogMining();
-						// aLog.setId(assignmentLogList.size());
-						aLog.setCourse(cou);
-						aLog.setAssignment(assignmentList.get((assignmentList.size() - 1) - randy.nextInt(2)));
-						aLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
-						final AssignmentMining a = aLog.getAssignment();
-
-						mult = (int) (a.getTimeClose() - a.getTimeOpen()) / Integer.valueOf(cou.getShortname());
-						time = (int) a.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
-						aLog.setTimestamp(time);
-						aLog.setPlatform(platform.getId());
-
-						for (int h = 0; h < courseUserList.size(); h++) {
-							if ((aLog.getUser() == (courseUserList.get(h).getUser()))
-									&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-											+ "" + 2)) && (a.getMaxGrade() > 0))
-							{
-								aLog.setGrade(a.getMaxGrade() - randy.nextInt(a.getMaxGrade().intValue()));
-								aLog.setAction(assignmentActionTeacher[randy.nextInt(assignmentActionTeacher.length)]);
-
-							}
-						}
-						if (aLog.getAction() == null) {
-							aLog.setAction(assignmentActionStudent[randy.nextInt(assignmentActionStudent.length)]);
-						}
-
-						assignmentLogList.add(aLog);
-
-						// _________________ChatLogs___________________________________________________
-
-						final ChatLogMining cLog = new ChatLogMining();
-						cLog.setCourse(cou);
-						cLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
-						cLog.setChat(chatList.get((chatList.size() - 1)));
-						final ChatMining chat = cLog.getChat();
-
-						mult = (int) ((startdate + year) - chat.getChatTime()) / Integer.valueOf(cou.getShortname());
-						time = (int) chat.getChatTime() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
-						cLog.setTimestamp(time);
-						cLog.setMessage("Generated chat message for chat " + cou.getShortname() + " @ "
-								+ cLog.getTimestamp());
-						cLog.setPlatform(platform.getId());
-
-						chatLogList.add(cLog);
-
-						// _________________CourseLogs___________________________________________________
-
-						final CourseLogMining couLog = new CourseLogMining();
-						couLog.setCourse(cou);
-
-						if (log < 10)
+						int time = (int) (startdate + log * (year / logSwitch));
+						int mult;
+						if(characteristic == 1 )
 						{
-							couLog.setUser(userList.get((((courseList.size() - 1) * 5) + log) % userList.size()));
-							couLog.setAction("enrol");
-
-							mult = (int) (cou.getEnrolEnd() - cou.getEnrolStart())
+							final ResourceLogMining rLog = new ResourceLogMining();
+							// rLog.setId(resourceLogList.size() + 1);
+							rLog.setCourse(cou);
+							rLog.setResource(resourceList.get((resourceList.size() - 1) - randy.nextInt(10)));
+							rLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(userSwitch))
+									% userList.size()));
+							final ResourceMining r = rLog.getResource();
+	
+							mult = (int) ((startdate + year) - r.getTimeCreated())
 									/ Integer.valueOf(cou.getShortname());
-							time = (int) cou.getEnrolStart()
+							
+	
+								time = (int) r.getTimeCreated()
 									+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
-							couLog.setTimestamp(time);
+							
+								rLog.setTimestamp(time);
+	
+								rLog.setAction("view");
+								rLog.setPlatform(platform.getId());
+	
+								resourceLogList.add(rLog);
 						}
 						else
 						{
-							couLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10))
-									% userList.size()));
-							couLog.setAction("view");
+							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							{
+								final ResourceLogMining rLog1 = new ResourceLogMining();
+								// rLog.setId(resourceLogList.size() + 1);
+								rLog1.setCourse(cou);
+								rLog1.setResource(resourceList.get((resourceList.size() - 1) - randy.nextInt(10)));
+								rLog1.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(userSwitch))
+										% userList.size()));
+								
+								rLog1.setTimestamp(time);
+	
+								rLog1.setAction("view");
+								rLog1.setPlatform(platform.getId());
+	
+								resourceLogList.add(rLog1);
 
-							mult = (int) ((startdate + year) - cou.getTimeCreated())
-									/ Integer.valueOf(cou.getShortname());
-							time = (int) cou.getTimeCreated()
-									+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
-							couLog.setTimestamp(time);
+							}
 						}
-						couLog.setPlatform(platform.getId());
+						// _________________AssignmentLogs___________________________________________________
 
-						courseLogList.add(couLog);
+						if(characteristic == 1)
+						{
+							
+							final AssignmentLogMining aLog = new AssignmentLogMining();
+							// aLog.setId(assignmentLogList.size());
+							aLog.setCourse(cou);
+							aLog.setAssignment(assignmentList.get((assignmentList.size() - 1) - randy.nextInt(2)));
+							aLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							final AssignmentMining a = aLog.getAssignment();
+	
+							mult = (int) (a.getTimeClose() - a.getTimeOpen()) / Integer.valueOf(cou.getShortname());
+							time = (int) a.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+							aLog.setTimestamp(time);
+							aLog.setPlatform(platform.getId());
+	
+							for (int h = 0; h < courseUserList.size(); h++) {
+								if ((aLog.getUser() == (courseUserList.get(h).getUser()))
+										&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
+												+ "" + 2)) && (a.getMaxGrade() > 0))
+								{
+									aLog.setGrade(a.getMaxGrade() - randy.nextInt(a.getMaxGrade().intValue()));
+									aLog.setAction(assignmentActionTeacher[randy.nextInt(assignmentActionTeacher.length)]);
+	
+								}
+							}
+							if (aLog.getAction() == null) {
+								aLog.setAction(assignmentActionStudent[randy.nextInt(assignmentActionStudent.length)]);
+							}
+	
+							assignmentLogList.add(aLog);
+						}
+						else
+						{
+							
+							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							{
+								final AssignmentLogMining aLog = new AssignmentLogMining();
+								// aLog.setId(assignmentLogList.size());
+								aLog.setCourse(cou);
+								aLog.setAssignment(assignmentList.get((assignmentList.size() - 1) - randy.nextInt(2)));
+								aLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								final AssignmentMining a = aLog.getAssignment();
+								aLog.setTimestamp(time);
+								aLog.setPlatform(platform.getId());
+		
+								for (int h = 0; h < courseUserList.size(); h++) {
+									if ((aLog.getUser() == (courseUserList.get(h).getUser()))
+											&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
+													+ "" + 2)) && (a.getMaxGrade() > 0))
+									{
+										aLog.setGrade(a.getMaxGrade() - randy.nextInt(a.getMaxGrade().intValue()));
+										aLog.setAction(assignmentActionTeacher[randy.nextInt(assignmentActionTeacher.length)]);
+		
+									}
+								}
+								if (aLog.getAction() == null) {
+									aLog.setAction(assignmentActionStudent[randy.nextInt(assignmentActionStudent.length)]);
+								}
+		
+								assignmentLogList.add(aLog);
+							}
+						}
 
+						// _________________ChatLogs___________________________________________________
+						
+						if(characteristic == 1)
+						{
+							final ChatLogMining cLog = new ChatLogMining();
+							cLog.setCourse(cou);
+							cLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							cLog.setChat(chatList.get((chatList.size() - 1)));
+							final ChatMining chat = cLog.getChat();
+	
+							mult = (int) ((startdate + year) - chat.getChatTime()) / Integer.valueOf(cou.getShortname());
+							time = (int) chat.getChatTime() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+							cLog.setTimestamp(time);
+							cLog.setMessage("Generated chat message for chat " + cou.getShortname() + " @ "
+									+ cLog.getTimestamp());
+							cLog.setPlatform(platform.getId());
+	
+							chatLogList.add(cLog);
+						}
+						else
+						{
+							
+							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							{
+								final ChatLogMining cLog = new ChatLogMining();
+								cLog.setCourse(cou);
+								cLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								cLog.setChat(chatList.get((chatList.size() - 1)));
+								cLog.setTimestamp(time);
+								cLog.setMessage("Generated chat message for chat " + cou.getShortname() + " @ "
+										+ cLog.getTimestamp());
+								cLog.setPlatform(platform.getId());
+		
+								chatLogList.add(cLog);
+							}
+						}
+
+						// _________________CourseLogs___________________________________________________
+
+						if(characteristic == 1)
+						{
+							final CourseLogMining couLog = new CourseLogMining();
+							couLog.setCourse(cou);
+	
+							if (log < 10)
+							{
+								couLog.setUser(userList.get((((courseList.size() - 1) * 5) + log) % userList.size()));
+								couLog.setAction("enrol");
+	
+								mult = (int) (cou.getEnrolEnd() - cou.getEnrolStart())
+										/ Integer.valueOf(cou.getShortname());
+								time = (int) cou.getEnrolStart()
+										+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+								couLog.setTimestamp(time);
+							}
+							else
+							{
+								couLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10))
+										% userList.size()));
+								couLog.setAction("view");
+	
+								mult = (int) ((startdate + year) - cou.getTimeCreated())
+										/ Integer.valueOf(cou.getShortname());
+								time = (int) cou.getTimeCreated()
+										+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+								couLog.setTimestamp(time);
+							}
+							couLog.setPlatform(platform.getId());
+	
+							courseLogList.add(couLog);							
+						}
+						else
+						{
+							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							{
+								final CourseLogMining couLog = new CourseLogMining();
+								couLog.setCourse(cou);
+								
+								couLog.setTimestamp(time);
+								if (log < 10)
+								{
+									couLog.setUser(userList.get((((courseList.size() - 1) * 5) + log) % userList.size()));
+									couLog.setAction("enrol");
+								}
+								else
+								{
+									couLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10))
+											% userList.size()));
+									couLog.setAction("view");
+								}
+								couLog.setPlatform(platform.getId());
+		
+								courseLogList.add(couLog);	
+							}
+						}
+						
 						// _________________ForumLogs___________________________________________________
 
-						final ForumLogMining fLog = new ForumLogMining();
-						fLog.setCourse(cou);
-						fLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
-						fLog.setForum(forumList.get((forumList.size() - 1) - randy.nextInt(2)));
-						final ForumMining forum = fLog.getForum();
-
-						mult = (int) ((startdate + year) - forum.getTimeCreated())
-								/ Integer.valueOf(cou.getShortname());
-						time = (int) forum.getTimeCreated()
-								+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
-						fLog.setTimestamp(time);
-
-						fLog.setAction(forumAction[randy.nextInt(forumAction.length)]);
-						fLog.setSubject("Subject No." + randy.nextInt(5));
-						fLog.setMessage("Message in forum " + forum.getTitle() + " @" + fLog.getTimestamp());
-						fLog.setPlatform(platform.getId());
-
-						forumLogList.add(fLog);
+						if(characteristic == 1)
+						{
+							final ForumLogMining fLog = new ForumLogMining();
+							fLog.setCourse(cou);
+							fLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							fLog.setForum(forumList.get((forumList.size() - 1) - randy.nextInt(2)));
+							final ForumMining forum = fLog.getForum();
+	
+							mult = (int) ((startdate + year) - forum.getTimeCreated())
+									/ Integer.valueOf(cou.getShortname());
+							time = (int) forum.getTimeCreated()
+									+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+							fLog.setTimestamp(time);
+	
+							fLog.setAction(forumAction[randy.nextInt(forumAction.length)]);
+							fLog.setSubject("Subject No." + randy.nextInt(5));
+							fLog.setMessage("Message in forum " + forum.getTitle() + " @" + fLog.getTimestamp());
+							fLog.setPlatform(platform.getId());
+	
+							forumLogList.add(fLog);
+						}
+						else
+						{
+							
+							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							{
+								final ForumLogMining fLog = new ForumLogMining();
+								fLog.setCourse(cou);
+								fLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								fLog.setForum(forumList.get((forumList.size() - 1) - randy.nextInt(2)));
+								final ForumMining forum = fLog.getForum();
+								fLog.setTimestamp(time);
+		
+								fLog.setAction(forumAction[randy.nextInt(forumAction.length)]);
+								fLog.setSubject("Subject No." + randy.nextInt(5));
+								fLog.setMessage("Message in forum " + forum.getTitle() + " @" + fLog.getTimestamp());
+								fLog.setPlatform(platform.getId());
+		
+								forumLogList.add(fLog);
+							}
+						}
 
 						// _________________WikiLogs___________________________________________________
-
-						final WikiLogMining wLog = new WikiLogMining();
-						wLog.setCourse(cou);
-						wLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
-						wLog.setWiki(wikiList.get((wikiList.size() - 1) - randy.nextInt(2)));
-						final WikiMining wiki = wLog.getWiki();
-
-						mult = (int) ((startdate + year) - wiki.getTimeCreated()) / Integer.valueOf(cou.getShortname());
-						time = (int) wiki.getTimeCreated()
-								+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
-						wLog.setTimestamp(time);
-
-						wLog.setAction("view");
-						wLog.setPlatform(platform.getId());
-
-						wikiLogList.add(wLog);
+						
+						if(characteristic == 1)
+						{
+							final WikiLogMining wLog = new WikiLogMining();
+							wLog.setCourse(cou);
+							wLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							wLog.setWiki(wikiList.get((wikiList.size() - 1) - randy.nextInt(2)));
+							final WikiMining wiki = wLog.getWiki();
+	
+							mult = (int) ((startdate + year) - wiki.getTimeCreated()) / Integer.valueOf(cou.getShortname());
+							time = (int) wiki.getTimeCreated()
+									+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+							wLog.setTimestamp(time);
+	
+							wLog.setAction("view");
+							wLog.setPlatform(platform.getId());
+	
+							wikiLogList.add(wLog);
+						}
+						else
+						{
+							
+							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							{
+								final WikiLogMining wLog = new WikiLogMining();
+								wLog.setCourse(cou);
+								wLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								wLog.setWiki(wikiList.get((wikiList.size() - 1) - randy.nextInt(2)));
+								final WikiMining wiki = wLog.getWiki();
+								wLog.setTimestamp(time);
+								wLog.setAction("view");
+								wLog.setPlatform(platform.getId());
+		
+								wikiLogList.add(wLog);
+							}
+						}
 
 						// _________________ScormLogs___________________________________________________
 
-						final ScormLogMining sLog = new ScormLogMining();
-						sLog.setCourse(cou);
-						sLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
-						sLog.setScorm(scormList.get((scormList.size() - 1) - randy.nextInt(2)));
-						final ScormMining scorm = sLog.getScorm();
-
-						mult = (int) (scorm.getTimeClose() - scorm.getTimeOpen()) / Integer.valueOf(cou.getShortname());
-						time = (int) scorm.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
-						sLog.setTimestamp(time);
-
-						for (int h = 0; h < courseUserList.size(); h++) {
-							if ((sLog.getUser() == (courseUserList.get(h).getUser()))
-									&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-											+ "" + 2)) && (scorm.getMaxGrade() > 0))
-							{
-								sLog.setGrade(scorm.getMaxGrade() - randy.nextInt(scorm.getMaxGrade().intValue()));
-								sLog.setAction("report");
-
-							}
-						}
-						if (sLog.getAction() == null) {
-							sLog.setAction("view");
-						}
-
-						sLog.setPlatform(platform.getId());
-						scormLogList.add(sLog);
-
-						// _________________QuizLogs___________________________________________________
-
-						final QuizLogMining qLog = new QuizLogMining();
-						qLog.setCourse(cou);
-						qLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
-						qLog.setQuiz(quizList.get((quizList.size() - 1) - randy.nextInt(2)));
-						QuizMining quiz = qLog.getQuiz();
-
-						mult = (int) (quiz.getTimeClose() - quiz.getTimeOpen()) / Integer.valueOf(cou.getShortname());
-						time = (int) quiz.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
-						qLog.setTimestamp(time);
-
-						for (int h = 0; h < courseUserList.size(); h++) {
-							if ((qLog.getUser() == (courseUserList.get(h).getUser()))
-									&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-											+ "" + 2)) && (quiz.getMaxGrade() > 0))
-							{
-								qLog.setGrade(quiz.getMaxGrade() - randy.nextInt(quiz.getMaxGrade().intValue()));
-								qLog.setAction("report");
-
-							}
-						}
-						if (qLog.getAction() == null) {
-							qLog.setAction("attempt");
-						}
-
-						qLog.setPlatform(platform.getId());
-
-						quizLogList.add(qLog);
-
-						// _________________QuestionLogs___________________________________________________
-
-						final QuestionLogMining queLog = new QuestionLogMining();
-						queLog.setCourse(cou);
-						queLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10))
-								% userList.size()));
-						queLog.setQuiz(quizList.get((quizList.size() - 1) - randy.nextInt(2)));
-						queLog.setQuestion(questionList.get((questionList.size() - 1) - randy.nextInt(10)));
-						quiz = queLog.getQuiz();
-
-						mult = (int) (quiz.getTimeClose() - quiz.getTimeOpen()) / Integer.valueOf(cou.getShortname());
-						time = (int) quiz.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
-						queLog.setTimestamp(time);
-
-						for (int h = 0; h < courseUserList.size(); h++) {
-							if ((qLog.getUser() == (courseUserList.get(h).getUser()))
-									&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-											+ "" + 2)) && (quiz.getMaxGrade() > 0))
-							{
-								final int qNumber = 10;
-								if (quiz.getMaxGrade() < qNumber) {
-									queLog.setRawGrade((randy.nextDouble() * quiz.getMaxGrade()) / qNumber);
+						if(characteristic == 1)
+						{
+							final ScormLogMining sLog = new ScormLogMining();
+							sLog.setCourse(cou);
+							sLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							sLog.setScorm(scormList.get((scormList.size() - 1) - randy.nextInt(2)));
+							final ScormMining scorm = sLog.getScorm();
+	
+							mult = (int) (scorm.getTimeClose() - scorm.getTimeOpen()) / Integer.valueOf(cou.getShortname());
+							time = (int) scorm.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+							sLog.setTimestamp(time);
+	
+							for (int h = 0; h < courseUserList.size(); h++) {
+								if ((sLog.getUser() == (courseUserList.get(h).getUser()))
+										&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
+												+ "" + 2)) && (scorm.getMaxGrade() > 0))
+								{
+									sLog.setGrade(scorm.getMaxGrade() - randy.nextInt(scorm.getMaxGrade().intValue()));
+									sLog.setAction("report");
+	
 								}
-								queLog.setFinalGrade(queLog.getRawGrade() - (randy.nextDouble() * queLog.getRawGrade()));
-								queLog.setPenalty(queLog.getRawGrade() - queLog.getFinalGrade());
-								queLog.setAction("CLOSE");
-
+							}
+							if (sLog.getAction() == null) {
+								sLog.setAction("view");
+							}
+	
+							sLog.setPlatform(platform.getId());
+							scormLogList.add(sLog);
+						}
+						else
+						{
+							
+							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							{
+								final ScormLogMining sLog = new ScormLogMining();
+								sLog.setCourse(cou);
+								sLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								sLog.setScorm(scormList.get((scormList.size() - 1) - randy.nextInt(2)));
+								final ScormMining scorm = sLog.getScorm();
+								sLog.setTimestamp(time);
+		
+								for (int h = 0; h < courseUserList.size(); h++) {
+									if ((sLog.getUser() == (courseUserList.get(h).getUser()))
+											&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
+													+ "" + 2)) && (scorm.getMaxGrade() > 0))
+									{
+										sLog.setGrade(scorm.getMaxGrade() - randy.nextInt(scorm.getMaxGrade().intValue()));
+										sLog.setAction("report");
+		
+									}
+								}
+								if (sLog.getAction() == null) {
+									sLog.setAction("view");
+								}
+		
+								sLog.setPlatform(platform.getId());
+								scormLogList.add(sLog);
 							}
 						}
-						if (queLog.getAction() == null) {
-							queLog.setAction("OPEN");
+						
+						
+						// _________________QuizLogs___________________________________________________
+						
+						if(characteristic == 1)
+						{
+
+							final QuizLogMining qLog = new QuizLogMining();
+							qLog.setCourse(cou);
+							qLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							qLog.setQuiz(quizList.get((quizList.size() - 1) - randy.nextInt(2)));
+							QuizMining quiz = qLog.getQuiz();
+	
+							mult = (int) (quiz.getTimeClose() - quiz.getTimeOpen()) / Integer.valueOf(cou.getShortname());
+							time = (int) quiz.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+							qLog.setTimestamp(time);
+	
+							for (int h = 0; h < courseUserList.size(); h++) {
+								if ((qLog.getUser() == (courseUserList.get(h).getUser()))
+										&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
+												+ "" + 2)) && (quiz.getMaxGrade() > 0))
+								{
+									qLog.setGrade(quiz.getMaxGrade() - randy.nextInt(quiz.getMaxGrade().intValue()));
+									qLog.setAction("report");
+	
+								}
+							}
+							if (qLog.getAction() == null) {
+								qLog.setAction("attempt");
+							}
+	
+							qLog.setPlatform(platform.getId());
+	
+							quizLogList.add(qLog);
+						
+
+							// _________________QuestionLogs___________________________________________________
+	
+							final QuestionLogMining queLog = new QuestionLogMining();
+							queLog.setCourse(cou);
+							queLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10))
+									% userList.size()));
+							queLog.setQuiz(quizList.get((quizList.size() - 1) - randy.nextInt(2)));
+							queLog.setQuestion(questionList.get((questionList.size() - 1) - randy.nextInt(10)));
+							quiz = queLog.getQuiz();
+	
+							mult = (int) (quiz.getTimeClose() - quiz.getTimeOpen()) / Integer.valueOf(cou.getShortname());
+							time = (int) quiz.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
+							queLog.setTimestamp(time);
+	
+							for (int h = 0; h < courseUserList.size(); h++) {
+								if ((qLog.getUser() == (courseUserList.get(h).getUser()))
+										&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
+												+ "" + 2)) && (quiz.getMaxGrade() > 0))
+								{
+									final int qNumber = 10;
+									if (quiz.getMaxGrade() < qNumber) {
+										queLog.setRawGrade((randy.nextDouble() * quiz.getMaxGrade()) / qNumber);
+									}
+									queLog.setFinalGrade(queLog.getRawGrade() - (randy.nextDouble() * queLog.getRawGrade()));
+									queLog.setPenalty(queLog.getRawGrade() - queLog.getFinalGrade());
+									queLog.setAction("CLOSE");
+	
+								}
+							}
+							if (queLog.getAction() == null) {
+								queLog.setAction("OPEN");
+							}
+							queLog.setAnswers("Answers for " + queLog.getQuestion().getTitle());
+							queLog.setType("text");
+	
+							queLog.setPlatform(platform.getId());
+	
+							questionLogList.add(queLog);
 						}
-						queLog.setAnswers("Answers for " + queLog.getQuestion().getTitle());
-						queLog.setType("text");
+						else
+						{
+							
+							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							{
+								final QuizLogMining qLog = new QuizLogMining();
+								qLog.setCourse(cou);
+								qLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								qLog.setQuiz(quizList.get((quizList.size() - 1) - randy.nextInt(2)));
+								QuizMining quiz = qLog.getQuiz();
+		
+								qLog.setTimestamp(time);
+		
+								for (int h = 0; h < courseUserList.size(); h++) {
+									if ((qLog.getUser() == (courseUserList.get(h).getUser()))
+											&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
+													+ "" + 2)) && (quiz.getMaxGrade() > 0))
+									{
+										qLog.setGrade(quiz.getMaxGrade() - randy.nextInt(quiz.getMaxGrade().intValue()));
+										qLog.setAction("report");
+		
+									}
+								}
+								if (qLog.getAction() == null) {
+									qLog.setAction("attempt");
+								}
+		
+								qLog.setPlatform(platform.getId());
+		
+								quizLogList.add(qLog);
+							
 
-						queLog.setPlatform(platform.getId());
-
-						questionLogList.add(queLog);
+								// _________________QuestionLogs___________________________________________________
+		
+								final QuestionLogMining queLog = new QuestionLogMining();
+								queLog.setCourse(cou);
+								queLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10))
+										% userList.size()));
+								queLog.setQuiz(quizList.get((quizList.size() - 1) - randy.nextInt(2)));
+								queLog.setQuestion(questionList.get((questionList.size() - 1) - randy.nextInt(10)));
+								quiz = queLog.getQuiz();
+		
+								queLog.setTimestamp(time);
+		
+								for (int h = 0; h < courseUserList.size(); h++) {
+									if ((qLog.getUser() == (courseUserList.get(h).getUser()))
+											&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
+													+ "" + 2)) && (quiz.getMaxGrade() > 0))
+									{
+										final int qNumber = 10;
+										if (quiz.getMaxGrade() < qNumber) {
+											queLog.setRawGrade((randy.nextDouble() * quiz.getMaxGrade()) / qNumber);
+										}
+										queLog.setFinalGrade(queLog.getRawGrade() - (randy.nextDouble() * queLog.getRawGrade()));
+										queLog.setPenalty(queLog.getRawGrade() - queLog.getFinalGrade());
+										queLog.setAction("CLOSE");
+		
+									}
+								}
+								if (queLog.getAction() == null) {
+									queLog.setAction("OPEN");
+								}
+								queLog.setAnswers("Answers for " + queLog.getQuestion().getTitle());
+								queLog.setType("text");
+		
+								queLog.setPlatform(platform.getId());
+		
+								questionLogList.add(queLog);
+							
+							}
+						}
 					}
 
 				}
