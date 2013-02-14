@@ -297,7 +297,7 @@ public class Test {
 	{
 		System.out.println("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runClixConn();
+		this.runMoodleNumericConn();
 		System.out.println("Test finished");
 	}
 
