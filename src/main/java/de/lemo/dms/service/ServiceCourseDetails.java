@@ -21,6 +21,13 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 
+/**
+ * Service to get details of a course
+ * @author Boris Wenzlaff
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("courses")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceCourseDetails extends BaseService {

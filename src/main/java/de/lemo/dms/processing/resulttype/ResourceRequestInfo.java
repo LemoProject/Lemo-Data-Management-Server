@@ -10,11 +10,16 @@ package de.lemo.dms.processing.resulttype;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.lemo.dms.processing.ELearningObjectType;
 
+/**
+ * represents a list for RequestInfo object's which is use to transfer data from
+ * the dms to the app-server
+ * @author Sebastian Schwarzrock
+ *
+ */
 @XmlRootElement
 public class ResourceRequestInfo {
 
 	private Long id;
-	// private EResourceType resourcetype;
 	private String resourcetype;
 	private Long requests;
 	private Long users;

@@ -23,6 +23,10 @@ import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.resulttype.ResultListStringObject;
 
+/**
+ * Service to get a list of all learning objects within the specified courses that have a grade attribute
+ *
+ */
 @Path("ratedobjects")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceRatedObjects extends BaseService {

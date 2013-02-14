@@ -28,6 +28,13 @@ import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
 
+/**
+ * Checks which resources are used in certain courses
+ * 
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("activityresourcetype")
 public class QActivityResourceType extends Question {
 
@@ -40,7 +47,6 @@ public class QActivityResourceType extends Question {
 	{
 		boolean all = false;
 		final ResultListResourceRequestInfo list = new ResultListResourceRequestInfo();
-		// List<EResourceType> resourceTypes = new ArrayList<EResourceType>();
 		if (resourceTypes.size() == 0) {
 			all = true;
 		}

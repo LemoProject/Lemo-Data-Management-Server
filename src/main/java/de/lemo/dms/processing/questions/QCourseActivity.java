@@ -29,6 +29,12 @@ import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListHashMapObject;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
+/**
+ * Shows to the activities in the courses by objects
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("courseactivity")
 public class QCourseActivity extends Question {
 

@@ -20,6 +20,11 @@ import de.lemo.dms.db.miningDBclass.RoleMining;
 import de.lemo.dms.processing.resulttype.ResultListRoleObject;
 import de.lemo.dms.processing.resulttype.RoleObject;
 
+/**
+ * Service to get the defined roles
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("roles")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceRoles extends BaseService {

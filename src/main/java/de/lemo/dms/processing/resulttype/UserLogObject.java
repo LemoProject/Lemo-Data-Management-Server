@@ -10,6 +10,12 @@ package de.lemo.dms.processing.resulttype;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * represents a log from a user as object
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ *
+ */
 @XmlRootElement
 public class UserLogObject implements Comparable<UserLogObject> {
 

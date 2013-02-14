@@ -27,6 +27,11 @@ import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.BoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
 
+/**
+ * Accumulates the perfromance (result of tests) of the users over a period
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("performanceboxplot")
 public class QPerformanceBoxPlot extends Question {
 

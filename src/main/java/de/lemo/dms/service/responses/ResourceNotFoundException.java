@@ -11,6 +11,12 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.*;
 
+/**
+ * Encapsulates exceptions where resources were not found
+ * @author Boris Wenzlaff
+ * @author Leonard Kappe
+ *
+ */
 public class ResourceNotFoundException extends WebApplicationException {
 
 	private static final long serialVersionUID = 1L;

@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * represents a list for PathGraph objects which is use to transfer data from
+ * the dms to the app-server
+ * @author Sebastian Schwarzrock
+ *
+ */
 @XmlRootElement
 public class ResultListUserPathGraph {
 

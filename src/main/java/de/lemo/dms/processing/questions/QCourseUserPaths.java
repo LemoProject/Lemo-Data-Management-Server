@@ -37,6 +37,12 @@ import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 
+/**
+ * Computes paths for users
+ * @author Leonard Kappe
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("courseuserpaths")
 public class QCourseUserPaths extends Question {
 
@@ -50,7 +56,6 @@ public class QCourseUserPaths extends Question {
 		 * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to
 		 * serve as example implementation for other analyses.
 		 */
-
 		if (endTime == null) {
 			endTime = new Date().getTime();
 		}
@@ -76,7 +81,6 @@ public class QCourseUserPaths extends Question {
 		/*
 		 * Restrictions equivalent to HQL where:
 		 * 
-		 * where course in ( ... ) and timestamp between " + startTime + " AND " + endTime;
 		 */
 		criteria.add(Restrictions.in("log.course.id", courseIds))
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
@@ -144,7 +148,6 @@ public class QCourseUserPaths extends Question {
 		for (final Entry<Long, List<Long>> userEntry : userPaths.entrySet()) {
 
 			UserPathLink lastLink = null;
-			// Long userID = userEntry.getKey();
 
 			for (final Long nodeID : userEntry.getValue()) {
 				List<UserPathLink> links = coursePaths.get(nodeID);
@@ -175,7 +178,6 @@ public class QCourseUserPaths extends Question {
 		for (final Entry<Long, List<UserPathLink>> courseEntry : coursePaths.entrySet()) {
 			final JSONObject node = new JSONObject();
 			node.put("name", courseNodePositions.inverse().get(courseEntry.getKey()).getTitle());
-			// node.put("name", "");
 			node.put("value", courseEntry.getValue().size());
 			node.put("group", courseIds.contains(courseNodePositions.inverse().get(courseEntry.getKey())) ? 1 : 2);
 			nodes.put(node);

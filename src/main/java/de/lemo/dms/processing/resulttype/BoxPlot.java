@@ -10,16 +10,21 @@ package de.lemo.dms.processing.resulttype;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Class for one boxplot element
+ * @author Boris Wenzlaff
+ *
+ */
 @XmlRootElement
 public class BoxPlot {
 
-	private String name;// = "";
-	private Double median, // = 0.0,
-			upperWhisker,// = 0.0,
-			lowerWhisker;// = 0.0;
+	private String name;
+	private Double median;
+	private Double 	upperWhisker;
+	private Double 	lowerWhisker;
 	// absolute zugriffe und einzigartige zugriffe
-	private Double upperQuartil,// = 0.0,
-			lowerQuartil;// = 0.0;
+	private Double upperQuartil;
+	private Double 	lowerQuartil;
 
 	@XmlElement
 	public Double getMedian() {

@@ -7,6 +7,11 @@
 
 package de.lemo.dms.processing.resulttype;
 
+/**
+ * represent a node in the path of a user
+ * @author Sebastian Schwarzrock
+ *
+ */
 public class UserPathNode {
 
 	private String name;

@@ -11,6 +11,12 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * represents a list for any type which is use to transfer data from
+ * the dms to the app-server
+ * @author Leonard Kappe
+ *
+ */
 @XmlRootElement
 public class ResultList {
 

@@ -52,13 +52,7 @@ public class HibernateDBHandler implements IDBHandler {
 				for (final Iterator<?> iter2 = l.iterator(); iter2.hasNext();) {
 					final Object o = iter2.next();
 
-					/*
-					 * if(isIn.contains((IMappingClass)o)) System.out.println("double" + o.getClass()); else {
-					 */
-					// isIn.add((IMappingClass)o);
 					objects.add(o);
-					// }
-
 				}
 			}
 			final Transaction tx = session.beginTransaction();
@@ -75,7 +69,6 @@ public class HibernateDBHandler implements IDBHandler {
 				className = objects.get(i).getClass().getName();
 
 				classOb++;
-				// mining_session.saveOrUpdate(objects.get(i));
 				session.save(objects.get(i));
 
 				if ((i % 50) == 0) {

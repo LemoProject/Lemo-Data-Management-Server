@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -29,7 +30,6 @@ import ca.pfv.spmf.sequentialpatterns.Sequences;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import de.lemo.dms.core.Clock;
-import de.lemo.dms.core.DMSMain;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
@@ -40,13 +40,18 @@ import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;
 
+/**
+ * Read ther path data from the database and using the Bide algorithm to generates the frequent paths
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("frequentPaths")
 public class QFrequentPathsBIDE extends Question {
 
-	private static HashMap<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
-	private static HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
-	private static HashMap<String, Integer> idToInternalId = new HashMap<String, Integer>();
-	private static HashMap<Integer, String> internalIdToId = new HashMap<Integer, String>();
+	private static Map<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
+	private static Map<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
+	private static Map<String, Integer> idToInternalId = new HashMap<String, Integer>();
+	private static Map<Integer, String> internalIdToId = new HashMap<Integer, String>();
 	private static Logger logger = Logger.getLogger(QFrequentPathsBIDE.class);
 
 	@POST
@@ -391,8 +396,6 @@ public class QFrequentPathsBIDE extends Question {
 
 			final HashMap<Long, ArrayList<ILogMining>> logMap = new HashMap<Long, ArrayList<ILogMining>>();
 
-			// int pre = 1000;
-
 			for (int i = 0; i < list.size(); i++)
 			{
 				if ((list.get(i).getUser() != null) && (list.get(i).getLearnObjId() != null)) {
@@ -417,7 +420,7 @@ public class QFrequentPathsBIDE extends Question {
 			}
 
 			// Just changing the container for the user histories
-			final ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>();// (logMap.values());
+			final ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>();
 			int id = 1;
 			for (final ArrayList<ILogMining> uLog : logMap.values())
 			{
@@ -460,13 +463,14 @@ public class QFrequentPathsBIDE extends Question {
 
 			// This part is only for statistics - group histories of similar length together and display there
 			// respective lengths
-			final Integer[] lengths = new Integer[(max / 10) + 1];
+			final int DIF = 10;
+			final Integer[] lengths = new Integer[(max / DIF) + 1];
 			for (int i = 0; i < lengths.length; i++) {
 				lengths[i] = 0;
 			}
 
 			for (int i = 0; i < uhis.size(); i++) {
-				lengths[uhis.get(i).size() / 10]++;
+				lengths[uhis.get(i).size() / DIF]++;
 			}
 
 			for (int i = 0; i < lengths.length; i++) {

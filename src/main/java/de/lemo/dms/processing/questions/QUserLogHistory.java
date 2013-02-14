@@ -34,6 +34,11 @@ import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListUserLogObject;
 import de.lemo.dms.processing.resulttype.UserLogObject;
 
+/**
+ * Look up for spezial log events
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("userloghistory")
 public class QUserLogHistory extends Question {
 

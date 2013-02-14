@@ -16,6 +16,11 @@ import java.util.HashSet;
 import java.util.Set;
 import de.lemo.dms.processing.resulttype.BoxPlot;
 
+/**
+ * Generates Boxplot objects for dates and accumulate them to weeks
+ * @author Boris Wenzlaff
+ *
+ */
 public class BoxPlotGeneratorForDates {
 
 	private final HashMap<Integer, HashMap<Date, Long>> weekmap;
@@ -276,12 +281,14 @@ public class BoxPlotGeneratorForDates {
 
 	private long weekDiff(final Date first, final Date last) {
 		long diff = 0;
-		final Calendar cal_1 = new GregorianCalendar();
-		final Calendar cal_2 = new GregorianCalendar();
-		cal_1.setTime(first); // erster Zeitpunkt
-		cal_2.setTime(last); // zweiter Zeitpunkt
-		final long time = cal_2.getTime().getTime() - cal_1.getTime().getTime(); // Differenz in ms
-		final long days = Math.round(time / (24. * 60. * 60. * 1000.)); // Differenz in Tagen
+		final Calendar cal1 = new GregorianCalendar();
+		final Calendar cal2 = new GregorianCalendar();
+		cal1.setTime(first);
+		cal2.setTime(last);
+		// Differenz in ms
+		final long time = cal2.getTime().getTime() - cal1.getTime().getTime();
+		 // Differenz in Tagen
+		final long days = Math.round(time / (24. * 60. * 60. * 1000.));
 		diff = Math.round(days / 7);
 		return diff;
 	}
@@ -289,12 +296,14 @@ public class BoxPlotGeneratorForDates {
 	private long hourDiff(final Date first, final Date last) {
 		// TODO BUG Hier irgendwo
 		long diff = 0;
-		final Calendar cal_1 = new GregorianCalendar();
-		final Calendar cal_2 = new GregorianCalendar();
-		cal_1.setTime(first); // erster Zeitpunkt
-		cal_2.setTime(last); // zweiter Zeitpunkt
-		final long time = cal_2.getTime().getTime() - cal_1.getTime().getTime(); // Differenz in ms
-		final long days = Math.round(time / (24. * 60. * 60. * 1000.)); // Differenz in Tagen
+		final Calendar cal1 = new GregorianCalendar();
+		final Calendar cal2 = new GregorianCalendar();
+		cal1.setTime(first);
+		cal2.setTime(last);
+		// Differenz in ms
+		final long time = cal2.getTime().getTime() - cal1.getTime().getTime();
+		// Differenz in Tagen
+		final long days = Math.round(time / (24. * 60. * 60. * 1000.));
 		diff = Math.round(days);
 		return diff;
 	}

@@ -12,6 +12,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -25,17 +27,22 @@ import de.lemo.dms.db.miningDBclass.LevelMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
 
+/**
+ * Class to test the chemgapedia data creator
+ * @author Sebastian Schwarzrock
+ *
+ */
 public class TestDataCreatorChemgapedia {
 
-	private ArrayList<ResourceLogMining> resourceLogList = new ArrayList<ResourceLogMining>();
-	private ArrayList<ResourceMining> resourceList = new ArrayList<ResourceMining>();
-	private ArrayList<LevelAssociationMining> departmentDegreeList = new ArrayList<LevelAssociationMining>();
-	private ArrayList<LevelCourseMining> degreeCourseList = new ArrayList<LevelCourseMining>();
-	private ArrayList<CourseResourceMining> courseResourceList = new ArrayList<CourseResourceMining>();
+	private List<ResourceLogMining> resourceLogList = new ArrayList<ResourceLogMining>();
+	private List<ResourceMining> resourceList = new ArrayList<ResourceMining>();
+	private List<LevelAssociationMining> departmentDegreeList = new ArrayList<LevelAssociationMining>();
+	private List<LevelCourseMining> degreeCourseList = new ArrayList<LevelCourseMining>();
+	private List<CourseResourceMining> courseResourceList = new ArrayList<CourseResourceMining>();
 
-	private final HashMap<Long, CourseMining> couResMap = new HashMap<Long, CourseMining>();
-	private final HashMap<Long, LevelMining> degCouMap = new HashMap<Long, LevelMining>();
-	private final HashMap<Long, LevelMining> depDegMap = new HashMap<Long, LevelMining>();
+	private final Map<Long, CourseMining> couResMap = new HashMap<Long, CourseMining>();
+	private final Map<Long, LevelMining> degCouMap = new HashMap<Long, LevelMining>();
+	private final Map<Long, LevelMining> depDegMap = new HashMap<Long, LevelMining>();
 
 	/**
 	 * Extracts Mining-data from the Mining-database

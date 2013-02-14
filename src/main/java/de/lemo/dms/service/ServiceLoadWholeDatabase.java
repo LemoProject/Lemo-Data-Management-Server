@@ -18,7 +18,7 @@ import de.lemo.dms.connectors.ConnectorManager;
 import de.lemo.dms.connectors.IConnector;
 
 /**
- * load the whole database
+ * Service to Load the whole database
  * 
  * @author Boris Wenzlaff
  */

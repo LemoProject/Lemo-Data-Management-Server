@@ -33,6 +33,11 @@ import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
 import de.lemo.dms.processing.resulttype.UserPathObject;
 
+/**
+ * Generates a list of Nodes and edges, representing the user-navigation
+ * @author Sebastian Schwarzrock
+ *
+ */
 @Path("userpathanalysis")
 public class QUserPathAnalysis extends Question {
 
