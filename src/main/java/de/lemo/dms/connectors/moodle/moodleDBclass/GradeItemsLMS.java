@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
+/**
+ * Mapping class for table GradeItems.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class GradeItemsLMS {
 
 	private long id;

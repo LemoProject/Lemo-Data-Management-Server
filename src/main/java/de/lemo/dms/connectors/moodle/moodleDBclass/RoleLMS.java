@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
+/**
+ * Mapping class for table Role.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class RoleLMS {
 
 	private long id;

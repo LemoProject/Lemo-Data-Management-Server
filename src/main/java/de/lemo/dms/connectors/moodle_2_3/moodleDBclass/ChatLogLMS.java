@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+/**
+ * Mapping class for table ChatMessages.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class ChatLogLMS {
 
 	private long id;

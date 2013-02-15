@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
+/**
+ * Mapping class for table ForumPosts.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class ForumPostsLMS {
 
 	private long id;

@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
+/**
+ * Mapping class for table QuizQuestionInstances.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class QuizQuestionInstancesLMS {
 
 	public long id;

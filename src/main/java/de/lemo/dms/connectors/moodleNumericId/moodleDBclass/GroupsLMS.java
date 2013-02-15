@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
+/**
+ * Mapping class for table Groups.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class GroupsLMS {
 
 	private long id;

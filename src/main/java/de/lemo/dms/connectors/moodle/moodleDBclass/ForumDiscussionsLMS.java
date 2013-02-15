@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
+/**
+ * Mapping class for table ForumDiscussions.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class ForumDiscussionsLMS {
 
 	private long id;

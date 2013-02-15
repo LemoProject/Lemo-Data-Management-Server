@@ -9,6 +9,12 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
+/**
+ * Mapping class for table TAnswerPosition.
+ * 
+ * @author S.Schwarzrock
+ *
+ */
 public class TAnswerPosition implements IClixMappingClass {
 
 	private TAnswerPositionPK id;

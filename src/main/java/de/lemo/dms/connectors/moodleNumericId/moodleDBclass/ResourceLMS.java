@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
+/**
+ * Mapping class for table Resource.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class ResourceLMS {
 
 	private long id;

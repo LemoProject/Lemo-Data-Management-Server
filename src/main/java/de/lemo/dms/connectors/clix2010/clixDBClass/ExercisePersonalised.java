@@ -9,6 +9,12 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
+/**
+ * Mapping class for table ExercisePersonalised.
+ * 
+ * @author S.Schwarzrock
+ *
+ */
 public class ExercisePersonalised implements IClixMappingClass {
 
 	private ExercisePersonalisedPK id;

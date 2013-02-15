@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
+/**
+ * Mapping class for table CourseModules.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class CourseModulesLMS {
 
 	private long id;

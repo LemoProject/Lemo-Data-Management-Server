@@ -9,6 +9,12 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+/**
+ * Class for realization of primary key for PlatformGroupSpecification.
+ * 
+ * @author S.Schwarzrock
+ *
+ */
 public class PlatformGroupSpecificationPK implements Serializable {
 
 	/**

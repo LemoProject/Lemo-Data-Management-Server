@@ -87,7 +87,6 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.WikiMining;
 
-// TODO: Auto-generated Javadoc
 /**
  * Class for data-retrieval from Clix platforms.
  * 

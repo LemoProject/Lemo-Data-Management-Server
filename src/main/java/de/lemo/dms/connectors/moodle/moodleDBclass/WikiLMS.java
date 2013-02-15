@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
+/**
+ * Mapping class for table Wiki.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class WikiLMS {
 
 	private long id;

@@ -9,6 +9,12 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+/**
+ * Class for realization of primary key for ForumEntryState.
+ * 
+ * @author S.Schwarzrock
+ *
+ */
 public class ForumEntryStatePK implements Serializable {
 
 	/**

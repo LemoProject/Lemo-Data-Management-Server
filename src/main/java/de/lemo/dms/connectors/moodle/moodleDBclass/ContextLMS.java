@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
+/**
+ * Mapping class for table Context.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class ContextLMS {
 
 	private long id;

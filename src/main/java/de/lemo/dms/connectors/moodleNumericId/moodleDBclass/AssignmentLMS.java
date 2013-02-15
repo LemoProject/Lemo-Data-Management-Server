@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
+/**
+ * Mapping class for table Assignment.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class AssignmentLMS {
 
 	private long id;

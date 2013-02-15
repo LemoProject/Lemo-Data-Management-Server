@@ -9,6 +9,12 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
+/**
+ * Mapping class for table T2Task.
+ * 
+ * @author S.Schwarzrock
+ *
+ */
 public class T2Task implements IClixMappingClass {
 
 	private Long id;

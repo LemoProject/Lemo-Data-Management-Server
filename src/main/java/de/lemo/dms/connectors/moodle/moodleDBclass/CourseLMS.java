@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodle.moodleDBclass;
 
+/**
+ * Mapping class for table Course.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class CourseLMS {
 
 	private long id;

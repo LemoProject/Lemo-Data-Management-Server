@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
+/**
+ * Mapping class for table Scorm.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class ScormLMS {
 
 	private long id;

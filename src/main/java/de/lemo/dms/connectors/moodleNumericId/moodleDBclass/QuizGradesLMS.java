@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
+/**
+ * Mapping class for table QuizGrades.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class QuizGradesLMS {
 
 	private long id;

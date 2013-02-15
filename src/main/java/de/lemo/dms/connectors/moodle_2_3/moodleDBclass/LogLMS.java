@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+/**
+ * Mapping class for table Log.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class LogLMS {
 
 	private long id;

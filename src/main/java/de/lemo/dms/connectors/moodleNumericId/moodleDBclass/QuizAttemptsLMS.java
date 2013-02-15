@@ -7,6 +7,12 @@
 
 package de.lemo.dms.connectors.moodleNumericId.moodleDBclass;
 
+/**
+ * Mapping class for table QuizAttempsts.
+ * 
+ * @author S.Schwarzrock, B.Wolf
+ *
+ */
 public class QuizAttemptsLMS {
 
 	private long id;

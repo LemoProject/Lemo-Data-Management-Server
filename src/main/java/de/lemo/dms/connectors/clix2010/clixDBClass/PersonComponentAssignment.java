@@ -9,6 +9,12 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
+/**
+ * Mapping class for table PersonComponentAssignment.
+ * 
+ * @author S.Schwarzrock
+ *
+ */
 public class PersonComponentAssignment implements IClixMappingClass {
 
 	private PersonComponentAssignmentPK id;
