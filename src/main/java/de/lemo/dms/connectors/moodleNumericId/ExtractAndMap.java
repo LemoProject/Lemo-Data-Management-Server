@@ -232,14 +232,14 @@ public abstract class ExtractAndMap {
 		this.dbHandler.saveToDB(session, new PlatformMining(this.connector.getPlatformId(), this.connector.getName(),
 				this.connector.getPlattformType().toString(), this.connector.getPrefix()));
 
-		System.out.println("Initialized database in " + this.c.getAndReset());
+		logger.info("Initialized database in " + this.c.getAndReset());
 		// default call without parameter
 		if (args.length == 1)
 		{
 			// get the needed tables from LMS DB
 			this.c.reset();
 			this.getLMStables(sourceDBConf, readingtimestamp);
-			System.out.println("Loaded data from source in " + this.c.getAndReset());
+			logger.info("Loaded data from source in " + this.c.getAndReset());
 
 			// create and write the mining database tables
 			this.saveMiningTables();
@@ -258,7 +258,7 @@ public abstract class ExtractAndMap {
 				if (this.configMiningTimestamp.get(0) == null) {
 					this.c.reset();
 					this.getLMStables(sourceDBConf, 0, readingtimestamp);
-					System.out.println("Loaded data from source in " + this.c.getAndReset());
+					logger.info("Loaded data from source in " + this.c.getAndReset());
 					// create and write the mining database tables
 					this.saveMiningTables();
 				}
@@ -269,7 +269,7 @@ public abstract class ExtractAndMap {
 					this.logger.info("looptimestamp:" + looptimestamp);
 					this.c.reset();
 					this.getLMStables(sourceDBConf, looptimestamp + 1, readingtimestamp2);
-					System.out.println("Loaded data from source in " + this.c.getAndReset());
+					logger.info("Loaded data from source in " + this.c.getAndReset());
 					looptimestamp += 172800;
 					readingtimestamp2 += 172800;
 					this.logger.info("currenttimestamp:" + currenttimestamp);
@@ -324,7 +324,7 @@ public abstract class ExtractAndMap {
 				this.oldPlatformMining.put(((PlatformMining) (t.get(i))).getId(), (PlatformMining) t.get(i));
 			}
 		}
-		System.out.println("Loaded " + this.oldPlatformMining.size()
+		logger.info("Loaded " + this.oldPlatformMining.size()
 				+ " PlatformMining objects from the mining database.");
 
 		this.platformMining = new HashMap<Long, PlatformMining>();
@@ -411,7 +411,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldCourseMining.put(((CourseMining) (t.get(i))).getId(), (CourseMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldCourseMining.size() + " CourseMining objects from the mining database.");
+		logger.info("Loaded " + this.oldCourseMining.size() + " CourseMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL,
 				"from QuizMining x where x.platform=" + this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from QuizMining x order by x.id asc").list();
@@ -419,7 +419,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldQuizMining.put(((QuizMining) (t.get(i))).getId(), (QuizMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldQuizMining.size() + " QuizMining objects from the mining database.");
+		logger.info("Loaded " + this.oldQuizMining.size() + " QuizMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from AssignmentMining x where x.platform="
 				+ this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from AssignmentMining x order by x.id asc").list();
@@ -427,7 +427,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldAssignmentMining.put(((AssignmentMining) (t.get(i))).getId(), (AssignmentMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldAssignmentMining.size()
+		logger.info("Loaded " + this.oldAssignmentMining.size()
 				+ " AssignmentMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from ScormMining x where x.platform="
@@ -436,7 +436,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldScormMining.put(((ScormMining) (t.get(i))).getId(), (ScormMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldScormMining.size() + " ScormMining objects from the mining database.");
+		logger.info("Loaded " + this.oldScormMining.size() + " ScormMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from ForumMining x where x.platform="
 				+ this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from ForumMining x order by x.id asc").list();
@@ -444,7 +444,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldForumMining.put(((ForumMining) (t.get(i))).getId(), (ForumMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldForumMining.size() + " ForumMining objects from the mining database.");
+		logger.info("Loaded " + this.oldForumMining.size() + " ForumMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from ResourceMining x where x.platform="
 				+ this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from ResourceMining x order by x.id asc").list();
@@ -452,7 +452,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldResourceMining.put(((ResourceMining) (t.get(i))).getId(), (ResourceMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldResourceMining.size()
+		logger.info("Loaded " + this.oldResourceMining.size()
 				+ " ResourceMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL,
@@ -461,7 +461,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldUserMining.put(((UserMining) (t.get(i))).getId(), (UserMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldUserMining.size() + " UserMining objects from the mining database.");
+		logger.info("Loaded " + this.oldUserMining.size() + " UserMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL,
 				"from WikiMining x where x.platform=" + this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from WikiMining x order by x.id asc").list();
@@ -470,7 +470,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldWikiMining.put(((WikiMining) (t.get(i))).getId(), (WikiMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldWikiMining.size() + " WikiMining objects from the mining database.");
+		logger.info("Loaded " + this.oldWikiMining.size() + " WikiMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from GroupMining x where x.platform="
 				+ this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from GroupMining x order by x.id asc").list();
@@ -478,7 +478,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldGroupMining.put(((GroupMining) (t.get(i))).getId(), (GroupMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldGroupMining.size() + " GroupMining objects from the mining database.");
+		logger.info("Loaded " + this.oldGroupMining.size() + " GroupMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from QuestionMining x where x.platform="
 				+ this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from QuestionMining x order by x.id asc").list();
@@ -486,7 +486,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldQuestionMining.put(((QuestionMining) (t.get(i))).getId(), (QuestionMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldQuizMining.size() + " QuestionMining objects from the mining database.");
+		logger.info("Loaded " + this.oldQuizMining.size() + " QuestionMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL,
 				"from RoleMining x where x.platform=" + this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from RoleMining x order by x.id asc").list();
@@ -494,7 +494,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldRoleMining.put(((RoleMining) (t.get(i))).getId(), (RoleMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldRoleMining.size() + " RoleMining objects from the mining database.");
+		logger.info("Loaded " + this.oldRoleMining.size() + " RoleMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from QuizQuestionMining x where x.platform="
 				+ this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from QuizQuestionMining x order by x.id asc").list();
@@ -502,7 +502,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldQuizQuestionMining.put(((QuizQuestionMining) (t.get(i))).getId(), (QuizQuestionMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldQuizQuestionMining.size()
+		logger.info("Loaded " + this.oldQuizQuestionMining.size()
 				+ " QuizQuestionMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from LevelMining x where x.platform="
@@ -511,7 +511,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldLevelMining.put(((LevelMining) (t.get(i))).getId(), (LevelMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldLevelMining.size() + " LevelMining objects from the mining database.");
+		logger.info("Loaded " + this.oldLevelMining.size() + " LevelMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL,
 				"from ChatMining x where x.platform=" + this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from ChatMining x order by x.id asc").list();
@@ -519,7 +519,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldChatMining.put(((ChatMining) (t.get(i))).getId(), (ChatMining) t.get(i));
 		}
-		System.out.println("Loaded " + this.oldChatMining.size() + " ChatMining objects from the mining database.");
+		logger.info("Loaded " + this.oldChatMining.size() + " ChatMining objects from the mining database.");
 
 		this.dbHandler.closeSession(session);
 
@@ -629,11 +629,11 @@ public abstract class ExtractAndMap {
 		if (this.userMining == null) {
 
 			this.c.reset();
-			System.out.println("\nObject tables:\n");
+			logger.info("\nObject tables:\n");
 
 			this.assignmentMining = this.generateAssignmentMining();
 			objects += this.assignmentMining.size();
-			System.out.println("Generated " + this.assignmentMining.size() + " AssignmentMining entries in "
+			logger.info("Generated " + this.assignmentMining.size() + " AssignmentMining entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.assignmentMining.values());
 
@@ -641,198 +641,198 @@ public abstract class ExtractAndMap {
 			// temporal foreign key "course" in ChatMining
 			this.courseMining = this.generateCourseMining();
 			objects += this.courseMining.size();
-			System.out.println("Generated " + this.courseMining.size() + " CourseMining entries in "
+			logger.info("Generated " + this.courseMining.size() + " CourseMining entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.courseMining.values());
 
 			this.chatMining = this.generateChatMining();
 			objects += this.chatMining.size();
 			this.updates.add(this.chatMining.values());
-			System.out.println("Generated " + this.chatMining.size() + " ChatMining entries in " + this.c.getAndReset()
+			logger.info("Generated " + this.chatMining.size() + " ChatMining entries in " + this.c.getAndReset()
 					+ " s. ");
 
 			this.levelMining = this.generateLevelMining();
 			objects += this.levelMining.size();
-			System.out.println("Generated " + this.levelMining.size() + " LevelMining entries in "
+			logger.info("Generated " + this.levelMining.size() + " LevelMining entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.levelMining.values());
 
 			this.forumMining = this.generateForumMining();
 			objects += this.forumMining.size();
-			System.out.println("Generated " + this.forumMining.size() + " ForumMining entries in "
+			logger.info("Generated " + this.forumMining.size() + " ForumMining entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.forumMining.values());
 
 			this.groupMining = this.generateGroupMining();
 			objects += this.groupMining.size();
-			System.out.println("Generated " + this.groupMining.size() + " GroupMining entries in "
+			logger.info("Generated " + this.groupMining.size() + " GroupMining entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.groupMining.values());
 
 			this.questionMining = this.generateQuestionMining();
 			objects += this.questionMining.size();
-			System.out.println("Generated " + this.questionMining.size() + " QuestionMining entries in "
+			logger.info("Generated " + this.questionMining.size() + " QuestionMining entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.questionMining.values());
 
 			this.quizMining = this.generateQuizMining();
 			objects += this.quizMining.size();
 			this.updates.add(this.quizMining.values());
-			System.out.println("Generated " + this.quizMining.size() + " QuizMining entries in " + this.c.getAndReset()
+			logger.info("Generated " + this.quizMining.size() + " QuizMining entries in " + this.c.getAndReset()
 					+ " s. ");
 
 			this.resourceMining = this.generateResourceMining();
 			objects += this.resourceMining.size();
-			System.out.println("Generated " + this.resourceMining.size() + " ResourceMining entries in "
+			logger.info("Generated " + this.resourceMining.size() + " ResourceMining entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.resourceMining.values());
 
 			this.roleMining = this.generateRoleMining();
 			objects += this.roleMining.size();
-			System.out.println("Generated " + this.roleMining.size() + " RoleMining entries in " + this.c.getAndReset()
+			logger.info("Generated " + this.roleMining.size() + " RoleMining entries in " + this.c.getAndReset()
 					+ " s. ");
 			this.updates.add(this.roleMining.values());
 
 			this.scormMining = this.generateScormMining();
 			objects += this.scormMining.size();
-			System.out.println("Generated " + this.scormMining.size() + " ScormMining entries in "
+			logger.info("Generated " + this.scormMining.size() + " ScormMining entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.scormMining.values());
 
 			this.userMining = this.generateUserMining();
 			objects += this.userMining.size();
-			System.out.println("Generated " + this.userMining.size() + " UserMining entries in " + this.c.getAndReset()
+			logger.info("Generated " + this.userMining.size() + " UserMining entries in " + this.c.getAndReset()
 					+ " s. ");
 			this.updates.add(this.userMining.values());
 
 			this.wikiMining = this.generateWikiMining();
 			objects += this.wikiMining.size();
-			System.out.println("Generated " + this.wikiMining.size() + " WikiMining entries in " + this.c.getAndReset()
+			logger.info("Generated " + this.wikiMining.size() + " WikiMining entries in " + this.c.getAndReset()
 					+ " s. ");
 			this.updates.add(this.wikiMining.values());
 
 			this.updates.add(this.generateCourseAssignmentMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
-			System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseAssignmentMining entries in " + this.c.getAndReset() + " s. ");
 
 			this.updates.add(this.generateCourseScormMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
-			System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseScormMining entries in " + this.c.getAndReset() + " s. ");
 
 			/*
 			 * updates.add(generateDegreeCourseMining().values());
 			 * objects += updates.get(updates.size()-1).size();
-			 * System.out.println("Generated " + updates.get(updates.size()-1).size() +
+			 * logger.info("Generated " + updates.get(updates.size()-1).size() +
 			 * " DegreeCourseMining entries in "+ c.getAndReset() +" s. ");
 			 */
 
 			this.updates.add(this.generateLevelAssociationMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
-			System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " LevelAssociationMining entries in " + this.c.getAndReset() + " s. ");
 
 			this.updates.add(this.generateLevelCourseMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
-			System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " LevelCourseMining entries in " + this.c.getAndReset() + " s. ");
 
 			/*
 			 * updates.add(generateDepartmentDegreeMining().values());
 			 * objects += updates.get(updates.size()-1).size();
-			 * System.out.println("Generated " + updates.get(updates.size()-1).size() +
+			 * logger.info("Generated " + updates.get(updates.size()-1).size() +
 			 * " DepartmentDegreeMining entries in "+ c.getAndReset() +" s. ");
 			 */
 
 			this.quizQuestionMining = this.generateQuizQuestionMining();
 			objects += this.quizQuestionMining.size();
-			System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " QuizQuestionMining entries in " + this.c.getAndReset() + " s. ");
 
 			this.updates.add(this.quizQuestionMining.values());
 
 			this.updates.add(this.generateCourseGroupMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
-			System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseGroupMining entries in " + this.c.getAndReset() + " s. ");
 
 			this.courseQuizMining = this.generateCourseQuizMining();
 			objects += this.courseQuizMining.size();
-			System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseQuizMining entries in " + this.c.getAndReset() + " s. ");
 
 			this.updates.add(this.courseQuizMining.values());
 			this.updates.add(this.generateCourseResourceMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
-			System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseResourceMining entries in " + this.c.getAndReset() + " s. ");
 
 			this.updates.add(this.generateCourseWikiMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
-			System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseWikiMining entries in " + this.c.getAndReset() + " s. ");
 
 		}
 
 		this.updates.add(this.generateGroupUserMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " GroupUserMining entries in " + this.c.getAndReset() + " s. ");
 
 		this.updates.add(this.generateQuizUserMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " QuizUserMining entries in " + this.c.getAndReset() + " s. ");
 
 		this.updates.add(this.generateCourseUserMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " CourseUserMining entries in " + this.c.getAndReset() + " s. ");
 
-		System.out.println("\nLog tables:\n");
+		logger.info("\nLog tables:\n");
 
 		this.updates.add(this.generateAssignmentLogMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " AssignmentLogMining entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.generateChatLogMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " ChatLogMining entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.generateCourseLogMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " CourseLogMining entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.generateForumLogMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " ForumLogMining entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.generateQuestionLogMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " QuestionLogMining entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.generateQuizLogMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " QuizLogMining entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.generateResourceLogMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " ResourceLogMining entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.generateScormLogMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " ScormLogMining entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.generateWikiLogMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
-		System.out.println("Generated " + this.updates.get(this.updates.size() - 1).size()
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " WikiLogMining entries in " + this.c.getAndReset() + " s. ");
 
 		if (objects > 0)
 		{
 			final Session session = this.dbHandler.getMiningSession();
-			System.out.println("Writing to DB");
+			logger.info("Writing to DB");
 			this.dbHandler.saveCollectionToDB(session, this.updates);
 		}
 
