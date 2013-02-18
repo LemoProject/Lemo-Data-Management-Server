@@ -63,6 +63,11 @@ public class ContentGenerator {
 
 	private ESystem system;
 
+	/**
+	 * Enum for resource types
+	 * @author Sebastian Schwarzrock
+	 *
+	 */
 	enum EResourceType {
 		File,
 		Directory,
@@ -71,6 +76,11 @@ public class ContentGenerator {
 		Page,
 	}
 
+	/**
+	 * Enum for question types
+	 * @author Sebastian Schwarzrock
+	 *
+	 */
 	enum EQuestionType {
 		Pathetic,
 		Easy,
@@ -78,7 +88,12 @@ public class ContentGenerator {
 		Tricky,
 		Sphinxesque
 	}
-
+	
+	/**
+	 * Enum for LM systems
+	 * @author Sebastian Schwarzrock
+	 *
+	 */
 	enum ESystem {
 		fiz,
 		moodle,

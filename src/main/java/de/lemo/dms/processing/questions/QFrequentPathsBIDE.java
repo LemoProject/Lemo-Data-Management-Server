@@ -463,14 +463,14 @@ public class QFrequentPathsBIDE extends Question {
 
 			// This part is only for statistics - group histories of similar length together and display there
 			// respective lengths
-			final int DIF = 10;
-			final Integer[] lengths = new Integer[(max / DIF) + 1];
+			final int dif = 10;
+			final Integer[] lengths = new Integer[(max / dif) + 1];
 			for (int i = 0; i < lengths.length; i++) {
 				lengths[i] = 0;
 			}
 
 			for (int i = 0; i < uhis.size(); i++) {
-				lengths[uhis.get(i).size() / DIF]++;
+				lengths[uhis.get(i).size() / dif]++;
 			}
 
 			for (int i = 0; i < lengths.length; i++) {
