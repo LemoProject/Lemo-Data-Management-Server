@@ -64,10 +64,9 @@ public class Version {
 
 			final Criteria criteria = session.createCriteria(ConfigMining.class, "config");
 			criteria.setMaxResults(1);
-			//TODO use correct table row in the new database version
 			criteria.addOrder(org.hibernate.criterion.Order.desc("lastmodified"));
 			final ConfigMining prop = (ConfigMining) criteria.list().get(0);
-			version = prop.getPlatform().toString();
+			version = prop.getDatabaseModel().toString();
 
 		} catch (final Exception ex) {
 			this.logger.warn("cant read version from db\n" + ex.getMessage());
