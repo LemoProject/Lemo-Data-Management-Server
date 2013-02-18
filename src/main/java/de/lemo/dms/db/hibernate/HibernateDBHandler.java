@@ -71,7 +71,7 @@ public class HibernateDBHandler implements IDBHandler {
 			this.closeSession(session);
 		} catch (final HibernateException e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -96,7 +96,7 @@ public class HibernateDBHandler implements IDBHandler {
 			session.close();
 		} catch (final HibernateException he)
 		{
-			he.printStackTrace();
+			logger.error(he.getMessage());
 		}
 	}
 
@@ -115,7 +115,7 @@ public class HibernateDBHandler implements IDBHandler {
 					break;
 			}
 		} catch (final HibernateException he) {
-			he.printStackTrace();
+			logger.error(he.getMessage());
 		}
 		return null;
 	}
