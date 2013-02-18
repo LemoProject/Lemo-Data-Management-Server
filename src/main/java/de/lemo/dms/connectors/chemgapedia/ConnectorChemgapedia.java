@@ -8,7 +8,6 @@
 package de.lemo.dms.connectors.chemgapedia;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;

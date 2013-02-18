@@ -23,6 +23,11 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
+
+/**
+ * Service to get the courses from an docent
+ *
+ */
 @Path("teachercourses")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceTeacherCourses extends BaseService {

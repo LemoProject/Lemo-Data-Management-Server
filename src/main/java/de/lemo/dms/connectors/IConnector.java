@@ -7,7 +7,10 @@
 
 package de.lemo.dms.connectors;
 
-// TODO: Auto-generated Javadoc
+/**
+ * Interface for the connector classes
+ *
+ */
 public interface IConnector {
 
 	/**

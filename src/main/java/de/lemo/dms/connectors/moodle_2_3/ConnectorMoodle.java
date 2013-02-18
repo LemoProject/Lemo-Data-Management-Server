@@ -14,9 +14,14 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 
+/**
+ * Connector implementation for Moodle 2.3 platforms
+ * 
+ * @author s.schwarzrock
+ */
 public class ConnectorMoodle extends AbstractConnector {
 
-	DBConfigObject config;
+	private DBConfigObject config;
 
 	public ConnectorMoodle(final DBConfigObject config) {
 		this.config = config;

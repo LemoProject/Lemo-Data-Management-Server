@@ -9,6 +9,10 @@ package de.lemo.dms.db.miningDBclass;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
+/**
+ * Bean for the id mappig with hibernate
+ *
+ */
 public class IDMappingMining implements IMappingClass {
 
 	private Long id;

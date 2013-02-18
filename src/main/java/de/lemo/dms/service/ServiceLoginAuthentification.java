@@ -24,6 +24,11 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
+
+/**
+ * Service for the authentification of an user
+ *
+ */
 @Path("authentification")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceLoginAuthentification extends BaseService {

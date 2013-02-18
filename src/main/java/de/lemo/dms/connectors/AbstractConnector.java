@@ -7,6 +7,11 @@
 
 package de.lemo.dms.connectors;
 
+/**
+ * Abstract class for connector implementations
+ * @author Sebastian Schwarzrock
+ *
+ */
 public abstract class AbstractConnector implements IConnector {
 
 	private Long id;
