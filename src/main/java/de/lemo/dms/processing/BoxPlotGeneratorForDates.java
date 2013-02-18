@@ -24,9 +24,9 @@ import de.lemo.dms.processing.resulttype.BoxPlot;
  */
 public class BoxPlotGeneratorForDates {
 	
-	private final static int WEEK = 7;
-	private final static int HOUR = 24;
-	private final static int THOU = 1000;
+	private static final int WEEK = 7;
+	private static final int HOUR = 24;
+	private static final int THOU = 1000;
 	private final Map<Integer, HashMap<Date, Long>> weekmap;
 	private final Map<Integer, HashMap<Date, Long>> hourmap;
 	private final Set<Date> dates;

@@ -262,7 +262,7 @@ public class QUserByParameter extends Question {
 								value = Long.valueOf(objects.get(i));
 							}
 							if ((i % 2) != 0) {
-								if (objects.get(i) == "resource") {
+								if (objects.get(i).equals("resource")) {
 									ids.add(value);
 								}
 							}

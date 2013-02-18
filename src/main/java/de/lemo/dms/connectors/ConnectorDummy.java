@@ -21,7 +21,6 @@ public class ConnectorDummy extends AbstractConnector {
 
 	@Override
 	public boolean testConnections() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

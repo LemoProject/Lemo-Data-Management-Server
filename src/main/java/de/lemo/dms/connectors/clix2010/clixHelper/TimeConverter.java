@@ -17,6 +17,7 @@ import java.util.Date;
  *
  */
 public class TimeConverter {
+	private static final int THOU = 1000;
 	
 	private TimeConverter()
 	{
@@ -36,7 +37,7 @@ public class TimeConverter {
 		try {
 			final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			final Date d = sdf.parse(date);
-			t = d.getTime() / 1000;
+			t = d.getTime() / THOU;
 
 		} catch (final Exception e)
 		{
@@ -55,7 +56,7 @@ public class TimeConverter {
 	{
 		String s = "";
 
-		s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date * 1000);
+		s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date * THOU);
 
 		return s;
 	}
