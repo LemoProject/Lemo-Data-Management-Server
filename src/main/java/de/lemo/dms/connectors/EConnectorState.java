@@ -7,6 +7,10 @@
 
 package de.lemo.dms.connectors;
 
+/**
+ * enums for the states of an connector
+ *
+ */
 public enum EConnectorState {
 	ready,
 	progress,

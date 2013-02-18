@@ -25,7 +25,7 @@ import de.lemo.dms.db.miningDBclass.ConfigMining;
  */
 public class Version {
 
-	private final static String pom = "pom.xml";
+	private static final String POM = "pom.xml";
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final ServerConfiguration config = ServerConfiguration.getInstance();
 	private IDBHandler dbHandler = this.config.getMiningDbHandler();
@@ -37,7 +37,7 @@ public class Version {
 	 */
 	public String getServerVersion() {
 		String version = "unknown";
-		final File pomfile = new File(Version.pom);
+		final File pomfile = new File(Version.POM);
 		Model model = null;
 		FileReader reader = null;
 		final MavenXpp3Reader mavenreader = new MavenXpp3Reader();

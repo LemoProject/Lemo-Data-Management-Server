@@ -44,10 +44,13 @@ public class Test {
 		mod.writeSourceDB();
 	}
 
+	/**
+	 * main method for test case
+	 * TODO move to unit test
+	 * @param args
+	 */
 	public static void main(final String[] args)
 	{
 		Test.gen();
-		// write();
-		// writeMoodle();
 	}
 }

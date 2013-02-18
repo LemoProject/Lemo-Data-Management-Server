@@ -84,15 +84,8 @@ public class UserMining implements IMappingClass {
 	 */
 	public void setId(final String id, final List<IDMappingMining> idMappingMining,
 			final List<IDMappingMining> oldIdMappingMining) {
-		final long id_n = UserMining.idForHash(id, idMappingMining, oldIdMappingMining);
-		/*
-		 * if(id_n == -1)
-		 * {
-		 * id_n = largestId + 1;
-		 * largestId = id_n;
-		 * }
-		 */
-		this.id = id_n;
+		final long idN = UserMining.idForHash(id, idMappingMining, oldIdMappingMining);
+		this.id = idN;
 	}
 
 	public static long idForHash(final String hash1, final List<IDMappingMining> idMappingMining,

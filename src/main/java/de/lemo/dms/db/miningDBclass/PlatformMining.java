@@ -9,6 +9,10 @@ package de.lemo.dms.db.miningDBclass;
 
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
+/**
+ * Bean class for the platforms 
+ *
+ */
 public class PlatformMining implements IMappingClass {
 
 	private Long id;

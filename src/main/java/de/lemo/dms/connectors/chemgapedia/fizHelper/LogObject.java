@@ -225,12 +225,12 @@ public class LogObject implements Comparable<LogObject> {
 	 * 
 	 * @param id
 	 *            the id
-	 * @param id_mapping_mining
+	 * @param idMappingMining
 	 *            the id_mapping_mining
 	 */
-	public void setId(final String id, final List<IDMappingMining> id_mapping_mining) {
-		final long id_n = LogObject.idForHash(id, id_mapping_mining);
-		this.id = id_n;
+	public void setId(final String id, final List<IDMappingMining> idMappingMining) {
+		final long idn = LogObject.idForHash(id, idMappingMining);
+		this.id = idn;
 	}
 
 	/**
@@ -238,21 +238,21 @@ public class LogObject implements Comparable<LogObject> {
 	 * 
 	 * @param hash1
 	 *            the hash1
-	 * @param id_mapping_mining
+	 * @param idMappingMining
 	 *            the id_mapping_mining
 	 * @return the long
 	 */
-	public static long idForHash(final String hash1, final List<IDMappingMining> id_mapping_mining)
+	public static long idForHash(final String hash1, final List<IDMappingMining> idMappingMining)
 	{
-		long id_n = -1;
-		for (final Iterator<IDMappingMining> iter = id_mapping_mining.iterator(); iter.hasNext();)
+		long idN = -1;
+		for (final Iterator<IDMappingMining> iter = idMappingMining.iterator(); iter.hasNext();)
 		{
 			final IDMappingMining loadedItem = iter.next();
 			if (loadedItem.getHash() == hash1) {
-				id_n = loadedItem.getId();
+				idN = loadedItem.getId();
 			}
 		}
-		return id_n;
+		return idN;
 	}
 
 	/**

@@ -35,11 +35,6 @@ public class DMSMain {
 
 		try {
 			DMSRemoteServer.INSTANCE.start();
-
-			/*
-			 * TODO every example uses 'read' to keep the server running but
-			 * there may be a better way
-			 */
 			System.in.read();
 
 		} catch (final IOException e) {

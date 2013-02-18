@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -38,39 +39,39 @@ public class LogReader {
 	/**
 	 * User-objects of previous connector-runs
 	 */
-	private final HashMap<String, UserMining> oldUsers = new HashMap<String, UserMining>();
+	private final Map<String, UserMining> oldUsers = new HashMap<String, UserMining>();
 	/**
 	 * User-objects of current connector-run
 	 */
-	private HashMap<String, UserMining> newUsers = new HashMap<String, UserMining>();
+	private Map<String, UserMining> newUsers = new HashMap<String, UserMining>();
 	/**
 	 * Resource-objects of previous connector-runs
 	 */
-	private final HashMap<String, ResourceMining> oldResources = new HashMap<String, ResourceMining>();
+	private final Map<String, ResourceMining> oldResources = new HashMap<String, ResourceMining>();
 	/**
 	 * Resource-objects of current connector-run
 	 */
-	private final HashMap<String, ResourceMining> newResources = new HashMap<String, ResourceMining>();
+	private final Map<String, ResourceMining> newResources = new HashMap<String, ResourceMining>();
 	/**
 	 * CourseResource-objects found in database
 	 */
-	private final HashMap<String, CourseResourceMining> courseResources = new HashMap<String, CourseResourceMining>();
+	private final Map<String, CourseResourceMining> courseResources = new HashMap<String, CourseResourceMining>();
 	/**
 	 * IDMapping-objects of previous connector-runs
 	 */
-	private HashMap<String, IDMappingMining> id_mapping = new HashMap<String, IDMappingMining>();
+	private Map<String, IDMappingMining> idMapping = new HashMap<String, IDMappingMining>();
 	/**
 	 * IDMapping-objects of current connector-run
 	 */
-	private HashMap<String, IDMappingMining> new_id_mapping = new HashMap<String, IDMappingMining>();
+	private Map<String, IDMappingMining> newIdMapping = new HashMap<String, IDMappingMining>();
 	/**
 	 * HashMap storing all logged accesses, with according user-login as key
 	 */
-	private final HashMap<String, ArrayList<LogObject>> userHistories = new HashMap<String, ArrayList<LogObject>>();
+	private final Map<String, ArrayList<LogObject>> userHistories = new HashMap<String, ArrayList<LogObject>>();
 	/**
 	 * Course-objects of previous connector-runs
 	 */
-	private final HashMap<String, CourseMining> oldCourses = new HashMap<String, CourseMining>();
+	private final Map<String, CourseMining> oldCourses = new HashMap<String, CourseMining>();
 	/**
 	 * Internal clock-object for statistics
 	 */
@@ -108,7 +109,7 @@ public class LogReader {
 		this.connector = connector;
 		final long platformId = connector.getPlatformId();
 		try {
-			this.new_id_mapping = new HashMap<String, IDMappingMining>();
+			this.newIdMapping = new HashMap<String, IDMappingMining>();
 
 			Criteria c = session.createCriteria(IDMappingMining.class, "idmap");
 			c.add(Restrictions.eq("idmap.platform", platformId));
@@ -116,11 +117,11 @@ public class LogReader {
 			final List<IDMappingMining> ids = c.list();
 
 			// Load previously saved idMappingMining, used to identify resources
-			this.id_mapping = new HashMap<String, IDMappingMining>();
+			this.idMapping = new HashMap<String, IDMappingMining>();
 			for (int i = 0; i < ids.size(); i++)
 			{
 				ids.get(i).setPlatform(connector.getPlatformId());
-				this.id_mapping.put(ids.get(i).getHash(), ids.get(i));
+				this.idMapping.put(ids.get(i).getHash(), ids.get(i));
 			}
 			System.out.println("Read " + ids.size() + " IDMappings from database.");
 
@@ -222,8 +223,8 @@ public class LogReader {
 			this.oldUsers.put(user.getLogin(), user);
 		}
 
-		for (final IDMappingMining mapping : this.new_id_mapping.values()) {
-			this.id_mapping.put(mapping.getHash(), mapping);
+		for (final IDMappingMining mapping : this.newIdMapping.values()) {
+			this.idMapping.put(mapping.getHash(), mapping);
 		}
 
 		this.clearMaps();
@@ -235,7 +236,7 @@ public class LogReader {
 		this.newResources.clear();
 		this.newUsers.clear();
 		this.userHistories.clear();
-		this.new_id_mapping.clear();
+		this.newIdMapping.clear();
 	}
 
 	/**
@@ -339,9 +340,9 @@ public class LogReader {
 
 						long id = -1;
 						// Set user-id
-						if (this.id_mapping.get(name) != null)
+						if (this.idMapping.get(name) != null)
 						{
-							id = this.id_mapping.get(name).getId();
+							id = this.idMapping.get(name).getId();
 							lo.setId(id);
 						}
 						if (id == -1)
@@ -458,31 +459,31 @@ public class LogReader {
 						{
 							final ResourceMining r = new ResourceMining();
 
-							long resource_id = -1;
-							if (this.id_mapping.get(lo.getUrl()) != null)
+							long resourceId = -1;
+							if (this.idMapping.get(lo.getUrl()) != null)
 							{
-								resource_id = this.id_mapping.get(lo.getUrl()).getId();
-								lo.setId(resource_id);
+								resourceId = this.idMapping.get(lo.getUrl()).getId();
+								lo.setId(resourceId);
 							}
-							if (resource_id == -1)
+							if (resourceId == -1)
 							{
-								resource_id = this.resIdCount + 1;
-								this.resIdCount = resource_id;
-								this.id_mapping.put(
+								resourceId = this.resIdCount + 1;
+								this.resIdCount = resourceId;
+								this.idMapping.put(
 										lo.getUrl(),
 										new IDMappingMining(
-												Long.valueOf(this.connector.getPrefix() + "" + resource_id), lo
+												Long.valueOf(this.connector.getPrefix() + "" + resourceId), lo
 														.getUrl(), this.connector.getPlatformId()));
-								this.new_id_mapping.put(
+								this.newIdMapping.put(
 										lo.getUrl(),
 										new IDMappingMining(
-												Long.valueOf(this.connector.getPrefix() + "" + resource_id), lo
+												Long.valueOf(this.connector.getPrefix() + "" + resourceId), lo
 														.getUrl(), this.connector.getPlatformId()));
-								resource_id = Long.valueOf(this.connector.getPrefix() + "" + resource_id);
-								lo.setId(resource_id);
+								resourceId = Long.valueOf(this.connector.getPrefix() + "" + resourceId);
+								lo.setId(resourceId);
 							}
 
-							r.setId(resource_id);
+							r.setId(resourceId);
 							r.setUrl(lo.getUrl());
 							// Regex used to prevent the inclusion of assignment-pages
 							if (newRes && !r.getUrl().matches("[0-9a-z]{32}[-]{1}[0-9]++"))
@@ -576,7 +577,7 @@ public class LogReader {
 		final List<Collection<?>> l = new ArrayList<Collection<?>>();
 		final ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
 		final Collection<UserMining> it = this.newUsers.values();
-		final Collection<IDMappingMining> idmap = this.new_id_mapping.values();
+		final Collection<IDMappingMining> idmap = this.newIdMapping.values();
 		System.out.println("Found " + it.size() + " users.");
 		l.add(it);
 		l.add(idmap);

@@ -301,6 +301,11 @@ public class Test {
 		System.out.println("Test finished");
 	}
 
+	/**
+	 * main method for test case 
+	 * TODO move to unit test
+	 * @param args
+	 */
 	public static void main(final String[] args)
 	{
 		final Test t = new Test();

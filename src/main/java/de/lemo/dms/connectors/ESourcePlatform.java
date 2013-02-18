@@ -11,6 +11,10 @@ import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.db.DBConfigObject;
 
+/**
+ * enum for the avsailable platforms
+ *
+ */
 public enum ESourcePlatform {
 
 	Moodle_1_9,
