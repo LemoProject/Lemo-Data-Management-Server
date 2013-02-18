@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -72,10 +73,10 @@ public class XMLPackageParser {
 	private final HashMap<String, ResourceMining> resourceObj = new HashMap<String, ResourceMining>();
 
 	/** The list of file names */
-	private final ArrayList<String> fileNames = new ArrayList<String>();
+	private final List<String> fileNames = new ArrayList<String>();
 
 	/** The map containing the IDMapping-objects. */
-	private final HashMap<String, IDMappingMining> id_mapping;
+	private final Map<String, IDMappingMining> idmapping;
 
 	/** The largest course id of previous runs. */
 	private Long couId = 0L;
@@ -107,11 +108,11 @@ public class XMLPackageParser {
 		final List<IDMappingMining> ids = (List<IDMappingMining>) this.dbHandler.performQuery(session, EQueryType.HQL,
 				"from IDMappingMining x where x.platform=" + platformId + " order by x.id asc");
 
-		this.id_mapping = new HashMap<String, IDMappingMining>();
+		this.idmapping = new HashMap<String, IDMappingMining>();
 		for (int i = 0; i < ids.size(); i++) {
-			this.id_mapping.put(ids.get(i).getHash(), ids.get(i));
+			this.idmapping.put(ids.get(i).getHash(), ids.get(i));
 		}
-		System.out.println("Loaded " + this.id_mapping.size() + " IDMappingMining objects from the mining database.");
+		System.out.println("Loaded " + this.idmapping.size() + " IDMappingMining objects from the mining database.");
 
 		final List<LevelMining> levs = (List<LevelMining>) this.dbHandler.performQuery(session, EQueryType.HQL,
 				"FROM LevelMining x where x.platform=" + platformId + " order by x.id asc");
@@ -317,19 +318,19 @@ public class XMLPackageParser {
 			{
 				resource.setPosition(0);
 				this.resourceObj.get(resource.getUrl());
-				long r_id = -1;
-				if (this.id_mapping.get(resource.getUrl()) != null)
+				long rid = -1;
+				if (this.idmapping.get(resource.getUrl()) != null)
 				{
-					r_id = this.id_mapping.get(resource.getUrl()).getId();
-					resource.setId(r_id);
+					rid = this.idmapping.get(resource.getUrl()).getId();
+					resource.setId(rid);
 				}
-				if (r_id == -1)
+				if (rid == -1)
 				{
-					r_id = this.resId + 1;
-					this.resId = r_id;
-					r_id = Long.valueOf(this.connector.getPrefix() + "" + r_id);
-					this.id_mapping.put(resource.getUrl(), new IDMappingMining(r_id, resource.getUrl(), platformId));
-					resource.setId(r_id);
+					rid = this.resId + 1;
+					this.resId = rid;
+					rid = Long.valueOf(this.connector.getPrefix() + "" + rid);
+					this.idmapping.put(resource.getUrl(), new IDMappingMining(rid, resource.getUrl(), platformId));
+					resource.setId(rid);
 				}
 
 				resource.setPlatform(this.connector.getPlatformId());
@@ -419,21 +420,21 @@ public class XMLPackageParser {
 
 								}
 							}
-							long resource_id = -1;
-							if (this.id_mapping.get(r1.getUrl()) != null)
+							long resourceid = -1;
+							if (this.idmapping.get(r1.getUrl()) != null)
 							{
-								resource_id = this.id_mapping.get(r1.getUrl()).getId();
-								r1.setId(resource_id);
+								resourceid = this.idmapping.get(r1.getUrl()).getId();
+								r1.setId(resourceid);
 							}
-							if (resource_id == -1)
+							if (resourceid == -1)
 							{
-								resource_id = this.resId + 1;
-								this.resId = resource_id;
-								resource_id = Long.valueOf(this.connector.getPrefix() + "" + resource_id);
-								this.id_mapping.put(r1.getUrl(), new IDMappingMining(resource_id, r1.getUrl(),
+								resourceid = this.resId + 1;
+								this.resId = resourceid;
+								resourceid = Long.valueOf(this.connector.getPrefix() + "" + resourceid);
+								this.idmapping.put(r1.getUrl(), new IDMappingMining(resourceid, r1.getUrl(),
 										platformId));
 
-								r1.setId(resource_id);
+								r1.setId(resourceid);
 							}
 
 							r1.setPosition(pos);
@@ -489,7 +490,7 @@ public class XMLPackageParser {
 					{
 						r1.setPlatform(this.connector.getPlatformId());
 						this.resourceObj.put(r1.getUrl(), r1);
-						this.id_mapping.put(r1.getUrl(),
+						this.idmapping.put(r1.getUrl(),
 								new IDMappingMining(r1.getId(), r1.getUrl(), this.connector.getPlatformId()));
 						this.fileNames.add(filename + "*");
 						final CourseResourceMining crm = new CourseResourceMining();
@@ -578,7 +579,7 @@ public class XMLPackageParser {
 		li.add(this.levelAssociations.values());
 		li.add(this.levelCourses.values());
 		li.add(this.courseResources.values());
-		li.add(this.id_mapping.values());
+		li.add(this.idmapping.values());
 
 		final Session session = this.dbHandler.getMiningSession();
 		this.dbHandler.saveCollectionToDB(session, li);
@@ -617,7 +618,7 @@ public class XMLPackageParser {
 		this.courseObj.clear();
 		this.courseResources.clear();
 		this.fileNames.clear();
-		this.id_mapping.clear();
+		this.idmapping.clear();
 		this.levelAssociations.clear();
 		this.levelCourses.clear();
 		this.levelObj.clear();
