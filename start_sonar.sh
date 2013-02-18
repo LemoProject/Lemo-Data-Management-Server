@@ -1,3 +1,3 @@
 #!/bin/bash
-mvn clean install -DskipTests=true
-mvn sonar:sonar
+mvn -o clean install -DskipTests=true
+mvn -o sonar:sonar
