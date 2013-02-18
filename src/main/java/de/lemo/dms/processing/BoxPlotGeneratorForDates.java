@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import de.lemo.dms.processing.resulttype.BoxPlot;
 
@@ -22,9 +23,12 @@ import de.lemo.dms.processing.resulttype.BoxPlot;
  *
  */
 public class BoxPlotGeneratorForDates {
-
-	private final HashMap<Integer, HashMap<Date, Long>> weekmap;
-	private final HashMap<Integer, HashMap<Date, Long>> hourmap;
+	
+	private final static int WEEK = 7;
+	private final static int HOUR = 24;
+	private final static int THOU = 1000;
+	private final Map<Integer, HashMap<Date, Long>> weekmap;
+	private final Map<Integer, HashMap<Date, Long>> hourmap;
 	private final Set<Date> dates;
 	private Date min = null, max = null;
 	private final int[] weekdays;
@@ -34,15 +38,15 @@ public class BoxPlotGeneratorForDates {
 		this.weekmap = new HashMap<Integer, HashMap<Date, Long>>();
 		this.hourmap = new HashMap<Integer, HashMap<Date, Long>>();
 		this.dates = new HashSet<Date>();
-		this.weekdays = new int[7];
+		this.weekdays = new int[WEEK];
 
 		// wochen
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < WEEK; i++) {
 			this.weekmap.put(new Integer(i), new HashMap<Date, Long>());
 			this.weekdays[i] = 0;
 		}
 		// stunden
-		for (int i = 0; i < 24; i++) {
+		for (int i = 0; i < HOUR; i++) {
 			this.hourmap.put(new Integer(i), new HashMap<Date, Long>());
 		}
 	}
@@ -58,10 +62,10 @@ public class BoxPlotGeneratorForDates {
 		// datum filtern
 		final Calendar cal = Calendar.getInstance();
 		// TODO Länge des TimeStamps prüfen
-		final Date date = new Date(timestamp * 1000);
+		final Date date = new Date(timestamp * THOU);
 		cal.setTime(date);
 		// generate key for day
-		final Date keydate = new Date(timestamp * 1000);
+		final Date keydate = new Date(timestamp * THOU);
 		keydate.setHours(0);
 		keydate.setMinutes(0);
 		keydate.setSeconds(0);
@@ -117,16 +121,16 @@ public class BoxPlotGeneratorForDates {
 	}
 
 	public BoxPlot[] calculateResult() {
-		BoxPlot[] week = new BoxPlot[7];
-		BoxPlot[] hour = new BoxPlot[24];
-		final BoxPlot[] result = new BoxPlot[7 + 24];
+		BoxPlot[] week = new BoxPlot[WEEK];
+		BoxPlot[] hour = new BoxPlot[HOUR];
+		final BoxPlot[] result = new BoxPlot[WEEK + HOUR];
 		week = this.calculateResultForWeek();
 		hour = this.calculateResultForHour();
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < WEEK; i++) {
 			result[i] = week[i];
 		}
-		for (int i = 7; i < 31; i++) {
-			result[i] = hour[i - 7];
+		for (int i = WEEK; i < 31; i++) {
+			result[i] = hour[i - WEEK];
 		}
 		return result;
 	}
@@ -135,7 +139,7 @@ public class BoxPlotGeneratorForDates {
 	 * @return 7 boxplots with the result of a seven day week monday - sunday
 	 */
 	public BoxPlot[] calculateResultForWeek() {
-		final BoxPlot[] resultList = new BoxPlot[7];
+		final BoxPlot[] resultList = new BoxPlot[WEEK];
 
 		for (int i = 0; i < 7; i++) {
 			Long[] days = null;
@@ -180,9 +184,9 @@ public class BoxPlotGeneratorForDates {
 	 * @return list with boxplots for the hours 0 - 24
 	 */
 	public BoxPlot[] calculateResultForHour() {
-		final BoxPlot[] resultList = new BoxPlot[24];
+		final BoxPlot[] resultList = new BoxPlot[HOUR];
 
-		for (int i = 0; i < 24; i++) {
+		for (int i = 0; i < HOUR; i++) {
 			Long[] hours = null;
 			final HashMap<Date, Long> currenthour = this.hourmap.get(i);
 			final Date[] dates = currenthour.keySet().toArray(new Date[currenthour.size()]);
