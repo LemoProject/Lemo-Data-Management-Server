@@ -44,7 +44,7 @@ public class ServiceLoginAuthentification extends BaseService {
 		final Criteria criteria = session.createCriteria(UserMining.class, "users");
 		criteria.add(Restrictions.eq("users.login", loginHash));
 		
-		System.out.println("Looking for user:"+ login);
+		logger.info("Looking for user:"+ login);
 		
 		ArrayList<UserMining> results = (ArrayList<UserMining>) criteria.list();
 
@@ -52,14 +52,14 @@ public class ServiceLoginAuthentification extends BaseService {
 		
 		if(results != null && results.size() > 0)
 		{
-			System.out.println("User found id:"+ results.get(0).getId());
+			logger.info("User found id:"+ results.get(0).getId());
 			ArrayList<Long> l = new ArrayList<Long>();
 			l.add(0L);
 			l.add(results.get(0).getId());
 			res = new ResultListLongObject(l);
 		}
 		else
-			{	System.out.println("User "+ login+" not found!");
+			{	logger.info("User "+ login+" not found!");
 				res = new ResultListLongObject();}
 		return res;
 	}

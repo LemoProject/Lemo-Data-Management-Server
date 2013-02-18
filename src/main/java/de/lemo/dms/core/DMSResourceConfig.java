@@ -102,7 +102,7 @@ public class DMSResourceConfig extends DefaultResourceConfig {
 	 * @return every {@link Path}-annotated class in the package, mapped to the
 	 *         annotations value prefixed by the base URL
 	 */
-	private HashMap<String, Class<?>> getResourceClasses(final String packagePath,
+	private Map<String, Class<?>> getResourceClasses(final String packagePath,
 			final String baseUrl) {
 		final HashMap<String, Class<?>> resourceClasses = Maps.newHashMap();
 		final Set<Class<?>> packageClasses =

@@ -10,9 +10,11 @@ package de.lemo.dms.connectors;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import de.lemo.dms.core.DMSMain;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
@@ -37,7 +39,8 @@ public class Test {
 	private static final Long ID_MOODLE_NUMERIC = 5L;
 	private static final Long ID_MOODLE19 = 2L;
 	private static final Long ID_CLIX = 6L;
-
+	final Logger logger = Logger.getLogger(this.getClass());
+	
 	public ResultListLongObject authentificateUser(String login) {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -168,7 +171,7 @@ public class Test {
 		//
 		// Query pers = session.createQuery("from Person x order by x.id asc");
 		// List<?> person = pers.list();
-		// System.out.println("Person tables: " + person.size());
+		// logger.info("Person tables: " + person.size());
 	}
 
 	public void calculateMeichsner()
@@ -185,10 +188,10 @@ public class Test {
 
 		final Criteria crit = session.createCriteria(ResourceLogMining.class, "logs");
 		crit.add(Restrictions.in("logs.course.id", cids));
-		System.out.println("Reading DB");
+		logger.info("Reading DB");
 		@SuppressWarnings("unchecked")
 		final List<ResourceLogMining> l = crit.list();
-		System.out.println("Found " + l.size() + " courses.");
+		logger.info("Found " + l.size() + " courses.");
 
 		final HashSet<String> hSet = new HashSet<String>();
 		for (final ResourceLogMining resL : l)
@@ -203,7 +206,7 @@ public class Test {
 
 		for (final String s : hSet)
 		{
-			System.out.println(s);
+			logger.info(s);
 		}
 
 	}
@@ -264,7 +267,7 @@ public class Test {
 		quizzes.add(1411939L);
 
 		final ResultListBoxPlot res = ph.compute(courses, new ArrayList<Long>(), quizzes, 100, 0L, 1500000000L);
-		System.out.println(res.getElements().size());
+		logger.info(res.getElements().size());
 
 	}
 
@@ -290,15 +293,15 @@ public class Test {
 			res.add(obj.getRatedObject().getId() + "");
 			res.add(obj.getRatedObject().getTitle());
 		}
-		System.out.println("Starting test");
+		logger.info("Starting test");
 	}
 
 	public void run()
 	{
-		System.out.println("Starting test");
+		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		this.runMoodleNumericConn();
-		System.out.println("Test finished");
+		logger.info("Test finished");
 	}
 
 	/**

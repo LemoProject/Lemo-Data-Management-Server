@@ -123,9 +123,7 @@ public class QFrequentPathsBIDE extends Question {
 				sequenceDatabase.loadLinkedList(QFrequentPathsBIDE.generateLinkedList(courses, users, types, minLength,
 						maxLength,
 						startTime, endTime));
-				// sequenceDatabase.loadFile(generateInputFile(courseIds, userIds, startTime, endTime));
 			} else {
-				// sequenceDatabase.loadFile(generateInputFileSessionBound(courseIds, userIds, startTime, endTime));
 				sequenceDatabase.loadLinkedList(QFrequentPathsBIDE.generateLinkedListSessionBound(courses, users,
 						types, minLength,
 						maxLength, startTime, endTime));
@@ -210,7 +208,7 @@ public class QFrequentPathsBIDE extends Question {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} finally
 		{
 			QFrequentPathsBIDE.requests.clear();
@@ -348,7 +346,7 @@ public class QFrequentPathsBIDE extends Question {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return result;
 	}
@@ -517,7 +515,7 @@ public class QFrequentPathsBIDE extends Question {
 			logger.debug("Wrote " + z + " logs.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return result;
 	}
