@@ -63,7 +63,7 @@ public class HibernateDBHandler implements IDBHandler {
 
 				if (!className.equals("") && !className.equals(objects.get(i).getClass().getName()))
 				{
-					System.out.println("Wrote " + classOb + " objects of class " + className);
+					logger.info("Wrote " + classOb + " objects of class " + className);
 					classOb = 0;
 				}
 				className = objects.get(i).getClass().getName();
@@ -77,13 +77,13 @@ public class HibernateDBHandler implements IDBHandler {
 					session.clear();
 				}
 			}
-			System.out.println("Wrote " + classOb + " objects of class " + className + " to database.");
+			logger.info("Wrote " + classOb + " objects of class " + className + " to database.");
 			tx.commit();
 			session.clear();
 
 		} catch (final HibernateException e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 	}
@@ -127,7 +127,7 @@ public class HibernateDBHandler implements IDBHandler {
 			}
 		} catch (final HibernateException he)
 		{
-			System.out.println("Exception: " + he.getMessage());
+			logger.error(he.getMessage());
 		}
 		return l;
 	}
