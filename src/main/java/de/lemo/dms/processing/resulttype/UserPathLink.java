@@ -59,11 +59,11 @@ public class UserPathLink {
 
 	@Override
 	public int hashCode() {
-		final int PRIME = 31;
+		final int prime = 31;
 		int result = 1;
-		final int NEXTNUMBER = 32;
-		result = (PRIME * result) + (this.source.length() ^ (this.source.length() >>> NEXTNUMBER));
-		result = (PRIME * result) + (this.target.length() ^ (this.target.length() >>> NEXTNUMBER));
+		final int nextnumber = 32;
+		result = (prime * result) + (this.source.length() ^ (this.source.length() >>> nextnumber));
+		result = (prime * result) + (this.target.length() ^ (this.target.length() >>> nextnumber));
 		return result;
 	}
 

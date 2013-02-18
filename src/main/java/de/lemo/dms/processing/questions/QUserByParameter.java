@@ -71,7 +71,7 @@ public class QUserByParameter extends Question {
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
-		ResultListLongObject user_ids = null;
+		ResultListLongObject userIds = null;
 
 		if (startTime < endTime)
 		{
@@ -395,9 +395,9 @@ public class QUserByParameter extends Question {
 				}
 			}
 
-			user_ids = new ResultListLongObject(new ArrayList<Long>(users.values()));
+			userIds = new ResultListLongObject(new ArrayList<Long>(users.values()));
 		}
-		return user_ids;
+		return userIds;
 
 	}
 

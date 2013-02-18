@@ -91,24 +91,24 @@ public class UserMining implements IMappingClass {
 	public static long idForHash(final String hash1, final List<IDMappingMining> idMappingMining,
 			final List<IDMappingMining> oldIdMappingMining)
 	{
-		long id_n = -1;
+		long idN = -1;
 		for (final Iterator<IDMappingMining> iter = idMappingMining.iterator(); iter.hasNext();)
 		{
 			final IDMappingMining loadedItem = iter.next();
 			if (loadedItem.getHash() == hash1) {
-				id_n = loadedItem.getId();
+				idN = loadedItem.getId();
 			}
 		}
-		if (id_n == -1) {
+		if (idN == -1) {
 			for (final Iterator<IDMappingMining> iter = oldIdMappingMining.iterator(); iter.hasNext();)
 			{
 				final IDMappingMining loadedItem = iter.next();
 				if (loadedItem.getHash() == hash1) {
-					id_n = loadedItem.getId();
+					idN = loadedItem.getId();
 				}
 			}
 		}
-		return id_n;
+		return idN;
 	}
 
 	public void setId(final long id)

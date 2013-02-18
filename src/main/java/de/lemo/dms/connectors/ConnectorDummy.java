@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  */
 public class ConnectorDummy extends AbstractConnector {
 
-	private final int SLEEP = (60 * 1000);
+	private final int sleep = (60 * 1000);
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
@@ -29,7 +29,7 @@ public class ConnectorDummy extends AbstractConnector {
 	public void getData() {
 		try {
 			this.logger.info("connector dummy will load whole database");
-			Thread.sleep(this.SLEEP);
+			Thread.sleep(this.sleep);
 		} catch (final InterruptedException e) {
 
 			this.logger.warn("connector dummy throws exception at getData()");
@@ -40,7 +40,7 @@ public class ConnectorDummy extends AbstractConnector {
 	public void updateData(final long fromTimestamp) {
 		try {
 			this.logger.info("connector dummy will update whole database");
-			Thread.sleep(this.SLEEP);
+			Thread.sleep(this.sleep);
 		} catch (final InterruptedException e) {
 			this.logger.warn("connector dummy throws exception at updateData()");
 		}

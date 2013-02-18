@@ -10,6 +10,10 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 
+ * Bean class for the levels of hierarchy on the platform
+ */
 public class LevelMining {
 
 	private long id;
@@ -69,8 +73,8 @@ public class LevelMining {
 	 * @param department_degree_add
 	 *            this entry will be added to the list of department_degree in this department
 	 */
-	public void addLevelAssociation(final LevelAssociationMining LevelAssociationAdd) {
-		this.levelAssociations.add(LevelAssociationAdd);
+	public void addLevelAssociation(final LevelAssociationMining levelAssociationAdd) {
+		this.levelAssociations.add(levelAssociationAdd);
 	}
 
 	/**

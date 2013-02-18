@@ -26,9 +26,8 @@ public class DMSMain {
 	 * 
 	 * @author Boris Wenzlaff
 	 * @author Leonard Kappe
-	 * @see DMSRemoteServer
+	 * 
 	 * @param args
-	 *            not in use
 	 */
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger(DMSMain.class);
