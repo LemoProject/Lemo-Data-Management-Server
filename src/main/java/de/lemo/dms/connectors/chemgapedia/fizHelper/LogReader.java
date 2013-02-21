@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -97,6 +98,7 @@ public class LogReader {
 	 */
 	private final IConnector connector;
 
+	private Logger logger = Logger.getLogger(this.getClass());
 	/**
 	 * Creates a new LogReader-object, imports necessary objects from Mining-Database and sets counters.
 	 * 
@@ -373,7 +375,6 @@ public class LogReader {
 						else
 						{
 							final CourseResourceMining c = this.courseResources.get(lo.getUrl());
-							// CourseMining co;
 							if (this.courseResources.get(lo.getUrl()) != null) {
 								lo.setCourse(c.getCourse());
 								/*
@@ -533,7 +534,6 @@ public class LogReader {
 							this.newResources.put(r.getUrl(), r);
 						}
 
-						// logList.add(lo);
 						if (this.userHistories.get(logLine.getId()) == null)
 						{
 							final ArrayList<LogObject> a = new ArrayList<LogObject>();
@@ -578,7 +578,7 @@ public class LogReader {
 		final ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
 		final Collection<UserMining> it = this.newUsers.values();
 		final Collection<IDMappingMining> idmap = this.newIdMapping.values();
-		System.out.println("Found " + it.size() + " users.");
+		logger.info("Found " + it.size() + " users.");
 		l.add(it);
 		l.add(idmap);
 
@@ -610,7 +610,6 @@ public class LogReader {
 		Collections.sort(resourceLogMining);
 		l.add(this.newResources.values());
 		l.add(resourceLogMining);
-		System.out.println("");
 		if (session.isOpen()) {
 			this.dbHandler.saveCollectionToDB(session, l);
 		} else
@@ -618,7 +617,6 @@ public class LogReader {
 			session = this.dbHandler.getMiningSession();
 			this.dbHandler.saveCollectionToDB(session, l);
 		}
-		System.out.println("");
 	}
 
 }
