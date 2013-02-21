@@ -7,7 +7,6 @@
 
 package de.lemo.dms.core.config;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -152,7 +151,7 @@ public enum ServerConfiguration {
 			// no way to recover, re-throw at runtime
 			throw new RuntimeException(e);
 		} catch (final Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		if (lemoConfig == null) {
 			final String files = fileNames.toString();

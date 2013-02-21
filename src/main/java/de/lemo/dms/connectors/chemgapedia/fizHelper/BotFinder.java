@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -28,7 +30,7 @@ public class BotFinder {
 	 * @param log
 	 * @return
 	 */
-	public ArrayList<ArrayList<LogObject>> sessionize(final ArrayList<LogObject> log)
+	public List<ArrayList<LogObject>> sessionize(final List<LogObject> log)
 	{
 		final ArrayList<ArrayList<LogObject>> sessions = new ArrayList<ArrayList<LogObject>>();
 		final ArrayList<LogObject> currentSession = new ArrayList<LogObject>();
@@ -36,7 +38,7 @@ public class BotFinder {
 		for (int i = 0; i < log.size(); i++)
 		{
 			final LogObject l = log.get(i);
-			if ((l.getReferrer() == "-") || !previousPages.contains(l.getReferrer()))
+			if ((l.getReferrer().equals("-")) || !previousPages.contains(l.getReferrer()))
 			{
 				if (currentSession.size() > 0) {
 					sessions.add(currentSession);
@@ -57,7 +59,7 @@ public class BotFinder {
 	 *            Maximal number of views within a second.
 	 * @return List with all suspicious chunks.
 	 */
-	public ArrayList<Integer> checkFastOnes(final ArrayList<LogObject> log, final int chunkLimit)
+	public List<Integer> checkFastOnes(final List<LogObject> log, final int chunkLimit)
 	{
 		final ArrayList<Integer> chunks = new ArrayList<Integer>();
 		Collections.sort(log);
@@ -92,7 +94,7 @@ public class BotFinder {
 	 *            user.
 	 * @return List containing all suspicious chunks.
 	 */
-	public int checkPeriods(final ArrayList<LogObject> log, final int chunkLimit)
+	public int checkPeriods(final List<LogObject> log, final int chunkLimit)
 	{
 		Collections.sort(log);
 		// Skip if there was just one view
@@ -138,9 +140,9 @@ public class BotFinder {
 	 *            Maximal number of views performed on a single page.
 	 * @return number of requests of the most frequent requested page
 	 */
-	public int checkForRepetitions(final ArrayList<LogObject> log, final int chunkLimit) {
+	public int checkForRepetitions(final List<LogObject> log, final int chunkLimit) {
 
-		final Hashtable<String, Integer> temp = new Hashtable<String, Integer>();
+		final Map<String, Integer> temp = new Hashtable<String, Integer>();
 		for (int i = 0; i < log.size(); i++)
 		{
 			if (temp.containsKey(log.get(i).getUrl()))

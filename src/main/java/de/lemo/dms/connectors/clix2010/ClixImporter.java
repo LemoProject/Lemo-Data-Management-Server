@@ -68,8 +68,6 @@ import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.ForumMining;
 import de.lemo.dms.db.miningDBclass.GroupMining;
 import de.lemo.dms.db.miningDBclass.GroupUserMining;
-import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
-import de.lemo.dms.db.miningDBclass.LevelCourseMining;
 import de.lemo.dms.db.miningDBclass.LevelMining;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
@@ -322,8 +320,8 @@ public class ClixImporter {
 	private Map<Long, RoleMining> oldRoleMining;
 	// Map, holding the ChatMining objects, found in a previous data extraction process
 	/** The old_chat_mining. */
-	private HashMap<Long, ChatMining> oldChatMining;
-	
+	private Map<Long, ChatMining> oldChatMining;
+
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private final IConnector connector;
@@ -472,7 +470,7 @@ public class ClixImporter {
 
 				this.courseUserMining = this.generateCourseUserMining();
 				updates.add(this.courseUserMining.values());
-				
+
 				this.quizQuestionMining = this.generateQuizQuestionMining();
 				updates.add(this.quizQuestionMining.values());
 
@@ -1706,8 +1704,9 @@ public class ClixImporter {
 			for (final EComposing loadedItem : this.eComposing)
 			{
 				long id = 0;
-				if(loadedItem.getComponent() >= 0)
-					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
+				if (loadedItem.getComponent() >= 0) {
+					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());				
+				}
 				if ((this.scormMining.get(id) != null)
 						|| (this.oldScormMining.get(id) != null))
 				{
@@ -1746,8 +1745,10 @@ public class ClixImporter {
 			for (final EComposing loadedItem : this.eComposing)
 			{
 				long id = 0;
-				if(loadedItem.getComponent() >= 0)
+				if (loadedItem.getComponent() >= 0) {
 					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
+				}
+				id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
 				if ((this.assignmentMining.get(id) != null)
 						|| (this.oldAssignmentMining.get(id) != null))
 				{
@@ -1788,7 +1789,7 @@ public class ClixImporter {
 			for (final EComposing loadedItem : this.eComposing)
 			{
 				long id = 0;
-				if(loadedItem.getComponent() >= 0)
+				if (loadedItem.getComponent() >= 0)
 					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
 				if ((this.resourceMining.get(id) != null)
 						|| (this.oldResourceMining.get(id) != null))
@@ -1829,7 +1830,7 @@ public class ClixImporter {
 			for (final EComposing loadedItem : this.eComposing)
 			{
 				long id = 0;
-				if(loadedItem.getComponent() >= 0)
+				if (loadedItem.getComponent() >= 0)
 					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
 				if ((this.quizMining.get(id) != null)
 						|| (this.oldQuizMining.get(id) != null))
@@ -1862,7 +1863,7 @@ public class ClixImporter {
 	 * 
 	 * @return HashMap with QuizUserMining-objects
 	 */
-	private HashMap<Long, QuizUserMining> generateQuizUserMining()
+	private Map<Long, QuizUserMining> generateQuizUserMining()
 	{
 		final HashMap<Long, QuizUserMining> quizUsers = new HashMap<Long, QuizUserMining>();
 		try {
@@ -1905,8 +1906,10 @@ public class ClixImporter {
 			for (final EComposing loadedItem : this.eComposing)
 			{
 				long id = 0;
-				if(loadedItem.getComponent() >= 0)
-					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
+				if (loadedItem.getComponent() >= 0) {
+					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());				
+				}
+
 				if ((this.wikiMining.get(id) != null)
 						|| (this.oldWikiMining.get(id) != null))
 				{
@@ -1979,20 +1982,23 @@ public class ClixImporter {
 				}
 
 			}
-			
-			for(TGroupFullSpecification loadedItem : this.tGroupFullSpecification)
+
+			for (TGroupFullSpecification loadedItem : this.tGroupFullSpecification)
 			{
 				GroupUserMining item = new GroupUserMining();
-				item.setGroup(Long.valueOf(connector.getPrefix() + "" + loadedItem.getGroup()), groupMining, oldGroupMining);
-				item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining, oldUserMining);
-				if(item.getGroup() != null && item.getUser() != null)
+				item.setGroup(Long.valueOf(connector.getPrefix() + "" + loadedItem.getGroup()), groupMining,
+						oldGroupMining);
+				item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining,
+						oldUserMining);
+				if (item.getGroup() != null && item.getUser() != null)
 				{
-					long id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getGroup() + "" + loadedItem.getPerson());
+					long id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getGroup() + ""
+							+ loadedItem.getPerson());
 					item.setId(id);
-					if(groupUsers.get(id) == null)
+					if (groupUsers.get(id) == null)
 						groupUsers.put(id, item);
 				}
-				
+
 				if ((item.getUser() != null) && (item.getGroup() != null)) {
 					groupUsers.put(item.getId(), item);
 				}
@@ -2038,56 +2044,62 @@ public class ClixImporter {
 		}
 		return courseGroups;
 	}
-	
+
 	private Map<Long, CourseUserMining> generateCourseUserMining()
 	{
 		final HashMap<Long, CourseUserMining> courseUser = new HashMap<Long, CourseUserMining>();
-		try{
-			
+		try {
+
 			RoleMining teacher = null;
 			RoleMining student = null;
-			for(RoleMining r : roleMining.values())
+			for (RoleMining r : roleMining.values())
 			{
-				if(r.getType() == 1)
+				if (r.getType() == 1) {
 					teacher = r;
-				else if(r.getType() == 2)
+				}
+
+				else if (r.getType() == 2)
 					student = r;
-				if(teacher != null && student != null)
+				if (teacher != null && student != null)
 					break;
-					
+
 			}
-			
+
 			/** Students **/
-			for(Portfolio loadedItem : this.portfolio)
+			for (Portfolio loadedItem : this.portfolio)
 			{
-				if(loadedItem.getCourse() == 0)
+				if (loadedItem.getCourse() == 0)
 				{
 					CourseUserMining item = new CourseUserMining();
-					
+
 					item.setId(Long.valueOf(connector.getPrefix() + "0" + loadedItem.getId()));
-					item.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent()), courseMining, oldCourseMining);
-					item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining, oldUserMining);
+					item.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent()), courseMining,
+							oldCourseMining);
+					item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining,
+							oldUserMining);
 					item.setRole(student.getId(), roleMining, oldRoleMining);
 					item.setPlatform(connector.getPlatformId());
 					item.setEnrolend(TimeConverter.getTimestamp(loadedItem.getEndDate()));
 					item.setEnrolstart(TimeConverter.getTimestamp(loadedItem.getStartDate()));
-					
-					if(item.getCourse() != null && item.getUser() != null)
+
+					if (item.getCourse() != null && item.getUser() != null)
 						courseUser.put(item.getId(), item);
 				}
 			}
 			/** Tutors **/
-			for(PersonComponentAssignment loadedItem : this.personComponentAssignment)
+			for (PersonComponentAssignment loadedItem : this.personComponentAssignment)
 			{
 				CourseUserMining item = new CourseUserMining();
-				//TODO ids can be duplicated
+				// TODO ids can be duplicated
 				item.setId(Long.valueOf(connector.getPrefix() + "1" + loadedItem.getLongId()));
-				item.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent()), courseMining, oldCourseMining);
-				item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining, oldUserMining);
+				item.setCourse(Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent()), courseMining,
+						oldCourseMining);
+				item.setUser(Long.valueOf(connector.getPrefix() + "" + loadedItem.getPerson()), userMining,
+						oldUserMining);
 				item.setRole(teacher.getId(), roleMining, oldRoleMining);
 				item.setPlatform(connector.getPlatformId());
-				
-				if(item.getCourse() != null && item.getUser() != null)
+
+				if (item.getCourse() != null && item.getUser() != null)
 					courseUser.put(item.getId(), item);
 			}
 			this.logger.info("Generated " + courseUser.size() + " CourseUserMinings.");
@@ -2095,8 +2107,7 @@ public class ClixImporter {
 		{
 			e.printStackTrace();
 		}
-		
-		
+
 		return courseUser;
 	}
 
@@ -2113,7 +2124,7 @@ public class ClixImporter {
 			for (final EComposing loadedItem : this.eComposing)
 			{
 				long id = 0;
-				if(loadedItem.getComponent() >= 0)
+				if (loadedItem.getComponent() >= 0)
 					id = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getComponent());
 				if ((this.forumMining.get(id) != null)
 						|| (this.oldForumMining.get(id) != null))
@@ -2182,7 +2193,7 @@ public class ClixImporter {
 									+ ecMap.get(loadedItem.getForum()).getComposing()), this.courseMining,
 							this.oldCourseMining);
 				}
-				
+
 				if ((item.getUser() != null) && (item.getForum() != null)) {
 					forumLogs.put(item.getId(), item);
 				}
@@ -2205,14 +2216,15 @@ public class ClixImporter {
 					item.setCourse(ecMap.get(loadedItem.getForum()).getComposing(), this.courseMining,
 							this.oldCourseMining);
 				}
-				
-/*				if(item.getCourse() != null)
-				{
-					CourseForumMining cfm = new CourseForumMining();
-					cfm.setForum(item.getForum().getId(), this.forumMining, this.oldForumMining);
-					cfm.setCourse(item.getCourse().getId(), this.courseMining, this.oldCourseMining);
-				}
-*/
+
+				/*
+				 * if(item.getCourse() != null)
+				 * {
+				 * CourseForumMining cfm = new CourseForumMining();
+				 * cfm.setForum(item.getForum().getId(), this.forumMining, this.oldForumMining);
+				 * cfm.setCourse(item.getCourse().getId(), this.courseMining, this.oldCourseMining);
+				 * }
+				 */
 				if ((item.getUser() != null) && (item.getForum() != null)) {
 					forumLogs.put(item.getId(), item);
 				}
@@ -2568,7 +2580,7 @@ public class ClixImporter {
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);
-				//item.setCourse(item.getChat().getCourse());
+				// item.setCourse(item.getChat().getCourse());
 
 				if ((item.getChat() != null) && (item.getUser() != null)) {
 					chatLogs.put(item.getId(), item);
