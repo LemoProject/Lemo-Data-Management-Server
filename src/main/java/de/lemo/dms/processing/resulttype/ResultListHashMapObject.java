@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,7 +26,7 @@ import org.apache.log4j.Logger;
 @XmlRootElement
 public class ResultListHashMapObject {
 
-	private HashMap<Long, ResultListLongObject> elements;
+	private Map<Long, ResultListLongObject> elements;
 	private List<ResultListLongObject> entries;
 	private Long[] keys;
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -35,7 +36,7 @@ public class ResultListHashMapObject {
 
 	}
 
-	public ResultListHashMapObject(final HashMap<Long, ResultListLongObject> elements)
+	public ResultListHashMapObject(final Map<Long, ResultListLongObject> elements)
 	{
 		this.elements = elements;
 
@@ -51,7 +52,7 @@ public class ResultListHashMapObject {
 		}
 	}
 
-	public HashMap<Long, ResultListLongObject> getElements()
+	public Map<Long, ResultListLongObject> getElements()
 	{
 		this.elements = new HashMap<Long, ResultListLongObject>();
 		if ((this.keys != null) && (this.entries != null) && (this.keys.length == this.entries.size())) {
@@ -80,6 +81,6 @@ public class ResultListHashMapObject {
 	}
 
 	public void setKeys(final Long[] keys) {
-		this.keys = keys;
+		this.keys = (Long[]) keys.clone();
 	}
 }
