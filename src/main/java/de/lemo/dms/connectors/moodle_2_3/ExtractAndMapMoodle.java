@@ -12,6 +12,7 @@ package de.lemo.dms.connectors.moodle_2_3;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -576,7 +577,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	// methods for create and fill the mining-table instances
 
 	@Override
-	public HashMap<Long, CourseUserMining> generateCourseUserMining() {
+	public Map<Long, CourseUserMining> generateCourseUserMining() {
 
 		final HashMap<Long, CourseUserMining> courseUserMining = new HashMap<Long, CourseUserMining>();
 
@@ -630,7 +631,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, CourseForumMining> generateCourseForumMining() {
+	public Map<Long, CourseForumMining> generateCourseForumMining() {
 
 		final HashMap<Long, CourseForumMining> courseForumMining = new HashMap<Long, CourseForumMining>();
 
@@ -652,7 +653,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, CourseMining> generateCourseMining() {
+	public Map<Long, CourseMining> generateCourseMining() {
 
 		final HashMap<Long, CourseMining> courseMining = new HashMap<Long, CourseMining>();
 		for (final CourseLMS loadedItem : this.courseLms)
@@ -675,7 +676,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, CourseGroupMining> generateCourseGroupMining() {
+	public Map<Long, CourseGroupMining> generateCourseGroupMining() {
 
 		final HashMap<Long, CourseGroupMining> courseGroupMining = new HashMap<Long, CourseGroupMining>();
 
@@ -697,7 +698,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, CourseQuizMining> generateCourseQuizMining() {
+	public Map<Long, CourseQuizMining> generateCourseQuizMining() {
 
 		final HashMap<Long, CourseQuizMining> courseQuizMining = new HashMap<Long, CourseQuizMining>();
 
@@ -722,7 +723,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, CourseAssignmentMining> generateCourseAssignmentMining() {
+	public Map<Long, CourseAssignmentMining> generateCourseAssignmentMining() {
 
 		final HashMap<Long, CourseAssignmentMining> courseAssignmentMining = new HashMap<Long, CourseAssignmentMining>();
 
@@ -751,7 +752,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, CourseScormMining> generateCourseScormMining() {
+	public Map<Long, CourseScormMining> generateCourseScormMining() {
 
 		final HashMap<Long, CourseScormMining> courseScormMining = new HashMap<Long, CourseScormMining>();
 		for (final ScormLMS loadedItem : this.scormLms)
@@ -775,7 +776,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, CourseResourceMining> generateCourseResourceMining() {
+	public Map<Long, CourseResourceMining> generateCourseResourceMining() {
 
 		final HashMap<Long, CourseResourceMining> courseResourceMining = new HashMap<Long, CourseResourceMining>();
 
@@ -797,7 +798,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, CourseLogMining> generateCourseLogMining() {
+	public Map<Long, CourseLogMining> generateCourseLogMining() {
 		final HashMap<Long, CourseLogMining> courseLogMining = new HashMap<Long, CourseLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 
@@ -817,7 +818,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -871,7 +872,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, CourseWikiMining> generateCourseWikiMining() {
+	public Map<Long, CourseWikiMining> generateCourseWikiMining() {
 
 		final HashMap<Long, CourseWikiMining> courseWikiMining = new HashMap<Long, CourseWikiMining>();
 
@@ -893,7 +894,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, ForumLogMining> generateForumLogMining() {
+	public Map<Long, ForumLogMining> generateForumLogMining() {
 		final HashMap<Long, ForumLogMining> forumLogMining = new HashMap<Long, ForumLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 
@@ -912,7 +913,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -995,7 +996,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, ForumMining> generateForumMining() {
+	public Map<Long, ForumMining> generateForumMining() {
 
 		final HashMap<Long, ForumMining> forumMining = new HashMap<Long, ForumMining>();
 
@@ -1027,7 +1028,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, GroupUserMining> generateGroupUserMining() {
+	public Map<Long, GroupUserMining> generateGroupUserMining() {
 
 		final HashMap<Long, GroupUserMining> groupMembersMining = new HashMap<Long, GroupUserMining>();
 
@@ -1052,7 +1053,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, GroupMining> generateGroupMining() {
+	public Map<Long, GroupMining> generateGroupMining() {
 
 		final HashMap<Long, GroupMining> groupMining = new HashMap<Long, GroupMining>();
 
@@ -1070,7 +1071,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, QuestionLogMining> generateQuestionLogMining()
+	public Map<Long, QuestionLogMining> generateQuestionLogMining()
 	{
 
 		final HashMap<Long, QuestionLogMining> questionLogMiningtmp = new HashMap<Long, QuestionLogMining>();
@@ -1192,7 +1193,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid1);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1238,7 +1239,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, QuizLogMining> generateQuizLogMining() {
+	public Map<Long, QuizLogMining> generateQuizLogMining() {
 		final HashMap<Long, QuizLogMining> quizLogMining = new HashMap<Long, QuizLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 
@@ -1287,7 +1288,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				}
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
-				if ((insert.getQuiz() != null) && (insert.getUser() != null) && (loadedItem.getAction() != "review"))
+				if ((insert.getQuiz() != null) && (insert.getUser() != null) 
+						&& (!loadedItem.getAction().equals("review")))
 				{
 					for (final QuizAttemptsLMS loadedItem2 : this.quizAttemptsLms)
 					{
@@ -1346,7 +1348,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, AssignmentLogMining> generateAssignmentLogMining() {
+	public Map<Long, AssignmentLogMining> generateAssignmentLogMining() {
 
 		final HashMap<Long, AssignmentLogMining> assignmentLogMining = new HashMap<Long, AssignmentLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
@@ -1469,7 +1471,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, ScormLogMining> generateScormLogMining() {
+	public Map<Long, ScormLogMining> generateScormLogMining() {
 		final HashMap<Long, ScormLogMining> scormLogMining = new HashMap<Long, ScormLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 
@@ -1559,7 +1561,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, QuizMining> generateQuizMining() {
+	public Map<Long, QuizMining> generateQuizMining() {
 
 		final HashMap<Long, QuizMining> quizMining = new HashMap<Long, QuizMining>();
 
@@ -1598,7 +1600,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, AssignmentMining> generateAssignmentMining() {
+	public Map<Long, AssignmentMining> generateAssignmentMining() {
 
 		final HashMap<Long, AssignmentMining> assignmentMining = new HashMap<Long, AssignmentMining>();
 
@@ -1697,7 +1699,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, ScormMining> generateScormMining() {
+	public Map<Long, ScormMining> generateScormMining() {
 
 		final HashMap<Long, ScormMining> scormMining = new HashMap<Long, ScormMining>();
 
@@ -1717,7 +1719,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, QuizQuestionMining> generateQuizQuestionMining() {
+	public Map<Long, QuizQuestionMining> generateQuizQuestionMining() {
 
 		final HashMap<Long, QuizQuestionMining> quizQuestionMining = new HashMap<Long, QuizQuestionMining>();
 
@@ -1744,7 +1746,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, QuestionMining> generateQuestionMining() {
+	public Map<Long, QuestionMining> generateQuestionMining() {
 
 		final HashMap<Long, QuestionMining> questionMining = new HashMap<Long, QuestionMining>();
 
@@ -1766,7 +1768,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, QuizUserMining> generateQuizUserMining() {
+	public Map<Long, QuizUserMining> generateQuizUserMining() {
 
 		final HashMap<Long, QuizUserMining> quizUserMining = new HashMap<Long, QuizUserMining>();
 		for (final GradeGradesLMS loadedItem : this.gradeGradesLms)
@@ -1809,7 +1811,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, ResourceMining> generateResourceMining() {
+	public Map<Long, ResourceMining> generateResourceMining() {
 
 		final HashMap<Long, ResourceMining> resource = new HashMap<Long, ResourceMining>();
 
@@ -1842,7 +1844,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, ResourceLogMining> generateResourceLogMining() {
+	public Map<Long, ResourceLogMining> generateResourceLogMining() {
 		final HashMap<Long, ResourceLogMining> resourceLogMining = new HashMap<Long, ResourceLogMining>();
 		// A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her
 		// requests times.
@@ -1927,7 +1929,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, UserMining> generateUserMining() {
+	public Map<Long, UserMining> generateUserMining() {
 
 		final HashMap<Long, UserMining> userMining = new HashMap<Long, UserMining>();
 
@@ -1956,7 +1958,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	 * @see de.lemo.dms.connectors.moodle_2_3.ExtractAndMap#generateWikiLogMining()
 	 */
 	@Override
-	public HashMap<Long, WikiLogMining> generateWikiLogMining() {
+	public Map<Long, WikiLogMining> generateWikiLogMining() {
 		final HashMap<Long, WikiLogMining> wikiLogMining = new HashMap<Long, WikiLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 		final HashMap<Long, CourseModulesLMS> couMod = new HashMap<Long, CourseModulesLMS>();
@@ -2041,7 +2043,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, WikiMining> generateWikiMining() {
+	public Map<Long, WikiMining> generateWikiMining() {
 
 		final HashMap<Long, WikiMining> wikiMining = new HashMap<Long, WikiMining>();
 
@@ -2070,7 +2072,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, RoleMining> generateRoleMining() {
+	public Map<Long, RoleMining> generateRoleMining() {
 		// generate role tables
 		final HashMap<Long, RoleMining> roleMining = new HashMap<Long, RoleMining>();
 
@@ -2084,20 +2086,22 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			insert.setDescription(loadedItem.getDescription());
 			insert.setSortOrder(loadedItem.getSortorder());
 			insert.setPlatform(this.connector.getPlatformId());
-			if(loadedItem.getArchetype().equals("manager") || loadedItem.getArchetype().equals("coursecreator"))
+			if(loadedItem.getArchetype().equals("manager") || loadedItem.getArchetype().equals("coursecreator")) {
 				insert.setType(0);
-			else if(loadedItem.getArchetype().equals("teacher") || loadedItem.getArchetype().equals("editingteacher"))
+			}
+			else if(loadedItem.getArchetype().equals("teacher") || loadedItem.getArchetype().equals("editingteacher")) {
 				insert.setType(1);
-			else
+			}
+			else {
 				insert.setType(2);
-
+			}
 			roleMining.put(insert.getId(), insert);
 		}
 		return roleMining;
 	}
 
 	@Override
-	public HashMap<Long, LevelMining> generateLevelMining() {
+	public Map<Long, LevelMining> generateLevelMining() {
 		final HashMap<Long, LevelMining> levelMining = new HashMap<Long, LevelMining>();
 
 		for (final CourseCategoriesLMS loadedItem : this.courseCategoriesLms)
@@ -2115,7 +2119,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, LevelAssociationMining> generateLevelAssociationMining() {
+	public Map<Long, LevelAssociationMining> generateLevelAssociationMining() {
 		final HashMap<Long, LevelAssociationMining> levelAssociation = new HashMap<Long, LevelAssociationMining>();
 
 		for (final CourseCategoriesLMS loadedItem : this.courseCategoriesLms)
@@ -2140,7 +2144,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, LevelCourseMining> generateLevelCourseMining() {
+	public Map<Long, LevelCourseMining> generateLevelCourseMining() {
 		final HashMap<Long, LevelCourseMining> levelCourse = new HashMap<Long, LevelCourseMining>();
 
 		for (final ContextLMS loadedItem : this.contextLms)
@@ -2172,7 +2176,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, ChatMining> generateChatMining() {
+	public Map<Long, ChatMining> generateChatMining() {
 		final HashMap<Long, ChatMining> chatMining = new HashMap<Long, ChatMining>();
 
 		for (final ChatLMS loadedItem : this.chatLms)
@@ -2196,7 +2200,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, ChatLogMining> generateChatLogMining() {
+	public Map<Long, ChatLogMining> generateChatLogMining() {
 		final HashMap<Long, ChatLogMining> chatLogMining = new HashMap<Long, ChatLogMining>();
 
 		for (final ChatLogLMS loadedItem : this.chatLogLms)
