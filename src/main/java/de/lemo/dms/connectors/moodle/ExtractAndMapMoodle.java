@@ -88,7 +88,7 @@ import de.lemo.dms.db.miningDBclass.WikiMining;
  * The main class of the extraction process.
  * Implementation of the abstract extract class for the LMS Moodle.
  */
-public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Namen einf�gen
+public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in Namen einfügen
 
 	// LMS tables instances lists
 	private List<LogLMS> logLms;
@@ -1003,7 +1003,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, ForumMining> generateForumMining() {
+	public Map<Long, ForumMining> generateForumMining() {
 
 		final HashMap<Long, ForumMining> forumMining = new HashMap<Long, ForumMining>();
 
@@ -1081,7 +1081,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, GroupMining> generateGroupMining() {
+	public Map<Long, GroupMining> generateGroupMining() {
 
 		final HashMap<Long, GroupMining> groupMining = new HashMap<Long, GroupMining>();
 
@@ -1723,7 +1723,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, AssignmentMining> generateAssignmentMining() {
+	public Map<Long, AssignmentMining> generateAssignmentMining() {
 
 		final HashMap<Long, AssignmentMining> assignmentMining = new HashMap<Long, AssignmentMining>();
 
@@ -2244,13 +2244,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			insert.setDescription(loadedItem.getDescription());
 			insert.setSortOrder(loadedItem.getSortorder());
 			insert.setPlatform(this.connector.getPlatformId());
-			if(loadedItem.getShortname().contains("admin") || loadedItem.getShortname().equals("manager") ||  loadedItem.getShortname().equals("coursecreator"))
-				insert.setType(0);
-			else if(loadedItem.getShortname().contains("teacher"))
+			if(loadedItem.getShortname().contains("admin") || loadedItem.getShortname().equals("manager") 
+					||  loadedItem.getShortname().equals("coursecreator")) {
+				insert.setType(0);	
+			}
+			else if(loadedItem.getShortname().contains("teacher")) {
 				insert.setType(1);
-			else
-				insert.setType(2);
-
+			}
+			else {
+				insert.setType(2);	
+			}
 			roleMining.put(insert.getId(), insert);
 		}
 		return roleMining;
