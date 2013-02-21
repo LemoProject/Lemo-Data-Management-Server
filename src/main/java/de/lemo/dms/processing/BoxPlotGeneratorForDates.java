@@ -42,12 +42,12 @@ public class BoxPlotGeneratorForDates {
 
 		// wochen
 		for (int i = 0; i < WEEK; i++) {
-			this.weekmap.put(new Integer(i), new HashMap<Date, Long>());
+			this.weekmap.put(Integer.valueOf(i), new HashMap<Date, Long>());
 			this.weekdays[i] = 0;
 		}
 		// stunden
 		for (int i = 0; i < HOUR; i++) {
-			this.hourmap.put(new Integer(i), new HashMap<Date, Long>());
+			this.hourmap.put(Integer.valueOf(i), new HashMap<Date, Long>());
 		}
 	}
 
