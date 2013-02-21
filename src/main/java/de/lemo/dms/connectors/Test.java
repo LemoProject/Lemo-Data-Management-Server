@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import de.lemo.dms.core.DMSMain;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
@@ -61,8 +60,9 @@ public class Test {
 			l.add(results.get(0).getId());
 			res = new ResultListLongObject(l);
 		}
-		else
+		else {
 			res = new ResultListLongObject();
+		}
 		return res;
 	}
 	
@@ -80,13 +80,14 @@ public class Test {
 		if(results != null && results.size() > 0)
 		{
 			ArrayList<Long> l = new ArrayList<Long>();
-			for(CourseUserMining cu : results)
+			for(CourseUserMining cu : results) {
 				l.add(cu.getCourse().getId());
+			}
 			result = new ResultListLongObject(l);
 		}
-		else
+		else {
 			result = new ResultListLongObject();	
-		
+		}
 		return result;
 	}
 	
