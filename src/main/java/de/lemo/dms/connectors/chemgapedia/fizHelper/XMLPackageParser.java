@@ -306,7 +306,7 @@ public class XMLPackageParser {
 				t = root.item(i).getAttributes();
 				for (int j = 0; j < t.getLength(); j++)
 				{
-					if (t.item(j).getNodeName() == "xlink:href")
+					if (t.item(j).getNodeName().equals("xlink:href"))
 					{
 						resource.setUrl("http://www.chemgapedia.de/vsengine/vlu" + t.item(j).getNodeValue() + ".html");
 						break;
@@ -402,7 +402,7 @@ public class XMLPackageParser {
 								if (node.getTextContent() != null)
 								{
 
-									if (node.getNodeName() == "xlink:href")
+									if (node.getNodeName().equals("xlink:href"))
 									{
 										// ResourceMining r1 = new ResourceMining();
 
@@ -413,7 +413,7 @@ public class XMLPackageParser {
 												+ "/Page" + node.getTextContent() + ".html");
 									}
 
-									if (node.getNodeName() == "xlink:title")
+									if (node.getNodeName().equals("xlink:title"))
 									{
 										r1.setTitle(node.getTextContent());
 									}
