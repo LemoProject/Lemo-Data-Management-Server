@@ -46,13 +46,13 @@ import de.lemo.dms.db.miningDBclass.ResourceMining;
 public class XMLPackageParser {
 
 	/** The level objects. */
-	private final HashMap<String, LevelMining> levelObj = new HashMap<String, LevelMining>();
+	private final Map<String, LevelMining> levelObj = new HashMap<String, LevelMining>();
 
 	/** The level association objects . */
-	private final HashMap<Long, LevelAssociationMining> levelAssociations = new HashMap<Long, LevelAssociationMining>();
+	private final Map<Long, LevelAssociationMining> levelAssociations = new HashMap<Long, LevelAssociationMining>();
 
 	/** The level course objects. */
-	private final HashMap<Long, LevelCourseMining> levelCourses = new HashMap<Long, LevelCourseMining>();
+	private final Map<Long, LevelCourseMining> levelCourses = new HashMap<Long, LevelCourseMining>();
 
 	/** The largest level id of previous runs. */
 	private Long levId = 0L;
@@ -64,13 +64,13 @@ public class XMLPackageParser {
 	private Long levCouId = 0L;
 
 	/** The list of course objects. */
-	private final HashMap<String, CourseMining> courseObj = new HashMap<String, CourseMining>();
+	private final Map<String, CourseMining> courseObj = new HashMap<String, CourseMining>();
 
 	/** The course resources objects. */
-	private final HashMap<Long, CourseResourceMining> courseResources = new HashMap<Long, CourseResourceMining>();
+	private final Map<Long, CourseResourceMining> courseResources = new HashMap<Long, CourseResourceMining>();
 
 	/** The list of resource objects. */
-	private final HashMap<String, ResourceMining> resourceObj = new HashMap<String, ResourceMining>();
+	private final Map<String, ResourceMining> resourceObj = new HashMap<String, ResourceMining>();
 
 	/** The list of file names */
 	private final List<String> fileNames = new ArrayList<String>();
@@ -532,7 +532,7 @@ public class XMLPackageParser {
 	 *            File extension (returns all files if the string is empty)
 	 * @return An ArrayList containing all file names (absolute paths) contained in the given directory.
 	 */
-	private ArrayList<String> getFilenames(final String directory, final String suffix)
+	private List<String> getFilenames(final String directory, final String suffix)
 	{
 		final ArrayList<String> all = new ArrayList<String>();
 		try {
@@ -596,7 +596,7 @@ public class XMLPackageParser {
 		try {
 			final Clock c = new Clock();
 			this.logger.info("Gathering filenames in directory...");
-			final ArrayList<String> all = this.getFilenames(directory, ".vlu");
+			final List<String> all = this.getFilenames(directory, ".vlu");
 			Collections.sort(all);
 			this.logger.info("Found " + all.size() + " files in directory." + c.getAndReset());
 			this.logger.info("Reading all vlu-files in directory...");
