@@ -7,7 +7,6 @@
 
 package de.lemo.dms.connectors.moodle;
 
-// import miningDBclass.Config_mining;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -332,7 +331,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 		// accessing DB by creating a session and a transaction using HibernateUtil
 		final Session session = MoodleHibernateUtil.getSessionFactory(dbConf).openSession();
 		// Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19",
-		// "datamining", "LabDat1#").openSession();
 		session.clear();
 		final Transaction tx = session.beginTransaction();
 
@@ -676,6 +674,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			final CourseAssignmentMining insert = new CourseAssignmentMining();
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			if (insert.getId() == 112865) {
+				//TODO Was ist das???
 				System.out.println();
 			}
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -770,7 +769,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -901,7 +900,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1225,7 +1224,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			else
 			{
 				final ArrayList<Long> times = users.get(uid1);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1299,7 +1298,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1340,7 +1339,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 				}
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
-				if ((insert.getQuiz() != null) && (insert.getUser() != null) && (loadedItem.getAction() != "review"))
+				if ((insert.getQuiz() != null) && (insert.getUser() != null) 
+						&& (!loadedItem.getAction().equals("review")))
 				{
 					for (final QuizGradesLMS loadedItem2 : this.quizGradesLms)
 					{
@@ -1453,7 +1453,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1591,7 +1591,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1964,7 +1964,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -2114,7 +2114,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
