@@ -7,7 +7,6 @@
 
 package de.lemo.dms.core.config;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -33,6 +32,7 @@ import de.lemo.dms.db.hibernate.MiningHibernateUtil;
 
 /**
  * Class with the configuration parameter for the server
+ * 
  * @author Leonard Kappe
  */
 public enum ServerConfiguration {
@@ -66,11 +66,9 @@ public enum ServerConfiguration {
 	}
 
 	/**
-	 * The context path is used to determine the configuration file's name. The
-	 * first char (a slash by convention) will be
-	 * ignored. Some context paths aren't valid file names (like the root
-	 * context or those with sub-paths), so tomcat's
-	 * naming conventions for .war files will be used.
+	 * The context path is used to determine the configuration file's name. The first char (a slash by convention) will
+	 * be ignored. Some context paths aren't valid file names (like the root context or those with sub-paths), so
+	 * tomcat's naming conventions for .war files will be used.
 	 * Examples:
 	 * 
 	 * <pre>
@@ -113,7 +111,7 @@ public enum ServerConfiguration {
 		final String warName = contextPathTMP.substring(1).replace('/', '#');
 
 		final Set<String> fileNames = new LinkedHashSet<String>();
-		
+
 		// default, based on war name
 		fileNames.add(warName + ".xml");
 
@@ -139,9 +137,7 @@ public enum ServerConfiguration {
 				try {
 					in = resource.openStream();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-					this.logger.info("Looking for config file .... "+fileName+" not found!");
+					this.logger.info("Looking for config file .... " + fileName + " not found!");
 				}
 				if (in != null) {
 					this.logger.info("Using config file: " + fileName);
@@ -152,7 +148,7 @@ public enum ServerConfiguration {
 			// no way to recover, re-throw at runtime
 			throw new RuntimeException(e);
 		} catch (final Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		if (lemoConfig == null) {
 			final String files = fileNames.toString();
@@ -164,22 +160,18 @@ public enum ServerConfiguration {
 							+ files.substring(1, files.length() - 1));
 		}
 
-		this.logger.info("Config loaded for '"
-				+ lemoConfig.dataManagementServer.name + "'");
+		this.logger.info("Config loaded for '" + lemoConfig.dataManagementServer.name + "'");
 		return lemoConfig;
 	}
 
-	private List<IConnector> createConnectors(
-			final List<Connector> connectorConfigurations) {
-		final List<IConnector> result = Lists.newArrayList();
-		for (final Connector connectorConfig : connectorConfigurations) {
+	private List<IConnector> createConnectors(final List<Connector> connectorConfigurations) {
+		List<IConnector> result = Lists.newArrayList();
+		for (Connector connectorConfig : connectorConfigurations) {
 			this.logger.info("Inititalizing connector: " + connectorConfig);
-
-			final ESourcePlatform platform = ESourcePlatform
-					.valueOf(connectorConfig.platformType);
-			final DBConfigObject config = this.createDBConfig(connectorConfig.properties);
-			result.add(platform.newConnector(connectorConfig.platformId,
-					connectorConfig.name, config));
+			
+			ESourcePlatform platform = ESourcePlatform.valueOf(connectorConfig.platformType);
+			DBConfigObject config = this.createDBConfig(connectorConfig.properties);
+			result.add(platform.newConnector(connectorConfig.platformId, connectorConfig.name, config));
 		}
 		return result;
 	}
