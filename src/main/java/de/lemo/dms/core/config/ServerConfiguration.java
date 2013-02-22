@@ -148,7 +148,7 @@ public enum ServerConfiguration {
 			// no way to recover, re-throw at runtime
 			throw new RuntimeException(e);
 		} catch (final Exception e) {
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}
 		if (lemoConfig == null) {
 			final String files = fileNames.toString();

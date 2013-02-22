@@ -7,6 +7,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass.abstractions;
 
+/**
+ * TODO Was macht das Interface eigentlich???
+ * @author Sebastian Schwarzrock
+ *
+ */
 public interface IClixMappingClass {
 	//TODO Löschen?
 }

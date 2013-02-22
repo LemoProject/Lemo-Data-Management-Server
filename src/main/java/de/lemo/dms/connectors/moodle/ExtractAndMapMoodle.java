@@ -7,7 +7,6 @@
 
 package de.lemo.dms.connectors.moodle;
 
-// import miningDBclass.Config_mining;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,7 +87,7 @@ import de.lemo.dms.db.miningDBclass.WikiMining;
  * The main class of the extraction process.
  * Implementation of the abstract extract class for the LMS Moodle.
  */
-public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Namen einf�gen
+public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in Namen einfügen
 
 	// LMS tables instances lists
 	private List<LogLMS> logLms;
@@ -332,7 +331,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 		// accessing DB by creating a session and a transaction using HibernateUtil
 		final Session session = MoodleHibernateUtil.getSessionFactory(dbConf).openSession();
 		// Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19",
-		// "datamining", "LabDat1#").openSession();
 		session.clear();
 		final Transaction tx = session.beginTransaction();
 
@@ -676,6 +674,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			final CourseAssignmentMining insert = new CourseAssignmentMining();
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			if (insert.getId() == 112865) {
+				//TODO Was ist das???
 				System.out.println();
 			}
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -770,7 +769,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -901,7 +900,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1003,7 +1002,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, ForumMining> generateForumMining() {
+	public Map<Long, ForumMining> generateForumMining() {
 
 		final HashMap<Long, ForumMining> forumMining = new HashMap<Long, ForumMining>();
 
@@ -1081,7 +1080,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, GroupMining> generateGroupMining() {
+	public Map<Long, GroupMining> generateGroupMining() {
 
 		final HashMap<Long, GroupMining> groupMining = new HashMap<Long, GroupMining>();
 
@@ -1225,7 +1224,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid1);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1299,7 +1298,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1340,7 +1339,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				}
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
-				if ((insert.getQuiz() != null) && (insert.getUser() != null) && (loadedItem.getAction() != "review"))
+				if ((insert.getQuiz() != null) && (insert.getUser() != null) 
+						&& (!loadedItem.getAction().equals("review")))
 				{
 					for (final QuizGradesLMS loadedItem2 : this.quizGradesLms)
 					{
@@ -1453,7 +1453,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1591,7 +1591,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1723,7 +1723,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 	}
 
 	@Override
-	public HashMap<Long, AssignmentMining> generateAssignmentMining() {
+	public Map<Long, AssignmentMining> generateAssignmentMining() {
 
 		final HashMap<Long, AssignmentMining> assignmentMining = new HashMap<Long, AssignmentMining>();
 
@@ -1964,7 +1964,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -2114,7 +2114,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -2244,13 +2244,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			insert.setDescription(loadedItem.getDescription());
 			insert.setSortOrder(loadedItem.getSortorder());
 			insert.setPlatform(this.connector.getPlatformId());
-			if(loadedItem.getShortname().contains("admin") || loadedItem.getShortname().equals("manager") ||  loadedItem.getShortname().equals("coursecreator"))
-				insert.setType(0);
-			else if(loadedItem.getShortname().contains("teacher"))
+			if(loadedItem.getShortname().contains("admin") || loadedItem.getShortname().equals("manager") 
+					||  loadedItem.getShortname().equals("coursecreator")) {
+				insert.setType(0);	
+			}
+			else if(loadedItem.getShortname().contains("teacher")) {
 				insert.setType(1);
-			else
-				insert.setType(2);
-
+			}
+			else {
+				insert.setType(2);	
+			}
 			roleMining.put(insert.getId(), insert);
 		}
 		return roleMining;

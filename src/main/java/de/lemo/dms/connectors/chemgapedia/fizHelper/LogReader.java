@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -97,6 +98,7 @@ public class LogReader {
 	 */
 	private final IConnector connector;
 
+	private Logger logger = Logger.getLogger(this.getClass());
 	/**
 	 * Creates a new LogReader-object, imports necessary objects from Mining-Database and sets counters.
 	 * 
@@ -123,7 +125,7 @@ public class LogReader {
 				ids.get(i).setPlatform(connector.getPlatformId());
 				this.idMapping.put(ids.get(i).getHash(), ids.get(i));
 			}
-			System.out.println("Read " + ids.size() + " IDMappings from database.");
+			logger.info("Read " + ids.size() + " IDMappings from database.");
 
 			// Load previously saved UserMining-objects
 			c = session.createCriteria(UserMining.class, "users");
@@ -132,7 +134,7 @@ public class LogReader {
 			for (int i = 0; i < us.size(); i++) {
 				this.oldUsers.put(us.get(i).getLogin(), us.get(i));
 			}
-			System.out.println("Read " + us.size() + " UserMinings from database.");
+			logger.info("Read " + us.size() + " UserMinings from database.");
 
 			// Load previously saved ResourceMining-objects
 			c = session.createCriteria(ResourceMining.class, "resources");
@@ -141,7 +143,7 @@ public class LogReader {
 			for (final ResourceMining res : rt) {
 				this.oldResources.put(res.getUrl(), res);
 			}
-			System.out.println("Read " + rt.size() + " ResourceMinings from database.");
+			logger.info("Read " + rt.size() + " ResourceMinings from database.");
 
 			// Load previously saved CourseMining-objects
 			c = session.createCriteria(CourseMining.class, "courses");
@@ -151,7 +153,7 @@ public class LogReader {
 			{
 				this.oldCourses.put(cm.get(i).getTitle(), cm.get(i));
 			}
-			System.out.println("Read " + cm.size() + " CourseMinings from database.");
+			logger.info("Read " + cm.size() + " CourseMinings from database.");
 
 			// Load previously saved CourseResourceMining-objects
 			c = session.createCriteria(CourseResourceMining.class, "coursesResources");
@@ -160,7 +162,7 @@ public class LogReader {
 			for (int i = 0; i < courseResource.size(); i++) {
 				this.courseResources.put(courseResource.get(i).getResource().getUrl(), courseResource.get(i));
 			}
-			System.out.println("Read " + courseResource.size() + " CourseResourceMinings from database.");
+			logger.info("Read " + courseResource.size() + " CourseResourceMinings from database.");
 
 			final Query resCount = session.createQuery("select max(res.id) from ResourceMining res where res.platform="
 					+ platformId + "");
@@ -197,7 +199,7 @@ public class LogReader {
 
 		} catch (final Exception e)
 		{
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 
 	}
@@ -285,14 +287,13 @@ public class LogReader {
 			final double cutUsePerc = (old - Long.valueOf("" + tempUsers.size())) / (old / 100);
 			final double tmp = totalLines / 100.0d;
 			final double cutLinPerc = linesDeleted / tmp;
-			System.out.println("Filtered " + (old - tempUsers.size()) + " suspicious users  out of " + old + " ("
+			logger.info("Filtered " + (old - tempUsers.size()) + " suspicious users  out of " + old + " ("
 					+ new DecimalFormat("0.00").format(cutUsePerc) + "%), eliminating " + linesDeleted + " log lines ("
 					+ new DecimalFormat("0.00").format(cutLinPerc) + "%).");
 			this.newUsers = tempUsers;
 		} catch (final Exception e)
 		{
-			System.out.println("Error while filtering log-file:");
-			e.printStackTrace();
+			logger.error("While filtering log-file:");
 		}
 	}
 
@@ -311,7 +312,7 @@ public class LogReader {
 	{
 		try
 		{
-			System.out.println("Reading server log " + inFile);
+			logger.info("Reading server log " + inFile);
 			final BufferedReader input = new BufferedReader(new FileReader(inFile));
 			int count = 0;
 			try
@@ -373,7 +374,6 @@ public class LogReader {
 						else
 						{
 							final CourseResourceMining c = this.courseResources.get(lo.getUrl());
-							// CourseMining co;
 							if (this.courseResources.get(lo.getUrl()) != null) {
 								lo.setCourse(c.getCourse());
 								/*
@@ -516,7 +516,7 @@ public class LogReader {
 							if (h.length() > 0) {
 								h = f + h.substring(1);
 							} else {
-								System.out.println("URL doesn't match pattern: " + lo.getUrl());
+								logger.info("URL doesn't match pattern: " + lo.getUrl());
 							}
 							r.setTitle(h);
 
@@ -533,7 +533,6 @@ public class LogReader {
 							this.newResources.put(r.getUrl(), r);
 						}
 
-						// logList.add(lo);
 						if (this.userHistories.get(logLine.getId()) == null)
 						{
 							final ArrayList<LogObject> a = new ArrayList<LogObject>();
@@ -547,9 +546,9 @@ public class LogReader {
 						}
 					}
 					else if (!logLine.isValid()) {
-						System.out.println("Line doesn't match pattern.");
+						logger.info("Line doesn't match pattern.");
 					} else {
-						System.out.println("Line's timestamp is to old.");
+						logger.info("Line's timestamp is to old.");
 					}
 				}
 				if (filterLog) {
@@ -559,7 +558,7 @@ public class LogReader {
 
 			finally
 			{
-				System.out.println("Read " + count + " lines.");
+				logger.info("Read " + count + " lines.");
 				input.close();
 			}
 		} catch (final Exception ex)
@@ -578,7 +577,7 @@ public class LogReader {
 		final ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
 		final Collection<UserMining> it = this.newUsers.values();
 		final Collection<IDMappingMining> idmap = this.newIdMapping.values();
-		System.out.println("Found " + it.size() + " users.");
+		logger.info("Found " + it.size() + " users.");
 		l.add(it);
 		l.add(idmap);
 
@@ -610,7 +609,6 @@ public class LogReader {
 		Collections.sort(resourceLogMining);
 		l.add(this.newResources.values());
 		l.add(resourceLogMining);
-		System.out.println("");
 		if (session.isOpen()) {
 			this.dbHandler.saveCollectionToDB(session, l);
 		} else
@@ -618,7 +616,6 @@ public class LogReader {
 			session = this.dbHandler.getMiningSession();
 			this.dbHandler.saveCollectionToDB(session, l);
 		}
-		System.out.println("");
 	}
 
 }

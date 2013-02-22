@@ -298,10 +298,6 @@ public abstract class ExtractAndMap {
 		config.setPlatform(this.connector.getPlatformId());
 		config.setDatabaseModel("1.2");
 		this.dbHandler.saveToDB(session, config);
-		// mining_session.saveOrUpdate(config);
-
-		// tx.commit();
-		// mining_session.clear();
 		this.logger.info("Elapsed time: " + (endtime - this.starttime) + "s");
 		this.dbHandler.closeSession(session);
 	}
@@ -324,7 +320,7 @@ public abstract class ExtractAndMap {
 
 		this.configMiningTimestamp = (List<Timestamp>) this.dbHandler.performQuery(session, EQueryType.HQL,
 				"select max(lastModified) from ConfigMining x where x.platform=" + this.connector.getPlatformId()
-						+ " order by x.id asc");// mining_session.createQuery("select max(lastmodified) from ConfigMining x order by x.id asc").list();
+						+ " order by x.id asc");
 		if (this.configMiningTimestamp.get(0) == null) {
 			this.configMiningTimestamp.set(0, new Timestamp(0));
 		}
@@ -422,7 +418,7 @@ public abstract class ExtractAndMap {
 		this.logger.info("Loaded " + this.oldQuizMining.size() + " QuizMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from AssignmentMining x where x.platform="
-				+ this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from AssignmentMining x order by x.id asc").list();
+				+ this.connector.getPlatformId() + " order by x.id asc");
 		this.oldAssignmentMining = new HashMap<Long, AssignmentMining>();
 		for (int i = 0; i < t.size(); i++) {
 			this.oldAssignmentMining.put(((AssignmentMining) (t.get(i))).getId(), (AssignmentMining) t.get(i));
@@ -539,7 +535,6 @@ public abstract class ExtractAndMap {
 		{
 			this.oldIdMapping.put(ids.get(i).getHash(), ids.get(i));
 		}
-		// mining_session.clear();
 
 		return readingtimestamp;
 	}

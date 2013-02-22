@@ -79,6 +79,7 @@ public class LogLine implements Comparable<LogLine> {
 
 			// Set URL
 			if (lineArguments[4].equals("-")) {
+				//TODO Löschen, was ist das???
 				System.out.println();
 			}
 			if (!lineArguments[4].trim().startsWith("http://www.chemgapedia.de")) {
