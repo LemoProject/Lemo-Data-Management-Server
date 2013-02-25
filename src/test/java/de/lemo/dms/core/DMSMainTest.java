@@ -5,7 +5,6 @@
  *
  * Project Lemo Learning Analytics
  *
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.core;
