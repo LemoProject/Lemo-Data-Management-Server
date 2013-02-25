@@ -8,6 +8,7 @@
 package de.lemo.dms.connectors.clix2010;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -19,7 +20,7 @@ import de.lemo.dms.db.DBConfigObject;
  */
 public class ClixHibernateUtil {
 
-	private static HashMap<DBConfigObject, SessionFactory> sessionFactories = Maps.newHashMap();
+	private static Map<DBConfigObject, SessionFactory> sessionFactories = Maps.newHashMap();
 
 	public static SessionFactory getSessionFactory(final DBConfigObject dbconfig) {
 		SessionFactory sessionFactory = ClixHibernateUtil.sessionFactories.get(dbconfig);

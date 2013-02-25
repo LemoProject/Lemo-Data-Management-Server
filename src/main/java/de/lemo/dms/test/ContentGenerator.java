@@ -261,8 +261,9 @@ public class ContentGenerator {
 			}
 
 			gr.setTimeCreated(startdate + offset + randy.nextInt(week));
-			if(characteristic != 1)
+			if(characteristic != 1) {
 				gr.setTimeCreated(startdate);
+			}
 			gr.setTimeModified(gr.getTimeCreated() + randy.nextInt(month));
 			gr.setPlatform(platform.getId());
 
@@ -503,8 +504,9 @@ public class ContentGenerator {
 						final QuizMining q = new QuizMining();
 						q.setId(Long.valueOf(platform.getPrefix() + "" + (quizList.size() + 1)));
 						q.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
-						if(characteristic != 1)
+						if(characteristic != 1) {
 							q.setTimeCreated(startdate);
+						}
 						q.setTimeModified(q.getTimeCreated() + randy.nextInt(year / 2));
 						q.setTitle("Quiz " + i + "." + j + "." + k + "." + l);
 						q.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);

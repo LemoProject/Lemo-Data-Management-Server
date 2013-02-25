@@ -153,204 +153,204 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 		// reading the LMS Database, create tables as lists of instances of the DB-table classes
 		final Query assign = session.createQuery("from AssignLMS order by id asc");
 		this.assignLms = assign.list();
-		System.out.println("AssignLMS tables: " + this.assignLms.size());
+		logger.info("AssignLMS tables: " + this.assignLms.size());
 
 		final Query enrol = session.createQuery("from EnrolLMS x order by x.id asc");
 		this.enrolLms = enrol.list();
-		System.out.println("EnrolLMS tables: " + this.enrolLms.size());
+		logger.info("EnrolLMS tables: " + this.enrolLms.size());
 
 		final Query modules = session.createQuery("from ModulesLMS x order by x.id asc");
 		this.modulesLms = modules.list();
-		System.out.println("ModulesLMS tables: " + this.modulesLms.size());
+		logger.info("ModulesLMS tables: " + this.modulesLms.size());
 
 		final Query userEnrol = session.createQuery("from UserEnrolmentsLMS x order by x.id asc");
 		this.userEnrolmentsLms = userEnrol.list();
-		System.out.println("UserEnrolmentsLMS tables: " + this.userEnrolmentsLms.size());
+		logger.info("UserEnrolmentsLMS tables: " + this.userEnrolmentsLms.size());
 
 		final Query coursMod = session.createQuery("from CourseModulesLMS x order by x.id asc");
 		this.courseModulesLms = coursMod.list();
-		System.out.println("CourseModulesLMS tables: " + this.courseModulesLms.size());
+		logger.info("CourseModulesLMS tables: " + this.courseModulesLms.size());
 
 		final Query log = session
 				.createQuery("from LogLMS x where x.time>=:readingtimestamp and x.time<=:ceiling order by x.id asc");
 		log.setParameter("readingtimestamp", readingfromtimestamp);
 		log.setParameter("ceiling", ceiling);
 		this.logLms = log.list();
-		System.out.println("LogLMS tables: " + this.logLms.size());
+		logger.info("LogLMS tables: " + this.logLms.size());
 
 		final Query resource = session
 				.createQuery("from ResourceLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		resource.setParameter("readingtimestamp", readingfromtimestamp);
 		resource.setParameter("ceiling", ceiling);
 		this.resourceLms = resource.list();
-		System.out.println("ResourceLMS tables: " + this.resourceLms.size());
+		logger.info("ResourceLMS tables: " + this.resourceLms.size());
 
 		final Query quizAttempts = session
 				.createQuery("from QuizAttemptsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		quizAttempts.setParameter("readingtimestamp", readingfromtimestamp);
 		quizAttempts.setParameter("ceiling", ceiling);
 		this.quizAttemptsLms = quizAttempts.list();
-		System.out.println("QuizAttemptsLMS tables: " + this.quizAttemptsLms.size());
+		logger.info("QuizAttemptsLMS tables: " + this.quizAttemptsLms.size());
 
 		final Query chat = session
 				.createQuery("from ChatLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		chat.setParameter("readingtimestamp", readingfromtimestamp);
 		chat.setParameter("ceiling", ceiling);
 		this.chatLms = chat.list();
-		System.out.println("ChatLMS tables: " + this.chatLms.size());
+		logger.info("ChatLMS tables: " + this.chatLms.size());
 
 		final Query chatlog = session
 				.createQuery("from ChatLogLMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:ceiling order by x.id asc");
 		chatlog.setParameter("readingtimestamp", readingfromtimestamp);
 		chatlog.setParameter("ceiling", ceiling);
 		this.chatLogLms = chatlog.list();
-		System.out.println("ChatLogLMS tables: " + this.chatLogLms.size());
+		logger.info("ChatLogLMS tables: " + this.chatLogLms.size());
 
 		final Query courseCategories = session
 				.createQuery("from CourseCategoriesLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		courseCategories.setParameter("readingtimestamp", readingfromtimestamp);
 		courseCategories.setParameter("ceiling", ceiling);
 		this.courseCategoriesLms = courseCategories.list();
-		System.out.println("CourseCategoriesLMS tables: " + this.courseCategoriesLms.size());
+		logger.info("CourseCategoriesLMS tables: " + this.courseCategoriesLms.size());
 
 		final Query course = session
 				.createQuery("from CourseLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		course.setParameter("readingtimestamp", readingfromtimestamp);
 		course.setParameter("ceiling", ceiling);
 		this.courseLms = course.list();
-		System.out.println("CourseLMS tables: " + this.courseLms.size());
+		logger.info("CourseLMS tables: " + this.courseLms.size());
 
 		final Query forumPosts = session
 				.createQuery("from ForumPostsLMS x where x.modified>=:readingtimestamp and x.modified<=:ceiling order by x.id asc");
 		forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
 		forumPosts.setParameter("ceiling", ceiling);
 		this.forumPostsLms = forumPosts.list();
-		System.out.println("ForumPostsLMS tables: " + this.forumPostsLms.size());
+		logger.info("ForumPostsLMS tables: " + this.forumPostsLms.size());
 
 		final Query forum = session
 				.createQuery("from ForumLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		forum.setParameter("readingtimestamp", readingfromtimestamp);
 		forum.setParameter("ceiling", ceiling);
 		this.forumLms = forum.list();
-		System.out.println("ForumLMS tables: " + this.forumLms.size());
+		logger.info("ForumLMS tables: " + this.forumLms.size());
 
 		final Query group = session
 				.createQuery("from GroupsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		group.setParameter("readingtimestamp", readingfromtimestamp);
 		group.setParameter("ceiling", ceiling);
 		this.groupLms = group.list();
-		System.out.println("GroupsLMS tables: " + this.groupLms.size());
+		logger.info("GroupsLMS tables: " + this.groupLms.size());
 
 		final Query quiz = session
 				.createQuery("from QuizLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		quiz.setParameter("readingtimestamp", readingfromtimestamp);
 		quiz.setParameter("ceiling", ceiling);
 		this.quizLms = quiz.list();
-		System.out.println("QuizLMS tables: " + this.quizLms.size());
+		logger.info("QuizLMS tables: " + this.quizLms.size());
 
 		final Query wiki = session
 				.createQuery("from WikiLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		wiki.setParameter("readingtimestamp", readingfromtimestamp);
 		wiki.setParameter("ceiling", ceiling);
 		this.wikiLms = wiki.list();
-		System.out.println("WikiLMS tables: " + this.wikiLms.size());
+		logger.info("WikiLMS tables: " + this.wikiLms.size());
 
 		final Query groupMembers = session
 				.createQuery("from GroupsMembersLMS x where x.timeadded>=:readingtimestamp and x.timeadded<=:ceiling order by x.id asc");
 		groupMembers.setParameter("readingtimestamp", readingfromtimestamp);
 		groupMembers.setParameter("ceiling", ceiling);
 		this.groupMembersLms = groupMembers.list();
-		System.out.println("GroupsMembersLMS tables: " + this.groupMembersLms.size());
+		logger.info("GroupsMembersLMS tables: " + this.groupMembersLms.size());
 
 		final Query questionStates = session
 				.createQuery("from QuestionStatesLMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:ceiling order by x.id asc");
 		questionStates.setParameter("readingtimestamp", readingfromtimestamp);
 		questionStates.setParameter("ceiling", ceiling);
 		this.questionStatesLms = questionStates.list();
-		System.out.println("QuestionStatesLMS tables: " + this.questionStatesLms.size());
+		logger.info("QuestionStatesLMS tables: " + this.questionStatesLms.size());
 
 		final Query quizQuestionInstances = session
 				.createQuery("from QuizQuestionInstancesLMS x order by x.id asc");
 		this.quizQuestionInstancesLms = quizQuestionInstances.list();
-		System.out.println("QuizQuestionInstancesLMS tables: " + this.quizQuestionInstancesLms.size());
+		logger.info("QuizQuestionInstancesLMS tables: " + this.quizQuestionInstancesLms.size());
 
 		final Query question = session
 				.createQuery("from QuestionLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		question.setParameter("readingtimestamp", readingfromtimestamp);
 		question.setParameter("ceiling", ceiling);
 		this.questionLms = question.list();
-		System.out.println("QuestionLMS tables: " + this.questionLms.size());
+		logger.info("QuestionLMS tables: " + this.questionLms.size());
 
 		final Query user = session
 				.createQuery("from UserLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		user.setParameter("ceiling", ceiling);
 		user.setParameter("readingtimestamp", readingfromtimestamp);
 		this.userLms = user.list();
-		System.out.println("UserLMS tables: " + this.userLms.size());
+		logger.info("UserLMS tables: " + this.userLms.size());
 
 		final Query role = session.createQuery("from RoleLMS x order by x.id asc");
 		this.roleLms = role.list();
-		System.out.println("RoleLMS tables: " + this.roleLms.size());
+		logger.info("RoleLMS tables: " + this.roleLms.size());
 
 		final Query context = session.createQuery("from ContextLMS x order by x.id asc");
 		this.contextLms = context.list();
-		System.out.println("ContextLMS tables: " + this.contextLms.size());
+		logger.info("ContextLMS tables: " + this.contextLms.size());
 
 		final Query roleAssignments = session
 				.createQuery("from RoleAssignmentsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		roleAssignments.setParameter("ceiling", ceiling);
 		roleAssignments.setParameter("readingtimestamp", readingfromtimestamp);
 		this.roleAssignmentsLms = roleAssignments.list();
-		System.out.println("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
+		logger.info("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
 
 		final Query assignments = session
 				.createQuery("from AssignmentLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		assignments.setParameter("ceiling", ceiling);
 		assignments.setParameter("readingtimestamp", readingfromtimestamp);
 		this.assignmentLms = assignments.list();
-		System.out.println("AssignmentLMS tables: " + this.assignmentLms.size());
+		logger.info("AssignmentLMS tables: " + this.assignmentLms.size());
 
 		final Query assignmentSubmission = session
 				.createQuery("from AssignmentSubmissionsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		assignmentSubmission.setParameter("ceiling", ceiling);
 		assignmentSubmission.setParameter("readingtimestamp", readingfromtimestamp);
 		this.assignmentSubmissionLms = assignmentSubmission.list();
-		System.out.println("AssignmentSubmissionsLMS tables: " + this.assignmentSubmissionLms.size());
+		logger.info("AssignmentSubmissionsLMS tables: " + this.assignmentSubmissionLms.size());
 
 		final Query quizGrades = session
 				.createQuery("from QuizGradesLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		quizGrades.setParameter("ceiling", ceiling);
 		quizGrades.setParameter("readingtimestamp", readingfromtimestamp);
 		this.quizGradesLms = quizGrades.list();
-		System.out.println("QuizGradesLMS tables: " + this.quizGradesLms.size());
+		logger.info("QuizGradesLMS tables: " + this.quizGradesLms.size());
 
 		final Query forumDiscussions = session
 				.createQuery("from ForumDiscussionsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		forumDiscussions.setParameter("ceiling", ceiling);
 		forumDiscussions.setParameter("readingtimestamp", readingfromtimestamp);
 		this.forumDiscussionsLms = forumDiscussions.list();
-		System.out.println("ForumDiscussionsLMS tables: " + this.forumDiscussionsLms.size());
+		logger.info("ForumDiscussionsLMS tables: " + this.forumDiscussionsLms.size());
 
 		final Query scorm = session
 				.createQuery("from ScormLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		scorm.setParameter("ceiling", ceiling);
 		scorm.setParameter("readingtimestamp", readingfromtimestamp);
 		this.scormLms = scorm.list();
-		System.out.println("ScormLMS tables: " + this.scormLms.size());
+		logger.info("ScormLMS tables: " + this.scormLms.size());
 
 		final Query gradeGrades = session
 				.createQuery("from GradeGradesLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		gradeGrades.setParameter("ceiling", ceiling);
 		gradeGrades.setParameter("readingtimestamp", readingfromtimestamp);
 		this.gradeGradesLms = gradeGrades.list();
-		System.out.println("GradeGradesLMS tables: " + this.gradeGradesLms.size());
+		logger.info("GradeGradesLMS tables: " + this.gradeGradesLms.size());
 
 		final Query gradeItems = session
 				.createQuery("from GradeItemsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
 		gradeItems.setParameter("ceiling", ceiling);
 		gradeItems.setParameter("readingtimestamp", readingfromtimestamp);
 		this.gradeItemsLms = gradeItems.list();
-		System.out.println("GradeItemsLMS tables: " + this.gradeItemsLms.size());
+		logger.info("GradeItemsLMS tables: " + this.gradeItemsLms.size());
 
 		// hibernate session finish and close
 		tx.commit();
@@ -375,90 +375,90 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 
 			final Query assign = session.createQuery("from AssignLMS x order by x.id asc");
 			this.assignLms = assign.list();
-			System.out.println("AssignLMS tables: " + this.assignLms.size());
+			logger.info("AssignLMS tables: " + this.assignLms.size());
 
 			final Query enrol = session.createQuery("from EnrolLMS x order by x.id asc");
 			this.enrolLms = enrol.list();
-			System.out.println("EnrolLMS tables: " + this.enrolLms.size());
+			logger.info("EnrolLMS tables: " + this.enrolLms.size());
 
 			final Query modules = session.createQuery("from ModulesLMS x order by x.id asc");
 			this.modulesLms = modules.list();
-			System.out.println("ModulesLMS tables: " + this.modulesLms.size());
+			logger.info("ModulesLMS tables: " + this.modulesLms.size());
 
 			final Query userEnrol = session.createQuery("from UserEnrolmentsLMS x order by x.id asc");
 			this.userEnrolmentsLms = userEnrol.list();
-			System.out.println("UserEnrolmentsLMS tables: " + this.userEnrolmentsLms.size());
+			logger.info("UserEnrolmentsLMS tables: " + this.userEnrolmentsLms.size());
 
 			final Query coursMod = session.createQuery("from CourseModulesLMS x order by x.id asc");
 			this.courseModulesLms = coursMod.list();
-			System.out.println("CourseModulesLMS tables: " + this.courseModulesLms.size());
+			logger.info("CourseModulesLMS tables: " + this.courseModulesLms.size());
 
 			final Query resource = session.createQuery("from ResourceLMS x order by x.id asc");
 			this.resourceLms = resource.list();
-			System.out.println("ResourceLMS tables: " + this.resourceLms.size());
+			logger.info("ResourceLMS tables: " + this.resourceLms.size());
 
 			final Query course = session.createQuery("from CourseLMS x order by x.id asc");
 			this.courseLms = course.list();
-			System.out.println("CourseLMS tables: " + this.courseLms.size());
+			logger.info("CourseLMS tables: " + this.courseLms.size());
 
 			final Query chat = session.createQuery("from ChatLMS x order by x.id asc");
 			this.chatLms = chat.list();
-			System.out.println("ChatLMS tables: " + this.chatLms.size());
+			logger.info("ChatLMS tables: " + this.chatLms.size());
 
 			final Query courseCategories = session.createQuery("from CourseCategoriesLMS x order by x.id asc");
 			this.courseCategoriesLms = courseCategories.list();
-			System.out.println("CourseCategoriesLMS tables: " + this.courseCategoriesLms.size());
+			logger.info("CourseCategoriesLMS tables: " + this.courseCategoriesLms.size());
 
 			final Query forum = session.createQuery("from ForumLMS x order by x.id asc");
 			this.forumLms = forum.list();
-			System.out.println("ForumLMS tables: " + this.forumLms.size());
+			logger.info("ForumLMS tables: " + this.forumLms.size());
 
 			final Query group = session.createQuery("from GroupsLMS x order by x.id asc");
 			this.groupLms = group.list();
-			System.out.println("GroupsLMS tables: " + this.groupLms.size());
+			logger.info("GroupsLMS tables: " + this.groupLms.size());
 
 			final Query quiz = session.createQuery("from QuizLMS x order by x.id asc");
 			this.quizLms = quiz.list();
-			System.out.println("QuizLMS tables: " + this.quizLms.size());
+			logger.info("QuizLMS tables: " + this.quizLms.size());
 
 			final Query wiki = session.createQuery("from WikiLMS x order by x.id asc");
 			this.wikiLms = wiki.list();
-			System.out.println("WikiLMS tables: " + this.wikiLms.size());
+			logger.info("WikiLMS tables: " + this.wikiLms.size());
 
 			final Query quizQuestionInstances = session
 					.createQuery("from QuizQuestionInstancesLMS x order by x.id asc");
 			this.quizQuestionInstancesLms = quizQuestionInstances.list();
-			System.out.println("QuizQuestionInstancesLMS tables: " + this.quizQuestionInstancesLms.size());
+			logger.info("QuizQuestionInstancesLMS tables: " + this.quizQuestionInstancesLms.size());
 
 			final Query question = session.createQuery("from QuestionLMS x order by x.id asc");
 			this.questionLms = question.list();
-			System.out.println("QuestionLMS tables: " + this.questionLms.size());
+			logger.info("QuestionLMS tables: " + this.questionLms.size());
 
 			final Query user = session.createQuery("from UserLMS x order by x.id asc");
 			this.userLms = user.list();
-			System.out.println("UserLMS tables: " + this.userLms.size());
+			logger.info("UserLMS tables: " + this.userLms.size());
 
 			final Query role = session.createQuery("from RoleLMS x order by x.id asc");
 			this.roleLms = role.list();
-			System.out.println("RoleLMS tables: " + this.roleLms.size());
+			logger.info("RoleLMS tables: " + this.roleLms.size());
 
 			session.clear();
 
 			final Query context = session.createQuery("from ContextLMS x order by x.id asc");
 			this.contextLms = context.list();
-			System.out.println("ContextLMS tables: " + this.contextLms.size());
+			logger.info("ContextLMS tables: " + this.contextLms.size());
 
 			final Query assignments = session.createQuery("from AssignmentLMS x order by x.id asc");
 			this.assignmentLms = assignments.list();
-			System.out.println("AssignmentLMS tables: " + this.assignmentLms.size());
+			logger.info("AssignmentLMS tables: " + this.assignmentLms.size());
 
 			final Query scorm = session.createQuery("from ScormLMS x order by x.id asc");
 			this.scormLms = scorm.list();
-			System.out.println("ScormLMS tables: " + this.scormLms.size());
+			logger.info("ScormLMS tables: " + this.scormLms.size());
 
 			final Query gradeItems = session.createQuery("from GradeItemsLMS x order by x.id asc");
 			this.gradeItemsLms = gradeItems.list();
-			System.out.println("GradeItemsLMS tables: " + this.gradeItemsLms.size());
+			logger.info("GradeItemsLMS tables: " + this.gradeItemsLms.size());
 		}
 
 		final Query quizAttempts = session
@@ -466,35 +466,35 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 		quizAttempts.setParameter("readingtimestamp", readingfromtimestamp);
 		quizAttempts.setParameter("readingtimestamp2", readingtotimestamp);
 		this.quizAttemptsLms = quizAttempts.list();
-		System.out.println("QuizAttemptsLMS tables: " + this.quizAttemptsLms.size());
+		logger.info("QuizAttemptsLMS tables: " + this.quizAttemptsLms.size());
 
 		final Query log = session
 				.createQuery("from LogLMS x where x.time>=:readingtimestamp and x.time<=:readingtimestamp2 order by x.id asc");
 		log.setParameter("readingtimestamp", readingfromtimestamp);
 		log.setParameter("readingtimestamp2", readingtotimestamp);
 		this.logLms = log.list();
-		System.out.println("LogLMS tables: " + this.logLms.size());
+		logger.info("LogLMS tables: " + this.logLms.size());
 
 		final Query chatlog = session
 				.createQuery("from ChatLogLMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:readingtimestamp2 order by x.id asc");
 		chatlog.setParameter("readingtimestamp", readingfromtimestamp);
 		chatlog.setParameter("readingtimestamp2", readingtotimestamp);
 		this.chatLogLms = chatlog.list();
-		System.out.println("ChatLogLMS tables: " + this.chatLogLms.size());
+		logger.info("ChatLogLMS tables: " + this.chatLogLms.size());
 
 		final Query forumPosts = session
 				.createQuery("from ForumPostsLMS x where x.created>=:readingtimestamp and x.created<=:readingtimestamp2 order by x.id asc");
 		forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
 		forumPosts.setParameter("readingtimestamp2", readingtotimestamp);
 		this.forumPostsLms = forumPosts.list();
-		System.out.println("ForumPostsLMS tables: " + this.forumPostsLms.size());
+		logger.info("ForumPostsLMS tables: " + this.forumPostsLms.size());
 
 		final Query forumPostsModified = session
 				.createQuery("from ForumPostsLMS x where x.modified>=:readingtimestamp and x.modified<=:readingtimestamp2 order by x.id asc");
 		forumPostsModified.setParameter("readingtimestamp", readingfromtimestamp);
 		forumPostsModified.setParameter("readingtimestamp2", readingtotimestamp);
 		this.forumPostsLms.addAll(forumPostsModified.list());
-		System.out.println("ForumPostsLMS tables: " + this.forumPostsLms.size());
+		logger.info("ForumPostsLMS tables: " + this.forumPostsLms.size());
 
 		session.clear();
 
@@ -503,49 +503,49 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 		groupMembers.setParameter("readingtimestamp", readingfromtimestamp);
 		groupMembers.setParameter("readingtimestamp2", readingtotimestamp);
 		this.groupMembersLms = groupMembers.list();
-		System.out.println("GroupsMembersLMS tables: " + this.groupMembersLms.size());
+		logger.info("GroupsMembersLMS tables: " + this.groupMembersLms.size());
 
 		final Query questionStates = session
 				.createQuery("from QuestionStatesLMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:readingtimestamp2 order by x.id asc");
 		questionStates.setParameter("readingtimestamp", readingfromtimestamp);
 		questionStates.setParameter("readingtimestamp2", readingtotimestamp);
 		this.questionStatesLms = questionStates.list();
-		System.out.println("QuestionStatesLMS tables: " + this.questionStatesLms.size());
+		logger.info("QuestionStatesLMS tables: " + this.questionStatesLms.size());
 
 		final Query roleAssignments = session
 				.createQuery("from RoleAssignmentsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
 		roleAssignments.setParameter("readingtimestamp", readingfromtimestamp);
 		roleAssignments.setParameter("readingtimestamp2", readingtotimestamp);
 		this.roleAssignmentsLms = roleAssignments.list();
-		System.out.println("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
+		logger.info("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
 
 		final Query assignmentSubmission = session
 				.createQuery("from AssignmentSubmissionsLMS x where x.timecreated>=:readingtimestamp and x.timecreated<=:readingtimestamp2 order by x.id asc");
 		assignmentSubmission.setParameter("readingtimestamp", readingfromtimestamp);
 		assignmentSubmission.setParameter("readingtimestamp2", readingtotimestamp);
 		this.assignmentSubmissionLms = assignmentSubmission.list();
-		System.out.println("AssignmentSubmissionsLMS tables: " + this.assignmentSubmissionLms.size());
+		logger.info("AssignmentSubmissionsLMS tables: " + this.assignmentSubmissionLms.size());
 
 		final Query quizGrades = session
 				.createQuery("from QuizGradesLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
 		quizGrades.setParameter("readingtimestamp", readingfromtimestamp);
 		quizGrades.setParameter("readingtimestamp2", readingtotimestamp);
 		this.quizGradesLms = quizGrades.list();
-		System.out.println("QuizGradesLMS tables: " + this.quizGradesLms.size());
+		logger.info("QuizGradesLMS tables: " + this.quizGradesLms.size());
 
 		final Query forumDiscussions = session
 				.createQuery("from ForumDiscussionsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
 		forumDiscussions.setParameter("readingtimestamp", readingfromtimestamp);
 		forumDiscussions.setParameter("readingtimestamp2", readingtotimestamp);
 		this.forumDiscussionsLms = forumDiscussions.list();
-		System.out.println("ForumDiscussionsLMS tables: " + this.forumDiscussionsLms.size());
+		logger.info("ForumDiscussionsLMS tables: " + this.forumDiscussionsLms.size());
 
 		final Query gradeGrades = session
 				.createQuery("from GradeGradesLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
 		gradeGrades.setParameter("readingtimestamp", readingfromtimestamp);
 		gradeGrades.setParameter("readingtimestamp2", readingtotimestamp);
 		this.gradeGradesLms = gradeGrades.list();
-		System.out.println("GradeGradesLMS tables: " + this.gradeGradesLms.size());
+		logger.info("GradeGradesLMS tables: " + this.gradeGradesLms.size());
 
 		session.clear();
 
