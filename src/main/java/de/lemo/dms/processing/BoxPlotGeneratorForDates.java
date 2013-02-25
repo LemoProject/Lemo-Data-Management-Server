@@ -297,7 +297,6 @@ public class BoxPlotGeneratorForDates {
 	}
 
 	private long hourDiff(final Date first, final Date last) {
-		// TODO BUG Hier irgendwo
 		long diff = 0;
 		final Calendar cal1 = new GregorianCalendar();
 		final Calendar cal2 = new GregorianCalendar();
