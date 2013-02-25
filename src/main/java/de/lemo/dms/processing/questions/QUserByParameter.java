@@ -100,9 +100,8 @@ public class QUserByParameter extends Question {
 						if ((i % 2) == 0) {
 							value = Long.valueOf(objects.get(i));
 						}
-						// If the object's type is 'assignment' the identifier is added to the 'ids' list
-						if ((i % 2) != 0) {
-							if (objects.get(i) == "assignment") {
+						else  {
+							if (objects.get(i).equals("assignment")) {
 								ids.add(value);
 							}
 						}
@@ -138,10 +137,8 @@ public class QUserByParameter extends Question {
 						if ((i % 2) == 0) {
 							value = Long.valueOf(objects.get(i));
 						}
-						if ((i % 2) != 0) {
-							if (objects.get(i) == "course") {
-								ids.add(value);
-							}
+						if ((i % 2) != 0 && objects.get(i).equals("course")) {
+							ids.add(value);
 						}
 					}
 				}
@@ -170,7 +167,7 @@ public class QUserByParameter extends Question {
 							value = Long.valueOf(objects.get(i));
 						}
 						if ((i % 2) != 0) {
-							if (objects.get(i) == "forum") {
+							if (objects.get(i).equals("forum")) {
 								ids.add(value);
 							}
 						}
@@ -201,7 +198,7 @@ public class QUserByParameter extends Question {
 							value = Long.valueOf(objects.get(i));
 						}
 						if ((i % 2) != 0) {
-							if (objects.get(i) == "question") {
+							if (objects.get(i).equals("question")) {
 								ids.add(value);
 							}
 						}
@@ -231,7 +228,7 @@ public class QUserByParameter extends Question {
 							value = Long.valueOf(objects.get(i));
 						}
 						if ((i % 2) != 0) {
-							if (objects.get(i) == "quiz") {
+							if (objects.get(i).equals("quiz")) {
 								ids.add(value);
 							}
 						}
@@ -292,10 +289,8 @@ public class QUserByParameter extends Question {
 						if ((i % 2) == 0) {
 							value = Long.valueOf(objects.get(i));
 						}
-						if ((i % 2) != 0) {
-							if (objects.get(i) == "scorm") {
-								ids.add(value);
-							}
+						if ((i % 2) != 0 && objects.get(i).equals("scorm")) {
+							ids.add(value);
 						}
 					}
 				}
@@ -323,10 +318,8 @@ public class QUserByParameter extends Question {
 						if ((i % 2) == 0) {
 							value = Long.valueOf(objects.get(i));
 						}
-						if ((i % 2) != 0) {
-							if (objects.get(i) == "wiki") {
+						if ((i % 2) != 0 && objects.get(i).equals("wiki")) {
 								ids.add(value);
-							}
 						}
 					}
 				}
