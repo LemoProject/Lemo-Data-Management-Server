@@ -112,7 +112,7 @@ public class XMLPackageParser {
 		for (int i = 0; i < ids.size(); i++) {
 			this.idmapping.put(ids.get(i).getHash(), ids.get(i));
 		}
-		System.out.println("Loaded " + this.idmapping.size() + " IDMappingMining objects from the mining database.");
+		logger.info("Loaded " + this.idmapping.size() + " IDMappingMining objects from the mining database.");
 
 		final List<LevelMining> levs = (List<LevelMining>) this.dbHandler.performQuery(session, EQueryType.HQL,
 				"FROM LevelMining x where x.platform=" + platformId + " order by x.id asc");
@@ -122,7 +122,7 @@ public class XMLPackageParser {
 		for (int i = 0; i < levs.size(); i++) {
 			this.levelObj.put(levs.get(i).getTitle(), levs.get(i));
 		}
-		System.out.println("Loaded " + this.levelObj.size() + " LevelMining objects from the mining database.");
+		logger.info("Loaded " + this.levelObj.size() + " LevelMining objects from the mining database.");
 
 		final List<CourseMining> cous = (List<CourseMining>) this.dbHandler.performQuery(session, EQueryType.HQL,
 				"FROM CourseMining x where x.platform=" + platformId + " order by x.id asc");
@@ -132,7 +132,7 @@ public class XMLPackageParser {
 		for (int i = 0; i < cous.size(); i++) {
 			this.courseObj.put(cous.get(i).getTitle(), cous.get(i));
 		}
-		System.out.println("Loaded " + this.courseObj.size() + " CourseMining objects from the mining database.");
+		logger.info("Loaded " + this.courseObj.size() + " CourseMining objects from the mining database.");
 
 		final List<ResourceMining> ress = (List<ResourceMining>) this.dbHandler.performQuery(session, EQueryType.HQL,
 				"FROM ResourceMining x where x.platform=" + platformId + " order by x.id asc");
@@ -142,7 +142,7 @@ public class XMLPackageParser {
 		for (int i = 0; i < ress.size(); i++) {
 			this.resourceObj.put(ress.get(i).getUrl(), ress.get(i));
 		}
-		System.out.println("Loaded " + this.resourceObj.size() + " ResourceMining objects from the mining database.");
+		logger.info("Loaded " + this.resourceObj.size() + " ResourceMining objects from the mining database.");
 
 		final List<LevelAssociationMining> levAsc = (List<LevelAssociationMining>) this.dbHandler.performQuery(session,
 				EQueryType.HQL, "FROM LevelAssociationMining x where x.platform=" + platformId + " order by x.id asc");
@@ -152,7 +152,7 @@ public class XMLPackageParser {
 		for (int i = 0; i < levAsc.size(); i++) {
 			this.levelAssociations.put(levAsc.get(i).getLower().getId(), levAsc.get(i));
 		}
-		System.out.println("Loaded " + this.levelAssociations.size()
+		logger.info("Loaded " + this.levelAssociations.size()
 				+ " LevelAssociationMining objects from the mining database.");
 
 		final List<LevelCourseMining> levCou = (List<LevelCourseMining>) this.dbHandler.performQuery(session,
@@ -163,7 +163,7 @@ public class XMLPackageParser {
 		for (int i = 0; i < levCou.size(); i++) {
 			this.levelCourses.put(levCou.get(i).getCourse().getId(), levCou.get(i));
 		}
-		System.out.println("Loaded " + this.levelCourses.size()
+		logger.info("Loaded " + this.levelCourses.size()
 				+ " LevelCourseMining objects from the mining database.");
 
 		final List<CourseResourceMining> couRes = (List<CourseResourceMining>) this.dbHandler.performQuery(session,
@@ -174,7 +174,7 @@ public class XMLPackageParser {
 		for (int i = 0; i < couRes.size(); i++) {
 			this.courseResources.put(couRes.get(i).getResource().getId(), couRes.get(i));
 		}
-		System.out.println("Loaded " + this.courseResources.size()
+		logger.info("Loaded " + this.courseResources.size()
 				+ " CourseResourceMining objects from the mining database.");
 
 		this.dbHandler.closeSession(session);
@@ -502,24 +502,17 @@ public class XMLPackageParser {
 						this.courseResources.put(r1.getId(), crm);
 					}
 				}
-				else
-				{
-					// String s = fnames.get(this.resourceObj.get(r.getId()));
-
-					// System.out.println(s.substring(s.indexOf("\\vsc")) + " : " +
-					// filename.substring(filename.indexOf("\\vsc")));
-				}
 			}
 
 			// ---- Error handling ----
 		} catch (final SAXParseException spe) {
-			System.out.println("\n** Parsing error, line " + spe.getLineNumber() + ", uri " + spe.getSystemId());
+			logger.info("\n** Parsing error, line " + spe.getLineNumber() + ", uri " + spe.getSystemId());
 		} catch (final SAXException sxe) {
-			System.out.println("\n** SAX error!");
+			logger.info("\n** SAX error!");
 		} catch (final ParserConfigurationException pce) {
-			System.out.println("ParserConfigurationException: " + pce.getMessage());
+			logger.info("ParserConfigurationException: " + pce.getMessage());
 		} catch (final IOException ioe) {
-			System.out.println("IOException: " + ioe.getMessage());
+			logger.info("IOException: " + ioe.getMessage());
 		}
 	}
 
@@ -537,7 +530,7 @@ public class XMLPackageParser {
 		final ArrayList<String> all = new ArrayList<String>();
 		try {
 			File f = new File(directory);
-			System.out.println("Gathering filenames from path: " + f.getAbsolutePath());
+			logger.info("Gathering filenames from path: " + f.getAbsolutePath());
 			final ArrayList<String> dirs = new ArrayList<String>();
 			for (int i = 0; i < f.list().length; i++) {
 				dirs.add(i, directory + "\\" + f.list()[i]);
@@ -559,7 +552,7 @@ public class XMLPackageParser {
 			}
 		} catch (final Exception e)
 		{
-			System.out.println("Exception @ getFilenames" + e.getMessage());
+			logger.info("Exception @ getFilenames" + e.getMessage());
 		}
 		return all;
 	}

@@ -107,6 +107,11 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
+	
 	/**
 	 * Gets the estimated difficulty of the resource.
 	 * 

@@ -113,4 +113,9 @@ public class ConfigMining implements IMappingClass {
 		}
 		return false;
 	}
+	
+	@Override
+	public int hashCode() {
+		return (int) lastModified.getTime();
+	}
 }

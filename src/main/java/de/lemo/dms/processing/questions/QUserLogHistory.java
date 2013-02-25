@@ -152,9 +152,6 @@ public class QUserLogHistory extends Question {
 							new UserLogObject(ilm.getUser().getId(), ilm.getTimestamp(), title, ilm.getId(), type, ilm
 									.getCourse().getId(), ""));
 				}
-			} else {
-				//TODO wozu das else statement?
-				//System.out.println();
 			}
 		}
 

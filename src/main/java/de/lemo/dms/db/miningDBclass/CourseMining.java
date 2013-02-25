@@ -61,6 +61,11 @@ public class CourseMining implements IMappingClass, ILearningObject {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
+	
 	/**
 	 * standard getter for the attribute id
 	 * 

@@ -31,6 +31,11 @@ public class CourseScormMining implements IMappingClass, ICourseRatedObjectAssoc
 		}
 		return false;
 	}
+	
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
 
 	/**
 	 * standard getter for the attribute course

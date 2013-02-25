@@ -17,7 +17,6 @@ import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 public class CourseQuizMining implements IMappingClass, ICourseRatedObjectAssociation {
 
 	// implements Serializable
-	// private static final long serialVersionUID = 1L;
 	private long id;
 	private CourseMining course;
 	private QuizMining quiz;
@@ -55,6 +54,11 @@ public class CourseQuizMining implements IMappingClass, ICourseRatedObjectAssoci
 		this.course = course;
 	}
 
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
+	
 	/**
 	 * parameterized setter for the attribute course
 	 * 

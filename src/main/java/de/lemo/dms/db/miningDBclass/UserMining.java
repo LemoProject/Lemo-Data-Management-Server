@@ -50,6 +50,11 @@ public class UserMining implements IMappingClass {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
+	
 	/**
 	 * standard getter for the attribute id
 	 * 

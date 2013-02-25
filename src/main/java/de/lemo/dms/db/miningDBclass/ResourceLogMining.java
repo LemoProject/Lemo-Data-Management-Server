@@ -34,6 +34,11 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 		}
 		return false;
 	}
+	
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
 
 	@Override
 	public String getTitle()

@@ -43,6 +43,11 @@ public class GroupUserMining implements IMappingClass {
 	public long getId() {
 		return this.id;
 	}
+	
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
 
 	/**
 	 * standard setter for the attribute id

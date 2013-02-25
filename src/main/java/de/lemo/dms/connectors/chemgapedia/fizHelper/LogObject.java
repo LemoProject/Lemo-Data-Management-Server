@@ -104,6 +104,11 @@ public class LogObject implements Comparable<LogObject> {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
+	
 	/**
 	 * Constructor. Creates a new log object.
 	 */

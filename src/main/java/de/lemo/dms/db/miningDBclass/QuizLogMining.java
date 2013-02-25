@@ -56,6 +56,11 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	}
 
 	@Override
+	public int hashCode() {
+		return (int) id;
+	}
+	
+	@Override
 	public Long getDuration() {
 		return this.duration;
 	}

@@ -57,6 +57,11 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 		}
 		return false;
 	}
+	
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
 
 	@Override
 	public Long getDuration() {

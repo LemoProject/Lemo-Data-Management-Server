@@ -17,7 +17,8 @@ public class RoleMining implements IMappingClass {
 	private long id;
 	private String name;
 	private String shortname;
-	private String description;// text
+	// text
+	private String description;
 	private long sortOrder;
 	private Long platform;
 	private long type;
@@ -36,6 +37,11 @@ public class RoleMining implements IMappingClass {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
+	
 	/**
 	 * standard setter for the attribute id
 	 * 

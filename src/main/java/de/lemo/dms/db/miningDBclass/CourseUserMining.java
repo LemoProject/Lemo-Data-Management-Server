@@ -45,6 +45,11 @@ public class CourseUserMining implements IMappingClass {
 	public long getId() {
 		return this.id;
 	}
+	
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
 
 	/**
 	 * standard setter for the attribute id
@@ -89,7 +94,6 @@ public class CourseUserMining implements IMappingClass {
 	 */
 	public void setCourse(final long course, final Map<Long, CourseMining> courseMining,
 			final Map<Long, CourseMining> oldCourseMining) {
-		// System.out.println("course id: " + course);
 		if (courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
