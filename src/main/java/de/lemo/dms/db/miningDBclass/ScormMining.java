@@ -41,6 +41,11 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
+	
 	/**
 	 * standard getter for the attribute timestamp
 	 * 

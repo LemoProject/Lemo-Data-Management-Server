@@ -56,6 +56,11 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	}
 
 	@Override
+	public int hashCode() {
+		return (int) id;
+	}
+	
+	@Override
 	public Long getDuration() {
 		return this.duration;
 	}
