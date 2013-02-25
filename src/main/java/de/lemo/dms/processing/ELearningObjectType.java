@@ -66,10 +66,10 @@ public enum ELearningObjectType {
 	 */
 	public static ELearningObjectType fromLogMiningType(final ILogMining log) {
 		for (final ELearningObjectType learnObjectType : ELearningObjectType.values()) {
-			if (learnObjectType.getLogMiningType()!= null && log != null) {
-				if(learnObjectType.getLogMiningType().equals(log.getClass())) {
+			if (learnObjectType.getLogMiningType() != null && log != null) {
+				if (learnObjectType.getLogMiningType().equals(log.getClass())) {
 					return learnObjectType;
-				} 
+				}
 			}
 		}
 		return UNKNOWN;
@@ -83,8 +83,7 @@ public enum ELearningObjectType {
 	 * @return the enum constants
 	 */
 	public static Set<ELearningObjectType> fromNames(final Collection<String> names) {
-		final EnumSet<ELearningObjectType> result =
-				EnumSet.noneOf(ELearningObjectType.class);
+		final EnumSet<ELearningObjectType> result = EnumSet.noneOf(ELearningObjectType.class);
 		for (final String name : names) {
 			result.add(ELearningObjectType.valueOf(name.toUpperCase()));
 		}
