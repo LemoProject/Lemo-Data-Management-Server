@@ -33,10 +33,6 @@ class DataManagementServer {
 	@XmlAttribute
 	public String name = DataManagementServer.DEFAULT_NAME;
 
-	@XmlElement
-	@XmlList
-	public List<Long> courseIdFilter = Lists.newArrayList();
-
 	/**
 	 * Database settings, uses hibernate-style <code>&lt;property&gt;</code> elements (key/value pairs).
 	 */

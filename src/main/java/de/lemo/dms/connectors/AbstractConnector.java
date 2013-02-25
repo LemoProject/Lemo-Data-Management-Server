@@ -7,6 +7,9 @@
 
 package de.lemo.dms.connectors;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Abstract class for connector implementations
  * @author Sebastian Schwarzrock
@@ -18,7 +21,8 @@ public abstract class AbstractConnector implements IConnector {
 	private String name;
 	private Long prefix;
 	private ESourcePlatform platform;
-
+	private List<Long> courseIdFilter = Collections.emptyList();
+	
 	@Override
 	public Long getPlatformId() {
 		return this.id;
@@ -60,4 +64,28 @@ public abstract class AbstractConnector implements IConnector {
 		return this.id + "-" + this.platform + "-" + this.name;
 	}
 
+	/**
+	 * @return true if connectors should only load specific courses
+	 */
+	public boolean filterCourseIds() {
+		return !courseIdFilter.isEmpty();
+	}
+
+	/**
+	 * The list of course IDs to be loaded by a connectors.
+	 * 
+	 * @return a list of course IDs
+	 */
+	public List<Long> getCourseIdFilter() {
+		return courseIdFilter;
+	}
+
+	/**
+	 * @param courseIdFilter
+	 *            a list of course IDs
+	 */
+	public void setCourseIdFilter(List<Long> courseIdFilter) {
+		this.courseIdFilter = courseIdFilter;
+	}
+	
 }

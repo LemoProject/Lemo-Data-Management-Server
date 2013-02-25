@@ -20,7 +20,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
 
 /**
- * Handles all connector instances and provides connector-related configuration.
+ * Handles all connector instances.
  * 
  * @author Leonard Kappe
  */
@@ -30,7 +30,6 @@ public enum ConnectorManager {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final List<IConnector> connectors = Lists.newArrayList();
-	private List<Long> courseIdFilter = Collections.emptyList();
 	private ConnectorGetDataWorkerThread getDataThread;
 
 	/**
@@ -137,27 +136,5 @@ public enum ConnectorManager {
 		dbHandler.closeSession(session);
 	}
 
-	/**
-	 * @return true if connectors should only load specific courses
-	 */
-	public boolean filterCourseIds() {
-		return !courseIdFilter.isEmpty();
-	}
-
-	/**
-	 * The list of course IDs to be loaded by a connectors.
-	 * 
-	 * @return a list of course IDs
-	 */
-	public List<Long> getCourseIdFilter() {
-		return courseIdFilter;
-	}
-
-	/**
-	 * @param courseIdFilter
-	 *            a list of course IDs
-	 */
-	public void setCourseIdFilter(List<Long> courseIdFilter) {
-		this.courseIdFilter = courseIdFilter;
-	}
+	
 }

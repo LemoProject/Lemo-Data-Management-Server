@@ -31,7 +31,7 @@ import de.lemo.dms.db.hibernate.HibernateDBHandler;
 import de.lemo.dms.db.hibernate.MiningHibernateUtil;
 
 /**
- * Class with the configuration parameter for the server
+ * Manages and loads all configuration data for the server and all connectors.
  * 
  * @author Leonard Kappe
  */
@@ -96,7 +96,6 @@ public enum ServerConfiguration {
 		for (final IConnector connector : connectors) {
 			connectorManager.addConnector(connector);
 		}
-		connectorManager.setCourseIdFilter(lemoConfig.dataManagementServer.courseIdFilter);
 	}
 
 	private LemoConfig readConfigFiles(String contextPath) {
@@ -171,7 +170,8 @@ public enum ServerConfiguration {
 
 			ESourcePlatform platform = ESourcePlatform.valueOf(connectorConfig.platformType);
 			DBConfigObject config = this.createDBConfig(connectorConfig.properties);
-			result.add(platform.newConnector(connectorConfig.platformId, connectorConfig.name, config));
+			result.add(platform.newConnector(connectorConfig.platformId, connectorConfig.name, config,
+					connectorConfig.courseIdFilter));
 		}
 		return result;
 	}

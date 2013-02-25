@@ -9,11 +9,12 @@
   </apps>
   <!-- -->
   <dms name="Lemo DMS">
+
     <database>
       <!-- Maven replacement variables-->
-    	<property name="hibernate.connection.url">${mining-hibernate-url}</property>
-   	<property name="hibernate.connection.username">${mining-hibernate-username}</property>
-    	<property name="hibernate.connection.password">${mining-hibernate-password}</property>
+      <property name="hibernate.connection.url">${mining-hibernate-url}</property>
+      <property name="hibernate.connection.username">${mining-hibernate-username}</property>
+      <property name="hibernate.connection.password">${mining-hibernate-password}</property>
       <!-- main config-->
       <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
@@ -42,9 +43,12 @@
     </database>
     <connectors>
       <connector platform-id="2" name="beuth1" platform-type="Moodle_1_9">
+        <courseIdFilter>
+          <!-- -->
+        </courseIdFilter>
         <property name="hibernate.connection.url">jdbc:mysql://localhost/lmsmoodle?rewriteBatchedStatements=true</property>
-    	<property name="hibernate.connection.username">user</property>
-	<property name="hibernate.connection.password">password</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.default_schema=lemo_db"></property>
@@ -57,25 +61,25 @@
         <property name="lemo.filter_log_file">true</property>
       </connector>
       <connector platform-id="4" name="beuth2" platform-type="Moodle_2_3">
-      	<property name="hibernate.connection.url">jdbc:postgresql://localhost/moodle</property>
-		<property name="hibernate.connection.username">user</property>
-		<property name="hibernate.connection.password">password</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost/moodle</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.default_schema=lemo_db">public</property>
       </connector>
       <connector platform-id="5" name="bbw1" platform-type="Moodle_1_9_Numeric">
         <property name="hibernate.connection.url">jdbc:postgresql://localhost/moodle</property>
-		<property name="hibernate.connection.username">user</property>
-		<property name="hibernate.connection.password">password</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.default_schema=lemo_db">public</property>
       </connector>
       <connector platform-id="6" name="clix" platform-type="Clix_2010">
         <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:clix</property>
-		<property name="hibernate.connection.username">lemo_dummy</property>
-		<property name="hibernate.connection.password">lemo_dummypwd</property>
+        <property name="hibernate.connection.username">lemo_dummy</property>
+        <property name="hibernate.connection.password">lemo_dummypwd</property>
         <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
         <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
         <property name="hibernate.default_schema=lemo_db">lemo_db</property>

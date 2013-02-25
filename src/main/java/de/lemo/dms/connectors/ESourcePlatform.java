@@ -7,13 +7,13 @@
 
 package de.lemo.dms.connectors;
 
+import java.util.List;
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.db.DBConfigObject;
 
 /**
  * enum for the avsailable platforms
- *
  */
 public enum ESourcePlatform {
 
@@ -24,7 +24,20 @@ public enum ESourcePlatform {
 	Chemgaroo,
 	Dummy, ;
 
-	public IConnector newConnector(final Long id, final String name, final DBConfigObject config) {
+	/**
+	 * Create a new connector for this platform.
+	 * 
+	 * @param id
+	 *            connector ID
+	 * @param name
+	 *            human readable platform name
+	 * @param config
+	 *            connector configuration
+	 * @param filter
+	 *            list of course IDs to be loaded - loads all courses if empty
+	 * @return
+	 */
+	public IConnector newConnector(final Long id, final String name, final DBConfigObject config, List<Long> filter) {
 		AbstractConnector connector;
 		switch (this) {
 
@@ -53,12 +66,13 @@ public enum ESourcePlatform {
 				break;
 
 			default:
-				throw new RuntimeException("No Connector implementation");
+				throw new RuntimeException("No Connector implementation found for '" + this.name() + "'.");
 		}
 
 		connector.setPlatformId(id);
 		connector.setPlatformType(this);
 		connector.setName(name);
+		connector.setCourseIdFilter(filter);
 
 		return connector;
 
