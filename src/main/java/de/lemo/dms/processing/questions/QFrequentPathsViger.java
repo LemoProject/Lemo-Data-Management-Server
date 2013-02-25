@@ -81,29 +81,31 @@ public class QFrequentPathsViger extends Question {
 			}
 			if ((users != null) && (users.size() > 0))
 			{
-				System.out.print("Parameter list: Users: " + users.get(0));
+				StringBuffer buffer = new StringBuffer();
+				buffer.append("Parameter list: Users: " + users.get(0));
 				for (int i = 1; i < users.size(); i++) {
-					System.out.print(", " + users.get(i));
+					buffer.append(", " + users.get(i));
 				}
-				System.out.println();
+				logger.info(buffer.toString());
 			}
 			if ((types != null) && (types.size() > 0))
 			{
-				System.out.print("Parameter list: Types: : " + types.get(0));
+				StringBuffer buffer = new StringBuffer();
+				buffer.append("Parameter list: Types: : " + types.get(0));
 				for (int i = 1; i < types.size(); i++) {
-					System.out.print(", " + types.get(i));
+					buffer.append(", " + types.get(i));
 				}
-				System.out.println();
+				logger.info(buffer.toString());
 			}
 			if ((minLength != null) && (maxLength != null) && (minLength < maxLength))
 			{
-				System.out.println("Parameter list: Minimum path length: : " + minLength);
-				System.out.println("Parameter list: Maximum path length: : " + maxLength);
+				logger.info("Parameter list: Minimum path length: : " + minLength);
+				logger.info("Parameter list: Maximum path length: : " + maxLength);
 			}
-			System.out.println("Parameter list: Minimum Support: : " + minSup);
-			System.out.println("Parameter list: Session Wise: : " + sessionWise);
-			System.out.println("Parameter list: Start time: : " + startTime);
-			System.out.println("Parameter list: End time: : " + endTime);
+			logger.info("Parameter list: Minimum Support: : " + minSup);
+			logger.info("Parameter list: Session Wise: : " + sessionWise);
+			logger.info("Parameter list: Start time: : " + startTime);
+			logger.info("Parameter list: End time: : " + endTime);
 		}
 
 		try
@@ -119,11 +121,10 @@ public class QFrequentPathsViger extends Question {
 			// execute the algorithm
 			final Clock c = new Clock();
 			final Sequences res = algo.runAlgorithm(sequenceDatabase);
-			System.out.println("Time for Hirate-calculation: " + c.get());
+			logger.info("Time for Hirate-calculation: " + c.get());
 
 			final LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 			Long pathId = 0L;
-			System.out.println();
 			for (int i = 0; i < res.getLevelCount(); i++)
 			{
 				for (int j = 0; j < res.getLevel(i).size(); j++)
@@ -131,7 +132,7 @@ public class QFrequentPathsViger extends Question {
 					String predecessor = null;
 					final Long absSup = Long.valueOf(res.getLevel(i).get(j).getAbsoluteSupport());
 					pathId++;
-					System.out.println("New " + i + "-Sequence. Support : "
+					logger.info("New " + i + "-Sequence. Support : "
 							+ res.getLevel(i).get(j).getAbsoluteSupport());
 					for (int k = 0; k < res.getLevel(i).get(j).size(); k++)
 					{
@@ -173,7 +174,7 @@ public class QFrequentPathsViger extends Question {
 
 				}
 			}
-			System.out.println("\n");
+			logger.info("\n");
 
 			for (final UserPathObject pathEntry : pathObjects.values()) {
 
