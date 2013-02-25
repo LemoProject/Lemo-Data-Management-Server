@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.lemo</groupId>
 	<artifactId>dms</artifactId>
-	<version>PT2S8_Final-211-g418ef23</version><!-- FLAG 1 identifier DONT DELETE -->
+	<version>PT2S8_Final-213-g0db5fb3</version><!-- FLAG 1 identifier DONT DELETE -->
 	<packaging>war</packaging>
 	<name>Lemo Data Management Server</name>
 
