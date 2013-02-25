@@ -44,7 +44,8 @@
     <connectors>
       <connector platform-id="2" name="beuth1" platform-type="Moodle_1_9">
         <courseIdFilter>
-          <!-- -->
+          <!-- Example: -->
+          <!-- 112100 11476 112200 -->
         </courseIdFilter>
         <property name="hibernate.connection.url">jdbc:mysql://localhost/lmsmoodle?rewriteBatchedStatements=true</property>
         <property name="hibernate.connection.username">user</property>
