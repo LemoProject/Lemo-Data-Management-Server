@@ -322,7 +322,6 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 
 	@Override
 	public Double getFinalGrade() {
-		// TODO Auto-generated method stub
 		return this.grade;
 	}
 }

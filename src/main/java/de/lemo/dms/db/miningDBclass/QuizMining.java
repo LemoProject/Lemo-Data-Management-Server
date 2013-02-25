@@ -386,7 +386,6 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 
 	@Override
 	public Long getPrefix() {
-		// TODO Auto-generated method stub
 		return 14L;
 	}
 }

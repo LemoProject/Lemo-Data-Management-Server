@@ -59,7 +59,6 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.WikiMining;
 
-// TODO: Auto-generated Javadoc
 /**
  * The main class of the extraction process.
  * Inherit from this class to make an extract class for a specific LMS.

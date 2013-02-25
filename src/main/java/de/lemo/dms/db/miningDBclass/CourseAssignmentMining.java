@@ -162,7 +162,6 @@ public class CourseAssignmentMining implements IMappingClass, ICourseRatedObject
 
 	@Override
 	public IRatedObject getRatedObject() {
-		// TODO Auto-generated method stub
 		return this.assignment;
 	}
 }

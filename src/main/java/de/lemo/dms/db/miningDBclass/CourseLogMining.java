@@ -235,7 +235,6 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 
 	@Override
 	public Long getPrefix() {
-		// TODO Auto-generated method stub
 		return 12L;
 	}
 

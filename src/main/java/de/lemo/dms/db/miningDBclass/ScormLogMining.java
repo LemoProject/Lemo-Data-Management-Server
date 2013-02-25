@@ -322,7 +322,6 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 
 	@Override
 	public Double getFinalGrade() {
-		// TODO Auto-generated method stub
 		return this.grade;
 	}
 }
