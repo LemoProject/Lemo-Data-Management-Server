@@ -553,7 +553,7 @@ public class ClixImporter {
 			this.clearSourceData();
 
 		} catch (final Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -1789,8 +1789,9 @@ public class ClixImporter {
 			for (final EComposing loadedItem : this.eComposing)
 			{
 				long id = 0;
-				if (loadedItem.getComponent() >= 0)
+				if (loadedItem.getComponent() >= 0) {
 					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
+				}
 				if ((this.resourceMining.get(id) != null)
 						|| (this.oldResourceMining.get(id) != null))
 				{
@@ -1830,8 +1831,9 @@ public class ClixImporter {
 			for (final EComposing loadedItem : this.eComposing)
 			{
 				long id = 0;
-				if (loadedItem.getComponent() >= 0)
+				if (loadedItem.getComponent() >= 0) {
 					id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getComponent());
+				}
 				if ((this.quizMining.get(id) != null)
 						|| (this.oldQuizMining.get(id) != null))
 				{
@@ -1995,8 +1997,9 @@ public class ClixImporter {
 					long id = Long.valueOf(connector.getPrefix() + "" + loadedItem.getGroup() + ""
 							+ loadedItem.getPerson());
 					item.setId(id);
-					if (groupUsers.get(id) == null)
+					if (groupUsers.get(id) == null) {
 						groupUsers.put(id, item);
+					}
 				}
 
 				if ((item.getUser() != null) && (item.getGroup() != null)) {
@@ -2058,11 +2061,12 @@ public class ClixImporter {
 					teacher = r;
 				}
 
-				else if (r.getType() == 2)
+				else if (r.getType() == 2) {
 					student = r;
-				if (teacher != null && student != null)
+				}
+				if (teacher != null && student != null) {
 					break;
-
+				}
 			}
 
 			/** Students **/
@@ -2082,8 +2086,9 @@ public class ClixImporter {
 					item.setEnrolend(TimeConverter.getTimestamp(loadedItem.getEndDate()));
 					item.setEnrolstart(TimeConverter.getTimestamp(loadedItem.getStartDate()));
 
-					if (item.getCourse() != null && item.getUser() != null)
+					if (item.getCourse() != null && item.getUser() != null) {
 						courseUser.put(item.getId(), item);
+					}
 				}
 			}
 			/** Tutors **/
@@ -2099,8 +2104,9 @@ public class ClixImporter {
 				item.setRole(teacher.getId(), roleMining, oldRoleMining);
 				item.setPlatform(connector.getPlatformId());
 
-				if (item.getCourse() != null && item.getUser() != null)
+				if (item.getCourse() != null && item.getUser() != null) {
 					courseUser.put(item.getId(), item);
+				}
 			}
 			this.logger.info("Generated " + courseUser.size() + " CourseUserMinings.");
 		} catch (final Exception e)
