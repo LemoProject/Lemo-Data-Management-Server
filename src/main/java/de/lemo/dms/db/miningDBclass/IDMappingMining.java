@@ -31,6 +31,11 @@ public class IDMappingMining implements IMappingClass {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return id.intValue();
+	}
+	
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -57,7 +62,7 @@ public class IDMappingMining implements IMappingClass {
 		this.hash = hash;
 		this.platform = platform;
 	}
-
+	
 	@Override
 	public long getId() {
 		return this.id;

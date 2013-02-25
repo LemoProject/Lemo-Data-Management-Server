@@ -68,6 +68,11 @@ public class PlatformMining implements IMappingClass {
 		}
 		return false;
 	}
+	
+	@Override
+	public int hashCode() {
+		return id.intValue();
+	}
 
 	public Long getPrefix() {
 		return this.prefix;

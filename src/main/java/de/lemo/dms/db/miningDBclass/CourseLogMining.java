@@ -56,6 +56,11 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 	}
 
 	@Override
+	public int hashCode() {
+		return (int) id;
+	}
+	
+	@Override
 	public Long getDuration() {
 		return this.duration;
 	}
