@@ -502,13 +502,6 @@ public class XMLPackageParser {
 						this.courseResources.put(r1.getId(), crm);
 					}
 				}
-				else
-				{
-					// String s = fnames.get(this.resourceObj.get(r.getId()));
-
-					// System.out.println(s.substring(s.indexOf("\\vsc")) + " : " +
-					// filename.substring(filename.indexOf("\\vsc")));
-				}
 			}
 
 			// ---- Error handling ----
