@@ -25,6 +25,7 @@ public enum ConnectorManager {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final List<IConnector> connectors = Lists.newArrayList();
 	private ConnectorGetDataWorkerThread getDataThread;
+	private List<Long> courseIdFilter;
 
 	/**
 	 * return the instance of the manager
@@ -116,5 +117,17 @@ public enum ConnectorManager {
 
 		dbHandler.saveToDB(session, platform);
 		dbHandler.closeSession(session);
+	}
+
+	public boolean filterCourseIds() {
+		return courseIdFilter != null && !courseIdFilter.isEmpty();
+	}
+
+	public List<Long> getCourseIdFilter() {
+		return courseIdFilter;
+	}
+
+	public void setCourseIdFilter(List<Long> courseIdFilter) {
+		this.courseIdFilter = courseIdFilter;
 	}
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlType;
 import com.google.common.collect.Lists;
 
@@ -31,6 +32,10 @@ class DataManagementServer {
 	 */
 	@XmlAttribute
 	public String name = DataManagementServer.DEFAULT_NAME;
+
+	@XmlElement
+	@XmlList
+	public List<Long> courseIdFilter = Lists.newArrayList();
 
 	/**
 	 * Database settings, uses hibernate-style <code>&lt;property&gt;</code> elements (key/value pairs).
