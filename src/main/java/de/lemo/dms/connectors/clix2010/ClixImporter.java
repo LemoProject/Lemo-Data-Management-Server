@@ -2124,8 +2124,9 @@ public class ClixImporter {
 			for (final EComposing loadedItem : this.eComposing)
 			{
 				long id = 0;
-				if (loadedItem.getComponent() >= 0)
+				if (loadedItem.getComponent() >= 0) {
 					id = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getComponent());
+				}
 				if ((this.forumMining.get(id) != null)
 						|| (this.oldForumMining.get(id) != null))
 				{
