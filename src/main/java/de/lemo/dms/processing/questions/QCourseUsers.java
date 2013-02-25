@@ -13,6 +13,8 @@ import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -26,8 +28,8 @@ import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 /**
  * All members of a course
+ * 
  * @author Sebastian Schwarzrock
- *
  */
 @Path("activecourseusers")
 public class QCourseUsers extends Question {
@@ -38,18 +40,14 @@ public class QCourseUsers extends Question {
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
-		// Check arguments
-		if (startTime >= endTime) {
-			return null;
-		}
+		validateTimestamps(startTime, endTime);
 
 		// Set up db-connection
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
-		final Criteria criteria = session.createCriteria(CourseLogMining.class, "log");
-
-		criteria.add(Restrictions.in("log.course.id", courseIds))
+		final Criteria criteria = session.createCriteria(CourseLogMining.class, "log")
+				.add(Restrictions.in("log.course.id", courseIds))
 				.add(Restrictions.between("log.timestamp", startTime, endTime));
 
 		@SuppressWarnings("unchecked")

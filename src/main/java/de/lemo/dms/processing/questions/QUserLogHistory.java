@@ -9,7 +9,6 @@ package de.lemo.dms.processing.questions;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -60,15 +59,9 @@ public class QUserLogHistory extends Question {
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
 			@FormParam(MetaParam.USER_IDS) final List<Long> userIds,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) Long endTime) {
+			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
-		if (endTime == null) {
-			endTime = new Date().getTime();
-		}
-
-		if ((startTime >= endTime) || userIds.isEmpty()) {
-			return null;
-		}
+		validateTimestamps(startTime, endTime);
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();

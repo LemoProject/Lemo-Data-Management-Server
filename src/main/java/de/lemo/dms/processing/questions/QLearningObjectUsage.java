@@ -15,6 +15,8 @@ import java.util.Map.Entry;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -29,8 +31,8 @@ import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
 
 /**
  * Use of learning objects
+ * 
  * @author Sebastian Schwarzrock
- *
  */
 @Path("learningobjectusage")
 public class QLearningObjectUsage extends Question {
@@ -59,36 +61,19 @@ public class QLearningObjectUsage extends Question {
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
-		this.logger.info("Params: " + courseIds + "/" + userIds + "/" + types + "/" + startTime
-				+ "/" + endTime);
+		validateTimestamps(startTime, endTime);
 
 		final ResultListResourceRequestInfo result = new ResultListResourceRequestInfo();
-		// DB-initialization
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
 		// Create criteria for log-file-search
-		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
-
-		if ((startTime == null) || (endTime == null) || (startTime >= endTime)) {
-			this.logger.info("Invalid time params.");
-			return null;
-		}
-
-		if ((types != null) && (types.size() > 0)) {
-			for (int i = 0; i < types.size(); i++) {
-				this.logger.info("LO Request - LO Selection: " + types.get(i));
-			}
-		} else {
-			this.logger.info("LO Request - LO Selection: NO Items selected ");
-		}
-
-		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
+		final Criteria criteria = session.createCriteria(ILogMining.class, "log")
+				.add(Restrictions.between("log.timestamp", startTime, endTime));
 
 		if (!courseIds.isEmpty()) {
 			criteria.add(Restrictions.in("log.course.id", courseIds));
 		}
-
 		if (!userIds.isEmpty()) {
 			criteria.add(Restrictions.in("log.user.id", userIds));
 		}
@@ -102,6 +87,7 @@ public class QLearningObjectUsage extends Question {
 
 		for (final ILogMining ilo : list)
 		{
+			// TODO use Class.getSimpleName() instead?
 			final String obType = ilo
 					.getClass()
 					.toString()

@@ -267,7 +267,7 @@ public class Test {
 		quizzes.add(1411888L);
 		quizzes.add(1411939L);
 
-		final ResultListBoxPlot res = ph.compute(courses, new ArrayList<Long>(), quizzes, 100, 0L, 1500000000L);
+		final ResultListBoxPlot res = ph.compute(courses, new ArrayList<Long>(), quizzes, 100L, 0L, 1500000000L);
 		logger.info(res.getElements().size());
 
 	}

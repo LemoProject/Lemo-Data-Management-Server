@@ -35,8 +35,8 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
 
 /**
  * Generates a list of Nodes and edges, representing the user-navigation
+ * 
  * @author Sebastian Schwarzrock
- *
  */
 @Path("userpathanalysis")
 public class QUserPathAnalysis extends Question {
@@ -70,8 +70,7 @@ public class QUserPathAnalysis extends Question {
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
-		this.logger.info("Params: " + courseIds + "/" + userIds + "/" + types + "/" + considerLogouts + "/" + startTime
-				+ "/" + endTime);
+		validateTimestamps(startTime, endTime);
 
 		// DB-initialization
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -79,11 +78,6 @@ public class QUserPathAnalysis extends Question {
 
 		// Create criteria for log-file-search
 		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
-
-		if ((startTime == null) || (endTime == null) || (startTime >= endTime)) {
-			this.logger.info("Invalid time params.");
-			return null;
-		}
 
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		criteria.addOrder(Order.asc("log.timestamp"));
@@ -101,7 +95,7 @@ public class QUserPathAnalysis extends Question {
 
 		Collections.sort(list);
 
-		this.logger.info("Total matched entries: " + list.size());
+		this.logger.debug("Total matched entries: " + list.size());
 
 		// Map for UserPathObjects
 		final LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
@@ -146,7 +140,7 @@ public class QUserPathAnalysis extends Question {
 			}
 		}
 
-		this.logger.info("Skipped entries with missing user id: " + skippedUsers);
+		this.logger.debug("Skipped entries with missing user id: " + skippedUsers);
 
 		int skippedLogs = 0;
 		// Generate paths from user histories
@@ -210,7 +204,7 @@ public class QUserPathAnalysis extends Question {
 				}
 			}
 		}
-		this.logger.info("Skipped entries with missing learn object id: " + skippedLogs);
+		this.logger.debug("Skipped entries with missing learn object id: " + skippedLogs);
 
 		final ArrayList<UserPathNode> nodes = Lists.newArrayList();
 		final ArrayList<UserPathLink> links = Lists.newArrayList();

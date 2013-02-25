@@ -8,6 +8,7 @@
 package de.lemo.dms.processing.questions;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +18,9 @@ import java.util.Set;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import org.codehaus.jettison.json.JSONException;
 import org.hibernate.Session;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.processing.BoxPlotGeneratorForDates;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
@@ -27,16 +30,16 @@ import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
 
 /**
  * Accumulates the requests of the users to the objects over a period
+ * 
  * @author Boris Wenzlaff
- *
  */
 @Path("cumulative")
 public class QCumulativeUserAccess extends Question {
 
 	/**
-	 * @param minTimestamp
+	 * @param startTime
 	 *            min time for the data
-	 * @param maxTimestamp
+	 * @param endTime
 	 *            max time for the data
 	 * @param types
 	 *            list with learning objects to compute
@@ -57,22 +60,20 @@ public class QCumulativeUserAccess extends Question {
 			@FormParam(MetaParam.TYPES) final List<String> types,
 			@FormParam(MetaParam.DEPARTMENT) final List<Long> departments,
 			@FormParam(MetaParam.DEGREE) final List<Long> degrees,
-			@FormParam(MetaParam.START_TIME) final Long minTimestamp,
-			@FormParam(MetaParam.END_TIME) final Long maxTimestamp) {
+			@FormParam(MetaParam.START_TIME) final Long startTime,
+			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
-		super.logger.debug("call for question: cumulative user access");
+		validateTimestamps(startTime, endTime);
 
-		super.logger.debug("Activity types: " + types);
-		final Set<ELearningObjectType> learnObjectTypes =
-				ELearningObjectType.fromNames(types);
+		final Set<ELearningObjectType> learnObjectTypes = ELearningObjectType.fromNames(types);
 
 		// generiere querys
-		final Map<ELearningObjectType, String> querys = this.generateQuerys(minTimestamp,
-				maxTimestamp, learnObjectTypes, departments, degrees, course);
+		final Map<ELearningObjectType, String> querys = this.generateQuerys(startTime,
+				endTime, learnObjectTypes, departments, degrees, course);
 
 		super.logger.debug("Query result: " + querys.toString());
 
-		final Session session = super.dbHandler.getMiningSession();
+		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 
 		// SQL querys
 		super.logger.debug("Starting processing ....");
@@ -205,7 +206,7 @@ public class QCumulativeUserAccess extends Question {
 	// generiert ein einfaches query mit einem inner join für die abfrage
 	private String generateBaseQuery(final String table) {
 		final StringBuilder sb = new StringBuilder();
-		//TODO INSERT Chat for Objects
+		// TODO INSERT Chat for Objects
 		sb.append("SELECT timestamp, user_id, course.title as course, course.id as courseId, degree.title as degree, degree.id as degreeId, department.title AS department, department.id as departmentId");
 		sb.append(" FROM ((((" + table + "_log AS log");
 		sb.append(" LEFT JOIN course");

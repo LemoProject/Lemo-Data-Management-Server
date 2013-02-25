@@ -16,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -39,9 +41,9 @@ import de.lemo.dms.processing.resulttype.UserPathLink;
 
 /**
  * Computes paths for users
+ * 
  * @author Leonard Kappe
  * @author Sebastian Schwarzrock
- *
  */
 @Path("courseuserpaths")
 public class QCourseUserPaths extends Question {
@@ -50,43 +52,22 @@ public class QCourseUserPaths extends Question {
 	public JSONObject compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) Long endTime) throws JSONException {
+			@FormParam(MetaParam.END_TIME) Long endTime
+			) throws JSONException {
 
-		/*
-		 * This is the first usage of Criteria API in the project and therefore a bit more documented than usual, to
-		 * serve as example implementation for other analyses.
-		 */
-		if (endTime == null) {
-			endTime = new Date().getTime();
-		}
-
-		if ((startTime >= endTime) || (courseIds == null) || courseIds.isEmpty()) {
-			return null;
-		}
+		validateTimestamps(startTime, endTime);
 
 		final Stopwatch stopWatch = new Stopwatch();
-
 		stopWatch.start();
 
-		/* A criteria is created from the session. */
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
-		/*
-		 * HQL-like equivalent: "Select from ILogMining". ILogMining is an interface, so Hibernate will load all classes
-		 * implementing it. The string argument is an alias.
-		 */
-		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
-
-		/*
-		 * Restrictions equivalent to HQL where:
-		 * 
-		 */
-		criteria.add(Restrictions.in("log.course.id", courseIds))
+		final Criteria criteria = session.createCriteria(ILogMining.class, "log")
+				.add(Restrictions.in("log.course.id", courseIds))
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
 				.add(Restrictions.eq("log.action", "view"));
 
-		/* Calling list() eventually performs the query */
 		@SuppressWarnings("unchecked")
 		final List<ILogMining> logs = criteria.list();
 

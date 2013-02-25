@@ -8,8 +8,10 @@
 package de.lemo.dms.processing;
 
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import de.lemo.dms.service.BaseService;
+import javax.ws.rs.core.Response;
+import org.apache.log4j.Logger;
 
 /**
  * Base class for questions, sets default JSON response type.
@@ -17,6 +19,21 @@ import de.lemo.dms.service.BaseService;
  * @author Leonard Kappe
  */
 @Produces(MediaType.APPLICATION_JSON)
-public abstract class Question extends BaseService {
+public abstract class Question {
+
+	protected final Logger logger = Logger.getLogger(this.getClass());
+
+	protected void validateTimestamps(Long startTime, Long endTime) throws WebApplicationException {
+		if (startTime == null || endTime == null || startTime >= endTime) {
+			throw new WebApplicationException(Response.Status.BAD_REQUEST);
+		}
+	}
+
+	protected void validateTimestamps(Long startTime, Long endTime, Long resolution) throws WebApplicationException {
+		validateTimestamps(startTime, endTime);
+		if (resolution == null || resolution <= 0) {
+			throw new WebApplicationException(Response.Status.BAD_REQUEST);
+		}
+	}
 
 }
