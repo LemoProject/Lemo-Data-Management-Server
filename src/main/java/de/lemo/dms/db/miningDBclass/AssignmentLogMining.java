@@ -60,6 +60,11 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	}
 
 	@Override
+	public int hashCode() {
+		return (int)id;
+	}
+	
+	@Override
 	public String getTitle()
 	{
 		return this.assignment == null ? null : this.assignment.getTitle();

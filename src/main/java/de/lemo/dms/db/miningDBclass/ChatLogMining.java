@@ -49,6 +49,11 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 	}
 
 	@Override
+	public int hashCode() {
+		return (int)id;
+	}
+	
+	@Override
 	public void setDuration(final Long duration)
 	{
 		this.duration = duration;

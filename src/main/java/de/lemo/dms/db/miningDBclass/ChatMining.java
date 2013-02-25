@@ -37,6 +37,11 @@ public class ChatMining implements IMappingClass {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return (int)id;
+	}
+	
 	public CourseMining getCourse() {
 		return this.course;
 	}
