@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import de.lemo.dms.connectors.ConnectorManager;
@@ -26,19 +27,21 @@ import de.lemo.dms.connectors.EConnectorState;
  * @author Boris Wenzlaff
  */
 @Path("/getconnectorstate")
-public class ServiceGetConnectorState extends BaseService {
+public class ServiceGetConnectorState {
+
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public JSONObject getConnectrorStateJson() {
-		super.logger.info("call for service: getConnectrorStateJson");
+		logger.info("call for service: getConnectrorStateJson");
 		final ConnectorManager cm = ConnectorManager.getInstance();
 		final EConnectorState cs = cm.connectorState();
 		final JSONObject result = new JSONObject();
 		try {
 			result.put("state", cs.name());
 		} catch (final JSONException e) {
-			super.logger.warn(e.getMessage());
+			logger.warn(e.getMessage());
 		}
 		return result;
 	}

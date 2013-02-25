@@ -14,19 +14,23 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.EQueryType;
+import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 
 /**
  * Service for user information. Provide all courses for a user
- *
  */
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
-public class ServiceUserInformation extends BaseService {
+public class ServiceUserInformation {
+
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	@GET
 	@Path("/{uid}/courses")
@@ -37,11 +41,11 @@ public class ServiceUserInformation extends BaseService {
 		final ArrayList<CourseObject> courses = new ArrayList<CourseObject>();
 
 		// Set up db-connection
-
-		final Session session = this.dbHandler.getMiningSession();
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+		final Session session = dbHandler.getMiningSession();
 
 		@SuppressWarnings("unchecked")
-		final ArrayList<Long> cu = (ArrayList<Long>) this.dbHandler.performQuery(session, EQueryType.SQL,
+		final ArrayList<Long> cu = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.SQL,
 				"Select course_id from course_user where user_id=" + id);
 
 		String query = "";
@@ -58,18 +62,18 @@ public class ServiceUserInformation extends BaseService {
 
 		if (cu.size() > 0) {
 			@SuppressWarnings("unchecked")
-			final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) this.dbHandler.performQuery(session,
+			final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(session,
 					EQueryType.HQL,
 					"from CourseMining where id in " + query);
 			for (int i = 0; i < ci.size(); i++) {
 				@SuppressWarnings("unchecked")
-				final ArrayList<Long> parti = (ArrayList<Long>) this.dbHandler.performQuery(session, EQueryType.HQL,
+				final ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
 						"Select count(DISTINCT user) from CourseUserMining where course=" + ci.get(i).getId());
 				@SuppressWarnings("unchecked")
-				final ArrayList<Long> latest = (ArrayList<Long>) this.dbHandler.performQuery(session, EQueryType.HQL,
+				final ArrayList<Long> latest = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
 						"Select max(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(i).getId());
 				@SuppressWarnings("unchecked")
-				final ArrayList<Long> first = (ArrayList<Long>) this.dbHandler.performQuery(session, EQueryType.HQL,
+				final ArrayList<Long> first = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
 						"Select min(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(i).getId());
 				Long cpa = 0L;
 				if ((parti.size() > 0) && (parti.get(0) != null)) {
@@ -89,7 +93,7 @@ public class ServiceUserInformation extends BaseService {
 				courses.add(co);
 			}
 		}
-		this.dbHandler.closeSession(session);
+		dbHandler.closeSession(session);
 		return new ResultListCourseObject(courses);
 	}
 

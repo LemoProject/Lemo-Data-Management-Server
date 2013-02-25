@@ -19,7 +19,9 @@ import javax.ws.rs.core.MediaType;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.EQueryType;
+import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.resulttype.CourseObject;
@@ -27,67 +29,62 @@ import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 
 /**
  * Service to get details of a course
+ * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  * @author Sebastian Schwarzrock
- *
  */
 @Path("courses")
 @Produces(MediaType.APPLICATION_JSON)
-public class ServiceCourseDetails extends BaseService {
+public class ServiceCourseDetails {
 
 	@GET
 	@Path("{cid}")
 	public CourseObject getCourseDetails(@PathParam("cid") final Long id) {
 
-		// Set up db-connection
-		final Session session = this.dbHandler.getMiningSession();
-		
-		
-		//
-		
-		
-		
-		//
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+		final Session session = dbHandler.getMiningSession();
 
 		@SuppressWarnings("unchecked")
-		final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) this.dbHandler.performQuery(session,
+		final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(session,
 				EQueryType.HQL,
 				"from CourseMining where id = " + id);
 		CourseObject co = new CourseObject();
 		if ((ci != null) && (ci.size() >= 1)) {
 			@SuppressWarnings("unchecked")
-			final ArrayList<Long> parti = (ArrayList<Long>) this.dbHandler.performQuery(session, EQueryType.HQL,
+			final ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
 					"Select count(DISTINCT user) from CourseUserMining where course=" + ci.get(0).getId());
 			final Criteria criteria = session.createCriteria(ILogMining.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", id));
-			
+
+			@SuppressWarnings("unchecked")
 			ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
 			Collections.sort(logs);
-			
+
 			Long cla = 0L;
 			Long cfin = 0L;
-			
-			if(logs.size() > 0)
+
+			if (logs.size() > 0)
 			{
-				cla = logs.get(logs.size()-1).getTimestamp();
+				cla = logs.get(logs.size() - 1).getTimestamp();
 				cfin = logs.get(0).getTimestamp();
 			}
-			
+
 			Long cpan = 0L;
 			if ((parti.size() > 0) && (parti.get(0) != null)) {
 				cpan = parti.get(0);
 			}
-			
+
 			co = new CourseObject(ci.get(0).getId(), ci.get(0).getShortname(), ci.get(0).getTitle(), cpan, cla, cfin);
 		}
-		this.dbHandler.closeSession(session);
+		dbHandler.closeSession(session);
 		return co;
 	}
 
 	@GET
 	public ResultListCourseObject getCoursesDetails(@QueryParam("course_id") final List<Long> ids) {
 
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final ArrayList<CourseObject> courses = new ArrayList<CourseObject>();
 
 		if (ids.isEmpty()) {
@@ -95,37 +92,40 @@ public class ServiceCourseDetails extends BaseService {
 		}
 
 		// Set up db-connection
-		final Session session = this.dbHandler.getMiningSession();
+		final Session session = dbHandler.getMiningSession();
 
 		Criteria criteria = session.createCriteria(CourseMining.class, "course");
 		criteria.add(Restrictions.in("course.id", ids));
-		
+
+		@SuppressWarnings("unchecked")
 		final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) criteria.list();
 
 		for (CourseMining courseMining : ci) {
 			@SuppressWarnings("unchecked")
-			final ArrayList<Long> parti = (ArrayList<Long>) this.dbHandler.performQuery(session, EQueryType.HQL,
+			final ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
 					"Select count(DISTINCT user) from CourseUserMining where course=" + courseMining.getId());
-			
+
 			criteria = session.createCriteria(ILogMining.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
-			
+
+			@SuppressWarnings("unchecked")
 			ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
 			Collections.sort(logs);
-			
+
 			Long clan = 0L;
 			Long cfin = 0L;
-			
-			if(logs.size() > 0)
+
+			if (logs.size() > 0)
 			{
-				clan = logs.get(logs.size()-1).getTimestamp();
+				clan = logs.get(logs.size() - 1).getTimestamp();
 				cfin = logs.get(0).getTimestamp();
 			}
 			Long cpan = 0L;
 			if ((parti.size() > 0) && (parti.get(0) != null)) {
 				cpan = parti.get(0);
 			}
-			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(), courseMining.getTitle(),
+			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(),
+					courseMining.getTitle(),
 					cpan,
 					clan, cfin);
 			courses.add(co);

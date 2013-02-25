@@ -26,9 +26,9 @@ import de.lemo.dms.db.miningDBclass.WikiLogMining;
 
 /**
  * Service for debugging messages
+ * 
  * @author Leonard Kappe
  * @author Sebastian Schwarzrock
- *
  */
 @Path("/debug")
 public class ServiceDebug {

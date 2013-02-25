@@ -25,11 +25,10 @@ import de.lemo.dms.processing.resulttype.ResultListStringObject;
 
 /**
  * Service to get a list of all learning objects within the specified courses that have a grade attribute
- *
  */
 @Path("ratedobjects")
 @Produces(MediaType.APPLICATION_JSON)
-public class ServiceRatedObjects extends BaseService {
+public class ServiceRatedObjects {
 
 	/**
 	 * Returns a list of all learning objects within the specified courses that have a grade attribute (assignments,
@@ -58,8 +57,8 @@ public class ServiceRatedObjects extends BaseService {
 
 			for (final ICourseRatedObjectAssociation obj : list)
 			{
-				//Simple name is not needed so far - will break App-server implementation !!!
-				//res.add(obj.getRatedObject().getClass().getSimpleName());
+				// Simple name is not needed so far - will break App-server implementation !!!
+				// res.add(obj.getRatedObject().getClass().getSimpleName());
 				res.add(obj.getRatedObject().getPrefix().toString());
 				res.add(obj.getRatedObject().getId() + "");
 				res.add(obj.getRatedObject().getTitle());

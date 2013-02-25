@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -28,7 +29,9 @@ import de.lemo.dms.processing.resulttype.ResultListLongObject;
  */
 @Path("authentification")
 @Produces(MediaType.APPLICATION_JSON)
-public class ServiceLoginAuthentification extends BaseService {
+public class ServiceLoginAuthentification {
+
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	@GET
 	public ResultListLongObject authentificateUser(@QueryParam(MetaParam.USER_NAME) String login) {

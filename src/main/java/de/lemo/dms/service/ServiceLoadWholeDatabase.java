@@ -12,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import de.lemo.dms.connectors.ConnectorManager;
@@ -23,12 +24,14 @@ import de.lemo.dms.connectors.IConnector;
  * @author Boris Wenzlaff
  */
 @Path("/loadwholedatabase")
-public class ServiceLoadWholeDatabase extends BaseService {
+public class ServiceLoadWholeDatabase {
+
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public JSONObject loadWholeDatabase(@QueryParam("connector") final Long connectorId) throws JSONException {
-		super.logger.info("call for service: loadWholeDatabase");
+		logger.info("call for service: loadWholeDatabase");
 
 		final ConnectorManager cm = ConnectorManager.getInstance();
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(connectorId);
@@ -37,7 +40,7 @@ public class ServiceLoadWholeDatabase extends BaseService {
 			rs.put("error", "invalid connector id");
 			return rs;
 		}
-		this.logger.info("Selected connector " + connector);
+		logger.info("Selected connector " + connector);
 		final boolean loaded = cm.startUpdateData(connector);
 
 		final JSONObject rs = new JSONObject();

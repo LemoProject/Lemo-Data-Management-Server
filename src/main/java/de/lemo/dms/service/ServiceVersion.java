@@ -20,7 +20,7 @@ import de.lemo.dms.core.Version;
  */
 @Produces(MediaType.APPLICATION_JSON)
 @Path("version")
-public class ServiceVersion extends BaseService {
+public class ServiceVersion {
 
 	@GET
 	@Path("dms")

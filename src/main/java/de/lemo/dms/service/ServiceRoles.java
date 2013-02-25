@@ -22,12 +22,12 @@ import de.lemo.dms.processing.resulttype.RoleObject;
 
 /**
  * Service to get the defined roles
+ * 
  * @author Sebastian Schwarzrock
- *
  */
 @Path("roles")
 @Produces(MediaType.APPLICATION_JSON)
-public class ServiceRoles extends BaseService {
+public class ServiceRoles {
 
 	@GET
 	public ResultListRoleObject getUserRoles() {
