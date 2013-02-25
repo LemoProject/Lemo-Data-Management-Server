@@ -796,7 +796,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 	}
 
@@ -938,7 +938,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 
 	}
@@ -1123,7 +1123,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 
 	}
@@ -1151,7 +1151,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + chats.size() + " ChatMining");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return chats;
 	}
@@ -1199,7 +1199,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + resources.size() + " ResourceMining.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return resources;
 	}
@@ -1239,7 +1239,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + courses.size() + " CourseMining.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return courses;
 	}
@@ -1273,7 +1273,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + users.size() + " UserMining.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return users;
 	}
@@ -1313,7 +1313,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + assignments.size() + " AssignmentMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return assignments;
 	}
@@ -1359,7 +1359,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + quizzes.size() + " QuizMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return quizzes;
 	}
@@ -1399,7 +1399,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + forums.size() + " ForumMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return forums;
 	}
@@ -1446,7 +1446,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + roles.size() + " RoleMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return roles;
 	}
@@ -1474,7 +1474,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + groups.size() + " GroupMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return groups;
 	}
@@ -1515,7 +1515,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + wikis.size() + " WikiMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return wikis;
 	}
@@ -1534,7 +1534,7 @@ public class ClixImporter {
 	 * this.logger.info("Generated " + departments.size() + " DepartmentMinings.");
 	 * }catch(Exception e)
 	 * {
-	 * e.printStackTrace();
+	 * logger.warn(e.getMessage());
 	 * }
 	 * return departments;
 	 * }
@@ -1558,7 +1558,7 @@ public class ClixImporter {
 	 * this.logger.info("Generated " + degrees.size() + " DegreeMinings.");
 	 * }catch(Exception e)
 	 * {
-	 * e.printStackTrace();
+	 * logger.warn(e.getMessage());
 	 * }
 	 * return degrees;
 	 * }
@@ -1600,7 +1600,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return questions;
 	}
@@ -1651,7 +1651,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + scorms.size() + " ScormMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return scorms;
 	}
@@ -1686,7 +1686,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + quizQuestions.size() + " QuizQuestionMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return quizQuestions;
 	}
@@ -1728,7 +1728,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + courseScorms.size() + " CourseScormMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return courseScorms;
 	}
@@ -1771,7 +1771,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return courseAssignments;
 	}
@@ -1813,7 +1813,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return courseResources;
 	}
@@ -1855,7 +1855,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return courseQuizzes;
 	}
@@ -1890,7 +1890,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + quizUsers.size() + " QuizUserMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return quizUsers;
 	}
@@ -1932,7 +1932,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + courseWikis.size() + " CourseWikiMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return courseWikis;
 	}
@@ -1952,7 +1952,7 @@ public class ClixImporter {
 	 * 
 	 * }catch(Exception e)
 	 * {
-	 * e.printStackTrace();
+	 * logger.warn(e.getMessage());
 	 * }
 	 * return degreeCourses;
 	 * }
@@ -2011,7 +2011,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return groupUsers;
 	}
@@ -2043,7 +2043,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + courseGroups.size() + " CourseGroupMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return courseGroups;
 	}
@@ -2111,7 +2111,7 @@ public class ClixImporter {
 			this.logger.info("Generated " + courseUser.size() + " CourseUserMinings.");
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 
 		return courseUser;
@@ -2155,7 +2155,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 
 		return courseForum;
@@ -2240,7 +2240,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return forumLogs;
 	}
@@ -2282,7 +2282,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return wikiLogs;
 	}
@@ -2318,7 +2318,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return courseLogs;
 	}
@@ -2359,7 +2359,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return questionLogs;
 	}
@@ -2403,7 +2403,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return quizLogs;
 	}
@@ -2464,7 +2464,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return assignmentLogs;
 	}
@@ -2522,7 +2522,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return scormLogs;
 	}
@@ -2560,7 +2560,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return resourceLogs;
 	}
@@ -2597,7 +2597,7 @@ public class ClixImporter {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return chatLogs;
 	}

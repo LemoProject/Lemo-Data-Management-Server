@@ -323,9 +323,9 @@ public class ContentGenerator {
 					final int ts = (int) (startdate + offset);
 
 					cou.setTimeCreated(ts + randy.nextInt(week));
-					if(characteristic != 1)
+					if(characteristic != 1) {
 						cou.setTimeCreated(startdate);
-
+					}
 					cou.setEnrolStart(ts + week + randy.nextInt(week));
 					cou.setEnrolEnd(cou.getEnrolStart() + (3 * week));
 					cou.setTimeModified(ts + randy.nextInt(year / 2));
@@ -385,8 +385,9 @@ public class ContentGenerator {
 						r.setDifficulty("Level " + randy.nextInt(10));
 						r.setPosition(l);
 						r.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
-						if(characteristic != 1)
+						if(characteristic != 1) {
 							r.setTimeCreated(startdate);
+						}
 						r.setTimeModified(r.getTimeCreated() + randy.nextInt(year / 2));
 						r.setTitle("Resource " + i + "." + j + "." + k + "." + l);
 						r.setPlatform(platform.getId());
@@ -434,8 +435,9 @@ public class ContentGenerator {
 						final WikiMining w = new WikiMining();
 						w.setId(Long.valueOf(platform.getPrefix() + "" + (wikiList.size() + 1)));
 						w.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
-						if(characteristic != 1)
+						if(characteristic != 1) {
 							w.setTimeCreated(startdate);
+						}
 						w.setTimeModified(w.getTimeCreated() + randy.nextInt(year / 2));
 						w.setTitle("Wiki " + i + "." + j + "." + k + "." + l);
 						w.setSummary("This is wiki " + i + "." + j + "." + k + "." + l + "'s summary.");
@@ -457,8 +459,9 @@ public class ContentGenerator {
 						final AssignmentMining a = new AssignmentMining();
 						a.setId(Long.valueOf(platform.getPrefix() + "" + (assignmentList.size() + 1)));
 						a.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
-						if(characteristic != 1)
+						if(characteristic != 1) {
 							a.setTimeCreated(startdate);
+						}
 						a.setTimeModified(a.getTimeCreated() + randy.nextInt(year / 2));
 						a.setTitle("Assignment " + i + "." + j + "." + k + "." + l);
 						a.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
@@ -482,8 +485,9 @@ public class ContentGenerator {
 						final ForumMining f = new ForumMining();
 						f.setId(Long.valueOf(platform.getPrefix() + "" + (forumList.size() + 1)));
 						f.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
-						if(characteristic != 1)
+						if(characteristic != 1) {
 							f.setTimeCreated(startdate);
+						}
 						f.setTimeModified(f.getTimeCreated() + randy.nextInt(year / 2));
 						f.setTitle("Forum " + i + "." + j + "." + k + "." + l);
 						f.setSummary("Forum " + i + "." + j + "." + k + "." + l + "'s summary...");
@@ -529,8 +533,9 @@ public class ContentGenerator {
 							final QuestionMining que = new QuestionMining();
 							que.setId(Long.valueOf(platform.getPrefix() + "" + (questionList.size() + 1)));
 							que.setTimeCreated(q.getTimeCreated() + randy.nextInt(week));
-							if(characteristic != 1)
+							if(characteristic != 1) {
 								que.setTimeCreated(startdate);
+							}
 							que.setTimeModified(que.getTimeCreated() + randy.nextInt(year / 2));
 
 							que.setTitle("Question " + i + "." + j + "." + k + "." + l + "." + m);
@@ -590,8 +595,9 @@ public class ContentGenerator {
 						sco.setId(Long.valueOf(platform.getPrefix() + "" + (scormList.size() + 1)));
 						sco.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
 						sco.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
-						if(characteristic != 1)
+						if(characteristic != 1) {
 							sco.setTimeCreated(startdate);
+						}
 						sco.setTimeModified(sco.getTimeCreated() + randy.nextInt(year / 2));
 						sco.setTimeOpen(sco.getTimeCreated() + randy.nextInt(month));
 						sco.setTimeClose(sco.getTimeOpen() + (2 * week));
