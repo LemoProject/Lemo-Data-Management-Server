@@ -631,7 +631,6 @@ public class ContentGenerator {
 						if(characteristic == 1 )
 						{
 							final ResourceLogMining rLog = new ResourceLogMining();
-							// rLog.setId(resourceLogList.size() + 1);
 							rLog.setCourse(cou);
 							rLog.setResource(resourceList.get((resourceList.size() - 1) - randy.nextInt(MAGIC_TEN)));
 							rLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
@@ -657,7 +656,6 @@ public class ContentGenerator {
 							for(int x = 0 ; x < log + 1 % (year / MAGIC_EIGHT); x++)
 							{
 								final ResourceLogMining rLog1 = new ResourceLogMining();
-								// rLog.setId(resourceLogList.size() + 1);
 								rLog1.setCourse(cou);
 								rLog1.setResource(resourceList.get((resourceList.size() - 1) - randy.nextInt(MAGIC_TEN)));
 								rLog1.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
@@ -678,7 +676,6 @@ public class ContentGenerator {
 						{
 							
 							final AssignmentLogMining aLog = new AssignmentLogMining();
-							// aLog.setId(assignmentLogList.size());
 							aLog.setCourse(cou);
 							aLog.setAssignment(assignmentList.get((assignmentList.size() - 1) - randy.nextInt(2)));
 							aLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
@@ -711,7 +708,6 @@ public class ContentGenerator {
 							for(int x = 0 ; x < log + 1 % (year / MAGIC_EIGHT); x++)
 							{
 								final AssignmentLogMining aLog = new AssignmentLogMining();
-								// aLog.setId(assignmentLogList.size());
 								aLog.setCourse(cou);
 								aLog.setAssignment(assignmentList.get((assignmentList.size() - 1) - randy.nextInt(2)));
 								aLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
