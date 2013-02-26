@@ -6,7 +6,6 @@
 
 package de.lemo.dms.connectors.moodle_2_3;
 
-// import miningDBclass.Config_mining;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -364,7 +363,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 		// accessing DB by creating a session and a transaction using HibernateUtil
 		final Session session = HibernateUtil.getSessionFactory(dbConf).openSession();
 		// Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19",
-		// "datamining", "LabDat1#").openSession();
 		session.clear();
 		final Transaction tx = session.beginTransaction();
 
@@ -1819,7 +1817,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			final ResourceMining insert = new ResourceMining();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			// insert.setType(loadedItem.getType());
 			insert.setTitle(loadedItem.getName());
 			insert.setPlatform(this.connector.getPlatformId());
 
