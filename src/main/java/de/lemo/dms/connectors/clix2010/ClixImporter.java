@@ -129,7 +129,6 @@ public class ClixImporter {
 	private List<ExerciseGroup> exerciseGroup;
 	// List, holding the entries of the E_COMPONENT table of the source database
 	/** The e component. */
-	// private List<EComponent> eComponent;
 	/** The e component. */
 	private Map<Long, EComponent> eComponentMap;
 	// List, holding the entries of the E_COMPONENTTYPE table of the source database
@@ -261,8 +260,6 @@ public class ClixImporter {
 	/** The course_scorm_mining. */
 	private Map<Long, CourseScormMining> courseScormMining;
 	// Map, holding the CourseUserMining objects, found in the current data extraction process
-	// private Map<Long, CourseUserMining> course_user_mining;
-	// Map, holding the CourseForumMining objects, found in the current data extraction process
 	/** The course_forum_mining. */
 	private Map<Long, CourseForumMining> courseForumMining;
 	// Map, holding the CourseGroupMining objects, found in the current data extraction process
@@ -458,14 +455,7 @@ public class ClixImporter {
 				this.chatMining = this.generateChatMining();
 				updates.add(this.chatMining.values());
 
-				// generateLevelMining();
-				// updates.add(level_mining.values());
-
 				this.logger.info("\nAssociationObjects: \n");
-
-				// updates.add(level_association_mining.values());
-
-				// updates.add(level_course_mining.values());
 
 				this.courseUserMining = this.generateCourseUserMining();
 				updates.add(this.courseUserMining.values());
@@ -479,12 +469,6 @@ public class ClixImporter {
 				//
 				this.courseAssignmentMining = this.generateCourseAssignmentMining();
 				updates.add(this.courseAssignmentMining.values());
-
-				// level_association_mining = generateLevelAssociationMining();
-				// updates.add(level_association_mining.values());
-
-				// level_course_mining = generateLevelCourseMining();
-				// updates.add(level_course_mining.values());
 
 				this.courseScormMining = this.generateCourseScormMining();
 				updates.add(this.courseScormMining.values());
@@ -564,7 +548,6 @@ public class ClixImporter {
 		this.biTrackContentImpressions.clear();
 		this.chatProtocol.clear();
 		this.exerciseGroup.clear();
-		// eComponent.clear();
 		this.eComponentMap.clear();
 		this.eComponentType.clear();
 		this.eComposing.clear();
@@ -931,9 +914,6 @@ public class ClixImporter {
 			final Query wE = session.createQuery("from WikiEntry x order by x.id asc");
 			this.wikiEntry = wE.list();
 			this.logger.info("WikiEntry tables: " + this.wikiEntry.size());
-
-			// writeToFile();
-			// loadFromFile();
 
 		} catch (final Exception e)
 		{
@@ -1524,20 +1504,6 @@ public class ClixImporter {
 	 * 
 	 * @return HashMap with DepartmentMining-objects
 	 */
-	/*
-	 * private Map<Long, DepartmentMining> generateDepartmentMining()
-	 * {
-	 * HashMap<Long, DepartmentMining> departments = new HashMap<Long, DepartmentMining>();
-	 * try{
-	 * 
-	 * this.logger.info("Generated " + departments.size() + " DepartmentMinings.");
-	 * }catch(Exception e)
-	 * {
-	 * logger.warn(e.getMessage());
-	 * }
-	 * return departments;
-	 * }
-	 */
 
 	/**
 	 * Generates DegreeMining-objects from the given data
@@ -1545,18 +1511,6 @@ public class ClixImporter {
 	 * @return HashMap with DegreeMining-objects
 	 */
 	/*
-	 * <<<<<<< HEAD
-	 * public HashMap<Long, DegreeMining> generateDegreeMining()
-	 * =======
-	 * private Map<Long, DegreeMining> generateDegreeMining()
-	 * >>>>>>> refs/remotes/origin/feature_currentWorkBranch1210_sebs
-	 * {
-	 * HashMap<Long, DegreeMining> degrees = new HashMap<Long, DegreeMining>();
-	 * try{
-	 * 
-	 * this.logger.info("Generated " + degrees.size() + " DegreeMinings.");
-	 * }catch(Exception e)
-	 * {
 	 * logger.warn(e.getMessage());
 	 * }
 	 * return degrees;
@@ -2222,15 +2176,6 @@ public class ClixImporter {
 					item.setCourse(ecMap.get(loadedItem.getForum()).getComposing(), this.courseMining,
 							this.oldCourseMining);
 				}
-
-				/*
-				 * if(item.getCourse() != null)
-				 * {
-				 * CourseForumMining cfm = new CourseForumMining();
-				 * cfm.setForum(item.getForum().getId(), this.forumMining, this.oldForumMining);
-				 * cfm.setCourse(item.getCourse().getId(), this.courseMining, this.oldCourseMining);
-				 * }
-				 */
 				if ((item.getUser() != null) && (item.getForum() != null)) {
 					forumLogs.put(item.getId(), item);
 				}
@@ -2586,7 +2531,6 @@ public class ClixImporter {
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);
-				// item.setCourse(item.getChat().getCourse());
 
 				if ((item.getChat() != null) && (item.getUser() != null)) {
 					chatLogs.put(item.getId(), item);
