@@ -396,14 +396,12 @@ public class XMLPackageParser {
 							for (int j = 0; j < t.getLength(); j++)
 							{
 								final Node node = t.item(j);
-								// int len = t.getLength();
 
 								if (node.getTextContent() != null)
 								{
 
 									if (node.getNodeName().equals("xlink:href"))
 									{
-										// ResourceMining r1 = new ResourceMining();
 
 										r1.setDifficulty(resource.getDifficulty());
 
@@ -440,7 +438,6 @@ public class XMLPackageParser {
 							r1.setPlatform(this.connector.getPlatformId());
 							tempRes.add(r1);
 							this.resourceObj.put(r1.getUrl(), r1);
-							// this.resourceObj.add(r1);
 							this.fileNames.add(filename + "*");
 							if (this.courseResources.get(r1.getId()) == null)
 							{
@@ -452,7 +449,7 @@ public class XMLPackageParser {
 								crm.setPlatform(this.connector.getPlatformId());
 								this.courseResources.put(r1.getId(), crm);
 							}
-							pos++;// /////////
+							pos++;
 
 						}
 					}
