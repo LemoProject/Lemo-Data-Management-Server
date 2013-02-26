@@ -48,13 +48,14 @@ public class ServiceTeacherCourses {
 		if (results != null && results.size() > 0)
 		{
 			ArrayList<Long> l = new ArrayList<Long>();
-			for (CourseUserMining cu : results)
+			for (CourseUserMining cu : results) {
 				l.add(cu.getCourse().getId());
+			}
 			result = new ResultListLongObject(l);
 		}
-		else
+		else {
 			result = new ResultListLongObject();
-
+		}
 		return result;
 	}
 

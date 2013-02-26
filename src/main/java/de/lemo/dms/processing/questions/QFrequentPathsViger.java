@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -50,6 +51,7 @@ public class QFrequentPathsViger extends Question {
 	private static Map<String, List<Long>> requests = new HashMap<String, List<Long>>();
 	private static Map<String, Integer> idToInternalId = new HashMap<String, Integer>();
 	private static Map<Integer, String> internalIdToId = new HashMap<Integer, String>();
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	@POST
 	public ResultListUserPathGraph compute(
@@ -113,7 +115,6 @@ public class QFrequentPathsViger extends Question {
 
 			sequenceDatabase.loadLinkedList(QFrequentPathsViger.generateLinkedList(courses, users, types, minLength,
 					maxLength, startTime, endTime));
-			// sequenceDatabase.loadFile(generateInputFile(courseIds, userIds, startTime, endTime));
 
 			final AlgoFournierViger08 algo = new AlgoFournierViger08(minSup, 0L, 1L, 0L, 1000L, null, true, false);
 
@@ -195,7 +196,8 @@ public class QFrequentPathsViger extends Question {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
+			
 		} finally
 		{
 			QFrequentPathsViger.requests.clear();
@@ -249,8 +251,6 @@ public class QFrequentPathsViger extends Question {
 
 		final HashMap<Long, ArrayList<ILogMining>> logMap = new HashMap<Long, ArrayList<ILogMining>>();
 
-		// int pre = 1000;
-
 		for (int i = 0; i < list.size(); i++)
 		{
 			if ((list.get(i).getUser() != null) && (list.get(i).getLearnObjId() != null)) {
@@ -275,7 +275,7 @@ public class QFrequentPathsViger extends Question {
 		}
 
 		// Just changing the container for the user histories
-		final ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>();// (logMap.values());
+		final ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>();
 		int id = 1;
 		for (final ArrayList<ILogMining> uLog : logMap.values())
 		{

@@ -995,9 +995,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 
 			final QuestionLogMining insert = new QuestionLogMining();
 
-			insert.setId(questionLogMiningtmp.size() + 1 + this.questionLogMax); // ID
+			// ID
+			insert.setId(questionLogMiningtmp.size() + 1 + this.questionLogMax);
+			// Question
 			insert.setQuestion(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getQuestion()),
-					this.questionMining, this.oldQuestionMining); // Question
+					this.questionMining, this.oldQuestionMining);
 			insert.setPenalty(loadedItem.getPenalty());
 			insert.setAnswers(loadedItem.getAnswer());
 			insert.setTimestamp(loadedItem.getTimestamp());
@@ -1294,7 +1296,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1318,18 +1320,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
 						this.assignmentMining, this.oldAssignmentMining);
 
-				if ((insert.getAssignment() != null) && (insert.getUser() != null) && (insert.getCourse() != null))// &&
-																													// insert.getAction().equals("upload"))
+				if ((insert.getAssignment() != null) && (insert.getUser() != null) && (insert.getCourse() != null))
 				{
 					if (asSub.get(Long.valueOf(loadedItem.getInfo())) != null) {
 						for (final AssignmentSubmissionsLMS loadedItem2 : asSub
 								.get(Long.valueOf(loadedItem.getInfo())))
 						{
 							if ((loadedItem2.getAssignment() == Long.valueOf(loadedItem.getInfo()))
-									&& loadedItem2.getUserid().equals(loadedItem.getUserid()))// &&
-																								// loadedItem2.getTimemodified()
-																								// ==
-																								// loadedItem.getTime())
+									&& loadedItem2.getUserid().equals(loadedItem.getUserid()))
 							{
 
 								insert.setGrade(Double.valueOf(loadedItem2.getGrade()));
@@ -1403,7 +1401,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1721,7 +1719,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1831,7 +1829,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {

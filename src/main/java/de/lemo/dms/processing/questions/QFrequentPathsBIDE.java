@@ -66,9 +66,9 @@ public class QFrequentPathsBIDE extends Question {
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
 		validateTimestamps(startTime, endTime);
-
-		final ArrayList<UserPathNode> nodes = Lists.newArrayList();
-		final ArrayList<UserPathLink> links = Lists.newArrayList();
+		
+		final List<UserPathNode> nodes = Lists.newArrayList();
+		final List<UserPathLink> links = Lists.newArrayList();
 
 		if (logger.isDebugEnabled()) {
 			StringBuffer buffer = new StringBuffer();

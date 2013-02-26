@@ -7,6 +7,7 @@
 package de.lemo.dms.processing.resulttype;
 
 import java.util.HashMap;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -22,7 +23,7 @@ public class UserPathObject {
 	private String id;
 	private String title;
 	private Long weight;
-	private HashMap<String, Integer> edges;
+	private Map<String, Integer> edges;
 	private Double duration;
 	private Long group;
 	private String type;
@@ -92,11 +93,11 @@ public class UserPathObject {
 	}
 
 	@XmlElement
-	public HashMap<String, Integer> getEdges() {
+	public Map<String, Integer> getEdges() {
 		return this.edges;
 	}
 
-	public void setEdges(final HashMap<String, Integer> edges) {
+	public void setEdges(final Map<String, Integer> edges) {
 		this.edges = edges;
 	}
 

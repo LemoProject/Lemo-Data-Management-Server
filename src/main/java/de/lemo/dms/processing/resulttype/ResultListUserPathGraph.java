@@ -6,7 +6,7 @@
 
 package de.lemo.dms.processing.resulttype;
 
-import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -19,8 +19,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ResultListUserPathGraph {
 
-	private ArrayList<UserPathLink> links;
-	private ArrayList<UserPathNode> nodes;
+	private List<UserPathLink> links;
+	private List<UserPathNode> nodes;
 
 	@XmlElement
 	public final String type = this.getClass().getSimpleName();
@@ -28,29 +28,29 @@ public class ResultListUserPathGraph {
 	public ResultListUserPathGraph() {
 	}
 
-	public ResultListUserPathGraph(final ArrayList<UserPathNode> nodes, final ArrayList<UserPathLink> links)
+	public ResultListUserPathGraph(final List<UserPathNode> nodes, final List<UserPathLink> links)
 	{
 		this.nodes = nodes;
 		this.links = links;
 	}
 
 	@XmlElement
-	public ArrayList<UserPathLink> getLinks()
+	public List<UserPathLink> getLinks()
 	{
 		return this.links;
 	}
 
-	public void setLinks(final ArrayList<UserPathLink> links)
+	public void setLinks(final List<UserPathLink> links)
 	{
 		this.links = links;
 	}
 
 	@XmlElement
-	public ArrayList<UserPathNode> getNodes() {
+	public List<UserPathNode> getNodes() {
 		return this.nodes;
 	}
 
-	public void setNodes(final ArrayList<UserPathNode> nodes) {
+	public void setNodes(final List<UserPathNode> nodes) {
 		this.nodes = nodes;
 	}
 }
