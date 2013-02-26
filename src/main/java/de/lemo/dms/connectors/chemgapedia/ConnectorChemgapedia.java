@@ -37,6 +37,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 	private final String logPath;
 	private final String vscPath;
 	private final Logger logger = Logger.getLogger(this.getClass());
+	private static final int THOU = 1000;
 
 	public ConnectorChemgapedia(final DBConfigObject config) {
 		final Map<String, String> props = config.getProperties();
@@ -88,7 +89,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 
 	@Override
 	public void getData() {
-		final Long starttime = System.currentTimeMillis() / 1000;
+		final Long starttime = System.currentTimeMillis() / THOU;
 
 		if (this.processVSC || this.processLog)
 		{
@@ -110,7 +111,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 				logR.clearMaps();
 			}
 
-			final Long endtime = System.currentTimeMillis() / 1000;
+			final Long endtime = System.currentTimeMillis() / THOU;
 			final ConfigMining config = new ConfigMining();
 			config.setLastModifiedLong(System.currentTimeMillis());
 			config.setElapsedTime((endtime) - (starttime));
@@ -125,7 +126,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 
 	@Override
 	public void updateData(final long fromTimestamp) {
-		final Long starttime = System.currentTimeMillis() / 1000;
+		final Long starttime = System.currentTimeMillis() / THOU;
 
 		if (this.processVSC || this.processLog)
 		{
@@ -147,7 +148,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 				logR.clearMaps();
 			}
 
-			final Long endtime = System.currentTimeMillis() / 1000;
+			final Long endtime = System.currentTimeMillis() / THOU;
 			final ConfigMining config = new ConfigMining();
 			config.setLastModifiedLong(System.currentTimeMillis());
 			config.setElapsedTime((endtime) - (starttime));

@@ -24,7 +24,7 @@ public class BiTrackContentImpressions implements IClixMappingClass {
 	private Long user;
 	private Long totalImpressions;
 	private Long characteristic;
-	private final static String DOLLAR = "$$$";
+	private static final String DOLLAR = "$$$";
 
 	public BiTrackContentImpressionsPK getId() {
 		return this.id;
