@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -29,6 +30,7 @@ import de.lemo.dms.processing.resulttype.ResultListStringObject;
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceRatedObjects {
 
+	private Logger logger = Logger.getLogger(this.getClass());
 	/**
 	 * Returns a list of all learning objects within the specified courses that have a grade attribute (assignments,
 	 * quizzes, scorms)
@@ -57,7 +59,6 @@ public class ServiceRatedObjects {
 			for (final ICourseRatedObjectAssociation obj : list)
 			{
 				// Simple name is not needed so far - will break App-server implementation !!!
-				// res.add(obj.getRatedObject().getClass().getSimpleName());
 				res.add(obj.getRatedObject().getPrefix().toString());
 				res.add(obj.getRatedObject().getId() + "");
 				res.add(obj.getRatedObject().getTitle());
@@ -65,7 +66,7 @@ public class ServiceRatedObjects {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 		return new ResultListStringObject(res);

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import de.lemo.dms.core.config.ServerConfiguration;
@@ -42,6 +43,8 @@ public class TestDataCreatorChemgapedia {
 	private final Map<Long, CourseMining> couResMap = new HashMap<Long, CourseMining>();
 	private final Map<Long, LevelMining> degCouMap = new HashMap<Long, LevelMining>();
 	private final Map<Long, LevelMining> depDegMap = new HashMap<Long, LevelMining>();
+	
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	/**
 	 * Extracts Mining-data from the Mining-database
@@ -83,7 +86,7 @@ public class TestDataCreatorChemgapedia {
 
 	private void createFile(final String path, final String url, final String title, final String specialism,
 			final String name, final String area, final String audienceLevel, final String timeValue,
-			final ArrayList<String> subResourceTitles, final ArrayList<String> subResourceUrls)
+			final List<String> subResourceTitles, final List<String> subResourceUrls)
 	{
 		try {
 			final FileWriter out = new FileWriter(path);
@@ -110,7 +113,7 @@ public class TestDataCreatorChemgapedia {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
