@@ -66,7 +66,7 @@ public abstract class AbstractConnector implements IConnector {
 	/**
 	 * @return true if connectors should only load specific courses
 	 */
-	public boolean filterCourseIds() {
+	public boolean isFilterEnabled() {
 		return !courseIdFilter.isEmpty();
 	}
 

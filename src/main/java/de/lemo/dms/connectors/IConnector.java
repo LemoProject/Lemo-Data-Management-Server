@@ -6,9 +6,10 @@
 
 package de.lemo.dms.connectors;
 
+import java.util.List;
+
 /**
  * Interface for the connector classes
- *
  */
 public interface IConnector {
 
@@ -43,5 +44,9 @@ public interface IConnector {
 	String getName();
 
 	ESourcePlatform getPlattformType();
+
+	boolean isFilterEnabled();
+
+	List<Long> getCourseIdFilter();
 
 }
