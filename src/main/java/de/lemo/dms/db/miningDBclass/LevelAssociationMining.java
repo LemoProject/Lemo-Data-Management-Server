@@ -9,6 +9,11 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.Map;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
+/**
+ * Represanting the link between hierarchy objects
+ * @author Sebastian Schwarzrock
+ *
+ */
 public class LevelAssociationMining implements IMappingClass {
 
 	private long id;
