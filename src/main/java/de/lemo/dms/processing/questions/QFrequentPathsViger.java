@@ -195,7 +195,8 @@ public class QFrequentPathsViger extends Question {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
+			
 		} finally
 		{
 			QFrequentPathsViger.requests.clear();

@@ -9,6 +9,7 @@ package de.lemo.dms.processing.resulttype;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -25,7 +26,8 @@ public class ResultListLog {
 
 	@XmlElement
 	private final JSONArray logs = new JSONArray();
-
+	private Logger logger = Logger.getLogger(this.getClass());
+	
 	public ResultListLog() {
 		/* JAXB no-arg default constructor */
 	}
@@ -43,7 +45,7 @@ public class ResultListLog {
 				this.logs.put(logJSON);
 			}
 		} catch (final JSONException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 }
