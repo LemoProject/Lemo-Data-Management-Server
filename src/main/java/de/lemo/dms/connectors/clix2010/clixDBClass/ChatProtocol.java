@@ -21,13 +21,14 @@ public class ChatProtocol implements IClixMappingClass {
 	private Long person;
 	private String chatSource;
 	private String lastUpdated;
+	private final static String DOLLAR = "$$$"; 
 
 	public String getString()
 	{
-		return "ChatProtocol$$$" + this.id + "$$$"
-				+ this.getChatSource() + "$$$"
-				+ this.getLastUpdated() + "$$$"
-				+ this.getChatroom() + "$$$"
+		return "ChatProtocol" + DOLLAR + this.id + DOLLAR
+				+ this.getChatSource() + DOLLAR
+				+ this.getLastUpdated() + DOLLAR
+				+ this.getChatroom() + DOLLAR
 				+ this.getPerson();
 	}
 
