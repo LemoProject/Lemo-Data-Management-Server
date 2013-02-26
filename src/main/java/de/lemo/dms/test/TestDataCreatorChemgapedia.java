@@ -238,7 +238,7 @@ public class TestDataCreatorChemgapedia {
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 

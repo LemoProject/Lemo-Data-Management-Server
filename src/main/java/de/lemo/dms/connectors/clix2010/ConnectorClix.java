@@ -6,6 +6,7 @@
 
 package de.lemo.dms.connectors.clix2010;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import de.lemo.dms.connectors.AbstractConnector;
 import de.lemo.dms.db.DBConfigObject;
@@ -18,6 +19,7 @@ import de.lemo.dms.db.DBConfigObject;
 public class ConnectorClix extends AbstractConnector {
 
 	private final DBConfigObject config;
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	public ConnectorClix(final DBConfigObject config) {
 		this.config = config;
@@ -26,11 +28,10 @@ public class ConnectorClix extends AbstractConnector {
 	@Override
 	public boolean testConnections() {
 		try {
-
-			// ToDo - TestImpl
+			//TODO - TestImpl
 		} catch (final HibernateException he)
 		{
-			he.printStackTrace();
+			logger.error(he.getMessage());
 			return false;
 		}
 		return true;

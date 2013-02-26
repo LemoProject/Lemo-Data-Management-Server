@@ -1181,13 +1181,6 @@ public abstract class ExtractAndMap {
 	abstract Map<Long, LevelAssociationMining> generateLevelAssociationMining();
 
 	/**
-	 * Generate degree course mining.
-	 * 
-	 * @return the list
-	 */
-	// abstract Map<Long, DegreeCourseMining> generateDegreeCourseMining();
-
-	/**
 	 * Generate level course mining.
 	 * 
 	 * @return the list

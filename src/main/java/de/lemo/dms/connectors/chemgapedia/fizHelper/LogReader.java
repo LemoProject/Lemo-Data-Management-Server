@@ -375,21 +375,6 @@ public class LogReader {
 							final CourseResourceMining c = this.courseResources.get(lo.getUrl());
 							if (this.courseResources.get(lo.getUrl()) != null) {
 								lo.setCourse(c.getCourse());
-								/*
-								 * try{
-								 * HibernateProxy prox = (HibernateProxy)c.getCourse();
-								 * co = (CourseMining)prox.getHibernateLazyInitializer().getImplementation();
-								 * }catch(ClassCastException e)
-								 * {
-								 * co = c.getCourse();
-								 * }
-								 * catch(NullPointerException e)
-								 * {
-								 * co = null;
-								 * }
-								 * if(c != null)
-								 * lo.setCourse(co);
-								 */
 							}
 						}
 
@@ -492,7 +477,7 @@ public class LogReader {
 									final int inPos = lo.getUrl().substring(0, lo.getUrl().lastIndexOf("/") - 1)
 											.lastIndexOf("/");
 									String urlCut = lo.getUrl().substring(0, inPos);
-									urlCut = urlCut.substring(urlCut.lastIndexOf("/") + 1, urlCut.length());
+									urlCut = urlCut.substring(urlCut.lastIndexOf('/') + 1, urlCut.length());
 									r.setType("Index");
 								} else {
 									r.setType("Unknown");
@@ -507,7 +492,7 @@ public class LogReader {
 
 							// Construct resource title from URL
 							String h = lo.getUrl().substring(lo.getUrl().lastIndexOf("/") + 1, lo.getUrl().length());
-							h = h.substring(0, h.indexOf("."));
+							h = h.substring(0, h.indexOf('.'));
 							String f = "";
 							if (h.length() > 0) {
 								f = Character.toUpperCase(h.charAt(0)) + "";
@@ -562,7 +547,7 @@ public class LogReader {
 			}
 		} catch (final Exception ex)
 		{
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}
 
 	}
