@@ -87,7 +87,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
  */
 public class TestDataCreatorMoodle {
 
-	private ArrayList<AssignmentMining> assignmentList;
+	private List<AssignmentMining> assignmentList;
 	private List<AssignmentLogMining> assignmentLogList;
 	private List<ChatMining> chatList;
 	private List<ChatLogMining> chatLogList;
