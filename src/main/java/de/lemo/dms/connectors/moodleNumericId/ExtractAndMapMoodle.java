@@ -6,8 +6,6 @@
 
 package de.lemo.dms.connectors.moodleNumericId;
 
-// import miningDBclass.Config_mining;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,8 +84,8 @@ import de.lemo.dms.db.miningDBclass.WikiMining;
  * The main class of the extraction process.
  * Implementation of the abstract extract class for the LMS Moodle.
  */
-public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Namen einf�gen
-
+public class ExtractAndMapMoodle extends ExtractAndMap {
+	// Versionsnummer in Namen einfügen
 	// LMS tables instances lists
 
 	private List<LogLMS> logLms;
@@ -1069,7 +1067,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			for (final QuestionLMS loadedItem2 : this.questionLms)
 			{
 				if (loadedItem2.getId() == (loadedItem.getQuestion())) {
-					insert.setType(loadedItem2.getQtype());// Type
+					insert.setType(loadedItem2.getQtype());
 					break;
 				}
 			}

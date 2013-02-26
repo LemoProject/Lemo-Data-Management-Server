@@ -902,7 +902,6 @@ public class ContentGenerator {
 								wLog.setCourse(cou);
 								wLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 								wLog.setWiki(wikiList.get((wikiList.size() - 1) - randy.nextInt(2)));
-								final WikiMining wiki = wLog.getWiki();
 								wLog.setTimestamp(time);
 								wLog.setAction("view");
 								wLog.setPlatform(platform.getId());

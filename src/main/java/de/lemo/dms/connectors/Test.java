@@ -96,29 +96,8 @@ public class Test {
 	public void runChemConn()
 	{
 
-		// ServerConfiguration.getInstance().loadConfig("/lemo");
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_CHEM);
 		connector.getData();
-		/*
-		 * String logs = "C:\\Users\\s.schwarzrock\\Desktop\\120614\\130104_lemojoin_10K_1.log";
-		 * //int i = 0;
-		 * //for(int i = 1 ; i < 6; i++)
-		 * //{
-		 * DBConfigObject sourceConf = new DBConfigObject();
-		 * sourceConf.setProperty("lemo.log_file_path", logs);
-		 * sourceConf.setProperty("lemo.resource_metadata_path", "C:\\Users\\s.schwarzrock\\Desktop\\vsc");
-		 * sourceConf.setProperty("lemo.filter_log_file", "true");
-		 * sourceConf.setProperty("lemo.process_metadata", "true");
-		 * sourceConf.setProperty("lemo.process_log_file", "true");
-		 * 
-		 * // IConnector connector = ConnectorManager.getInstance().getConnectorById(ID_CHEM);
-		 * ConnectorChemgapedia cm = new ConnectorChemgapedia(sourceConf);
-		 * cm.setPlatformId(100L);
-		 * cm.setName("chem-test");
-		 * cm.setPrefix(101L);
-		 * 
-		 * cm.updateData(0L);
-		 */
 	}
 
 	/**
@@ -126,7 +105,6 @@ public class Test {
 	 */
 	public void runMoodleConn()
 	{
-		// ServerConfiguration.getInstance().loadConfig("/lemo");
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE19);
 		connector.updateData(1338000000L);
 	}
@@ -138,7 +116,6 @@ public class Test {
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE_NUMERIC);
 		connector.getData();
-		// connector.updateData(1338000000);
 	}
 
 	/**
@@ -148,7 +125,6 @@ public class Test {
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE23);
 		connector.getData();
-		// connector.updateData(1338000000);
 	}
 
 	/**
@@ -158,20 +134,11 @@ public class Test {
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_CLIX);
 		connector.getData();
-		// connector.updateData(1338000000);
 	}
 
 	public void test()
 	{
-		// Session session =
-		// HibernateUtil.getDynamicSourceDBFactoryClix(ServerConfigurationHardCoded.getInstance().getSourceDBConfig()).openSession();
-		// //Session session = HibernateUtil.getDynamicSourceDBFactoryMoodle("jdbc:mysql://localhost/moodle19",
-		// "datamining", "LabDat1#").openSession();
-		// session.clear();
-		//
-		// Query pers = session.createQuery("from Person x order by x.id asc");
-		// List<?> person = pers.list();
-		// logger.info("Person tables: " + person.size());
+		
 	}
 
 	public void calculateMeichsner()
@@ -210,20 +177,6 @@ public class Test {
 		}
 
 	}
-
-	// public static void test2()
-	// {
-	// QCourseActivity qca = new QCourseActivity();
-	// List<Long> courses = new ArrayList<Long>();
-	// courses.add(112200L);
-	// courses.add(11476L);
-	// List<Long> roles = new ArrayList<Long>();
-	// Long startTime = 0L;
-	// Long endTime = 1500000000L;
-	// int resolution = 100;
-	// List<String> resourceTypes = new ArrayList<String>();
-	// qca.compute(courses, roles, startTime, endTime, resolution, resourceTypes);
-	// }
 
 	public void testViger()
 	{

@@ -504,9 +504,6 @@ public abstract class ExtractAndMap {
 		logger.info("Loaded " + this.oldChatMining.size() + " ChatMining objects from the mining database.");
 
 		this.dbHandler.closeSession(session);
-
-		// mining_session.clear();
-
 		return readingtimestamp;
 	}
 
@@ -526,7 +523,7 @@ public abstract class ExtractAndMap {
 	 *            *
 	 * @return the lM stables
 	 */
-	abstract public void getLMStables(DBConfigObject dbConf, long readingfromtimestamp);
+	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp);
 
 	/**
 	 * Has to read the LMS Database.
@@ -546,12 +543,12 @@ public abstract class ExtractAndMap {
 	 *            *
 	 * @return the lM stables
 	 */
-	abstract public void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, long readingtotimestamp);
+	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, long readingtotimestamp);
 
 	/**
 	 * Has to clear the lists of LMS tables*.
 	 */
-	abstract public void clearLMStables();
+	public abstract void clearLMStables();
 
 	/**
 	 * Clears the lists of mining tables.
