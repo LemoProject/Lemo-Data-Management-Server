@@ -401,7 +401,7 @@ public abstract class ExtractAndMap {
 		// load objects which are already in Mining DB for associations
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from CourseMining x where x.platform="
-				+ this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from CourseMining x order by x.id asc").list();
+				+ this.connector.getPlatformId() + " order by x.id asc");
 		this.oldCourseMining = new HashMap<Long, CourseMining>();
 		for (int i = 0; i < t.size(); i++) {
 			this.oldCourseMining.put(((CourseMining) (t.get(i))).getId(), (CourseMining) t.get(i));
@@ -409,7 +409,7 @@ public abstract class ExtractAndMap {
 		this.logger.info("Loaded " + this.oldCourseMining.size() + " CourseMining objects from the mining database.");
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL,
-				"from QuizMining x where x.platform=" + this.connector.getPlatformId() + " order by x.id asc");// mining_session.createQuery("from QuizMining x order by x.id asc").list();
+				"from QuizMining x where x.platform=" + this.connector.getPlatformId() + " order by x.id asc");
 		this.oldQuizMining = new HashMap<Long, QuizMining>();
 		for (int i = 0; i < t.size(); i++) {
 			this.oldQuizMining.put(((QuizMining) (t.get(i))).getId(), (QuizMining) t.get(i));
@@ -554,7 +554,7 @@ public abstract class ExtractAndMap {
 	 *            *
 	 * @return the lM stables
 	 */
-	abstract public void getLMStables(DBConfigObject dbConf, long readingfromtimestamp);
+	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp);
 
 	/**
 	 * Has to read the LMS Database.
@@ -574,12 +574,12 @@ public abstract class ExtractAndMap {
 	 *            *
 	 * @return the lM stables
 	 */
-	abstract public void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, long readingtotimestamp);
+	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, long readingtotimestamp);
 
 	/**
 	 * Has to clear the lists of LMS tables*.
 	 */
-	abstract public void clearLMStables();
+	public abstract void clearLMStables();
 
 	/**
 	 * Clears the lists of mining tables.

@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.AssignmentLMS;
@@ -86,42 +87,42 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
  */
 public class TestDataCreatorMoodle {
 
-	private ArrayList<AssignmentMining> assignmentList;
-	private ArrayList<AssignmentLogMining> assignmentLogList;
-	private ArrayList<ChatMining> chatList;
-	private ArrayList<ChatLogMining> chatLogList;
-	private ArrayList<CourseMining> courseList;
-	private ArrayList<CourseLogMining> courseLogList;
-	private ArrayList<CourseAssignmentMining> courseAssignmentList;
-	private ArrayList<CourseForumMining> courseForumList;
-	private ArrayList<CourseGroupMining> courseGroupList;
-	private ArrayList<CourseQuizMining> courseQuizList;
-	private ArrayList<CourseResourceMining> courseResourceList;
-	private ArrayList<CourseScormMining> courseScormList;
-	private ArrayList<CourseUserMining> courseUserList;
-	private ArrayList<CourseWikiMining> courseWikiList;
-	private ArrayList<ForumMining> forumList;
-	private ArrayList<ForumLogMining> forumLogList;
-	private ArrayList<GroupMining> groupList;
-	private ArrayList<GroupUserMining> groupUserList;
-	private ArrayList<QuestionMining> questionList;
-	private ArrayList<QuestionLogMining> questionLogList;
-	private ArrayList<QuizMining> quizList;
-	private ArrayList<QuizLogMining> quizLogList;
-	private ArrayList<QuizQuestionMining> quizQuestionList;
-	private ArrayList<QuizUserMining> quizUserList;
-	private ArrayList<ResourceLogMining> resourceLogList;
-	private ArrayList<ResourceMining> resourceList;
-	private ArrayList<RoleMining> roleList;
-	private ArrayList<ScormMining> scormList;
-	private ArrayList<ScormLogMining> scormLogList;
-	private ArrayList<UserMining> userList;
-	private ArrayList<WikiMining> wikiList;
-	private ArrayList<WikiLogMining> wikiLogList;
-	private ArrayList<LevelMining> departmentList;
-	private ArrayList<LevelMining> degreeList;
-	private ArrayList<LevelAssociationMining> departmentDegreeList;
-	private ArrayList<LevelCourseMining> degreeCourseList;
+	private List<AssignmentMining> assignmentList;
+	private List<AssignmentLogMining> assignmentLogList;
+	private List<ChatMining> chatList;
+	private List<ChatLogMining> chatLogList;
+	private List<CourseMining> courseList;
+	private List<CourseLogMining> courseLogList;
+	private List<CourseAssignmentMining> courseAssignmentList;
+	private List<CourseForumMining> courseForumList;
+	private List<CourseGroupMining> courseGroupList;
+	private List<CourseQuizMining> courseQuizList;
+	private List<CourseResourceMining> courseResourceList;
+	private List<CourseScormMining> courseScormList;
+	private List<CourseUserMining> courseUserList;
+	private List<CourseWikiMining> courseWikiList;
+	private List<ForumMining> forumList;
+	private List<ForumLogMining> forumLogList;
+	private List<GroupMining> groupList;
+	private List<GroupUserMining> groupUserList;
+	private List<QuestionMining> questionList;
+	private List<QuestionLogMining> questionLogList;
+	private List<QuizMining> quizList;
+	private List<QuizLogMining> quizLogList;
+	private List<QuizQuestionMining> quizQuestionList;
+	private List<QuizUserMining> quizUserList;
+	private List<ResourceLogMining> resourceLogList;
+	private List<ResourceMining> resourceList;
+	private List<RoleMining> roleList;
+	private List<ScormMining> scormList;
+	private List<ScormLogMining> scormLogList;
+	private List<UserMining> userList;
+	private List<WikiMining> wikiList;
+	private List<WikiLogMining> wikiLogList;
+	private List<LevelMining> departmentList;
+	private List<LevelMining> degreeList;
+	private List<LevelAssociationMining> departmentDegreeList;
+	private List<LevelCourseMining> degreeCourseList;
 
 	private static List<LogLMS> logLms = new ArrayList<LogLMS>();
 	private static List<ResourceLMS> resourceLms = new ArrayList<ResourceLMS>();
@@ -150,17 +151,17 @@ public class TestDataCreatorMoodle {
 	private static List<ChatLogLMS> chatLogLms = new ArrayList<ChatLogLMS>();
 	private static List<CourseCategoriesLMS> courseCategoriesLms = new ArrayList<CourseCategoriesLMS>();
 
-	private HashMap<Long, CourseMining> couAssMap;
-	private HashMap<Long, CourseMining> couForMap;
-	private HashMap<Long, CourseMining> couGroMap;
-	private HashMap<Long, CourseMining> couQuiMap;
-	private HashMap<Long, CourseMining> couUseMap;
-	private HashMap<Long, CourseMining> couResMap;
-	private HashMap<Long, CourseMining> couScoMap;
-	private HashMap<Long, CourseMining> couWikMap;
+	private Map<Long, CourseMining> couAssMap;
+	private Map<Long, CourseMining> couForMap;
+	private Map<Long, CourseMining> couGroMap;
+	private Map<Long, CourseMining> couQuiMap;
+	private Map<Long, CourseMining> couUseMap;
+	private Map<Long, CourseMining> couResMap;
+	private Map<Long, CourseMining> couScoMap;
+	private Map<Long, CourseMining> couWikMap;
 
-	private HashMap<Long, LevelMining> degCouMap;
-	private HashMap<Long, LevelMining> depDegMap;
+	private Map<Long, LevelMining> degCouMap;
+	private Map<Long, LevelMining> depDegMap;
 
 	private void generateUserLMS()
 	{
@@ -435,20 +436,7 @@ public class TestDataCreatorMoodle {
 
 			TestDataCreatorMoodle.logLms.add(lms);
 		}
-		/*
-		 * for(QuestionLogMining item : questionLogList)
-		 * {
-		 * Log_LMS lms = new Log_LMS();
-		 * lms.setId(item.getId());
-		 * lms.setAction(item.getAction());
-		 * lms.setModule("forum");
-		 * lms.setInfo(item.getQuestion().getId()+"");
-		 * lms.setTime(item.getTimestamp());
-		 * lms.setCourse(item.getCourse().getId());
-		 * lms.setUserid(item.getUser().getId()+"");
-		 * log_lms.add(lms);
-		 * }
-		 */
+
 		for (final ScormLogMining item : this.scormLogList)
 		{
 			final LogLMS lms = new LogLMS();
@@ -863,7 +851,6 @@ public class TestDataCreatorMoodle {
 
 	private void generateQuizQuestionInstancesLMS()
 	{
-		// HashMap<Long, Quiz_question_instances_LMS> tempMap = new HashMap<Long, Quiz_question_instances_LMS>();
 		for (final QuizQuestionMining item : this.quizQuestionList)
 		{
 			final QuizQuestionInstancesLMS lms = new QuizQuestionInstancesLMS();
@@ -872,11 +859,9 @@ public class TestDataCreatorMoodle {
 			lms.setQuestion(item.getQuestion().getId());
 			lms.setQuiz(item.getQuiz().getId());
 
-			// tempMap.put(lms.getId(), lms);
 			TestDataCreatorMoodle.quizQuestionInstancesLms.add(lms);
 
 		}
-		// quiz_question_instances_lms.addAll(tempMap.values());
 	}
 
 	private void generateGradeGradesLMS()

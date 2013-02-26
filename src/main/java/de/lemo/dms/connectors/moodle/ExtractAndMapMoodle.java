@@ -672,10 +672,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 		{
 			final CourseAssignmentMining insert = new CourseAssignmentMining();
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			if (insert.getId() == 112865) {
-				//TODO Was ist das???
-				System.out.println();
-			}
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
 					this.oldCourseMining);
 			insert.setPlatform(this.connector.getPlatformId());
@@ -1106,9 +1102,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 
 			final QuestionLogMining insert = new QuestionLogMining();
 
-			insert.setId(questionLogMiningtmp.size() + 1 + this.questionLogMax); // ID
+			// ID
+			insert.setId(questionLogMiningtmp.size() + 1 + this.questionLogMax);
+			// Question
 			insert.setQuestion(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getQuestion()),
-					this.questionMining, this.oldQuestionMining); // Question
+					this.questionMining, this.oldQuestionMining);
 			insert.setPenalty(loadedItem.getPenalty());
 			insert.setAnswers(loadedItem.getAnswer());
 			insert.setTimestamp(loadedItem.getTimestamp());
