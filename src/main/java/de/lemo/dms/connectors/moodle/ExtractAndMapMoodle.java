@@ -88,6 +88,7 @@ import de.lemo.dms.db.miningDBclass.WikiMining;
  */
 public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in Namen einfügen
 
+	private final static int DURATION = 3600;
 	// LMS tables instances lists
 	private List<LogLMS> logLms;
 	private List<ResourceLMS> resourceLms;
@@ -117,7 +118,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 	private List<CourseCategoriesLMS> courseCategoriesLms;
 	private List<CourseModulesLMS> courseModulesLms;
 
-	private final boolean numericUserId = false;
+	private final static boolean numericUserId = false;
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -831,8 +832,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -987,8 +988,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -1257,8 +1258,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -1397,8 +1398,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -1550,8 +1551,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -1670,8 +1671,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -2038,8 +2039,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -2188,8 +2189,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
