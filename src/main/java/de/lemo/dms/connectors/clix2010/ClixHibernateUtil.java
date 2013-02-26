@@ -16,9 +16,12 @@ import de.lemo.dms.db.DBConfigObject;
 /**
  * Startup Hibernate and provide access to the singleton SessionFactory
  */
-public class ClixHibernateUtil {
+public final class ClixHibernateUtil {
 
 	private static Map<DBConfigObject, SessionFactory> sessionFactories = Maps.newHashMap();
+
+	private ClixHibernateUtil() {
+	}
 
 	public static SessionFactory getSessionFactory(final DBConfigObject dbconfig) {
 		SessionFactory sessionFactory = ClixHibernateUtil.sessionFactories.get(dbconfig);

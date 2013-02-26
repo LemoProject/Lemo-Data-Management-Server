@@ -16,9 +16,12 @@ import de.lemo.dms.db.DBConfigObject;
 /**
  * Startup Hibernate and provide access to the singleton SessionFactory
  */
-public class MoodleNumericHibernateUtil {
+public final class MoodleNumericHibernateUtil {
 
 	private static Map<DBConfigObject, SessionFactory> sessionFactories = Maps.newHashMap();
+
+	private MoodleNumericHibernateUtil() {
+	}
 
 	public static SessionFactory getSessionFactory(final DBConfigObject dbconfig) {
 		SessionFactory sessionFactory = MoodleNumericHibernateUtil.sessionFactories.get(dbconfig);

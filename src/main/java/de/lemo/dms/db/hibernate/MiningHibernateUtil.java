@@ -14,9 +14,12 @@ import de.lemo.dms.db.DBConfigObject;
 /**
  * Startup Hibernate and provide access to the singleton SessionFactory
  */
-public class MiningHibernateUtil {
+public final class MiningHibernateUtil {
 
 	private static SessionFactory sessionFactory;
+
+	private MiningHibernateUtil() {
+	}
 
 	public static void initSessionFactory(final DBConfigObject dbConfig) {
 		MiningHibernateUtil.sessionFactory = MiningHibernateUtil.createSessionFactory(dbConfig);

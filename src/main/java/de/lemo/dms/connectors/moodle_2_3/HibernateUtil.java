@@ -16,7 +16,10 @@ import de.lemo.dms.db.DBConfigObject;
 /**
  * Startup Hibernate and provide access to the singleton SessionFactory
  */
-public class HibernateUtil {
+public final class HibernateUtil {
+
+	private HibernateUtil() {
+	}
 
 	private static HashMap<DBConfigObject, SessionFactory> sessionFactories = Maps.newHashMap();
 

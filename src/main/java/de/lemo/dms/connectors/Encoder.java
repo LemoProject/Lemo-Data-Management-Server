@@ -13,7 +13,7 @@ import java.security.MessageDigest;
  * 
  * @author Sebastian Schwarzrock
  */
-public class Encoder {
+public final class Encoder {
 
 	private Encoder() {
 

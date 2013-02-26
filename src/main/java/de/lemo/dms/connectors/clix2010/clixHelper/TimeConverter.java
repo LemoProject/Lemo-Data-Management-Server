@@ -13,21 +13,20 @@ import java.util.Date;
  * Simple utility-class for the conversion of Clix-timestamps to posix timestamps
  * 
  * @author s.schwarzrock
- *
  */
-public class TimeConverter {
+public final class TimeConverter {
+
 	private static final int THOU = 1000;
-	
-	private TimeConverter()
-	{
-		
+
+	private TimeConverter() {
+
 	}
 
 	/**
 	 * Converts a Clix-timestamp to a posix-timestamp.
 	 * 
-	 * @param date String-representation of a date within Clix.
-	 * 
+	 * @param date
+	 *            String-representation of a date within Clix.
 	 * @return Posix-timestamp of the date.
 	 */
 	public static Long getTimestamp(final String date)
@@ -48,7 +47,8 @@ public class TimeConverter {
 	/**
 	 * Converts a Posix-timestamp to a Clix-timestamp.
 	 * 
-	 * @param date Posix-timestamp
+	 * @param date
+	 *            Posix-timestamp
 	 * @return String-representation of a date within Clix
 	 */
 	public static String getStringRepresentation(final Long date)
