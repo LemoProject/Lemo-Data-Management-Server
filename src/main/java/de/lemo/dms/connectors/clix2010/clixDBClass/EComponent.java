@@ -23,6 +23,7 @@ public class EComponent implements IClixMappingClass {
 	private String lastUpdated;
 	private String startDate;
 	private String description;
+	private final static String DOLLAR = "$$$";
 
 	public EComponent()
 	{
@@ -31,13 +32,13 @@ public class EComponent implements IClixMappingClass {
 
 	public String getString()
 	{
-		return "EComponent$$$"
-				+ this.id + "$$$"
-				+ this.getCreationDate() + "$$$"
-				+ this.getDescription() + "$$$"
-				+ this.getLastUpdated() + "$$$"
-				+ this.getName() + "$$$"
-				+ this.getStartDate() + "$$$"
+		return "EComponent" + DOLLAR
+				+ this.id + DOLLAR
+				+ this.getCreationDate() + DOLLAR
+				+ this.getDescription() + DOLLAR
+				+ this.getLastUpdated() + DOLLAR
+				+ this.getName() + DOLLAR
+				+ this.getStartDate() + DOLLAR
 				+ this.getType();
 	}
 

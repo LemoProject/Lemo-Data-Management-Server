@@ -24,6 +24,7 @@ public class BiTrackContentImpressions implements IClixMappingClass {
 	private Long user;
 	private Long totalImpressions;
 	private Long characteristic;
+	private final static String DOLLAR = "$$$";
 
 	public BiTrackContentImpressionsPK getId() {
 		return this.id;
@@ -31,12 +32,12 @@ public class BiTrackContentImpressions implements IClixMappingClass {
 
 	public String getString()
 	{
-		return "BiTrackContentImpressions$$$"
-				+ this.getContainer() + "$$$"
-				+ this.getDayOfAccess() + "$$$"
-				+ this.getCharacteristic() + "$$$"
-				+ this.getContent() + "$$$"
-				+ this.getTotalImpressions() + "$$$"
+		return "BiTrackContentImpressions" + DOLLAR
+				+ this.getContainer() + DOLLAR
+				+ this.getDayOfAccess() + DOLLAR
+				+ this.getCharacteristic() + DOLLAR
+				+ this.getContent() + DOLLAR
+				+ this.getTotalImpressions() + DOLLAR
 				+ this.getUser();
 	}
 

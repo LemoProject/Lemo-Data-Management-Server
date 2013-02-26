@@ -24,6 +24,7 @@ public class ExercisePersonalised implements IClixMappingClass {
 	private String uploadDate;
 	private Long exerciseSheet;
 	private Long community;
+	private final static String DOLLAR = "$$$";
 
 	public ExercisePersonalisedPK getId() {
 		return this.id;
@@ -31,12 +32,12 @@ public class ExercisePersonalised implements IClixMappingClass {
 
 	public String getString()
 	{
-		return "ExercisePersonalised$$$"
-				+ this.getUploadDate() + "$$$"
-				+ this.getCommunity() + "$$$"
-				+ this.getExercise() + "$$$"
-				+ this.getExerciseSheet() + "$$$"
-				+ this.getPoints() + "$$$"
+		return "ExercisePersonalised" + DOLLAR
+				+ this.getUploadDate() + DOLLAR
+				+ this.getCommunity() + DOLLAR
+				+ this.getExercise() + DOLLAR
+				+ this.getExerciseSheet() + DOLLAR
+				+ this.getPoints() + DOLLAR
 				+ this.getUser();
 	}
 

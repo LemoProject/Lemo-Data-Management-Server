@@ -90,6 +90,8 @@ import de.lemo.dms.db.miningDBclass.WikiMining;
  * @author s.schwarzrock
  */
 public class ClixImporter {
+	
+	private static final int MAGIC_THOU = 1000;
 
 	/** The resource log max. */
 	private Long resourceLogMax = 0L;
@@ -336,7 +338,7 @@ public class ClixImporter {
 	public void getClixData(final DBConfigObject dbConfig)
 	{
 		final Clock c = new Clock();
-		final Long starttime = System.currentTimeMillis() / 1000;
+		final Long starttime = System.currentTimeMillis() / MAGIC_THOU;
 
 		this.platformMining = new HashMap<Long, PlatformMining>();
 		// Do Import
@@ -351,7 +353,7 @@ public class ClixImporter {
 		this.logger.info("\n" + c.getAndReset() + " (saving data)" + "\n");
 
 		// Create and save config-object
-		final Long endtime = System.currentTimeMillis() / 1000;
+		final Long endtime = System.currentTimeMillis() / MAGIC_THOU;
 		final ConfigMining config = new ConfigMining();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (starttime));
@@ -374,7 +376,7 @@ public class ClixImporter {
 	 */
 	public void updateClixData(final DBConfigObject dbConfig, Long startTime)
 	{
-		final Long currentSysTime = System.currentTimeMillis() / 1000;
+		final Long currentSysTime = System.currentTimeMillis() / MAGIC_THOU;
 		Long upperLimit = 0L;
 
 		this.platformMining = new HashMap<Long, PlatformMining>();
@@ -394,7 +396,7 @@ public class ClixImporter {
 			startTime = upperLimit;
 		}
 
-		final Long endtime = System.currentTimeMillis() / 1000;
+		final Long endtime = System.currentTimeMillis() / MAGIC_THOU;
 		final ConfigMining config = new ConfigMining();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (currentSysTime));
@@ -1087,8 +1089,8 @@ public class ClixImporter {
 
 			// The date-strings have to be modified, because the date format of the table BiTrackContentImpressions is
 			// different
-			startStr = startStr.substring(0, startStr.indexOf(" "));
-			endStr = endStr.substring(0, endStr.indexOf(" "));
+			startStr = startStr.substring(0, startStr.indexOf(' '));
+			endStr = endStr.substring(0, endStr.indexOf(' '));
 
 			final Query biTrack = session
 					.createQuery("from BiTrackContentImpressions x where x.dayOfAccess>=:start and x.dayOfAccess<=:end order by x.id asc");
@@ -1096,9 +1098,6 @@ public class ClixImporter {
 			biTrack.setParameter("end", endStr);
 			this.biTrackContentImpressions = biTrack.list();
 			this.logger.info("biTrackContentImpressions tables: " + this.biTrackContentImpressions.size());
-
-			// writeToFile();
-			// loadFromFile();
 
 		} catch (final Exception e)
 		{

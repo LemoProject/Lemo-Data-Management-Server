@@ -17,6 +17,7 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
 public class EComponentType implements IClixMappingClass {
 
 	private EComponentTypePK id;
+	private final static String DOLLAR = "$$$";
 
 	public EComponentTypePK getId() {
 		return this.id;
@@ -33,11 +34,11 @@ public class EComponentType implements IClixMappingClass {
 
 	public String getString()
 	{
-		return "EComponentType$$$"
-				+ this.getUploadDir() + "$$$"
-				+ this.getCharacteristic() + "$$$"
-				+ this.getCharacteristicId() + "$$$"
-				+ this.getComponent() + "$$$"
+		return "EComponentType" + DOLLAR
+				+ this.getUploadDir() + DOLLAR
+				+ this.getCharacteristic() + DOLLAR
+				+ this.getCharacteristicId() + DOLLAR
+				+ this.getComponent() + DOLLAR
 				+ this.getLanguage();
 	}
 
