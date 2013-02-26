@@ -21,7 +21,7 @@ public class ChatProtocol implements IClixMappingClass {
 	private Long person;
 	private String chatSource;
 	private String lastUpdated;
-	private final static String DOLLAR = "$$$"; 
+	private static final String DOLLAR = "$$$"; 
 
 	public String getString()
 	{
