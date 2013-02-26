@@ -6,7 +6,6 @@
 
 package de.lemo.dms.connectors.moodleNumericId;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.hibernate.SessionFactory;

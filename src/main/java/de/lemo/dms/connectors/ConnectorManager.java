@@ -6,7 +6,6 @@
 
 package de.lemo.dms.connectors;
 
-import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
