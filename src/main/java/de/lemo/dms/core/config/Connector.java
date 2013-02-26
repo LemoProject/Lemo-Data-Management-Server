@@ -6,12 +6,12 @@
 
 package de.lemo.dms.core.config;
 
-import java.util.Collections;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlType;
+import com.google.common.collect.Lists;
 
 /**
  * Configuration for {@link de.lemo.dms.connectors.IConnector} implementations.
@@ -44,14 +44,14 @@ class Connector {
 	 */
 	@XmlElement
 	@XmlList
-	public List<Long> courseIdFilter = Collections.emptyList();
+	public List<Long> courseIdFilter = Lists.newArrayList();
 
 	/**
 	 * Hibernate-style <code>&lt;property&gt;</code> elements, used for source
 	 * database or file based server logs.
 	 */
 	@XmlElement(name = "property", required = true)
-	public List<PropertyConfig> properties = Collections.emptyList();
+	public List<PropertyConfig> properties = Lists.newArrayList();
 
 	@Override
 	public String toString() {
