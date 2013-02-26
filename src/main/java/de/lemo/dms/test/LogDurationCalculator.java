@@ -16,10 +16,13 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 /**
  * Calculates and sets the duration-attributes for a List of log-objects. The list "values" has not to be sorted
  * before.
+ * 
  * @author Sebastian Schwarzrock
- *
  */
-public class LogDurationCalculator {
+public final class LogDurationCalculator {
+
+	private LogDurationCalculator() {
+	}
 
 	/**
 	 * Calculates and sets the duration-attributes for a List of log-objects. The list "values" has not to be sorted

@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
  * @author Leonard Kappe
  * @see DMSRemoteServer
  */
-public class DMSMain {
+public final class DMSMain {
 
 	private DMSMain() {
 	}
