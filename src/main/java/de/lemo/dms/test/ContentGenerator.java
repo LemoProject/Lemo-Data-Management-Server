@@ -61,6 +61,10 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 public class ContentGenerator {
 
 	private ESystem system;
+	private static final int MAGIC_THREE = 3;
+	private static final int MAGIC_FIVE = 5;
+	private static final int MAGIC_EIGHT = 8;
+	private static final int MAGIC_TEN = 10;
 
 	/**
 	 * Enum for resource types
@@ -165,13 +169,13 @@ public class ContentGenerator {
 		forumAction[0] = "view forum";
 		forumAction[1] = "subscribe";
 		forumAction[2] = "add discussion";
-		forumAction[3] = "view discussion";
+		forumAction[MAGIC_THREE] = "view discussion";
 
 		final String[] assignmentActionTeacher = new String[4];
 		assignmentActionTeacher[0] = "add";
 		assignmentActionTeacher[1] = "update";
 		assignmentActionTeacher[2] = "update grades";
-		assignmentActionTeacher[3] = "view submissions";
+		assignmentActionTeacher[MAGIC_THREE] = "view submissions";
 
 		final String[] assignmentActionStudent = new String[2];
 		assignmentActionStudent[0] = "upload";
@@ -268,7 +272,7 @@ public class ContentGenerator {
 
 			groupList.add(gr);
 
-			for (int j = i * 5; j < ((i * 5) + 10); j++)
+			for (int j = i * MAGIC_FIVE; j < ((i * MAGIC_FIVE) + MAGIC_TEN); j++)
 			{
 				final GroupUserMining gu = new GroupUserMining();
 				gu.setId(Long.valueOf(platform.getPrefix() + "" + (groupUserList.size() + 1)));
@@ -326,7 +330,7 @@ public class ContentGenerator {
 						cou.setTimeCreated(startdate);
 					}
 					cou.setEnrolStart(ts + week + randy.nextInt(week));
-					cou.setEnrolEnd(cou.getEnrolStart() + (3 * week));
+					cou.setEnrolEnd(cou.getEnrolStart() + (MAGIC_THREE * week));
 					cou.setTimeModified(ts + randy.nextInt(year / 2));
 					cou.setStartDate(cou.getEnrolStart() + (2 * week));
 					cou.setShortname(i + "" + j + "" + k);
@@ -343,7 +347,7 @@ public class ContentGenerator {
 					levelCourseList.add(degCou);
 
 					// Associate users with course
-					final int userSwitch = 25 + (((k - 1) % 3) * 25);
+					final int userSwitch = 25 + (((k - 1) % MAGIC_THREE) * 25);
 					for (int l = 0; l < userSwitch; l++)
 					{
 						final CourseUserMining cu = new CourseUserMining();
@@ -359,7 +363,7 @@ public class ContentGenerator {
 						cu.setCourse(cou);
 						cu.setEnrolstart(cou.getEnrolStart());
 						cu.setEnrolend(cou.getEnrolEnd());
-						cu.setUser(userList.get((((courseList.size() - 1) * 5) + l) % userList.size()));
+						cu.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + l) % userList.size()));
 						cu.setPlatform(platform.getId());
 
 						courseUserList.add(cu);
@@ -376,12 +380,12 @@ public class ContentGenerator {
 					// Now create LearningObjects
 					// Create resources
 					final int pt = (randy.nextInt(6) + 1) * 15;
-					final int resSwitch = 15 + ((((k - 1) / 3) % 3) * 15);
+					final int resSwitch = 15 + ((((k - 1) / MAGIC_THREE) % MAGIC_THREE) * 15);
 					for (int l = 1; l < resSwitch; l++)
 					{
 						final ResourceMining r = new ResourceMining();
 						r.setId(Long.valueOf(platform.getPrefix() + "" + (resourceList.size() + 1)));
-						r.setDifficulty("Level " + randy.nextInt(10));
+						r.setDifficulty("Level " + randy.nextInt(MAGIC_TEN));
 						r.setPosition(l);
 						r.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
 						if(characteristic != 1) {
@@ -398,10 +402,10 @@ public class ContentGenerator {
 								r.setProcessingTime(pt);
 								r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/" + r.getTitle() + ".vlu.html");
 							}
-							else if (l < 10)
+							else if (l < MAGIC_TEN)
 							{
 								r.setType("Page");
-								r.setProcessingTime(pt / 8);
+								r.setProcessingTime(pt / MAGIC_EIGHT);
 								r.setUrl("http://www.chemgapedia.de/vsengine/vlu/vsc/Resource " + i + "." + j + "." + k
 										+ ".1.vlu/Page/vsc/" + r.getTitle() + ".vscml.html");
 							}
@@ -429,7 +433,7 @@ public class ContentGenerator {
 						courseResourceList.add(couRes);
 					}
 					// Create wikis
-					for (int l = 1; l < 3; l++)
+					for (int l = 1; l < MAGIC_THREE; l++)
 					{
 						final WikiMining w = new WikiMining();
 						w.setId(Long.valueOf(platform.getPrefix() + "" + (wikiList.size() + 1)));
@@ -453,7 +457,7 @@ public class ContentGenerator {
 						courseWikiList.add(couWik);
 					}
 					// Create Assignments
-					for (int l = 1; l < 3; l++)
+					for (int l = 1; l < MAGIC_THREE; l++)
 					{
 						final AssignmentMining a = new AssignmentMining();
 						a.setId(Long.valueOf(platform.getPrefix() + "" + (assignmentList.size() + 1)));
@@ -463,7 +467,7 @@ public class ContentGenerator {
 						}
 						a.setTimeModified(a.getTimeCreated() + randy.nextInt(year / 2));
 						a.setTitle("Assignment " + i + "." + j + "." + k + "." + l);
-						a.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
+						a.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * MAGIC_FIVE);
 						a.setTimeOpen(a.getTimeCreated() + randy.nextInt(month));
 						a.setTimeClose(a.getTimeOpen() + (2 * week));
 						a.setType("Assignment");
@@ -479,7 +483,7 @@ public class ContentGenerator {
 						courseAssignmentList.add(couAss);
 					}
 					// Create Forums
-					for (int l = 1; l < 3; l++)
+					for (int l = 1; l < MAGIC_THREE; l++)
 					{
 						final ForumMining f = new ForumMining();
 						f.setId(Long.valueOf(platform.getPrefix() + "" + (forumList.size() + 1)));
@@ -502,7 +506,7 @@ public class ContentGenerator {
 						courseForumList.add(couFor);
 					}
 					// Create Quizzes
-					for (int l = 1; l < 3; l++)
+					for (int l = 1; l < MAGIC_THREE; l++)
 					{
 						final QuizMining q = new QuizMining();
 						q.setId(Long.valueOf(platform.getPrefix() + "" + (quizList.size() + 1)));
@@ -512,8 +516,8 @@ public class ContentGenerator {
 						}
 						q.setTimeModified(q.getTimeCreated() + randy.nextInt(year / 2));
 						q.setTitle("Quiz " + i + "." + j + "." + k + "." + l);
-						q.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
-						q.setQtype("QuizType " + randy.nextInt(10));
+						q.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * MAGIC_FIVE);
+						q.setQtype("QuizType " + randy.nextInt(MAGIC_TEN));
 						q.setTimeOpen(q.getTimeCreated() + randy.nextInt(month));
 						q.setTimeClose(q.getTimeOpen() + (2 * week));
 						q.setPlatform(platform.getId());
@@ -588,11 +592,11 @@ public class ContentGenerator {
 						chatList.add(c);
 					}
 					// Create scorms
-					for (int l = 1; l < 3; l++)
+					for (int l = 1; l < MAGIC_THREE; l++)
 					{
 						final ScormMining sco = new ScormMining();
 						sco.setId(Long.valueOf(platform.getPrefix() + "" + (scormList.size() + 1)));
-						sco.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * 5);
+						sco.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * MAGIC_FIVE);
 						sco.setTimeCreated(cou.getTimeCreated() + randy.nextInt(week));
 						if(characteristic != 1) {
 							sco.setTimeCreated(startdate);
@@ -616,7 +620,7 @@ public class ContentGenerator {
 
 					// Create log-entries
 					// Create AssignmentLogs
-					final int logSwitch = logsPerLearnObject + ((((k - 1) / 9) % 3) * logsPerLearnObject);
+					final int logSwitch = logsPerLearnObject + ((((k - 1) / 9) % MAGIC_THREE) * logsPerLearnObject);
 					for (int log = 0; log < logSwitch; log++)
 					{
 
@@ -629,8 +633,8 @@ public class ContentGenerator {
 							final ResourceLogMining rLog = new ResourceLogMining();
 							// rLog.setId(resourceLogList.size() + 1);
 							rLog.setCourse(cou);
-							rLog.setResource(resourceList.get((resourceList.size() - 1) - randy.nextInt(10)));
-							rLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(userSwitch))
+							rLog.setResource(resourceList.get((resourceList.size() - 1) - randy.nextInt(MAGIC_TEN)));
+							rLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
 									% userList.size()));
 							final ResourceMining r = rLog.getResource();
 	
@@ -650,13 +654,13 @@ public class ContentGenerator {
 						}
 						else
 						{
-							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							for(int x = 0 ; x < log + 1 % (year / MAGIC_EIGHT); x++)
 							{
 								final ResourceLogMining rLog1 = new ResourceLogMining();
 								// rLog.setId(resourceLogList.size() + 1);
 								rLog1.setCourse(cou);
-								rLog1.setResource(resourceList.get((resourceList.size() - 1) - randy.nextInt(10)));
-								rLog1.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(userSwitch))
+								rLog1.setResource(resourceList.get((resourceList.size() - 1) - randy.nextInt(MAGIC_TEN)));
+								rLog1.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
 										% userList.size()));
 								
 								rLog1.setTimestamp(time);
@@ -677,7 +681,7 @@ public class ContentGenerator {
 							// aLog.setId(assignmentLogList.size());
 							aLog.setCourse(cou);
 							aLog.setAssignment(assignmentList.get((assignmentList.size() - 1) - randy.nextInt(2)));
-							aLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							aLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 							final AssignmentMining a = aLog.getAssignment();
 	
 							mult = (int) (a.getTimeClose() - a.getTimeOpen()) / Integer.valueOf(cou.getShortname());
@@ -704,13 +708,13 @@ public class ContentGenerator {
 						else
 						{
 							
-							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							for(int x = 0 ; x < log + 1 % (year / MAGIC_EIGHT); x++)
 							{
 								final AssignmentLogMining aLog = new AssignmentLogMining();
 								// aLog.setId(assignmentLogList.size());
 								aLog.setCourse(cou);
 								aLog.setAssignment(assignmentList.get((assignmentList.size() - 1) - randy.nextInt(2)));
-								aLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								aLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 								final AssignmentMining a = aLog.getAssignment();
 								aLog.setTimestamp(time);
 								aLog.setPlatform(platform.getId());
@@ -739,7 +743,7 @@ public class ContentGenerator {
 						{
 							final ChatLogMining cLog = new ChatLogMining();
 							cLog.setCourse(cou);
-							cLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							cLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 							cLog.setChat(chatList.get((chatList.size() - 1)));
 							final ChatMining chat = cLog.getChat();
 	
@@ -755,11 +759,11 @@ public class ContentGenerator {
 						else
 						{
 							
-							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							for(int x = 0 ; x < log + 1 % (year / MAGIC_EIGHT); x++)
 							{
 								final ChatLogMining cLog = new ChatLogMining();
 								cLog.setCourse(cou);
-								cLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								cLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 								cLog.setChat(chatList.get((chatList.size() - 1)));
 								cLog.setTimestamp(time);
 								cLog.setMessage("Generated chat message for chat " + cou.getShortname() + " @ "
@@ -777,9 +781,9 @@ public class ContentGenerator {
 							final CourseLogMining couLog = new CourseLogMining();
 							couLog.setCourse(cou);
 	
-							if (log < 10)
+							if (log < MAGIC_TEN)
 							{
-								couLog.setUser(userList.get((((courseList.size() - 1) * 5) + log) % userList.size()));
+								couLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + log) % userList.size()));
 								couLog.setAction("enrol");
 	
 								mult = (int) (cou.getEnrolEnd() - cou.getEnrolStart())
@@ -790,7 +794,7 @@ public class ContentGenerator {
 							}
 							else
 							{
-								couLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10))
+								couLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN))
 										% userList.size()));
 								couLog.setAction("view");
 	
@@ -806,20 +810,20 @@ public class ContentGenerator {
 						}
 						else
 						{
-							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							for(int x = 0 ; x < log + 1 % (year / MAGIC_EIGHT); x++)
 							{
 								final CourseLogMining couLog = new CourseLogMining();
 								couLog.setCourse(cou);
 								
 								couLog.setTimestamp(time);
-								if (log < 10)
+								if (log < MAGIC_TEN)
 								{
-									couLog.setUser(userList.get((((courseList.size() - 1) * 5) + log) % userList.size()));
+									couLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + log) % userList.size()));
 									couLog.setAction("enrol");
 								}
 								else
 								{
-									couLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10))
+									couLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN))
 											% userList.size()));
 									couLog.setAction("view");
 								}
@@ -835,7 +839,7 @@ public class ContentGenerator {
 						{
 							final ForumLogMining fLog = new ForumLogMining();
 							fLog.setCourse(cou);
-							fLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							fLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 							fLog.setForum(forumList.get((forumList.size() - 1) - randy.nextInt(2)));
 							final ForumMining forum = fLog.getForum();
 	
@@ -846,7 +850,7 @@ public class ContentGenerator {
 							fLog.setTimestamp(time);
 	
 							fLog.setAction(forumAction[randy.nextInt(forumAction.length)]);
-							fLog.setSubject("Subject No." + randy.nextInt(5));
+							fLog.setSubject("Subject No." + randy.nextInt(MAGIC_FIVE));
 							fLog.setMessage("Message in forum " + forum.getTitle() + " @" + fLog.getTimestamp());
 							fLog.setPlatform(platform.getId());
 	
@@ -855,17 +859,17 @@ public class ContentGenerator {
 						else
 						{
 							
-							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							for(int x = 0 ; x < log + 1 % (year / MAGIC_EIGHT); x++)
 							{
 								final ForumLogMining fLog = new ForumLogMining();
 								fLog.setCourse(cou);
-								fLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								fLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 								fLog.setForum(forumList.get((forumList.size() - 1) - randy.nextInt(2)));
 								final ForumMining forum = fLog.getForum();
 								fLog.setTimestamp(time);
 		
 								fLog.setAction(forumAction[randy.nextInt(forumAction.length)]);
-								fLog.setSubject("Subject No." + randy.nextInt(5));
+								fLog.setSubject("Subject No." + randy.nextInt(MAGIC_FIVE));
 								fLog.setMessage("Message in forum " + forum.getTitle() + " @" + fLog.getTimestamp());
 								fLog.setPlatform(platform.getId());
 		
@@ -879,7 +883,7 @@ public class ContentGenerator {
 						{
 							final WikiLogMining wLog = new WikiLogMining();
 							wLog.setCourse(cou);
-							wLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							wLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 							wLog.setWiki(wikiList.get((wikiList.size() - 1) - randy.nextInt(2)));
 							final WikiMining wiki = wLog.getWiki();
 	
@@ -896,11 +900,11 @@ public class ContentGenerator {
 						else
 						{
 							
-							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							for(int x = 0 ; x < log + 1 % (year / MAGIC_EIGHT); x++)
 							{
 								final WikiLogMining wLog = new WikiLogMining();
 								wLog.setCourse(cou);
-								wLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								wLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 								wLog.setWiki(wikiList.get((wikiList.size() - 1) - randy.nextInt(2)));
 								final WikiMining wiki = wLog.getWiki();
 								wLog.setTimestamp(time);
@@ -917,7 +921,7 @@ public class ContentGenerator {
 						{
 							final ScormLogMining sLog = new ScormLogMining();
 							sLog.setCourse(cou);
-							sLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							sLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 							sLog.setScorm(scormList.get((scormList.size() - 1) - randy.nextInt(2)));
 							final ScormMining scorm = sLog.getScorm();
 	
@@ -945,11 +949,11 @@ public class ContentGenerator {
 						else
 						{
 							
-							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							for(int x = 0 ; x < log + 1 % (year / MAGIC_EIGHT); x++)
 							{
 								final ScormLogMining sLog = new ScormLogMining();
 								sLog.setCourse(cou);
-								sLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								sLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 								sLog.setScorm(scormList.get((scormList.size() - 1) - randy.nextInt(2)));
 								final ScormMining scorm = sLog.getScorm();
 								sLog.setTimestamp(time);
@@ -981,7 +985,7 @@ public class ContentGenerator {
 
 							final QuizLogMining qLog = new QuizLogMining();
 							qLog.setCourse(cou);
-							qLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+							qLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 							qLog.setQuiz(quizList.get((quizList.size() - 1) - randy.nextInt(2)));
 							QuizMining quiz = qLog.getQuiz();
 	
@@ -1012,10 +1016,10 @@ public class ContentGenerator {
 	
 							final QuestionLogMining queLog = new QuestionLogMining();
 							queLog.setCourse(cou);
-							queLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10))
+							queLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN))
 									% userList.size()));
 							queLog.setQuiz(quizList.get((quizList.size() - 1) - randy.nextInt(2)));
-							queLog.setQuestion(questionList.get((questionList.size() - 1) - randy.nextInt(10)));
+							queLog.setQuestion(questionList.get((questionList.size() - 1) - randy.nextInt(MAGIC_TEN)));
 							quiz = queLog.getQuiz();
 	
 							mult = (int) (quiz.getTimeClose() - quiz.getTimeOpen()) / Integer.valueOf(cou.getShortname());
@@ -1027,7 +1031,7 @@ public class ContentGenerator {
 										&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
 												+ "" + 2)) && (quiz.getMaxGrade() > 0))
 								{
-									final int qNumber = 10;
+									final int qNumber = MAGIC_TEN;
 									if (quiz.getMaxGrade() < qNumber) {
 										queLog.setRawGrade((randy.nextDouble() * quiz.getMaxGrade()) / qNumber);
 									}
@@ -1050,11 +1054,11 @@ public class ContentGenerator {
 						else
 						{
 							
-							for(int x = 0 ; x < log + 1 % (year / 8); x++)
+							for(int x = 0 ; x < log + 1 % (year / MAGIC_EIGHT); x++)
 							{
 								final QuizLogMining qLog = new QuizLogMining();
 								qLog.setCourse(cou);
-								qLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10)) % userList.size()));
+								qLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 								qLog.setQuiz(quizList.get((quizList.size() - 1) - randy.nextInt(2)));
 								QuizMining quiz = qLog.getQuiz();
 		
@@ -1083,10 +1087,10 @@ public class ContentGenerator {
 		
 								final QuestionLogMining queLog = new QuestionLogMining();
 								queLog.setCourse(cou);
-								queLog.setUser(userList.get((((courseList.size() - 1) * 5) + randy.nextInt(10))
+								queLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN))
 										% userList.size()));
 								queLog.setQuiz(quizList.get((quizList.size() - 1) - randy.nextInt(2)));
-								queLog.setQuestion(questionList.get((questionList.size() - 1) - randy.nextInt(10)));
+								queLog.setQuestion(questionList.get((questionList.size() - 1) - randy.nextInt(MAGIC_TEN)));
 								quiz = queLog.getQuiz();
 		
 								queLog.setTimestamp(time);
@@ -1096,7 +1100,7 @@ public class ContentGenerator {
 											&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
 													+ "" + 2)) && (quiz.getMaxGrade() > 0))
 									{
-										final int qNumber = 10;
+										final int qNumber = MAGIC_TEN;
 										if (quiz.getMaxGrade() < qNumber) {
 											queLog.setRawGrade((randy.nextDouble() * quiz.getMaxGrade()) / qNumber);
 										}
