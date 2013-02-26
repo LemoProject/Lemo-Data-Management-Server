@@ -21,8 +21,8 @@ public enum DMSRemoteServer {
 
 	INSTANCE;
 
-	private final static int PORT = 8081;
-	private final static String HOST = "localhost";
+	private static final int PORT = 8081;
+	private static final String HOST = "localhost";
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private HttpServer server;
 

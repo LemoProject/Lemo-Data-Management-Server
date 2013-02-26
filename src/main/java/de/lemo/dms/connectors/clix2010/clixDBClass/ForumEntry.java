@@ -22,6 +22,7 @@ public class ForumEntry implements IClixMappingClass {
 	private String lastUpdated;
 	private String title;
 	private String content;
+	private static final String DOLLAR = "$$$";
 
 	public ForumEntry()
 	{
@@ -29,12 +30,12 @@ public class ForumEntry implements IClixMappingClass {
 
 	public String getString()
 	{
-		return "ForumEntry$$$"
-				+ this.id + "$$$"
-				+ this.getContent() + "$$$"
-				+ this.getForum() + "$$$"
-				+ this.getLastUpdated() + "$$$"
-				+ this.getTitle() + "$$$"
+		return "ForumEntry" + DOLLAR
+				+ this.id + DOLLAR
+				+ this.getContent() + DOLLAR
+				+ this.getForum() + DOLLAR
+				+ this.getLastUpdated() + DOLLAR
+				+ this.getTitle() + DOLLAR
 				+ this.getLastUpdater();
 	}
 

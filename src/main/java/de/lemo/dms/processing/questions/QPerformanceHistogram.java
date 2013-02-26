@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -33,6 +34,7 @@ import de.lemo.dms.processing.resulttype.ResultListLongObject;
 @Path("performanceHistogram")
 public class QPerformanceHistogram extends Question {
 
+	private Logger logger = Logger.getLogger(this.getClass());
 	/**
 	 * @param courses
 	 *            (optional) List of course-ids that shall be included
@@ -63,23 +65,25 @@ public class QPerformanceHistogram extends Question {
 		if (logger.isDebugEnabled()) {
 			if ((courses != null) && (courses.size() > 0))
 			{
-				System.out.print("Parameter list: Courses: " + courses.get(0));
+				StringBuffer buffer = new StringBuffer();
+				buffer.append("Parameter list: Courses: " + courses.get(0));
 				for (int i = 1; i < courses.size(); i++) {
-					System.out.print(", " + courses.get(i));
+					buffer.append(", " + courses.get(i));
 				}
-				System.out.println();
+				logger.info(buffer.toString());
 			}
 			if ((users != null) && (users.size() > 0))
 			{
-				System.out.print("Parameter list: Users: " + users.get(0));
+				StringBuffer buffer = new StringBuffer();
+				buffer.append("Parameter list: Users: " + users.get(0));
 				for (int i = 1; i < users.size(); i++) {
-					System.out.print(", " + users.get(i));
+					buffer.append(", " + users.get(i));
 				}
-				System.out.println();
+				logger.info(buffer.toString());
 			}
-			System.out.println("Parameter list: Resolution: : " + resolution);
-			System.out.println("Parameter list: Start time: : " + startTime);
-			System.out.println("Parameter list: End time: : " + endTime);
+			logger.info("Parameter list: Resolution: : " + resolution);
+			logger.info("Parameter list: Start time: : " + startTime);
+			logger.info("Parameter list: End time: : " + endTime);
 		}
 
 		// Determine length of result array

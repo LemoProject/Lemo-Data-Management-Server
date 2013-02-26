@@ -13,8 +13,8 @@ package de.lemo.dms.core;
  */
 public class Clock {
 
-	private final static int SECONDS = 60;
-	private final static int DIVIDOR = 1000;
+	private static final int SECONDS = 60;
+	private static final int DIVIDOR = 1000;
 	private long start;
 
 	/**

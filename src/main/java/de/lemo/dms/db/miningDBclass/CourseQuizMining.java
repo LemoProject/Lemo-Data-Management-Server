@@ -6,7 +6,6 @@
 
 package de.lemo.dms.db.miningDBclass;
 
-// import java.io.Serializable;
 import java.util.Map;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;

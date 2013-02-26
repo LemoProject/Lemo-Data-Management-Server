@@ -21,6 +21,7 @@ public class Person implements IClixMappingClass {
 	private String firstLoginTime;
 	private String login;
 	private Long gender;
+	private static final String DOLLAR = "$$$";
 
 	public Person()
 	{
@@ -29,11 +30,11 @@ public class Person implements IClixMappingClass {
 
 	public String getString()
 	{
-		return "Person$$$"
-				+ this.id + "$$$"
-				+ this.getFirstLoginTime() + "$$$"
-				+ this.getLastLoginTime() + "$$$"
-				+ this.getLogin() + "$$$"
+		return "Person" + DOLLAR
+				+ this.id + DOLLAR
+				+ this.getFirstLoginTime() + DOLLAR
+				+ this.getLastLoginTime() + DOLLAR
+				+ this.getLogin() + DOLLAR
 				+ this.getGender();
 	}
 
