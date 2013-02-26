@@ -2,7 +2,6 @@
  * File ./main/java/de/lemo/dms/db/miningDBclass/ResourceMining.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.db.miningDBclass;
@@ -12,7 +11,6 @@ import java.util.Set;
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-// TODO: Auto-generated Javadoc
 /** This class represents the table resource. */
 public class ResourceMining implements IMappingClass, ILearningObject {
 

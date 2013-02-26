@@ -2,7 +2,6 @@
  * File ./main/java/de/lemo/dms/db/miningDBclass/CourseLogMining.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.db.miningDBclass;
@@ -236,7 +235,6 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 
 	@Override
 	public Long getPrefix() {
-		// TODO Auto-generated method stub
 		return 12L;
 	}
 

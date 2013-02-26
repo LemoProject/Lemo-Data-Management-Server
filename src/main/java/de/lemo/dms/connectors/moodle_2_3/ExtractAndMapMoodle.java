@@ -2,7 +2,6 @@
  * File ./main/java/de/lemo/dms/connectors/moodle_2_3/ExtractAndMapMoodle.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.connectors.moodle_2_3;
@@ -1259,7 +1258,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -1383,7 +1382,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {

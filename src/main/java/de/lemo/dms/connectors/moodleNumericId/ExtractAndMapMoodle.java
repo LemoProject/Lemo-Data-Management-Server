@@ -2,7 +2,6 @@
  * File ./main/java/de/lemo/dms/connectors/moodleNumericId/ExtractAndMapMoodle.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.connectors.moodleNumericId;
@@ -734,7 +733,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -836,7 +835,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			else
 			{
 				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction() == "login") {
+				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
 				if (!times.contains(loadedItem.getTime())) {
@@ -898,10 +897,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				final ArrayList<Long> times = users.get(r.getUser().getId());
 
 				final int pos = times.indexOf(r.getTimestamp());
-				if ((pos > -1) && (pos < (times.size() - 1))) {
-					if (times.get(pos + 1) != 0) {
+				if ((pos > -1) && (pos < (times.size() - 1)) && (times.get(pos + 1) != 0)) {
 						duration = times.get(pos + 1) - times.get(pos);
-					}
 				}
 				// All duration that are longer than one hour are cut to an hour
 				if (duration > 3600) {
@@ -1203,7 +1200,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 				}
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
-				if ((insert.getQuiz() != null) && (insert.getUser() != null) && (loadedItem.getAction() != "review"))
+				if ((insert.getQuiz() != null) && (insert.getUser() != null) 
+						&& (loadedItem.getAction().equals("review")))
 				{
 					for (final QuizGradesLMS loadedItem2 : this.quizGradesLms)
 					{
@@ -1937,13 +1935,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			insert.setDescription(loadedItem.getDescription());
 			insert.setSortOrder(loadedItem.getSortorder());
 			insert.setPlatform(this.connector.getPlatformId());
-			if(loadedItem.getShortname().contains("admin") || loadedItem.getShortname().equals("manager") ||  loadedItem.getShortname().equals("coursecreator"))
+			if(loadedItem.getShortname().contains("admin") || loadedItem.getShortname().equals("manager") ||
+					loadedItem.getShortname().equals("coursecreator")) {
 				insert.setType(0);
-			else if(loadedItem.getShortname().contains("teacher"))
+			}
+			else if(loadedItem.getShortname().contains("teacher")) {
 				insert.setType(1);
-			else
+			}
+			else {
 				insert.setType(2);
-
+			}
 			roleMining.put(insert.getId(), insert);
 		}
 		return roleMining;

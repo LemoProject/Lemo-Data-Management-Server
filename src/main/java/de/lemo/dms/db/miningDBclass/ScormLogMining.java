@@ -2,7 +2,6 @@
  * File ./main/java/de/lemo/dms/db/miningDBclass/ScormLogMining.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.db.miningDBclass;
@@ -323,7 +322,6 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 
 	@Override
 	public Double getFinalGrade() {
-		// TODO Auto-generated method stub
 		return this.grade;
 	}
 }

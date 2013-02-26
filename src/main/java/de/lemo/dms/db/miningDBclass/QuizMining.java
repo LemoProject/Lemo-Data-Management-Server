@@ -2,7 +2,6 @@
  * File ./main/java/de/lemo/dms/db/miningDBclass/QuizMining.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.db.miningDBclass;
@@ -387,7 +386,6 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 
 	@Override
 	public Long getPrefix() {
-		// TODO Auto-generated method stub
 		return 14L;
 	}
 }

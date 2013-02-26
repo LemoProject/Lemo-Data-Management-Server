@@ -2,7 +2,6 @@
  * File ./main/java/de/lemo/dms/connectors/moodleNumericId/ExtractAndMap.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.connectors.moodleNumericId;
@@ -60,7 +59,6 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.WikiMining;
 
-// TODO: Auto-generated Javadoc
 /**
  * The main class of the extraction process.
  * Inherit from this class to make an extract class for a specific LMS.

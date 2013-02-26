@@ -2,7 +2,6 @@
  * File ./main/java/de/lemo/dms/processing/BoxPlotGeneratorForDates.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.processing;
@@ -298,7 +297,6 @@ public class BoxPlotGeneratorForDates {
 	}
 
 	private long hourDiff(final Date first, final Date last) {
-		// TODO BUG Hier irgendwo
 		long diff = 0;
 		final Calendar cal1 = new GregorianCalendar();
 		final Calendar cal2 = new GregorianCalendar();

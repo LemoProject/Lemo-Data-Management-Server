@@ -2,7 +2,6 @@
  * File ./main/java/de/lemo/dms/db/miningDBclass/CourseAssignmentMining.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.db.miningDBclass;
@@ -163,7 +162,6 @@ public class CourseAssignmentMining implements IMappingClass, ICourseRatedObject
 
 	@Override
 	public IRatedObject getRatedObject() {
-		// TODO Auto-generated method stub
 		return this.assignment;
 	}
 }

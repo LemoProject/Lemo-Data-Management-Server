@@ -2,7 +2,6 @@
  * File ./main/java/de/lemo/dms/connectors/ConnectorManager.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
- * Copyright TODO (INSERT COPYRIGHT)
  */
 
 package de.lemo.dms.connectors;
@@ -23,6 +22,7 @@ import de.lemo.dms.db.miningDBclass.PlatformMining;
  * Handles all connector instances.
  * 
  * @author Leonard Kappe
+ * @author Boris Wenzlaff
  */
 public enum ConnectorManager {
 
