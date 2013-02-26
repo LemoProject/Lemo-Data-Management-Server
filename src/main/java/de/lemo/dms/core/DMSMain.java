@@ -19,13 +19,15 @@ import org.apache.log4j.Logger;
  */
 public class DMSMain {
 
+	private DMSMain() {
+	}
+
 	/**
 	 * Main entry point for running the server as Java application, i.e. not in a
 	 * servlet container like tomcat.
 	 * 
 	 * @author Boris Wenzlaff
 	 * @author Leonard Kappe
-	 * 
 	 * @param args
 	 */
 	public static void main(final String[] args) {

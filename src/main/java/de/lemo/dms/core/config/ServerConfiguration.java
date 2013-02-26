@@ -30,7 +30,7 @@ import de.lemo.dms.db.hibernate.HibernateDBHandler;
 import de.lemo.dms.db.hibernate.MiningHibernateUtil;
 
 /**
- * Class with the configuration parameter for the server
+ * Manages and loads all configuration data for the server and all connectors.
  * 
  * @author Leonard Kappe
  */
@@ -46,8 +46,7 @@ public enum ServerConfiguration {
 	{
 		// the very first place where we can initialize the logger
 		Logger.getRootLogger().setLevel(Level.INFO);
-		Logger.getRootLogger().addAppender(
-				new ConsoleAppender(new PatternLayout(ServerConfiguration.DEFAULT_PATTERN)));
+		Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout(ServerConfiguration.DEFAULT_PATTERN)));
 	}
 
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -66,7 +65,7 @@ public enum ServerConfiguration {
 
 	/**
 	 * The context path is used to determine the configuration file's name. The first char (a slash by convention) will
-	 * be ignored. Some context paths aren't valid file names (like the root context or those with sub-paths), so
+	 * be ignored. Some context paths aren't valid file names (like the root context or those with sub-paths), therefore
 	 * tomcat's naming conventions for .war files will be used.
 	 * Examples:
 	 * 
@@ -167,10 +166,11 @@ public enum ServerConfiguration {
 		List<IConnector> result = Lists.newArrayList();
 		for (Connector connectorConfig : connectorConfigurations) {
 			this.logger.info("Inititalizing connector: " + connectorConfig);
-			
+
 			ESourcePlatform platform = ESourcePlatform.valueOf(connectorConfig.platformType);
 			DBConfigObject config = this.createDBConfig(connectorConfig.properties);
-			result.add(platform.newConnector(connectorConfig.platformId, connectorConfig.name, config));
+			result.add(platform.newConnector(connectorConfig.platformId, connectorConfig.name, config,
+					connectorConfig.courseIdFilter));
 		}
 		return result;
 	}

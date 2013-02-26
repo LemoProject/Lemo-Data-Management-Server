@@ -6,6 +6,7 @@
 
 package de.lemo.dms.connectors;
 
+import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -18,9 +19,10 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
 
 /**
- * Manager to controle the connectors
+ * Handles all connector instances.
+ * 
+ * @author Leonard Kappe
  * @author Boris Wenzlaff
- *
  */
 public enum ConnectorManager {
 
@@ -31,7 +33,7 @@ public enum ConnectorManager {
 	private ConnectorGetDataWorkerThread getDataThread;
 
 	/**
-	 * return the instance of the manager
+	 * Return the instance of the manager.
 	 * 
 	 * @return a singleton instance of the ConnectorManager
 	 */
@@ -46,6 +48,11 @@ public enum ConnectorManager {
 		return this.connectors;
 	}
 
+	/**
+	 * Add a connector.
+	 * 
+	 * @param connector
+	 */
 	public void addConnector(final IConnector connector) {
 		this.saveOrUpdateConnectorInfo(connector);
 		this.connectors.add(connector);
@@ -54,7 +61,7 @@ public enum ConnectorManager {
 	/**
 	 * update the database, all data will be loaded
 	 * 
-	 * @return true is an connector selected otherwise false
+	 * @return true if loading has started
 	 */
 	public boolean startUpdateData(final IConnector connector) {
 		this.logger.info("Updating " + connector);
@@ -81,6 +88,13 @@ public enum ConnectorManager {
 		return EConnectorState.ready;
 	}
 
+	/**
+	 * Get a connector by its id.
+	 * 
+	 * @param connectorId
+	 *            a connector id
+	 * @return the connector with the provided id or null if none found
+	 */
 	public IConnector getConnectorById(final Long connectorId) {
 		if (connectorId != null) {
 			for (final IConnector connector : this.connectors) {
@@ -121,4 +135,6 @@ public enum ConnectorManager {
 		dbHandler.saveToDB(session, platform);
 		dbHandler.closeSession(session);
 	}
+
+	
 }

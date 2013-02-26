@@ -72,10 +72,10 @@ public class QFrequentPathsBIDE extends Question {
 
 		if (logger.isDebugEnabled()) {
 			StringBuffer buffer = new StringBuffer();
-			if (!courses.isEmpty())	{
-				buffer.append("Parameter list: Courses: " + courses.get(0));
+			if (!courses.isEmpty()) {
+				buffer.append("Parameter list: Courses: ").append(courses.get(0));
 				for (int i = 1; i < courses.size(); i++) {
-					buffer.append(", " + courses.get(i));
+					buffer.append(", ").append(courses.get(i));
 				}
 				logger.debug(buffer.toString());
 			}
@@ -84,16 +84,16 @@ public class QFrequentPathsBIDE extends Question {
 				logger.debug("Parameter list: Users: " + users.get(0));
 				buffer = new StringBuffer();
 				for (int i = 1; i < users.size(); i++) {
-					buffer.append(", " + users.get(i));
+					buffer.append(", ").append(users.get(i));
 				}
 				logger.debug(buffer.toString());
 			}
 			if (!types.isEmpty())
 			{
 				buffer = new StringBuffer();
-				buffer.append("Parameter list: Types: : " + types.get(0));
+				buffer.append("Parameter list: Types: : ").append(types.get(0));
 				for (int i = 1; i < types.size(); i++) {
-					buffer.append(", " + types.get(i));
+					buffer.append(", ").append(types.get(i));
 				}
 				logger.debug(buffer.toString());
 			}
@@ -107,7 +107,7 @@ public class QFrequentPathsBIDE extends Question {
 			logger.debug("Parameter list: Start time: : " + startTime);
 			logger.debug("Parameter list: End time: : " + endTime);
 		}
-		
+
 		try {
 
 			final SequenceDatabase sequenceDatabase = new SequenceDatabase();

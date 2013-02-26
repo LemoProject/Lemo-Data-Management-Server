@@ -9,12 +9,15 @@ package de.lemo.dms.connectors;
 import java.security.MessageDigest;
 
 /**
- * 
  * MD5 operation for anonymity
+ * 
  * @author Sebastian Schwarzrock
- *
  */
 public class Encoder {
+
+	private Encoder() {
+
+	}
 
 	private static MessageDigest md = null;
 

@@ -9,7 +9,6 @@ package de.lemo.dms.processing;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
-import org.apache.log4j.Logger;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
 import de.lemo.dms.db.miningDBclass.ChatLogMining;
 import de.lemo.dms.db.miningDBclass.CourseLogMining;
@@ -36,10 +35,7 @@ public enum ELearningObjectType {
 	QUIZ(QuizLogMining.class),
 	RESOURCE(ResourceLogMining.class),
 	SCORM(ScormLogMining.class),
-	WIKI(WikiLogMining.class),
-	UNKNOWN(null);
-
-	private static Logger logger = Logger.getLogger(ELearningObjectType.class);
+	WIKI(WikiLogMining.class), ;
 
 	private Class<? extends ILogMining> type;
 
@@ -65,13 +61,11 @@ public enum ELearningObjectType {
 	 */
 	public static ELearningObjectType fromLogMiningType(final ILogMining log) {
 		for (final ELearningObjectType learnObjectType : ELearningObjectType.values()) {
-			if (learnObjectType.getLogMiningType()!= null && log != null) {
-				if(learnObjectType.getLogMiningType().equals(log.getClass())) {
-					return learnObjectType;
-				} 
+			if (log != null && learnObjectType.getLogMiningType().equals(log.getClass())) {
+				return learnObjectType;
 			}
 		}
-		return UNKNOWN;
+		return null;
 	}
 
 	/**
@@ -82,13 +76,9 @@ public enum ELearningObjectType {
 	 * @return the enum constants
 	 */
 	public static Set<ELearningObjectType> fromNames(final Collection<String> names) {
-		final EnumSet<ELearningObjectType> result =
-				EnumSet.noneOf(ELearningObjectType.class);
+		final EnumSet<ELearningObjectType> result = EnumSet.noneOf(ELearningObjectType.class);
 		for (final String name : names) {
 			result.add(ELearningObjectType.valueOf(name.toUpperCase()));
-		}
-		if (result.remove(UNKNOWN)) {
-			ELearningObjectType.logger.warn("Someone injected the string \"unknown\"!");
 		}
 		return result;
 	}
