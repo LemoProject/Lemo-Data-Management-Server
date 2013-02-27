@@ -1,3 +1,8 @@
+/**
+ * File ./main/java/de/lemo/dms/processing/questions/QPerformanceUserTest.java
+ * Date 2013-02-26
+ * Project Lemo Learning Analytics
+ */
 package de.lemo.dms.processing.questions;
 
 import java.util.ArrayList;
@@ -21,10 +26,16 @@ import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
+/**
+ * Gathers and returns all all test results for every student and every test in a course
+ * 
+ * @author Sebastian Schwarzrock
+ */
 @Path("performanceUserTest")
 public class QPerformanceUserTest {
 	
@@ -38,7 +49,9 @@ public class QPerformanceUserTest {
 	 *            (mandatory) List of learning object ids (the ids have to start with the type specific prefix (11 for
 	 *            "assignment", 14 for "quiz", 17 for "scorm"))
 	 * @param resolution
-	 *            (mandatory)
+	 *            (mandatory) Used to scale the results. If set to 0, the method 
+	 *            returns the actual results of the test. Otherwise it returns the 
+	 *            results scaled using the value of resolution.
 	 * @param startTime
 	 *            (mandatory)
 	 * @param endTime
@@ -81,7 +94,7 @@ public class QPerformanceUserTest {
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 		
-		final Criteria criteria = session.createCriteria(IRatedLogObject.class, "log");
+		Criteria criteria = session.createCriteria(IRatedLogObject.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
@@ -122,7 +135,7 @@ public class QPerformanceUserTest {
 		}
 		
 		// Determine length of result array
-		final int objects = u.size() * quizzes.size() + u.size();
+		final int objects = quizzes.size() + u.size() * quizzes.size() + u.size();
 
 		final Long[] results = new Long[objects];
 		
@@ -134,8 +147,10 @@ public class QPerformanceUserTest {
 					&& (log.getFinalGrade() != null) &&
 					(log.getMaxGrade() != null) && (log.getMaxGrade() > 0))
 			{
+				Double step = 1d;
 				// Determine size of each interval
-				final Double step = log.getMaxGrade() / resolution;
+				if(resolution != 0)
+					step = log.getMaxGrade() / resolution;
 				if (step > 0d)
 				{
 					// Determine interval for specific grade
@@ -164,7 +179,27 @@ public class QPerformanceUserTest {
 
 		}
 		
-		int i = 0;
+		criteria = session.createCriteria(ICourseRatedObjectAssociation.class, "aso");
+		criteria.add(Restrictions.in("aso.course.id", courses));
+		
+		@SuppressWarnings("unchecked")
+		ArrayList<ICourseRatedObjectAssociation> q = (ArrayList<ICourseRatedObjectAssociation>) criteria.list(); 
+		HashMap<Long, Double> maxGrades = new HashMap<Long, Double>();
+		for(ICourseRatedObjectAssociation aso : q)
+		{
+			maxGrades.put(Long.valueOf(aso.getPrefix() + "" + aso.getRatedObject().getId()), aso.getRatedObject().getMaxGrade());
+		}
+		
+		//Determine maximum number of points for every quiz
+		for(int i = 0; i < quizzes.size(); i++)
+		{
+			if(maxGrades.get(quizzes.get(i)) != null)
+				results[i] = maxGrades.get(quizzes.get(i)).longValue();
+			else
+				results[i] = -1L;
+		}
+		
+		int i = quizzes.size();
 		for(Entry<Long, ArrayList<Long>> entry : fin.entrySet())
 		{
 			//Insert user-id into result list

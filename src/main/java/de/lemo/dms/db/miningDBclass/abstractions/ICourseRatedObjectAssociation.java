@@ -9,7 +9,7 @@ package de.lemo.dms.db.miningDBclass.abstractions;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 
 /**
- * Interface for the association between the course and an rated obbject
+ * Interface for the association between the course and an rated object
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  * @author Sebastian Schwarzrock
@@ -19,5 +19,7 @@ public interface ICourseRatedObjectAssociation {
 	IRatedObject getRatedObject();
 
 	CourseMining getCourse();
+	
+	Long getPrefix();
 
 }

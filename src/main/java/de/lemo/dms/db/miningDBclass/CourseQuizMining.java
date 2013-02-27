@@ -41,6 +41,11 @@ public class CourseQuizMining implements IMappingClass, ICourseRatedObjectAssoci
 	public CourseMining getCourse() {
 		return this.course;
 	}
+	
+	@Override
+	public Long getPrefix() {
+		return this.quiz.getPrefix();
+	}
 
 	/**
 	 * standard setter for the attribute course

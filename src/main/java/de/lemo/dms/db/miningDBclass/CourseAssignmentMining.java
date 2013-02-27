@@ -164,4 +164,9 @@ public class CourseAssignmentMining implements IMappingClass, ICourseRatedObject
 	public IRatedObject getRatedObject() {
 		return this.assignment;
 	}
+
+	@Override
+	public Long getPrefix() {
+		return this.assignment.getPrefix();
+	}
 }

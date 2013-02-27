@@ -159,4 +159,9 @@ public class CourseScormMining implements IMappingClass, ICourseRatedObjectAssoc
 	public IRatedObject getRatedObject() {
 		return this.scorm;
 	}
+
+	@Override
+	public Long getPrefix() {
+		return this.scorm.getPrefix();
+	}
 }
