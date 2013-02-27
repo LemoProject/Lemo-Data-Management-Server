@@ -333,64 +333,55 @@ public abstract class ExtractAndMap {
 
 		// load objects which are already in Mining DB for associations
 
-		Query logCount = session.createQuery("select max(id) from ResourceLogMining where platform="
-				+ this.connector.getPlatformId());
+		Query logCount = session.createQuery("select max(id) from ResourceLogMining");
 		this.resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.resourceLogMax == null) {
 			this.resourceLogMax = 0L;
 		}
 
-		logCount = session.createSQLQuery("select max(id) from chat_log where platform="
-				+ this.connector.getPlatformId());
+		logCount = session.createSQLQuery("select max(id) from chat_log");
 		this.chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.chatLogMax == null) {
 			this.chatLogMax = 0L;
 		}
 
-		logCount = session.createSQLQuery("select max(id) from assignment_log where platform="
-				+ this.connector.getPlatformId());
+		logCount = session.createSQLQuery("select max(id) from assignment_log");
 		this.assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.assignmentLogMax == null) {
 			this.assignmentLogMax = 0L;
 		}
 
-		logCount = session.createSQLQuery("select max(id) from course_log where platform="
-				+ this.connector.getPlatformId());
+		logCount = session.createSQLQuery("select max(id) from course_log");
 		this.courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.courseLogMax == null) {
 			this.courseLogMax = 0L;
 		}
 
-		logCount = session.createSQLQuery("select max(id) from forum_log where platform="
-				+ this.connector.getPlatformId());
+		logCount = session.createSQLQuery("select max(id) from forum_log");
 		this.forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.forumLogMax == null) {
 			this.forumLogMax = 0L;
 		}
 
-		logCount = session.createSQLQuery("select max(id) from question_log where platform="
-				+ this.connector.getPlatformId());
+		logCount = session.createSQLQuery("select max(id) from question_log");
 		this.questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.questionLogMax == null) {
 			this.questionLogMax = 0L;
 		}
 
-		logCount = session.createSQLQuery("select max(id) from quiz_log where platform="
-				+ this.connector.getPlatformId());
+		logCount = session.createSQLQuery("select max(id) from quiz_log");
 		this.quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.quizLogMax == null) {
 			this.quizLogMax = 0L;
 		}
 
-		logCount = session.createSQLQuery("select max(id) from scorm_log where platform="
-				+ this.connector.getPlatformId());
+		logCount = session.createSQLQuery("select max(id) from scorm_log");
 		this.scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.scormLogMax == null) {
 			this.scormLogMax = 0L;
 		}
 
-		logCount = session.createSQLQuery("select max(id) from wiki_log where platform="
-				+ this.connector.getPlatformId());
+		logCount = session.createSQLQuery("select max(id) from wiki_log");
 		this.wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.wikiLogMax == null) {
 			this.wikiLogMax = 0L;

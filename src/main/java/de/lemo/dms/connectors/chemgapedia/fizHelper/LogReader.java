@@ -188,7 +188,7 @@ public class LogReader {
 			}
 
 			final Query logCount = session
-					.createQuery("select max(log.id) from ResourceLogMining log where log.platform=" + platformId + "");
+					.createQuery("select max(log.id) from ResourceLogMining log");
 			if (logCount.list().size() > 0) {
 				this.resLogId = ((ArrayList<Long>) logCount.list()).get(0);
 			}
