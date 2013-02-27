@@ -17,7 +17,7 @@ public class RoleLMS {
 	private long id;
 	private String name;
 	private String shortname;
-	private String description;// text
+	private String description;
 	private long sortorder;
 	private String archetype;
 

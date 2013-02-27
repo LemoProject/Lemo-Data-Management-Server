@@ -1890,27 +1890,6 @@ public class ClixImporter {
 	}
 
 	/**
-	 * Generates DegreeCourseMining-objects from the given data.
-	 * 
-	 * @return HashMap with DegreeCourseMining-objects
-	 */
-	/*
-	 * private Map<Long, DegreeCourseMining> generateDegreeCourseMining()
-	 * {
-	 * HashMap<Long, DegreeCourseMining> degreeCourses = new HashMap<Long, DegreeCourseMining>();
-	 * 
-	 * try{
-	 * this.logger.info("Generated " + degreeCourses.size() + " DegreeCourseMinings.");
-	 * 
-	 * }catch(Exception e)
-	 * {
-	 * logger.warn(e.getMessage());
-	 * }
-	 * return degreeCourses;
-	 * }
-	 */
-
-	/**
 	 * Generates GroupUserMining-objects from the given data
 	 * 
 	 * @return HashMap with GroupUserMining-objects

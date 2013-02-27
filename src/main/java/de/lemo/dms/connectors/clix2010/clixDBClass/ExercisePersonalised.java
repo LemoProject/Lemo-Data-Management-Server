@@ -24,7 +24,7 @@ public class ExercisePersonalised implements IClixMappingClass {
 	private String uploadDate;
 	private Long exerciseSheet;
 	private Long community;
-	private final static String DOLLAR = "$$$";
+	private static final String DOLLAR = "$$$";
 
 	public ExercisePersonalisedPK getId() {
 		return this.id;

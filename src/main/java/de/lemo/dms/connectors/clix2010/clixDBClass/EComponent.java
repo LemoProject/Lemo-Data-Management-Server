@@ -23,7 +23,7 @@ public class EComponent implements IClixMappingClass {
 	private String lastUpdated;
 	private String startDate;
 	private String description;
-	private final static String DOLLAR = "$$$";
+	private static final String DOLLAR = "$$$";
 
 	public EComponent()
 	{

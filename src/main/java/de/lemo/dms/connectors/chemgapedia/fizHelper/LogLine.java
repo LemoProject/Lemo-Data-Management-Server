@@ -66,21 +66,17 @@ public class LogLine implements Comparable<LogLine> {
 			this.isValid = true;
 			// Set id
 			if (lineArguments[2].split("/").length == 2) {
+				// IF Cookie is set use Cookie-ID
 				this.id = Encoder.createMD5(lineArguments[2].split("/")[0].trim()) + "/"
-						+ lineArguments[2].split("/")[1]; // IF Cookie is set use Cookie-ID
+						+ lineArguments[2].split("/")[1];
 			}
 			else {
-				this.id = Encoder.createMD5(lineArguments[3].trim()) + ""; // use IP else
+				// use IP else
+				this.id = Encoder.createMD5(lineArguments[3].trim()) + "";
 			}
 
 			// Set timestamp
 			this.timestamp = Long.parseLong(lineArguments[0]);
-
-			// Set URL
-			if (lineArguments[4].equals("-")) {
-				//TODO Löschen, was ist das???
-				System.out.println();
-			}
 			if (!lineArguments[4].trim().startsWith("http://www.chemgapedia.de")) {
 				this.url = "http://www.chemgapedia.de" + lineArguments[4].trim();
 			} else {

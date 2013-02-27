@@ -86,8 +86,9 @@ import de.lemo.dms.db.miningDBclass.WikiMining;
  * The main class of the extraction process.
  * Implementation of the abstract extract class for the LMS Moodle.
  */
-public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in Namen einfügen
-
+public class ExtractAndMapMoodle extends ExtractAndMap {
+	//TODO Versionsnummer in Namen einfügen
+	private static final int DURATION = 3600;
 	// LMS tables instances lists
 	private List<LogLMS> logLms;
 	private List<ResourceLMS> resourceLms;
@@ -117,7 +118,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 	private List<CourseCategoriesLMS> courseCategoriesLms;
 	private List<CourseModulesLMS> courseModulesLms;
 
-	private final boolean numericUserId = false;
+	private static final boolean NUMERIC_USER_ID = false;
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -534,7 +535,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 								this.roleMining, this.oldRoleMining);
 						insert.setPlatform(this.connector.getPlatformId());
 
-						if (!this.numericUserId)
+						if (!this.NUMERIC_USER_ID)
 						{
 							long id = -1;
 							if (this.idMapping.get(loadedItem2.getUserid()) != null)
@@ -782,7 +783,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 						this.courseMining, this.oldCourseMining);
 				insert.setPlatform(this.connector.getPlatformId());
 
-				if (!this.numericUserId)
+				if (!this.NUMERIC_USER_ID)
 				{
 					long id = -1;
 					if (this.idMapping.get(loadedItem.getUserid()) != null)
@@ -831,8 +832,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -911,7 +912,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 				insert.setId(forumLogMining.size() + 1 + this.forumLogMax);
 				insert.setPlatform(this.connector.getPlatformId());
 
-				if (!this.numericUserId)
+				if (!this.NUMERIC_USER_ID)
 				{
 					long id = -1;
 					if (this.idMapping.get(loadedItem.getUserid()) != null)
@@ -987,8 +988,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -1038,7 +1039,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setGroup(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getGroupid()), this.groupMining,
 					this.oldGroupMining);
-			if (!this.numericUserId)
+			if (!this.NUMERIC_USER_ID)
 			{
 				long id = -1;
 				if (this.idMapping.get(loadedItem.getUserid()) != null)
@@ -1176,7 +1177,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			for (final QuestionLMS loadedItem2 : this.questionLms)
 			{
 				if (loadedItem2.getId() == (loadedItem.getQuestion())) {
-					insert.setType(loadedItem2.getQtype());// Type
+					insert.setType(loadedItem2.getQtype());
 					break;
 				}
 			}
@@ -1257,8 +1258,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -1313,7 +1314,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setPlatform(this.connector.getPlatformId());
-				if (!this.numericUserId)
+				if (!this.NUMERIC_USER_ID)
 				{
 					long id = -1;
 					if (this.idMapping.get(loadedItem.getUserid()) != null)
@@ -1342,7 +1343,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					for (final QuizGradesLMS loadedItem2 : this.quizGradesLms)
 					{
 						long id = -1;
-						if (!this.numericUserId)
+						if (!this.NUMERIC_USER_ID)
 						{
 							if (this.idMapping.get(loadedItem.getUserid()) != null)
 							{
@@ -1397,8 +1398,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -1467,7 +1468,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 
-				if (!this.numericUserId)
+				if (!this.NUMERIC_USER_ID)
 				{
 					long id = -1;
 					if (this.idMapping.get(loadedItem.getUserid()) != null)
@@ -1497,17 +1498,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 				insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
 						this.assignmentMining, this.oldAssignmentMining);
 
-				if ((insert.getAssignment() != null) && (insert.getUser() != null) && (insert.getCourse() != null))// &&
-																													// insert.getAction().equals("upload"))
+				if ((insert.getAssignment() != null) && (insert.getUser() != null) && (insert.getCourse() != null))
+																												
 				{
 					if (asSub.get(Long.valueOf(loadedItem.getInfo())) != null) {
 						for (final AssignmentSubmissionsLMS loadedItem2 : asSub.get(Long.valueOf(loadedItem.getInfo())))
 						{
 							if ((loadedItem2.getAssignment() == Long.valueOf(loadedItem.getInfo()))
-									&& loadedItem2.getUserid().equals(loadedItem.getUserid()))// &&
-																								// loadedItem2.getTimemodified()
-																								// ==
-																								// loadedItem.getTime())
+									&& loadedItem2.getUserid().equals(loadedItem.getUserid()))
 							{
 
 								insert.setGrade(Double.valueOf(loadedItem2.getGrade()));
@@ -1550,8 +1548,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -1606,7 +1604,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 						this.courseMining, this.oldCourseMining);
 				insert.setPlatform(this.connector.getPlatformId());
 
-				if (!this.numericUserId)
+				if (!this.NUMERIC_USER_ID)
 				{
 					long id = -1;
 					if (this.idMapping.get(loadedItem.getUserid()) != null)
@@ -1670,8 +1668,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -1846,7 +1844,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 				insert.setTimeModified(loadedItem.getTimemodified());
 			}
 
-			if (!this.numericUserId)
+			if (!this.NUMERIC_USER_ID)
 			{
 				long id = -1;
 				if (this.idMapping.get(loadedItem.getUserid()) != null)
@@ -1976,7 +1974,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 
 				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
 
-				if (!this.numericUserId)
+				if (!this.NUMERIC_USER_ID)
 				{
 					long id = -1;
 					if (this.idMapping.get(loadedItem.getUserid()) != null)
@@ -2038,8 +2036,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -2057,7 +2055,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 
 			final UserMining insert = new UserMining();
 
-			if (!this.numericUserId)
+			if (!this.NUMERIC_USER_ID)
 			{
 				final long id = this.largestId + 1;
 				this.largestId = id;
@@ -2135,7 +2133,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 
 				insert.setPlatform(this.connector.getPlatformId());
 
-				if (!this.numericUserId)
+				if (!this.NUMERIC_USER_ID)
 				{
 					long id = -1;
 					if (this.idMapping.get(loadedItem.getUserid()) != null)
@@ -2188,8 +2186,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 					}
 				}
 				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
+				if (duration > DURATION) {
+					duration = DURATION;
 				}
 				r.setDuration(duration);
 			}
@@ -2371,7 +2369,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {//TODO Versionsnummer in
 			}
 			insert.setDuration(0L);
 
-			if (!this.numericUserId)
+			if (!this.NUMERIC_USER_ID)
 			{
 				long id = -1;
 				if (this.idMapping.get(loadedItem.getUser()) != null)

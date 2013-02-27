@@ -17,7 +17,7 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
 public class EComponentType implements IClixMappingClass {
 
 	private EComponentTypePK id;
-	private final static String DOLLAR = "$$$";
+	private static final String DOLLAR = "$$$";
 
 	public EComponentTypePK getId() {
 		return this.id;

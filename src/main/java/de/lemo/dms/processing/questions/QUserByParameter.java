@@ -130,10 +130,8 @@ public class QUserByParameter extends Question {
 		final HashMap<Long, Long> users = new HashMap<Long, Long>();
 		for (int i = 0; i < logs.size(); i++)
 		{
-			if (users.get(logs.get(i).getUser().getId()) == null) {
-				if (usersWithinRoles == null) {
+			if ((users.get(logs.get(i).getUser().getId()) == null) && usersWithinRoles == null) {
 					users.put(logs.get(i).getUser().getId(), logs.get(i).getUser().getId());
-				}
 			}
 			// If there are role restrictions, only user with the specified role get added
 			if ((usersWithinRoles != null) && (usersWithinRoles.get(logs.get(i).getUser().getId()) != null)) {
@@ -147,6 +145,7 @@ public class QUserByParameter extends Question {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<ILogMining> loadLogMining(Criteria criteria, List<String> objects, String type) {
 
 		List<Long> ids = new ArrayList<Long>(objects.size() / 2);
@@ -164,10 +163,7 @@ public class QUserByParameter extends Question {
 		if (!ids.isEmpty()) {
 			criteria.add(Restrictions.in("log." + type + ".id", ids));
 		}
-
-		@SuppressWarnings("unchecked")
-		List<ILogMining> result = criteria.list();
-		return result;
+		return criteria.list();
 
 	}
 }

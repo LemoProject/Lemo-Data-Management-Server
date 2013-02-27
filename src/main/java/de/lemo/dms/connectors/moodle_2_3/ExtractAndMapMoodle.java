@@ -90,7 +90,8 @@ import de.lemo.dms.db.miningDBclass.WikiMining;
  * The main class of the extraction process.
  * Implementation of the abstract extract class for the LMS Moodle.
  */
-public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Namen einf�gen
+public class ExtractAndMapMoodle extends ExtractAndMap {
+	// Versionsnummer in Namen einfügen
 
 	// LMS tables instances lists
 	/** The log_lms. */
@@ -1080,9 +1081,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 
 			final QuestionLogMining insert = new QuestionLogMining();
 
-			insert.setId(questionLogMiningtmp.size() + 1 + this.questionLogMax); // ID
+			insert.setId(questionLogMiningtmp.size() + 1 + this.questionLogMax);
 			insert.setQuestion(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getQuestion()),
-					this.questionMining, this.oldQuestionMining); // Question
+					this.questionMining, this.oldQuestionMining);
 			insert.setPenalty(loadedItem.getPenalty());
 			insert.setAnswers(loadedItem.getAnswer());
 			insert.setTimestamp(loadedItem.getTimestamp());
@@ -1152,7 +1153,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 			for (final QuestionLMS loadedItem2 : this.questionLms)
 			{
 				if (loadedItem2.getId() == (loadedItem.getQuestion())) {
-					insert.setType(loadedItem2.getQtype());// Type
+					insert.setType(loadedItem2.getQtype());
 					break;
 				}
 			}
@@ -1404,18 +1405,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {// Versionsnummer in Nam
 						this.assignmentMining, this.oldAssignmentMining);
 				insert.setPlatform(this.connector.getPlatformId());
 
-				if ((insert.getAssignment() != null) && (insert.getUser() != null) && (insert.getCourse() != null))// &&
-																													// insert.getAction().equals("upload"))
+				if ((insert.getAssignment() != null) && (insert.getUser() != null) && (insert.getCourse() != null))
 				{
 					if (asSub.get(Long.valueOf(loadedItem.getInfo())) != null) {
 						for (final AssignmentSubmissionsLMS loadedItem2 : asSub
 								.get(Long.valueOf(loadedItem.getInfo())))
 						{
 							if ((loadedItem2.getAssignment() == Long.valueOf(loadedItem.getInfo()))
-									&& loadedItem2.getUserid().equals(loadedItem.getUserid()))// &&
-																								// loadedItem2.getTimemodified()
-																								// ==
-																								// loadedItem.getTime())
+									&& loadedItem2.getUserid().equals(loadedItem.getUserid()))
 							{
 								insert.setGrade((double) loadedItem2.getGrade());
 								break;

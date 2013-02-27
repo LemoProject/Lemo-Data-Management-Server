@@ -289,7 +289,6 @@ public abstract class ExtractAndMap {
 		}
 
 		// calculate running time of extract process
-		// Transaction tx = mining_session.beginTransaction();
 		final long endtime = System.currentTimeMillis() / 1000;
 		final ConfigMining config = new ConfigMining();
 		config.setLastModifiedLong(System.currentTimeMillis());
@@ -1167,13 +1166,6 @@ public abstract class ExtractAndMap {
 	abstract Map<Long, LevelMining> generateLevelMining();
 
 	/**
-	 * Generate department degree mining.
-	 * 
-	 * @return the list
-	 */
-	// abstract Map<Long, DepartmentDegreeMining> generateDepartmentDegreeMining();
-
-	/**
 	 * Generate level association mining.
 	 * 
 	 * @return the list
@@ -1186,34 +1178,6 @@ public abstract class ExtractAndMap {
 	 * @return the list
 	 */
 	abstract Map<Long, LevelCourseMining> generateLevelCourseMining();
-
-	/**
-	 * Generate degree mining.
-	 * 
-	 * @return the list
-	 */
-	// abstract Map<Long, DegreeMining> generateDegreeMining();
-
-	/**
-	 * Generate department mining.
-	 * 
-	 * @return the list
-	 */
-	// abstract Map<Long, DepartmentMining> generateDepartmentMining();
-
-	/**
-	 * Generate department degree mining.
-	 * 
-	 * @return the list
-	 */
-	// abstract Map<Long, DepartmentDegreeMining> generateDepartmentDegreeMining();
-
-	/**
-	 * Generate degree course mining.
-	 * 
-	 * @return the list
-	 */
-	// abstract Map<Long, DegreeCourseMining> generateDegreeCourseMining();
 
 	/**
 	 * Generate chat mining.
