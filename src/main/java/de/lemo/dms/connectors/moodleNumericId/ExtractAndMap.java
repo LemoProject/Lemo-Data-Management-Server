@@ -322,7 +322,7 @@ public abstract class ExtractAndMap {
 		this.platformMining = new HashMap<Long, PlatformMining>();
 
 		this.configMiningTimestamp = this.dbHandler.getMiningSession()
-				.createQuery("select max(lastModified) from ConfigMining x order by x.id asc").list();
+				.createQuery("select max(lastModified) from ConfigMining x where x.platform="+ this.connector.getPlatformId() + " order by x.id asc").list();
 
 
 		if (this.configMiningTimestamp.get(0) == null) {
