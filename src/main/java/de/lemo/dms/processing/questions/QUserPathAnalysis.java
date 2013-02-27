@@ -23,6 +23,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
@@ -63,7 +64,7 @@ public class QUserPathAnalysis extends Question {
 	@POST
 	public ResultListUserPathGraph compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
-			@FormParam(MetaParam.USER_IDS) final List<Long> userIds,
+			@FormParam(MetaParam.USER_IDS) List<Long> userIds,
 			@FormParam(MetaParam.TYPES) final List<String> types,
 			@FormParam(MetaParam.LOGOUT_FLAG) final Boolean considerLogouts,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
@@ -75,8 +76,23 @@ public class QUserPathAnalysis extends Question {
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
+		Criteria criteria;
+		if(userIds == null || userIds.size() == 0)
+		{
+			criteria = session.createCriteria(CourseUserMining.class, "cu")
+				.add(Restrictions.in("cu.course.id", courseIds));
+			
+			if(userIds == null)
+				userIds = new ArrayList<Long>();
+			
+			for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
+				if (cu.getUser() == null && cu.getRole().getType() == 2)
+					userIds.add(cu.getUser().getId());
+			}
+		}
+		
 		// Create criteria for log-file-search
-		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		criteria = session.createCriteria(ILogMining.class, "log");
 
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		criteria.addOrder(Order.asc("log.timestamp"));

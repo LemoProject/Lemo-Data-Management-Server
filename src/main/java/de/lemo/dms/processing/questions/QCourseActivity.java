@@ -59,7 +59,7 @@ public class QCourseActivity extends Question {
 	public ResultListHashMapObject compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
 			@FormParam(MetaParam.ROLE_IDS) final List<Long> roles,
-			@FormParam(MetaParam.USER_IDS) final List<Long> users,
+			@FormParam(MetaParam.USER_IDS) List<Long> users,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
@@ -73,6 +73,20 @@ public class QCourseActivity extends Question {
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
+		Criteria criteria;
+		if(users == null || users.size() == 0)
+		{
+			criteria = session.createCriteria(CourseUserMining.class, "cu")
+				.add(Restrictions.in("cu.course.id", courses));
+			
+			if(users == null)
+				users = new ArrayList<Long>();
+			
+			for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
+				if (cu.getUser() == null && cu.getRole().getType() == 2)
+					users.add(cu.getUser().getId());
+			}
+		}
 		// Calculate size of time intervalls
 		final double intervall = (endTime - startTime) / (resolution);
 
@@ -119,9 +133,11 @@ public class QCourseActivity extends Question {
 
 		if ((roles != null) && (roles.size() > 0))
 		{
-			final Criteria criteria = session.createCriteria(CourseUserMining.class, "log")
+			criteria = session.createCriteria(CourseUserMining.class, "log")
 					.add(Restrictions.in("log.course.id", courses))
+					.add(Restrictions.in("log.course.id", users))
 					.add(Restrictions.in("log.role.id", roles));
+			
 			if ((users != null) && (users.size() > 0)) {
 				criteria.add(Restrictions.in("log.user.id", users));
 			}

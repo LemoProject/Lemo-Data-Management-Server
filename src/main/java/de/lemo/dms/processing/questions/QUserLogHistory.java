@@ -20,6 +20,7 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuizLogMining;
@@ -53,10 +54,11 @@ public class QUserLogHistory extends Question {
 	 *            LongInteger time stamp
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListUserLogObject compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
-			@FormParam(MetaParam.USER_IDS) final List<Long> userIds,
+			@FormParam(MetaParam.USER_IDS) List<Long> userIds,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
@@ -64,16 +66,28 @@ public class QUserLogHistory extends Question {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
-
-		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
-
+		
+		Criteria criteria;
+		if(userIds == null || userIds.size() == 0)
+		{
+			criteria = session.createCriteria(CourseUserMining.class, "cu")
+				.add(Restrictions.in("cu.course.id", courseIds));
+			
+			if(userIds == null)
+				userIds = new ArrayList<Long>();
+			
+			for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
+				if (cu.getUser() == null && cu.getRole().getType() == 2)
+					userIds.add(cu.getUser().getId());
+			}
+		}
+		criteria = session.createCriteria(ILogMining.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime))
 				.add(Restrictions.in("log.user.id", userIds));
 		if ((courseIds != null) && (courseIds.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courseIds));
 		}
 
-		@SuppressWarnings("unchecked")
 		final List<ILogMining> logs = criteria.list();
 
 		// HashMap for all user-histories

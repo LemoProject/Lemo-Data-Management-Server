@@ -20,6 +20,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -50,10 +51,11 @@ public class QPerformanceBoxPlot extends Question {
 	 *            (mandatory)
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListBoxPlot compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
-			@FormParam(MetaParam.USER_IDS) final List<Long> users,
+			@FormParam(MetaParam.USER_IDS) List<Long> users,
 			@FormParam(MetaParam.QUIZ_IDS) List<Long> quizzes,
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
@@ -90,8 +92,23 @@ public class QPerformanceBoxPlot extends Question {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
+		
+		Criteria criteria;
+		if(users == null || users.size() == 0)
+		{
+			criteria = session.createCriteria(CourseUserMining.class, "cu")
+				.add(Restrictions.in("cu.course.id", courses));
+			
+			if(users == null)
+				users = new ArrayList<Long>();
+			
+			for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
+				if (cu.getUser() == null && cu.getRole().getType() == 2)
+					users.add(cu.getUser().getId());
+			}
+		}
 
-		final Criteria criteria = session.createCriteria(IRatedLogObject.class, "log");
+		criteria = session.createCriteria(IRatedLogObject.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
