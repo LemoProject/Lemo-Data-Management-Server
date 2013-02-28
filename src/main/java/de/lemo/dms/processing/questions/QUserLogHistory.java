@@ -30,6 +30,7 @@ import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResultListUserLogObject;
 import de.lemo.dms.processing.resulttype.UserLogObject;
 
@@ -70,20 +71,12 @@ public class QUserLogHistory extends Question {
 		Criteria criteria;
 		if(userIds == null || userIds.size() == 0)
 		{
-			criteria = session.createCriteria(CourseUserMining.class, "cu")
-				.add(Restrictions.in("cu.course.id", courseIds));
-			
-			if(userIds == null)
-				userIds = new ArrayList<Long>();
-			
-			for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
-				if (cu.getUser() == null && cu.getRole().getType() == 2)
-					userIds.add(cu.getUser().getId());
-			}
+			userIds = StudentHelper.getCourseStudents(courseIds);
 		}
 		criteria = session.createCriteria(ILogMining.class, "log");
-		criteria.add(Restrictions.between("log.timestamp", startTime, endTime))
-				.add(Restrictions.in("log.user.id", userIds));
+		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
+		if(userIds != null && userIds.size() > 0)
+			criteria.add(Restrictions.in("log.user.id", userIds));
 		if ((courseIds != null) && (courseIds.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courseIds));
 		}

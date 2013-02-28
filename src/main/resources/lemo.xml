@@ -50,7 +50,7 @@
         <property name="hibernate.default_schema"></property>
       </connector>
       <connector platform-id="3" name="Chemgaroo" platform-type="Chemgaroo">
-        <property name="lemo.log_file_path">C:\Users\s.schwarzrock\Desktop\120614\130104_lemojoin_10K_1.log</property>
+        <property name="lemo.log_file_path">C:\Users\s.schwarzrock\Desktop\120614\lemo-join.log</property>
         <property name="lemo.resource_metadata_path">C:\Users\s.schwarzrock\Desktop\vsc</property>
         <property name="lemo.process_log_file">true</property>
         <property name="lemo.process_metadata">true</property>

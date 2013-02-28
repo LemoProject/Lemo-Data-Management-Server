@@ -22,6 +22,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListRRITypes;
 
@@ -55,18 +56,13 @@ public class QActivityResourceTypeResolution extends Question {
 		for (ELearningObjectType loType : ELearningObjectType.values()) {
 			if (allTypes || resourceTypes.contains(loType.name().toLowerCase())) {
 				Criteria criteria;
-				ArrayList<Long> users = new ArrayList<Long>();
-				criteria = session.createCriteria(CourseUserMining.class, "cu")
-					.add(Restrictions.in("cu.course.id", courses));
-				
-				for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
-					if (cu.getUser() == null && cu.getRole().getType() == 2)
-						users.add(cu.getUser().getId());
-				}
+				ArrayList<Long> users = StudentHelper.getCourseStudents(courses);
 				criteria = session.createCriteria(loType.getLogMiningType(), "log")
 						.add(Restrictions.between("log.timestamp", startTime, endTime))
-						.add(Restrictions.in("log.course.id", courses))
 						.add(Restrictions.in("log.user.id", users));
+				if(users.size() > 0)
+					criteria.add(Restrictions.in("log.course.id", courses));
+				
 				final List<ILogMining> logs = criteria.list();
 				HashMap<String, ResourceRequestInfo> rri = loadLogMining(logs, loType,
 						startTime, endTime, resolution, intervall);

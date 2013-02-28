@@ -17,7 +17,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuizLogMining;
@@ -27,6 +26,7 @@ import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
 
@@ -53,27 +53,16 @@ public class QActivityResourceType extends Question {
 		boolean allTypes = resourceTypes.isEmpty();
 		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		
-		ArrayList<Long> users = new ArrayList<Long>();
-		Criteria criteria;
-		if(users == null || users.size() == 0)
-		{
-			criteria = session.createCriteria(CourseUserMining.class, "cu")
-				.add(Restrictions.in("cu.course.id", courses));
-			for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
-				if (cu.getUser() == null && cu.getRole().getType() == 2)
-					users.add(cu.getUser().getId());
-			}
-		}
-
+		ArrayList<Long> users = StudentHelper.getCourseStudents(courses);
 		// Create and initialize array for results
 		if (resourceTypes.contains(ELearningObjectType.ASSIGNMENT.toString().toLowerCase()) || allTypes)
 		{
-			criteria = session.createCriteria(AssignmentLogMining.class, "log");
+			final Criteria criteria = session.createCriteria(AssignmentLogMining.class, "log");
 			criteria.add(Restrictions.in("log.course.id", courses))
-					.add(Restrictions.in("log.user.id", users))
 					.add(Restrictions.between("log.timestamp", startTime, endTime));
+			if(users.size() > 0)
+				criteria.add(Restrictions.in("log.user.id", users));
 
-			@SuppressWarnings("unchecked")
 			final List<AssignmentLogMining> ilm = criteria.list();
 			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 			for (int i = 0; i < ilm.size(); i++) {
@@ -97,11 +86,10 @@ public class QActivityResourceType extends Question {
 		}
 		if (resourceTypes.contains(ELearningObjectType.FORUM.toString().toLowerCase()) || allTypes)
 		{
-			criteria = session.createCriteria(ForumLogMining.class, "log");
-			criteria.add(Restrictions.in("log.course.id", courses))
+			final Criteria criteria = session.createCriteria(ForumLogMining.class, "log");
+				criteria.add(Restrictions.in("log.course.id", courses))
 					.add(Restrictions.in("log.user.id", users))
 					.add(Restrictions.between("log.timestamp", startTime, endTime));
-			@SuppressWarnings("unchecked")
 			final List<ForumLogMining> ilm = criteria.list();
 			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 			for (int i = 0; i < ilm.size(); i++) {
@@ -120,11 +108,10 @@ public class QActivityResourceType extends Question {
 		}
 		if (resourceTypes.contains(ELearningObjectType.QUESTION.toString().toLowerCase()) || allTypes)
 		{
-			criteria = session.createCriteria(QuestionLogMining.class, "log");
+			final Criteria criteria = session.createCriteria(QuestionLogMining.class, "log");
 			criteria.add(Restrictions.in("log.course.id", courses))
 					.add(Restrictions.in("log.user.id", users))
 					.add(Restrictions.between("log.timestamp", startTime, endTime));
-			@SuppressWarnings("unchecked")
 			final List<QuestionLogMining> ilm = criteria.list();
 			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 			for (int i = 0; i < ilm.size(); i++) {
@@ -144,11 +131,10 @@ public class QActivityResourceType extends Question {
 		}
 		if (resourceTypes.contains(ELearningObjectType.QUIZ.toString().toLowerCase()) || allTypes)
 		{
-			criteria = session.createCriteria(QuizLogMining.class, "log");
+			final Criteria criteria = session.createCriteria(QuizLogMining.class, "log");
 			criteria.add(Restrictions.in("log.course.id", courses))
 					.add(Restrictions.in("log.user.id", users))
 					.add(Restrictions.between("log.timestamp", startTime, endTime));
-			@SuppressWarnings("unchecked")
 			final List<QuizLogMining> ilm = criteria.list();
 			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 			for (int i = 0; i < ilm.size(); i++) {
@@ -167,11 +153,10 @@ public class QActivityResourceType extends Question {
 		}
 		if (resourceTypes.contains(ELearningObjectType.RESOURCE.toString().toLowerCase()) || allTypes)
 		{
-			criteria = session.createCriteria(ResourceLogMining.class, "log");
+			final Criteria criteria = session.createCriteria(ResourceLogMining.class, "log");
 			criteria.add(Restrictions.in("log.course.id", courses))
 					.add(Restrictions.in("log.user.id", users))
 					.add(Restrictions.between("log.timestamp", startTime, endTime));
-			@SuppressWarnings("unchecked")
 			final List<ResourceLogMining> ilm = criteria.list();
 			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 			for (int i = 0; i < ilm.size(); i++) {
@@ -191,11 +176,10 @@ public class QActivityResourceType extends Question {
 		}
 		if (resourceTypes.contains(ELearningObjectType.SCORM.toString().toLowerCase()) || allTypes)
 		{
-			criteria = session.createCriteria(ScormLogMining.class, "log");
+			final Criteria criteria = session.createCriteria(ScormLogMining.class, "log");
 			criteria.add(Restrictions.in("log.course.id", courses))
 					.add(Restrictions.in("log.user.id", users))
 					.add(Restrictions.between("log.timestamp", startTime, endTime));
-			@SuppressWarnings("unchecked")
 			final List<ScormLogMining> ilm = criteria.list();
 			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 			for (int i = 0; i < ilm.size(); i++) {
@@ -214,11 +198,10 @@ public class QActivityResourceType extends Question {
 		}
 		if (resourceTypes.contains(ELearningObjectType.WIKI.toString().toLowerCase()) || allTypes)
 		{
-			criteria = session.createCriteria(WikiLogMining.class, "log");
+			final Criteria criteria = session.createCriteria(WikiLogMining.class, "log");
 			criteria.add(Restrictions.in("log.course.id", courses))
 					.add(Restrictions.in("log.user.id", users))
 					.add(Restrictions.between("log.timestamp", startTime, endTime));
-			@SuppressWarnings("unchecked")
 			final List<WikiLogMining> ilm = criteria.list();
 			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
 			for (int i = 0; i < ilm.size(); i++) {

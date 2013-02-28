@@ -30,6 +30,7 @@ import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 import de.lemo.dms.processing.MetaParam;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 /**
@@ -99,23 +100,15 @@ public class QPerformanceUserTest {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			criteria = session.createCriteria(CourseUserMining.class, "cu")
-				.add(Restrictions.in("cu.course.id", courses));
-			
-			if(users == null)
-				users = new ArrayList<Long>();
-			
-			for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
-				if (cu.getUser() == null && cu.getRole().getType() == 2)
-					users.add(cu.getUser().getId());
-			}
+			users = StudentHelper.getCourseStudents(courses);
 		}
 		criteria = session.createCriteria(IRatedLogObject.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
 		}
-		criteria.add(Restrictions.in("log.user.id", users));
+		if(users != null && users.size() > 0)
+			criteria.add(Restrictions.in("log.user.id", users));
 		
 		@SuppressWarnings("unchecked")
 		final ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();

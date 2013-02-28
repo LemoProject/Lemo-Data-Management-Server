@@ -35,6 +35,7 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 
 /**
@@ -63,23 +64,16 @@ public class QCourseUserPaths extends Question {
 		final Session session = dbHandler.getMiningSession();
 		
 		Criteria criteria;
-		ArrayList<Long> us = new ArrayList<Long>();
-		if(us == null || us.size() == 0)
-		{
-			criteria = session.createCriteria(CourseUserMining.class, "cu")
-				.add(Restrictions.in("cu.course.id", courseIds));
-			
-			for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
-				if (cu.getUser() == null && cu.getRole().getType() == 2)
-					us.add(cu.getUser().getId());
-			}
-		}
+		ArrayList<Long> us = StudentHelper.getCourseStudents(courseIds);
 
 		criteria = session.createCriteria(ILogMining.class, "log")
 				.add(Restrictions.in("log.course.id", courseIds))
-				.add(Restrictions.in("log.user.id", us))
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
 				.add(Restrictions.eq("log.action", "view"));
+		if (us.size() > 0) {
+				criteria.add(Restrictions.in("log.user.id", us));
+		}
+
 
 		final List<ILogMining> logs = criteria.list();
 

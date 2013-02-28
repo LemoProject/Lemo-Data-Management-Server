@@ -25,6 +25,7 @@ import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResultListHashMapObject;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
@@ -76,16 +77,7 @@ public class QCourseActivity extends Question {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			criteria = session.createCriteria(CourseUserMining.class, "cu")
-				.add(Restrictions.in("cu.course.id", courses));
-			
-			if(users == null)
-				users = new ArrayList<Long>();
-			
-			for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
-				if (cu.getUser() == null && cu.getRole().getType() == 2)
-					users.add(cu.getUser().getId());
-			}
+			users = StudentHelper.getCourseStudents(courses);
 		}
 		// Calculate size of time intervalls
 		final double intervall = (endTime - startTime) / (resolution);
@@ -135,8 +127,10 @@ public class QCourseActivity extends Question {
 		{
 			criteria = session.createCriteria(CourseUserMining.class, "log")
 					.add(Restrictions.in("log.course.id", courses))
-					.add(Restrictions.in("log.course.id", users))
+					
 					.add(Restrictions.in("log.role.id", roles));
+			if(users.size() > 0)
+				criteria.add(Restrictions.in("log.user.id", users));
 			
 			if ((users != null) && (users.size() > 0)) {
 				criteria.add(Restrictions.in("log.user.id", users));

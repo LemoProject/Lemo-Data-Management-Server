@@ -24,6 +24,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
 
@@ -69,16 +70,7 @@ public class QLearningObjectUsage extends Question {
 		Criteria criteria;
 		if(userIds == null || userIds.size() == 0)
 		{
-			criteria = session.createCriteria(CourseUserMining.class, "cu")
-				.add(Restrictions.in("cu.course.id", courseIds));
-			
-			if(userIds == null)
-				userIds = new ArrayList<Long>();
-			
-			for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
-				if (cu.getUser() == null && cu.getRole().getType() == 2)
-					userIds.add(cu.getUser().getId());
-			}
+			userIds = StudentHelper.getCourseStudents(courseIds);
 		}
 
 		// Create criteria for log-file-search

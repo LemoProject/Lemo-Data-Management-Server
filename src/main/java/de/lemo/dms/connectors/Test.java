@@ -253,7 +253,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodleNumericConn();
+		this.runChemConn();
 		logger.info("Test finished");
 	}
 
