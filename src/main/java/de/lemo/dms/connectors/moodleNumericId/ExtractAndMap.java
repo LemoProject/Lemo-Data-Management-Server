@@ -216,7 +216,7 @@ public abstract class ExtractAndMap {
 	 *            Optional arguments for the process. Used for the selection of the ExtractAndMap Implementation and
 	 *            time stamp when the extraction should start.
 	 **/
-	public void start(final String[] args, final DBConfigObject sourceDBConf) {
+	public void start(final String[] args, final DBConfigObject sourceDBConf, List<Long> courses) {
 
 		this.dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		this.c = new Clock();
@@ -236,7 +236,7 @@ public abstract class ExtractAndMap {
 		{
 			// get the needed tables from LMS DB
 			this.c.reset();
-			this.getLMStables(sourceDBConf, readingtimestamp);
+			this.getLMStables(sourceDBConf, readingtimestamp, courses);
 			logger.info("Loaded data from source in " + this.c.getAndReset());
 
 			// create and write the mining database tables
@@ -255,7 +255,7 @@ public abstract class ExtractAndMap {
 				// first read & save LMS DB tables from 0 to starttime for timestamps which are not set(which are 0)
 				if (this.configMiningTimestamp.get(0) == null) {
 					this.c.reset();
-					this.getLMStables(sourceDBConf, 0, readingtimestamp);
+					this.getLMStables(sourceDBConf, 0, readingtimestamp, courses);
 					logger.info("Loaded data from source in " + this.c.getAndReset());
 					// create and write the mining database tables
 					this.saveMiningTables();
@@ -266,7 +266,7 @@ public abstract class ExtractAndMap {
 				{
 					this.logger.info("looptimestamp:" + looptimestamp);
 					this.c.reset();
-					this.getLMStables(sourceDBConf, looptimestamp + 1, readingtimestamp2);
+					this.getLMStables(sourceDBConf, looptimestamp + 1, readingtimestamp2, courses);
 					logger.info("Loaded data from source in " + this.c.getAndReset());
 					looptimestamp += 172800;
 					readingtimestamp2 += 172800;
@@ -525,7 +525,7 @@ public abstract class ExtractAndMap {
 	 *            *
 	 * @return the lM stables
 	 */
-	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp);
+	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, List<Long> courses);
 
 	/**
 	 * Has to read the LMS Database.
@@ -545,7 +545,7 @@ public abstract class ExtractAndMap {
 	 *            *
 	 * @return the lM stables
 	 */
-	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, long readingtotimestamp);
+	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, long readingtotimestamp, List<Long> courses);
 
 	/**
 	 * Has to clear the lists of LMS tables*.

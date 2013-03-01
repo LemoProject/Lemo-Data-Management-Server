@@ -48,5 +48,7 @@ public interface IConnector {
 	boolean isFilterEnabled();
 
 	List<Long> getCourseIdFilter();
+	
+	void setCourseIdFilter(List<Long> courses);
 
 }
