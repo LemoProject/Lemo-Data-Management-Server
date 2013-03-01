@@ -29,7 +29,7 @@ import de.lemo.dms.processing.resulttype.BoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
 
 /**
- * Accumulates the perfromance (result of tests) of the users over a period
+ * Accumulates the performance (result of tests) of the users over a period
  * 
  * @author Sebastian Schwarzrock
  */
@@ -109,7 +109,6 @@ public class QPerformanceBoxPlot extends Question {
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
 
-		@SuppressWarnings("unchecked")
 		final ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 
 		final HashMap<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>();

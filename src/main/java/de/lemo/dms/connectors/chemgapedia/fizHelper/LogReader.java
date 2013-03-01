@@ -112,6 +112,8 @@ public class LogReader {
 	private final IConnector connector;
 
 	private Logger logger = Logger.getLogger(this.getClass());
+	
+	private RoleMining standardRole;
 	/**
 	 * Creates a new LogReader-object, imports necessary objects from Mining-Database and sets counters.
 	 * 
@@ -197,6 +199,7 @@ public class LogReader {
 				role.setShortname("STD");
 				role.setType(2);
 				
+				this.standardRole = role;
 				this.oldRoles.put(role.getId(), role);
 			}
 
@@ -558,7 +561,7 @@ public class LogReader {
 							if (h.length() > 0) {
 								h = f + h.substring(1);
 							} else {
-								logger.info("URL doesn't match pattern: " + lo.getUrl());
+								logger.debug("URL doesn't match pattern: " + lo.getUrl());
 							}
 							r.setTitle(h);
 
@@ -588,9 +591,9 @@ public class LogReader {
 						}
 					}
 					else if (!logLine.isValid()) {
-						logger.info("Line doesn't match pattern.");
+						logger.debug("Line doesn't match pattern.");
 					} else {
-						logger.info("Line's timestamp is to old.");
+						logger.debug("Line's timestamp is to old.");
 					}
 				}
 				if (filterLog) {
@@ -617,17 +620,20 @@ public class LogReader {
 	{
 		final List<Collection<?>> l = new ArrayList<Collection<?>>();
 		final ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
-		final HashMap<String, CourseUserMining> courseUserMining = new HashMap<String, CourseUserMining>();
+		ArrayList<CourseUserMining> courseUserMining = new ArrayList<CourseUserMining>();
 		final Collection<UserMining> users = this.newUsers.values();
 		final Collection<IDMappingMining> idmap = this.newIdMapping.values();
 		logger.info("Found " + users.size() + " users.");
 		l.add(users);
+		logger.info("Found " + idmap.size() + " IDMappings.");
 		l.add(idmap);
-
+		
 		for (final ArrayList<LogObject> loadedItem : this.userHistories.values())
 		{
+			final HashMap<Long, CourseUserMining> courseUserSingle = new HashMap<Long, CourseUserMining>();
 			for (int i = 0; i < loadedItem.size(); i++)
 			{
+				
 				final ResourceLogMining rl = new ResourceLogMining();
 
 				// Set Url for resource-object
@@ -645,44 +651,50 @@ public class LogReader {
 				rl.setPlatform(this.connector.getPlatformId());
 				rl.setId(this.resLogId + 1);
 				this.resLogId++;
-				
+			
 				if(rl.getCourse() != null)
 				{
-					CourseUserMining cu;
-					if(courseUserMining.get(rl.getUser().getId() + "-" + rl.getCourse().getId()) == null)
-					{
+					CourseUserMining cu = courseUserSingle.get(rl.getCourse().getId());
+					
+					if(cu == null)
+					{	
+						
 						cu = new CourseUserMining();
 						cu.setCourse(rl.getCourse());
 						cu.setUser(rl.getUser());
 						cu.setEnrolend(rl.getTimestamp());
 						cu.setEnrolstart(rl.getTimestamp());
-						cu.setRole(Long.valueOf(connector.getPrefix() + "" + 0), oldRoles, oldRoles);
+						cu.setRole(this.standardRole);
 						cu.setPlatform(connector.getPlatformId());
 						
 						Long id = this.courseUserIdCount + 1;
 						this.courseUserIdCount = id;
 						cu.setId(Long.valueOf(connector.getPrefix() + "" + id));
-					}
+						courseUserSingle.put(rl.getCourse().getId(), cu);
+					}					
 					else
 					{
-						cu = courseUserMining.get(rl.getUser().getId() + "-" + rl.getCourse().getId());
 						if(cu.getEnrolend() < rl.getTimestamp())
 							cu.setEnrolend(rl.getTimestamp());
 						if(cu.getEnrolstart() > rl.getTimestamp())
-							cu.setEnrolstart(rl.getTimestamp());
+							cu.setEnrolstart(rl.getTimestamp());					
 					}
-					
-					courseUserMining.put(rl.getUser().getId() + "-" + rl.getCourse().getId(), cu);
 				}
-
+				
+				
 				resourceLogMining.add(rl);
 			}
+			courseUserMining.addAll(courseUserSingle.values());
 		}
 		Collections.sort(resourceLogMining);
+		logger.info("Found " + newResources.values().size() + " resources.");
 		l.add(this.newResources.values());
+		logger.info("Found " + oldRoles.values().size() + " roles.");
 		l.add(this.oldRoles.values());
-		l.add(courseUserMining.values());
+		logger.info("Found " + courseUserMining.size() + " courseUsers.");
+		l.add(courseUserMining);logger.info("Found " + resourceLogMining.size() + " resourceLogs.");
 		l.add(resourceLogMining);
+		logger.info("Writing to database...");
 		if (session.isOpen()) {
 			this.dbHandler.saveCollectionToDB(session, l);
 		} else
