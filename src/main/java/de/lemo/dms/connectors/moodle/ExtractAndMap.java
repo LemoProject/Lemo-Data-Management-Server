@@ -332,64 +332,55 @@ public abstract class ExtractAndMap {
 			this.largestId = ((ArrayList<Long>) large.list()).get(0);
 		}
 
-		Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log where log.platform="
-				+ platformId + "");
+		Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log");
 		this.resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.resourceLogMax == null) {
 			this.resourceLogMax = 0L;
 		}
 
-		logCount = session.createQuery("select max(log.id) from ChatLogMining log where log.platform=" + platformId
-				+ "");
+		logCount = session.createQuery("select max(log.id) from ChatLogMining log");
 		this.chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.chatLogMax == null) {
 			this.chatLogMax = 0L;
 		}
 
-		logCount = session.createQuery("select max(log.id) from AssignmentLogMining log where log.platform="
-				+ platformId + "");
+		logCount = session.createQuery("select max(log.id) from AssignmentLogMining log");
 		this.assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.assignmentLogMax == null) {
 			this.assignmentLogMax = 0L;
 		}
 
-		logCount = session.createQuery("select max(log.id) from CourseLogMining log where log.platform=" + platformId
-				+ "");
+		logCount = session.createQuery("select max(log.id) from CourseLogMining log");
 		this.courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.courseLogMax == null) {
 			this.courseLogMax = 0L;
 		}
 
-		logCount = session.createQuery("select max(log.id) from ForumLogMining log where log.platform=" + platformId
-				+ "");
+		logCount = session.createQuery("select max(log.id) from ForumLogMining log");
 		this.forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.forumLogMax == null) {
 			this.forumLogMax = 0L;
 		}
 
-		logCount = session.createQuery("select max(log.id) from QuestionLogMining log where log.platform=" + platformId
-				+ "");
+		logCount = session.createQuery("select max(log.id) from QuestionLogMining log");
 		this.questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.questionLogMax == null) {
 			this.questionLogMax = 0L;
 		}
 
-		logCount = session.createQuery("select max(log.id) from QuizLogMining log where log.platform=" + platformId
-				+ "");
+		logCount = session.createQuery("select max(log.id) from QuizLogMining log");
 		this.quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.quizLogMax == null) {
 			this.quizLogMax = 0L;
 		}
 
-		logCount = session.createQuery("select max(log.id) from ScormLogMining log where log.platform=" + platformId
-				+ "");
+		logCount = session.createQuery("select max(log.id) from ScormLogMining log");
 		this.scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.scormLogMax == null) {
 			this.scormLogMax = 0L;
 		}
 
-		logCount = session.createQuery("select max(log.id) from WikiLogMining log where log.platform=" + platformId
-				+ "");
+		logCount = session.createQuery("select max(log.id) from WikiLogMining log");
 		this.wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.wikiLogMax == null) {
 			this.wikiLogMax = 0L;

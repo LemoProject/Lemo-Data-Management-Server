@@ -118,8 +118,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	private List<CourseCategoriesLMS> courseCategoriesLms;
 	private List<CourseModulesLMS> courseModulesLms;
 
-	private static final boolean NUMERIC_USER_ID = false;
-
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private final IConnector connector;
@@ -535,30 +533,28 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 								this.roleMining, this.oldRoleMining);
 						insert.setPlatform(this.connector.getPlatformId());
 
-						if (!this.NUMERIC_USER_ID)
+						long id = -1;
+						if (this.idMapping.get(loadedItem2.getUserid()) != null)
 						{
-							long id = -1;
-							if (this.idMapping.get(loadedItem2.getUserid()) != null)
-							{
-								id = this.idMapping.get(loadedItem2.getUserid()).getId();
-								insert.setUser(id, this.userMining, this.oldUserMining);
-							}
-							if ((id == -1) && (this.oldIdMapping.get(loadedItem2.getUserid()) != null))
-							{
-								id = this.oldIdMapping.get(loadedItem2.getUserid()).getId();
-								insert.setUser(id, this.userMining, this.oldUserMining);
-							}
-							if (id == -1)
-							{
-								id = this.largestId + 1;
-								this.largestId = id;
-								this.idMapping.put(loadedItem2.getUserid(),
-										new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id),
-												loadedItem2.getUserid(), this.connector.getPlatformId()));
-								insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
-										this.oldUserMining);
-							}
+							id = this.idMapping.get(loadedItem2.getUserid()).getId();
+							insert.setUser(id, this.userMining, this.oldUserMining);
 						}
+						if ((id == -1) && (this.oldIdMapping.get(loadedItem2.getUserid()) != null))
+						{
+							id = this.oldIdMapping.get(loadedItem2.getUserid()).getId();
+							insert.setUser(id, this.userMining, this.oldUserMining);
+						}
+						if (id == -1)
+						{
+							id = this.largestId + 1;
+							this.largestId = id;
+							this.idMapping.put(loadedItem2.getUserid(),
+									new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id),
+											loadedItem2.getUserid(), this.connector.getPlatformId()));
+							insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
+									this.oldUserMining);
+						}
+					
 						insert.setEnrolstart(loadedItem2.getTimestart());
 						insert.setEnrolend(loadedItem2.getTimeend());
 						insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInstanceid()),
@@ -783,31 +779,28 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						this.courseMining, this.oldCourseMining);
 				insert.setPlatform(this.connector.getPlatformId());
 
-				if (!this.NUMERIC_USER_ID)
+				long id = -1;
+				if (this.idMapping.get(loadedItem.getUserid()) != null)
 				{
-					long id = -1;
-					if (this.idMapping.get(loadedItem.getUserid()) != null)
-					{
-						id = this.idMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
+					id = this.idMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
 
-					}
-					if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
-					{
-						id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
-					}
-					if (id == -1)
-					{
-						id = this.largestId + 1;
-						this.largestId = id;
-						this.idMapping.put(
-								loadedItem.getUserid(),
-								new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
-										.getUserid(), this.connector.getPlatformId()));
-						insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
-								this.oldUserMining);
-					}
+				}
+				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+				{
+					id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
+				}
+				if (id == -1)
+				{
+					id = this.largestId + 1;
+					this.largestId = id;
+					this.idMapping.put(
+							loadedItem.getUserid(),
+							new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
+									.getUserid(), this.connector.getPlatformId()));
+					insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
+							this.oldUserMining);
 				}
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
@@ -911,31 +904,27 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 				insert.setId(forumLogMining.size() + 1 + this.forumLogMax);
 				insert.setPlatform(this.connector.getPlatformId());
-
-				if (!this.NUMERIC_USER_ID)
+				long id = -1;
+				if (this.idMapping.get(loadedItem.getUserid()) != null)
 				{
-					long id = -1;
-					if (this.idMapping.get(loadedItem.getUserid()) != null)
-					{
-						id = this.idMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
-					}
-					if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
-					{
-						id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
-					}
-					if (id == -1)
-					{
-						id = this.largestId + 1;
-						this.largestId = id;
-						this.idMapping.put(
-								loadedItem.getUserid(),
-								new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
-										.getUserid(), this.connector.getPlatformId()));
-						insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
-								this.oldUserMining);
-					}
+					id = this.idMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
+				}
+				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+				{
+					id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
+				}
+				if (id == -1)
+				{
+					id = this.largestId + 1;
+					this.largestId = id;
+					this.idMapping.put(
+							loadedItem.getUserid(),
+							new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
+									.getUserid(), this.connector.getPlatformId()));
+					insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
+							this.oldUserMining);
 				}
 				if ((loadedItem.getAction().equals("view forum") || loadedItem.getAction().equals("subscribe"))
 						&& loadedItem.getInfo().matches("[0-9]+")) {
@@ -1039,32 +1028,30 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setGroup(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getGroupid()), this.groupMining,
 					this.oldGroupMining);
-			if (!this.NUMERIC_USER_ID)
+
+			long id = -1;
+			if (this.idMapping.get(loadedItem.getUserid()) != null)
 			{
-				long id = -1;
-				if (this.idMapping.get(loadedItem.getUserid()) != null)
-				{
-					id = this.idMapping.get(loadedItem.getUserid()).getId();
-					insert.setUser(id, this.userMining, this.oldUserMining);
-				}
-				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
-				{
-					id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
-					insert.setUser(id, this.userMining, this.oldUserMining);
+				id = this.idMapping.get(loadedItem.getUserid()).getId();
+				insert.setUser(id, this.userMining, this.oldUserMining);
+			}
+			if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+			{
+				id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+				insert.setUser(id, this.userMining, this.oldUserMining);
 
-				}
-				if (id == -1)
-				{
-					id = this.largestId + 1;
-					this.largestId = id;
-					this.idMapping.put(
-							loadedItem.getUserid(),
-							new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
-									.getUserid(), this.connector.getPlatformId()));
-					insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
-							this.oldUserMining);
+			}
+			if (id == -1)
+			{
+				id = this.largestId + 1;
+				this.largestId = id;
+				this.idMapping.put(
+						loadedItem.getUserid(),
+						new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
+								.getUserid(), this.connector.getPlatformId()));
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
+						this.oldUserMining);
 
-				}
 			}
 			insert.setTimestamp(loadedItem.getTimeadded());
 			insert.setPlatform(this.connector.getPlatformId());
@@ -1314,22 +1301,20 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setPlatform(this.connector.getPlatformId());
-				if (!this.NUMERIC_USER_ID)
+				long id = -1;
+				if (this.idMapping.get(loadedItem.getUserid()) != null)
 				{
-					long id = -1;
-					if (this.idMapping.get(loadedItem.getUserid()) != null)
-					{
-						id = this.idMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
+					id = this.idMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
 
-					}
-					if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
-					{
-						id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
-
-					}
 				}
+				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+				{
+					id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
+
+				}
+			
 				if (loadedItem.getInfo().matches("[0-9]+"))
 				{
 					insert.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
@@ -1342,19 +1327,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				{
 					for (final QuizGradesLMS loadedItem2 : this.quizGradesLms)
 					{
-						long id = -1;
-						if (!this.NUMERIC_USER_ID)
+						id = -1;
+						if (this.idMapping.get(loadedItem.getUserid()) != null)
 						{
-							if (this.idMapping.get(loadedItem.getUserid()) != null)
-							{
-								id = this.idMapping.get(loadedItem.getUserid()).getId();
+							id = this.idMapping.get(loadedItem.getUserid()).getId();
 
-							}
-							if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
-							{
-								id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+						}
+						if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+						{
+							id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
 
-							}
 						}
 						if ((Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getQuiz()) == insert.getQuiz()
 								.getId())
@@ -1468,30 +1450,27 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 
-				if (!this.NUMERIC_USER_ID)
+				long id = -1;
+				if (this.idMapping.get(loadedItem.getUserid()) != null)
 				{
-					long id = -1;
-					if (this.idMapping.get(loadedItem.getUserid()) != null)
-					{
-						id = this.idMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
-					}
-					if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
-					{
-						id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
-					}
-					if (id == -1)
-					{
-						id = this.largestId + 1;
-						this.largestId = id;
-						this.idMapping.put(
-								loadedItem.getUserid(),
-								new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
-										.getUserid(), this.connector.getPlatformId()));
-						insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
-								this.oldUserMining);
-					}
+					id = this.idMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
+				}
+				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+				{
+					id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
+				}
+				if (id == -1)
+				{
+					id = this.largestId + 1;
+					this.largestId = id;
+					this.idMapping.put(
+							loadedItem.getUserid(),
+							new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
+									.getUserid(), this.connector.getPlatformId()));
+					insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
+							this.oldUserMining);
 				}
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
@@ -1604,32 +1583,29 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						this.courseMining, this.oldCourseMining);
 				insert.setPlatform(this.connector.getPlatformId());
 
-				if (!this.NUMERIC_USER_ID)
+				long id = -1;
+				if (this.idMapping.get(loadedItem.getUserid()) != null)
 				{
-					long id = -1;
-					if (this.idMapping.get(loadedItem.getUserid()) != null)
-					{
-						id = this.idMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
+					id = this.idMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
 
-					}
-					if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
-					{
-						id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
+				}
+				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+				{
+					id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
 
-					}
-					if (id == -1)
-					{
-						id = this.largestId + 1;
-						this.largestId = id;
-						this.idMapping.put(
-								loadedItem.getUserid(),
-								new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
-										.getUserid(), this.connector.getPlatformId()));
-						insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
-								this.oldUserMining);
-					}
+				}
+				if (id == -1)
+				{
+					id = this.largestId + 1;
+					this.largestId = id;
+					this.idMapping.put(
+							loadedItem.getUserid(),
+							new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
+									.getUserid(), this.connector.getPlatformId()));
+					insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
+							this.oldUserMining);
 				}
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
@@ -1843,33 +1819,30 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			if (loadedItem.getTimemodified() != null) {
 				insert.setTimeModified(loadedItem.getTimemodified());
 			}
-
-			if (!this.NUMERIC_USER_ID)
+			
+			long id = -1;
+			if (this.idMapping.get(loadedItem.getUserid()) != null)
 			{
-				long id = -1;
-				if (this.idMapping.get(loadedItem.getUserid()) != null)
-				{
-					id = this.idMapping.get(loadedItem.getUserid()).getId();
-					insert.setUser(id, this.userMining, this.oldUserMining);
+				id = this.idMapping.get(loadedItem.getUserid()).getId();
+				insert.setUser(id, this.userMining, this.oldUserMining);
 
-				}
-				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
-				{
-					id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
-					insert.setUser(id, this.userMining, this.oldUserMining);
+			}
+			if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+			{
+				id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+				insert.setUser(id, this.userMining, this.oldUserMining);
 
-				}
-				if (id == -1)
-				{
-					id = this.largestId + 1;
-					this.largestId = id;
-					this.idMapping.put(
-							loadedItem.getUserid(),
-							new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
-									.getUserid(), this.connector.getPlatformId()));
-					insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
-							this.oldUserMining);
-				}
+			}
+			if (id == -1)
+			{
+				id = this.largestId + 1;
+				this.largestId = id;
+				this.idMapping.put(
+						loadedItem.getUserid(),
+						new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
+								.getUserid(), this.connector.getPlatformId()));
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
+						this.oldUserMining);
 			}
 			for (final GradeItemsLMS loadedItem2 : this.gradeItemsLms)
 			{
@@ -1974,32 +1947,29 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
 
-				if (!this.NUMERIC_USER_ID)
+				long id = -1;
+				if (this.idMapping.get(loadedItem.getUserid()) != null)
 				{
-					long id = -1;
-					if (this.idMapping.get(loadedItem.getUserid()) != null)
-					{
-						id = this.idMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
+					id = this.idMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
 
-					}
-					if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
-					{
-						id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
+				}
+				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+				{
+					id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
 
-					}
-					if (id == -1)
-					{
-						id = this.largestId + 1;
-						this.largestId = id;
-						this.idMapping.put(
-								loadedItem.getUserid(),
-								new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
-										.getUserid(), this.connector.getPlatformId()));
-						insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
-								this.oldUserMining);
-					}
+				}
+				if (id == -1)
+				{
+					id = this.largestId + 1;
+					this.largestId = id;
+					this.idMapping.put(
+							loadedItem.getUserid(),
+							new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
+									.getUserid(), this.connector.getPlatformId()));
+					insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
+							this.oldUserMining);
 				}
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
@@ -2055,15 +2025,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			final UserMining insert = new UserMining();
 
-			if (!this.NUMERIC_USER_ID)
-			{
-				final long id = this.largestId + 1;
-				this.largestId = id;
-				this.idMapping.put(loadedItem.getId(),
-						new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem.getId(),
-								this.connector.getPlatformId()));
-				insert.setId(Long.valueOf(this.connector.getPrefix() + "" + id));
-			}
+			final long id = this.largestId + 1;
+			this.largestId = id;
+			this.idMapping.put(loadedItem.getId(),
+					new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem.getId(),
+							this.connector.getPlatformId()));
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + id));
 			insert.setLogin(Encoder.createMD5(loadedItem.getLogin()));
 			insert.setLastLogin(loadedItem.getLastlogin());
 			insert.setFirstAccess(loadedItem.getFirstaccess());
@@ -2133,33 +2100,30 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 				insert.setPlatform(this.connector.getPlatformId());
 
-				if (!this.NUMERIC_USER_ID)
+				long id = -1;
+				if (this.idMapping.get(loadedItem.getUserid()) != null)
 				{
-					long id = -1;
-					if (this.idMapping.get(loadedItem.getUserid()) != null)
-					{
-						id = this.idMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
+					id = this.idMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
 
-					}
-					if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
-					{
-						id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
-						insert.setUser(id, this.userMining, this.oldUserMining);
+				}
+				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUserid()) != null))
+				{
+					id = this.oldIdMapping.get(loadedItem.getUserid()).getId();
+					insert.setUser(id, this.userMining, this.oldUserMining);
 
-					}
-					if (id == -1)
-					{
-						id = this.largestId + 1;
-						this.largestId = id;
-						this.idMapping.put(
-								loadedItem.getUserid(),
-								new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
-										.getUserid(), this.connector.getPlatformId()));
-						insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
-								this.oldUserMining);
+				}
+				if (id == -1)
+				{
+					id = this.largestId + 1;
+					this.largestId = id;
+					this.idMapping.put(
+							loadedItem.getUserid(),
+							new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
+									.getUserid(), this.connector.getPlatformId()));
+					insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
+							this.oldUserMining);
 
-					}
 				}
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
@@ -2369,33 +2333,29 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 			insert.setDuration(0L);
 
-			if (!this.NUMERIC_USER_ID)
+			long id = -1;
+			if (this.idMapping.get(loadedItem.getUser()) != null)
 			{
-				long id = -1;
-				if (this.idMapping.get(loadedItem.getUser()) != null)
-				{
-					id = this.idMapping.get(loadedItem.getUser()).getId();
-					insert.setUser(id, this.userMining, this.oldUserMining);
+				id = this.idMapping.get(loadedItem.getUser()).getId();
+				insert.setUser(id, this.userMining, this.oldUserMining);
 
-				}
-				if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUser()) != null))
-				{
-					id = this.oldIdMapping.get(loadedItem.getUser()).getId();
-					insert.setUser(id, this.userMining, this.oldUserMining);
+			}
+			if ((id == -1) && (this.oldIdMapping.get(loadedItem.getUser()) != null))
+			{
+				id = this.oldIdMapping.get(loadedItem.getUser()).getId();
+				insert.setUser(id, this.userMining, this.oldUserMining);
 
-				}
-				if (id == -1)
-				{
-					id = this.largestId + 1;
-					this.largestId = id;
-					this.idMapping.put(
-							loadedItem.getUser(),
-							new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
-									.getUser(), this.connector.getPlatformId()));
-					insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
-							this.oldUserMining);
-				}
-
+			}
+			if (id == -1)
+			{
+				id = this.largestId + 1;
+				this.largestId = id;
+				this.idMapping.put(
+						loadedItem.getUser(),
+						new IDMappingMining(Long.valueOf(this.connector.getPrefix() + "" + id), loadedItem
+								.getUser(), this.connector.getPlatformId()));
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + id), this.userMining,
+						this.oldUserMining);
 			}
 			if (insert.getUser() == null) {
 				this.logger.debug("In ChatLogMining(chat part), user not found for log: " + loadedItem.getId()

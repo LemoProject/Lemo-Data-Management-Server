@@ -6,6 +6,7 @@
 
 package de.lemo.dms.processing.questions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -33,6 +34,7 @@ import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 
 /**
@@ -44,6 +46,7 @@ import de.lemo.dms.processing.resulttype.UserPathLink;
 @Path("courseuserpaths")
 public class QCourseUserPaths extends Question {
 
+	@SuppressWarnings("unchecked")
 	@POST
 	public JSONObject compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
@@ -58,13 +61,19 @@ public class QCourseUserPaths extends Question {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
+		
+		Criteria criteria;
+		ArrayList<Long> us = StudentHelper.getCourseStudents(courseIds);
 
-		final Criteria criteria = session.createCriteria(ILogMining.class, "log")
+		criteria = session.createCriteria(ILogMining.class, "log")
 				.add(Restrictions.in("log.course.id", courseIds))
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
 				.add(Restrictions.eq("log.action", "view"));
+		if (us.size() > 0) {
+				criteria.add(Restrictions.in("log.user.id", us));
+		}
 
-		@SuppressWarnings("unchecked")
+
 		final List<ILogMining> logs = criteria.list();
 
 		final Set<Long/* user id */> users = Sets.newHashSet();
@@ -86,7 +95,7 @@ public class QCourseUserPaths extends Question {
 		exdendedCriteria.add(Restrictions.in("log.user.id", users))
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
 				.add(Restrictions.eq("log.action", "view"));
-		@SuppressWarnings("unchecked")
+
 		final List<ILogMining> extendedLogs = exdendedCriteria.list();
 
 		long courseCount = 0;

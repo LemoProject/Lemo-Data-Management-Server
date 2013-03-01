@@ -33,6 +33,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
@@ -222,7 +223,7 @@ public class QFrequentPathsViger extends Question {
 	 * @return The path to the generated file
 	 */
 	@SuppressWarnings("unchecked")
-	private static LinkedList<String> generateLinkedList(final List<Long> courses, final List<Long> users,
+	private static LinkedList<String> generateLinkedList(final List<Long> courses, List<Long> users,
 			final List<String> types, final Long minLength, final Long maxLength, final Long starttime,
 			final Long endtime)
 	{
@@ -234,8 +235,14 @@ public class QFrequentPathsViger extends Question {
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
 		final Session session = dbHandler.getMiningSession();
+		
+		Criteria criteria;
+		if(users == null || users.size() == 0)
+		{
+			users = StudentHelper.getCourseStudents(courses);
+		}
 
-		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		criteria = session.createCriteria(ILogMining.class, "log");
 		if (courses.size() > 0) {
 			criteria.add(Restrictions.in("log.course.id", courses));
 		}

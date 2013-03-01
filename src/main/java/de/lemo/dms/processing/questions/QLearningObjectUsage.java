@@ -23,6 +23,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
 
@@ -50,10 +51,11 @@ public class QLearningObjectUsage extends Question {
 	 *            LongInteger time stamp
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListResourceRequestInfo compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
-			@FormParam(MetaParam.USER_IDS) final List<Long> userIds,
+			@FormParam(MetaParam.USER_IDS) List<Long> userIds,
 			@FormParam(MetaParam.TYPES) final List<String> types,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
@@ -63,10 +65,17 @@ public class QLearningObjectUsage extends Question {
 		final ResultListResourceRequestInfo result = new ResultListResourceRequestInfo();
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
+		
+		Criteria criteria;
+		if(userIds == null || userIds.size() == 0)
+		{
+			userIds = StudentHelper.getCourseStudents(courseIds);
+		}
 
 		// Create criteria for log-file-search
-		final Criteria criteria = session.createCriteria(ILogMining.class, "log")
-				.add(Restrictions.between("log.timestamp", startTime, endTime));
+		criteria = session.createCriteria(ILogMining.class, "log")
+				.add(Restrictions.between("log.timestamp", startTime, endTime))
+				.add(Restrictions.in("log.user.id", userIds));
 
 		if (!courseIds.isEmpty()) {
 			criteria.add(Restrictions.in("log.course.id", courseIds));
@@ -75,7 +84,6 @@ public class QLearningObjectUsage extends Question {
 			criteria.add(Restrictions.in("log.user.id", userIds));
 		}
 
-		@SuppressWarnings("unchecked")
 		final List<ILogMining> list = criteria.list();
 
 		this.logger.info("Total matched entries: " + list.size());

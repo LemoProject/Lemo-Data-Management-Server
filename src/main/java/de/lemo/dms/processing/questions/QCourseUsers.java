@@ -46,6 +46,12 @@ public class QCourseUsers extends Question {
 		final Criteria criteria = session.createCriteria(CourseLogMining.class, "log")
 				.add(Restrictions.in("log.course.id", courseIds))
 				.add(Restrictions.between("log.timestamp", startTime, endTime));
+		
+		/*
+		  final Criteria criteria = session.createCriteria(CourseUserMining.class, "cu")
+				.add(Restrictions.in("cu.course.id", courseIds));
+		  
+		 */
 
 		@SuppressWarnings("unchecked")
 		final ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
@@ -57,6 +63,15 @@ public class QCourseUsers extends Question {
 			}
 			users.add(log.getUser().getId());
 		}
+		/*
+		 for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
+			if (cu.getUser() == null) {
+				continue;
+			}
+			if(cu.getRole.getType() == 2)
+				users.add(cu.getUser().getId());
+		}
+		 */
 
 		return new ResultListLongObject(new ArrayList<Long>(users));
 	}

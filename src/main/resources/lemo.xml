@@ -12,7 +12,7 @@
     <database>
       <!-- Maven replacement variables-->
     	<property name="hibernate.connection.url">${mining-hibernate-url}</property>
-   		<property name="hibernate.connection.username">${mining-hibernate-username}</property>
+	   	<property name="hibernate.connection.username">${mining-hibernate-username}</property>
     	<property name="hibernate.connection.password">${mining-hibernate-password}</property>
       <!-- main config-->
       <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>

@@ -23,11 +23,12 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.BoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
 
 /**
- * Accumulates the perfromance (result of tests) of the users over a period
+ * Accumulates the performance (result of tests) of the users over a period
  * 
  * @author Sebastian Schwarzrock
  */
@@ -50,10 +51,11 @@ public class QPerformanceBoxPlot extends Question {
 	 *            (mandatory)
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListBoxPlot compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
-			@FormParam(MetaParam.USER_IDS) final List<Long> users,
+			@FormParam(MetaParam.USER_IDS) List<Long> users,
 			@FormParam(MetaParam.QUIZ_IDS) List<Long> quizzes,
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
@@ -90,8 +92,14 @@ public class QPerformanceBoxPlot extends Question {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
+		
+		Criteria criteria;
+		if(users == null || users.size() == 0)
+		{
+			users = StudentHelper.getCourseStudents(courses);
+		}
 
-		final Criteria criteria = session.createCriteria(IRatedLogObject.class, "log");
+		criteria = session.createCriteria(IRatedLogObject.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
@@ -100,7 +108,6 @@ public class QPerformanceBoxPlot extends Question {
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
 
-		@SuppressWarnings("unchecked")
 		final ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 
 		final HashMap<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>();

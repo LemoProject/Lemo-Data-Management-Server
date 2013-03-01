@@ -22,14 +22,26 @@ import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 /**
- * Service to get the courses from an docent
+ * Service to get the courses of an teacher
  */
 @Path("teachercourses")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceTeacherCourses {
 
+	/**
+	 * Returns a list of ids for all courses of the teacher
+	 * 
+	 * @param id		User-id of the teacher. If set to null, the method will return all courses
+	 * 					of the platform.
+	 * @param startTime	Used to check if a course's 'enrolStart' is new enough. If set to null,
+	 * 					no time-constraints will be used .
+	 * 
+	 * @return	List of course-ids
+	 */
+	@SuppressWarnings("unchecked")
 	@GET
-	public ResultListLongObject getTeachersCourses(@QueryParam(MetaParam.USER_IDS) Long id) {
+	public ResultListLongObject getTeachersCourses(@QueryParam(MetaParam.USER_IDS) Long id,
+												   @QueryParam(MetaParam.START_TIME) Long startTime) {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
@@ -40,9 +52,15 @@ public class ServiceTeacherCourses {
 		types.add(1L);
 
 		final Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
-		criteria.add(Restrictions.eq("cu.user.id", id));
-		criteria.add(Restrictions.in("cu.role.type", types));
-
+		if(id != null)
+		{
+			criteria.add(Restrictions.eq("cu.user.id", id));
+			criteria.add(Restrictions.in("cu.role.type", types));
+		}
+		if(startTime != null)
+		{
+			criteria.add(Restrictions.ge("cu.enrolStart", startTime));
+		}
 		ArrayList<CourseUserMining> results = (ArrayList<CourseUserMining>) criteria.list();
 
 		if (results != null && results.size() > 0)

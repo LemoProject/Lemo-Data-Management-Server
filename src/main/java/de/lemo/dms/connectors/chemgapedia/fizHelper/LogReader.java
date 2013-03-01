@@ -26,9 +26,11 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.CourseResourceMining;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.IDMappingMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ResourceMining;
+import de.lemo.dms.db.miningDBclass.RoleMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 
 /**
@@ -40,6 +42,14 @@ public class LogReader {
 	 * User-objects of previous connector-runs
 	 */
 	private final Map<String, UserMining> oldUsers = new HashMap<String, UserMining>();
+	/**
+	 * Role-objects of previous connector-runs
+	 */
+	private final Map<Long, RoleMining> oldRoles = new HashMap<Long, RoleMining>();
+	/**
+	 * CourseUser-objects of previous connector-runs
+	 */
+	private final Map<String, CourseUserMining> oldCourseUsers = new HashMap<String, CourseUserMining>();
 	/**
 	 * User-objects of current connector-run
 	 */
@@ -89,6 +99,10 @@ public class LogReader {
 	 */
 	private Long userIdCount;
 	/**
+	 * Database's largest id used in CourseUserMining
+	 */
+	private Long courseUserIdCount;
+	/**
 	 * Database's largest id used in ResourceMining
 	 */
 	private Long resIdCount;
@@ -98,6 +112,8 @@ public class LogReader {
 	private final IConnector connector;
 
 	private Logger logger = Logger.getLogger(this.getClass());
+	
+	private RoleMining standardRole;
 	/**
 	 * Creates a new LogReader-object, imports necessary objects from Mining-Database and sets counters.
 	 * 
@@ -143,6 +159,15 @@ public class LogReader {
 				this.oldResources.put(res.getUrl(), res);
 			}
 			logger.info("Read " + rt.size() + " ResourceMinings from database.");
+			
+			// Load previously saved CourseUserMining-objects
+			c = session.createCriteria(CourseUserMining.class, "courseUsers");
+			c.add(Restrictions.eq("courseUsers.platform", platformId));
+			final List<CourseUserMining> cu = c.list();
+			for (final CourseUserMining res : cu) {
+				this.oldCourseUsers.put(res.getCourse().getId() + "" + res.getUser().getId(), res);
+			}
+			logger.info("Read " + cu.size() + " CourseUserMinings from database.");
 
 			// Load previously saved CourseMining-objects
 			c = session.createCriteria(CourseMining.class, "courses");
@@ -153,6 +178,30 @@ public class LogReader {
 				this.oldCourses.put(cm.get(i).getTitle(), cm.get(i));
 			}
 			logger.info("Read " + cm.size() + " CourseMinings from database.");
+			
+			// Load previously saved CourseMining-objects
+			c = session.createCriteria(RoleMining.class, "roles");
+			c.add(Restrictions.eq("roles.platform", platformId));
+			final List<RoleMining> roles = c.list();
+			for (int i = 0; i < roles.size(); i++)
+			{
+				this.oldRoles.put(roles.get(i).getId(), roles.get(i));
+			}
+			logger.info("Read " + cm.size() + " RoleMinings from database.");
+			
+			if(this.oldRoles.size() == 0)
+			{
+				RoleMining role = new RoleMining();
+				role.setId(Long.valueOf(connector.getPrefix() + "" + 0));
+				role.setDescription("Standard Chemgapedia-Nutzer");
+				role.setName("Student");
+				role.setPlatform(connector.getPlatformId());
+				role.setShortname("STD");
+				role.setType(2);
+				
+				this.standardRole = role;
+				this.oldRoles.put(role.getId(), role);
+			}
 
 			// Load previously saved CourseResourceMining-objects
 			c = session.createCriteria(CourseResourceMining.class, "coursesResources");
@@ -186,9 +235,21 @@ public class LogReader {
 			} else {
 				this.userIdCount = 0L;
 			}
+			
+			final Query courseUserCount = session.createQuery("select max(courseUser.id) from CourseUserMining courseUser where courseUser.platform="
+					+ platformId + "");
+			if (courseUserCount.list().size() > 0) {
+				this.courseUserIdCount = ((ArrayList<Long>) courseUserCount.list()).get(0);
+			}
+			if ((this.courseUserIdCount != null) && (this.courseUserIdCount != 0)) {
+				this.courseUserIdCount = Long.valueOf(this.courseUserIdCount.toString().substring(
+						connector.getPrefix().toString().length()));
+			} else {
+				this.courseUserIdCount = 0L;
+			}
 
 			final Query logCount = session
-					.createQuery("select max(log.id) from ResourceLogMining log where log.platform=" + platformId + "");
+					.createQuery("select max(log.id) from ResourceLogMining log");
 			if (logCount.list().size() > 0) {
 				this.resLogId = ((ArrayList<Long>) logCount.list()).get(0);
 			}
@@ -500,7 +561,7 @@ public class LogReader {
 							if (h.length() > 0) {
 								h = f + h.substring(1);
 							} else {
-								logger.info("URL doesn't match pattern: " + lo.getUrl());
+								logger.debug("URL doesn't match pattern: " + lo.getUrl());
 							}
 							r.setTitle(h);
 
@@ -530,9 +591,9 @@ public class LogReader {
 						}
 					}
 					else if (!logLine.isValid()) {
-						logger.info("Line doesn't match pattern.");
+						logger.debug("Line doesn't match pattern.");
 					} else {
-						logger.info("Line's timestamp is to old.");
+						logger.debug("Line's timestamp is to old.");
 					}
 				}
 				if (filterLog) {
@@ -559,16 +620,20 @@ public class LogReader {
 	{
 		final List<Collection<?>> l = new ArrayList<Collection<?>>();
 		final ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
-		final Collection<UserMining> it = this.newUsers.values();
+		ArrayList<CourseUserMining> courseUserMining = new ArrayList<CourseUserMining>();
+		final Collection<UserMining> users = this.newUsers.values();
 		final Collection<IDMappingMining> idmap = this.newIdMapping.values();
-		logger.info("Found " + it.size() + " users.");
-		l.add(it);
+		logger.info("Found " + users.size() + " users.");
+		l.add(users);
+		logger.info("Found " + idmap.size() + " IDMappings.");
 		l.add(idmap);
-
+		
 		for (final ArrayList<LogObject> loadedItem : this.userHistories.values())
 		{
+			final HashMap<Long, CourseUserMining> courseUserSingle = new HashMap<Long, CourseUserMining>();
 			for (int i = 0; i < loadedItem.size(); i++)
 			{
+				
 				final ResourceLogMining rl = new ResourceLogMining();
 
 				// Set Url for resource-object
@@ -586,13 +651,50 @@ public class LogReader {
 				rl.setPlatform(this.connector.getPlatformId());
 				rl.setId(this.resLogId + 1);
 				this.resLogId++;
-
+			
+				if(rl.getCourse() != null)
+				{
+					CourseUserMining cu = courseUserSingle.get(rl.getCourse().getId());
+					
+					if(cu == null)
+					{	
+						
+						cu = new CourseUserMining();
+						cu.setCourse(rl.getCourse());
+						cu.setUser(rl.getUser());
+						cu.setEnrolend(rl.getTimestamp());
+						cu.setEnrolstart(rl.getTimestamp());
+						cu.setRole(this.standardRole);
+						cu.setPlatform(connector.getPlatformId());
+						
+						Long id = this.courseUserIdCount + 1;
+						this.courseUserIdCount = id;
+						cu.setId(Long.valueOf(connector.getPrefix() + "" + id));
+						courseUserSingle.put(rl.getCourse().getId(), cu);
+					}					
+					else
+					{
+						if(cu.getEnrolend() < rl.getTimestamp())
+							cu.setEnrolend(rl.getTimestamp());
+						if(cu.getEnrolstart() > rl.getTimestamp())
+							cu.setEnrolstart(rl.getTimestamp());					
+					}
+				}
+				
+				
 				resourceLogMining.add(rl);
 			}
+			courseUserMining.addAll(courseUserSingle.values());
 		}
 		Collections.sort(resourceLogMining);
+		logger.info("Found " + newResources.values().size() + " resources.");
 		l.add(this.newResources.values());
+		logger.info("Found " + oldRoles.values().size() + " roles.");
+		l.add(this.oldRoles.values());
+		logger.info("Found " + courseUserMining.size() + " courseUsers.");
+		l.add(courseUserMining);logger.info("Found " + resourceLogMining.size() + " resourceLogs.");
 		l.add(resourceLogMining);
+		logger.info("Writing to database...");
 		if (session.isOpen()) {
 			this.dbHandler.saveCollectionToDB(session, l);
 		} else

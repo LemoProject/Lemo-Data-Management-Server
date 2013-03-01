@@ -21,6 +21,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListRRITypes;
 
@@ -34,6 +35,7 @@ import de.lemo.dms.processing.resulttype.ResultListRRITypes;
 @Path("activityresourcetyperesolution")
 public class QActivityResourceTypeResolution extends Question {
 
+	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListRRITypes compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
@@ -52,10 +54,14 @@ public class QActivityResourceTypeResolution extends Question {
 
 		for (ELearningObjectType loType : ELearningObjectType.values()) {
 			if (allTypes || resourceTypes.contains(loType.name().toLowerCase())) {
-				Criteria criteria = session.createCriteria(loType.getLogMiningType(), "log")
+				Criteria criteria;
+				ArrayList<Long> users = StudentHelper.getCourseStudents(courses);
+				criteria = session.createCriteria(loType.getLogMiningType(), "log")
 						.add(Restrictions.between("log.timestamp", startTime, endTime))
-						.add(Restrictions.in("log.course.id", courses));
-				@SuppressWarnings("unchecked")
+						.add(Restrictions.in("log.user.id", users));
+				if(users.size() > 0)
+					criteria.add(Restrictions.in("log.course.id", courses));
+				
 				final List<ILogMining> logs = criteria.list();
 				HashMap<String, ResourceRequestInfo> rri = loadLogMining(logs, loType,
 						startTime, endTime, resolution, intervall);

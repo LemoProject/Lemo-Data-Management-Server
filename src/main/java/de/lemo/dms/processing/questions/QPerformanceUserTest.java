@@ -29,6 +29,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 import de.lemo.dms.processing.MetaParam;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 /**
@@ -58,10 +59,11 @@ public class QPerformanceUserTest {
 	 *            (mandatory)
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListLongObject compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
-			@FormParam(MetaParam.USER_IDS) final List<Long> users,
+			@FormParam(MetaParam.USER_IDS) List<Long> users,
 			@FormParam(MetaParam.QUIZ_IDS) final List<Long> quizzes,
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
@@ -94,16 +96,20 @@ public class QPerformanceUserTest {
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 		
-		Criteria criteria = session.createCriteria(IRatedLogObject.class, "log");
+		Criteria criteria;
+		if(users == null || users.size() == 0)
+		{
+			users = StudentHelper.getCourseStudents(courses);
+		}
+		criteria = session.createCriteria(IRatedLogObject.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
 		}
-		if ((users != null) && (users.size() > 0)) {
+		if(users != null && users.size() > 0)
 			criteria.add(Restrictions.in("log.user.id", users));
-		}
-
-		@SuppressWarnings("unchecked")
+		
+		
 		final ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 
 		final Map<Long, Integer> obj = new HashMap<Long, Integer>();
@@ -182,7 +188,7 @@ public class QPerformanceUserTest {
 		criteria = session.createCriteria(ICourseRatedObjectAssociation.class, "aso");
 		criteria.add(Restrictions.in("aso.course.id", courses));
 		
-		@SuppressWarnings("unchecked")
+		
 		ArrayList<ICourseRatedObjectAssociation> q = (ArrayList<ICourseRatedObjectAssociation>) criteria.list(); 
 		HashMap<Long, Double> maxGrades = new HashMap<Long, Double>();
 		for(ICourseRatedObjectAssociation aso : q)
