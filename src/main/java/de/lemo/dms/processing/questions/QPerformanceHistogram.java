@@ -21,7 +21,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -123,7 +122,6 @@ public class QPerformanceHistogram extends Question {
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
 
-		@SuppressWarnings("unchecked")
 		final ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 
 		final Map<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>();

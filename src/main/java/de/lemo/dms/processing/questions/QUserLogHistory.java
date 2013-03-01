@@ -20,7 +20,6 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.QuestionLogMining;
 import de.lemo.dms.db.miningDBclass.QuizLogMining;

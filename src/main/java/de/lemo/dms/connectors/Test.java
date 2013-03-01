@@ -39,6 +39,7 @@ public class Test {
 	private static final Long ID_CLIX = 6L;
 	final Logger logger = Logger.getLogger(this.getClass());
 	
+	@SuppressWarnings("unchecked")
 	public ResultListLongObject authentificateUser(String login) {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -65,6 +66,7 @@ public class Test {
 		return res;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ResultListLongObject getTeachersCourses(Long id) {
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();

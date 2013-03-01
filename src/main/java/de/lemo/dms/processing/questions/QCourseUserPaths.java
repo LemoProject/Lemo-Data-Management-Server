@@ -30,7 +30,6 @@ import com.google.common.collect.Sets;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
@@ -96,7 +95,7 @@ public class QCourseUserPaths extends Question {
 		exdendedCriteria.add(Restrictions.in("log.user.id", users))
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
 				.add(Restrictions.eq("log.action", "view"));
-		@SuppressWarnings("unchecked")
+
 		final List<ILogMining> extendedLogs = exdendedCriteria.list();
 
 		long courseCount = 0;

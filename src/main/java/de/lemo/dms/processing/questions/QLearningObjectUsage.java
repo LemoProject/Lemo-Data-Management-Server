@@ -19,7 +19,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
@@ -85,7 +84,6 @@ public class QLearningObjectUsage extends Question {
 			criteria.add(Restrictions.in("log.user.id", userIds));
 		}
 
-		@SuppressWarnings("unchecked")
 		final List<ILogMining> list = criteria.list();
 
 		this.logger.info("Total matched entries: " + list.size());

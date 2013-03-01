@@ -26,7 +26,6 @@ import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 import de.lemo.dms.processing.MetaParam;
@@ -110,7 +109,7 @@ public class QPerformanceUserTest {
 		if(users != null && users.size() > 0)
 			criteria.add(Restrictions.in("log.user.id", users));
 		
-		@SuppressWarnings("unchecked")
+		
 		final ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
 
 		final Map<Long, Integer> obj = new HashMap<Long, Integer>();
@@ -189,7 +188,7 @@ public class QPerformanceUserTest {
 		criteria = session.createCriteria(ICourseRatedObjectAssociation.class, "aso");
 		criteria.add(Restrictions.in("aso.course.id", courses));
 		
-		@SuppressWarnings("unchecked")
+		
 		ArrayList<ICourseRatedObjectAssociation> q = (ArrayList<ICourseRatedObjectAssociation>) criteria.list(); 
 		HashMap<Long, Double> maxGrades = new HashMap<Long, Double>();
 		for(ICourseRatedObjectAssociation aso : q)
