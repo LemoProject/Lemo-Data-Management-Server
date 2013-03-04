@@ -163,9 +163,9 @@ public class QCumulativeUserAccess extends Question {
 	private String generateBaseQuery(final String table) {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("SELECT timestamp, user_id, course.title as course, course.id as courseId");
-		sb.append(" FROM ((((" + table + "_log AS log");
+		sb.append(" FROM " + table + "_log AS log");
 		sb.append(" LEFT JOIN course");
-		sb.append(" ON course.id = log.course_id)");
+		sb.append(" ON course.id = log.course_id");
 		return sb.toString();
 	}
 
