@@ -40,10 +40,6 @@ public class QCumulativeUserAccess extends Question {
 	 *            max time for the data
 	 * @param types
 	 *            list with learning objects to compute
-	 * @param departments
-	 *            departments for the request
-	 * @param degrees
-	 *            degrees for the request
 	 * @param course
 	 *            courses for the request
 	 * @return a list with the cumulative user access to the learning objects
@@ -51,12 +47,9 @@ public class QCumulativeUserAccess extends Question {
 	 * @throws JSONException
 	 */
 	@POST
-	// @Produces(MediaType.APPLICATION_JSON)
 	public ResultListBoxPlot compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> course,
 			@FormParam(MetaParam.TYPES) final List<String> types,
-			@FormParam(MetaParam.DEPARTMENT) final List<Long> departments,
-			@FormParam(MetaParam.DEGREE) final List<Long> degrees,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
@@ -66,7 +59,7 @@ public class QCumulativeUserAccess extends Question {
 
 		// generiere querys
 		final Map<ELearningObjectType, String> querys = this.generateQuerys(startTime,
-				endTime, learnObjectTypes, departments, degrees, course);
+				endTime, learnObjectTypes, course);
 
 		super.logger.debug("Query result: " + querys.toString());
 
@@ -118,10 +111,8 @@ public class QCumulativeUserAccess extends Question {
 	private Map<ELearningObjectType, String> generateQuerys(
 			final long timestampMin, final long timestampMax,
 			final Set<ELearningObjectType> types,
-			final List<Long> departments,
-			final List<Long> degrees,
 			final List<Long> course) {
-		final HashMap<ELearningObjectType, String> result = new HashMap<ELearningObjectType, String>();
+		final Map<ELearningObjectType, String> result = new HashMap<ELearningObjectType, String>();
 		boolean timeframe = false;
 		final List<String> qa = new ArrayList<String>();
 
@@ -132,44 +123,13 @@ public class QCumulativeUserAccess extends Question {
 		}
 		for (final ELearningObjectType loType : types) {
 			String query = this.generateBaseQuery(loType.name().toLowerCase());
-			if (timeframe || (course != null) || (departments != null)
-					|| (degrees != null)) {
+			if (timeframe || (course != null)) {
 				query += " WHERE";
 			}
 			// zeitraum
 			if (timeframe) {
 				qa.add(" timestamp >= " + timestampMin + " AND timestamp<= "
 						+ timestampMax);
-			}
-			// filter departments
-			if ((departments != null) && !departments.isEmpty()) {
-				final StringBuilder sb = new StringBuilder();
-				sb.append(" (");
-				int i = 0;
-				for (final Long dep : departments) {
-					sb.append(" department.id = " + dep.toString());
-					if (i < (departments.size() - 1)) {
-						sb.append(" OR");
-					}
-					i++;
-				}
-				sb.append(")");
-				qa.add(sb.toString());
-			}
-			// filter degrees
-			if ((degrees != null) && !degrees.isEmpty()) {
-				final StringBuilder sb = new StringBuilder();
-				sb.append(" (");
-				int i = 0;
-				for (final Long deg : degrees) {
-					sb.append(" degree.id = " + deg.toString());
-					if (i < (degrees.size() - 1)) {
-						sb.append(" OR");
-					}
-					i++;
-				}
-				sb.append(")");
-				qa.add(sb.toString());
 			}
 			// filter course
 			if ((course != null) && !course.isEmpty()) {
@@ -193,7 +153,6 @@ public class QCumulativeUserAccess extends Question {
 					query += " AND";
 				}
 			}
-
 			result.put(loType, query);
 		}
 
@@ -203,19 +162,10 @@ public class QCumulativeUserAccess extends Question {
 	// generiert ein einfaches query mit einem inner join für die abfrage
 	private String generateBaseQuery(final String table) {
 		final StringBuilder sb = new StringBuilder();
-		// TODO INSERT Chat for Objects
-		sb.append("SELECT timestamp, user_id, course.title as course, course.id as courseId, degree.title as degree, degree.id as degreeId, department.title AS department, department.id as departmentId");
+		sb.append("SELECT timestamp, user_id, course.title as course, course.id as courseId");
 		sb.append(" FROM ((((" + table + "_log AS log");
 		sb.append(" LEFT JOIN course");
 		sb.append(" ON course.id = log.course_id)");
-		sb.append(" LEFT JOIN degree_course as dc");
-		sb.append(" ON log.course_id = dc.course_id)");
-		sb.append(" LEFT JOIN degree");
-		sb.append(" ON dc.degree_id = degree.id)");
-		sb.append(" LEFT JOIN department_degree as dg");
-		sb.append(" ON degree.id = dg.degree_id)");
-		sb.append(" LEFT JOIN department");
-		sb.append(" ON dg.department_id = department.id");
 		return sb.toString();
 	}
 
