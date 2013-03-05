@@ -109,12 +109,10 @@ public class Test {
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE19);
 		ArrayList<Long> courses = new ArrayList<Long>();
-		courses.add(180L);
-		courses.add(476L);
-		courses.add(4025L);
+		//courses.add(2200L);
+		//courses.add(476L);
 		connector.setCourseIdFilter(courses);
-		//connector.getData();
-		connector.updateData(1325376000L);
+		connector.getData();
 	}
 
 	/**

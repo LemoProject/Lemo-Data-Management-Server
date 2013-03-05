@@ -372,7 +372,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(empty)
-			this.quizQuestionInstancesLms = new ArrayList<QuizQuestionInstancesLMS>();
+			this.questionLms = new ArrayList<QuestionLMS>();
 		else
 			this.questionLms = criteria.list();
 		logger.info("QuestionLMS tables: " + this.questionLms.size());

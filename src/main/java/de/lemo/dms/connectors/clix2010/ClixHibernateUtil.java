@@ -49,6 +49,7 @@ public final class ClixHibernateUtil {
 
 		// add mapping classes
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/EComponent.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/LearningLog.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ChatProtocol.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/EComponentType.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/EComposing.hbm.xml");
