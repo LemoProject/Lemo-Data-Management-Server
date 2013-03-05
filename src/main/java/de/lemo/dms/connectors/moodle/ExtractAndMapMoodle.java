@@ -672,7 +672,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			session.clear();
 
 			criteria = session.createCriteria(ContextLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.instanceid", courses));
 			criteria.addOrder(Property.forName("obj.id").asc());
+			
 			this.contextLms = criteria.list();
 			logger.info("ContextLMS tables: " + this.contextLms.size());
 
@@ -732,7 +735,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(!hasCR)
 		{
 			forumPosts= session
-				.createQuery("from ForumPostsLMS x where x.modified>=:readingtimestamp and x.modified<=:ceiling order by x.id asc");
+				.createQuery("from ForumPostsLMS x where x.created>=:readingtimestamp and x.created<=:ceiling order by x.id asc");
 			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
 			forumPosts.setParameter("ceiling", readingtotimestamp);
 			this.forumPostsLms = forumPosts.list();
@@ -748,11 +751,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				else
 					courseClause += ")";
 			}
-			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from forum_posts as posts JOIN log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp and posts.modified<=:ceiling");
+			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from forum_posts as posts JOIN log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.created>=:readingtimestamp and posts.created<=:ceiling");
 			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
 			forumPosts.setParameter("ceiling", readingtotimestamp);
 			List<Object[]> tmpl = forumPosts.list();
-			this.forumPostsLms = new ArrayList<ForumPostsLMS>();
+			if(this.forumPostsLms == null)
+				this.forumPostsLms = new ArrayList<ForumPostsLMS>();
 			for(Object[] obj : tmpl)
 			{
 				ForumPostsLMS p = new ForumPostsLMS();
@@ -762,6 +766,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				p.setModified(((Integer) obj[3]).longValue());
 				p.setSubject((String) obj[4]);
 				p.setMessage((String) obj[5]);
+				
 				this.forumPostsLms.add(p);
 			
 			}
@@ -773,6 +778,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			forumPostsModified= session
 				.createQuery("from ForumPostsLMS x where x.modified>=:readingtimestamp and x.modified<=:ceiling order by x.id asc");
+			forumPostsModified.setParameter("readingtimestamp", readingfromtimestamp);
+			forumPostsModified.setParameter("ceiling", readingtotimestamp);
+			this.forumPostsLms.addAll(forumPostsModified.list());
 		}
 		else
 		{
@@ -785,12 +793,26 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				else
 					courseClause += ")";
 			}
-			forumPostsModified = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from mdl_forum_posts as posts JOIN mdl_log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp and posts.modified<=:ceiling");
-
+			forumPostsModified = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from forum_posts as posts JOIN log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp and posts.modified<=:ceiling");
+			forumPostsModified.setParameter("readingtimestamp", readingfromtimestamp);
+			forumPostsModified.setParameter("ceiling", readingtotimestamp);
+			List<Object[]> tmpl = forumPostsModified.list();
+			if(this.forumPostsLms == null)
+				this.forumPostsLms = new ArrayList<ForumPostsLMS>();
+			for(Object[] obj : tmpl)
+			{
+				ForumPostsLMS p = new ForumPostsLMS();
+				p.setId(((Integer) obj[0]).longValue());
+				p.setUserid((String) obj[1]);
+				p.setCreated(((Integer) obj[2]).longValue());
+				p.setModified(((Integer) obj[3]).longValue());
+				p.setSubject((String) obj[4]);
+				p.setMessage((String) obj[5]);
+				
+				this.forumPostsLms.add(p);
+			
+			}
 		}
-		forumPostsModified.setParameter("readingtimestamp", readingfromtimestamp);
-		forumPostsModified.setParameter("ceiling", readingtotimestamp);
-		this.forumPostsLms.addAll(forumPostsModified.list());
 		logger.info("ForumPostsLMS tables: " + this.forumPostsLms.size());
 
 		session.clear();
@@ -845,9 +867,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			criteria = session.createCriteria(UserLMS.class, "obj");
 			if(hasCR)
 			{
-				ArrayList<Long> ids = new ArrayList<Long>();
+				ArrayList<String> ids = new ArrayList<String>();
 	 			for(RoleAssignmentsLMS e : this.roleAssignmentsLms)
-	 				ids.add(Long.valueOf(e.getUserid()));
+	 				ids.add(e.getUserid());
 	 			if(ids.size() > 0)
 	 				criteria.add(Restrictions.in("obj.id", ids));
 			}

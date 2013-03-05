@@ -113,7 +113,8 @@ public class Test {
 		courses.add(476L);
 		courses.add(4025L);
 		connector.setCourseIdFilter(courses);
-		connector.getData();
+		//connector.getData();
+		connector.updateData(1325376000L);
 	}
 
 	/**
