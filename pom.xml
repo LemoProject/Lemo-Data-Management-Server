@@ -61,7 +61,7 @@
 			<id>beuth</id>
 			<properties>
 				<lemo-system-name>beuth</lemo-system-name>
-				<lemo-display-name>Beuth</lemo-display-name>
+				<lemo-display-name>Moodle Beuth</lemo-display-name>
 				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
@@ -71,17 +71,7 @@
 			<id>clix</id>
 			<properties>
 				<lemo-system-name>clix</lemo-system-name>
-				<lemo-display-name>Clix</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>clix-im</id>
-			<properties>
-				<lemo-system-name>clix-im</lemo-system-name>
-				<lemo-display-name>Clix Meichsner</lemo-display-name>
+				<lemo-display-name>Clix HTW</lemo-display-name>
 				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
@@ -91,7 +81,7 @@
 			<id>bbw</id>
 			<properties>
 				<lemo-system-name>bbw</lemo-system-name>
-				<lemo-display-name>BBW</lemo-display-name>
+				<lemo-display-name>Moodle BBW</lemo-display-name>
 				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
@@ -106,31 +96,15 @@
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
-		
-		<profile>
-			<id>clix-forte</id>
-			<properties>
-				<lemo-system-name>clix-forte</lemo-system-name>
-				<lemo-display-name>Clix Fortenbacher</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-		
+
 	</profiles>
 
 	<dependencies>
-		<!--   <dependency>
-			<groupId>ca.pfv</groupId>
-			<artifactId>sqpm</artifactId>
-			<version>1.0</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>ca.pfv</groupId> <artifactId>sqpm</artifactId> 
+			<version>1.0</version> </dependency> -->
 
-		<!-- <dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3.0</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.oracle</groupId> <artifactId>ojdbc6</artifactId> 
+			<version>11.2.0.3.0</version> </dependency> -->
 
 
 		<dependency>
@@ -235,14 +209,14 @@
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
 		</dependency>
-		
-		
 
-<dependency>
-  <groupId>postgresql</groupId>
-  <artifactId>postgresql</artifactId>
-  <version>9.2-1002.jdbc4</version>
-</dependency> 
+
+
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.2-1002.jdbc4</version>
+		</dependency>
 
 		<!-- from lemo repo -->
 
@@ -257,20 +231,20 @@
 			<artifactId>ojdbc6</artifactId>
 			<version>11.2.0.3.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache</groupId>
 			<artifactId>maven-model</artifactId>
 			<version>3.0.2</version>
 		</dependency>
-		
+
 		<dependency>
-      		<groupId>org.apache.maven</groupId>
-      		<artifactId>maven-core</artifactId>
-      		<version>3.0.1</version>
-    	</dependency>
-    	
-    	<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-core</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.codehaus.plexus</groupId>
 			<artifactId>plexus-utils</artifactId>
 			<version>2.0.4</version>
@@ -353,27 +327,26 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
 				<executions>
-                	<execution>
-	                    <id>versionnumber</id>
+					<execution>
+						<id>versionnumber</id>
 						<configuration>
 							<target>
 								<exec executable="git" outputproperty="BUILD_NUMBER">
-									<arg value="describe"/>
+									<arg value="describe" />
 								</exec>
-								<echo message="Build Number: ${BUILD_NUMBER}"/>
-								<copy file="pom.xml" tofile="pom.xml.old"/>
+								<echo message="Build Number: ${BUILD_NUMBER}" />
+								<copy file="pom.xml" tofile="pom.xml.old" />
 								<replaceregexp file="pom.xml"
 									match="(&lt;version&gt;).*(&lt;/version&gt;&lt;!-- FLAG 1 identifier DONT DELETE --&gt;)"
-									replace="\1${BUILD_NUMBER}\2"
-									byline="true"/>
+									replace="\1${BUILD_NUMBER}\2" byline="true" />
 							</target>
 						</configuration>
-					    <phase>package</phase>
-	                    <goals>
-	                        <goal>run</goal>
-	                    </goals>
-                	</execution>
-                </executions>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>
@@ -417,5 +390,5 @@
 		<lemo2-tomcat-url>http://lemo2.f4.htw-berlin.de:8080</lemo2-tomcat-url>
 		<lemo3-tomcat-url>http://141.45.146.174:8080</lemo3-tomcat-url>
 	</properties>
-	
+
 </project>
