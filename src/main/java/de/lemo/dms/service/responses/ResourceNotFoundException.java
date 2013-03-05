@@ -30,11 +30,11 @@ public class ResourceNotFoundException extends WebApplicationException {
 	/**
 	 * Create a HTTP 404 (Not Found) exception.
 	 * 
-	 * @param message
+	 * @param resourceDescription
 	 *            the String that is the entity of the 404 response.
 	 */
-	public ResourceNotFoundException(final String message) {
-		super(Response.status(Status.NOT_FOUND).entity(message).type("text/plain").build());
+	public ResourceNotFoundException(final String resourceDescription) {
+		super(Response.status(Status.NOT_FOUND).entity("Resource not found: " + resourceDescription).type(MediaType.TEXT_PLAIN).build());
 	}
 
 }

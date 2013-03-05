@@ -25,6 +25,7 @@ import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
+import de.lemo.dms.service.responses.ResourceNotFoundException;
 
 /**
  * Service to get details of a course
@@ -44,40 +45,40 @@ public class ServiceCourseDetails {
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
-		@SuppressWarnings("unchecked")
-		final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(session,
-				EQueryType.HQL,
-				"from CourseMining where id = " + id);
-		CourseObject co = new CourseObject();
-		if ((ci != null) && (ci.size() >= 1)) {
-			@SuppressWarnings("unchecked")
-			final ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
-					"Select count(DISTINCT user) from CourseUserMining where course=" + ci.get(0).getId());
-			final Criteria criteria = session.createCriteria(ILogMining.class, "log");
-			criteria.add(Restrictions.eq("log.course.id", id));
-
-			@SuppressWarnings("unchecked")
-			ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
-			Collections.sort(logs);
-
-			Long cla = 0L;
-			Long cfin = 0L;
-
-			if (logs.size() > 0)
-			{
-				cla = logs.get(logs.size() - 1).getTimestamp();
-				cfin = logs.get(0).getTimestamp();
-			}
-
-			Long cpan = 0L;
-			if ((parti.size() > 0) && (parti.get(0) != null)) {
-				cpan = parti.get(0);
-			}
-
-			co = new CourseObject(ci.get(0).getId(), ci.get(0).getShortname(), ci.get(0).getTitle(), cpan, cla, cfin);
+		CourseMining course = (CourseMining) session.get(CourseMining.class, id);
+		if (course == null) {
+			throw new ResourceNotFoundException("Course " + id);
 		}
+
+		@SuppressWarnings("unchecked")
+		final ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
+				"Select count(DISTINCT user) from CourseUserMining where course=" + course.getId());
+		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		criteria.add(Restrictions.eq("log.course.id", id));
+
+		@SuppressWarnings("unchecked")
+		ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
+		Collections.sort(logs);
+
+		Long cla = 0L;
+		Long cfin = 0L;
+
+		if (logs.size() > 0)
+		{
+			cla = logs.get(logs.size() - 1).getTimestamp();
+			cfin = logs.get(0).getTimestamp();
+		}
+
+		Long cpan = 0L;
+		if ((parti.size() > 0) && (parti.get(0) != null)) {
+			cpan = parti.get(0);
+		}
+
+		CourseObject result =
+				new CourseObject(course.getId(), course.getShortname(), course.getTitle(), cpan, cla, cfin);
+
 		dbHandler.closeSession(session);
-		return co;
+		return result;
 	}
 
 	@GET
@@ -124,9 +125,7 @@ public class ServiceCourseDetails {
 				cpan = parti.get(0);
 			}
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(),
-					courseMining.getTitle(),
-					cpan,
-					clan, cfin);
+					courseMining.getTitle(), cpan, clan, cfin);
 			courses.add(co);
 		}
 		return new ResultListCourseObject(courses);
