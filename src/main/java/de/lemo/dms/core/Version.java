@@ -26,9 +26,8 @@ public class Version {
 
 	private static final String POM = "pom.xml";
 	private final Logger logger = Logger.getLogger(this.getClass());
-	private final ServerConfiguration config = ServerConfiguration.getInstance();
-	private IDBHandler dbHandler = this.config.getMiningDbHandler();
-
+	//private 
+	
 	/**
 	 * read the version number from the pom.xml
 	 * 
@@ -59,11 +58,12 @@ public class Version {
 	public String getDBVersion() {
 		String version = "unknown";
 		try {
-			final Session session = this.dbHandler.getMiningSession();
+			ServerConfiguration.getInstance().loadConfig("/lemo");
+			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+			final Session session = dbHandler.getMiningSession();
 
 			final Criteria criteria = session.createCriteria(ConfigMining.class, "config");
 			criteria.setMaxResults(1);
-			criteria.addOrder(org.hibernate.criterion.Order.desc("lastmodified"));
 			final ConfigMining prop = (ConfigMining) criteria.list().get(0);
 			version = prop.getDatabaseModel().toString();
 
