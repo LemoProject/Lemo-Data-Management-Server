@@ -144,7 +144,12 @@ public class Test {
 	public void runClixConn()
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_CLIX);
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(20201114L);
+
+		connector.setCourseIdFilter(courses);
 		connector.getData();
+		//connector.updateData(1356994800L);
 	}
 
 	public void test()
@@ -264,7 +269,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodleConn();
+		this.runClixConn();
 		logger.info("Test finished");
 	}
 

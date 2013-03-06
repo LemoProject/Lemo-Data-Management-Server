@@ -21,16 +21,6 @@ public class ChatProtocol implements IClixMappingClass {
 	private Long person;
 	private String chatSource;
 	private String lastUpdated;
-	private static final String DOLLAR = "$$$"; 
-
-	public String getString()
-	{
-		return "ChatProtocol" + DOLLAR + this.id + DOLLAR
-				+ this.getChatSource() + DOLLAR
-				+ this.getLastUpdated() + DOLLAR
-				+ this.getChatroom() + DOLLAR
-				+ this.getPerson();
-	}
 
 	public Long getId() {
 		return this.id;

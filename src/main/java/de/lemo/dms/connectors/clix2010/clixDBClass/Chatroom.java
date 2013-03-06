@@ -25,13 +25,7 @@ public class Chatroom implements IClixMappingClass {
 
 	}
 
-	public String getString()
-	{
-		return "Chatroom$$$"
-				+ this.id + "$$$"
-				+ this.getLastUpdated() + "$$$"
-				+ this.getTitle();
-	}
+
 
 	public long getId() {
 		return this.id;

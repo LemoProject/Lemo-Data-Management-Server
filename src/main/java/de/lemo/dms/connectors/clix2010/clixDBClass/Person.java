@@ -21,22 +21,12 @@ public class Person implements IClixMappingClass {
 	private String firstLoginTime;
 	private String login;
 	private Long gender;
-	private static final String DOLLAR = "$$$";
 
 	public Person()
 	{
 
 	}
 
-	public String getString()
-	{
-		return "Person" + DOLLAR
-				+ this.id + DOLLAR
-				+ this.getFirstLoginTime() + DOLLAR
-				+ this.getLastLoginTime() + DOLLAR
-				+ this.getLogin() + DOLLAR
-				+ this.getGender();
-	}
 
 	public Long getId() {
 		return this.id;

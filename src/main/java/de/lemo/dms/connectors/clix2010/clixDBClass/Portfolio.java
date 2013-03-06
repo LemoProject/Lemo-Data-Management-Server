@@ -22,6 +22,7 @@ public class Portfolio implements IClixMappingClass {
 	private String startDate;
 	private String endDate;
 	private Long course;
+	private String lastUpdated;
 
 	public String getStartDate() {
 		return this.startDate;
@@ -74,6 +75,14 @@ public class Portfolio implements IClixMappingClass {
 
 	public void setCourse(Long course) {
 		this.course = course;
+	}
+
+	public String getLastUpdated() {
+		return lastUpdated;
+	}
+
+	public void setLastUpdated(String lastUpdated) {
+		this.lastUpdated = lastUpdated;
 	}
 
 }

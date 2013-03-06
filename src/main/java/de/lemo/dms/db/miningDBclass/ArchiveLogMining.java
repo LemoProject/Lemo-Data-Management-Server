@@ -1,9 +1,16 @@
-package de.lemo.dms.db.miningDBclass;
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/ArchiveLogMining.java
+ * Date 2013-03-05
+ * Project Lemo Learning Analytics
+ */package de.lemo.dms.db.miningDBclass;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
-
+/** 
+ * This class represents the table archive_log_mining. 
+ * @author Sebastian Schwarzrock
+ */
 public class ArchiveLogMining implements ILogMining {
 
 	private long id;

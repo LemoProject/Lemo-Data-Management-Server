@@ -22,22 +22,6 @@ public class ForumEntry implements IClixMappingClass {
 	private String lastUpdated;
 	private String title;
 	private String content;
-	private static final String DOLLAR = "$$$";
-
-	public ForumEntry()
-	{
-	}
-
-	public String getString()
-	{
-		return "ForumEntry" + DOLLAR
-				+ this.id + DOLLAR
-				+ this.getContent() + DOLLAR
-				+ this.getForum() + DOLLAR
-				+ this.getLastUpdated() + DOLLAR
-				+ this.getTitle() + DOLLAR
-				+ this.getLastUpdater();
-	}
 
 	public Long getId() {
 		return this.id;

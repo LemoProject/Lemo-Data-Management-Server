@@ -1,6 +1,14 @@
+/**
+ * File ./main/java/de/lemo/dms/db/miningDBclass/CourseArchiveMining.java
+ * Date 2013-03-05
+ * Project Lemo Learning Analytics
+ */
 package de.lemo.dms.db.miningDBclass;
 
-
+/** 
+ * This class represents the relationship between the courses and archive. 
+ * @author Sebastian Schwarzrock
+ */
 public class CourseArchiveMining {
 	
 	private long id;

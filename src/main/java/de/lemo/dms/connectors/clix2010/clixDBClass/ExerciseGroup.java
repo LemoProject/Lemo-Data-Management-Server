@@ -19,11 +19,6 @@ public class ExerciseGroup implements IClixMappingClass {
 	private long id;
 	private long associatedCourse;
 
-	public ExerciseGroup()
-	{
-
-	}
-
 	public long getId() {
 		return this.id;
 	}
@@ -40,11 +35,5 @@ public class ExerciseGroup implements IClixMappingClass {
 		this.associatedCourse = associatedCourse;
 	}
 
-	public String getString()
-	{
-		return "ExerciseGroup$$$"
-				+ this.id + "$$$"
-				+ this.getAssociatedCourse();
-	}
 
 }

@@ -18,15 +18,15 @@
 
 		<property name="course" column="COURSE_ID" type="long" />
 		
-		<property name="component" column="COURSE_ID" type="long" />
+		<property name="component" column="COMPONENT_ID" type="long" />
 		
 		<property name="startDate" column="START_DATE" type="string" />
 		
-		<property name="endDate" column="END_DATE" type="string" />
-		
-		<property name="title" column="CHATROOM_NAME" type="string" />		
+		<property name="endDate" column="END_DATE" type="string" />	
 		
 		<property name="evaluatedScore" column="EVALUATED_SCORE" type="double" />
+		
+		<property name="typeOfModification" column="TYPE_OF_MODIFICATION" type="long" />
 
 	</class>
 

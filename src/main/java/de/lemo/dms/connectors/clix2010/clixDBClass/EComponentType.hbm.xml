@@ -7,19 +7,16 @@
 
 	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.EComponentType"
 		table="E_COMPONENTTYPE">
+		
+		<id name="id" column="COMPONENTTYPE_ID" type="long">
+			<generator class="native" />
+		</id>
 
-
-		<composite-id name="id"
-			class="de.lemo.dms.connectors.clix2010.clixDBClass.EComponentTypePK">
-
-			<key-property name="component" column="COMPONENTTYPE_ID"
-				type="long" />
-			<key-property name="language" column="LANGUAGE_ID" type="long" />
-
-		</composite-id>
-
-		<property name="component" insert="false" update="false"
+		<property name="componentType" insert="false" update="false"
 			column="COMPONENTTYPE_ID" type="long" />
+			
+		<property name="component" insert="false" update="false"
+			column="COMPONENT_ID" type="long" />
 
 		<property name="language" insert="false" update="false"
 			column="LANGUAGE_ID" type="long" />

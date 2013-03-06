@@ -1,6 +1,16 @@
+/**
+ * File ./main/java/de/lemo/dms/connectors/clix2010/clixDBClass/BiTrackContentImpressions.java
+ * Date 2013-03-05
+ * Project Lemo Learning Analytics
+ */
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
-
+/**
+ * Mapping class for table LearningLog.
+ * 
+ * @author S.Schwarzrock
+ *
+ */
 public class LearningLog {
 	
 	private Long id;
@@ -11,6 +21,7 @@ public class LearningLog {
 	private String startDate;
 	private String endDate;
 	private Double evaluatedScore;
+	private Long typeOfModification;
 	
 	public Long getId() {
 		return id;
@@ -74,6 +85,14 @@ public class LearningLog {
 	
 	public void setEvaluatedScore(Double evaluatedScore) {
 		this.evaluatedScore = evaluatedScore;
+	}
+
+	public Long getTypeOfModification() {
+		return typeOfModification;
+	}
+
+	public void setTypeOfModification(Long typeOfModification) {
+		this.typeOfModification = typeOfModification;
 	}
 	
 	
