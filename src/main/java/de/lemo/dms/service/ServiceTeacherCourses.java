@@ -55,7 +55,8 @@ public class ServiceTeacherCourses {
 		if(id != null)
 		{
 			criteria.add(Restrictions.eq("cu.user.id", id));
-			criteria.add(Restrictions.in("cu.role.type", types));
+			criteria.createAlias("cu.role", "role");
+			criteria.add(Restrictions.in("role.type", types));
 		}
 		if(startTime != null)
 		{
