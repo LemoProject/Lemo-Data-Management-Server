@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContentComposing"
+		table="T_QTI_CONTENTCOMPOSING">
+
+		<composite-id name="id"
+			class="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContentComposingPK">
+
+			<key-property name="candidate" column="CANDIDATE_ID" type="long" />
+			<key-property name="content" column="CONTENT_ID" type="long" />
+			<key-property name="container" column="CONTAINER_ID" type="long" />
+
+		</composite-id>
+
+		<property name="content" column="CONTENT_ID" type="long" />
+
+		<property name="container" column="CONTAINER_ID" type="long" />
+
+		<property name="candidate" column="CANDIDATE_ID" type="long" />
+
+	</class>
+
+</hibernate-mapping>

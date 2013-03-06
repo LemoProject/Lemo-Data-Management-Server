@@ -67,6 +67,7 @@ public final class MiningHibernateUtil {
 
 		// Association-classes
 		config.addResource("de/lemo/dms/db/miningDBclass/CourseAssignmentMining.hbm.xml");
+		config.addResource("de/lemo/dms/db/miningDBclass/CourseChatMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/CourseForumMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/CourseGroupMining.hbm.xml");
 		config.addResource("de/lemo/dms/db/miningDBclass/CourseQuizMining.hbm.xml");

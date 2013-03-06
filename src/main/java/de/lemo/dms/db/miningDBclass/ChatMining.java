@@ -23,6 +23,19 @@ public class ChatMining implements IMappingClass {
 	private long chatTime;
 	private CourseMining course;
 	private Long platform;
+	
+	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
+	private Set<CourseChatMining> courseChats = new HashSet<CourseChatMining>();
+	
+	/**
+	 * standard setter for the attribute course_chat
+	 * 
+	 * @param courseChat
+	 *            this entry will be added to the list of course_chat in this assignment
+	 */
+	public void addCourseChat(final CourseChatMining courseChat) {
+		this.courseChats.add(courseChat);
+	}
 
 	@Override
 	public boolean equals(final IMappingClass o)
@@ -64,7 +77,7 @@ public class ChatMining implements IMappingClass {
 		}
 	}
 
-	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
+
 
 	@Override
 	public long getId() {
@@ -102,9 +115,17 @@ public class ChatMining implements IMappingClass {
 	public Set<ChatLogMining> getChatLogs() {
 		return this.chatLogs;
 	}
+	
+	public Set<CourseChatMining> getCourseChats() {
+		return this.courseChats;
+	}
 
 	public void setChatLogs(final Set<ChatLogMining> chatLogs) {
 		this.chatLogs = chatLogs;
+	}
+	
+	public void setCourseChats(final Set<CourseChatMining> courseChats) {
+		this.courseChats = courseChats;
 	}
 
 	public void addChatLog(final ChatLogMining chatLog) {

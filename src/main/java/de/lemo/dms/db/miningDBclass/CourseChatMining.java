@@ -1,5 +1,5 @@
 /**
- * File ./main/java/de/lemo/dms/db/miningDBclass/CourseArchiveMining.java
+ * File ./main/java/de/lemo/dms/db/miningDBclass/CourseChatMining.java
  * Date 2013-03-05
  * Project Lemo Learning Analytics
  */
@@ -8,21 +8,21 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.Map;
 
 /** 
- * This class represents the relationship between the courses and archive. 
+ * This class represents the relationship between the courses and chat. 
  * @author Sebastian Schwarzrock
  */
-public class CourseArchiveMining {
+public class CourseChatMining {
 	
 	private long id;
 	private CourseMining course;
-	private ArchiveMining archive;
+	private ChatMining chat;
 	private long platform;
 	
 	/**
 	 * parameterized setter for the attribute course
 	 * 
 	 * @param course
-	 *            the id of a course in which the archive is used
+	 *            the id of a course in which the chat is used
 	 * @param courseMining
 	 *            a list of new added courses, which is searched for the course with the id submitted in the course
 	 *            parameter
@@ -35,12 +35,12 @@ public class CourseArchiveMining {
 		if (courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addCourseArchive(this);
+			courseMining.get(course).addCourseChat(this);
 		}
 		if ((this.course == null) && (oldCourseMining.get(course) != null))
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addCourseArchive(this);
+			oldCourseMining.get(course).addCourseChat(this);
 		}
 	}
 	
@@ -56,21 +56,19 @@ public class CourseArchiveMining {
 	 *            a list of course in the miningdatabase, which is searched for the course with the id submitted in the
 	 *            course parameter
 	 */
-	public void setArchive(final long archive, final Map<Long, ArchiveMining> archiveMining,
-			final Map<Long, ArchiveMining> oldArchiveMining) {
-		if (archiveMining.get(archive) != null)
+	public void setChat(final long chat, final Map<Long, ChatMining> chatMining,
+			final Map<Long, ChatMining> oldChatMining) {
+		if (chatMining.get(chat) != null)
 		{
-			this.archive = archiveMining.get(archive);
-			archiveMining.get(archive).addCourseArchive(this);
+			this.chat = chatMining.get(chat);
+			chatMining.get(chat).addCourseChat(this);
 		}
-		if ((this.archive == null) && (oldArchiveMining.get(archive) != null))
+		if ((this.chat == null) && (oldChatMining.get(chat) != null))
 		{
-			this.archive = oldArchiveMining.get(archive);
-			oldArchiveMining.get(archive).addCourseArchive(this);
+			this.chat = oldChatMining.get(chat);
+			oldChatMining.get(chat).addCourseChat(this);
 		}
 	}
-	
-	
 	
 	public long getId() {
 		return id;
@@ -88,13 +86,6 @@ public class CourseArchiveMining {
 		this.course = course;
 	}
 	
-	public ArchiveMining getArchive() {
-		return archive;
-	}
-	
-	public void setArchive(ArchiveMining archive) {
-		this.archive = archive;
-	}
 	
 	public long getPlatform() {
 		return platform;
@@ -102,6 +93,14 @@ public class CourseArchiveMining {
 	
 	public void setPlatform(long platform) {
 		this.platform = platform;
+	}
+
+	public ChatMining getChat() {
+		return chat;
+	}
+
+	public void setChat(ChatMining chat) {
+		this.chat = chat;
 	}
 	
 	

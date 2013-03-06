@@ -18,8 +18,8 @@ public class ArchiveMining {
 	private Long platform;
 	private String title;
 	
-	private Set<ArchiveLogMining> assignmentLogs = new HashSet<ArchiveLogMining>();
-	private Set<CourseArchiveMining> courseAssignments = new HashSet<CourseArchiveMining>();
+	private Set<ArchiveLogMining> archiveLogs = new HashSet<ArchiveLogMining>();
+	private Set<CourseArchiveMining> courseArchives = new HashSet<CourseArchiveMining>();
 	
 	public Long getId() {
 		return id;
@@ -45,20 +45,31 @@ public class ArchiveMining {
 		this.title = title;
 	}
 	
-	public Set<ArchiveLogMining> getAssignmentLogs() {
-		return assignmentLogs;
+	public Set<ArchiveLogMining> getArchiveLogs() {
+		return archiveLogs;
 	}
 	
-	public void setAssignmentLogs(Set<ArchiveLogMining> assignmentLogs) {
-		this.assignmentLogs = assignmentLogs;
+	public void setArchiveLogs(Set<ArchiveLogMining> archiveLogs) {
+		this.archiveLogs = archiveLogs;
 	}
 	
-	public Set<CourseArchiveMining> getCourseAssignments() {
-		return courseAssignments;
+	public Set<CourseArchiveMining> getCourseArchives() {
+		return courseArchives;
 	}
 	
-	public void setCourseAssignments(Set<CourseArchiveMining> courseAssignments) {
-		this.courseAssignments = courseAssignments;
+	public void setCourseArchives(Set<CourseArchiveMining> courseArchives) {
+		this.courseArchives = courseArchives;
+	}
+	
+	/**
+	 * standard setter for the attribute course_archive
+	 * 
+	 * @param courseAssignment
+	 *            this entry will be added to the list of course_archive in this archive
+	 */
+	public void addCourseArchive(final CourseArchiveMining courseArchive)
+	{
+		this.courseArchives.add(courseArchive);
 	}
 
 

@@ -52,6 +52,7 @@ import de.lemo.dms.db.miningDBclass.AssignmentMining;
 import de.lemo.dms.db.miningDBclass.ChatLogMining;
 import de.lemo.dms.db.miningDBclass.ChatMining;
 import de.lemo.dms.db.miningDBclass.CourseAssignmentMining;
+import de.lemo.dms.db.miningDBclass.CourseChatMining;
 import de.lemo.dms.db.miningDBclass.CourseForumMining;
 import de.lemo.dms.db.miningDBclass.CourseGroupMining;
 import de.lemo.dms.db.miningDBclass.CourseLogMining;
@@ -1130,6 +1131,35 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 		}
 		return courseAssignmentMining;
+	}
+	
+	@Override
+	public Map<Long, CourseChatMining> generateCourseChatMining() {
+
+		final HashMap<Long, CourseChatMining> courseChatMining = new HashMap<Long, CourseChatMining>();
+
+		for (final ChatMining loadedItem : this.chatMining.values())
+		{
+			final CourseChatMining insert = new CourseChatMining();
+
+			insert.setId(courseChatMining.size() + 1 + this.courseChatMax);
+			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse().getId()), this.courseMining,
+					this.oldCourseMining);
+			insert.setPlatform(this.connector.getPlatformId());			
+			insert.setChat(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()),
+					this.chatMining, this.chatMining);
+			if ((insert.getCourse() != null) && (insert.getChat() != null)) {
+				courseChatMining.put(insert.getId(), insert);
+			}
+			if (insert.getCourse() == null) {
+				this.logger.debug("course not found for course-chatt: " + loadedItem.getId() + " and course: "
+						+ loadedItem.getCourse());
+			}
+			if (insert.getChat() == null) {
+				this.logger.debug("In CourseChatMining, chatt not found: " + loadedItem.getId());
+			}
+		}
+		return courseChatMining;
 	}
 
 	@Override

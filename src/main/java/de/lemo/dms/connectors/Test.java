@@ -145,8 +145,14 @@ public class Test {
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_CLIX);
 		ArrayList<Long> courses = new ArrayList<Long>();
-		courses.add(20201114L);
+		//courses.add(20201114L);
 
+		courses.add(17945446L); 
+		courses.add(13617310L);
+		courses.add(10921956L);
+		courses.add(8074949L);
+		courses.add(4667155L);
+		
 		connector.setCourseIdFilter(courses);
 		connector.getData();
 		//connector.updateData(1356994800L);
@@ -154,7 +160,8 @@ public class Test {
 
 	public void test()
 	{
-		
+		String s = "Die Schwalbe fliegt über den Eriesee, 123213()/7124";
+		System.out.println(TextHelper.replaceString(s));
 	}
 
 	public void calculateMeichsner()
@@ -269,7 +276,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runClixConn();
+		this.test();
 		logger.info("Test finished");
 	}
 

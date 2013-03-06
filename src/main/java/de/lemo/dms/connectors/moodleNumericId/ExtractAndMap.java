@@ -27,6 +27,7 @@ import de.lemo.dms.db.miningDBclass.ChatLogMining;
 import de.lemo.dms.db.miningDBclass.ChatMining;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.CourseAssignmentMining;
+import de.lemo.dms.db.miningDBclass.CourseChatMining;
 import de.lemo.dms.db.miningDBclass.CourseForumMining;
 import de.lemo.dms.db.miningDBclass.CourseGroupMining;
 import de.lemo.dms.db.miningDBclass.CourseLogMining;
@@ -199,6 +200,7 @@ public abstract class ExtractAndMap {
 	protected Long quizLogMax;
 	protected Long scormLogMax;
 	protected Long wikiLogMax;
+	protected Long courseChatMax;
 
 	private final IConnector connector;
 
@@ -385,6 +387,12 @@ public abstract class ExtractAndMap {
 		this.wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.wikiLogMax == null) {
 			this.wikiLogMax = 0L;
+		}
+		
+		Query couCaCount = session.createQuery("select max(cc.id) from CourseChatMining cc");
+		this.courseChatMax = ((ArrayList<Long>) couCaCount.list()).get(0);
+		if (this.courseChatMax == null) {
+			this.courseChatMax = 0L;
 		}
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from CourseMining x where x.platform="
@@ -698,6 +706,11 @@ public abstract class ExtractAndMap {
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseAssignmentMining entries in " + this.c.getAndReset() + " s. ");
+			
+			this.updates.add(this.generateCourseChatMining().values());
+			objects += this.updates.get(this.updates.size() - 1).size();
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+					+ " CourseChatMining entries in " + this.c.getAndReset() + " s. ");
 
 			this.updates.add(this.generateCourseScormMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
@@ -875,6 +888,17 @@ public abstract class ExtractAndMap {
 	 * @return A list of instances of the course_assignment table representing class.
 	 **/
 	abstract Map<Long, CourseAssignmentMining> generateCourseAssignmentMining();
+	
+	/**
+	 * Has to create and fill the course_chat table.
+	 * This table describes which chats are used in which courses.
+	 * The attributes are described in the documentation of the course_chat_mining class.
+	 * Please use the getter and setter predefined in the course_chat_mining class to fill the tables within this
+	 * method.
+	 * 
+	 * @return A list of instances of the course_wiki table representing class.
+	 **/
+	abstract Map<Long, CourseChatMining> generateCourseChatMining();
 
 	/**
 	 * Has to create and fill the course_scorm table.
