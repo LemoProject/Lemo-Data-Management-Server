@@ -44,6 +44,7 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.T2Task;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPosition;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TGroupFullSpecification;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContent;
+import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContentComposing;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiEvalAssessment;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TTestSpecification;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseGroup;
@@ -138,6 +139,8 @@ public class ClixImporter {
 	// List, holding the entries of the EXERCISE_GROUP table of the source database
 	/** The exercise group. */
 	private List<ExerciseGroup> exerciseGroup;
+	/** The TQtiContentComposing. */
+	private List<TQtiContentComposing> tQtiContentComposing;
 	// List, holding the entries of the E_COMPONENT table of the source database
 	/** The e component. */
 	/** The e component. */
@@ -830,11 +833,6 @@ public class ClixImporter {
 			}
 			logger.info("EComposing tables: " + this.eComposing.size());
 			
-
-			
-
-
-			
 			//Get ExerciseGroup tables
 			criteria = session.createCriteria(ExerciseGroup.class, "obj");
 			if(hasCR)
@@ -891,6 +889,22 @@ public class ClixImporter {
 			}
 			tmp.clear();
 			this.logger.info("EComponent tables: " + this.eComponentMap.values().size());
+			
+			//Get TQtiContentComposing tables
+			criteria = session.createCriteria(TQtiContentComposing.class, "obj");
+			if(hasCR)
+			{
+				HashSet<Long> tmp1 = new HashSet<Long>(this.eComponentMap.keySet());
+				empty = tmp1.isEmpty();
+				if(!empty)
+					criteria.add(Restrictions.in("obj.content", tmp1));
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			if(!empty)
+				this.tQtiContentComposing = criteria.list();
+			else
+				this.tQtiContentComposing = new ArrayList<TQtiContentComposing>();
+			logger.info("TQtiContentComposing tables: " + this.tQtiContentComposing.size());
 			
 			//Get Chatroom tables
 			criteria = session.createCriteria(Chatroom.class, "obj");
@@ -2112,12 +2126,12 @@ public class ClixImporter {
 		final HashMap<Long, QuizQuestionMining> quizQuestions = new HashMap<Long, QuizQuestionMining>();
 
 		try {
-			for (final TTestSpecification loadedItem : this.tTestSpecification)
+			for (final TQtiContentComposing loadedItem : this.tQtiContentComposing)
 			{
 				final QuizQuestionMining item = new QuizQuestionMining();
-				item.setQuestion(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getTest()),
+				item.setQuestion(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getContent()),
 						this.questionMining, this.oldQuestionMining);
-				item.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getTask()), this.quizMining,
+				item.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getContainer()), this.quizMining,
 						this.oldQuizMining);
 				// Id for QuizQuestion entry is a combination of the question-id and the quiz-id
 				item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId().hashCode()));

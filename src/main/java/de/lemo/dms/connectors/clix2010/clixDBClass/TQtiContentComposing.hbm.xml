@@ -16,13 +16,17 @@
 			<key-property name="container" column="CONTAINER_ID" type="long" />
 
 		</composite-id>
-
-		<property name="content" column="CONTENT_ID" type="long" />
-
-		<property name="container" column="CONTAINER_ID" type="long" />
-
-		<property name="candidate" column="CANDIDATE_ID" type="long" />
-
+		
+		<property name="candidate" insert="false" update="false" column="CANDIDATE_ID"
+			type="long" />
+			
+		<property name="content" insert="false" update="false" column="CONTENT_ID"
+			type="long" />
+			
+		<property name="container" insert="false" update="false" column="CONTAINER_ID"
+			type="long" />
+			
+			
 	</class>
 
 </hibernate-mapping>
