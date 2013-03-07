@@ -68,6 +68,8 @@ public final class ClixHibernateUtil {
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TeamExerciseGroupMember.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TGroupFullSpecification.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiContent.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiTestItemD.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiContentStructure.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiContentComposing.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiEvalAssessment.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TTestSpecification.hbm.xml");

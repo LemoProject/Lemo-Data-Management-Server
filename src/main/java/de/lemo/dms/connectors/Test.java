@@ -147,11 +147,11 @@ public class Test {
 		ArrayList<Long> courses = new ArrayList<Long>();
 		courses.add(20201114L);
 
-		courses.add(17945446L); 
+		/*courses.add(17945446L); 
 		courses.add(13617310L);
 		courses.add(10921956L);
 		courses.add(8074949L);
-		courses.add(4667155L);
+		courses.add(4667155L);*/
 		
 		connector.setCourseIdFilter(courses);
 		connector.getData();
