@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class
+		name="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiTestPlayerResp"
+		table="T_QTI_TESTPLAYER_RESP">
+
+
+		<composite-id name="id"
+			class="de.lemo.dms.connectors.clix2010.clixDBClass.TQtiTestPlayerRespPK">
+
+			<key-property name="candidate" column="CANDIDATE_ID" type="long" />
+			<key-property name="response" column="RESPONSE_ID" type="long" />
+			<key-property name="container" column="CONTAINER_ID" type="long" />
+			<key-property name="content" column="CONTENT_ID" type="long" />
+			<key-property name="subitemPosition" column="SUBITEM_POSITION" type="long" />
+			<key-property name="testItem" column="TESTITEM_ID" type="long" />
+
+		</composite-id>
+
+		<property name="candidate" insert="false" update="false" column="CANDIDATE_ID"
+			type="long" />
+
+		<property name="response" insert="false" update="false" column="RESPONSE_ID"
+			type="long" />
+			
+		<property name="container" insert="false" update="false" column="CONTAINER_ID"
+			type="long" />
+
+		<property name="content" insert="false" update="false" column="CONTENT_ID"
+			type="long" />
+			
+		<property name="subitemPosition" insert="false" update="false" column="SUBITEM_POSITION"
+			type="long" />
+
+		<property name="testItem" insert="false" update="false" column="TESTITEM_ID"
+			type="long" />
+			
+		<property name="evaluationDate" column="EVALUATION_DATE" type="string" />
+		
+		<property name="text" column="RESPONSE" type="string" />
+		
+		<property name="evaluatedScore" column="EVALUATED_SCORE" type="double" />
+		
+		<property name="itemResultStatus" column="ITEM_RESULT_STATUS" type="long" />
+		
+		<property name="processStatus" column="PROCESS_STATUS" type="long" />
+		
+				<property name="itemProcessStatus" column="ITEM_PROCESS_STATUS" type="long" />
+
+	</class>
+
+</hibernate-mapping>

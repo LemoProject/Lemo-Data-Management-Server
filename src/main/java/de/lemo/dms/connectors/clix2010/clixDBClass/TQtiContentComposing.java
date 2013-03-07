@@ -20,6 +20,7 @@ public class TQtiContentComposing implements IClixMappingClass {
 	private Long candidate;
 	private Long content;
 	private Long container;
+	private Long position;
 	
 	
 	public Long getContainer() {
@@ -52,6 +53,14 @@ public class TQtiContentComposing implements IClixMappingClass {
 	
 	public void setId(TQtiContentComposingPK id) {
 		this.id = id;
+	}
+
+	public Long getPosition() {
+		return position;
+	}
+
+	public void setPosition(Long position) {
+		this.position = position;
 	}
 	
 	

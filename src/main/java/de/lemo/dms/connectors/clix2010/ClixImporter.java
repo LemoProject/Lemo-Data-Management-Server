@@ -24,7 +24,6 @@ import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressions;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ChatProtocol;
-import de.lemo.dms.connectors.clix2010.clixDBClass.Chatroom;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponent;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponentType;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComposing;
@@ -40,15 +39,14 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.PlatformGroupSpecification;
 import de.lemo.dms.connectors.clix2010.clixDBClass.Portfolio;
 import de.lemo.dms.connectors.clix2010.clixDBClass.PortfolioLog;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ScormSessionTimes;
-import de.lemo.dms.connectors.clix2010.clixDBClass.T2Task;
-import de.lemo.dms.connectors.clix2010.clixDBClass.TAnswerPosition;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TGroupFullSpecification;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContent;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContentComposing;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiContentStructure;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiEvalAssessment;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiTestItemD;
-import de.lemo.dms.connectors.clix2010.clixDBClass.TTestSpecification;
+import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiTestPlayer;
+import de.lemo.dms.connectors.clix2010.clixDBClass.TQtiTestPlayerResp;
 import de.lemo.dms.connectors.clix2010.clixDBClass.TeamExerciseGroup;
 import de.lemo.dms.connectors.clix2010.clixDBClass.WikiEntry;
 import de.lemo.dms.connectors.clix2010.clixHelper.TimeConverter;
@@ -144,10 +142,14 @@ public class ClixImporter {
 	private Map<Long, EComponent> eComponentMap;
 	/** The e component type. */
 	private List<EComponentType> eComponentType;
+	/** The e component type. */
+	private List<TQtiTestPlayer> tQtiTestPlayer;
 	/** The e composing. */
 	private List<EComposing> eComposing;
 	/** The exercise personalised. */
 	private List<ExercisePersonalised> exercisePersonalised;
+	/** The tQti TestPlayer Responses. */
+	private List<TQtiTestPlayerResp> tQtiTestPlayerResp;
 	/** The forum entry. */
 	private List<ForumEntry> forumEntry;
 	/** The forum entry state. */
@@ -166,8 +168,6 @@ public class ClixImporter {
 	private List<PortfolioLog> portfolioLog;
 	/** The scorm session times. */
 	private List<ScormSessionTimes> scormSessionTimes;
-	/** The t answer position. */
-	private List<TAnswerPosition> tAnswerPosition;
 	/** The team exercise group. */
 	private List<TeamExerciseGroup> teamExerciseGroup;
 	/** The t group full specification. */
@@ -180,12 +180,8 @@ public class ClixImporter {
 	private List<TQtiTestItemD> tQtiTestItemD;
 	/** The t qti eval assessment. */
 	private List<TQtiEvalAssessment> tQtiEvalAssessment;
-	/** The t test specification. */
-	private List<TTestSpecification> tTestSpecification;
 	/** The wiki entry. */
 	private List<WikiEntry> wikiEntry;
-	/** The chatroom. */
-	private List<Chatroom> chatroom;
 
 	/** The e composing map. */
 	private Map<Long, EComposing> eComposingMap;
@@ -521,14 +517,11 @@ public class ClixImporter {
 		this.portfolio.clear();
 		this.portfolioLog.clear();
 		this.scormSessionTimes.clear();
-		this.tAnswerPosition.clear();
 		this.teamExerciseGroup.clear();
 		this.tGroupFullSpecification.clear();
 		this.tQtiContent.clear();
 		this.tQtiEvalAssessment.clear();
-		this.tTestSpecification.clear();
 		this.wikiEntry.clear();
-		this.chatroom.clear();
 
 	}
 
@@ -759,6 +752,26 @@ public class ClixImporter {
 			this.biTrackContentImpressions = criteria.list();
 			logger.info("BiTrackContentImpressions tables: " + this.biTrackContentImpressions.size());
 			
+			//Get QTiTestPlayerResp tables
+			criteria = session.createCriteria(TQtiTestPlayerResp.class, "obj");
+			if(hasCR)
+			{
+				criteria.add(Restrictions.in("obj.container", courses));
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.tQtiTestPlayerResp = criteria.list();
+			logger.info("TQtiTestPlayerResp tables: " + this.tQtiTestPlayerResp.size());
+			
+			//Get QTiTestPlayer tables
+			criteria = session.createCriteria(TQtiTestPlayer.class, "obj");
+			if(hasCR)
+			{
+				criteria.add(Restrictions.in("obj.container", courses));
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.tQtiTestPlayer = criteria.list();
+			logger.info("TQtiTestPlayer tables: " + this.tQtiTestPlayer.size());
+			
 			//Get EComposing tables
 			criteria = session.createCriteria(EComposing.class, "obj");
 			if(hasCR)
@@ -907,22 +920,6 @@ public class ClixImporter {
 			else
 				this.tQtiContent = new ArrayList<TQtiContent>();
 			this.logger.info("TQtiContent tables: " + this.tQtiContent.size());
-			
-			//Get Chatroom tables
-			criteria = session.createCriteria(Chatroom.class, "obj");
-			if(hasCR)
-			{
-				HashSet<Long> tmp1 = new HashSet<Long>(this.eComposingMap.keySet());
-				empty = tmp1.isEmpty();
-				if(!empty)
-					criteria.add(Restrictions.in("obj.id", tmp1));
-			}
-			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
-				this.chatroom = criteria.list();
-			else
-				this.chatroom = new ArrayList<Chatroom>();
-			logger.info("Chatroom tables: " + this.chatroom.size());
 			
 			//Get ChatProtocol tables
 			criteria = session.createCriteria(ChatProtocol.class, "obj");
@@ -1123,12 +1120,6 @@ public class ClixImporter {
 				this.tQtiTestItemD = new ArrayList<TQtiTestItemD>();
 			this.logger.info("TQtiTestItemD tables: " + this.tQtiTestItemD.size());	
 			
-			//Get TAnswerPosition tables
-			criteria = session.createCriteria(TAnswerPosition.class, "obj");
-			criteria.addOrder(Property.forName("obj.id").asc());
-			this.tAnswerPosition = criteria.list();
-			this.logger.info("TAnswerPosition tables: " + this.tAnswerPosition.size());
-			
 			//Get TGroupFullSpecification tables
 			criteria = session.createCriteria(TGroupFullSpecification.class, "obj");
 			if(hasCR)
@@ -1159,12 +1150,6 @@ public class ClixImporter {
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.tQtiEvalAssessment = criteria.list();
 			this.logger.info("TQtiEvalAssessment tables: " + this.tQtiEvalAssessment.size());
-			
-			//Get TTestSpecification tables
-			criteria = session.createCriteria(TTestSpecification.class, "obj");
-			criteria.addOrder(Property.forName("obj.id").asc());
-			this.tTestSpecification = criteria.list();
-			this.logger.info("TTestSpecification tables: " + this.tTestSpecification.size());
 			
 			//Get WikiEntry tables
 			criteria = session.createCriteria(WikiEntry.class, "obj");
@@ -1211,6 +1196,11 @@ public class ClixImporter {
 
 			Criteria criteria;
 			
+			// The Clix database uses date representation of the type varchar, so the unix-timestamp has to be converted
+			// to a string
+			String startStr = TimeConverter.getStringRepresentation(start);
+			String endStr = TimeConverter.getStringRepresentation(end);
+			
 			// Read the tables that don't refer to log-entries once
 			if (this.userMining == null)
 			{
@@ -1231,22 +1221,6 @@ public class ClixImporter {
 				}
 				logger.info("EComposing tables: " + this.eComposing.size());
 				
-				criteria = session.createCriteria(Chatroom.class, "obj");
-				if(hasCR)
-				{
-					HashSet<Long> tmp1 = new HashSet<Long>(this.eComposingMap.keySet());
-					empty = tmp1.isEmpty();
-					if(!empty)
-						criteria.add(Restrictions.in("obj.id", tmp1));
-				}
-				criteria.addOrder(Property.forName("obj.id").asc());
-				if(!hasCR || !empty)
-					this.chatroom = criteria.list();
-				else
-					this.chatroom = new ArrayList<Chatroom>();
-				this.logger.info("Chatroom tables: " + this.chatroom.size());
-
-				
 				criteria = session.createCriteria(Portfolio.class, "obj");
 				if(hasCR)
 				{
@@ -1265,23 +1239,35 @@ public class ClixImporter {
 				criteria.addOrder(Property.forName("obj.id").asc());
 				this.personComponentAssignment = criteria.list();
 				this.logger.info("PersonComponentAssignment tables: " + this.personComponentAssignment.size());
-
-				//Get EComponentType tables
-				criteria = session.createCriteria(EComponentType.class, "obj");
+				
+				//Get ExerciseGroup tables
+				criteria = session.createCriteria(ExerciseGroup.class, "obj");
+				if(hasCR)
+				{
+					criteria.add(Restrictions.in("obj.associatedCourse", courses));
+				}
+				criteria.addOrder(Property.forName("obj.id").asc());
+				this.exerciseGroup = criteria.list();
+				this.logger.info("ExerciseGroup tables: " + this.exerciseGroup.size());
+				
+				//Get ExercisePersonalised tables
+				criteria = session.createCriteria(ExercisePersonalised.class, "obj");
 				if(hasCR)
 				{
 					Set<Long> ids = new HashSet<Long>();
-					
-					for(EComponent eg : this.eComponentMap.values())
-					{
-						ids.add(eg.getType());
-					}
+					for(ExerciseGroup eg : this.exerciseGroup)
+						ids.add(eg.getId());
 					empty = ids.isEmpty();
-					//criteria.add(Restrictions.in("obj.id", ids));
+					if(!empty)
+						criteria.add(Restrictions.in("obj.community", ids));
 				}
+				criteria.add(Restrictions.between("obj.uploadDate", startStr, endStr));
 				criteria.addOrder(Property.forName("obj.id").asc());
-				this.eComponentType = criteria.list();
-				this.logger.info("EComponentType tables: " + this.eComponentType.size());
+				if(!hasCR || !empty)
+					this.exercisePersonalised = criteria.list();
+				else
+					this.exercisePersonalised = new ArrayList<ExercisePersonalised>();
+				this.logger.info("ExercisePersonalised tables: " + this.exercisePersonalised.size());		
 				
 				//Get EComponent tables
 				Set<Long> tmpComp = new HashSet<Long>();
@@ -1308,6 +1294,75 @@ public class ClixImporter {
 				}
 				tmp.clear();
 				this.logger.info("EComponent tables: " + this.eComponentMap.values().size());
+
+				//Get EComponentType tables
+				criteria = session.createCriteria(EComponentType.class, "obj");
+				if(hasCR)
+				{
+					Set<Long> ids = new HashSet<Long>();
+					
+					for(EComponent eg : this.eComponentMap.values())
+					{
+						ids.add(eg.getType());
+					}
+					empty = ids.isEmpty();
+					//criteria.add(Restrictions.in("obj.id", ids));
+				}
+				criteria.addOrder(Property.forName("obj.id").asc());
+				this.eComponentType = criteria.list();
+				this.logger.info("EComponentType tables: " + this.eComponentType.size());
+				
+
+				
+				//Get TQtiContentStructure tables
+				criteria = session.createCriteria(TQtiContentStructure.class, "obj");
+				if(hasCR)
+				{
+					ArrayList<Long> newKeys = new ArrayList<Long>(this.eComposingMap.keySet());
+					HashSet<Long> allKeys = new HashSet<Long>();
+					while(!newKeys.isEmpty())
+					{
+						
+						criteria = session.createCriteria(TQtiContentStructure.class, "obj");
+						criteria.add(Restrictions.in("obj.container", newKeys));
+						List<TQtiContentStructure> t = criteria.list();
+						newKeys.clear();
+						for(TQtiContentStructure tqs : t )
+						{
+							newKeys.add(tqs.getContent());
+							allKeys.add(tqs.getContainer());
+						}
+						allKeys.addAll(newKeys);
+					}
+					criteria = session.createCriteria(TQtiContentStructure.class, "obj");
+					empty = allKeys.isEmpty();
+					if(!empty)
+						criteria.add(Restrictions.in("obj.container", allKeys));
+				}
+				criteria.addOrder(Property.forName("obj.id").asc());
+				if(!hasCR || !empty)
+					this.tQtiContentStructure = criteria.list();
+				else
+					this.tQtiContentStructure = new ArrayList<TQtiContentStructure>();
+				this.logger.info("TQtiContentStructure tables: " + this.tQtiContentStructure.size());
+				
+				//Get TQtiContentComposing tables
+				criteria = session.createCriteria(TQtiContentComposing.class, "obj");
+				if(hasCR)
+				{
+					HashSet<Long> tmp1 = new HashSet<Long>();
+					for(TQtiContentStructure tqs : this.tQtiContentStructure)
+						tmp1.add(tqs.getContent());
+					empty = tmp1.isEmpty();
+					if(!empty)
+						criteria.add(Restrictions.in("obj.container", tmp1));
+				}
+				criteria.addOrder(Property.forName("obj.id").asc());
+				if(!hasCR || !empty)
+					this.tQtiContentComposing = criteria.list();
+				else
+					this.tQtiContentComposing = new ArrayList<TQtiContentComposing>();
+				logger.info("TQtiContentComposing tables: " + this.tQtiContentComposing.size());
 
 				//Get Person tables
 				criteria = session.createCriteria(Person.class, "obj");
@@ -1367,10 +1422,54 @@ public class ClixImporter {
 					this.platformGroup = new ArrayList<PlatformGroup>();
 				this.logger.info("PlatformGroup tables: " + this.platformGroup.size());
 				
+				//Get TQtiContent tables
+				criteria = session.createCriteria(TQtiContent.class, "obj");
+				if(hasCR)
+				{
+					HashSet<Long> ids = new HashSet<Long>();
+					for(TQtiContentStructure tqs : this.tQtiContentStructure)
+					{
+						ids.add(tqs.getContainer());
+						ids.add(tqs.getContent());
+					}
+					for(TQtiContentComposing tqs : this.tQtiContentComposing)
+					{
+						ids.add(tqs.getContainer());
+						ids.add(tqs.getContent());
+					}
+					empty = ids.isEmpty();
+					if(!empty)
+						criteria.add(Restrictions.in("obj.id", ids));
+							
+				}
+				criteria.addOrder(Property.forName("obj.id").asc());
+				if(!hasCR || !empty)
+					this.tQtiContent = criteria.list();
+				else
+					this.tQtiContent = new ArrayList<TQtiContent>();
+				this.logger.info("TQtiContent tables: " + this.tQtiContent.size());
+			}
+				
 				//Get TQtiTestItemD tables
 				criteria = session.createCriteria(TQtiTestItemD.class, "obj");
+				if(hasCR)
+				{
+					HashSet<Long> ids = new HashSet<Long>();
+					for(TQtiContent tc : this.tQtiContent)
+					{
+						ids.add(tc.getId());
+					}
+					empty = ids.isEmpty();
+					if(!empty)
+					{
+						criteria.add(Restrictions.in("obj.content", ids));
+					}
+				}
 				criteria.addOrder(Property.forName("obj.id").asc());
-				this.tQtiTestItemD = criteria.list();
+				if(!hasCR || !empty)
+					this.tQtiTestItemD = criteria.list();
+				else
+					this.tQtiTestItemD = new ArrayList<TQtiTestItemD>();
 				this.logger.info("TQtiTestItemD tables: " + this.tQtiTestItemD.size());	
 				
 				//Get TeamExerciseGroup tables
@@ -1402,24 +1501,19 @@ public class ClixImporter {
 					this.tGroupFullSpecification = new ArrayList<TGroupFullSpecification>();
 				this.logger.info("TGroupFullSpecification tables: " + this.tGroupFullSpecification.size());
 
-				criteria = session.createCriteria(TQtiContent.class, "obj");
-				criteria.addOrder(Property.forName("obj.id").asc());
-				this.tQtiContent = criteria.list();
-				this.logger.info("TQtiContent tables: " + this.tQtiContent.size());
-				
-				criteria = session.createCriteria(TTestSpecification.class, "obj");
-				criteria.addOrder(Property.forName("obj.id").asc());
-				this.tTestSpecification = criteria.list();
-				this.logger.info("TTestSpecification tables: " + this.tTestSpecification.size());
 
-			}
 
 			// Read log-data successively, using the time stamps
 
-			// The Clix database uses date representation of the type varchar, so the unix-timestamp has to be converted
-			// to a string
-			String startStr = TimeConverter.getStringRepresentation(start);
-			String endStr = TimeConverter.getStringRepresentation(end);
+			//Get QTiTestPlayerResp tables
+			criteria = session.createCriteria(TQtiTestPlayerResp.class, "obj");
+			if(hasCR)
+			{
+				criteria.add(Restrictions.in("obj.container", courses));
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.tQtiTestPlayerResp = criteria.list();
+			logger.info("TQtiTestPlayerResp tables: " + this.tQtiTestPlayerResp.size());
 			
 			//Get LearningLog tables
 			criteria = session.createCriteria(LearningLog.class, "obj");
@@ -1497,11 +1591,6 @@ public class ClixImporter {
 				this.forumEntryState = new ArrayList<ForumEntryState>();
 			this.logger.info("ForumEntryState tables: " + this.forumEntryState.size());
 
-			criteria = session.createCriteria(TAnswerPosition.class, "obj");
-			criteria.addOrder(Property.forName("obj.id").asc());
-			this.tAnswerPosition = criteria.list();
-			this.logger.info("TAnswerPosition tables: " + this.tAnswerPosition.size());
-			
 			//Get TQtiEvalAssessment tables
 			criteria = session.createCriteria(TQtiEvalAssessment.class, "obj");
 			if(hasCR)
@@ -1534,41 +1623,27 @@ public class ClixImporter {
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.wikiEntry = criteria.list();
 			this.logger.info("WikiEntry tables: " + this.wikiEntry.size());
-
-
-			//Get ExerciseGroup tables
-			criteria = session.createCriteria(ExerciseGroup.class, "obj");
-			if(hasCR)
-			{
-				criteria.add(Restrictions.in("obj.associatedCourse", courses));
-			}
-			criteria.addOrder(Property.forName("obj.id").asc());
-			this.exerciseGroup = criteria.list();
-			this.logger.info("ExerciseGroup tables: " + this.exerciseGroup.size());
 			
-			//Get ExercisePersonalised tables
-			criteria = session.createCriteria(ExercisePersonalised.class, "obj");
+
+			
+	
+			
+			//Get QTiTestPlayer tables
+			criteria = session.createCriteria(TQtiTestPlayer.class, "obj");
 			if(hasCR)
 			{
-				Set<Long> ids = new HashSet<Long>();
-				for(ExerciseGroup eg : this.exerciseGroup)
-					ids.add(eg.getId());
-				empty = ids.isEmpty();
-				if(!empty)
-					criteria.add(Restrictions.in("obj.community", ids));
+				criteria.add(Restrictions.in("obj.container", courses));
 			}
-			criteria.add(Restrictions.between("obj.uploadDate", startStr, endStr));
+			criteria.add(Restrictions.between("obj.created", startStr, endStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
-				this.exercisePersonalised = criteria.list();
-			else
-				this.exercisePersonalised = new ArrayList<ExercisePersonalised>();
-			this.logger.info("ExercisePersonalised tables: " + this.exercisePersonalised.size());
+			this.tQtiTestPlayer = criteria.list();
+			logger.info("TQtiTestPlayer tables: " + this.tQtiTestPlayer.size());
 
 			// The date-strings have to be modified, because the date format of the table BiTrackContentImpressions is
 			// different
 			startStr = startStr.substring(0, startStr.indexOf(' '));
 			endStr = endStr.substring(0, endStr.indexOf(' '));
+
 
 			//Get BiTrackContentImpressions tables
 			criteria = session.createCriteria(BiTrackContentImpressions.class, "obj");
@@ -1580,6 +1655,8 @@ public class ClixImporter {
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.biTrackContentImpressions = criteria.list();
 			this.logger.info("BiTrackContentImpressions tables: " + this.biTrackContentImpressions.size());
+			
+
 
 		} catch (final Exception e)
 		{
@@ -1598,15 +1675,26 @@ public class ClixImporter {
 	 */
 	private Map<Long, ChatMining> generateChatMining() {
 		final HashMap<Long, ChatMining> chats = new HashMap<Long, ChatMining>();
+		final HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
+		for (final EComponentType loadedItem : this.eComponentType) {
+			//if (loadedItem.getCharacteristicId() == 8L) {
+				eCTypes.put(loadedItem.getId(), loadedItem);
+			//}
+		}
 		try {
-			for (final Chatroom loadedItem : this.chatroom)
+			for (final EComponent loadedItem : this.eComponentMap.values())
 			{
-				final ChatMining item = new ChatMining();
-				item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-				item.setTitle(loadedItem.getTitle());
-				item.setChatTime(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
-				item.setPlatform(this.connector.getPlatformId());
-				chats.put(item.getId(), item);
+				EComponentType ect = eCTypes.get(loadedItem.getType());
+				if (ect != null && (ect.getUploadDir().toLowerCase().contains("chat")) )
+				{
+					final ChatMining item = new ChatMining();
+					item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+					item.setTitle(loadedItem.getName());
+					item.setDescription(loadedItem.getDescription());
+					item.setChatTime(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+					item.setPlatform(this.connector.getPlatformId());
+					chats.put(item.getId(), item);
+				}
 			}
 
 			this.logger.info("Generated " + chats.size() + " ChatMining");
@@ -1793,6 +1881,13 @@ public class ClixImporter {
 		try {
 			final HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
 			final HashMap<Long, EComposing> eCompo = new HashMap<Long, EComposing>();
+			final HashMap<Long, TQtiContent> tQtis = new HashMap<Long, TQtiContent>();
+			
+			for (final TQtiContent loadedItem : this.tQtiContent)
+			{
+				tQtis.put(loadedItem.getId(), loadedItem);
+			}
+			
 			for (final EComponentType loadedItem : this.eComponentType)
 			{
 			//	if (loadedItem.getCharacteristicId() == 14L) {
@@ -1803,6 +1898,9 @@ public class ClixImporter {
 			{
 				eCompo.put(loadedItem.getComposing(), loadedItem);
 			}
+			
+			
+			
 			for (final EComponent loadedItem : this.eComponentMap.values())
 			{
 				final QuizMining item = new QuizMining();
@@ -1815,6 +1913,10 @@ public class ClixImporter {
 					item.setTimeModified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 					item.setTimeCreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
 					item.setPlatform(this.connector.getPlatformId());
+					if(tQtis.containsKey(loadedItem.getId()))
+						item.setMaxGrade(tQtis.get(loadedItem.getId()).getScore());
+					else
+						item.setMaxGrade(0d);
 					if (eCompo.get(loadedItem.getId()) != null) {
 						item.setTimeClose(TimeConverter.getTimestamp(eCompo.get(loadedItem.getId()).getEndDate()));
 					}
@@ -2161,21 +2263,21 @@ public class ClixImporter {
 		try {
 			for (final TQtiContentStructure loadedItem : this.tQtiContentStructure)
 			{
-				final QuizQuestionMining item = new QuizQuestionMining();
-				item.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getContainer()), this.quizMining,
-						this.oldQuizMining);
 				for( final TQtiContentComposing loadedItem2 : this.tQtiContentComposing)
 				{
-					if(loadedItem2.getContainer() == loadedItem.getContent())
+					final QuizQuestionMining item = new QuizQuestionMining();
+					item.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getContainer()), this.quizMining,
+							this.oldQuizMining);
+					if(loadedItem2.getContainer().equals(loadedItem.getContent()))
 					{
-						item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-						item.setQuestion(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getContent()),
+						item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getId().hashCode()));
+						item.setQuestion(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getContent()),
 								this.questionMining, this.oldQuestionMining);
 					}
-				}		
-				item.setPlatform(this.connector.getPlatformId());
-				if ((item.getQuestion() != null) && (item.getQuiz() != null)) {
-					quizQuestions.put(item.getId(), item);
+					item.setPlatform(this.connector.getPlatformId());
+					if ((item.getQuestion() != null) && (item.getQuiz() != null)) {
+						quizQuestions.put(item.getId(), item);
+					}		
 				}
 			}
 
@@ -2842,26 +2944,37 @@ public class ClixImporter {
 		final HashMap<Long, QuestionLogMining> questionLogs = new HashMap<Long, QuestionLogMining>();
 
 		try {
-			for (final TAnswerPosition loadedItem : this.tAnswerPosition)
+			for (final TQtiTestPlayerResp loadedItem : this.tQtiTestPlayerResp)
 			{
 				final QuestionLogMining item = new QuestionLogMining();
 
-				item.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getPerson()), this.userMining,
+				item.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCandidate()), this.userMining,
 						this.oldUserMining);
-				item.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getTest()), this.quizMining,
+				item.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getContent()), this.quizMining,
 						this.oldQuizMining);
-				item.setQuestion(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getQuestion()),
+				item.setQuestion(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getTestItem()),
 						this.questionMining, this.oldQuestionMining);
-				item.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getTest()), this.courseMining,
+				item.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getContainer()), this.courseMining,
 						this.oldCourseMining);
-				item.setId(questionLogs.size() + this.questionLogMax + 1);
-				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getEvaluated()));
+				
+				item.setFinalGrade(loadedItem.getEvaluatedScore());
+				item.setRawGrade(loadedItem.getEvaluatedScore());
+				item.setPenalty(0d);
+				item.setType("QTI");
+				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getEvaluationDate()));
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);
-
+				item.setAnswers(loadedItem.getText());
+				item.setId(questionLogs.size() + this.questionLogMax + 1);	
+				if(loadedItem.getProcessStatus() == 0L)
+					item.setAction("view");
+				if(loadedItem.getProcessStatus() == 1L)
+					item.setAction("close");
+				
 				if ((item.getQuestion() != null) && (item.getQuiz() != null) && (item.getUser() != null)
 						&& (item.getCourse() != null)) {
 					questionLogs.put(item.getId(), item);
+					
 				}
 			}
 			this.logger.info("Generated " + questionLogs.size() + " QuestionLogMinings.");
@@ -2882,26 +2995,42 @@ public class ClixImporter {
 	{
 		final HashMap<Long, QuizLogMining> quizLogs = new HashMap<Long, QuizLogMining>();
 		try {
-			for (final TQtiEvalAssessment loadedItem : this.tQtiEvalAssessment)
+			for (final TQtiTestPlayer loadedItem : this.tQtiTestPlayer)
 			{
 				final QuizLogMining item = new QuizLogMining();
 
 				item.setId(quizLogs.size() + this.quizLogMax + 1);
-				item.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getComponent()),
+				item.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getContainer()),
 						this.courseMining, this.oldCourseMining);
 				item.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCandidate()),
 						this.userMining, this.oldUserMining);
-				item.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getAssessment()),
+				item.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getContent()),
 						this.quizMining, this.oldQuizMining);
-				item.setGrade(Double.valueOf(loadedItem.getEvaluatedScore()));
+				item.setGrade(loadedItem.getEvaluatedScore());
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);
-				if (loadedItem.getEvalCount() == 0L) {
-					item.setAction("Try");
-				} else {
-					item.setAction("Submit");
+				int status = loadedItem.getRuntimeStatus().intValue();
+				if(loadedItem.getRuntimeStatus() == null)
+					status = -1;
+				switch(status)
+				{
+					case 0: 
+						item.setAction("attempt");
+						break;
+					case 1: 
+						item.setAction("saved");
+						break;
+					case 2:
+						item.setAction("commited");
+						break;
+					case 3:
+						item.setAction("graded");
+						break;
+					default: 
+						item.setAction("unknown");
+						break;					
 				}
-				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastInvocation()));
+				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getCreated()));
 
 				if ((item.getCourse() != null) && (item.getQuiz() != null) && (item.getUser() != null)) {
 					quizLogs.put(item.getId(), item);

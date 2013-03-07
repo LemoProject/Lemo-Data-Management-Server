@@ -26,6 +26,8 @@
 		<property name="container" insert="false" update="false" column="CONTAINER_ID"
 			type="long" />
 			
+		<property name="position" column="POSITION_ID" type="long" />
+			
 			
 	</class>
 
