@@ -27,14 +27,6 @@ public class ForumEntryState implements IClixMappingClass {
 		return this.id;
 	}
 
-	public String getString()
-	{
-		return "ForumEntryState$$$"
-				+ this.getLastUpdated() + "$$$"
-				+ this.getEntry() + "$$$"
-				+ this.getForum() + "$$$"
-				+ this.getUser();
-	}
 
 	public void setId(final ForumEntryStatePK id) {
 		this.id = id;

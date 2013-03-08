@@ -47,6 +47,10 @@ public class CourseMining implements IMappingClass, ILearningObject {
 	private Set<ScormLogMining> scormLogs = new HashSet<ScormLogMining>();
 	private Set<CourseScormMining> courseScorms = new HashSet<CourseScormMining>();
 	private Set<LevelCourseMining> levelCourses = new HashSet<LevelCourseMining>();
+	private Set<CourseArchiveMining> courseArchives = new HashSet<CourseArchiveMining>();
+	private Set<CourseChatMining> courseChats = new HashSet<CourseChatMining>();
+	private Set<ArchiveMining> archives = new HashSet<ArchiveMining>();
+	private Set<ArchiveLogMining> archiveLogs = new HashSet<ArchiveLogMining>();
 
 	@Override
 	public boolean equals(final IMappingClass o)
@@ -633,6 +637,44 @@ public class CourseMining implements IMappingClass, ILearningObject {
 	public void setCourseAssignments(final Set<CourseAssignmentMining> courseAssignment) {
 		this.courseAssignments = courseAssignment;
 	}
+	
+	/**
+	 * standard setter for the attribute course_archive
+	 * 
+	 * @param courseChats
+	 *            a set of entries in the course_assignment table which shows the assignments used in the course
+	 */
+	public void setCourseArchives(final Set<CourseArchiveMining> courseArchives) {
+		this.courseArchives = courseArchives;
+	}
+	
+	/**
+	 * standard setter for the attribute course_chat
+	 * 
+	 * @param courseChat
+	 *            a set of entries in the course_assignment table which shows the assignments used in the course
+	 */
+	public void setCourseChats(final Set<CourseChatMining> courseChats) {
+		this.courseChats = courseChats;
+	}
+	
+	/**
+	 * standard getter for the attribute course_archive
+	 * 
+	 * @return a set of entries in the course_archive table which shows the archives used in the course
+	 */
+	public Set<CourseArchiveMining> getCourseArchives() {
+		return this.courseArchives;
+	}
+	
+	/**
+	 * standard getter for the attribute course_chat
+	 * 
+	 * @return a set of entries in the course_chat table which shows the chats used in the course
+	 */
+	public Set<CourseChatMining> getCourseChats() {
+		return this.courseChats;
+	}
 
 	/**
 	 * standard getter for the attribute course_assignment
@@ -652,7 +694,35 @@ public class CourseMining implements IMappingClass, ILearningObject {
 	public void addCourseAssignment(final CourseAssignmentMining courseAssignment) {
 		this.courseAssignments.add(courseAssignment);
 	}
+	
+	/**
+	 * standard add method for the attribute course_archive
+	 * 
+	 * @param courseAssignment
+	 *            this entry of the course_archive table will be added to this course
+	 */
+	public void addCourseArchive(final CourseArchiveMining courseArchive) {
+		this.courseArchives.add(courseArchive);
+	}
+	
+	/**
+	 * standard add method for the attribute course_chat
+	 * 
+	 * @param courseAssignment
+	 *            this entry of the course_assignment table will be added to this course
+	 */
+	public void addCourseChat(final CourseChatMining courseChat) {
+		this.courseChats.add(courseChat);
+	}
+	
+	public void addArchive(final ArchiveMining archive) {
+		this.archives.add(archive);
+	}
 
+	public void addArchiveLog(final ArchiveLogMining archiveLog) {
+		this.archiveLogs.add(archiveLog);
+	}
+	
 	public void addChat(final ChatMining chat) {
 		this.chats.add(chat);
 	}

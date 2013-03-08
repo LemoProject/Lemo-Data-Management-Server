@@ -49,6 +49,7 @@ public final class ClixHibernateUtil {
 
 		// add mapping classes
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/EComponent.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/LearningLog.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ChatProtocol.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/EComponentType.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/EComposing.hbm.xml");
@@ -60,17 +61,16 @@ public final class ClixHibernateUtil {
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PlatformGroupSpecification.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/Portfolio.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PortfolioLog.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/T2Task.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TAnswerPosition.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TeamExerciseComposingExt.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TeamExerciseGroup.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TeamExerciseGroupMember.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TGroupFullSpecification.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiContent.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiTestItemD.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiTestPlayerResp.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiTestPlayer.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiContentStructure.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiContentComposing.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiEvalAssessment.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TTestSpecification.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/WikiEntry.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/Chatroom.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ExerciseGroup.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PersonComponentAssignment.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ScormSessionTimes.hbm.xml");

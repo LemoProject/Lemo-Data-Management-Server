@@ -28,16 +28,6 @@ public class ScormSessionTimes implements IClixMappingClass {
 		return this.id;
 	}
 
-	public String getString()
-	{
-		return "ScormSessionTimes$$$"
-				+ this.getLastUpdated() + "$$$"
-				+ this.getScore() + "$$$"
-				+ this.getStatus() + "$$$"
-				+ this.getComponent() + "$$$"
-				+ this.getPerson();
-	}
-
 	public void setId(final ScormSessionTimesPK id) {
 		this.id = id;
 	}

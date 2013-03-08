@@ -21,6 +21,8 @@
 		<property name="course" column="COURSE_ID" type="long" />
 
 		<property name="startDate" column="STARTDATE" type="string" />
+		
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
 
 	</class>
 

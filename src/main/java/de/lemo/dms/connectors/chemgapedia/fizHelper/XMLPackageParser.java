@@ -86,7 +86,7 @@ public class XMLPackageParser {
 	private final IConnector connector;
 
 	private final IDBHandler dbHandler;
-
+	
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	/**
@@ -96,9 +96,11 @@ public class XMLPackageParser {
 	 *            Name of the Chemgapedia-platform
 	 */
 	@SuppressWarnings("unchecked")
-	public XMLPackageParser(final IConnector connector)
+	public XMLPackageParser(final IConnector connector, final List<Long> courses)
 	{
 		this.connector = connector;
+		
+	
 		final long platformId = connector.getPlatformId();
 
 		this.dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -251,7 +253,19 @@ public class XMLPackageParser {
 			final Long platformId = this.connector.getPlatformId();
 			final Long platformPrefix = this.connector.getPrefix();
 
-			if (this.levelObj.get(level1) == null)
+			if (this.courseObj.get(resource.getTitle()) == null)
+			{
+				course.setTitle(resource.getTitle());
+				course.setId(Long.valueOf(platformPrefix + "" + (this.couId + 1)));
+				course.setPlatform(platformId);
+				this.couId++;
+
+				this.courseObj.put(course.getTitle(), course);
+			} else {
+				course = this.courseObj.get(resource.getTitle());
+			}
+			
+			if (this.levelObj.get(level1) == null )
 			{
 				lev1.setTitle(level1);
 				lev1.setId(Long.valueOf(platformPrefix + "" + (this.levId + 1)));
@@ -282,21 +296,13 @@ public class XMLPackageParser {
 				lev3.setPlatform(platformId);
 				lev3.setDepth(3);
 				this.levId++;
+				
 				this.levelObj.put(lev3.getTitle(), lev3);
 			} else {
 				lev3 = this.levelObj.get(level3);
 			}
 
-			if (this.courseObj.get(resource.getTitle()) == null)
-			{
-				course.setTitle(resource.getTitle());
-				course.setId(Long.valueOf(platformPrefix + "" + (this.couId + 1)));
-				course.setPlatform(platformId);
-				this.couId++;
-				this.courseObj.put(course.getTitle(), course);
-			} else {
-				course = this.courseObj.get(resource.getTitle());
-			}
+			
 
 			// Set URL
 			final NodeList root = document.getElementsByTagName("vlunode");
@@ -429,7 +435,7 @@ public class XMLPackageParser {
 								this.resId = resourceid;
 								resourceid = Long.valueOf(this.connector.getPrefix() + "" + resourceid);
 								this.idmapping.put(r1.getUrl(), new IDMappingMining(resourceid, r1.getUrl(),
-										platformId));
+											platformId));
 
 								r1.setId(resourceid);
 							}

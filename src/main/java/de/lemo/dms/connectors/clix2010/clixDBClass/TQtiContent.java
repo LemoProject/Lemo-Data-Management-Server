@@ -20,22 +20,14 @@ public class TQtiContent implements IClixMappingClass {
 	private String created;
 	private String lastUpdated;
 	private String name;
-
+	private Double score;
+	
 	public String getName() {
 		return this.name;
 	}
 
 	public void setName(final String name) {
 		this.name = name;
-	}
-
-	public String getString()
-	{
-		return "TQtiContent$$$"
-				+ this.id + "$$$"
-				+ this.getCreated() + "$$$"
-				+ this.getLastUpdated() + "$$$"
-				+ this.getName();
 	}
 
 	public TQtiContent()
@@ -65,6 +57,14 @@ public class TQtiContent implements IClixMappingClass {
 
 	public void setLastUpdated(final String lastUpdated) {
 		this.lastUpdated = lastUpdated;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
 	}
 
 }

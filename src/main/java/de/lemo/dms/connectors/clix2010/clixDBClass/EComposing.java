@@ -48,11 +48,6 @@ public class EComposing implements IClixMappingClass {
 		this.endDate = endDate;
 	}
 
-	public EComposing()
-	{
-
-	}
-
 	public Long getId() {
 		return this.id;
 	}

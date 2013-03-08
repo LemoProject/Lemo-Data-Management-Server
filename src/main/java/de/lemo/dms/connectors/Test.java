@@ -108,7 +108,11 @@ public class Test {
 	public void runMoodleConn()
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE19);
-		connector.updateData(1338000000L);
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(2200L);
+		courses.add(476L);
+		connector.setCourseIdFilter(courses);
+		connector.getData();
 	}
 
 	/**
@@ -117,6 +121,13 @@ public class Test {
 	public void runMoodleNumericConn()
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE_NUMERIC);
+		ArrayList<Long> courses = new ArrayList<Long>();
+		
+		courses.add(1485L);
+		courses.add(1197L);
+		courses.add(1275L);
+		connector.setCourseIdFilter(courses);
+		
 		connector.getData();
 	}
 
@@ -126,7 +137,12 @@ public class Test {
 	public void runMoodle23Conn()
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE23);
+		
+		ArrayList<Long> courses = new ArrayList<Long>();
+		courses.add(7L);
+		connector.setCourseIdFilter(courses);
 		connector.getData();
+		
 	}
 
 	/**
@@ -135,12 +151,32 @@ public class Test {
 	public void runClixConn()
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_CLIX);
+		ArrayList<Long> courses = new ArrayList<Long>();
+		//courses.add(20201114L);
+
+		
+		courses.add(17945446L); 
+		courses.add(13617310L);
+		courses.add(10921956L);
+		courses.add(8074949L);
+		courses.add(4667155L);
+		/*
+		
+		courses.add(18508964L);
+		courses.add(21040950L);
+		courses.add(21040967L);		
+		
+		
+		*/
+		connector.setCourseIdFilter(courses);
 		connector.getData();
+		//connector.updateData(1300000000L);
 	}
 
 	public void test()
 	{
-		
+		String s = "Die Schwalbe fliegt über den Eriesee, 123213()/7124";
+		System.out.println(TextHelper.replaceString(s));
 	}
 
 	public void calculateMeichsner()
@@ -255,7 +291,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodleNumericConn();
+		this.runMoodleConn();
 		logger.info("Test finished");
 	}
 

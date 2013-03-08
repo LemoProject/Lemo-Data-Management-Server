@@ -16,31 +16,12 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  */
 public class EComponentType implements IClixMappingClass {
 
-	private EComponentTypePK id;
-	private static final String DOLLAR = "$$$";
-
-	public EComponentTypePK getId() {
-		return this.id;
-	}
-
-	public void setId(final EComponentTypePK id) {
-		this.id = id;
-	}
-
+	private Long id;
 	private Long component;
+	private Long componentType;
 	private Long characteristic;
 	private Long language;
 	private String uploadDir;
-
-	public String getString()
-	{
-		return "EComponentType" + DOLLAR
-				+ this.getUploadDir() + DOLLAR
-				+ this.getCharacteristic() + DOLLAR
-				+ this.getCharacteristicId() + DOLLAR
-				+ this.getComponent() + DOLLAR
-				+ this.getLanguage();
-	}
 
 	public String getUploadDir() {
 		return this.uploadDir;
@@ -65,12 +46,7 @@ public class EComponentType implements IClixMappingClass {
 	public void setLanguage(final Long language) {
 		this.language = language;
 	}
-
-	public EComponentType()
-	{
-
-	}
-
+	
 	public Long getComponent() {
 		return this.component;
 	}
@@ -85,6 +61,22 @@ public class EComponentType implements IClixMappingClass {
 
 	public void setCharacteristicId(final Long characteristicId) {
 		this.characteristic = characteristicId;
+	}
+
+	public Long getComponentType() {
+		return componentType;
+	}
+
+	public void setComponentType(Long componentType) {
+		this.componentType = componentType;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

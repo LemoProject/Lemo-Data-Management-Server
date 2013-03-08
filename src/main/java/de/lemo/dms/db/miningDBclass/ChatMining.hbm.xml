@@ -22,6 +22,13 @@
 			<key column="chat_id" />
 			<one-to-many class="de.lemo.dms.db.miningDBclass.ChatLogMining" />
 		</set>
+		
+		<set name="courseChats" inverse="true" lazy="false">
+			<key>
+				<column name="chat_id" />
+			</key>
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseChatMining" />
+		</set>
 
 	</class>
 

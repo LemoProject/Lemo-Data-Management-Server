@@ -6,16 +6,21 @@
 
 package de.lemo.dms.connectors.moodleNumericId;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.TextHelper;
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.AssignmentLMS;
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.AssignmentSubmissionsLMS;
 import de.lemo.dms.connectors.moodleNumericId.moodleDBclass.ChatLogLMS;
@@ -49,6 +54,7 @@ import de.lemo.dms.db.miningDBclass.AssignmentMining;
 import de.lemo.dms.db.miningDBclass.ChatLogMining;
 import de.lemo.dms.db.miningDBclass.ChatMining;
 import de.lemo.dms.db.miningDBclass.CourseAssignmentMining;
+import de.lemo.dms.db.miningDBclass.CourseChatMining;
 import de.lemo.dms.db.miningDBclass.CourseForumMining;
 import de.lemo.dms.db.miningDBclass.CourseGroupMining;
 import de.lemo.dms.db.miningDBclass.CourseLogMining;
@@ -126,192 +132,406 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void getLMStables(final DBConfigObject dbConf, final long readingfromtimestamp) {
+	public void getLMStables(final DBConfigObject dbConf, final long readingfromtimestamp, List<Long> courses) {
 		final Session session = MoodleNumericHibernateUtil.getSessionFactory(dbConf).openSession();
 		final Transaction tx = session.beginTransaction();
 
 		// Just for testing. has to be set to Long.MaxValue if not longer needed.
 		final long ceiling = Long.MAX_VALUE;
 
+		boolean hasCR = false;
+		if(courses != null && courses.size() > 0)
+			hasCR = true; 
+		
+		boolean empty = false;
+
+
 		// reading the LMS Database, create tables as lists of instances of the DB-table classes
 
-		final Query log = session
-				.createQuery("from LogLMS x where x.time>=:readingtimestamp and x.time<=:ceiling order by x.id asc");
-		log.setParameter("readingtimestamp", readingfromtimestamp);
-		log.setParameter("ceiling", ceiling);
-		this.logLms = log.list();
-		this.logger.info("LogLMS tables: " + this.logLms.size());
+		Criteria criteria = session.createCriteria(LogLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.course", courses));
+		criteria.add(Restrictions.le("obj.time", ceiling));
+		criteria.add(Restrictions.ge("obj.time", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.logLms = criteria.list();
+		logger.info("LogLMS tables: " + this.logLms.size());
 
-		final Query resource = session
-				.createQuery("from ResourceLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		resource.setParameter("readingtimestamp", readingfromtimestamp);
-		resource.setParameter("ceiling", ceiling);
-		this.resourceLms = resource.list();
-		this.logger.info("ResourceLMS tables: " + this.resourceLms.size());
+		criteria = session.createCriteria(ResourceLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.course", courses));
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.resourceLms = criteria.list();
+		logger.info("ResourceLMS tables: " + this.resourceLms.size());
 
-		final Query courseMod = session.createQuery("from CourseModulesLMS x order by x.id asc");
-		this.courseModulesLms = courseMod.list();
-		this.logger.info("CourseModulesLMS tables: " + this.courseModulesLms.size());
+		criteria = session.createCriteria(CourseModulesLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.course", courses));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.courseModulesLms = criteria.list();
+		logger.info("CourseModulesLMS tables: " + this.courseModulesLms.size());
 
-		final Query chat = session
-				.createQuery("from ChatLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		chat.setParameter("readingtimestamp", readingfromtimestamp);
-		chat.setParameter("ceiling", ceiling);
-		this.chatLms = chat.list();
-		this.logger.info("ChatLMS tables: " + this.chatLms.size());
+		criteria = session.createCriteria(ChatLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.course", courses));
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.chatLms = criteria.list();
+		logger.info("ChatLMS tables: " + this.chatLms.size());
 
-		final Query chatlog = session
-				.createQuery("from ChatLogLMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:ceiling order by x.id asc");
-		chatlog.setParameter("readingtimestamp", readingfromtimestamp);
-		chatlog.setParameter("ceiling", ceiling);
-		this.chatLogLms = chatlog.list();
-		this.logger.info("ChatLogLMS tables: " + this.chatLogLms.size());
+		criteria = session.createCriteria(ChatLogLMS.class, "obj");
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(ChatLMS e : this.chatLms)
+ 				ids.add(e.getId());
+ 			if(ids.size() > 0)
+ 				criteria.add(Restrictions.in("obj.chat", ids));
+ 			else
+ 				empty = true;
+		}
+		criteria.add(Restrictions.le("obj.timestamp", ceiling));
+		criteria.add(Restrictions.ge("obj.timestamp", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.chatLogLms = new ArrayList<ChatLogLMS>();
+		else
+			this.chatLogLms = criteria.list();
+		logger.info("ChatLogLMS tables: " + this.chatLogLms.size());
 
-		final Query courseCategories = session
-				.createQuery("from CourseCategoriesLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		courseCategories.setParameter("readingtimestamp", readingfromtimestamp);
-		courseCategories.setParameter("ceiling", ceiling);
-		this.courseCategoriesLms = courseCategories.list();
-		this.logger.info("CourseCategoriesLMS tables: " + this.courseCategoriesLms.size());
+		criteria = session.createCriteria(CourseCategoriesLMS.class, "obj");
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.courseCategoriesLms = criteria.list();
+		logger.info("CourseCategoriesLMS tables: " + this.courseCategoriesLms.size());
 
-		final Query course = session
-				.createQuery("from CourseLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		course.setParameter("readingtimestamp", readingfromtimestamp);
-		course.setParameter("ceiling", ceiling);
-		this.courseLms = course.list();
-		this.logger.info("CourseLMS tables: " + this.courseLms.size());
+		criteria = session.createCriteria(CourseLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.id", courses));
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.courseLms = criteria.list();
+		logger.info("CourseLMS tables: " + this.courseLms.size());
 
-		final Query forumPosts = session
+		final Query forumPosts;
+		if(!hasCR)
+		{
+			forumPosts= session
 				.createQuery("from ForumPostsLMS x where x.modified>=:readingtimestamp and x.modified<=:ceiling order by x.id asc");
-		forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
-		forumPosts.setParameter("ceiling", ceiling);
-		this.forumPostsLms = forumPosts.list();
-		this.logger.info("ForumPostsLMS tables: " + this.forumPostsLms.size());
+			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
+			forumPosts.setParameter("ceiling", ceiling);
+			this.forumPostsLms = forumPosts.list();
+		}
+		else
+		{
+			String courseClause ="(";
+			for(int i = 0; i < courses.size(); i++)
+			{
+				courseClause += courses.get(i);
+				if(i < courses.size() - 1)
+					courseClause += ",";
+				else
+					courseClause += ")";
+			}
+			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from mdl_forum_posts as posts JOIN mdl_log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp and posts.modified<=:ceiling");
+			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
+			forumPosts.setParameter("ceiling", ceiling);
+			List<Object[]> tmpl = forumPosts.list();
+			this.forumPostsLms = new ArrayList<ForumPostsLMS>();
+			for(Object[] obj : tmpl)
+			{
+				ForumPostsLMS p = new ForumPostsLMS();
+				p.setId(((BigInteger) obj[0]).longValue());
+				p.setUserid(((BigInteger) obj[1]).longValue());
+				p.setCreated(((BigInteger) obj[2]).longValue());
+				p.setModified(((BigInteger) obj[3]).longValue());
+				p.setSubject((String) obj[4]);
+				p.setMessage((String) obj[5]);
+				this.forumPostsLms.add(p);
+			
+			}
+		}
+		logger.info("ForumPostsLMS tables: " + this.forumPostsLms.size());
 
-		final Query forum = session
-				.createQuery("from ForumLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		forum.setParameter("readingtimestamp", readingfromtimestamp);
-		forum.setParameter("ceiling", ceiling);
-		this.forumLms = forum.list();
-		this.logger.info("ForumLMS tables: " + this.forumLms.size());
+		criteria = session.createCriteria(ForumLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.course", courses));
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.forumLms = criteria.list();
+		logger.info("ForumLMS tables: " + this.forumLms.size());
 
-		final Query group = session
-				.createQuery("from GroupsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		group.setParameter("readingtimestamp", readingfromtimestamp);
-		group.setParameter("ceiling", ceiling);
-		this.groupLms = group.list();
-		this.logger.info("GroupsLMS tables: " + this.groupLms.size());
+		criteria = session.createCriteria(GroupsLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.courseid", courses));
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.groupLms = criteria.list();
+		logger.info("GroupsLMS tables: " + this.groupLms.size());
 
-		final Query quiz = session
-				.createQuery("from QuizLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		quiz.setParameter("readingtimestamp", readingfromtimestamp);
-		quiz.setParameter("ceiling", ceiling);
-		this.quizLms = quiz.list();
-		this.logger.info("QuizLMS tables: " + this.quizLms.size());
+		criteria = session.createCriteria(QuizLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.course", courses));
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.quizLms = criteria.list();
+		logger.info("QuizLMS tables: " + this.quizLms.size());
 
-		final Query wiki = session
-				.createQuery("from WikiLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		wiki.setParameter("readingtimestamp", readingfromtimestamp);
-		wiki.setParameter("ceiling", ceiling);
-		this.wikiLms = wiki.list();
-		this.logger.info("WikiLMS tables: " + this.wikiLms.size());
+		criteria = session.createCriteria(WikiLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.course", courses));
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.wikiLms = criteria.list();
+		logger.info("WikiLMS tables: " + this.wikiLms.size());
 
-		final Query groupMembers = session
-				.createQuery("from GroupsMembersLMS x where x.timeadded>=:readingtimestamp and x.timeadded<=:ceiling order by x.id asc");
-		groupMembers.setParameter("readingtimestamp", readingfromtimestamp);
-		groupMembers.setParameter("ceiling", ceiling);
-		this.groupMembersLms = groupMembers.list();
-		this.logger.info("GroupsMembersLMS tables: " + this.groupMembersLms.size());
+		criteria = session.createCriteria(GroupsMembersLMS.class, "obj");
+		empty = false;
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(GroupsLMS e : this.groupLms)
+ 				ids.add(e.getId());
+ 			empty = ids.isEmpty();
+ 			if(!empty)
+ 				criteria.add(Restrictions.in("obj.groupid", ids));
+		}
+		criteria.add(Restrictions.le("obj.timeadded", ceiling));
+		criteria.add(Restrictions.ge("obj.timeadded", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.groupMembersLms = new ArrayList<GroupsMembersLMS>();
+		else
+			this.groupMembersLms = criteria.list();
+		logger.info("GroupsMembersLMS tables: " + this.groupMembersLms.size());
 
-		final Query questionStates = session
-				.createQuery("from QuestionStatesLMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:ceiling order by x.id asc");
-		questionStates.setParameter("readingtimestamp", readingfromtimestamp);
-		questionStates.setParameter("ceiling", ceiling);
-		this.questionStatesLms = questionStates.list();
-		this.logger.info("QuestionStatesLMS tables: " + this.questionStatesLms.size());
+		criteria = session.createCriteria(QuizQuestionInstancesLMS.class, "obj");
+		empty = false;
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(QuizLMS e : this.quizLms)
+ 				ids.add(e.getId());
+ 			empty = ids.isEmpty();
+ 			if(!empty)
+ 				criteria.add(Restrictions.in("obj.quiz", ids));
+ 		}
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.quizQuestionInstancesLms = new ArrayList<QuizQuestionInstancesLMS>();
+		else
+			this.quizQuestionInstancesLms = criteria.list();
+		logger.info("QuizQuestionInstancesLMS tables: " + this.quizQuestionInstancesLms.size());
 
-		final Query quizQuestionInstances = session
-				.createQuery("from QuizQuestionInstancesLMS x order by x.id asc");
-		this.quizQuestionInstancesLms = quizQuestionInstances.list();
-		this.logger.info("QuizQuestionInstancesLMS tables: " + this.quizQuestionInstancesLms.size());
+		criteria = session.createCriteria(QuestionStatesLMS.class, "obj");
+		empty = false;
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(QuizQuestionInstancesLMS e : this.quizQuestionInstancesLms)
+ 				ids.add(e.getQuestion());
+ 			if(empty = ids.isEmpty());
+ 				criteria.add(Restrictions.in("obj.question", ids));
+		}
+		criteria.add(Restrictions.le("obj.timestamp", ceiling));
+		criteria.add(Restrictions.ge("obj.timestamp", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.questionStatesLms = new ArrayList<QuestionStatesLMS>();
+		else
+			this.questionStatesLms = criteria.list();
+		logger.info("QuestionStatesLMS tables: " + this.questionStatesLms.size());
 
-		final Query question = session
-				.createQuery("from QuestionLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		question.setParameter("readingtimestamp", readingfromtimestamp);
-		question.setParameter("ceiling", ceiling);
-		this.questionLms = question.list();
-		this.logger.info("QuestionLMS tables: " + this.questionLms.size());
+		criteria = session.createCriteria(QuestionLMS.class, "obj");
+		empty = false;
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(QuizQuestionInstancesLMS e : this.quizQuestionInstancesLms)
+ 				ids.add(e.getQuestion());
+ 			if(empty = ids.isEmpty());
+ 				criteria.add(Restrictions.in("obj.id", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.questionLms = new ArrayList<QuestionLMS>();
+		else
+			this.questionLms = criteria.list();
+		logger.info("QuestionLMS tables: " + this.questionLms.size());
 
-		final Query user = session
-				.createQuery("from UserLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		user.setParameter("ceiling", ceiling);
-		user.setParameter("readingtimestamp", readingfromtimestamp);
-		this.userLms = user.list();
-		this.logger.info("UserLMS tables: " + this.userLms.size());
+		criteria = session.createCriteria(ContextLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.instanceid", courses));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.contextLms = criteria.list();
+		logger.info("ContextLMS tables: " + this.contextLms.size());
+		
+		criteria = session.createCriteria(RoleAssignmentsLMS.class, "obj");
+		empty = false;
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+			for(ContextLMS c : this.contextLms)
+			{
+				if(c.getContextlevel() == 50 && courses.contains(c.getInstanceid()))
+					ids.add(c.getId());
+			}
+			if(empty = ids.isEmpty());
+				criteria.add(Restrictions.in("obj.contextid", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.roleAssignmentsLms = new ArrayList<RoleAssignmentsLMS>();
+		else
+			this.roleAssignmentsLms = criteria.list();
+		logger.info("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
+		
+		criteria = session.createCriteria(UserLMS.class, "obj");
+		empty = false;
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(RoleAssignmentsLMS e : this.roleAssignmentsLms)
+ 				ids.add(e.getUserid());
+ 			if(empty = ids.isEmpty());
+ 				criteria.add(Restrictions.in("obj.id", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.userLms = new ArrayList<UserLMS>();
+		else
+			this.userLms = criteria.list();
+		logger.info("UserLMS tables: " + this.userLms.size());
 
-		final Query role = session.createQuery("from RoleLMS x order by x.id asc");
-		this.roleLms = role.list();
-		this.logger.info("RoleLMS tables: " + this.roleLms.size());
 
-		final Query context = session.createQuery("from ContextLMS x order by x.id asc");
-		this.contextLms = context.list();
-		this.logger.info("ContextLMS tables: " + this.contextLms.size());
+		criteria = session.createCriteria(RoleLMS.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.roleLms = criteria.list();
+		logger.info("RoleLMS tables: " + this.roleLms.size());
 
-		final Query roleAssignments = session
-				.createQuery("from RoleAssignmentsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		roleAssignments.setParameter("ceiling", ceiling);
-		roleAssignments.setParameter("readingtimestamp", readingfromtimestamp);
-		this.roleAssignmentsLms = roleAssignments.list();
-		this.logger.info("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
+		criteria = session.createCriteria(AssignmentLMS.class, "obj");
+		if(hasCR)
+		{
+			criteria.add(Restrictions.in("obj.course", courses));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assignmentLms = criteria.list();
+		logger.info("AssignmentLMS tables: " + this.assignmentLms.size());
 
-		final Query assignments = session
-				.createQuery("from AssignmentLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		assignments.setParameter("ceiling", ceiling);
-		assignments.setParameter("readingtimestamp", readingfromtimestamp);
-		this.assignmentLms = assignments.list();
-		this.logger.info("AssignmentLMS tables: " + this.assignmentLms.size());
+		criteria = session.createCriteria(AssignmentSubmissionsLMS.class, "obj");
+		empty = false;
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(AssignmentLMS e : this.assignmentLms)
+ 				ids.add(e.getId());
+ 			if(empty = ids.isEmpty());
+ 				criteria.add(Restrictions.in("obj.assignment", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.assignmentSubmissionLms = new ArrayList<AssignmentSubmissionsLMS>();
+		else
+			this.assignmentSubmissionLms = criteria.list();
+		logger.info("AssignmentSubmissionsLMS tables: " + this.assignmentSubmissionLms.size());
 
-		final Query assignmentSubmission = session
-				.createQuery("from AssignmentSubmissionsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		assignmentSubmission.setParameter("ceiling", ceiling);
-		assignmentSubmission.setParameter("readingtimestamp", readingfromtimestamp);
-		this.assignmentSubmissionLms = assignmentSubmission.list();
-		this.logger.info("AssignmentSubmissionsLMS tables: " + this.assignmentSubmissionLms.size());
+		criteria = session.createCriteria(QuizGradesLMS.class, "obj");
+		empty = false;
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(QuizLMS e : this.quizLms)
+ 				ids.add(e.getId());
+ 			if(empty = ids.isEmpty());
+ 				criteria.add(Restrictions.in("obj.quiz", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.quizGradesLms = new ArrayList<QuizGradesLMS>();
+		else
+			this.quizGradesLms = criteria.list();
+		logger.info("QuizGradesLMS tables: " + this.quizGradesLms.size());
 
-		final Query quizGrades = session
-				.createQuery("from QuizGradesLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		quizGrades.setParameter("ceiling", ceiling);
-		quizGrades.setParameter("readingtimestamp", readingfromtimestamp);
-		this.quizGradesLms = quizGrades.list();
-		this.logger.info("QuizGradesLMS tables: " + this.quizGradesLms.size());
+		criteria = session.createCriteria(ForumDiscussionsLMS.class, "obj");
+		empty = false;
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(ForumLMS e : this.forumLms)
+ 				ids.add(e.getId());
+ 			if(empty = ids.isEmpty());
+ 				criteria.add(Restrictions.in("obj.forum", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.forumDiscussionsLms = new ArrayList<ForumDiscussionsLMS>();
+		else
+			this.forumDiscussionsLms = criteria.list();
+		logger.info("ForumDiscussionsLMS tables: " + this.forumDiscussionsLms.size());
 
-		final Query forumDiscussions = session
-				.createQuery("from ForumDiscussionsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		forumDiscussions.setParameter("ceiling", ceiling);
-		forumDiscussions.setParameter("readingtimestamp", readingfromtimestamp);
-		this.forumDiscussionsLms = forumDiscussions.list();
-		this.logger.info("ForumDiscussionsLMS tables: " + this.forumDiscussionsLms.size());
+		criteria = session.createCriteria(ScormLMS.class, "obj");
+		if(hasCR)
+		{
+			criteria.add(Restrictions.in("obj.course", courses));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.scormLms = criteria.list();
+		logger.info("ScormLMS tables: " + this.scormLms.size());
 
-		final Query scorm = session
-				.createQuery("from ScormLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		scorm.setParameter("ceiling", ceiling);
-		scorm.setParameter("readingtimestamp", readingfromtimestamp);
-		this.scormLms = scorm.list();
-		this.logger.info("ScormLMS tables: " + this.scormLms.size());
-
-		final Query gradeGrades = session
-				.createQuery("from GradeGradesLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		gradeGrades.setParameter("ceiling", ceiling);
-		gradeGrades.setParameter("readingtimestamp", readingfromtimestamp);
-		this.gradeGradesLms = gradeGrades.list();
-		this.logger.info("GradeGradesLMS tables: " + this.gradeGradesLms.size());
-
-		final Query gradeItems = session
-				.createQuery("from GradeItemsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:ceiling order by x.id asc");
-		gradeItems.setParameter("ceiling", ceiling);
-		gradeItems.setParameter("readingtimestamp", readingfromtimestamp);
-		this.gradeItemsLms = gradeItems.list();
-		this.logger.info("GradeItemsLMS tables: " + this.gradeItemsLms.size());
+		criteria = session.createCriteria(GradeItemsLMS.class, "obj");
+		if(hasCR)
+		{
+			criteria.add(Restrictions.in("obj.courseid", courses));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.gradeItemsLms = criteria.list();
+		logger.info("GradeItemsLMS tables: " + this.gradeItemsLms.size());
+		
+		criteria = session.createCriteria(GradeGradesLMS.class, "obj");
+		empty = false;
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(GradeItemsLMS e : this.gradeItemsLms)
+ 				ids.add(e.getId());
+ 			if(empty = ids.isEmpty());
+ 				criteria.add(Restrictions.in("obj.itemid", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", ceiling));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(hasCR && empty)
+			this.gradeGradesLms = new ArrayList<GradeGradesLMS>();
+		else
+			this.gradeGradesLms = criteria.list();
+		logger.info("GradeGradesLMS tables: " + this.gradeGradesLms.size());
 
 		// hibernate session finish and close
 		tx.commit();
@@ -321,164 +541,398 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void getLMStables(final DBConfigObject dbConf, final long readingfromtimestamp, final long readingtotimestamp) {
+	public void getLMStables(final DBConfigObject dbConf, final long readingfromtimestamp, final long readingtotimestamp, List<Long> courses) {
 		final Session session = MoodleNumericHibernateUtil.getSessionFactory(dbConf).openSession();
 		final Transaction tx = session.beginTransaction();
 
+		boolean hasCR = false;
+		if(courses != null && courses.size() > 0)
+			hasCR = true; 
 		// reading the LMS Database, create tables as lists of instances of the DB-table classes
 
+		Criteria criteria;
+		
 		if (this.userLms == null) {
 
-			final Query resource = session.createQuery("from ResourceLMS x order by x.id asc");
-			this.resourceLms = resource.list();
-			this.logger.info("ResourceLMS tables: " + this.resourceLms.size());
+			criteria = session.createCriteria(ResourceLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.course", courses));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.resourceLms = criteria.list();
+			logger.info("ResourceLMS tables: " + this.resourceLms.size());
 
-			final Query course = session.createQuery("from CourseLMS x order by x.id asc");
-			this.courseLms = course.list();
-			this.logger.info("CourseLMS tables: " + this.courseLms.size());
+			criteria = session.createCriteria(CourseLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.id", courses));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.courseLms = criteria.list();
+			logger.info("CourseLMS tables: " + this.courseLms.size());
 
-			final Query chat = session.createQuery("from ChatLMS x order by x.id asc");
-			this.chatLms = chat.list();
-			this.logger.info("ChatLMS tables: " + this.chatLms.size());
+			criteria = session.createCriteria(ChatLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.course", courses));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.chatLms = criteria.list();
+			logger.info("ChatLMS tables: " + this.chatLms.size());
 
-			final Query courseCategories = session.createQuery("from CourseCategoriesLMS x order by x.id asc");
-			this.courseCategoriesLms = courseCategories.list();
-			this.logger.info("CourseCategoriesLMS tables: " + this.courseCategoriesLms.size());
+			criteria = session.createCriteria(CourseCategoriesLMS.class, "obj");
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.courseCategoriesLms = criteria.list();
+			logger.info("CourseCategoriesLMS tables: " + this.courseCategoriesLms.size());
 
-			final Query forum = session.createQuery("from ForumLMS x order by x.id asc");
-			this.forumLms = forum.list();
-			this.logger.info("ForumLMS tables: " + this.forumLms.size());
+			criteria = session.createCriteria(ForumLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.course", courses));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.forumLms = criteria.list();
+			logger.info("ForumLMS tables: " + this.forumLms.size());
 
-			final Query courseMod = session.createQuery("from CourseModulesLMS x order by x.id asc");
-			this.courseModulesLms = courseMod.list();
-			this.logger.info("CourseModulesLMS tables: " + this.courseModulesLms.size());
+			criteria = session.createCriteria(CourseModulesLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.course", courses));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.courseModulesLms = criteria.list();
+			logger.info("CourseModulesLMS tables: " + this.courseModulesLms.size());
 
-			final Query group = session.createQuery("from GroupsLMS x order by x.id asc");
-			this.groupLms = group.list();
-			this.logger.info("GroupsLMS tables: " + this.groupLms.size());
+			criteria = session.createCriteria(GroupsLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.courseid", courses));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.groupLms = criteria.list();
+			logger.info("GroupsLMS tables: " + this.groupLms.size());
 
-			final Query quiz = session.createQuery("from QuizLMS x order by x.id asc");
-			this.quizLms = quiz.list();
-			this.logger.info("QuizLMS tables: " + this.quizLms.size());
+			criteria = session.createCriteria(QuizLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.course", courses));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.quizLms = criteria.list();
+			logger.info("QuizLMS tables: " + this.quizLms.size());
 
-			final Query wiki = session.createQuery("from WikiLMS x order by x.id asc");
-			this.wikiLms = wiki.list();
-			this.logger.info("WikiLMS tables: " + this.wikiLms.size());
+			criteria = session.createCriteria(WikiLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.course", courses));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.wikiLms = criteria.list();
+			logger.info("WikiLMS tables: " + this.wikiLms.size());
 
-			final Query quizQuestionInstances = session
-					.createQuery("from QuizQuestionInstancesLMS x order by x.id asc");
-			this.quizQuestionInstancesLms = quizQuestionInstances.list();
-			this.logger.info("QuizQuestionInstancesLMS tables: " + this.quizQuestionInstancesLms.size());
+			criteria = session.createCriteria(QuizQuestionInstancesLMS.class, "obj");
+			if(hasCR)
+			{
+				ArrayList<Long> ids = new ArrayList<Long>();
+	 			for(QuizLMS e : this.quizLms)
+	 				ids.add(e.getId());
+	 			if(ids.size() > 0)
+	 				criteria.add(Restrictions.in("obj.quiz", ids));
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.quizQuestionInstancesLms = criteria.list();
+			logger.info("QuizQuestionInstancesLMS tables: " + this.quizQuestionInstancesLms.size());
 
-			final Query question = session.createQuery("from QuestionLMS x order by x.id asc");
-			this.questionLms = question.list();
-			this.logger.info("QuestionLMS tables: " + this.questionLms.size());
+			criteria = session.createCriteria(QuestionLMS.class, "obj");
+			if(hasCR)
+			{
+				ArrayList<Long> ids = new ArrayList<Long>();
+	 			for(QuizQuestionInstancesLMS e : this.quizQuestionInstancesLms)
+	 				ids.add(e.getQuestion());
+	 			if(ids.size() > 0)
+	 				criteria.add(Restrictions.in("obj.id", ids));
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.questionLms = criteria.list();
+			logger.info("QuestionLMS tables: " + this.questionLms.size());
 
-			final Query user = session.createQuery("from UserLMS x order by x.id asc");
-			this.userLms = user.list();
-			this.logger.info("UserLMS tables: " + this.userLms.size());
-
-			final Query role = session.createQuery("from RoleLMS x order by x.id asc");
-			this.roleLms = role.list();
-			this.logger.info("RoleLMS tables: " + this.roleLms.size());
+			criteria = session.createCriteria(RoleLMS.class, "obj");
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.roleLms = criteria.list();
+			logger.info("RoleLMS tables: " + this.roleLms.size());
 
 			session.clear();
 
-			final Query context = session.createQuery("from ContextLMS x order by x.id asc");
-			this.contextLms = context.list();
-			this.logger.info("ContextLMS tables: " + this.contextLms.size());
+			criteria = session.createCriteria(ContextLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.instanceid", courses));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			
+			this.contextLms = criteria.list();
+			logger.info("ContextLMS tables: " + this.contextLms.size());
 
-			final Query assignments = session.createQuery("from AssignmentLMS x order by x.id asc");
-			this.assignmentLms = assignments.list();
-			this.logger.info("AssignmentLMS tables: " + this.assignmentLms.size());
+			criteria = session.createCriteria(AssignmentLMS.class, "obj");
+			if(hasCR)
+			{
+				criteria.add(Restrictions.in("obj.course", courses));
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.assignmentLms = criteria.list();
+			logger.info("AssignmentLMS tables: " + this.assignmentLms.size());
 
-			final Query scorm = session.createQuery("from ScormLMS x order by x.id asc");
-			this.scormLms = scorm.list();
-			this.logger.info("ScormLMS tables: " + this.scormLms.size());
+			criteria = session.createCriteria(ScormLMS.class, "obj");
+			if(hasCR)
+			{
+				criteria.add(Restrictions.in("obj.course", courses));
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.scormLms = criteria.list();
+			logger.info("ScormLMS tables: " + this.scormLms.size());
 
-			final Query gradeItems = session.createQuery("from GradeItemsLMS x order by x.id asc");
-			this.gradeItemsLms = gradeItems.list();
-			this.logger.info("GradeItemsLMS tables: " + this.gradeItemsLms.size());
+			criteria = session.createCriteria(GradeItemsLMS.class, "obj");
+			if(hasCR)
+			{
+				criteria.add(Restrictions.in("obj.courseid", courses));
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.gradeItemsLms = criteria.list();
+			logger.info("GradeItemsLMS tables: " + this.gradeItemsLms.size());
 		}
 
-		final Query log = session
-				.createQuery("from LogLMS x where x.time>=:readingtimestamp and x.time<=:readingtimestamp2 order by x.id asc");
-		log.setParameter("readingtimestamp", readingfromtimestamp);
-		log.setParameter("readingtimestamp2", readingtotimestamp);
-		this.logLms = log.list();
-		this.logger.info("LogLMS tables: " + this.logLms.size());
+		criteria = session.createCriteria(LogLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.course", courses));
+		criteria.add(Restrictions.le("obj.time", readingtotimestamp));
+		criteria.add(Restrictions.ge("obj.time", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.logLms = criteria.list();
+		logger.info("LogLMS tables: " + this.logLms.size());
 
-		final Query chatlog = session
-				.createQuery("from ChatLogLMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:readingtimestamp2 order by x.id asc");
-		chatlog.setParameter("readingtimestamp", readingfromtimestamp);
-		chatlog.setParameter("readingtimestamp2", readingtotimestamp);
-		this.chatLogLms = chatlog.list();
-		this.logger.info("ChatLogLMS tables: " + this.chatLogLms.size());
+		criteria = session.createCriteria(ChatLogLMS.class, "obj");
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(ChatLMS e : this.chatLms)
+ 				ids.add(e.getId());
+ 			if(ids.size() > 0)
+ 				criteria.add(Restrictions.in("obj.chat", ids));
+		}
+		criteria.add(Restrictions.le("obj.timestamp", readingtotimestamp));
+		criteria.add(Restrictions.ge("obj.timestamp", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.chatLogLms = criteria.list();
+		logger.info("ChatLogLMS tables: " + this.chatLogLms.size());
 
-		final Query forumPosts = session
-				.createQuery("from ForumPostsLMS x where x.created>=:readingtimestamp and x.created<=:readingtimestamp2 order by x.id asc");
-		forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
-		forumPosts.setParameter("readingtimestamp2", readingtotimestamp);
-		this.forumPostsLms = forumPosts.list();
-		this.logger.info("ForumPostsLMS tables: " + this.forumPostsLms.size());
+		final Query forumPosts;
+		if(!hasCR)
+		{
+			forumPosts= session
+				.createQuery("from ForumPostsLMS x where x.created>=:readingtimestamp and x.created<=:ceiling order by x.id asc");
+			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
+			forumPosts.setParameter("ceiling", readingtotimestamp);
+			this.forumPostsLms = forumPosts.list();
+		}
+		else
+		{
+			String courseClause ="(";
+			for(int i = 0; i < courses.size(); i++)
+			{
+				courseClause += courses.get(i);
+				if(i < courses.size() - 1)
+					courseClause += ",";
+				else
+					courseClause += ")";
+			}
+			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from forum_posts as posts JOIN log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.created>=:readingtimestamp and posts.created<=:ceiling");
+			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
+			forumPosts.setParameter("ceiling", readingtotimestamp);
+			List<Object[]> tmpl = forumPosts.list();
+			if(this.forumPostsLms == null)
+				this.forumPostsLms = new ArrayList<ForumPostsLMS>();
+			for(Object[] obj : tmpl)
+			{
+				ForumPostsLMS p = new ForumPostsLMS();
+				p.setId(((BigInteger) obj[0]).longValue());
+				p.setUserid(((BigInteger) obj[1]).longValue());
+				p.setCreated(((BigInteger) obj[2]).longValue());
+				p.setModified(((BigInteger) obj[3]).longValue());
+				p.setSubject((String) obj[4]);
+				p.setMessage((String) obj[5]);
+				
+				this.forumPostsLms.add(p);
+			
+			}
+		}
+		logger.info("ForumPostsLMS tables: " + this.forumPostsLms.size());
 
-		final Query forumPostsModified = session
-				.createQuery("from ForumPostsLMS x where x.modified>=:readingtimestamp and x.modified<=:readingtimestamp2 order by x.id asc");
-		forumPostsModified.setParameter("readingtimestamp", readingfromtimestamp);
-		forumPostsModified.setParameter("readingtimestamp2", readingtotimestamp);
-		this.forumPostsLms.addAll(forumPostsModified.list());
-		this.logger.info("ForumPostsLMS tables: " + this.forumPostsLms.size());
+		final Query forumPostsModified;
+		if(!hasCR)
+		{
+			forumPostsModified= session
+				.createQuery("from ForumPostsLMS x where x.modified>=:readingtimestamp and x.modified<=:ceiling order by x.id asc");
+			forumPostsModified.setParameter("readingtimestamp", readingfromtimestamp);
+			forumPostsModified.setParameter("ceiling", readingtotimestamp);
+			this.forumPostsLms.addAll(forumPostsModified.list());
+		}
+		else
+		{
+			String courseClause ="(";
+			for(int i = 0; i < courses.size(); i++)
+			{
+				courseClause += courses.get(i);
+				if(i < courses.size() - 1)
+					courseClause += ",";
+				else
+					courseClause += ")";
+			}
+			forumPostsModified = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from forum_posts as posts JOIN log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp and posts.modified<=:ceiling");
+			forumPostsModified.setParameter("readingtimestamp", readingfromtimestamp);
+			forumPostsModified.setParameter("ceiling", readingtotimestamp);
+			List<Object[]> tmpl = forumPostsModified.list();
+			if(this.forumPostsLms == null)
+				this.forumPostsLms = new ArrayList<ForumPostsLMS>();
+			for(Object[] obj : tmpl)
+			{
+				ForumPostsLMS p = new ForumPostsLMS();
+				p.setId(((Integer) obj[0]).longValue());
+				p.setUserid(((Integer) obj[1]).longValue());
+				p.setCreated(((Integer) obj[2]).longValue());
+				p.setModified(((Integer) obj[3]).longValue());
+				p.setSubject((String) obj[4]);
+				p.setMessage((String) obj[5]);
+				
+				this.forumPostsLms.add(p);
+			
+			}
+		}
+		logger.info("ForumPostsLMS tables: " + this.forumPostsLms.size());
 
 		session.clear();
 
-		final Query groupMembers = session
-				.createQuery("from GroupsMembersLMS x where x.timeadded>=:readingtimestamp and x.timeadded<=:readingtimestamp2 order by x.id asc");
-		groupMembers.setParameter("readingtimestamp", readingfromtimestamp);
-		groupMembers.setParameter("readingtimestamp2", readingtotimestamp);
-		this.groupMembersLms = groupMembers.list();
-		this.logger.info("GroupsMembersLMS tables: " + this.groupMembersLms.size());
+		criteria = session.createCriteria(GroupsMembersLMS.class, "obj");
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(GroupsLMS e : this.groupLms)
+ 				ids.add(e.getId());
+ 			if(ids.size() > 0)
+ 				criteria.add(Restrictions.in("obj.groupid", ids));
+		}
+		criteria.add(Restrictions.le("obj.timeadded", readingtotimestamp));
+		criteria.add(Restrictions.ge("obj.timeadded", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.groupMembersLms = criteria.list();
+		logger.info("GroupsMembersLMS tables: " + this.groupMembersLms.size());
 
-		final Query questionStates = session
-				.createQuery("from QuestionStatesLMS x where x.timestamp>=:readingtimestamp and x.timestamp<=:readingtimestamp2 order by x.id asc");
-		questionStates.setParameter("readingtimestamp", readingfromtimestamp);
-		questionStates.setParameter("readingtimestamp2", readingtotimestamp);
-		this.questionStatesLms = questionStates.list();
-		this.logger.info("QuestionStatesLMS tables: " + this.questionStatesLms.size());
+		criteria = session.createCriteria(QuestionStatesLMS.class, "obj");
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(QuizQuestionInstancesLMS e : this.quizQuestionInstancesLms)
+ 				ids.add(e.getQuestion());
+ 			if(ids.size() > 0)
+ 				criteria.add(Restrictions.in("obj.question", ids));
+		}
+		criteria.add(Restrictions.le("obj.timestamp", readingtotimestamp));
+		criteria.add(Restrictions.ge("obj.timestamp", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.questionStatesLms = criteria.list();
+		logger.info("QuestionStatesLMS tables: " + this.questionStatesLms.size());
+		
+		if(this.userLms == null)
+		{
+			criteria = session.createCriteria(RoleAssignmentsLMS.class, "obj");
+			if(hasCR)
+			{
+				ArrayList<Long> ids = new ArrayList<Long>();
+				for(ContextLMS c : this.contextLms)
+				{
+					if(c.getContextlevel() == 50 && courses.contains(c.getInstanceid()))
+						ids.add(c.getId());
+					if(ids.size() > 0)
+						criteria.add(Restrictions.in("obj.contextid", ids));
+				}
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.roleAssignmentsLms = criteria.list();
+			
+			criteria = session.createCriteria(UserLMS.class, "obj");
+			if(hasCR)
+			{
+				ArrayList<Long> ids = new ArrayList<Long>();
+	 			for(RoleAssignmentsLMS e : this.roleAssignmentsLms)
+	 				ids.add(e.getUserid());
+	 			if(ids.size() > 0)
+	 				criteria.add(Restrictions.in("obj.id", ids));
+			}
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.userLms = criteria.list();
+			logger.info("UserLMS tables: " + this.userLms.size());
+			this.roleAssignmentsLms = null;
+		}
+		
+		criteria = session.createCriteria(RoleAssignmentsLMS.class, "obj");
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+			for(ContextLMS c : this.contextLms)
+			{
+				if(c.getContextlevel() == 50 && courses.contains(c.getInstanceid()))
+					ids.add(c.getId());
+				if(ids.size() > 0)
+					criteria.add(Restrictions.in("obj.contextid", ids));
+			}
+		}
+		criteria.add(Restrictions.le("obj.timemodified", readingtotimestamp));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.roleAssignmentsLms = criteria.list();
+		logger.info("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
 
-		final Query roleAssignments = session
-				.createQuery("from RoleAssignmentsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
-		roleAssignments.setParameter("readingtimestamp", readingfromtimestamp);
-		roleAssignments.setParameter("readingtimestamp2", readingtotimestamp);
-		this.roleAssignmentsLms = roleAssignments.list();
-		this.logger.info("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
+		criteria = session.createCriteria(AssignmentSubmissionsLMS.class, "obj");
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(AssignmentLMS e : this.assignmentLms)
+ 				ids.add(e.getId());
+ 			if(ids.size() > 0)
+ 				criteria.add(Restrictions.in("obj.assignment", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", readingtotimestamp));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assignmentSubmissionLms = criteria.list();
+		logger.info("AssignmentSubmissionsLMS tables: " + this.assignmentSubmissionLms.size());
 
-		final Query assignmentSubmission = session
-				.createQuery("from AssignmentSubmissionsLMS x where x.timecreated>=:readingtimestamp and x.timecreated<=:readingtimestamp2 order by x.id asc");
-		assignmentSubmission.setParameter("readingtimestamp", readingfromtimestamp);
-		assignmentSubmission.setParameter("readingtimestamp2", readingtotimestamp);
-		this.assignmentSubmissionLms = assignmentSubmission.list();
-		this.logger.info("AssignmentSubmissionsLMS tables: " + this.assignmentSubmissionLms.size());
+		criteria = session.createCriteria(QuizGradesLMS.class, "obj");
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(QuizLMS e : this.quizLms)
+ 				ids.add(e.getId());
+ 			if(ids.size() > 0)
+ 				criteria.add(Restrictions.in("obj.quiz", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", readingtotimestamp));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.quizGradesLms = criteria.list();
+		logger.info("QuizGradesLMS tables: " + this.quizGradesLms.size());
 
-		final Query quizGrades = session
-				.createQuery("from QuizGradesLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
-		quizGrades.setParameter("readingtimestamp", readingfromtimestamp);
-		quizGrades.setParameter("readingtimestamp2", readingtotimestamp);
-		this.quizGradesLms = quizGrades.list();
-		this.logger.info("QuizGradesLMS tables: " + this.quizGradesLms.size());
+		criteria = session.createCriteria(ForumDiscussionsLMS.class, "obj");
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(ForumLMS e : this.forumLms)
+ 				ids.add(e.getId());
+ 			if(ids.size() > 0)
+ 				criteria.add(Restrictions.in("obj.forum", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", readingtotimestamp));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.forumDiscussionsLms = criteria.list();
+		logger.info("ForumDiscussionsLMS tables: " + this.forumDiscussionsLms.size());
 
-		final Query forumDiscussions = session
-				.createQuery("from ForumDiscussionsLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
-		forumDiscussions.setParameter("readingtimestamp", readingfromtimestamp);
-		forumDiscussions.setParameter("readingtimestamp2", readingtotimestamp);
-		this.forumDiscussionsLms = forumDiscussions.list();
-		this.logger.info("ForumDiscussionsLMS tables: " + this.forumDiscussionsLms.size());
-
-		final Query gradeGrades = session
-				.createQuery("from GradeGradesLMS x where x.timemodified>=:readingtimestamp and x.timemodified<=:readingtimestamp2 order by x.id asc");
-		gradeGrades.setParameter("readingtimestamp", readingfromtimestamp);
-		gradeGrades.setParameter("readingtimestamp2", readingtotimestamp);
-		this.gradeGradesLms = gradeGrades.list();
-		this.logger.info("GradeGradesLMS tables: " + this.gradeGradesLms.size());
+		criteria = session.createCriteria(GradeGradesLMS.class, "obj");
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+ 			for(GradeItemsLMS e : this.gradeItemsLms)
+ 				ids.add(e.getId());
+ 			if(ids.size() > 0)
+ 				criteria.add(Restrictions.in("obj.itemid", ids));
+		}
+		criteria.add(Restrictions.le("obj.timemodified", readingtotimestamp));
+		criteria.add(Restrictions.ge("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.gradeGradesLms = criteria.list();
+		logger.info("GradeGradesLMS tables: " + this.gradeGradesLms.size());
 
 		session.clear();
 
@@ -661,6 +1115,35 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 		}
 		return courseAssignmentMining;
+	}
+	
+	@Override
+	public Map<Long, CourseChatMining> generateCourseChatMining() {
+
+		final HashMap<Long, CourseChatMining> courseChatMining = new HashMap<Long, CourseChatMining>();
+
+		for (final ChatMining loadedItem : this.chatMining.values())
+		{
+			final CourseChatMining insert = new CourseChatMining();
+
+			insert.setId(courseChatMining.size() + 1 + this.courseChatMax);
+			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse().getId()), this.courseMining,
+					this.oldCourseMining);
+			insert.setPlatform(this.connector.getPlatformId());			
+			insert.setChat(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()),
+					this.chatMining, this.chatMining);
+			if ((insert.getCourse() != null) && (insert.getChat() != null)) {
+				courseChatMining.put(insert.getId(), insert);
+			}
+			if (insert.getCourse() == null) {
+				this.logger.debug("course not found for course-chatt: " + loadedItem.getId() + " and course: "
+						+ loadedItem.getCourse());
+			}
+			if (insert.getChat() == null) {
+				this.logger.debug("In CourseChatMining, chatt not found: " + loadedItem.getId());
+			}
+		}
+		return courseChatMining;
 	}
 
 	@Override
@@ -875,8 +1358,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					if ((loadedItem2.getUserid() == loadedItem.getUserid())
 							&& ((loadedItem2.getCreated() == loadedItem.getTime()) || (loadedItem2.getModified() == loadedItem
 									.getTime()))) {
-						insert.setMessage(loadedItem2.getMessage());
-						insert.setSubject(loadedItem2.getSubject());
+						insert.setMessage(TextHelper.replaceString(loadedItem2.getMessage()));
+						insert.setSubject(TextHelper.replaceString(loadedItem2.getSubject()));
 						break;
 					}
 				}
@@ -2054,7 +2537,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(chatLogMining.size() + 1 + this.chatLogMax);
 			insert.setChat(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getChat()), this.chatMining,
 					this.oldChatMining);
-			insert.setMessage(loadedItem.getMessage());
+			insert.setMessage(TextHelper.replaceString(loadedItem.getMessage()));
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setPlatform(this.connector.getPlatformId());
 			if (insert.getChat() != null) {

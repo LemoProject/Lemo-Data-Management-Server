@@ -27,6 +27,7 @@ import de.lemo.dms.db.miningDBclass.ChatLogMining;
 import de.lemo.dms.db.miningDBclass.ChatMining;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
 import de.lemo.dms.db.miningDBclass.CourseAssignmentMining;
+import de.lemo.dms.db.miningDBclass.CourseChatMining;
 import de.lemo.dms.db.miningDBclass.CourseForumMining;
 import de.lemo.dms.db.miningDBclass.CourseGroupMining;
 import de.lemo.dms.db.miningDBclass.CourseLogMining;
@@ -200,6 +201,7 @@ public abstract class ExtractAndMap {
 	protected Long wikiLogMax;
 	protected Long chatLogMax;
 	protected Long resourceLogMax;
+	protected Long courseChatMax;
 
 	/** Designates which entries should be read from the LMS Database during the process. */
 	private long starttime;
@@ -227,7 +229,7 @@ public abstract class ExtractAndMap {
 	 *            Optional arguments for the process. Used for the selection of the ExtractAndMap Implementation and
 	 *            timestamp when the extraction should start.
 	 **/
-	public void start(final String[] args, final DBConfigObject sourceDBConf) {
+	public void start(final String[] args, final DBConfigObject sourceDBConf, List<Long> courses) {
 		this.dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		this.c = new Clock();
 		this.starttime = System.currentTimeMillis() / 1000;
@@ -244,7 +246,7 @@ public abstract class ExtractAndMap {
 		{
 			// get the needed tables from LMS DB
 			this.c.reset();
-			this.getLMStables(sourceDBConf, readingtimestamp);
+			this.getLMStables(sourceDBConf, readingtimestamp, courses);
 			this.logger.info("Loaded data from source in " + this.c.getAndReset());
 
 			// create and write the mining database tables
@@ -263,7 +265,7 @@ public abstract class ExtractAndMap {
 				// first read & save LMS DB tables from 0 to starttime for timestamps which are not set(which are 0)
 				if (this.configMiningTimestamp.get(0) == null) {
 					this.c.reset();
-					this.getLMStables(sourceDBConf, 0, readingtimestamp);
+					this.getLMStables(sourceDBConf, 0, readingtimestamp, courses);
 					this.logger.info("Loaded data from source in " + this.c.getAndReset());
 					// create and write the mining database tables
 					this.saveMiningTables();
@@ -274,7 +276,7 @@ public abstract class ExtractAndMap {
 				{
 					this.logger.info("looptimestamp:" + looptimestamp);
 					this.c.reset();
-					this.getLMStables(sourceDBConf, looptimestamp + 1, readingtimestamp2);
+					this.getLMStables(sourceDBConf, looptimestamp + 1, readingtimestamp2, courses);
 					this.logger.info("Loaded data from source in " + this.c.getAndReset());
 					looptimestamp += 172800;
 					readingtimestamp2 += 172800;
@@ -294,7 +296,7 @@ public abstract class ExtractAndMap {
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (this.starttime));
 		config.setPlatform(this.connector.getPlatformId());
-		config.setDatabaseModel("1.2");
+		config.setDatabaseModel("1.3");
 		this.dbHandler.saveToDB(session, config);
 		this.logger.info("Elapsed time: " + (endtime - this.starttime) + "s");
 		this.dbHandler.closeSession(session);
@@ -342,6 +344,12 @@ public abstract class ExtractAndMap {
 		this.chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
 		if (this.chatLogMax == null) {
 			this.chatLogMax = 0L;
+		}
+		
+		Query couCaCount = session.createQuery("select max(cc.id) from CourseChatMining cc");
+		this.courseChatMax = ((ArrayList<Long>) couCaCount.list()).get(0);
+		if (this.courseChatMax == null) {
+			this.courseChatMax = 0L;
 		}
 
 		logCount = session.createQuery("select max(log.id) from AssignmentLogMining log");
@@ -544,7 +552,7 @@ public abstract class ExtractAndMap {
 	 *            *
 	 * @return the lM stables
 	 */
-	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp);
+	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, List<Long> courses);
 
 	/**
 	 * Has to read the LMS Database.
@@ -564,7 +572,7 @@ public abstract class ExtractAndMap {
 	 *            *
 	 * @return the lM stables
 	 */
-	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, long readingtotimestamp);
+	public abstract void getLMStables(DBConfigObject dbConf, long readingfromtimestamp, long readingtotimestamp, List<Long> courses);
 
 	/**
 	 * Has to clear the lists of LMS tables*.
@@ -719,6 +727,11 @@ public abstract class ExtractAndMap {
 			objects += this.updates.get(this.updates.size() - 1).size();
 			this.logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseAssignmentMining entries in " + this.c.getAndReset() + " s. ");
+			
+			this.updates.add(this.generateCourseChatMining().values());
+			objects += this.updates.get(this.updates.size() - 1).size();
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+					+ " CourseChatMining entries in " + this.c.getAndReset() + " s. ");
 
 			this.updates.add(this.generateCourseScormMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
@@ -847,6 +860,17 @@ public abstract class ExtractAndMap {
 	 * @return A list of instances of the course_user table representing class.
 	 **/
 	abstract Map<Long, CourseUserMining> generateCourseUserMining();
+	
+	/**
+	 * Has to create and fill the course_chat table.
+	 * This table describes which chats are used in which courses.
+	 * The attributes are described in the documentation of the course_chat_mining class.
+	 * Please use the getter and setter predefined in the course_chat_mining class to fill the tables within this
+	 * method.
+	 * 
+	 * @return A list of instances of the course_wiki table representing class.
+	 **/
+	abstract Map<Long, CourseChatMining> generateCourseChatMining();
 
 	/**
 	 * Has to create and fill the course_forum table.

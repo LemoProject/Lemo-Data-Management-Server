@@ -55,6 +55,11 @@
 			<key column="course_id" />
 			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseAssignmentMining" />
 		</set>
+		
+		<set name="courseChats" inverse="true" lazy="false">
+			<key column="course_id" />
+			<one-to-many class="de.lemo.dms.db.miningDBclass.CourseChatMining" />
+		</set>
 
 		<set name="courseResources" inverse="true" lazy="false">
 			<key column="course_id" />
