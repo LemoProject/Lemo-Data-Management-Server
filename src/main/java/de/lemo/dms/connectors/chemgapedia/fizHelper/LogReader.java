@@ -106,6 +106,7 @@ public class LogReader {
 	 * Database's largest id used in ResourceMining
 	 */
 	private Long resIdCount;
+	
 	/**
 	 * Database's largest timestamp used in ResourceLogMining
 	 */
@@ -121,11 +122,12 @@ public class LogReader {
 	 * @param session
 	 */
 	@SuppressWarnings("unchecked")
-	public LogReader(final IConnector connector, final Session session)
+	public LogReader(final IConnector connector, final Session session, List<Long> courses)
 	{
 		this.connector = connector;
 		final long platformId = connector.getPlatformId();
 		try {
+
 			this.newIdMapping = new HashMap<String, IDMappingMining>();
 
 			Criteria c = session.createCriteria(IDMappingMining.class, "idmap");
@@ -519,11 +521,11 @@ public class LogReader {
 										new IDMappingMining(
 												Long.valueOf(this.connector.getPrefix() + "" + resourceId), lo
 														.getUrl(), this.connector.getPlatformId()));
-								this.newIdMapping.put(
-										lo.getUrl(),
-										new IDMappingMining(
-												Long.valueOf(this.connector.getPrefix() + "" + resourceId), lo
-														.getUrl(), this.connector.getPlatformId()));
+									this.newIdMapping.put(
+											lo.getUrl(),
+											new IDMappingMining(
+													Long.valueOf(this.connector.getPrefix() + "" + resourceId), lo
+															.getUrl(), this.connector.getPlatformId()));
 								resourceId = Long.valueOf(this.connector.getPrefix() + "" + resourceId);
 								lo.setId(resourceId);
 							}
@@ -649,11 +651,13 @@ public class LogReader {
 				rl.setDuration(loadedItem.get(i).getDuration());
 				rl.setAction("View");
 				rl.setPlatform(this.connector.getPlatformId());
-				rl.setId(this.resLogId + 1);
-				this.resLogId++;
+
 			
 				if(rl.getCourse() != null)
 				{
+					rl.setId(this.resLogId + 1);
+					this.resLogId++;
+					
 					CourseUserMining cu = courseUserSingle.get(rl.getCourse().getId());
 					
 					if(cu == null)
@@ -679,10 +683,11 @@ public class LogReader {
 						if(cu.getEnrolstart() > rl.getTimestamp())
 							cu.setEnrolstart(rl.getTimestamp());					
 					}
+					
+					resourceLogMining.add(rl);
 				}
 				
-				
-				resourceLogMining.add(rl);
+
 			}
 			courseUserMining.addAll(courseUserSingle.values());
 		}

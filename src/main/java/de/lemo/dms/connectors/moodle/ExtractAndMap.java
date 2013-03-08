@@ -296,7 +296,7 @@ public abstract class ExtractAndMap {
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (this.starttime));
 		config.setPlatform(this.connector.getPlatformId());
-		config.setDatabaseModel("1.2");
+		config.setDatabaseModel("1.3");
 		this.dbHandler.saveToDB(session, config);
 		this.logger.info("Elapsed time: " + (endtime - this.starttime) + "s");
 		this.dbHandler.closeSession(session);

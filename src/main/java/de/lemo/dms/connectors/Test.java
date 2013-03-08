@@ -154,20 +154,20 @@ public class Test {
 		ArrayList<Long> courses = new ArrayList<Long>();
 		//courses.add(20201114L);
 
-		/*
+		
 		courses.add(17945446L); 
 		courses.add(13617310L);
 		courses.add(10921956L);
 		courses.add(8074949L);
 		courses.add(4667155L);
-		*/
+		/*
 		
 		courses.add(18508964L);
 		courses.add(21040950L);
 		courses.add(21040967L);		
 		
 		
-		
+		*/
 		connector.setCourseIdFilter(courses);
 		connector.getData();
 		//connector.updateData(1300000000L);
@@ -291,7 +291,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodleNumericConn();
+		this.runMoodleConn();
 		logger.info("Test finished");
 	}
 

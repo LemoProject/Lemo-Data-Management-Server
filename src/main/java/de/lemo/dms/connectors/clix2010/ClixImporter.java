@@ -305,7 +305,7 @@ public class ClixImporter {
 		final ConfigMining config = new ConfigMining();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (starttime));
-		config.setDatabaseModel("1.2");
+		config.setDatabaseModel("1.3");
 		config.setPlatform(this.connector.getPlatformId());
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -348,7 +348,7 @@ public class ClixImporter {
 		final ConfigMining config = new ConfigMining();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (currentSysTime));
-		config.setDatabaseModel("1.2");
+		config.setDatabaseModel("1.3");
 		config.setPlatform(this.connector.getPlatformId());
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();

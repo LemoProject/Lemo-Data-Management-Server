@@ -289,7 +289,7 @@ public abstract class ExtractAndMap {
 		final ConfigMining config = new ConfigMining();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (this.starttime));
-		config.setDatabaseModel("1.2");
+		config.setDatabaseModel("1.3");
 		config.setPlatform(this.connector.getPlatformId());
 		this.dbHandler.saveToDB(session, config);
 		this.logger.info("Elapsed time: " + (endtime - this.starttime) + "s");

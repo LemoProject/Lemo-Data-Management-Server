@@ -98,14 +98,14 @@ public class ConnectorChemgapedia extends AbstractConnector {
 
 			if (this.processVSC)
 			{
-				final XMLPackageParser x = new XMLPackageParser(this);
+				final XMLPackageParser x = new XMLPackageParser(this, this.getCourseIdFilter());
 				x.readAllVlus(this.vscPath);
 				x.saveAllToDB();
 				x.clearMaps();
 			}
 			if (this.processLog)
 			{
-				final LogReader logR = new LogReader(this, session);
+				final LogReader logR = new LogReader(this, session, this.getCourseIdFilter());
 				logR.loadServerLogData(this.logPath, 0L, this.filter, session);
 				logR.save(session);
 				logR.clearMaps();
@@ -115,7 +115,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 			final ConfigMining config = new ConfigMining();
 			config.setLastModifiedLong(System.currentTimeMillis());
 			config.setElapsedTime((endtime) - (starttime));
-			config.setDatabaseModel("1.2");
+			config.setDatabaseModel("1.3");
 			config.setPlatform(this.getPlatformId());
 
 			session = dbHandler.getMiningSession();
@@ -135,14 +135,14 @@ public class ConnectorChemgapedia extends AbstractConnector {
 
 			if (this.processVSC)
 			{
-				final XMLPackageParser x = new XMLPackageParser(this);
+				final XMLPackageParser x = new XMLPackageParser(this, this.getCourseIdFilter());
 				x.readAllVlus(this.vscPath);
 				x.saveAllToDB();
 				x.clearMaps();
 			}
 			if (this.processLog)
 			{
-				final LogReader logR = new LogReader(this, session);
+				final LogReader logR = new LogReader(this, session, this.getCourseIdFilter());
 				logR.loadServerLogData(this.logPath, 0L, this.filter, session);
 				logR.save(session);
 				logR.clearMaps();
@@ -152,7 +152,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 			final ConfigMining config = new ConfigMining();
 			config.setLastModifiedLong(System.currentTimeMillis());
 			config.setElapsedTime((endtime) - (starttime));
-			config.setDatabaseModel("1.2");
+			config.setDatabaseModel("1.3");
 			config.setPlatform(this.getPlatformId());
 
 			dbHandler.saveToDB(session, config);
