@@ -22,6 +22,7 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.TextHelper;
 import de.lemo.dms.connectors.clix2010.clixDBClass.BiTrackContentImpressions;
 import de.lemo.dms.connectors.clix2010.clixDBClass.ChatProtocol;
 import de.lemo.dms.connectors.clix2010.clixDBClass.EComponent;
@@ -2807,8 +2808,8 @@ public class ClixImporter {
 						this.oldForumMining);
 				item.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getLastUpdater()),
 						this.userMining, this.oldUserMining);
-				item.setSubject(loadedItem.getTitle());
-				item.setMessage(loadedItem.getContent());
+				item.setSubject(TextHelper.replaceString(loadedItem.getTitle()));
+				item.setMessage(TextHelper.replaceString(loadedItem.getContent()));
 				item.setAction("Post");
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				item.setPlatform(this.connector.getPlatformId());
@@ -3221,7 +3222,7 @@ public class ClixImporter {
 						this.oldChatMining);
 				item.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getPerson()), this.userMining,
 						this.oldUserMining);
-				item.setMessage(loadedItem.getChatSource());
+				item.setMessage(TextHelper.replaceString(loadedItem.getChatSource()));
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);

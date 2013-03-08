@@ -7,6 +7,7 @@
 package de.lemo.dms.connectors.moodle;
 
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.TextHelper;
 import de.lemo.dms.connectors.moodle.moodleDBclass.AssignmentLMS;
 import de.lemo.dms.connectors.moodle.moodleDBclass.AssignmentSubmissionsLMS;
 import de.lemo.dms.connectors.moodle.moodleDBclass.ChatLogLMS;
@@ -248,10 +250,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			for(Object[] obj : tmpl)
 			{
 				ForumPostsLMS p = new ForumPostsLMS();
-				p.setId(((Integer) obj[0]).longValue());
-				p.setUserid((String) obj[1]);
-				p.setCreated(((Integer) obj[2]).longValue());
-				p.setModified(((Integer) obj[3]).longValue());
+				p.setId(((BigInteger) obj[0]).longValue());
+				p.setUserid(((String) obj[1]));
+				p.setCreated(((BigInteger) obj[2]).longValue());
+				p.setModified(((BigInteger) obj[3]).longValue());
 				p.setSubject((String) obj[4]);
 				p.setMessage((String) obj[5]);
 				this.forumPostsLms.add(p);
@@ -761,10 +763,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			for(Object[] obj : tmpl)
 			{
 				ForumPostsLMS p = new ForumPostsLMS();
-				p.setId(((Integer) obj[0]).longValue());
-				p.setUserid((String) obj[1]);
-				p.setCreated(((Integer) obj[2]).longValue());
-				p.setModified(((Integer) obj[3]).longValue());
+				p.setId(((BigInteger) obj[0]).longValue());
+				p.setUserid(((String) obj[1]));
+				p.setCreated(((BigInteger) obj[2]).longValue());
+				p.setModified(((BigInteger) obj[3]).longValue());
 				p.setSubject((String) obj[4]);
 				p.setMessage((String) obj[5]);
 				
@@ -1451,8 +1453,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					if ((loadedItem2.getUserid() == loadedItem.getUserid())
 							&& ((loadedItem2.getCreated() == loadedItem.getTime()) || (loadedItem2.getModified() == loadedItem
 									.getTime()))) {
-						insert.setMessage(loadedItem2.getMessage());
-						insert.setSubject(loadedItem2.getSubject());
+						insert.setMessage(TextHelper.replaceString(loadedItem2.getMessage()));
+						insert.setSubject(TextHelper.replaceString(loadedItem2.getSubject()));
 						break;
 					}
 				}
@@ -2825,7 +2827,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(chatLogMining.size() + 1 + this.chatLogMax);
 			insert.setChat(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getChat()), this.chatMining,
 					this.oldChatMining);
-			insert.setMessage(loadedItem.getMessage());
+			insert.setMessage(TextHelper.replaceString(loadedItem.getMessage()));
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setPlatform(this.connector.getPlatformId());
 			if (insert.getChat() != null) {
