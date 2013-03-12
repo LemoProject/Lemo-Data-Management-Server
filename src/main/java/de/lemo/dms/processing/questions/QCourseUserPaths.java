@@ -6,7 +6,6 @@
 
 package de.lemo.dms.processing.questions;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -63,7 +62,7 @@ public class QCourseUserPaths extends Question {
 		final Session session = dbHandler.getMiningSession();
 		
 		Criteria criteria;
-		ArrayList<Long> us = StudentHelper.getCourseStudents(courseIds);
+		List<Long> us = StudentHelper.getCourseStudents(courseIds);
 
 		criteria = session.createCriteria(ILogMining.class, "log")
 				.add(Restrictions.in("log.course.id", courseIds))

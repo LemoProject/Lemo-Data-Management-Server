@@ -55,7 +55,7 @@ public class QActivityResourceTypeResolution extends Question {
 		for (ELearningObjectType loType : ELearningObjectType.values()) {
 			if (allTypes || resourceTypes.contains(loType.name().toLowerCase())) {
 				Criteria criteria;
-				ArrayList<Long> users = StudentHelper.getCourseStudents(courses);
+				List<Long> users = StudentHelper.getCourseStudents(courses);
 				criteria = session.createCriteria(loType.getLogMiningType(), "log")
 						.add(Restrictions.between("log.timestamp", startTime, endTime))
 						.add(Restrictions.in("log.user.id", users));
