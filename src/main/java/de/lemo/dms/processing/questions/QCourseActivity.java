@@ -55,7 +55,6 @@ public class QCourseActivity extends Question {
 	 *            (Optional)
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListHashMapObject compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
@@ -66,19 +65,22 @@ public class QCourseActivity extends Question {
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
 			@FormParam(MetaParam.TYPES) final List<String> resourceTypes) {
 
-		final HashMap<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();
-		
 		validateTimestamps(startTime, endTime, resolution);
 
+		final HashMap<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();
+		
 		// Set up db-connection
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
-		Criteria criteria;
-		if(users == null || users.size() == 0)
-		{
+		if (users.isEmpty()) {
 			users = StudentHelper.getCourseStudents(courses);
+			if (users.isEmpty()) {
+				// TODO no users in course, maybe send some http error
+				return new ResultListHashMapObject();
+			}
 		}
+
 		// Calculate size of time intervalls
 		final double intervall = (endTime - startTime) / (resolution);
 
@@ -98,69 +100,49 @@ public class QCourseActivity extends Question {
 			result.put(courses.get(j), new ResultListLongObject(l));
 		}
 
-		for (final Long c : courses)
-		{
-
-			userPerResStep.put(c, new HashMap<Integer, Set<Long>>());
-
+		for (final Long course : courses) {
+			userPerResStep.put(course, new HashMap<Integer, Set<Long>>());
 		}
 
-		if ((resourceTypes != null) && (resourceTypes.size() > 0)) {
-			for (int i = 0; i < resourceTypes.size(); i++) {
-				this.logger.info("Course Activity Request - CA Selection: " + resourceTypes.get(i));
-			}
-		} else {
+		for (String resourceType : resourceTypes) {
+			this.logger.debug("Course Activity Request - CA Selection: " + resourceType);
+		}
+		if (resourceTypes.isEmpty()) {
 			this.logger.info("Course Activity Request - CA Selection: NO Items selected ");
 		}
 
-		if ((resourceTypes != null) && (resourceTypes.size() > 0)) {
-			for (int i = 0; i < resourceTypes.size(); i++) {
-				this.logger.info("Course Activity Request - CA Selection: " + resourceTypes.get(i));
-			}
+		// role filtering
+		final List<Long> userList;
+		if (roles.isEmpty()) {
+			// don't filter roles
+			userList = users;
 		} else {
-			this.logger.info("Course Activity Request - CA Selection: NO Items selected ");
-		}
-
-		List<CourseUserMining> ilm = null;
-
-		if ((roles != null) && (roles.size() > 0))
-		{
-			criteria = session.createCriteria(CourseUserMining.class, "log")
-					.add(Restrictions.in("log.course.id", courses))
-					
-					.add(Restrictions.in("log.role.id", roles));
-			if(users.size() > 0)
-				criteria.add(Restrictions.in("log.user.id", users));
-			
-			if ((users != null) && (users.size() > 0)) {
-				criteria.add(Restrictions.in("log.user.id", users));
-			}
-			ilm = criteria.list();
-		}
-		final List<Long> userList = new ArrayList<Long>();
-
-		if (ilm != null) {
-			for (int i = 0; i < ilm.size(); i++)
-			{
-				if (ilm.get(i).getUser() != null) {
-					userList.add(ilm.get(i).getUser().getId());
+			// filter by role
+			userList = new ArrayList<Long>();
+			Criteria userRoleCriteria = session.createCriteria(CourseUserMining.class, "cu")
+					.add(Restrictions.in("cu.course.id", courses))
+					.add(Restrictions.in("cu.role.id", roles))
+					.add(Restrictions.in("cu.user.id", users));
+			@SuppressWarnings("unchecked")
+			List<CourseUserMining> courseUsers = userRoleCriteria.list();
+			for (CourseUserMining courseUser : courseUsers) {
+				if (courseUser.getUser() != null) {
+					userList.add(courseUser.getUser().getId());
 				}
 			}
-		}
-		List<ILogMining> logs = null;
-
-		final Criteria criteria2 = session.createCriteria(ILogMining.class, "log");
-		criteria2.add(Restrictions.in("log.course.id", courses));
-
-		if (users.size() > 0) {
-			criteria2.add(Restrictions.in("log.user.id", users));
-		} else if (userList.size() > 0) {
-			criteria2.add(Restrictions.in("log.user.id", users));
+			if (userList.isEmpty()) {
+				// no user with the given roles
+				return new ResultListHashMapObject();
+			}
 		}
 
-		criteria2.add(Restrictions.between("log.timestamp", startTime, endTime));
+		final Criteria criteria = session.createCriteria(ILogMining.class, "log")
+				.add(Restrictions.in("log.course.id", courses))
+				.add(Restrictions.between("log.timestamp", startTime, endTime))
+				.add(Restrictions.in("log.user.id", users));
 
-		logs = criteria2.list();
+		@SuppressWarnings("unchecked")
+		List<ILogMining> logs = criteria.list();
 
 		for (int i = 0; i < logs.size(); i++)
 		{
