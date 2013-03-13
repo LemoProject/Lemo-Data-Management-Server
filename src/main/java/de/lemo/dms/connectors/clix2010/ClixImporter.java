@@ -3258,70 +3258,107 @@ public class ClixImporter {
 		final ArrayList<ResourceLogMining> resourceLogs = new ArrayList<ResourceLogMining>();
 		try {
 			
+			Long lastATime = null;
+			Long lastAUser = null;
+			Long lastRTime = null;
+			Long lastRUser = null;
+			Long lastSTime = null;
+			Long lastSUser = null;
+			Long lastWTime = null;
+			Long lastWUser = null;
+			
+			
+			
+			
 			for(LearningLog log : this.learningLog)
 			{
+				
 				if(this.assignmentMining.get(Long.valueOf(connector.getPrefix() + "" + log.getComponent())) != null)
 				{
-					AssignmentLogMining item = new AssignmentLogMining();
-					item.setId(assignmentLogs.size() + this.assignmentLogMax + 1);
-					item.setCourse(Long.valueOf(connector.getPrefix() + "" + log.getCourse()), courseMining, oldCourseMining);
-					item.setAssignment(Long.valueOf(connector.getPrefix() + "" + log.getComponent()), assignmentMining, oldAssignmentMining);
-					item.setUser(Long.valueOf(connector.getPrefix() + "" + log.getPerson()), userMining, oldUserMining);
-					item.setDuration(0L);
-					item.setAction(log.getTypeOfModification() + "");
-					item.setGrade(log.getEvaluatedScore());
-					item.setPlatform(connector.getPlatformId());
-					item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
-					
-					if(item.getCourse() != null && item.getUser() != null && item.getAssignment() != null)
-						assignmentLogs.add(item);
+					if(!(TimeConverter.getTimestamp(log.getLastUpdated()).equals(lastATime) && log.getPerson().equals(lastAUser)))
+					{
+						AssignmentLogMining item = new AssignmentLogMining();
+						item.setId(assignmentLogs.size() + this.assignmentLogMax + 1);
+						item.setCourse(Long.valueOf(connector.getPrefix() + "" + log.getCourse()), courseMining, oldCourseMining);
+						item.setAssignment(Long.valueOf(connector.getPrefix() + "" + log.getComponent()), assignmentMining, oldAssignmentMining);
+						item.setUser(Long.valueOf(connector.getPrefix() + "" + log.getPerson()), userMining, oldUserMining);
+						item.setDuration(0L);
+						item.setAction(log.getTypeOfModification() + "");
+						item.setGrade(log.getEvaluatedScore());
+						item.setPlatform(connector.getPlatformId());
+						item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
+						
+						if(item.getCourse() != null && item.getUser() != null && item.getAssignment() != null)
+							assignmentLogs.add(item);
+						
+						//lastATime = item.getTimestamp();
+						//lastAUser = log.getPerson();
+					}
 					
 				}
 				else if(this.resourceMining.get(Long.valueOf(connector.getPrefix() + "" + log.getComponent())) != null)
 				{
-					ResourceLogMining item = new ResourceLogMining();
-					item.setId(resourceLogs.size() + this.resourceLogMax + 1);
-					item.setCourse(Long.valueOf(connector.getPrefix() + "" + log.getCourse()), courseMining, oldCourseMining);
-					item.setResource(Long.valueOf(connector.getPrefix() + "" + log.getComponent()), resourceMining, oldResourceMining);
-					item.setUser(Long.valueOf(connector.getPrefix() + "" + log.getPerson()), userMining, oldUserMining);
-					item.setDuration(0L);
-					item.setAction(log.getTypeOfModification() + "");
-					item.setPlatform(connector.getPlatformId());
-					item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
-					
-					if(item.getCourse() != null && item.getUser() != null && item.getResource() != null)
-						resourceLogs.add(item);
+					if(!(TimeConverter.getTimestamp(log.getLastUpdated()).equals(lastRTime) && log.getPerson().equals(lastRUser)))
+					{
+						ResourceLogMining item = new ResourceLogMining();
+						item.setId(resourceLogs.size() + this.resourceLogMax + 1);
+						item.setCourse(Long.valueOf(connector.getPrefix() + "" + log.getCourse()), courseMining, oldCourseMining);
+						item.setResource(Long.valueOf(connector.getPrefix() + "" + log.getComponent()), resourceMining, oldResourceMining);
+						item.setUser(Long.valueOf(connector.getPrefix() + "" + log.getPerson()), userMining, oldUserMining);
+						item.setDuration(0L);
+						item.setAction(log.getTypeOfModification() + "");
+						item.setPlatform(connector.getPlatformId());
+						item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
+						
+						if(item.getCourse() != null && item.getUser() != null && item.getResource() != null)
+							resourceLogs.add(item);
+						
+						//lastRTime = item.getTimestamp();
+						//lastRUser = log.getPerson();
+					}
 				}
 				else if(this.wikiMining.get(Long.valueOf(connector.getPrefix() + "" + log.getComponent())) != null)
 				{
-					WikiLogMining item = new WikiLogMining();
-					item.setId(wikiLogs.size() + this.wikiLogMax + 1);
-					item.setCourse(Long.valueOf(connector.getPrefix() + "" + log.getCourse()), courseMining, oldCourseMining);
-					item.setWiki(Long.valueOf(connector.getPrefix() + "" + log.getComponent()), wikiMining, oldWikiMining);
-					item.setUser(Long.valueOf(connector.getPrefix() + "" + log.getPerson()), userMining, oldUserMining);
-					item.setDuration(0L);
-					item.setAction(log.getTypeOfModification() + "");
-					item.setPlatform(connector.getPlatformId());
-					item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
-					
-					if(item.getCourse() != null && item.getUser() != null && item.getWiki() != null)
-						wikiLogs.add(item);
+					if(!(TimeConverter.getTimestamp(log.getLastUpdated()).equals(lastWTime) && log.getPerson().equals(lastWUser)))
+					{
+						WikiLogMining item = new WikiLogMining();
+						item.setId(wikiLogs.size() + this.wikiLogMax + 1);
+						item.setCourse(Long.valueOf(connector.getPrefix() + "" + log.getCourse()), courseMining, oldCourseMining);
+						item.setWiki(Long.valueOf(connector.getPrefix() + "" + log.getComponent()), wikiMining, oldWikiMining);
+						item.setUser(Long.valueOf(connector.getPrefix() + "" + log.getPerson()), userMining, oldUserMining);
+						item.setDuration(0L);
+						item.setAction(log.getTypeOfModification() + "");
+						item.setPlatform(connector.getPlatformId());
+						item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
+						
+						if(item.getCourse() != null && item.getUser() != null && item.getWiki() != null)
+							wikiLogs.add(item);
+						
+						//lastWTime = item.getTimestamp();
+						//lastWUser = log.getPerson();
+					}
 				}
 				else if(this.scormMining.get(Long.valueOf(connector.getPrefix() + "" + log.getComponent())) != null)
 				{
-					ScormLogMining item = new ScormLogMining();
-					item.setId(scormLogs.size() + this.scormLogMax + 1);
-					item.setCourse(Long.valueOf(connector.getPrefix() + "" + log.getCourse()), courseMining, oldCourseMining);
-					item.setScorm(Long.valueOf(connector.getPrefix() + "" + log.getComponent()), scormMining, oldScormMining);
-					item.setUser(Long.valueOf(connector.getPrefix() + "" + log.getPerson()), userMining, oldUserMining);
-					item.setDuration(0L);
-					item.setAction(log.getTypeOfModification() + "");
-					item.setPlatform(connector.getPlatformId());
-					item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
-					item.setGrade(log.getEvaluatedScore());
-					
-					if(item.getCourse() != null && item.getUser() != null && item.getScorm() != null)
-						scormLogs.add(item);
+					if(!(TimeConverter.getTimestamp(log.getLastUpdated()).equals(lastSTime) && log.getPerson().equals(lastSUser)))
+					{
+						ScormLogMining item = new ScormLogMining();
+						item.setId(scormLogs.size() + this.scormLogMax + 1);
+						item.setCourse(Long.valueOf(connector.getPrefix() + "" + log.getCourse()), courseMining, oldCourseMining);
+						item.setScorm(Long.valueOf(connector.getPrefix() + "" + log.getComponent()), scormMining, oldScormMining);
+						item.setUser(Long.valueOf(connector.getPrefix() + "" + log.getPerson()), userMining, oldUserMining);
+						item.setDuration(0L);
+						item.setAction(log.getTypeOfModification() + "");
+						item.setPlatform(connector.getPlatformId());
+						item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
+						item.setGrade(log.getEvaluatedScore());
+						
+						if(item.getCourse() != null && item.getUser() != null && item.getScorm() != null)
+							scormLogs.add(item);
+						
+						//lastSTime = item.getTimestamp();
+						//lastSUser = log.getPerson();
+					}
 				}
 			}
 			
