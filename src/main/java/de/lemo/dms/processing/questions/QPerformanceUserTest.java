@@ -134,7 +134,7 @@ public class QPerformanceUserTest {
 
 			u.add(log.getUser().getId());
 			
-			if (singleResults.get(key) == null)
+			if (log.getFinalGrade() != null && singleResults.get(key) == null)
 			{
 				singleResults.put(key, log);
 			}
@@ -161,7 +161,7 @@ public class QPerformanceUserTest {
 				{
 					// Determine interval for specific grade
 					Integer pos = (int) (log.getFinalGrade() / step);
-					if (pos > (resolution - 1)) {
+					if (resolution > 0 && pos > (resolution - 1)) {
 						pos = resolution.intValue() - 1;
 					}
 					

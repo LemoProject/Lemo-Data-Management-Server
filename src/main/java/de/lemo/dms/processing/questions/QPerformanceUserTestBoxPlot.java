@@ -133,7 +133,7 @@ public class QPerformanceUserTestBoxPlot {
 
 			u.add(log.getUser().getId());
 			
-			if (singleResults.get(key) == null)
+			if (log.getFinalGrade() != null && singleResults.get(key) == null) 
 			{
 				singleResults.put(key, log);
 			}
