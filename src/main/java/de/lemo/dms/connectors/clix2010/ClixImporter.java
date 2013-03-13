@@ -805,12 +805,11 @@ public class ClixImporter {
 				Set<Long> ids = new HashSet<Long>();
 				for(ExerciseGroup eg : this.exerciseGroup)
 					ids.add(eg.getId());
-				empty = ids.isEmpty();
-				if(!empty)
+				if(!(empty = ids.isEmpty()))
 					criteria.add(Restrictions.in("obj.community", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				this.exercisePersonalised = criteria.list();
 			else
 				this.exercisePersonalised = new ArrayList<ExercisePersonalised>();
@@ -827,13 +826,12 @@ public class ClixImporter {
 				tmpComp.addAll(courses);
 				for(ExercisePersonalised eP : this.exercisePersonalised)
 					tmpComp.add(eP.getExercise());
-				empty = tmpComp.isEmpty();
-				if(!empty)
+				if(!(empty = tmpComp.isEmpty()))
 					criteria.add(Restrictions.in("obj.id", tmpComp));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			final List<EComponent> tmp;
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				tmp = criteria.list();
 			else
 				tmp = new ArrayList<EComponent>();			
@@ -866,12 +864,11 @@ public class ClixImporter {
 					allKeys.addAll(newKeys);
 				}
 				criteria = session.createCriteria(TQtiContentStructure.class, "obj");
-				empty = allKeys.isEmpty();
-				if(!empty)
+				if(!(empty = allKeys.isEmpty()))
 					criteria.add(Restrictions.in("obj.container", allKeys));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				this.tQtiContentStructure = criteria.list();
 			else
 				this.tQtiContentStructure = new ArrayList<TQtiContentStructure>();
@@ -884,12 +881,11 @@ public class ClixImporter {
 				HashSet<Long> tmp1 = new HashSet<Long>();
 				for(TQtiContentStructure tqs : this.tQtiContentStructure)
 					tmp1.add(tqs.getContent());
-				empty = tmp1.isEmpty();
-				if(!empty)
+				if(!(empty = tmp1.isEmpty()))
 					criteria.add(Restrictions.in("obj.container", tmp1));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				this.tQtiContentComposing = criteria.list();
 			else
 				this.tQtiContentComposing = new ArrayList<TQtiContentComposing>();
@@ -910,13 +906,12 @@ public class ClixImporter {
 					ids.add(tqs.getContainer());
 					ids.add(tqs.getContent());
 				}
-				empty = ids.isEmpty();
-				if(!empty)
+				if(!(empty = ids.isEmpty()))
 					criteria.add(Restrictions.in("obj.id", ids));
 						
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				this.tQtiContent = criteria.list();
 			else
 				this.tQtiContent = new ArrayList<TQtiContent>();
@@ -927,12 +922,11 @@ public class ClixImporter {
 			if(hasCR)
 			{
 				HashSet<Long> tmp1 = new HashSet<Long>(this.eComposingMap.keySet());
-				empty = tmp1.isEmpty();
-				if(!empty)
+				if(!(empty = tmp1.isEmpty()))
 					criteria.add(Restrictions.in("obj.chatroom", tmp1));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				this.chatProtocol = criteria.list();
 			else
 				this.chatProtocol = new ArrayList<ChatProtocol>();
@@ -948,7 +942,7 @@ public class ClixImporter {
 				{
 					ids.add(eg.getType());
 				}
-				empty = ids.isEmpty();
+				//if(!(empty = ids.isEmpty()))
 				//criteria.add(Restrictions.in("obj.id", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
@@ -1030,12 +1024,11 @@ public class ClixImporter {
 					ids.add(eP.getUser());
 				for(PersonComponentAssignment eP : this.personComponentAssignment)
 					ids.add(eP.getPerson());
-				empty = ids.isEmpty();
-				if(!empty)
+				if(!(empty = ids.isEmpty()))
 					criteria.add(Restrictions.in("obj.id", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				this.person = criteria.list();
 			else
 				this.person = new ArrayList<Person>();
@@ -1050,12 +1043,11 @@ public class ClixImporter {
 				Set<Long> ids = new HashSet<Long>();
 				for(Person eg : this.person)
 					ids.add(eg.getId());
-				empty = ids.isEmpty();
-				if(!empty)
+				if(!(empty = ids.isEmpty()))
 					criteria.add(Restrictions.in("obj.person", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				this.platformGroupSpecification = criteria.list();
 			else
 				this.platformGroupSpecification = new ArrayList<PlatformGroupSpecification>();
@@ -1068,12 +1060,11 @@ public class ClixImporter {
 				Set<Long> ids = new HashSet<Long>();
 				for(PlatformGroupSpecification eg : this.platformGroupSpecification)
 					ids.add(eg.getGroup());
-				empty = ids.isEmpty();
-				if(!empty)
+				if(!(empty = ids.isEmpty()))
 					criteria.add(Restrictions.in("obj.id", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				this.platformGroup = criteria.list();
 			else
 				this.platformGroup = new ArrayList<PlatformGroup>();
@@ -1108,14 +1099,13 @@ public class ClixImporter {
 				{
 					ids.add(tc.getId());
 				}
-				empty = ids.isEmpty();
-				if(!empty)
+				if(!(empty = ids.isEmpty()))
 				{
 					criteria.add(Restrictions.in("obj.content", ids));
 				}
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				this.tQtiTestItemD = criteria.list();
 			else
 				this.tQtiTestItemD = new ArrayList<TQtiTestItemD>();
@@ -1129,12 +1119,11 @@ public class ClixImporter {
 				Set<Long> ids = new HashSet<Long>();
 				for(TeamExerciseGroup eg : this.teamExerciseGroup)
 					ids.add(eg.getId());
-				empty = ids.isEmpty();
-				if(!empty)
+				if(!(empty = ids.isEmpty()))
 					criteria.add(Restrictions.in("obj.component", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!hasCR || !empty)
+			if(!(hasCR && empty))
 				this.tGroupFullSpecification = criteria.list();
 			else
 				this.tGroupFullSpecification = new ArrayList<TGroupFullSpecification>();
@@ -1258,13 +1247,12 @@ public class ClixImporter {
 					Set<Long> ids = new HashSet<Long>();
 					for(ExerciseGroup eg : this.exerciseGroup)
 						ids.add(eg.getId());
-					empty = ids.isEmpty();
-					if(!empty)
+					if(!(empty = ids.isEmpty()))
 						criteria.add(Restrictions.in("obj.community", ids));
 				}
 				criteria.add(Restrictions.between("obj.uploadDate", startStr, endStr));
 				criteria.addOrder(Property.forName("obj.id").asc());
-				if(!hasCR || !empty)
+				if(!(hasCR && empty))
 					this.exercisePersonalised = criteria.list();
 				else
 					this.exercisePersonalised = new ArrayList<ExercisePersonalised>();
@@ -1279,13 +1267,12 @@ public class ClixImporter {
 					tmpComp.addAll(courses);
 					for(ExercisePersonalised eP : this.exercisePersonalised)
 						tmpComp.add(eP.getExercise());
-					empty = tmpComp.isEmpty();
-					if(!empty)
+					if(!(empty = tmpComp.isEmpty()))
 						criteria.add(Restrictions.in("obj.id", tmpComp));
 				}
 				criteria.addOrder(Property.forName("obj.id").asc());
 				final List<EComponent> tmp;
-				if(!hasCR || !empty)
+				if(!(hasCR && empty))
 					tmp = criteria.list();
 				else
 					tmp = new ArrayList<EComponent>();	
@@ -1306,7 +1293,7 @@ public class ClixImporter {
 					{
 						ids.add(eg.getType());
 					}
-					empty = ids.isEmpty();
+					//if(!(empty = ids.isEmpty()))
 					//criteria.add(Restrictions.in("obj.id", ids));
 				}
 				criteria.addOrder(Property.forName("obj.id").asc());
@@ -1336,12 +1323,11 @@ public class ClixImporter {
 						allKeys.addAll(newKeys);
 					}
 					criteria = session.createCriteria(TQtiContentStructure.class, "obj");
-					empty = allKeys.isEmpty();
-					if(!empty)
+					if(!(empty = allKeys.isEmpty()))
 						criteria.add(Restrictions.in("obj.container", allKeys));
 				}
 				criteria.addOrder(Property.forName("obj.id").asc());
-				if(!hasCR || !empty)
+				if(!(hasCR && empty))
 					this.tQtiContentStructure = criteria.list();
 				else
 					this.tQtiContentStructure = new ArrayList<TQtiContentStructure>();
@@ -1354,12 +1340,11 @@ public class ClixImporter {
 					HashSet<Long> tmp1 = new HashSet<Long>();
 					for(TQtiContentStructure tqs : this.tQtiContentStructure)
 						tmp1.add(tqs.getContent());
-					empty = tmp1.isEmpty();
-					if(!empty)
+					if(!(empty = tmp1.isEmpty()))
 						criteria.add(Restrictions.in("obj.container", tmp1));
 				}
 				criteria.addOrder(Property.forName("obj.id").asc());
-				if(!hasCR || !empty)
+				if(!(hasCR && empty))
 					this.tQtiContentComposing = criteria.list();
 				else
 					this.tQtiContentComposing = new ArrayList<TQtiContentComposing>();
@@ -1376,12 +1361,11 @@ public class ClixImporter {
 						ids.add(eP.getUser());
 					for(PersonComponentAssignment eP : this.personComponentAssignment)
 						ids.add(eP.getPerson());
-					empty = ids.isEmpty();
-					if(!empty)
+					if(!(empty = ids.isEmpty()))
 						criteria.add(Restrictions.in("obj.id", ids));
 				}
 				criteria.addOrder(Property.forName("obj.id").asc());
-				if(!hasCR || !empty)
+				if(!(hasCR && empty))
 					this.person = criteria.list();
 				else
 					this.person = new ArrayList<Person>();
@@ -1394,8 +1378,7 @@ public class ClixImporter {
 					Set<Long> ids = new HashSet<Long>();
 					for(Person eg : this.person)
 						ids.add(eg.getId());
-					empty = ids.isEmpty();
-					if(!empty)
+					if(!(empty = ids.isEmpty()))
 						criteria.add(Restrictions.in("obj.person", ids));
 				}
 				criteria.addOrder(Property.forName("obj.id").asc());
@@ -1412,12 +1395,11 @@ public class ClixImporter {
 					Set<Long> ids = new HashSet<Long>();
 					for(PlatformGroupSpecification eg : this.platformGroupSpecification)
 						ids.add(eg.getGroup());
-					empty = ids.isEmpty();
-					if(!empty)
+					if(!(empty = ids.isEmpty()))
 						criteria.add(Restrictions.in("obj.id", ids));
 				}
 				criteria.addOrder(Property.forName("obj.id").asc());
-				if(!hasCR || !empty)
+				if(!(hasCR && empty))
 					this.platformGroup = criteria.list();
 				else
 					this.platformGroup = new ArrayList<PlatformGroup>();
@@ -1438,13 +1420,12 @@ public class ClixImporter {
 						ids.add(tqs.getContainer());
 						ids.add(tqs.getContent());
 					}
-					empty = ids.isEmpty();
-					if(!empty)
+					if(!(empty = ids.isEmpty()))
 						criteria.add(Restrictions.in("obj.id", ids));
 							
 				}
 				criteria.addOrder(Property.forName("obj.id").asc());
-				if(!hasCR || !empty)
+				if(!(hasCR && empty))
 					this.tQtiContent = criteria.list();
 				else
 					this.tQtiContent = new ArrayList<TQtiContent>();
@@ -1460,14 +1441,13 @@ public class ClixImporter {
 					{
 						ids.add(tc.getId());
 					}
-					empty = ids.isEmpty();
-					if(!empty)
+					if(!(empty = ids.isEmpty()))
 					{
 						criteria.add(Restrictions.in("obj.content", ids));
 					}
 				}
 				criteria.addOrder(Property.forName("obj.id").asc());
-				if(!hasCR || !empty)
+				if(!(hasCR && empty))
 					this.tQtiTestItemD = criteria.list();
 				else
 					this.tQtiTestItemD = new ArrayList<TQtiTestItemD>();
@@ -1491,12 +1471,11 @@ public class ClixImporter {
 					Set<Long> ids = new HashSet<Long>();
 					for(TeamExerciseGroup eg : this.teamExerciseGroup)
 						ids.add(eg.getId());
-					empty = ids.isEmpty();
-					if(!empty)
+					if(!(empty = ids.isEmpty()))
 						criteria.add(Restrictions.in("obj.component", ids));
 				}
 				criteria.addOrder(Property.forName("obj.id").asc());
-				if(!hasCR || !empty)
+				if(!(hasCR && empty))
 					this.tGroupFullSpecification = criteria.list();
 				else
 					this.tGroupFullSpecification = new ArrayList<TGroupFullSpecification>();
@@ -1554,13 +1533,12 @@ public class ClixImporter {
 			if(hasCR)
 			{
 				HashSet<Long> tmp1 = new HashSet<Long>(this.eComposingMap.keySet());
-				empty = tmp1.isEmpty();
-				if(!empty)
+				if(!(empty = tmp1.isEmpty()))
 					criteria.add(Restrictions.in("obj.chatroom", tmp1));
 			}
 			criteria.add(Restrictions.between("obj.lastUpdated", startStr, endStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
-			if(!empty)
+			if(!(hasCR && empty))
 				this.chatProtocol = criteria.list();
 			else
 				this.chatProtocol = new ArrayList<ChatProtocol>();
