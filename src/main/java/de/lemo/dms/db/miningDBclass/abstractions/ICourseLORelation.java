@@ -7,6 +7,8 @@
 
 package de.lemo.dms.db.miningDBclass.abstractions;
 
+import de.lemo.dms.db.miningDBclass.CourseMining;
+
 /**
  * Interface for all Course-LearningObject-Association-Classes
  * @author Sebastian Schwarzrock
@@ -15,9 +17,9 @@ public interface ICourseLORelation {
 	
 	long getId();
 	
-	Long getCourseId();
+	CourseMining getCourse();
 	
-	Long getLearningObjectId();
+	ILearningObject getLearningObject();
 	
 
 }

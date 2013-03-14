@@ -9,6 +9,7 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
+import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
@@ -159,12 +160,7 @@ public class CourseWikiMining implements IMappingClass, ICourseLORelation{
 	}
 
 	@Override
-	public Long getCourseId() {
-		return this.course.getId();
-	}
-
-	@Override
-	public Long getLearningObjectId() {
-		return this.wiki.getId();
+	public ILearningObject getLearningObject() {
+		return this.wiki;
 	}
 }

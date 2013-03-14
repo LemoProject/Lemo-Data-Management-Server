@@ -10,6 +10,7 @@ import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
+import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
@@ -173,13 +174,8 @@ public class CourseAssignmentMining implements ICourseLORelation, IMappingClass,
 	}
 
 	@Override
-	public Long getCourseId() {
-		return this.getCourse().getId();
-	}
-
-	@Override
-	public Long getLearningObjectId() {
-		return this.getAssignment().getId();
+	public ILearningObject getLearningObject() {
+		return this.getAssignment();
 	}
 
 

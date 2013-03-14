@@ -8,6 +8,7 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.Map;
 
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
+import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 
 /** 
  * This class represents the relationship between the courses and chat. 
@@ -105,14 +106,10 @@ public class CourseChatMining implements ICourseLORelation{
 		this.chat = chat;
 	}
 
-	@Override
-	public Long getCourseId() {
-		return this.course.getId();
-	}
 
 	@Override
-	public Long getLearningObjectId() {
-		return this.chat.getId();
+	public ILearningObject getLearningObject() {
+		return this.chat;
 	}
 	
 	
