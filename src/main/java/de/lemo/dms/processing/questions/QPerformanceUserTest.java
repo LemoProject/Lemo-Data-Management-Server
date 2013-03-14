@@ -136,7 +136,10 @@ public class QPerformanceUserTest {
 			
 			if (log.getFinalGrade() != null && singleResults.get(key) == null)
 			{
-				singleResults.put(key, log);
+				if(log.getFinalGrade() > singleResults.get(key).getFinalGrade())
+				{
+					singleResults.put(key, log);
+				}
 			}
 		}
 		
