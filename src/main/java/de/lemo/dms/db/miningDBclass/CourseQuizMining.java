@@ -7,12 +7,14 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
 /** This class represents the relationship between the courses and quiz. */
-public class CourseQuizMining implements IMappingClass, ICourseRatedObjectAssociation {
+public class CourseQuizMining implements IMappingClass, ICourseLORelation, ICourseRatedObjectAssociation {
 
 	// implements Serializable
 	private long id;
@@ -165,5 +167,15 @@ public class CourseQuizMining implements IMappingClass, ICourseRatedObjectAssoci
 	@Override
 	public Long getPrefix() {
 		return this.quiz.getPrefix();
+	}
+
+	@Override
+	public Long getCourseId() {
+		return this.course.getId();
+	}
+
+	@Override
+	public Long getLearningObjectId() {
+		return this.quiz.getId();
 	}
 }

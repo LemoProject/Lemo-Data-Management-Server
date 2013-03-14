@@ -7,6 +7,8 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
@@ -15,7 +17,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
  * This class represents the relationship between the courses and assignments. 
  * @author Sebastian Schwarzrock
  */
-public class CourseAssignmentMining implements IMappingClass, ICourseRatedObjectAssociation {
+public class CourseAssignmentMining implements ICourseLORelation, IMappingClass, ICourseRatedObjectAssociation {
 
 	private long id;
 	private CourseMining course;
@@ -169,4 +171,16 @@ public class CourseAssignmentMining implements IMappingClass, ICourseRatedObject
 	public Long getPrefix() {
 		return this.assignment.getPrefix();
 	}
+
+	@Override
+	public Long getCourseId() {
+		return this.getCourse().getId();
+	}
+
+	@Override
+	public Long getLearningObjectId() {
+		return this.getAssignment().getId();
+	}
+
+
 }

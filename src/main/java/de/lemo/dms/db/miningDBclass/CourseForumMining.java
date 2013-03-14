@@ -7,13 +7,15 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * This class represents the relationship between courses and forums.
  * @author Sebastian Schwarzrock
  */
-public class CourseForumMining implements IMappingClass {
+public class CourseForumMining implements IMappingClass, ICourseLORelation {
 
 	private long id;
 	private CourseMining course;
@@ -153,5 +155,15 @@ public class CourseForumMining implements IMappingClass {
 
 	public void setPlatform(final Long platform) {
 		this.platform = platform;
+	}
+
+	@Override
+	public Long getCourseId() {
+		return this.course.getId();
+	}
+
+	@Override
+	public Long getLearningObjectId() {
+		return this.forum.getId();
 	}
 }

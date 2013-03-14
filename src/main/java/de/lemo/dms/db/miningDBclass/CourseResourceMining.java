@@ -7,10 +7,12 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the relationship between courses and resources. */
-public class CourseResourceMining implements IMappingClass {
+public class CourseResourceMining implements IMappingClass, ICourseLORelation {
 
 	private long id;
 	private CourseMining course;
@@ -150,5 +152,15 @@ public class CourseResourceMining implements IMappingClass {
 
 	public void setPlatform(final Long platform) {
 		this.platform = platform;
+	}
+
+	@Override
+	public Long getCourseId() {
+		return this.course.getId();
+	}
+
+	@Override
+	public Long getLearningObjectId() {
+		return this.resource.getId();
 	}
 }

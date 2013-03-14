@@ -7,12 +7,14 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
 /** This class represents the relationship between the courses and scorm packages. */
-public class CourseScormMining implements IMappingClass, ICourseRatedObjectAssociation {
+public class CourseScormMining implements IMappingClass, ICourseLORelation, ICourseRatedObjectAssociation {
 
 	private long id;
 	private CourseMining course;
@@ -163,5 +165,15 @@ public class CourseScormMining implements IMappingClass, ICourseRatedObjectAssoc
 	@Override
 	public Long getPrefix() {
 		return this.scorm.getPrefix();
+	}
+
+	@Override
+	public Long getCourseId() {
+		return this.course.getId();
+	}
+
+	@Override
+	public Long getLearningObjectId() {
+		return this.scorm.getId();
 	}
 }
