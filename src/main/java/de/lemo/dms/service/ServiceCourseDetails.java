@@ -23,6 +23,7 @@ import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 import de.lemo.dms.service.responses.ResourceNotFoundException;
@@ -54,7 +55,15 @@ public class ServiceCourseDetails {
 		final ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
 				"Select count(DISTINCT user) from CourseUserMining where course=" + course.getId());
 		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		List<Long> cid = new ArrayList<Long>();
+		cid.add(id);
+		List<Long> users = StudentHelper.getCourseStudents(cid);
+		
 		criteria.add(Restrictions.eq("log.course.id", id));
+		if(users != null && users.size() > 0)
+		{
+			criteria.add(Restrictions.in("log.user.id", users));
+		}
 
 		@SuppressWarnings("unchecked")
 		ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
@@ -105,8 +114,14 @@ public class ServiceCourseDetails {
 			final ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
 					"Select count(DISTINCT user) from CourseUserMining where course=" + courseMining.getId());
 
+			List<Long> users = StudentHelper.getCourseStudents(ids);
+			
 			criteria = session.createCriteria(ILogMining.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
+			if(users != null && users.size() > 0)
+			{
+				criteria.add(Restrictions.in("log.user.id", users));
+			}
 
 			@SuppressWarnings("unchecked")
 			ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
