@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import de.lemo.dms.core.config.ServerConfiguration;
+import de.lemo.dms.processing.questions.QLearningObjectUsage;
 import de.lemo.dms.processing.questions.QPerformanceUserTestBoxPlot;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
@@ -67,12 +68,18 @@ public class Test {
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public void test()
 	{
-		ServiceUserInformation sui = new ServiceUserInformation();
+		QLearningObjectUsage qlou = new QLearningObjectUsage();
+		List<Long> courses = new ArrayList<Long>();
 		
-		logger.info(sui.getCourseCountForUser(11164L));
+		courses.add(11476L);
 		
+		
+		qlou.compute(courses, new ArrayList<Long>(), new ArrayList<String>(), 0L, 1500000000L);
+		
+	
 		ServiceCourseTitleSearch scts = new ServiceCourseTitleSearch();
 		scts.getCoursesByText("Inform", null, null);
 		

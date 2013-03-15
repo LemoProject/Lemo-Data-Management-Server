@@ -21,6 +21,12 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 	private long timeCreated;
 	private long timeModified;
 	private Long platform;
+	private static final Long PREFIX = 13L;
+	
+	public Long getPrefix()
+	{
+		return PREFIX;
+	}
 
 	private Set<QuizQuestionMining> quizQuestions = new HashSet<QuizQuestionMining>();
 	private Set<QuestionLogMining> questionLogs = new HashSet<QuestionLogMining>();

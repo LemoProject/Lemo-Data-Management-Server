@@ -20,10 +20,17 @@ public class WikiMining implements IMappingClass, ILearningObject {
 	private long timeCreated;
 	private long timeModified;
 	private Long platform;
+	private static final Long PREFIX = 18L;
 
 	private Set<CourseWikiMining> courseWikis = new HashSet<CourseWikiMining>();
 	private Set<WikiLogMining> wikiLogs = new HashSet<WikiLogMining>();
 
+	
+	public Long getPrefix()
+	{
+		return PREFIX;
+	}
+	
 	@Override
 	public boolean equals(final IMappingClass o)
 	{

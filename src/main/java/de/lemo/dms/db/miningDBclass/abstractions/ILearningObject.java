@@ -17,5 +17,7 @@ public interface ILearningObject {
 	long getId();
 
 	String getTitle();
+	
+	Long getPrefix();
 
 }

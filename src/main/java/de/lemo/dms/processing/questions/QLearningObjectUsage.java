@@ -7,6 +7,7 @@
 package de.lemo.dms.processing.questions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
@@ -51,6 +53,7 @@ public class QLearningObjectUsage extends Question {
 	 *            LongInteger time stamp
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListResourceRequestInfo compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
@@ -84,7 +87,8 @@ public class QLearningObjectUsage extends Question {
 		this.logger.info("Total matched entries: " + logs.size());
 
 		final HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
-
+		HashSet<String> requestedObjects = new HashSet<String>();
+		
 		for (final ILogMining ilo : logs)
 		{
 			// TODO use Class.getSimpleName() instead?
@@ -96,6 +100,7 @@ public class QLearningObjectUsage extends Question {
 
 			if ((types == null) || (types.size() == 0) || types.contains(obType.toUpperCase()))
 			{
+				requestedObjects.add(ilo.getPrefix() + " " + ilo.getLearnObjId());
 				final String id = ilo.getPrefix() + "_" + ilo.getLearnObjId() + "?" + obType + "$" + ilo.getTitle();
 				if (requests.get(id) == null)
 				{
@@ -107,6 +112,30 @@ public class QLearningObjectUsage extends Question {
 				}
 			}
 		}
+		
+		//Adding RRIs for unused Objects
+		criteria = session.createCriteria(ICourseLORelation.class, "aso");
+		criteria.add(Restrictions.in("aso.course.id", courseIds));
+		List<ICourseLORelation> asoList = criteria.list();
+		
+		for(ICourseLORelation aso : asoList)
+		{
+			String id = aso.getLearningObject().getPrefix() + " " + aso.getLearningObject().getId();
+			if(!requestedObjects.contains(id))
+			{
+				String type = aso.getLearningObject().getClass().getSimpleName().toUpperCase();
+				if(type.indexOf("MINING") > -1)
+				{
+					type = type.substring(0, type.indexOf("MINING"));				
+					final ResourceRequestInfo rri = new ResourceRequestInfo(0L,
+							ELearningObjectType.valueOf(type), 0L, 0L,
+							aso.getLearningObject().getTitle(), 0L);
+					result.add(rri);
+				}
+			}
+		}
+		
+		
 		final Long id = 0L;
 		for (final Entry<String, ArrayList<Long>> item : requests.entrySet())
 		{
@@ -118,7 +147,7 @@ public class QLearningObjectUsage extends Question {
 			result.add(rri);
 		}
 		this.logger.info("Total returned entries: " + result.getResourceRequestInfos().size());
-
+		
 		return result;
 	}
 }

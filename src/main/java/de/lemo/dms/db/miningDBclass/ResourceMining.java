@@ -37,6 +37,13 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	private Set<CourseResourceMining> courseResources = new HashSet<CourseResourceMining>();
 	/** The resource_log. */
 	private Set<ResourceLogMining> resourceLogs = new HashSet<ResourceLogMining>();
+	
+	private static final Long PREFIX = 16L;
+	
+	public Long getPrefix()
+	{
+		return PREFIX;
+	}
 
 	@Override
 	public boolean equals(final IMappingClass o)
