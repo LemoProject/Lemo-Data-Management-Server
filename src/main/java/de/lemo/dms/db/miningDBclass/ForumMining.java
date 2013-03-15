@@ -23,10 +23,16 @@ public class ForumMining implements IMappingClass, ILearningObject {
 	private long timeCreated;
 	private long timeModified;
 	private Long platform;
+	private static final Long PREFIX = 15L;
 
 	private Set<CourseForumMining> courseForums = new HashSet<CourseForumMining>();
 	private Set<ForumLogMining> forumLogs = new HashSet<ForumLogMining>();
 
+	public Long getPrefix()
+	{
+		return PREFIX;
+	}
+	
 	@Override
 	public boolean equals(final IMappingClass o)
 	{

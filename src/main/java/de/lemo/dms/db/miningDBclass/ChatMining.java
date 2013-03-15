@@ -25,9 +25,15 @@ public class ChatMining implements IMappingClass, ILearningObject {
 	private long chatTime;
 	private CourseMining course;
 	private Long platform;
+	private static final Long PREFIX = 19L;
 	
 	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
 	private Set<CourseChatMining> courseChats = new HashSet<CourseChatMining>();
+	
+	public Long getPrefix()
+	{
+		return PREFIX;
+	}
 	
 	/**
 	 * standard setter for the attribute course_chat
