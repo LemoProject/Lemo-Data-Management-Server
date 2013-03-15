@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import de.lemo.dms.core.config.ServerConfiguration;
+import de.lemo.dms.processing.questions.QPerformanceUserTestBoxPlot;
+import de.lemo.dms.processing.resulttype.CourseObject;
+import de.lemo.dms.processing.resulttype.ResultListCourseObject;
+import de.lemo.dms.service.ServiceCourseDetails;
 
 
 /**
@@ -60,11 +64,30 @@ public class Test {
 		
 	}
 
+	
+	public static void test()
+	{
+		QPerformanceUserTestBoxPlot q = new QPerformanceUserTestBoxPlot();
+		List<Long> courses = new ArrayList<Long>();
+		
+		courses.add(11476L);
+		
+		ServiceCourseDetails scd = new ServiceCourseDetails();
+		CourseObject c = scd.getCourseDetails(11476L);
+
+		
+
+		ResultListCourseObject l = scd.getCoursesDetails(courses);
+		
+		
+	}
+	
+
 	public void run()
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runClixConn();
+		this.test();
 		logger.info("Test finished");
 	}
 

@@ -72,10 +72,7 @@ public class QActivityResourceTypeResolution extends Question {
 						result.setQuestionRRI(rriList);
 						break;
 					case CHAT:
-						// TODO is chat missing or purposely excluded?
-						break;
-					case COURSE:
-						result.setCourseRRI(rriList);
+						result.setChatRRI(rriList);
 						break;
 					case FORUM:
 						result.setForumRRI(rriList);

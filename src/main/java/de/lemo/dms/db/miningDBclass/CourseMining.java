@@ -15,7 +15,7 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
  * This class represents the table course.
  * @author Sebastian Schwarzrock
  */
-public class CourseMining implements IMappingClass, ILearningObject {
+public class CourseMining implements IMappingClass {
 
 	private long id;
 	private long startDate;
@@ -546,7 +546,6 @@ public class CourseMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the title of this course
 	 */
-	@Override
 	public String getTitle() {
 		return this.title;
 	}

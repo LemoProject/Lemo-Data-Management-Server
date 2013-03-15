@@ -1162,7 +1162,7 @@ public class ContentGenerator {
 		Collections.sort(questionLogList);
 
 		final ArrayList<ILogMining> allLogs = new ArrayList<ILogMining>();
-		allLogs.addAll(courseLogList);
+		
 		LogDurationCalculator.createIds(courseLogList, 1);
 		allLogs.addAll(resourceLogList);
 		LogDurationCalculator.createIds(resourceLogList, 1);

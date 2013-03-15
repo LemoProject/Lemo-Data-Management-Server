@@ -28,6 +28,7 @@ public class ResultListRRITypes {
 	private List<ResourceRequestInfo> resources;
 	private List<ResourceRequestInfo> scorms;
 	private List<ResourceRequestInfo> wikis;
+	private List<ResourceRequestInfo> chats;
 
 	public void setAssignmentRRI(final List<ResourceRequestInfo> assignments) {
 		this.assignments = assignments;
@@ -43,6 +44,10 @@ public class ResultListRRITypes {
 
 	public void setQuestionRRI(final List<ResourceRequestInfo> questions) {
 		this.questions = questions;
+	}
+	
+	public void setChatRRI(final List<ResourceRequestInfo> chats) {
+		this.chats = chats;
 	}
 
 	public void setQuizRRI(final List<ResourceRequestInfo> quiz) {
@@ -119,6 +124,12 @@ public class ResultListRRITypes {
 	public List<ResourceRequestInfo> getWikiRRI()
 	{
 		return this.wikis;
+	}
+	
+	@XmlElement
+	public List<ResourceRequestInfo> getChatRRI()
+	{
+		return this.chats;
 	}
 
 }

@@ -7,6 +7,8 @@
 package de.lemo.dms.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -14,11 +16,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
-import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
+import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 
@@ -31,68 +37,90 @@ public class ServiceUserInformation {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
+	/**
+	 * Returns courseObjects for all courses of the specified user.
+	 * 
+	 * @param id	User identifier
+	 * @param count	Number of courses that shall be returned (for users with lots of courses)
+	 * @param offset	
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	@GET
 	@Path("/{uid}/courses")
 	public ResultListCourseObject getCoursesByUser(@PathParam("uid") final long id,
 			@QueryParam("course_count") final Long count,
 			@QueryParam("course_offset") final Long offset) {
 		this.logger.info("## " + id);
-		final ArrayList<CourseObject> courses = new ArrayList<CourseObject>();
+		List<CourseObject> courses = new ArrayList<CourseObject>();
 
 		// Set up db-connection
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
+		
+		Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+		criteria.add(Restrictions.eq("cu.user.id", id));
+		List<CourseUserMining> couUseMin = criteria.list();
 
-		@SuppressWarnings("unchecked")
-		final ArrayList<Long> cu = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.SQL,
-				"Select course_id from course_user where user_id=" + id);
-
-		String query = "";
-		for (int i = 0; i < cu.size(); i++) {
-			if (i == 0) {
-				query += "(" + cu.get(i);
-			} else {
-				query += "," + cu.get(i);
-			}
-			if (i == (cu.size() - 1)) {
-				query += ")";
-			}
+		final ArrayList<CourseMining> courseList = new ArrayList<CourseMining>();
+		for(CourseUserMining courseUser : couUseMin)
+		{
+			courseList.add(courseUser.getCourse());
 		}
 
-		if (cu.size() > 0) {
-			@SuppressWarnings("unchecked")
-			final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) dbHandler.performQuery(session,
-					EQueryType.HQL,
-					"from CourseMining where id in " + query);
-			for (int i = 0; i < ci.size(); i++) {
-				@SuppressWarnings("unchecked")
-				final ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
-						"Select count(DISTINCT user) from CourseUserMining where course=" + ci.get(i).getId());
-				@SuppressWarnings("unchecked")
-				final ArrayList<Long> latest = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
-						"Select max(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(i).getId());
-				@SuppressWarnings("unchecked")
-				final ArrayList<Long> first = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
-						"Select min(timestamp) FROM ResourceLogMining x WHERE x.course=" + ci.get(i).getId());
-				Long cpa = 0L;
-				if ((parti.size() > 0) && (parti.get(0) != null)) {
-					cpa = parti.get(0);
-				}
-				Long cla = 0L;
-				if ((latest.size() > 0) && (latest.get(0) != null)) {
-					cla = latest.get(0);
-				}
-				Long cfi = 0L;
-				if ((first.size() > 0) && (first.get(0) != null)) {
-					cfi = first.get(0);
-				}
-				final CourseObject co = new CourseObject(ci.get(i).getId(), ci.get(i).getShortname(), ci.get(i)
-						.getTitle(),
-						cpa, cla, cfi);
-				courses.add(co);
+		for (CourseMining course : courseList) 
+		{
+			List<Long> l1 = new ArrayList<Long>();
+			l1.add(id);
+			final List<Long> participants = StudentHelper.getCourseStudents(l1);
+			criteria = session.createCriteria(ILogMining.class, "log");
+			criteria.add(Restrictions.eq("log.course.id", course.getId()));
+			if(participants.size() > 0)
+			{
+				criteria.add(Restrictions.in("log.user.id", participants));
 			}
+			List<ILogMining> logs = criteria.list();
+			Collections.sort(logs);
+			Long lastTime = 0L;
+			Long firstTime = 0L;
+			
+			if(logs.size() > 0)
+			{
+				lastTime = logs.get(logs.size()-1).getTimestamp();
+				firstTime = logs.get(0).getTimestamp();
+			}
+
+			final CourseObject courseObject = new CourseObject(course.getId(), course.getShortname(), course
+					.getTitle(),
+					participants.size(), lastTime, firstTime);
+			courses.add(courseObject);
 		}
 		dbHandler.closeSession(session);
+		
+		if(count != null && count > 0)
+		{
+			if(offset != null && offset > 0 )
+			{
+				if(courses.size() - offset >= count)
+				{
+					courses = courses.subList(offset.intValue(), offset.intValue() + count.intValue());
+				}
+				else
+				{
+					courses = courses.subList(offset.intValue(), courses.size()-1);
+				}
+			}
+			else
+			{
+				if(courses.size() > count)
+				{
+					courses = courses.subList(0, count.intValue());
+				}
+			}
+			
+		}
+		
 		return new ResultListCourseObject(courses);
 	}
 

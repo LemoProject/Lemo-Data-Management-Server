@@ -7,14 +7,13 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
-import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * This class represents the log table for the course object.
  * @author Sebastian Schwarzrock
  */
-public class CourseLogMining implements ILogMining, IMappingClass {
+public class CourseLogMining implements IMappingClass, Comparable<CourseLogMining> {
 
 	private long id;
 	private CourseMining course;
@@ -25,8 +24,8 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 	private Long platform;
 
 	@Override
-	public int compareTo(final ILogMining arg0) {
-		ILogMining s;
+	public int compareTo(final CourseLogMining arg0) {
+		CourseLogMining s;
 		try {
 			s = arg0;
 		} catch (final Exception e)
@@ -59,23 +58,23 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 		return (int) id;
 	}
 	
-	@Override
+
 	public Long getDuration() {
 		return this.duration;
 	}
 
-	@Override
+
 	public void setDuration(final Long duration) {
 		this.duration = duration;
 	}
 
-	@Override
+
 	public String getTitle()
 	{
 		return this.course == null ? null : this.course.getTitle();
 	}
 
-	@Override
+
 	public Long getLearnObjId()
 	{
 		return this.course == null ? null : this.course.getId();
@@ -97,7 +96,6 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 	 * @param id
 	 *            the identifier of the log entry
 	 */
-	@Override
 	public void setId(final long id) {
 		this.id = id;
 	}
@@ -107,7 +105,6 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the timestamp the action did occur
 	 */
-	@Override
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -127,7 +124,6 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the action which occur
 	 */
-	@Override
 	public String getAction() {
 		return this.action;
 	}
@@ -147,7 +143,6 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the course in which the action takes place
 	 */
-	@Override
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -193,7 +188,6 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the user who interact with the course
 	 */
-	@Override
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -233,7 +227,6 @@ public class CourseLogMining implements ILogMining, IMappingClass {
 		}
 	}
 
-	@Override
 	public Long getPrefix() {
 		return 12L;
 	}

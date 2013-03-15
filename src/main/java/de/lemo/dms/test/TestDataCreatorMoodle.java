@@ -315,6 +315,22 @@ public class TestDataCreatorMoodle {
 		}
 
 	}
+	
+	private void generateCourseLogs()
+	{
+		for (final CourseLogMining item : this.courseLogList)
+		{
+			final LogLMS lms = new LogLMS();
+			lms.setId(item.getId());
+			lms.setAction(item.getAction());
+			lms.setModule("course");
+			lms.setTime(item.getTimestamp());
+			lms.setCourse(item.getCourse().getId());
+			lms.setUserid(item.getUser().getId());
+
+			TestDataCreatorMoodle.logLms.add(lms);
+		}
+	}
 
 	private void generateLogLMS()
 	{
@@ -322,7 +338,7 @@ public class TestDataCreatorMoodle {
 		logs.addAll(this.resourceLogList);
 		logs.addAll(this.assignmentLogList);
 		logs.addAll(this.forumLogList);
-		logs.addAll(this.courseLogList);
+
 		logs.addAll(this.quizLogList);
 		logs.addAll(this.wikiLogList);
 		logs.addAll(this.scormLogList);
@@ -461,18 +477,6 @@ public class TestDataCreatorMoodle {
 			lms.setCourse(item.getCourse().getId());
 			lms.setUserid(item.getUser().getId());
 			lms.setCmid(item.getWiki().getId());
-
-			TestDataCreatorMoodle.logLms.add(lms);
-		}
-		for (final CourseLogMining item : this.courseLogList)
-		{
-			final LogLMS lms = new LogLMS();
-			lms.setId(item.getId());
-			lms.setAction(item.getAction());
-			lms.setModule("course");
-			lms.setTime(item.getTimestamp());
-			lms.setCourse(item.getCourse().getId());
-			lms.setUserid(item.getUser().getId());
 
 			TestDataCreatorMoodle.logLms.add(lms);
 		}
@@ -947,6 +951,7 @@ public class TestDataCreatorMoodle {
 		this.generateQuestionStatesLMS();
 
 		this.generateLogLMS();
+		this.generateCourseLogs();
 		this.generateContextLMS();
 		this.generateChatLogLMS();
 
