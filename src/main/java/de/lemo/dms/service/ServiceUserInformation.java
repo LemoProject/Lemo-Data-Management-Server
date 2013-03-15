@@ -125,21 +125,17 @@ public class ServiceUserInformation {
 	}
 	
 	/**
-	 * Returns courseObjects for all courses of the specified user.
+	 * Returns the number of courses for the specified user.
 	 * 
 	 * @param id	User identifier
-	 * @param count	Number of courses that shall be returned (for users with lots of courses)
-	 * @param offset	
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@GET
-	@Path("/{uid}/courses")
+	@Path("/{uid}/coursecount")
 	public Long getCourseCountForUser(@PathParam("uid") final Long id) {
 		
 		this.logger.info("## " + id);
-		List<CourseObject> courses = new ArrayList<CourseObject>();
 
 		// Set up db-connection
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
