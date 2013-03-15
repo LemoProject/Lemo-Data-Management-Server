@@ -136,6 +136,7 @@ public class QPerformanceUserTestBoxPlot {
 			if (log.getFinalGrade() != null && (singleResults.get(key) == null || log.getFinalGrade() > singleResults.get(key).getFinalGrade())) 
 			{
 				singleResults.put(key, log);
+
 			}
 		}		
 		Map<Long, ArrayList<Double>> fin = new HashMap<Long, ArrayList<Double>>();
