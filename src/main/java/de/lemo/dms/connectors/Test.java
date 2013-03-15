@@ -14,6 +14,8 @@ import de.lemo.dms.processing.questions.QPerformanceUserTestBoxPlot;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 import de.lemo.dms.service.ServiceCourseDetails;
+import de.lemo.dms.service.ServiceCourseTitleSearch;
+import de.lemo.dms.service.ServiceUserInformation;
 
 
 /**
@@ -65,20 +67,14 @@ public class Test {
 	}
 
 	
-	public static void test()
+	public void test()
 	{
-		QPerformanceUserTestBoxPlot q = new QPerformanceUserTestBoxPlot();
-		List<Long> courses = new ArrayList<Long>();
+		ServiceUserInformation sui = new ServiceUserInformation();
 		
-		courses.add(11476L);
+		logger.info(sui.getCourseCountForUser(11164L));
 		
-		ServiceCourseDetails scd = new ServiceCourseDetails();
-		CourseObject c = scd.getCourseDetails(11476L);
-
-		
-
-		ResultListCourseObject l = scd.getCoursesDetails(courses);
-		
+		ServiceCourseTitleSearch scts = new ServiceCourseTitleSearch();
+		scts.getCoursesByText("Inform", null, null);
 		
 	}
 	
@@ -98,6 +94,7 @@ public class Test {
 	 */
 	public static void main(final String[] args)
 	{
+
 		final Test t = new Test();
 		t.run();
 	}

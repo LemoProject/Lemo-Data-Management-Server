@@ -123,5 +123,29 @@ public class ServiceUserInformation {
 		
 		return new ResultListCourseObject(courses);
 	}
+	
+	/**
+	 * Returns courseObjects for all courses of the specified user.
+	 * 
+	 * @param id	User identifier
+	 * @param count	Number of courses that shall be returned (for users with lots of courses)
+	 * @param offset	
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@GET
+	@Path("/{uid}/courses")
+	public Long getCourseCountForUser(@PathParam("uid") final Long id) {
+		
+		this.logger.info("## " + id);
+		List<CourseObject> courses = new ArrayList<CourseObject>();
+
+		// Set up db-connection
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+		final Session session = dbHandler.getMiningSession();
+		
+		return ((Long) session.createQuery("Select count(*) from CourseUserMining where user="+id+" and role in (Select id from RoleMining where type in (0,1))").uniqueResult());
+	}
 
 }
