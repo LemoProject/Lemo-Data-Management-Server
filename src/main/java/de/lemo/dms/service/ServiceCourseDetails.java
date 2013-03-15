@@ -19,7 +19,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
-import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
@@ -29,7 +28,7 @@ import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 import de.lemo.dms.service.responses.ResourceNotFoundException;
 
 /**
- * Service to get details of a course
+ * Service to get details for a single course or a list of courses.
  * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe
@@ -39,6 +38,14 @@ import de.lemo.dms.service.responses.ResourceNotFoundException;
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceCourseDetails {
 
+	/**
+	 * Gets the details for a single course including id, title, description, 
+	 * number of participants, time of first student-request, time of latest student-request.
+	 * 
+	 * @param id	Identifier of the course.
+	 * 
+	 * @return	A CourseObject containing the information.
+	 */
 	@GET
 	@Path("{cid}")
 	public CourseObject getCourseDetails(@PathParam("cid") final Long id) {
@@ -51,16 +58,13 @@ public class ServiceCourseDetails {
 			throw new ResourceNotFoundException("Course " + id);
 		}
 
-		@SuppressWarnings("unchecked")
-		final ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
-				"Select count(DISTINCT user) from CourseUserMining where course=" + course.getId());
 		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
 		List<Long> cid = new ArrayList<Long>();
 		cid.add(id);
 		List<Long> users = StudentHelper.getCourseStudents(cid);
 		
 		criteria.add(Restrictions.eq("log.course.id", id));
-		if(users != null && users.size() > 0)
+		if(users.size() > 0)
 		{
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
@@ -69,27 +73,30 @@ public class ServiceCourseDetails {
 		ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
 		Collections.sort(logs);
 
-		Long cla = 0L;
-		Long cfin = 0L;
+		Long lastTime = 0L;
+		Long firstTime = 0L;
 
 		if (logs.size() > 0)
 		{
-			cla = logs.get(logs.size() - 1).getTimestamp();
-			cfin = logs.get(0).getTimestamp();
-		}
-
-		Long cpan = 0L;
-		if ((parti.size() > 0) && (parti.get(0) != null)) {
-			cpan = parti.get(0);
+			lastTime = logs.get(logs.size() - 1).getTimestamp();
+			firstTime = logs.get(0).getTimestamp();
 		}
 
 		CourseObject result =
-				new CourseObject(course.getId(), course.getShortname(), course.getTitle(), cpan, cla, cfin);
+				new CourseObject(course.getId(), course.getShortname(), course.getTitle(), users.size(), lastTime, firstTime);
 
 		dbHandler.closeSession(session);
 		return result;
 	}
 
+	/**
+	 * Gets the details for a a list of courses including id, title, description, 
+	 * number of participants, time of first student-request, time of latest student-request.
+	 * 
+	 * @param id	List of course identifiers.
+	 * 
+	 * @return	A List of CourseObjects containing the information.
+	 */
 	@GET
 	public ResultListCourseObject getCoursesDetails(@QueryParam("course_id") final List<Long> ids) {
 
@@ -110,15 +117,11 @@ public class ServiceCourseDetails {
 		final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) criteria.list();
 
 		for (CourseMining courseMining : ci) {
-			@SuppressWarnings("unchecked")
-			final ArrayList<Long> parti = (ArrayList<Long>) dbHandler.performQuery(session, EQueryType.HQL,
-					"Select count(DISTINCT user) from CourseUserMining where course=" + courseMining.getId());
-
 			List<Long> users = StudentHelper.getCourseStudents(ids);
 			
 			criteria = session.createCriteria(ILogMining.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
-			if(users != null && users.size() > 0)
+			if(users.size() > 0)
 			{
 				criteria.add(Restrictions.in("log.user.id", users));
 			}
@@ -127,20 +130,16 @@ public class ServiceCourseDetails {
 			ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
 			Collections.sort(logs);
 
-			Long clan = 0L;
-			Long cfin = 0L;
+			Long lastTime = 0L;
+			Long firstTime = 0L;
 
 			if (logs.size() > 0)
 			{
-				clan = logs.get(logs.size() - 1).getTimestamp();
-				cfin = logs.get(0).getTimestamp();
-			}
-			Long cpan = 0L;
-			if ((parti.size() > 0) && (parti.get(0) != null)) {
-				cpan = parti.get(0);
+				lastTime = logs.get(logs.size() - 1).getTimestamp();
+				firstTime = logs.get(0).getTimestamp();
 			}
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(),
-					courseMining.getTitle(), cpan, clan, cfin);
+					courseMining.getTitle(), users.size(), lastTime, firstTime);
 			courses.add(co);
 		}
 		return new ResultListCourseObject(courses);

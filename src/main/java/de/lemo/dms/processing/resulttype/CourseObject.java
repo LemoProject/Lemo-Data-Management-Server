@@ -21,7 +21,7 @@ public class CourseObject {
 	private Long id;
 	private String title;
 	private String description;
-	private Long participants;
+	private int participants;
 	private Long lastRequest;
 	private Long firstRequest;
 
@@ -29,7 +29,7 @@ public class CourseObject {
 	{
 	}
 
-	public CourseObject(final Long id, final String title, final String description, final Long participants,
+	public CourseObject(final Long id, final String title, final String description, final int participants,
 			final Long lastRequest, final Long firstRequest)
 	{
 		this.id = id;
@@ -52,7 +52,7 @@ public class CourseObject {
 		this.description = description;
 	}
 
-	public void setParticipants(final Long participants) {
+	public void setParticipants(final int participants) {
 		this.participants = participants;
 	}
 
@@ -80,7 +80,7 @@ public class CourseObject {
 	}
 
 	@XmlElement
-	public Long getParticipants() {
+	public int getParticipants() {
 		return this.participants;
 	}
 
