@@ -7,20 +7,13 @@
 package de.lemo.dms.processing.questions;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import de.lemo.dms.core.config.ServerConfiguration;
-import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.CourseLogMining;
-import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 /**
@@ -33,26 +26,27 @@ public class QCourseUsers extends Question {
 
 	@POST
 	public ResultListLongObject compute(
-			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
+			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
 		validateTimestamps(startTime, endTime);
-
+		/*
 		// Set up db-connection
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
-		final Criteria criteria = session.createCriteria(CourseLogMining.class, "log")
-				.add(Restrictions.in("log.course.id", courseIds))
+		final Criteria criteria = session.createCriteria(ILogMining.class, "log")
+				.add(Restrictions.in("log.course.id", courses))
 				.add(Restrictions.between("log.timestamp", startTime, endTime));
-		
+	*/	
 		/*
 		  final Criteria criteria = session.createCriteria(CourseUserMining.class, "cu")
 				.add(Restrictions.in("cu.course.id", courseIds));
 		  
 		 */
-
+		
+/*
 		@SuppressWarnings("unchecked")
 		final ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
 
@@ -63,7 +57,7 @@ public class QCourseUsers extends Question {
 			}
 			users.add(log.getUser().getId());
 		}
-		/*
+*/		/*
 		 for (final CourseUserMining cu : (List<CourseUserMining>)criteria.list()) {
 			if (cu.getUser() == null) {
 				continue;
@@ -73,7 +67,7 @@ public class QCourseUsers extends Question {
 		}
 		 */
 
-		return new ResultListLongObject(new ArrayList<Long>(users));
+		return new ResultListLongObject(new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).keySet()));
 	}
 
 }

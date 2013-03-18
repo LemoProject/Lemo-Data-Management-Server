@@ -108,6 +108,7 @@ public final class LogDurationCalculator {
 	 * @param offset
 	 *            Offset for the ids. If the offset is "0", the oldest log-object gets the id "0".
 	 */
+	@SuppressWarnings("unchecked")
 	public static void createIds(final List<?> values, final int offset)
 	{
 

@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -96,7 +97,15 @@ public class QPerformanceBoxPlot extends Question {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			users = StudentHelper.getCourseStudents(courses);
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+		}
+		else
+		{
+			Map<Long, Long> tmpUsers = StudentHelper.getCourseStudentsAliasKeys(courses);
+			for(Long id : users)
+			{
+				id = tmpUsers.get(id);
+			}
 		}
 
 		criteria = session.createCriteria(IRatedLogObject.class, "log");

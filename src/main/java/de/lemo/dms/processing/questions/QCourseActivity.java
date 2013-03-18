@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -21,7 +22,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -58,7 +58,6 @@ public class QCourseActivity extends Question {
 	@POST
 	public ResultListHashMapObject compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
-			@FormParam(MetaParam.ROLE_IDS) final List<Long> roles,
 			@FormParam(MetaParam.USER_IDS) List<Long> users,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
@@ -66,25 +65,32 @@ public class QCourseActivity extends Question {
 			@FormParam(MetaParam.TYPES) final List<String> resourceTypes) {
 
 		validateTimestamps(startTime, endTime, resolution);
-
-		final HashMap<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();
-		
+		final Map<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();
+		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
 		// Set up db-connection
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
 		if (users.isEmpty()) {
-			users = StudentHelper.getCourseStudents(courses);
+			users = new ArrayList<Long>(userMap.values());
 			if (users.isEmpty()) {
 				// TODO no users in course, maybe send some http error
+				this.logger.info("No users found for course. Returning empty resultset.");
 				return new ResultListHashMapObject();
+			}
+		}
+		else
+		{
+			for(Long id : users)
+			{
+				id = userMap.get(id);
 			}
 		}
 
 		// Calculate size of time intervalls
 		final double intervall = (endTime - startTime) / (resolution);
-
-		final HashMap<Long, HashMap<Integer, Set<Long>>> userPerResStep = new HashMap<Long, HashMap<Integer, Set<Long>>>();
+		final Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses);
+		final Map<Long, HashMap<Integer, Set<Long>>> userPerResStep = new HashMap<Long, HashMap<Integer, Set<Long>>>();
 
 		// Create and initialize array for results
 		for (int j = 0; j < courses.size(); j++)
@@ -109,31 +115,6 @@ public class QCourseActivity extends Question {
 		}
 		if (resourceTypes.isEmpty()) {
 			this.logger.info("Course Activity Request - CA Selection: NO Items selected ");
-		}
-
-		// role filtering
-		final List<Long> userList;
-		if (roles.isEmpty()) {
-			// don't filter roles
-			userList = users;
-		} else {
-			// filter by role
-			userList = new ArrayList<Long>();
-			Criteria userRoleCriteria = session.createCriteria(CourseUserMining.class, "cu")
-					.add(Restrictions.in("cu.course.id", courses))
-					.add(Restrictions.in("cu.role.id", roles))
-					.add(Restrictions.in("cu.user.id", users));
-			@SuppressWarnings("unchecked")
-			List<CourseUserMining> courseUsers = userRoleCriteria.list();
-			for (CourseUserMining courseUser : courseUsers) {
-				if (courseUser.getUser() != null) {
-					userList.add(courseUser.getUser().getId());
-				}
-			}
-			if (userList.isEmpty()) {
-				// no user with the given roles
-				return new ResultListHashMapObject();
-			}
 		}
 
 		final Criteria criteria = session.createCriteria(ILogMining.class, "log")
@@ -167,10 +148,10 @@ public class QCourseActivity extends Question {
 				if (userPerResStep.get(logs.get(i).getCourse().getId()).get(pos) == null)
 				{
 					final Set<Long> s = new HashSet<Long>();
-					s.add(logs.get(i).getUser().getId());
+					s.add(idToAlias.get(logs.get(i).getUser().getId()));
 					userPerResStep.get(logs.get(i).getCourse().getId()).put(pos, s);
 				} else {
-					userPerResStep.get(logs.get(i).getCourse().getId()).get(pos).add(logs.get(i).getUser().getId());
+					userPerResStep.get(logs.get(i).getCourse().getId()).get(pos).add(idToAlias.get(logs.get(i).getUser().getId()));
 				}
 			}
 		}
@@ -192,13 +173,14 @@ public class QCourseActivity extends Question {
 		if ((resultObject != null) && (resultObject.getElements() != null)) {
 			final Set<Long> keySet = resultObject.getElements().keySet();
 			final Iterator<Long> it = keySet.iterator();
-			while (it.hasNext()) {
+			while (it.hasNext()) 
+			{
 				final Long learnObjectTypeName = it.next();
 				this.logger.info("Result Course IDs: " + learnObjectTypeName);
 			}
 
 		} else {
-			this.logger.info("Empty resultset !!!");
+			this.logger.info("Returning empty resultset.");
 		}
 		return resultObject;
 	}

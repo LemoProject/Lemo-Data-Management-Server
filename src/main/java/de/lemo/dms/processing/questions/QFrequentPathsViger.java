@@ -239,7 +239,15 @@ public class QFrequentPathsViger extends Question {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			users = StudentHelper.getCourseStudents(courses);
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+		}
+		else
+		{
+			Map<Long, Long> tmpUsers = StudentHelper.getCourseStudentsAliasKeys(courses);
+			for(Long id : users)
+			{
+				id = tmpUsers.get(id);
+			}
 		}
 
 		criteria = session.createCriteria(ILogMining.class, "log");

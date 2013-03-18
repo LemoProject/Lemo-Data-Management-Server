@@ -7,10 +7,10 @@
 package de.lemo.dms.processing.questions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -41,9 +41,9 @@ public class QLearningObjectUsage extends Question {
 	 * Returns a list of resources and their respective statistics of usage.
 	 * 
 	 * @see ELearningObjectType
-	 * @param courseIds
+	 * @param courses
 	 *            List of course-identifiers
-	 * @param userIds
+	 * @param users
 	 *            List of user-identifiers
 	 * @param types
 	 *            List of learn object types (see ELearnObjType)
@@ -56,16 +56,25 @@ public class QLearningObjectUsage extends Question {
 	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListResourceRequestInfo compute(
-			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
-			@FormParam(MetaParam.USER_IDS) List<Long> userIds,
+			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
+			@FormParam(MetaParam.USER_IDS) List<Long> users,
 			@FormParam(MetaParam.TYPES) final List<String> types,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
 		validateTimestamps(startTime, endTime);
-		if (userIds.isEmpty()) {
-			userIds = StudentHelper.getCourseStudents(courseIds);
+		if (users.isEmpty()) {
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
 		}
+		else
+		{
+			Map<Long, Long> tmpUsers = StudentHelper.getCourseStudentsAliasKeys(courses);
+			for(Long id : users)
+			{
+				id = tmpUsers.get(id);
+			}
+		}
+		
 
 		final ResultListResourceRequestInfo result = new ResultListResourceRequestInfo();
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -74,14 +83,13 @@ public class QLearningObjectUsage extends Question {
 		// Create criteria for log-file-search
 		Criteria criteria = session.createCriteria(ILogMining.class, "log")
 				.add(Restrictions.between("log.timestamp", startTime, endTime));
-		if (!courseIds.isEmpty()) {
-			criteria.add(Restrictions.in("log.course.id", courseIds));
+		if (!courses.isEmpty()) {
+			criteria.add(Restrictions.in("log.course.id", courses));
 		}
-		if (!userIds.isEmpty()) {
-			criteria.add(Restrictions.in("log.user.id", userIds));
+		if (!users.isEmpty()) {
+			criteria.add(Restrictions.in("log.user.id", users));
 		}
 
-		@SuppressWarnings("unchecked")
 		final List<ILogMining> logs = criteria.list();
 
 		this.logger.info("Total matched entries: " + logs.size());
@@ -115,7 +123,7 @@ public class QLearningObjectUsage extends Question {
 		
 		//Adding RRIs for unused Objects
 		criteria = session.createCriteria(ICourseLORelation.class, "aso");
-		criteria.add(Restrictions.in("aso.course.id", courseIds));
+		criteria.add(Restrictions.in("aso.course.id", courses));
 		List<ICourseLORelation> asoList = criteria.list();
 		
 		for(ICourseLORelation aso : asoList)

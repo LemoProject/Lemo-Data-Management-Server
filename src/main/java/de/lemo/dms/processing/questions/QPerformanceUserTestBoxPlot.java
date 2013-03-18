@@ -99,8 +99,17 @@ public class QPerformanceUserTestBoxPlot {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			users = StudentHelper.getCourseStudents(courses);
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
 		}
+		else
+		{
+			Map<Long, Long> tmpUsers = StudentHelper.getCourseStudentsAliasKeys(courses);
+			for(Long id : users)
+			{
+				id = tmpUsers.get(id);
+			}
+		}
+		
 		criteria = session.createCriteria(IRatedLogObject.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
@@ -183,10 +192,11 @@ public class QPerformanceUserTestBoxPlot {
 		c.add(-1d);
 		
 		int i = 0;
+		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses);
 		for (final Entry<Long, ArrayList<Double>> e : fin.entrySet())
 		{
 			e.getValue().removeAll(c);
-			final BoxPlot plotty = this.calcBox(e.getValue(), e.getKey());
+			final BoxPlot plotty = this.calcBox(e.getValue(), idToAlias.get(e.getKey()));
 			results[i] = plotty;
 			i++;
 		}

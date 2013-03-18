@@ -9,6 +9,7 @@ package de.lemo.dms.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -61,7 +62,7 @@ public class ServiceCourseDetails {
 		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
 		List<Long> cid = new ArrayList<Long>();
 		cid.add(id);
-		List<Long> users = StudentHelper.getCourseStudents(cid);
+		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(cid).values());
 		
 		criteria.add(Restrictions.eq("log.course.id", id));
 		if(users.size() > 0)
@@ -98,32 +99,33 @@ public class ServiceCourseDetails {
 	 * @return	A List of CourseObjects containing the information.
 	 */
 	@GET
-	public ResultListCourseObject getCoursesDetails(@QueryParam("course_id") final List<Long> ids) {
+	public ResultListCourseObject getCoursesDetails(@QueryParam("course_id") final List<Long> courses) {
 
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
-		final ArrayList<CourseObject> courses = new ArrayList<CourseObject>();
+		final ArrayList<CourseObject> results = new ArrayList<CourseObject>();
 
-		if (ids.isEmpty()) {
-			return new ResultListCourseObject(courses);
+		if (courses.isEmpty()) {
+			return new ResultListCourseObject(results);
 		}
 
 		// Set up db-connection
 		final Session session = dbHandler.getMiningSession();
 
 		Criteria criteria = session.createCriteria(CourseMining.class, "course");
-		criteria.add(Restrictions.in("course.id", ids));
+		criteria.add(Restrictions.in("course.id", courses));
 
 		@SuppressWarnings("unchecked")
 		final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) criteria.list();
 
+		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+		
 		for (CourseMining courseMining : ci) {
-			List<Long> users = StudentHelper.getCourseStudents(ids);
 			
 			criteria = session.createCriteria(ILogMining.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
-			if(users.size() > 0)
+			if(userMap.size() > 0)
 			{
-				criteria.add(Restrictions.in("log.user.id", users));
+				criteria.add(Restrictions.in("log.user.id", userMap.values()));
 			}
 
 			@SuppressWarnings("unchecked")
@@ -139,10 +141,10 @@ public class ServiceCourseDetails {
 				firstTime = logs.get(0).getTimestamp();
 			}
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(),
-					courseMining.getTitle(), users.size(), lastTime, firstTime);
-			courses.add(co);
+					courseMining.getTitle(), userMap.size(), lastTime, firstTime);
+			results.add(co);
 		}
-		return new ResultListCourseObject(courses);
+		return new ResultListCourseObject(results);
 	}
 
 }

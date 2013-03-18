@@ -11,12 +11,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.processing.questions.QLearningObjectUsage;
-import de.lemo.dms.processing.questions.QPerformanceUserTestBoxPlot;
-import de.lemo.dms.processing.resulttype.CourseObject;
-import de.lemo.dms.processing.resulttype.ResultListCourseObject;
-import de.lemo.dms.service.ServiceCourseDetails;
 import de.lemo.dms.service.ServiceCourseTitleSearch;
-import de.lemo.dms.service.ServiceUserInformation;
 
 
 /**
@@ -68,7 +63,6 @@ public class Test {
 	}
 
 	
-	@SuppressWarnings("unchecked")
 	public void test()
 	{
 		QLearningObjectUsage qlou = new QLearningObjectUsage();
