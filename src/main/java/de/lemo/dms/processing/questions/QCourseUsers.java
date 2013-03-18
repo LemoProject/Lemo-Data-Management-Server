@@ -43,7 +43,7 @@ public class QCourseUsers extends Question {
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
-		final Criteria criteria = session.createCriteria(CourseLogMining.class, "log")
+		final Criteria criteria = session.createCriteria(ILogMining.class, "log")
 				.add(Restrictions.in("log.course.id", courseIds))
 				.add(Restrictions.between("log.timestamp", startTime, endTime));
 		
