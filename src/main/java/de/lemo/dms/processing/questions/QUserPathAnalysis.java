@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -46,9 +47,9 @@ public class QUserPathAnalysis extends Question {
 	 * matching the requirements given by the parameters.
 	 * 
 	 * @see ELearningObjectType
-	 * @param courseIds
+	 * @param courses
 	 *            List of course-identifiers
-	 * @param userIds
+	 * @param users
 	 *            List of user-identifiers
 	 * @param types
 	 *            List of learn object types (see ELearnObjType)
@@ -63,8 +64,8 @@ public class QUserPathAnalysis extends Question {
 	 */
 	@POST
 	public ResultListUserPathGraph compute(
-			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
-			@FormParam(MetaParam.USER_IDS) List<Long> userIds,
+			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
+			@FormParam(MetaParam.USER_IDS) List<Long> users,
 			@FormParam(MetaParam.TYPES) final List<String> types,
 			@FormParam(MetaParam.LOGOUT_FLAG) final Boolean considerLogouts,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
@@ -77,9 +78,19 @@ public class QUserPathAnalysis extends Question {
 		final Session session = dbHandler.getMiningSession();
 
 		Criteria criteria;
-		if(userIds == null || userIds.size() == 0)
+		if(users == null || users.size() == 0)
 		{
-			userIds = StudentHelper.getCourseStudents(courseIds);
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+		}
+		else
+		{
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			List<Long> tmp = new ArrayList<Long>();
+			for(int i = 0; i < users.size(); i++)
+			{
+				tmp.add(userMap.get(users.get(i)));
+			}
+			users = tmp;
 		}
 		
 		// Create criteria for log-file-search
@@ -88,12 +99,12 @@ public class QUserPathAnalysis extends Question {
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		criteria.addOrder(Order.asc("log.timestamp"));
 
-		if (!courseIds.isEmpty()) {
-			criteria.add(Restrictions.in("log.course.id", courseIds));
+		if (!courses.isEmpty()) {
+			criteria.add(Restrictions.in("log.course.id", courses));
 		}
 
-		if (!userIds.isEmpty()) {
-			criteria.add(Restrictions.in("log.user.id", userIds));
+		if (!users.isEmpty()) {
+			criteria.add(Restrictions.in("log.user.id", users));
 		}
 
 		@SuppressWarnings("unchecked")

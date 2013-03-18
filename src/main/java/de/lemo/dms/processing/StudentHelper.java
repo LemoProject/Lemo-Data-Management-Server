@@ -5,10 +5,12 @@
  */
 package de.lemo.dms.processing;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.miningDBclass.CourseUserMining;
@@ -22,27 +24,58 @@ import de.lemo.dms.db.miningDBclass.CourseUserMining;
 public class StudentHelper {
 
 	/**
-	 * Returns the list of all ids of students registered within the specified courses.
+	 * Returns a map containing all ids of students registered within the courses as keys and replacement-aliases as values.
 	 * 
 	 * @param courses List of course identifiers
-	 * @return	List of identifiers of students within the specified courses
+	 * @return	Map<Long, Long> of identifiers (key-set) of students within the specified courses
 	 */
-	public static List<Long> getCourseStudents(List<Long> courses)
+	public static Map<Long, Long> getCourseStudentsAliasKeys(List<Long> courses)
 	{
 		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 
-		List<Long> users = new ArrayList<Long>();
-		Criteria criteria = session.createCriteria(CourseUserMining.class, "cu")
-				.add(Restrictions.in("cu.course.id", courses));
+		Map<Long, Long> users = new HashMap<Long, Long>();
+		Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+		criteria.add(Restrictions.in("cu.course.id", courses));
+		criteria.addOrder(Order.asc("cu.user.id"));
 		@SuppressWarnings("unchecked")
 		List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
+		Long i = 1L;
 		for (final CourseUserMining cu : courseUsers) {
-			// TODO clarify meaning of 'type 2'
+			// Only use students (type = 2) 
 			if (cu.getUser() != null && cu.getRole().getType() == 2)
-				users.add(cu.getUser().getId());
+			{
+				users.put(i, cu.getUser().getId());
+				i++;
+			}
 		}
-
 		return users;
 	}
+	
+	/**
+	 * Returns a map containing all ids of students registered within the courses as keys and replacement-aliases as values.
+	 * 
+	 * @param courses List of course identifiers
+	 * @return	Map<Long, Long> of identifiers (key-set) of students within the specified courses
+	 */
+	public static Map<Long, Long> getCourseStudentsRealKeys(List<Long> courses)
+	{
+		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 
+		Map<Long, Long> users = new HashMap<Long, Long>();
+		Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+		criteria.add(Restrictions.in("cu.course.id", courses));
+		criteria.addOrder(Order.asc("cu.user.id"));
+		@SuppressWarnings("unchecked")
+		List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
+		Long i = 1L;
+		for (final CourseUserMining cu : courseUsers) {
+			// Only use students (type = 2) 
+			if (cu.getUser() != null && cu.getRole().getType() == 2)
+			{
+				users.put(cu.getUser().getId(), i);
+				i++;
+			}
+		}
+		return users;
+	}
 }

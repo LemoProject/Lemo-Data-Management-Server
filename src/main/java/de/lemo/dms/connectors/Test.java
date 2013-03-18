@@ -10,13 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import de.lemo.dms.core.config.ServerConfiguration;
+import de.lemo.dms.processing.questions.QCourseActivity;
 import de.lemo.dms.processing.questions.QLearningObjectUsage;
-import de.lemo.dms.processing.questions.QPerformanceUserTestBoxPlot;
-import de.lemo.dms.processing.resulttype.CourseObject;
-import de.lemo.dms.processing.resulttype.ResultListCourseObject;
-import de.lemo.dms.service.ServiceCourseDetails;
 import de.lemo.dms.service.ServiceCourseTitleSearch;
-import de.lemo.dms.service.ServiceUserInformation;
 
 
 /**
@@ -68,16 +64,17 @@ public class Test {
 	}
 
 	
-	@SuppressWarnings("unchecked")
 	public void test()
 	{
-		QLearningObjectUsage qlou = new QLearningObjectUsage();
+		QCourseActivity qlou = new QCourseActivity();
 		List<Long> courses = new ArrayList<Long>();
-		
+		List<Long> users = new ArrayList<Long>();
+		users.add(2L);
 		courses.add(11476L);
 		
 		
-		qlou.compute(courses, new ArrayList<Long>(), new ArrayList<String>(), 0L, 1500000000L);
+		
+		qlou.compute(courses, users, 0L, 1500000000L, 100L, new ArrayList<String>());
 		
 	
 		ServiceCourseTitleSearch scts = new ServiceCourseTitleSearch();

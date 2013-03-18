@@ -68,12 +68,14 @@ public class ServiceUserInformation {
 		{
 			courseList.add(courseUser.getCourse());
 		}
+		
+		List<Long> l1 = new ArrayList<Long>();
+		l1.add(id);
+		
+		final List<Long> participants = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(l1).values());
 
 		for (CourseMining course : courseList) 
 		{
-			List<Long> l1 = new ArrayList<Long>();
-			l1.add(id);
-			final List<Long> participants = StudentHelper.getCourseStudents(l1);
 			criteria = session.createCriteria(ILogMining.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", course.getId()));
 			if(participants.size() > 0)

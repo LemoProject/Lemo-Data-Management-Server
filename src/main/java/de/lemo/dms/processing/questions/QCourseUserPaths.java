@@ -6,6 +6,7 @@
 
 package de.lemo.dms.processing.questions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,7 +30,6 @@ import com.google.common.collect.Sets;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
-import de.lemo.dms.db.miningDBclass.UserMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -48,7 +48,7 @@ public class QCourseUserPaths extends Question {
 	@SuppressWarnings("unchecked")
 	@POST
 	public JSONObject compute(
-			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
+			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) Long endTime
 			) throws JSONException {
@@ -62,53 +62,36 @@ public class QCourseUserPaths extends Question {
 		final Session session = dbHandler.getMiningSession();
 		
 		Criteria criteria;
-		List<Long> us = StudentHelper.getCourseStudents(courseIds);
+		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
 
 		criteria = session.createCriteria(ILogMining.class, "log")
-				.add(Restrictions.in("log.course.id", courseIds))
+				.add(Restrictions.in("log.course.id", courses))
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
 				.add(Restrictions.eq("log.action", "view"));
-		if (us.size() > 0) {
-				criteria.add(Restrictions.in("log.user.id", us));
+		if (!users.isEmpty()) {
+				criteria.add(Restrictions.in("log.user.id", users));
 		}
-
-
-		final List<ILogMining> logs = criteria.list();
-
-		final Set<Long/* user id */> users = Sets.newHashSet();
-		for (final ILogMining log : logs) {
-			final UserMining user = log.getUser();
-			if (user == null) {
-				continue;
-			}
-			users.add(user.getId());
-		}
-
-		this.logger.info("Found " + users.size() + " actions. " + +stopWatch.elapsedTime(TimeUnit.SECONDS));
-
-		if (users.isEmpty()) {
+		else
+		{
+			this.logger.info("No users found for courses. Returning empty JSONObject.");
 			return new JSONObject();
 		}
 
-		final Criteria exdendedCriteria = session.createCriteria(ILogMining.class, "log");
-		exdendedCriteria.add(Restrictions.in("log.user.id", users))
-				.add(Restrictions.between("log.timestamp", startTime, endTime))
-				.add(Restrictions.eq("log.action", "view"));
+		final List<ILogMining> logs = criteria.list();
 
-		final List<ILogMining> extendedLogs = exdendedCriteria.list();
+		this.logger.info("Found " + users.size() + " actions. " + +stopWatch.elapsedTime(TimeUnit.SECONDS));
 
 		long courseCount = 0;
 		final BiMap<CourseMining, Long> courseNodePositions = HashBiMap.create();
 		final Map<Long/* user id */, List<Long/* course id */>> userPaths = Maps.newHashMap();
 
-		this.logger.info("Paths fetched: " + extendedLogs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
+		this.logger.info("Paths fetched: " + logs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
+		
+		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses); 
 
-		for (final ILogMining log : extendedLogs) {
-			final UserMining user = log.getUser();
-			if ((user == null) || (log.getCourse() == null)) {
-				continue;
-			}
-
+		for (final ILogMining log : logs) 
+		{
+			
 			final CourseMining course = log.getCourse();
 			Long nodeID = courseNodePositions.get(course);
 			if (nodeID == null) {
@@ -116,7 +99,7 @@ public class QCourseUserPaths extends Question {
 				courseNodePositions.put(course, nodeID);
 			}
 
-			final long userId = log.getUser().getId();
+			final long userId = idToAlias.get(log.getUser().getId());
 
 			List<Long> nodeIDs = userPaths.get(userId);
 			if (nodeIDs == null) {
@@ -151,7 +134,7 @@ public class QCourseUserPaths extends Question {
 		}
 		stopWatch.stop();
 		this.logger.info("coursePaths: " + coursePaths.size());
-		this.logger.info("Total Fetched log entries: " + (logs.size() + extendedLogs.size()) + " log entries."
+		this.logger.info("Total Fetched log entries: " + (logs.size() + logs.size()) + " log entries."
 				+ stopWatch.elapsedTime(TimeUnit.SECONDS));
 
 		final Set<UserPathLink> links = Sets.newHashSet();
@@ -164,7 +147,7 @@ public class QCourseUserPaths extends Question {
 			final JSONObject node = new JSONObject();
 			node.put("name", courseNodePositions.inverse().get(courseEntry.getKey()).getTitle());
 			node.put("value", courseEntry.getValue().size());
-			node.put("group", courseIds.contains(courseNodePositions.inverse().get(courseEntry.getKey())) ? 1 : 2);
+			node.put("group", courses.contains(courseNodePositions.inverse().get(courseEntry.getKey())) ? 1 : 2);
 			nodes.put(node);
 
 			for (final UserPathLink edge : courseEntry.getValue()) {

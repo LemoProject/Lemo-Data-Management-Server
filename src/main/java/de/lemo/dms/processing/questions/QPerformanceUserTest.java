@@ -99,7 +99,17 @@ public class QPerformanceUserTest {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			users = StudentHelper.getCourseStudents(courses);
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+		}
+		else
+		{
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			List<Long> tmp = new ArrayList<Long>();
+			for(int i = 0; i < users.size(); i++)
+			{
+				tmp.add(userMap.get(users.get(i)));
+			}
+			users = tmp;
 		}
 		criteria = session.createCriteria(IRatedLogObject.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
@@ -206,10 +216,11 @@ public class QPerformanceUserTest {
 		}
 		
 		int i = quizzes.size();
+		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses);
 		for(Entry<Long, ArrayList<Long>> entry : fin.entrySet())
 		{
 			//Insert user-id into result list
-			results[i] = entry.getKey();
+			results[i] = idToAlias.get(entry.getKey());
 			//Insert all test results for user to result list
 			for(Long l : entry.getValue())
 			{

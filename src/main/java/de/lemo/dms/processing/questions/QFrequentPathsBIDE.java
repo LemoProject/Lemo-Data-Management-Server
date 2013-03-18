@@ -239,7 +239,17 @@ public class QFrequentPathsBIDE extends Question {
 
 			if(users == null || users.size() == 0)
 			{
-				users = StudentHelper.getCourseStudents(courses);
+				users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+			}
+			else
+			{
+				Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+				List<Long> tmp = new ArrayList<Long>();
+				for(int i = 0; i < users.size(); i++)
+				{
+					tmp.add(userMap.get(users.get(i)));
+				}
+				users = tmp;
 			}
 			
 			final Criteria criteria = session.createCriteria(ILogMining.class, "log");
@@ -380,7 +390,17 @@ public class QFrequentPathsBIDE extends Question {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			users = StudentHelper.getCourseStudents(courses);
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+		}
+		else
+		{
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			List<Long> tmp = new ArrayList<Long>();
+			for(int i = 0; i < users.size(); i++)
+			{
+				tmp.add(userMap.get(users.get(i)));
+			}
+			users = tmp;
 		}
 		
 		criteria = session.createCriteria(ILogMining.class, "log");

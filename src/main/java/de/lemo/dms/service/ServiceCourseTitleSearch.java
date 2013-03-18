@@ -9,6 +9,7 @@ package de.lemo.dms.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -70,15 +71,16 @@ public class ServiceCourseTitleSearch {
 		{
 			ids.add(course.getId());
 		}
+		
+		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(ids);
 
 		for (CourseMining courseMining : courses) {
-			List<Long> users = StudentHelper.getCourseStudents(ids);
 			
 			criteria = session.createCriteria(ILogMining.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
-			if(users.size() > 0)
+			if(userMap.size() > 0)
 			{
-				criteria.add(Restrictions.in("log.user.id", users));
+				criteria.add(Restrictions.in("log.user.id", userMap.values()));
 			}
 
 			@SuppressWarnings("unchecked")
@@ -94,7 +96,7 @@ public class ServiceCourseTitleSearch {
 				firstTime = logs.get(0).getTimestamp();
 			}
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(),
-					courseMining.getTitle(), users.size(), lastTime, firstTime);
+					courseMining.getTitle(), userMap.size(), lastTime, firstTime);
 			result.add(co);
 		}
 		

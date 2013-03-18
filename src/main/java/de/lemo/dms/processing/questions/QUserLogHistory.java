@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -44,9 +45,9 @@ public class QUserLogHistory extends Question {
 	/**
 	 * Returns all logged events matching the requirements given by the parameters.
 	 * 
-	 * @param courseIds
+	 * @param courses
 	 *            List of course-identifiers
-	 * @param userIds
+	 * @param users
 	 *            List of user-identifiers
 	 * @param startTime
 	 *            LongInteger time stamp
@@ -57,8 +58,8 @@ public class QUserLogHistory extends Question {
 	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListUserLogObject compute(
-			@FormParam(MetaParam.COURSE_IDS) final List<Long> courseIds,
-			@FormParam(MetaParam.USER_IDS) List<Long> userIds,
+			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
+			@FormParam(MetaParam.USER_IDS) List<Long> users,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
@@ -68,16 +69,26 @@ public class QUserLogHistory extends Question {
 		final Session session = dbHandler.getMiningSession();
 		
 		Criteria criteria;
-		if(userIds == null || userIds.size() == 0)
+		if(users == null || users.size() == 0)
 		{
-			userIds = StudentHelper.getCourseStudents(courseIds);
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+		}
+		else
+		{
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			List<Long> tmp = new ArrayList<Long>();
+			for(int i = 0; i < users.size(); i++)
+			{
+				tmp.add(userMap.get(users.get(i)));
+			}
+			users = tmp;
 		}
 		criteria = session.createCriteria(ILogMining.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
-		if(userIds != null && userIds.size() > 0)
-			criteria.add(Restrictions.in("log.user.id", userIds));
-		if ((courseIds != null) && (courseIds.size() > 0)) {
-			criteria.add(Restrictions.in("log.course.id", courseIds));
+		if(users != null && users.size() > 0)
+			criteria.add(Restrictions.in("log.user.id", users));
+		if ((courses != null) && (courses.size() > 0)) {
+			criteria.add(Restrictions.in("log.course.id", courses));
 		}
 
 		final List<ILogMining> logs = criteria.list();
