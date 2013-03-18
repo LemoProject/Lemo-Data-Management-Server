@@ -136,7 +136,7 @@ public class ServiceUserInformation {
 	 * @return
 	 */
 	@GET
-	@Path("/{uid}/courses")
+	@Path("/{uid}/coursecount")
 	public Long getCourseCountForUser(@PathParam("uid") final Long id) {
 		
 		this.logger.info("## " + id);

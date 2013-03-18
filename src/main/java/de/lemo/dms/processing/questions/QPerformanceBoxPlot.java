@@ -101,11 +101,13 @@ public class QPerformanceBoxPlot extends Question {
 		}
 		else
 		{
-			Map<Long, Long> tmpUsers = StudentHelper.getCourseStudentsAliasKeys(courses);
-			for(Long id : users)
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			List<Long> tmp = new ArrayList<Long>();
+			for(int i = 0; i < users.size(); i++)
 			{
-				id = tmpUsers.get(id);
+				tmp.add(userMap.get(users.get(i)));
 			}
+			users = tmp;
 		}
 
 		criteria = session.createCriteria(IRatedLogObject.class, "log");

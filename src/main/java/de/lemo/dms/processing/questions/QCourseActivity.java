@@ -81,10 +81,12 @@ public class QCourseActivity extends Question {
 		}
 		else
 		{
-			for(Long id : users)
+			List<Long> tmp = new ArrayList<Long>();
+			for(int i = 0; i < users.size(); i++)
 			{
-				id = userMap.get(id);
+				tmp.add(userMap.get(users.get(i)));
 			}
+			users = tmp;
 		}
 
 		// Calculate size of time intervalls
