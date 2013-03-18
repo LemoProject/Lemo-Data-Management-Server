@@ -25,9 +25,11 @@ public class BoxPlotGeneratorForDates {
 	
 	private static final int WEEK = 7;
 	private static final int HOUR = 24;
+	private static final int TIDE = 28;
 	private static final int THOU = 1000;
 	private final Map<Integer, HashMap<Date, Long>> weekmap;
 	private final Map<Integer, HashMap<Date, Long>> hourmap;
+	private final Map<Integer, HashMap<Date, Long>> tidemap;
 	private final Set<Date> dates;
 	private Date min = null, max = null;
 	private final int[] weekdays;
@@ -36,6 +38,7 @@ public class BoxPlotGeneratorForDates {
 		// initialisieren
 		this.weekmap = new HashMap<Integer, HashMap<Date, Long>>();
 		this.hourmap = new HashMap<Integer, HashMap<Date, Long>>();
+		this.tidemap = new HashMap<Integer, HashMap<Date, Long>>();
 		this.dates = new HashSet<Date>();
 		this.weekdays = new int[WEEK];
 
@@ -47,6 +50,10 @@ public class BoxPlotGeneratorForDates {
 		// stunden
 		for (int i = 0; i < HOUR; i++) {
 			this.hourmap.put(Integer.valueOf(i), new HashMap<Date, Long>());
+		}
+		// tides
+		for (int i = 0; i < TIDE; i++) {
+			this.tidemap.put(Integer.valueOf(i), new HashMap<Date, Long>());
 		}
 	}
 
@@ -69,7 +76,7 @@ public class BoxPlotGeneratorForDates {
 		keydate.setMinutes(0);
 		keydate.setSeconds(0);
 		// tag und stunde des zugriffs ermitteln
-		int day = 0, hour = 0;
+		int day = 0, hour = 0, tide = 0;
 		// stunde
 		hour = cal.get(Calendar.HOUR_OF_DAY);
 		// tag
@@ -98,6 +105,8 @@ public class BoxPlotGeneratorForDates {
 				day = 6;
 				break;
 		}
+		
+		tide = (4 * day + (hour / 6)) % TIDE;
 		// add week
 		if (this.weekmap.get(day).containsKey(keydate)) {
 			long val = this.weekmap.get(day).get(keydate);
@@ -116,20 +125,34 @@ public class BoxPlotGeneratorForDates {
 		else {
 			this.hourmap.get(hour).put(keydate, new Long(1));
 		}
+		// add tide
+		if (this.tidemap.get(tide).containsKey(keydate)) {
+			long val = this.tidemap.get(tide).get(keydate);
+			val += 1;
+			this.tidemap.get(tide).put(keydate, new Long(val));
+		}
+		else {
+			this.tidemap.get(tide).put(keydate, new Long(1));
+		}
 		this.addDate(keydate);
 	}
 
 	public BoxPlot[] calculateResult() {
 		BoxPlot[] week = new BoxPlot[WEEK];
 		BoxPlot[] hour = new BoxPlot[HOUR];
-		final BoxPlot[] result = new BoxPlot[WEEK + HOUR];
+		BoxPlot[] tide = new BoxPlot[TIDE];
+		final BoxPlot[] result = new BoxPlot[WEEK + HOUR + TIDE];
 		week = this.calculateResultForWeek();
 		hour = this.calculateResultForHour();
+		tide = this.calculateResultForTide();
 		for (int i = 0; i < WEEK; i++) {
 			result[i] = week[i];
 		}
 		for (int i = WEEK; i < 31; i++) {
 			result[i] = hour[i - WEEK];
+		}
+		for (int i = WEEK + HOUR; i < WEEK + HOUR + TIDE; i++) {
+			result[i] = tide[i - (WEEK + HOUR)];
 		}
 		return result;
 	}
@@ -218,6 +241,51 @@ public class BoxPlotGeneratorForDates {
 				hours[j + addCounter] = shours[j];
 			}
 			final BoxPlot bp = this.calcBox(hours);
+			bp.setName(Integer.toString(i));
+			resultList[i] = bp;
+		}
+		return resultList;
+	}
+	
+	/**
+	 * @return list with boxplots for the tides 0 - 28
+	 */
+	public BoxPlot[] calculateResultForTide() {
+		final BoxPlot[] resultList = new BoxPlot[TIDE];
+
+		for (int i = 0; i < TIDE; i++) {
+			Long[] tides = null;
+			final HashMap<Date, Long> currenttide = this.tidemap.get(i);
+			final Date[] dates = currenttide.keySet().toArray(new Date[currenttide.size()]);
+			final Long[] shours = currenttide.values().toArray(new Long[currenttide.size()]);
+			// berechnen wie viele tatsächlich tatsächlich eingetragen werden müssen
+			final long tideCount = currenttide.size();
+			if (tideCount <= 0) {
+				final BoxPlot bp = new BoxPlot();
+				bp.setName(Integer.toString(i));
+				resultList[i] = bp;
+				continue;
+			}
+			Arrays.sort(dates);
+			final Date firstDay = dates[0];
+			long diff = this.hourDiff(firstDay, this.max) + 1;
+			diff = diff - tideCount;
+			int addCounter = 0;
+			if (diff >= 1) {
+				tides = new Long[(int) (currenttide.size() + diff)];
+				for (int j = 0; j < diff; j++) {
+					tides[j] = 0L;
+					addCounter++;
+				}
+			}
+			else {
+				tides = new Long[currenttide.size()];
+			}
+			// vollständige liste mit allen daten und den leertagen
+			for (int j = 0; j < currenttide.size(); j++) {
+				tides[j + addCounter] = shours[j];
+			}
+			final BoxPlot bp = this.calcBox(tides);
 			bp.setName(Integer.toString(i));
 			resultList[i] = bp;
 		}
