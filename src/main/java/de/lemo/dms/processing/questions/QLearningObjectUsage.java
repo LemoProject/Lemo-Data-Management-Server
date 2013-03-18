@@ -146,7 +146,7 @@ public class QLearningObjectUsage extends Question {
 		}
 		
 		
-		final Long id = 0L;
+		Long id = 1L;
 		for (final Entry<String, ArrayList<Long>> item : requests.entrySet())
 		{
 			final String title = item.getKey().substring(item.getKey().indexOf("$") + 1);
@@ -154,6 +154,7 @@ public class QLearningObjectUsage extends Question {
 			final ResourceRequestInfo rri = new ResourceRequestInfo(id,
 					ELearningObjectType.valueOf(type.toUpperCase()), Long.valueOf(item.getValue().size()),
 					Long.valueOf(new HashSet<Long>(item.getValue()).size()), title, 0L);
+			id++;
 			result.add(rri);
 		}
 		this.logger.info("Total returned entries: " + result.getResourceRequestInfos().size());
