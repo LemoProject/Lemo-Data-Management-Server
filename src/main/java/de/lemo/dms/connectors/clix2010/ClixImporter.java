@@ -6,6 +6,7 @@
 
 package de.lemo.dms.connectors.clix2010;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -291,11 +292,11 @@ public class ClixImporter {
 		this.platformMining = new HashMap<Long, PlatformMining>();
 		// Do Import
 
-		this.initialize();
+		long startTime = this.initialize();
 
 		this.logger.info("\n" + c.getAndReset() + " (initializing)" + "\n");
 
-		this.loadData(dbConfig, courses);
+		this.loadData(dbConfig, courses, startTime);
 		this.logger.info("\n" + c.getAndReset() + " (loading data)" + "\n");
 		this.saveData();
 		this.logger.info("\n" + c.getAndReset() + " (saving data)" + "\n");
@@ -533,8 +534,10 @@ public class ClixImporter {
 	 *            the platform name
 	 */
 	@SuppressWarnings("unchecked")
-	private void initialize()
+	private Long initialize()
 	{
+		Long readingtimestamp;
+		
 		try {
 			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
@@ -543,6 +546,13 @@ public class ClixImporter {
 			session.clear();
 
 			ArrayList<?> l;
+			
+			readingtimestamp = (Long) session.createQuery("Select max(timestamp) from ILogMining where platform=" + this.connector.getPlatformId()).uniqueResult();
+			
+			if(readingtimestamp == null)
+			{
+				readingtimestamp = 0L;
+			}
 
 			Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log");
 			this.resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
@@ -718,17 +728,21 @@ public class ClixImporter {
 			}
 			this.logger.info("Read " + this.oldChatMining.size() + " old ChatMinings.");
 
+			
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
+			return null;
 		}
+		
+		return readingtimestamp;
 	}
 
 	/**
 	 * Loads all necessary tables from the Clix2010 database.
 	 */
 	@SuppressWarnings("unchecked")
-	private void loadData(final DBConfigObject dbConfig, List<Long> courses)
+	private void loadData(final DBConfigObject dbConfig, List<Long> courses, long startTime)
 	{
 		try {
 

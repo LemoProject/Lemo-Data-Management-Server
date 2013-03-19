@@ -128,25 +128,32 @@ public class QLearningObjectUsage extends Question {
 		criteria.add(Restrictions.in("aso.course.id", courses));
 		List<ICourseLORelation> asoList = criteria.list();
 		
+		
+		Long id = 1L;
+		
 		for(ICourseLORelation aso : asoList)
 		{
-			String id = aso.getLearningObject().getPrefix() + " " + aso.getLearningObject().getId();
-			if(!requestedObjects.contains(id))
+			String obId = aso.getLearningObject().getPrefix() + " " + aso.getLearningObject().getId();
+			if(!requestedObjects.contains(obId))
 			{
 				String type = aso.getLearningObject().getClass().getSimpleName().toUpperCase();
-				if(type.indexOf("MINING") > -1)
+				if(type.contains("MINING"))
 				{
-					type = type.substring(0, type.indexOf("MINING"));				
-					final ResourceRequestInfo rri = new ResourceRequestInfo(0L,
+					type = type.substring(0, type.indexOf("MINING"));
+				}
+				if(types.contains(type))
+				{			
+					final ResourceRequestInfo rri = new ResourceRequestInfo(id,
 							ELearningObjectType.valueOf(type), 0L, 0L,
 							aso.getLearningObject().getTitle(), 0L);
 					result.add(rri);
+					id++;
 				}
 			}
 		}
 		
 		
-		Long id = 1L;
+
 		for (final Entry<String, ArrayList<Long>> item : requests.entrySet())
 		{
 			final String title = item.getKey().substring(item.getKey().indexOf("$") + 1);
