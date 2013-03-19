@@ -71,6 +71,8 @@ public class Test {
 	{
 		QCumulativeUserAccess cua = new QCumulativeUserAccess();
 		QCourseActivity qlou = new QCourseActivity();
+		QLearningObjectUsage lou = new QLearningObjectUsage();
+		
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
 		users.add(2L);
@@ -79,9 +81,13 @@ public class Test {
 		ArrayList<String> types = new ArrayList<String>();
 		types.add("RESOURCE");
 		
+
+		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
 		CourseObject co = scd.getCourseDetails(11476L);
+		
+		lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest());
 		
 		cua.compute(courses, types, co.getFirstRequest(), co.getLastRequest());
 		
