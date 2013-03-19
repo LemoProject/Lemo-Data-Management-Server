@@ -23,6 +23,7 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
@@ -99,14 +100,16 @@ public class ServiceCourseDetails {
 	 * @return	A List of CourseObjects containing the information.
 	 */
 	@GET
-	public ResultListCourseObject getCoursesDetails(@QueryParam("course_id") final List<Long> courses) {
+	@Path("/multi")
+	public ResultListCourseObject getCoursesDetails(@QueryParam(MetaParam.COURSE_IDS) final List<Long> courses) {
 
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final ArrayList<CourseObject> results = new ArrayList<CourseObject>();
 
 		if (courses.isEmpty()) {
+			System.out.println("Courses List is empty");
 			return new ResultListCourseObject(results);
-		}
+		} else for(Long id : courses) System.out.println("Looking for Course: "+ id);
 
 		// Set up db-connection
 		final Session session = dbHandler.getMiningSession();
@@ -144,6 +147,11 @@ public class ServiceCourseDetails {
 					courseMining.getTitle(), userMap.size(), lastTime, firstTime);
 			results.add(co);
 		}
+		
+		if (results.isEmpty()) {
+			System.out.println("Result List is empty");
+		} else for(CourseObject co : results) System.out.println("Result Course: "+ co.getDescription());
+		
 		return new ResultListCourseObject(results);
 	}
 
