@@ -307,12 +307,20 @@ public abstract class ExtractAndMap {
 		final Session session = this.dbHandler.getMiningSession();
 
 		List<?> t;
+		
+		final long readingtimestamp;
 
-		this.configMiningTimestamp = (List<Timestamp>) this.dbHandler.performQuery(session, EQueryType.HQL,
-				"select max(lastModified) from ConfigMining x where x.platform=" + this.connector.getPlatformId()
-						+ " order by x.id asc");
-		if (this.configMiningTimestamp.get(0) == null) {
+		this.configMiningTimestamp = (List<Timestamp>) session.createQuery("Select max(timestamp) from ILogMining where platform=" + this.connector.getPlatformId()).uniqueResult();
+		
+		
+		if(this.configMiningTimestamp.get(0) != null)
+		{			
+			readingtimestamp = this.configMiningTimestamp.get(0).getTime();
+		}
+		else
+		{
 			this.configMiningTimestamp.set(0, new Timestamp(0));
+			readingtimestamp = 0;
 		}
 
 		Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log");
@@ -375,7 +383,7 @@ public abstract class ExtractAndMap {
 			this.wikiLogMax = 0L;
 		}
 
-		final long readingtimestamp = this.configMiningTimestamp.get(0).getTime();
+
 
 		// load objects which are already in Mining DB for associations
 
