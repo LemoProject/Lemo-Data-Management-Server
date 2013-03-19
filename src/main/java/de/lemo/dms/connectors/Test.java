@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import de.lemo.dms.core.config.ServerConfiguration;
+import de.lemo.dms.processing.questions.QActivityResourceType;
 import de.lemo.dms.processing.questions.QCourseActivity;
 import de.lemo.dms.processing.questions.QCumulativeUserAccess;
 import de.lemo.dms.processing.questions.QLearningObjectUsage;
@@ -72,6 +73,9 @@ public class Test {
 		QCumulativeUserAccess cua = new QCumulativeUserAccess();
 		QCourseActivity qlou = new QCourseActivity();
 		QLearningObjectUsage lou = new QLearningObjectUsage();
+		QActivityResourceType art = new QActivityResourceType();
+		
+		
 		
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
@@ -86,6 +90,8 @@ public class Test {
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
 		CourseObject co = scd.getCourseDetails(11476L);
+		
+		art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types);
 		
 		lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest());
 		

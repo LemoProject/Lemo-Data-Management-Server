@@ -8,7 +8,10 @@ package de.lemo.dms.processing.questions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -23,6 +26,7 @@ import de.lemo.dms.db.miningDBclass.QuizLogMining;
 import de.lemo.dms.db.miningDBclass.ResourceLogMining;
 import de.lemo.dms.db.miningDBclass.ScormLogMining;
 import de.lemo.dms.db.miningDBclass.WikiLogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -45,7 +49,7 @@ public class QActivityResourceType extends Question {
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
-			@FormParam(MetaParam.TYPES) final List<String> resourceTypes) {
+			@FormParam(MetaParam.TYPES) List<String> resourceTypes) {
 
 		validateTimestamps(startTime, endTime);
 
@@ -58,193 +62,52 @@ public class QActivityResourceType extends Question {
 			return new ResultListResourceRequestInfo();
 		}
 		
-		// Create and initialize array for results
-		if (resourceTypes.contains(ELearningObjectType.ASSIGNMENT.toString().toLowerCase()) || allTypes)
+		if(resourceTypes != null && !resourceTypes.isEmpty())
 		{
-			final Criteria criteria = session.createCriteria(AssignmentLogMining.class, "log");
-			criteria.add(Restrictions.in("log.course.id", courses))
-					.add(Restrictions.between("log.timestamp", startTime, endTime));
-			if(users.size() > 0)
+			List<String> tmp = new ArrayList<String>();
+			for(String s : resourceTypes)
+			{
+				tmp.add(s.toUpperCase());
+			}
+			resourceTypes = tmp;
+		}
+		
+		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		criteria.add(Restrictions.in("log.course.id", courses))
+				.add(Restrictions.between("log.timestamp", startTime, endTime));
 				criteria.add(Restrictions.in("log.user.id", users));
 
-			final List<AssignmentLogMining> ilm = criteria.list();
-			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
-			for (int i = 0; i < ilm.size(); i++) {
-				if (ilm.get(i).getAssignment() != null)
+		final List<ILogMining> logs = criteria.list();
+		
+		
+		final Map<Long, ResourceRequestInfo> rriMap = new HashMap<Long, ResourceRequestInfo>();
+		final Map<Long, Set<Long>> userMap = new HashMap<Long, Set<Long>>();
+		for(ILogMining log : logs)
+		{
+			String type = log.getClass().getSimpleName().toUpperCase();
+			if(type.contains("LOG"))
+			{
+				type = type.substring(0, type.indexOf("LOG"));
+			}
+			if (log.getLearnObjId() != null && log.getUser() != null && (resourceTypes.contains(type) || allTypes))
+			{
+				Long id = Long.valueOf(log.getPrefix() + "" + log.getLearnObjId());
+				if (rriMap.get(id) == null) {
+					Set<Long> userSet = new HashSet<Long>();
+					userSet.add(log.getUser().getId());
+					userMap.put(id, userSet);
+					rriMap.put(id, new ResourceRequestInfo(id, ELearningObjectType.valueOf(type), 1L, 1L, log.getTitle(), 0L));
+				} else
 				{
-					if (rri.get(ilm.get(i).getAssignment().getId()) == null) {
-						rri.put(ilm.get(i).getAssignment().getId(), new ResourceRequestInfo(ilm.get(i)
-								.getAssignment().getId(), ELearningObjectType.ASSIGNMENT, 1L, 1L, ilm.get(i)
-								.getAssignment().getTitle(), 0L));
-					} else
-					{
-
-						rri.get(ilm.get(i).getAssignment().getId()).incRequests();
-					}
+					userMap.get(id).add(log.getUser().getId());
+					rriMap.get(id).incRequests();
+					rriMap.get(id).setUsers(((Integer)userMap.get(id).size()).longValue());
 				}
 			}
-			if (rri.values() != null) {
-				result.addAll(rri.values());
-			}
 		}
-		if (resourceTypes.contains(ELearningObjectType.FORUM.toString().toLowerCase()) || allTypes)
-		{
-			final Criteria criteria = session.createCriteria(ForumLogMining.class, "log");
-			criteria.add(Restrictions.in("log.course.id", courses));
-			if(users.size() > 0)
-			{
-				criteria.add(Restrictions.in("log.user.id", users));
-			}
-			criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
-			final List<ForumLogMining> ilm = criteria.list();
-			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
-			for (int i = 0; i < ilm.size(); i++) {
-				if (ilm.get(i).getForum() != null) {
-					if (rri.get(ilm.get(i).getForum().getId()) == null) {
-						rri.put(ilm.get(i).getForum().getId(), new ResourceRequestInfo(ilm.get(i).getForum()
-								.getId(), ELearningObjectType.FORUM, 1L, 1L, ilm.get(i).getForum().getTitle(), 0L));
-					} else {
-						rri.get(ilm.get(i).getForum().getId()).incRequests();
-					}
-				}
-			}
-			if (rri.values() != null) {
-				result.addAll(rri.values());
-			}
+		if (rriMap.values() != null) {
+			result.addAll(rriMap.values());
 		}
-		if (resourceTypes.contains(ELearningObjectType.QUESTION.toString().toLowerCase()) || allTypes)
-		{
-			final Criteria criteria = session.createCriteria(QuestionLogMining.class, "log");
-			criteria.add(Restrictions.in("log.course.id", courses));
-			if(users.size() > 0)
-			{
-				criteria.add(Restrictions.in("log.user.id", users));
-			}
-			criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
-			
-			final List<QuestionLogMining> ilm = criteria.list();
-			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
-			for (int i = 0; i < ilm.size(); i++) {
-				if (ilm.get(i).getQuestion() != null) {
-					if (rri.get(ilm.get(i).getQuestion().getId()) == null) {
-						rri.put(ilm.get(i).getQuestion().getId(), new ResourceRequestInfo(ilm.get(i).getQuestion()
-								.getId(), ELearningObjectType.QUESTION, 1L, 1L,
-								ilm.get(i).getQuestion().getTitle(), 0L));
-					} else {
-						rri.get(ilm.get(i).getQuestion().getId()).incRequests();
-					}
-				}
-			}
-			if (rri.values() != null) {
-				result.addAll(rri.values());
-			}
-		}
-		if (resourceTypes.contains(ELearningObjectType.QUIZ.toString().toLowerCase()) || allTypes)
-		{
-			final Criteria criteria = session.createCriteria(QuizLogMining.class, "log");
-			criteria.add(Restrictions.in("log.course.id", courses));
-			if(users.size() > 0)
-			{
-				criteria.add(Restrictions.in("log.user.id", users));
-			}
-			criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
-			
-			final List<QuizLogMining> ilm = criteria.list();
-			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
-			for (int i = 0; i < ilm.size(); i++) {
-				if (ilm.get(i).getQuiz() != null) {
-					if (rri.get(ilm.get(i).getQuiz().getId()) == null) {
-						rri.put(ilm.get(i).getQuiz().getId(), new ResourceRequestInfo(ilm.get(i).getQuiz().getId(),
-								ELearningObjectType.QUIZ, 1L, 1L, ilm.get(i).getQuiz().getTitle(), 0L));
-					} else {
-						rri.get(ilm.get(i).getQuiz().getId()).incRequests();
-					}
-				}
-			}
-			if (rri.values() != null) {
-				result.addAll(rri.values());
-			}
-		}
-		if (resourceTypes.contains(ELearningObjectType.RESOURCE.toString().toLowerCase()) || allTypes)
-		{
-			final Criteria criteria = session.createCriteria(ResourceLogMining.class, "log");
-			criteria.add(Restrictions.in("log.course.id", courses));
-			if(users.size() > 0)
-			{
-				criteria.add(Restrictions.in("log.user.id", users));
-			}
-			criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
-			
-			final List<ResourceLogMining> ilm = criteria.list();
-			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
-			for (int i = 0; i < ilm.size(); i++) {
-				if (ilm.get(i).getResource() != null) {
-					if (rri.get(ilm.get(i).getResource().getId()) == null) {
-						rri.put(ilm.get(i).getResource().getId(), new ResourceRequestInfo(ilm.get(i).getResource()
-								.getId(), ELearningObjectType.RESOURCE, 1L, 1L,
-								ilm.get(i).getResource().getTitle(), 0L));
-					} else {
-						rri.get(ilm.get(i).getResource().getId()).incRequests();
-					}
-				}
-			}
-			if (rri.values() != null) {
-				result.addAll(rri.values());
-			}
-		}
-		if (resourceTypes.contains(ELearningObjectType.SCORM.toString().toLowerCase()) || allTypes)
-		{
-			final Criteria criteria = session.createCriteria(ScormLogMining.class, "log");
-			criteria.add(Restrictions.in("log.course.id", courses));
-			if(users.size() > 0)
-			{
-				criteria.add(Restrictions.in("log.user.id", users));
-			}
-			criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
-			
-			final List<ScormLogMining> ilm = criteria.list();
-			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
-			for (int i = 0; i < ilm.size(); i++) {
-				if (ilm.get(i).getScorm() != null) {
-					if (rri.get(ilm.get(i).getScorm().getId()) == null) {
-						rri.put(ilm.get(i).getScorm().getId(), new ResourceRequestInfo(ilm.get(i).getScorm()
-								.getId(), ELearningObjectType.SCORM, 1L, 1L, ilm.get(i).getScorm().getTitle(), 0L));
-					} else {
-						rri.get(ilm.get(i).getScorm().getId()).incRequests();
-					}
-				}
-			}
-			if (rri.values() != null) {
-				result.addAll(rri.values());
-			}
-		}
-		if (resourceTypes.contains(ELearningObjectType.WIKI.toString().toLowerCase()) || allTypes)
-		{
-			final Criteria criteria = session.createCriteria(WikiLogMining.class, "log");
-			criteria.add(Restrictions.in("log.course.id", courses));
-			if(users.size() > 0)
-			{
-				criteria.add(Restrictions.in("log.user.id", users));
-			}
-			criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
-			
-			final List<WikiLogMining> ilm = criteria.list();
-			final HashMap<Long, ResourceRequestInfo> rri = new HashMap<Long, ResourceRequestInfo>();
-			for (int i = 0; i < ilm.size(); i++) {
-				if (ilm.get(i).getWiki() != null) {
-					if (rri.get(ilm.get(i).getWiki().getId()) == null) {
-						rri.put(ilm.get(i).getWiki().getId(), new ResourceRequestInfo(ilm.get(i).getWiki().getId(),
-								ELearningObjectType.WIKI, 1L, 1L, ilm.get(i).getWiki().getTitle(), 0L));
-					} else {
-						rri.get(ilm.get(i).getWiki().getId()).incRequests();
-					}
-				}
-			}
-			if (rri.values() != null) {
-				result.addAll(rri.values());
-			}
-		}
-
 		return result;
 	}
 

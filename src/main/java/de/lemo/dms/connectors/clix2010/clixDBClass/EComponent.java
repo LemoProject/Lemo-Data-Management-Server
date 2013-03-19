@@ -23,6 +23,7 @@ public class EComponent implements IClixMappingClass {
 	private String lastUpdated;
 	private String startDate;
 	private String description;
+	private Long object;
 
 
 	public Long getId() {
@@ -79,6 +80,14 @@ public class EComponent implements IClixMappingClass {
 
 	public void setDescription(final String description) {
 		this.description = description;
+	}
+
+	public Long getObject() {
+		return object;
+	}
+
+	public void setObject(Long object) {
+		this.object = object;
 	}
 
 }

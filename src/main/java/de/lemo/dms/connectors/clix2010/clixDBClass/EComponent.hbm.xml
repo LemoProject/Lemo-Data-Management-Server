@@ -23,6 +23,8 @@
 		<property name="startDate" column="STARTDATE" type="string" />
 
 		<property name="description" column="DESCRIPTION" type="string" />
+		
+		<property name="object" column="OBJECT_ID" type="long" />
 
 	</class>
 
