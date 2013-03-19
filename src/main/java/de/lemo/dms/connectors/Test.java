@@ -39,6 +39,45 @@ public class Test {
 	public void runMoodle23Conn()
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE23);
+		List<Long> courses = new ArrayList<Long>();
+		courses.add(7L);
+		
+		connector.setCourseIdFilter(courses);
+		
+		connector.getData();
+		
+	}
+	
+	/**
+	 * Tests the Moodle(2.3)-connector. Configurations have to be altered accordingly.
+	 */
+	public void runMoodleConn()
+	{
+		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE19);
+		List<Long> courses = new ArrayList<Long>();
+		courses.add(476L);
+		courses.add(2200L);
+		courses.add(3905L);
+		
+		connector.setCourseIdFilter(courses);
+		
+		connector.getData();
+		
+	}
+	
+	/**
+	 * Tests the Moodle(2.3)-connector. Configurations have to be altered accordingly.
+	 */
+	public void runMoodleNumericConn()
+	{
+		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE_NUMERIC);
+		List<Long> courses = new ArrayList<Long>();
+		courses.add(1197L);
+		courses.add(1275L);
+		courses.add(1485L);
+		
+		connector.setCourseIdFilter(courses);
+		
 		connector.getData();
 		
 	}
@@ -51,16 +90,18 @@ public class Test {
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_CLIX);
 		List<Long> courses = new ArrayList<Long>();
 		
+		/*
 		courses.add(18508964L);
 		courses.add(21040950L);
 		courses.add(21040967L);
+		*/
 		
-		/*courses.add(4667155L);
+		courses.add(4667155L);
 		courses.add(8074949L);
 		courses.add(10921956L);
 		courses.add(13617310L);
 		courses.add(17945446L);
-		*/
+		
 		connector.setCourseIdFilter(courses);
 		
 		connector.getData();
@@ -110,7 +151,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.test();
+		this.runMoodleNumericConn();
 		logger.info("Test finished");
 	}
 

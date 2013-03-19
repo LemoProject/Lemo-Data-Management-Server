@@ -314,7 +314,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				else
 					courseClause += ")";
 			}
-			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from forum_posts as posts JOIN log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp and posts.modified<=:ceiling");
+			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from mdl_forum_posts as posts JOIN mdl_log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp and posts.modified<=:ceiling");
 			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
 			forumPosts.setParameter("ceiling", ceiling);
 			List<Object[]> tmpl = forumPosts.list();
@@ -1504,6 +1504,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					}
 				}
 				insert.setTimestamp(loadedItem.getTime());
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
 				if ((insert.getCourse() != null) && (insert.getForum() != null) && (insert.getUser() != null)) {
 					forumLogMining.put(insert.getId(), insert);
 				}
@@ -1627,6 +1632,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setPenalty(loadedItem.getPenalty());
 			insert.setAnswers(loadedItem.getAnswer());
 			insert.setTimestamp(loadedItem.getTimestamp());
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
+			
 			insert.setPlatform(this.connector.getPlatformId());
 
 			// Set Grades
@@ -1826,6 +1836,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				}
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
 				if ((insert.getQuiz() != null) && (insert.getUser() != null) 
 						&& (!loadedItem.getAction().equals("review")))
 				{
@@ -1941,6 +1956,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						this.oldUserMining);
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
 				insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
 						this.assignmentMining, this.oldAssignmentMining);
 				insert.setPlatform(this.connector.getPlatformId());
@@ -2049,6 +2069,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
 				if (loadedItem.getInfo().matches("[0-9]+")) {
 					insert.setScorm(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
 							this.scormMining, this.oldScormMining);
@@ -2426,6 +2451,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							this.resourceMining, this.oldResourceMining);
 				}
 				insert.setTimestamp(loadedItem.getTime());
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
 				if ((insert.getResource() == null) && !(loadedItem.getAction().equals("view all"))) {
 					this.logger.debug("In ResourceLogMining, resource not found for log: " + loadedItem.getId()
 							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
@@ -2545,6 +2575,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						this.courseMining, this.oldCourseMining);
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
 
 				if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getWiki() != null)) {
 					wikiLogMining.put(insert.getId(), insert);
@@ -2744,6 +2778,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					this.oldChatMining);
 			insert.setMessage(TextHelper.replaceString(loadedItem.getMessage()));
 			insert.setTimestamp(loadedItem.getTimestamp());
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
 			insert.setPlatform(this.connector.getPlatformId());
 			if (insert.getChat() != null) {
 				insert.setCourse(insert.getChat().getCourse().getId(), this.courseMining, this.oldCourseMining);

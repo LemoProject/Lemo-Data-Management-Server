@@ -17,6 +17,8 @@
 		<property name="databaseModel" column="database_model" type="string" />
 
 		<property name="platform" column="platform" type="long" />
+		
+		<property name="latestTimestamp" column="latest_timestamp" type="long" />
 
 	</class>
 

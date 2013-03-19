@@ -107,6 +107,8 @@ public class LogReader {
 	 */
 	private Long resIdCount;
 	
+	private Long startTime;
+	
 	/**
 	 * Database's largest timestamp used in ResourceLogMining
 	 */
@@ -127,6 +129,13 @@ public class LogReader {
 		this.connector = connector;
 		final long platformId = connector.getPlatformId();
 		try {
+			
+			this.startTime = (Long) session.createQuery("Select max(latestTimestamp) from ConfigMining where platform=" + this.connector.getPlatformId()).uniqueResult();
+			
+			if(this.startTime == null)
+			{
+				this.startTime = 0L;
+			}
 
 			this.newIdMapping = new HashMap<String, IDMappingMining>();
 
@@ -394,7 +403,7 @@ public class LogReader {
 					final LogLine logLine = new LogLine(line);
 
 					// The line is only processed, if it is readable and not older the the line before
-					if (logLine.isValid())
+					if (logLine.isValid() && this.startTime < logLine.getTimestamp())
 					{
 						final LogObject lo = new LogObject();
 						String name;
@@ -618,7 +627,7 @@ public class LogReader {
 	/**
 	 * Writes the data to the database.
 	 */
-	public void save(Session session)
+	public Long save(Session session)
 	{
 		final List<Collection<?>> l = new ArrayList<Collection<?>>();
 		final ArrayList<ResourceLogMining> resourceLogMining = new ArrayList<ResourceLogMining>();
@@ -692,6 +701,11 @@ public class LogReader {
 			courseUserMining.addAll(courseUserSingle.values());
 		}
 		Collections.sort(resourceLogMining);
+		Long maxLog = 0L;
+		if(resourceLogMining.size() > 0)
+		{
+			maxLog = resourceLogMining.get(resourceLogMining.size() -1 ).getTimestamp();
+		}
 		logger.info("Found " + newResources.values().size() + " resources.");
 		l.add(this.newResources.values());
 		logger.info("Found " + oldRoles.values().size() + " roles.");
@@ -707,6 +721,8 @@ public class LogReader {
 			session = this.dbHandler.getMiningSession();
 			this.dbHandler.saveCollectionToDB(session, l);
 		}
+		
+		return maxLog;
 	}
 
 }

@@ -19,13 +19,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
-import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
-import de.lemo.dms.db.miningDBclass.ForumLogMining;
-import de.lemo.dms.db.miningDBclass.QuestionLogMining;
-import de.lemo.dms.db.miningDBclass.QuizLogMining;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-import de.lemo.dms.db.miningDBclass.ScormLogMining;
-import de.lemo.dms.db.miningDBclass.WikiLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
@@ -59,10 +52,11 @@ public class QActivityResourceType extends Question {
 		
 		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
 		if(users.isEmpty()) {
+			logger.warn("Could not find associated users.");
 			return new ResultListResourceRequestInfo();
 		}
 		
-		if(resourceTypes != null && !resourceTypes.isEmpty())
+		if(resourceTypes != null && !allTypes)
 		{
 			List<String> tmp = new ArrayList<String>();
 			for(String s : resourceTypes)
@@ -77,8 +71,7 @@ public class QActivityResourceType extends Question {
 				.add(Restrictions.between("log.timestamp", startTime, endTime));
 				criteria.add(Restrictions.in("log.user.id", users));
 
-		final List<ILogMining> logs = criteria.list();
-		
+		final List<ILogMining> logs = criteria.list();		
 		
 		final Map<Long, ResourceRequestInfo> rriMap = new HashMap<Long, ResourceRequestInfo>();
 		final Map<Long, Set<Long>> userMap = new HashMap<Long, Set<Long>>();

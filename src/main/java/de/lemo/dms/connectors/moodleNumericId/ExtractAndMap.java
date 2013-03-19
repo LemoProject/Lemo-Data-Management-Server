@@ -201,6 +201,7 @@ public abstract class ExtractAndMap {
 	protected Long scormLogMax;
 	protected Long wikiLogMax;
 	protected Long courseChatMax;
+	protected Long maxLog = 0L;
 
 	private final IConnector connector;
 
@@ -291,6 +292,7 @@ public abstract class ExtractAndMap {
 		config.setElapsedTime((endtime) - (this.starttime));
 		config.setDatabaseModel("1.3");
 		config.setPlatform(this.connector.getPlatformId());
+		config.setLatestTimestamp(maxLog);
 		this.dbHandler.saveToDB(session, config);
 		this.logger.info("Elapsed time: " + (endtime - this.starttime) + "s");
 		this.dbHandler.closeSession(session);
@@ -324,19 +326,12 @@ public abstract class ExtractAndMap {
 
 		this.platformMining = new HashMap<Long, PlatformMining>();
 
-		final long readingtimestamp;
+		Long readingtimestamp;
+		readingtimestamp = (Long) session.createQuery("Select max(latestTimestamp) from ConfigMining where platform=" + this.connector.getPlatformId()).uniqueResult();
 		
-		this.configMiningTimestamp = (List<Timestamp>) session.createQuery("Select max(timestamp) from ILogMining where platform=" + this.connector.getPlatformId()).uniqueResult();
-		
-		
-		if(this.configMiningTimestamp.get(0) != null)
+		if(readingtimestamp == null)
 		{
-			readingtimestamp = this.configMiningTimestamp.get(0).getTime();
-		}
-		else
-		{
-			this.configMiningTimestamp.set(0, new Timestamp(0));
-			readingtimestamp = 0;
+			readingtimestamp = 0L;
 		}
 
 

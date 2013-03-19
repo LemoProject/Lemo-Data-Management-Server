@@ -207,6 +207,8 @@ public abstract class ExtractAndMap {
 
 	protected Long courseChatMax;
 	
+	protected Long maxLog = 0L;
+	
 	private Clock c;
 
 	/**
@@ -288,6 +290,7 @@ public abstract class ExtractAndMap {
 		config.setElapsedTime((endtime) - (this.starttime));
 		config.setDatabaseModel("1.3");
 		config.setPlatform(this.connector.getPlatformId());
+		config.setLatestTimestamp(maxLog);
 		this.dbHandler.saveToDB(session, config);
 		this.logger.info("Elapsed time: " + (endtime - this.starttime) + "s");
 		this.dbHandler.closeSession(session);
@@ -307,20 +310,13 @@ public abstract class ExtractAndMap {
 		final Session session = this.dbHandler.getMiningSession();
 
 		List<?> t;
-		
-		final long readingtimestamp;
 
-		this.configMiningTimestamp = (List<Timestamp>) session.createQuery("Select max(timestamp) from ILogMining where platform=" + this.connector.getPlatformId()).uniqueResult();
+		Long readingtimestamp;
+		readingtimestamp = (Long) session.createQuery("Select max(latestTimestamp) from ConfigMining where platform=" + this.connector.getPlatformId()).uniqueResult();
 		
-		
-		if(this.configMiningTimestamp.get(0) != null)
-		{			
-			readingtimestamp = this.configMiningTimestamp.get(0).getTime();
-		}
-		else
+		if(readingtimestamp == null)
 		{
-			this.configMiningTimestamp.set(0, new Timestamp(0));
-			readingtimestamp = 0;
+			readingtimestamp = 0L;
 		}
 
 		Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log");

@@ -93,6 +93,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 
 		if (this.processVSC || this.processLog)
 		{
+			Long maxLog = 0L;
 			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 			Session session = dbHandler.getMiningSession();
 
@@ -107,7 +108,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 			{
 				final LogReader logR = new LogReader(this, session, this.getCourseIdFilter());
 				logR.loadServerLogData(this.logPath, 0L, this.filter, session);
-				logR.save(session);
+				maxLog = logR.save(session);
 				logR.clearMaps();
 			}
 
@@ -116,6 +117,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 			config.setLastModifiedLong(System.currentTimeMillis());
 			config.setElapsedTime((endtime) - (starttime));
 			config.setDatabaseModel("1.3");
+			config.setLatestTimestamp(maxLog);
 			config.setPlatform(this.getPlatformId());
 
 			session = dbHandler.getMiningSession();
@@ -130,6 +132,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 
 		if (this.processVSC || this.processLog)
 		{
+			Long maxLog = 0L;
 			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 			final Session session = dbHandler.getMiningSession();
 
@@ -144,7 +147,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 			{
 				final LogReader logR = new LogReader(this, session, this.getCourseIdFilter());
 				logR.loadServerLogData(this.logPath, 0L, this.filter, session);
-				logR.save(session);
+				maxLog = logR.save(session);
 				logR.clearMaps();
 			}
 
@@ -154,6 +157,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 			config.setElapsedTime((endtime) - (starttime));
 			config.setDatabaseModel("1.3");
 			config.setPlatform(this.getPlatformId());
+			config.setLatestTimestamp(maxLog);
 
 			dbHandler.saveToDB(session, config);
 			dbHandler.closeSession(session);

@@ -65,6 +65,7 @@ public class ContentGenerator {
 	private static final int MAGIC_FIVE = 5;
 	private static final int MAGIC_EIGHT = 8;
 	private static final int MAGIC_TEN = 10;
+	private Long maxLog = 0L;
 
 	/**
 	 * Enum for resource types
@@ -645,6 +646,10 @@ public class ContentGenerator {
 									+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 							
 								rLog.setTimestamp(time);
+								if(rLog.getTimestamp() > maxLog)
+								{
+									maxLog = rLog.getTimestamp();
+								}
 	
 								rLog.setAction("view");
 								rLog.setPlatform(platform.getId());
@@ -662,6 +667,10 @@ public class ContentGenerator {
 										% userList.size()));
 								
 								rLog1.setTimestamp(time);
+								if(rLog1.getTimestamp() > maxLog)
+								{
+									maxLog = rLog1.getTimestamp();
+								}
 	
 								rLog1.setAction("view");
 								rLog1.setPlatform(platform.getId());
@@ -684,6 +693,10 @@ public class ContentGenerator {
 							mult = (int) (a.getTimeClose() - a.getTimeOpen()) / Integer.valueOf(cou.getShortname());
 							time = (int) a.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 							aLog.setTimestamp(time);
+							if(aLog.getTimestamp() > maxLog)
+							{
+								maxLog = aLog.getTimestamp();
+							}
 							aLog.setPlatform(platform.getId());
 	
 							for (int h = 0; h < courseUserList.size(); h++) {
@@ -713,6 +726,10 @@ public class ContentGenerator {
 								aLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 								final AssignmentMining a = aLog.getAssignment();
 								aLog.setTimestamp(time);
+								if(aLog.getTimestamp() > maxLog)
+								{
+									maxLog = aLog.getTimestamp();
+								}
 								aLog.setPlatform(platform.getId());
 		
 								for (int h = 0; h < courseUserList.size(); h++) {
@@ -746,6 +763,10 @@ public class ContentGenerator {
 							mult = (int) ((startdate + year) - chat.getChatTime()) / Integer.valueOf(cou.getShortname());
 							time = (int) chat.getChatTime() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 							cLog.setTimestamp(time);
+							if(cLog.getTimestamp() > maxLog)
+							{
+								maxLog = cLog.getTimestamp();
+							}
 							cLog.setMessage("Generated chat message for chat " + cou.getShortname() + " @ "
 									+ cLog.getTimestamp());
 							cLog.setPlatform(platform.getId());
@@ -762,6 +783,10 @@ public class ContentGenerator {
 								cLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 								cLog.setChat(chatList.get((chatList.size() - 1)));
 								cLog.setTimestamp(time);
+								if(cLog.getTimestamp() > maxLog)
+								{
+									maxLog = cLog.getTimestamp();
+								}
 								cLog.setMessage("Generated chat message for chat " + cou.getShortname() + " @ "
 										+ cLog.getTimestamp());
 								cLog.setPlatform(platform.getId());
@@ -787,6 +812,10 @@ public class ContentGenerator {
 								time = (int) cou.getEnrolStart()
 										+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 								couLog.setTimestamp(time);
+								if(couLog.getTimestamp() > maxLog)
+								{
+									maxLog = couLog.getTimestamp();
+								}
 							}
 							else
 							{
@@ -799,6 +828,10 @@ public class ContentGenerator {
 								time = (int) cou.getTimeCreated()
 										+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 								couLog.setTimestamp(time);
+								if(couLog.getTimestamp() > maxLog)
+								{
+									maxLog = couLog.getTimestamp();
+								}
 							}
 							couLog.setPlatform(platform.getId());
 	
@@ -812,6 +845,10 @@ public class ContentGenerator {
 								couLog.setCourse(cou);
 								
 								couLog.setTimestamp(time);
+								if(couLog.getTimestamp() > maxLog)
+								{
+									maxLog = couLog.getTimestamp();
+								}
 								if (log < MAGIC_TEN)
 								{
 									couLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + log) % userList.size()));
@@ -844,6 +881,10 @@ public class ContentGenerator {
 							time = (int) forum.getTimeCreated()
 									+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 							fLog.setTimestamp(time);
+							if(fLog.getTimestamp() > maxLog)
+							{
+								maxLog = fLog.getTimestamp();
+							}
 	
 							fLog.setAction(forumAction[randy.nextInt(forumAction.length)]);
 							fLog.setSubject("Subject No." + randy.nextInt(MAGIC_FIVE));
@@ -863,6 +904,10 @@ public class ContentGenerator {
 								fLog.setForum(forumList.get((forumList.size() - 1) - randy.nextInt(2)));
 								final ForumMining forum = fLog.getForum();
 								fLog.setTimestamp(time);
+								if(fLog.getTimestamp() > maxLog)
+								{
+									maxLog = fLog.getTimestamp();
+								}
 		
 								fLog.setAction(forumAction[randy.nextInt(forumAction.length)]);
 								fLog.setSubject("Subject No." + randy.nextInt(MAGIC_FIVE));
@@ -887,6 +932,10 @@ public class ContentGenerator {
 							time = (int) wiki.getTimeCreated()
 									+ (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 							wLog.setTimestamp(time);
+							if(wLog.getTimestamp() > maxLog)
+							{
+								maxLog = wLog.getTimestamp();
+							}
 	
 							wLog.setAction("view");
 							wLog.setPlatform(platform.getId());
@@ -903,6 +952,10 @@ public class ContentGenerator {
 								wLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 								wLog.setWiki(wikiList.get((wikiList.size() - 1) - randy.nextInt(2)));
 								wLog.setTimestamp(time);
+								if(wLog.getTimestamp() > maxLog)
+								{
+									maxLog = wLog.getTimestamp();
+								}
 								wLog.setAction("view");
 								wLog.setPlatform(platform.getId());
 		
@@ -923,6 +976,10 @@ public class ContentGenerator {
 							mult = (int) (scorm.getTimeClose() - scorm.getTimeOpen()) / Integer.valueOf(cou.getShortname());
 							time = (int) scorm.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 							sLog.setTimestamp(time);
+							if(sLog.getTimestamp() > maxLog)
+							{
+								maxLog = sLog.getTimestamp();
+							}
 	
 							for (int h = 0; h < courseUserList.size(); h++) {
 								if ((sLog.getUser() == (courseUserList.get(h).getUser()))
@@ -952,6 +1009,10 @@ public class ContentGenerator {
 								sLog.setScorm(scormList.get((scormList.size() - 1) - randy.nextInt(2)));
 								final ScormMining scorm = sLog.getScorm();
 								sLog.setTimestamp(time);
+								if(sLog.getTimestamp() > maxLog)
+								{
+									maxLog = sLog.getTimestamp();
+								}
 		
 								for (int h = 0; h < courseUserList.size(); h++) {
 									if ((sLog.getUser() == (courseUserList.get(h).getUser()))
@@ -987,6 +1048,10 @@ public class ContentGenerator {
 							mult = (int) (quiz.getTimeClose() - quiz.getTimeOpen()) / Integer.valueOf(cou.getShortname());
 							time = (int) quiz.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 							qLog.setTimestamp(time);
+							if(qLog.getTimestamp() > maxLog)
+							{
+								maxLog = qLog.getTimestamp();
+							}
 	
 							for (int h = 0; h < courseUserList.size(); h++) {
 								if ((qLog.getUser() == (courseUserList.get(h).getUser()))
@@ -1020,6 +1085,10 @@ public class ContentGenerator {
 							mult = (int) (quiz.getTimeClose() - quiz.getTimeOpen()) / Integer.valueOf(cou.getShortname());
 							time = (int) quiz.getTimeOpen() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
 							queLog.setTimestamp(time);
+							if(qLog.getTimestamp() > maxLog)
+							{
+								maxLog = qLog.getTimestamp();
+							}
 	
 							for (int h = 0; h < courseUserList.size(); h++) {
 								if ((qLog.getUser() == (courseUserList.get(h).getUser()))
@@ -1058,6 +1127,10 @@ public class ContentGenerator {
 								QuizMining quiz = qLog.getQuiz();
 		
 								qLog.setTimestamp(time);
+								if(qLog.getTimestamp() > maxLog)
+								{
+									maxLog = qLog.getTimestamp();
+								}
 		
 								for (int h = 0; h < courseUserList.size(); h++) {
 									if ((qLog.getUser() == (courseUserList.get(h).getUser()))
@@ -1089,6 +1162,10 @@ public class ContentGenerator {
 								quiz = queLog.getQuiz();
 		
 								queLog.setTimestamp(time);
+								if(queLog.getTimestamp() > maxLog)
+								{
+									maxLog = queLog.getTimestamp();
+								}
 		
 								for (int h = 0; h < courseUserList.size(); h++) {
 									if ((qLog.getUser() == (courseUserList.get(h).getUser()))
@@ -1197,9 +1274,10 @@ public class ContentGenerator {
 		final ConfigMining config = new ConfigMining();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime(1);
-		config.setDatabaseModel("1.2");
+		config.setDatabaseModel("1.3");
 		config.setPlatform(platform.getId());
 		config.setExtractCycle(1);
+		config.setLatestTimestamp(maxLog);
 
 		final ArrayList<ConfigMining> confList = new ArrayList<ConfigMining>();
 		confList.add(config);

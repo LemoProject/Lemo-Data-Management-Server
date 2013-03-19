@@ -11,7 +11,7 @@
   <dms name="Lemo DMS">
     <database>
       <!-- Maven replacement variables-->
-    <property name="hibernate.connection.url">jdbc:mysql://localhost/mining_beuth_19?rewriteBatchedStatements=true</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost/mining_bbw?rewriteBatchedStatements=true</property>
     <property name="hibernate.connection.username">datamining</property>
     <property name="hibernate.connection.password">LabDat1#</property>
       <!-- main config-->

@@ -20,6 +20,7 @@ public class ConfigMining implements IMappingClass {
 	private long elapsedTime;
 	private Long platform;
 	private String databaseModel;
+	private long latestTimestamp;
 
 	public Long getPlatform() {
 		return this.platform;
@@ -116,5 +117,13 @@ public class ConfigMining implements IMappingClass {
 	@Override
 	public int hashCode() {
 		return (int) lastModified.getTime();
+	}
+
+	public long getLatestTimestamp() {
+		return latestTimestamp;
+	}
+
+	public void setLatestTimestamp(long latestTimestamp) {
+		this.latestTimestamp = latestTimestamp;
 	}
 }

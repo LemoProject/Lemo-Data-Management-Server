@@ -202,6 +202,7 @@ public abstract class ExtractAndMap {
 	protected Long chatLogMax;
 	protected Long resourceLogMax;
 	protected Long courseChatMax;
+	protected Long maxLog = 0L;
 
 	/** Designates which entries should be read from the LMS Database during the process. */
 	private long starttime;
@@ -297,6 +298,7 @@ public abstract class ExtractAndMap {
 		config.setElapsedTime((endtime) - (this.starttime));
 		config.setPlatform(this.connector.getPlatformId());
 		config.setDatabaseModel("1.3");
+		config.setLatestTimestamp(maxLog);
 		this.dbHandler.saveToDB(session, config);
 		this.logger.info("Elapsed time: " + (endtime - this.starttime) + "s");
 		this.dbHandler.closeSession(session);
@@ -314,24 +316,19 @@ public abstract class ExtractAndMap {
 	public long getMiningInitial() {
 
 		final Session session = this.dbHandler.getMiningSession();
-		final long readingtimestamp;
+		
 
 		List<?> t;
 		final long platformId = this.connector.getPlatformId();
 
-		this.configMiningTimestamp = (List<Timestamp>) session.createQuery("Select max(timestamp) from ILogMining where platform=" + this.connector.getPlatformId()).uniqueResult();
+		Long readingtimestamp;
+		readingtimestamp = (Long) session.createQuery("Select max(latestTimestamp) from ConfigMining where platform=" + this.connector.getPlatformId()).uniqueResult();
 		
-		
-		if(this.configMiningTimestamp.get(0) != null)
+		if(readingtimestamp == null)
 		{
-			readingtimestamp = this.configMiningTimestamp.get(0).getTime();
+			readingtimestamp = 0L;
 		}
-		else
-		{
-			this.configMiningTimestamp.set(0, new Timestamp(0));
-			readingtimestamp = 0;
-		}
-		
+	
 		
 		final Query large = session.createQuery("select max(user.id) from UserMining user where user.platform="
 				+ platformId + "");
