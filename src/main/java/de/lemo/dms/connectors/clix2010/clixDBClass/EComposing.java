@@ -23,6 +23,7 @@ public class EComposing implements IClixMappingClass {
 	private String endDate;
 	private String startDate;
 	private Long composingType;
+	private String lastUpdated;
 
 	public Long getComposingType() {
 		return this.composingType;
@@ -79,5 +80,14 @@ public class EComposing implements IClixMappingClass {
 	public void setParent(final Long parent) {
 		this.parent = parent;
 	}
+
+	public String getLastUpdated() {
+		return lastUpdated;
+	}
+
+	public void setLastUpdated(String lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
+
 
 }

@@ -151,7 +151,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodleNumericConn();
+		this.runClixConn();
 		logger.info("Test finished");
 	}
 

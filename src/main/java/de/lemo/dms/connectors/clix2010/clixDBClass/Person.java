@@ -21,6 +21,7 @@ public class Person implements IClixMappingClass {
 	private String firstLoginTime;
 	private String login;
 	private Long gender;
+	private String lastUpdated;
 
 	public Person()
 	{
@@ -66,6 +67,16 @@ public class Person implements IClixMappingClass {
 
 	public void setGender(final Long gender) {
 		this.gender = gender;
+	}
+
+
+	public String getLastUpdated() {
+		return lastUpdated;
+	}
+
+
+	public void setLastUpdated(String lastUpdated) {
+		this.lastUpdated = lastUpdated;
 	}
 
 }

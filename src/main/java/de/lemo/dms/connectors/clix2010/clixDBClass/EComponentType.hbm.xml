@@ -25,6 +25,8 @@
 			type="long" />
 
 		<property name="uploadDir" column="UPLOADDIRECTORY" type="string" />
+		
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
 
 	</class>
 

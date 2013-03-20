@@ -19,6 +19,8 @@
 		<property name="gender" column="SALUTATION_ID" type="long" />
 
 		<property name="firstLoginTime" column="FIRSTLOGINTIME" type="string" />
+		
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
 
 	</class>
 

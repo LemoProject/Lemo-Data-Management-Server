@@ -6,7 +6,6 @@
 
 package de.lemo.dms.connectors.clix2010;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +18,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.connectors.Encoder;
@@ -300,9 +298,9 @@ public class ClixImporter {
 		this.logger.info("\n" + c.getAndReset() + " (initializing)" + "\n");
 
 		this.loadData(dbConfig, courses, startTime);
-		this.logger.info("\n" + c.getAndReset() + " (loading data)" + "\n");
+		this.logger.info(c.getAndReset() + " (loading data)" );
 		this.saveData();
-		this.logger.info("\n" + c.getAndReset() + " (saving data)" + "\n");
+		this.logger.info(c.getAndReset() + " (saving data)" );
 
 		// Create and save config-object
 		final Long endtime = System.currentTimeMillis() / MAGIC_THOU;
@@ -311,6 +309,9 @@ public class ClixImporter {
 		config.setElapsedTime((endtime) - (starttime));
 		config.setDatabaseModel("1.3");
 		config.setPlatform(this.connector.getPlatformId());
+		//To stop rounding errors
+		if(this.maxLog > 0)
+			this.maxLog++;
 		config.setLatestTimestamp(this.maxLog);
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -412,7 +413,7 @@ public class ClixImporter {
 				this.chatMining = this.generateChatMining();
 				updates.add(this.chatMining.values());
 
-				this.logger.info("\nAssociationObjects: \n");
+				this.logger.info(">>AssociationObjects<<");
 
 				this.courseUserMining = this.generateCourseUserMining();
 				updates.add(this.courseUserMining.values());
@@ -455,79 +456,29 @@ public class ClixImporter {
 
 			}
 
-			this.logger.info("\nLogObjects: \n");
+			this.logger.info(">>LogObjects<<");
 			
-			List<ILogMining> logTmp;
-
-			logTmp = new ArrayList<ILogMining>(this.generateAssignmentLogMining().values());
-			Collections.sort(logTmp);
-			if(logTmp != null && !logTmp.isEmpty() && logTmp.get(logTmp.size() - 1).getTimestamp() > maxLog)
-				maxLog = logTmp.get(logTmp.size() - 1).getTimestamp();
-			updates.add(logTmp);
-
-			//updates.add(this.courseAssignmentMining.values());
+			updates.add(this.courseAssignmentMining.values());
 			
-
+			updates.add(this.generateAssignmentLogMining().values());
 
 			updates.add(this.generateCourseLogMining().values());
 			
-			logTmp = new ArrayList<ILogMining>(this.generateForumLogMining().values());
-			Collections.sort(logTmp);
-			if(logTmp != null && !logTmp.isEmpty() && logTmp.get(logTmp.size() - 1).getTimestamp() > maxLog)
-				maxLog = logTmp.get(logTmp.size() - 1).getTimestamp();
-			updates.add(logTmp);
-
-			//updates.add(this.generateForumLogMining().values());
+			updates.add(this.generateForumLogMining().values());
 			
-			logTmp = new ArrayList<ILogMining>(this.generateQuizLogMining().values());
-			Collections.sort(logTmp);
-			if(logTmp != null && !logTmp.isEmpty() && logTmp.get(logTmp.size() - 1).getTimestamp() > maxLog)
-				maxLog = logTmp.get(logTmp.size() - 1).getTimestamp();
-			updates.add(logTmp);
-
-			//updates.add(this.generateQuizLogMining().values());
+			updates.add(this.generateQuizLogMining().values());
 			
-			logTmp = new ArrayList<ILogMining>(this.generateQuestionLogMining().values());
-			Collections.sort(logTmp);
-			if(logTmp != null && !logTmp.isEmpty() && logTmp.get(logTmp.size() - 1).getTimestamp() > maxLog)
-				maxLog = logTmp.get(logTmp.size() - 1).getTimestamp();
-			updates.add(logTmp);
-
-			//updates.add(this.generateQuestionLogMining().values());
+			updates.add(this.generateQuestionLogMining().values());
 			
-			logTmp = new ArrayList<ILogMining>(this.generateScormLogMining().values());
-			Collections.sort(logTmp);
-			if(logTmp != null && !logTmp.isEmpty() && logTmp.get(logTmp.size() - 1).getTimestamp() > maxLog)
-				maxLog = logTmp.get(logTmp.size() - 1).getTimestamp();
-			updates.add(logTmp);
-
-			//updates.add(this.generateScormLogMining().values());
+			updates.add(this.generateScormLogMining().values());
 			
-			logTmp = new ArrayList<ILogMining>(this.generateResourceLogMining().values());
-			Collections.sort(logTmp);
-			if(logTmp != null && !logTmp.isEmpty() && logTmp.get(logTmp.size() - 1).getTimestamp() > maxLog)
-				maxLog = logTmp.get(logTmp.size() - 1).getTimestamp();
-			updates.add(logTmp);
-
-			//updates.add(this.generateResourceLogMining().values());
+			updates.add(this.generateResourceLogMining().values());
 			
-			logTmp = new ArrayList<ILogMining>(this.generateWikiLogMining().values());
-			Collections.sort(logTmp);
-			if(logTmp != null && !logTmp.isEmpty() && logTmp.get(logTmp.size() - 1).getTimestamp() > maxLog)
-				maxLog = logTmp.get(logTmp.size() - 1).getTimestamp();
-			updates.add(logTmp);
-
-//			updates.add(this.generateWikiLogMining().values());
+			updates.add(this.generateWikiLogMining().values());
 
 			updates.add(generateILogMining());
 			
-			logTmp = new ArrayList<ILogMining>(this.generateChatLogMining().values());
-			Collections.sort(logTmp);
-			if(logTmp != null && !logTmp.isEmpty() && logTmp.get(logTmp.size() - 1).getTimestamp() > maxLog)
-				maxLog = logTmp.get(logTmp.size() - 1).getTimestamp();
-			updates.add(logTmp);
-			
-	//		updates.add(this.generateChatLogMining().values());
+			updates.add(this.generateChatLogMining().values());
 
 			Long objects = 0L;
 
@@ -604,6 +555,7 @@ public class ClixImporter {
 			ArrayList<?> l;
 			
 			readingtimestamp = (Long) session.createQuery("Select max(latestTimestamp) from ConfigMining where platform=" + this.connector.getPlatformId()).uniqueResult();
+			
 			
 			if(readingtimestamp == null)
 			{
@@ -825,7 +777,9 @@ public class ClixImporter {
 			{
 				criteria.add(Restrictions.in("obj.container", courses));
 			}
+			criteria.add(Restrictions.gt("obj.evaluationDate", startStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
+			
 			this.tQtiTestPlayerResp = criteria.list();
 			logger.info("TQtiTestPlayerResp tables: " + this.tQtiTestPlayerResp.size());
 			
@@ -846,6 +800,7 @@ public class ClixImporter {
 			{
 				criteria.add(Restrictions.in("obj.composing", courses));
 			}
+			criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.eComposing = criteria.list();
 			this.eComposingMap = new HashMap<Long, EComposing>();
@@ -896,6 +851,7 @@ public class ClixImporter {
 				if(!(empty = tmpComp.isEmpty()))
 					criteria.add(Restrictions.in("obj.id", tmpComp));
 			}
+			criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
 			final List<EComponent> tmp;
 			if(!(hasCR && empty))
@@ -977,6 +933,7 @@ public class ClixImporter {
 					criteria.add(Restrictions.in("obj.id", ids));
 						
 			}
+			criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!(hasCR && empty))
 				this.tQtiContent = criteria.list();
@@ -1013,6 +970,7 @@ public class ClixImporter {
 				//if(!(empty = ids.isEmpty()))
 				//criteria.add(Restrictions.in("obj.id", ids));
 			}
+			criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.eComponentType = criteria.list();
 			this.logger.info("EComponentType tables: " + this.eComponentType.size());
@@ -1100,6 +1058,7 @@ public class ClixImporter {
 				if(!(empty = ids.isEmpty()))
 					criteria.add(Restrictions.in("obj.id", ids));
 			}
+			criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!(hasCR && empty))
 				this.person = criteria.list();
@@ -1136,6 +1095,7 @@ public class ClixImporter {
 				if(!(empty = ids.isEmpty()))
 					criteria.add(Restrictions.in("obj.id", ids));
 			}
+			criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!(hasCR && empty))
 				this.platformGroup = criteria.list();
@@ -1879,6 +1839,9 @@ public class ClixImporter {
 				item.setPlatform(this.connector.getPlatformId());
 				item.setLastLogin(TimeConverter.getTimestamp(loadedItem.getLastLoginTime()));
 				item.setFirstAccess(TimeConverter.getTimestamp(loadedItem.getFirstLoginTime()));
+				
+				if(TimeConverter.getTimestamp(loadedItem.getLastUpdated()) > maxLog)
+					maxLog = TimeConverter.getTimestamp(loadedItem.getLastUpdated());
 
 				if (loadedItem.getGender() == 1) {
 					item.setGender(false);
@@ -2879,6 +2842,11 @@ public class ClixImporter {
 				item.setMessage(TextHelper.replaceString(loadedItem.getContent()));
 				item.setAction("Post");
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+				if(item.getTimestamp() > maxLog)
+				{
+					maxLog = item.getTimestamp();
+				}
+				
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);
 
@@ -2949,6 +2917,11 @@ public class ClixImporter {
 							this.courseMining, this.oldCourseMining);
 				}
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+				if(item.getTimestamp() > maxLog)
+				{
+					maxLog = item.getTimestamp();
+				}
+				
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);
 
@@ -2986,6 +2959,11 @@ public class ClixImporter {
 						this.oldUserMining);
 				item.setAction(loadedItem.getTypeOfModification() + "");
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+				if(item.getTimestamp() > maxLog)
+				{
+					maxLog = item.getTimestamp();
+				}
+				
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);
 
@@ -3031,6 +3009,11 @@ public class ClixImporter {
 				item.setPenalty(0d);
 				item.setType("QTI");
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getEvaluationDate()));
+				if(item.getTimestamp() > maxLog)
+				{
+					maxLog = item.getTimestamp();
+				}
+				
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);
 				item.setAnswers(loadedItem.getText());
@@ -3100,6 +3083,10 @@ public class ClixImporter {
 						break;					
 				}
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getCreated()));
+				if(item.getTimestamp() > maxLog)
+				{
+					maxLog = item.getTimestamp();
+				}
 
 				if ((item.getCourse() != null) && (item.getQuiz() != null) && (item.getUser() != null)) {
 					quizLogs.put(item.getId(), item);
@@ -3142,6 +3129,11 @@ public class ClixImporter {
 						this.oldUserMining);
 				item.setGrade(Double.valueOf(loadedItem.getPoints()));
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getUploadDate()));
+				if(item.getTimestamp() > maxLog)
+				{
+					maxLog = item.getTimestamp();
+				}
+				
 				item.setPlatform(this.connector.getPlatformId());
 				// Get the course_id via the exercisegroup_id
 				if (eg.get(loadedItem.getCommunity()) != null) {
@@ -3204,6 +3196,11 @@ public class ClixImporter {
 							this.scormMining, this.oldScormMining);
 					item.setAction(loadedItem.getStatus());
 					item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+					if(item.getTimestamp() > maxLog)
+					{
+						maxLog = item.getTimestamp();
+					}
+					
 					item.setId(scormLogs.size() + this.scormLogMax + 1);
 					item.setPlatform(this.connector.getPlatformId());
 
@@ -3257,6 +3254,11 @@ public class ClixImporter {
 				item.setId(resourceLogs.size() + this.resourceLogMax + 1);
 				// Time stamp has different format (2009-07-31)
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getDayOfAccess() + " 00:00:00.000"));
+				if(item.getTimestamp() > maxLog)
+				{
+					maxLog = item.getTimestamp();
+				}
+				
 				item.setPlatform(this.connector.getPlatformId());
 
 				if ((item.getResource() != null) && (item.getCourse() != null) && (item.getUser() != null)) {
@@ -3292,6 +3294,11 @@ public class ClixImporter {
 						this.oldUserMining);
 				item.setMessage(TextHelper.replaceString(loadedItem.getChatSource()));
 				item.setTimestamp(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
+				if(item.getTimestamp() > maxLog)
+				{
+					maxLog = item.getTimestamp();
+				}
+				
 				item.setPlatform(this.connector.getPlatformId());
 				item.setDuration(0L);
 				EComposing l = this.eComposingMap.get(loadedItem.getChatroom());
@@ -3340,7 +3347,6 @@ public class ClixImporter {
 			
 			for(LearningLog log : this.learningLog)
 			{
-				
 				if(this.assignmentMining.get(Long.valueOf(connector.getPrefix() + "" + log.getComponent())) != null)
 				{
 					if(!(TimeConverter.getTimestamp(log.getLastUpdated()).equals(lastATime) && log.getPerson().equals(lastAUser)))
@@ -3355,6 +3361,10 @@ public class ClixImporter {
 						item.setGrade(log.getEvaluatedScore());
 						item.setPlatform(connector.getPlatformId());
 						item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
+						if(item.getTimestamp() > maxLog)
+						{
+							maxLog = item.getTimestamp();
+						}
 						
 						if(item.getCourse() != null && item.getUser() != null && item.getAssignment() != null)
 							assignmentLogs.add(item);
@@ -3377,12 +3387,13 @@ public class ClixImporter {
 						item.setAction(log.getTypeOfModification() + "");
 						item.setPlatform(connector.getPlatformId());
 						item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
+						if(item.getTimestamp() > maxLog)
+						{
+							maxLog = item.getTimestamp();
+						}
 						
 						if(item.getCourse() != null && item.getUser() != null && item.getResource() != null)
 							resourceLogs.add(item);
-						
-						//lastRTime = item.getTimestamp();
-						//lastRUser = log.getPerson();
 					}
 				}
 				else if(this.wikiMining.get(Long.valueOf(connector.getPrefix() + "" + log.getComponent())) != null)
@@ -3398,12 +3409,13 @@ public class ClixImporter {
 						item.setAction(log.getTypeOfModification() + "");
 						item.setPlatform(connector.getPlatformId());
 						item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
+						if(item.getTimestamp() > maxLog)
+						{
+							maxLog = item.getTimestamp();
+						}
 						
 						if(item.getCourse() != null && item.getUser() != null && item.getWiki() != null)
 							wikiLogs.add(item);
-						
-						//lastWTime = item.getTimestamp();
-						//lastWUser = log.getPerson();
 					}
 				}
 				else if(this.scormMining.get(Long.valueOf(connector.getPrefix() + "" + log.getComponent())) != null)
@@ -3419,13 +3431,15 @@ public class ClixImporter {
 						item.setAction(log.getTypeOfModification() + "");
 						item.setPlatform(connector.getPlatformId());
 						item.setTimestamp(TimeConverter.getTimestamp(log.getLastUpdated()));
+						if(item.getTimestamp() > maxLog)
+						{
+							maxLog = item.getTimestamp();
+						}
+						
 						item.setGrade(log.getEvaluatedScore());
 						
 						if(item.getCourse() != null && item.getUser() != null && item.getScorm() != null)
 							scormLogs.add(item);
-						
-						//lastSTime = item.getTimestamp();
-						//lastSUser = log.getPerson();
 					}
 				}
 			}
@@ -3435,20 +3449,12 @@ public class ClixImporter {
 			e.printStackTrace();
 		}
 		Collections.sort(assignmentLogs);
-		if(assignmentLogs != null && !assignmentLogs.isEmpty() && assignmentLogs.get(assignmentLogs.size() - 1).getTimestamp() > maxLog)
-			maxLog = assignmentLogs.get(assignmentLogs.size() - 1).getTimestamp();
 		this.logger.info("Generated " + assignmentLogs.size() + " AssignmentLogMinings.");
 		Collections.sort(resourceLogs);
-		if(resourceLogs != null && !resourceLogs.isEmpty() && resourceLogs.get(resourceLogs.size() - 1).getTimestamp() > maxLog)
-			maxLog = resourceLogs.get(resourceLogs.size() - 1).getTimestamp();
 		this.logger.info("Generated " + resourceLogs.size() + " ResourceLogMinings.");
 		Collections.sort(wikiLogs);
-		if(wikiLogs != null && !wikiLogs.isEmpty() && wikiLogs.get(wikiLogs.size() - 1).getTimestamp() > maxLog)
-			maxLog = wikiLogs.get(wikiLogs.size() - 1).getTimestamp();
 		this.logger.info("Generated " + wikiLogs.size() + " WikiLogMinings.");
 		Collections.sort(scormLogs);
-		if(scormLogs != null && !scormLogs.isEmpty() && scormLogs.get(scormLogs.size() - 1).getTimestamp() > maxLog)
-			maxLog = scormLogs.get(scormLogs.size() - 1).getTimestamp();
 		this.logger.info("Generated " + scormLogs.size() + " ScormLogMinings.");
 		
 		
@@ -3457,7 +3463,6 @@ public class ClixImporter {
 		iLogs.addAll(wikiLogs);
 		iLogs.addAll(scormLogs);
 		
-		return iLogs;
-		
+		return iLogs;		
 	}
 }

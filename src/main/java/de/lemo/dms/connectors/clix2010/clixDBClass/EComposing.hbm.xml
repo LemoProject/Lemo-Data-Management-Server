@@ -24,6 +24,8 @@
 		<property name="endDate" column="ENDDATE" type="string" />
 
 		<property name="startDate" column="STARTDATE" type="string" />
+		
+		<property name="lastUpdated" column="LASTUPDATED" type="string" />
 
 	</class>
 

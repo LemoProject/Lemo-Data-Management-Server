@@ -22,6 +22,7 @@ public class EComponentType implements IClixMappingClass {
 	private Long characteristic;
 	private Long language;
 	private String uploadDir;
+	private String lastUpdated;
 
 	public String getUploadDir() {
 		return this.uploadDir;
@@ -77,6 +78,14 @@ public class EComponentType implements IClixMappingClass {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getLastUpdated() {
+		return lastUpdated;
+	}
+
+	public void setLastUpdated(String lastUpdated) {
+		this.lastUpdated = lastUpdated;
 	}
 
 }
