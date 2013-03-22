@@ -32,6 +32,7 @@ import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
  * Accumulates the requests of the users to the objects over a period
  * 
  * @author Boris Wenzlaff
+ * @author Sebastian Schwarzrock
  */
 @Path("cumulative")
 public class QCumulativeUserAccess extends Question {
