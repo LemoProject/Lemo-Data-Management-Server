@@ -121,7 +121,7 @@ public class Test {
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
 		users.add(2L);
-		courses.add(11476L);
+		courses.add(154667155L);
 		
 		ArrayList<String> types = new ArrayList<String>();
 		types.add("RESOURCE");
@@ -130,7 +130,7 @@ public class Test {
 		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
-		CourseObject co = scd.getCourseDetails(11476L);
+		CourseObject co = scd.getCourseDetails(154667155L);
 		
 		art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types);
 		
@@ -151,7 +151,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runClixConn();
+		this.test();
 		logger.info("Test finished");
 	}
 
