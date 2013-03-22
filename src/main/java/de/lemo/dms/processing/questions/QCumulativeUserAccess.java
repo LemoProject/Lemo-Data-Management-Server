@@ -97,11 +97,6 @@ public class QCumulativeUserAccess extends Question {
 				final Statement statement = session.connection().createStatement();
 				final ResultSet set = statement.executeQuery(querys.get(lo));
 				
-				//-----------------
-				
-
-				
-				//-------------------------
 
 				// durchlaufen des result sets
 				while (set.next()) {
