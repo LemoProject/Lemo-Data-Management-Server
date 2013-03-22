@@ -23,6 +23,7 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
@@ -45,12 +46,14 @@ public class ServiceCourseTitleSearch {
 	 * @return	A List of CourseObjects containing the information.
 	 */
 	@GET
-	public ResultListCourseObject getCoursesByText(@QueryParam("search_text") final String text,
-			@QueryParam("course_count") final Long count,
-			@QueryParam("course_offset") final Long offset ) {
+	public ResultListCourseObject getCoursesByText(@QueryParam(MetaParam.SEARCH_TEXT) final String text,
+			@QueryParam(MetaParam.RESULT_AMOUNT) final Long count,
+			@QueryParam(MetaParam.OFFSET) final Long offset ) {
 
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		List<CourseObject> result = new ArrayList<CourseObject>();
+		result.add(new CourseObject());
+		result.add(new CourseObject());
 
 		if (text == null || text.equals("")) {
 			return new ResultListCourseObject(result);

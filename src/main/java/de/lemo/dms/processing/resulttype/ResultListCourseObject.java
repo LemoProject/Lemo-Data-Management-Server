@@ -7,6 +7,7 @@
 package de.lemo.dms.processing.resulttype;
 
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -18,20 +19,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ResultListCourseObject {
 
-	private List<CourseObject> courses;
+	private List<CourseObject> elements;
 
 	public ResultListCourseObject() {
+
 	}
 
-	public ResultListCourseObject(final List<CourseObject> courses) {
-		this.courses = courses;
+	public ResultListCourseObject(final List<CourseObject> elements) {
+		this.elements = elements;
 	}
 
-	public List<CourseObject> getCourses() {
-		return this.courses;
+	@XmlElement
+	public List<CourseObject> getElements() {
+		return this.elements;
+	}
+	
+	public void setElements(final List<CourseObject> elements) {
+		this.elements = elements;
 	}
 
-	public void setCourses(final List<CourseObject> courses) {
-		this.courses = courses;
-	}
 }

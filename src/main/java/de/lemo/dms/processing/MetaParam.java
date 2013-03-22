@@ -32,4 +32,7 @@ public interface MetaParam {
 	String USER_IDS = "uid";
 	String USER_NAME = "uname";
 	String QUIZ_IDS = "quiz_ids";
+	String SEARCH_TEXT = "stext";
+	String RESULT_AMOUNT = "res_amount";
+	String OFFSET = "offset";
 }
