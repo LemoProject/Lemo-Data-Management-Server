@@ -127,11 +127,9 @@ public class ServiceUserInformation {
 	}
 	
 	/**
-	 * Returns courseObjects for all courses of the specified user.
+	 * Returns the number of courses for the specified user.
 	 * 
 	 * @param id	User identifier
-	 * @param count	Number of courses that shall be returned (for users with lots of courses)
-	 * @param offset	
 	 * 
 	 * @return
 	 */

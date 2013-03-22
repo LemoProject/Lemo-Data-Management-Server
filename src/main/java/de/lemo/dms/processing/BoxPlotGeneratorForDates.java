@@ -19,6 +19,7 @@ import de.lemo.dms.processing.resulttype.BoxPlot;
 /**
  * Generates Boxplot objects for dates and accumulate them to weeks
  * @author Boris Wenzlaff
+ * @author Sebastian Schwarzrock
  *
  */
 public class BoxPlotGeneratorForDates {

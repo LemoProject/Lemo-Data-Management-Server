@@ -37,7 +37,11 @@ public class QCourseUsers extends Question {
 		final Session session = dbHandler.getMiningSession();
 
 		final Criteria criteria = session.createCriteria(ILogMining.class, "log")
+<<<<<<< HEAD
+				.add(Restrictions.in("log.course.id", courseIds))
+=======
 				.add(Restrictions.in("log.course.id", courses))
+>>>>>>> refs/remotes/origin/feature_sebs_sp12b1
 				.add(Restrictions.between("log.timestamp", startTime, endTime));
 	*/	
 		/*
