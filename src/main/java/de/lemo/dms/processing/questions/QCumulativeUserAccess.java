@@ -16,8 +16,11 @@ import java.util.Set;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
+import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.BoxPlotGeneratorForDates;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
@@ -46,6 +49,7 @@ public class QCumulativeUserAccess extends Question {
 	 * @throws SQLException
 	 * @throws JSONException
 	 */
+	@SuppressWarnings("unchecked")
 	@POST
 	public ResultListBoxPlot compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> course,
@@ -69,17 +73,42 @@ public class QCumulativeUserAccess extends Question {
 		super.logger.debug("Starting processing ....");
 		final BoxPlotGeneratorForDates bpg = new BoxPlotGeneratorForDates();
 		try {
+			
+			Criteria criteria = session.createCriteria(ILogMining.class, "log");
+			criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
+			criteria.add(Restrictions.in("log.course.id", course));
+			List<ILogMining> logs = criteria.list();
+			
+			for(ILogMining log : logs)
+			{
+				String type = log.getClass().getSimpleName().toUpperCase();
+				if(type.indexOf("LOG") > -1)
+				{	
+					type = type.substring(0, type.indexOf("LOG"));
+					if(types.isEmpty() || types.contains(type))
+						bpg.addAccess(log.getTimestamp());
+				}
+			}
+			logs.clear();
+			/*
 			for (final ELearningObjectType lo : querys.keySet()) {
 				super.logger.debug("Starting processing -- Entering try catch");
 				@SuppressWarnings("deprecation")
 				final Statement statement = session.connection().createStatement();
 				final ResultSet set = statement.executeQuery(querys.get(lo));
+				
+				//-----------------
+				
+
+				
+				//-------------------------
 
 				// durchlaufen des result sets
 				while (set.next()) {
 					bpg.addAccess(set.getLong("timestamp"));
 				}
 			}
+			*/
 			final BoxPlot[] bp = bpg.calculateResult();
 			final List<BoxPlot> l = new ArrayList<BoxPlot>();
 			for (int i = 0; i < bp.length; i++) {

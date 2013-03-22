@@ -121,7 +121,7 @@ public class Test {
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
 		users.add(2L);
-		courses.add(154667155L);
+		courses.add(11476L);
 		
 		ArrayList<String> types = new ArrayList<String>();
 		types.add("RESOURCE");
@@ -130,15 +130,15 @@ public class Test {
 		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
-		CourseObject co = scd.getCourseDetails(154667155L);
+		CourseObject co = scd.getCourseDetails(11476L);
 		
-		art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types);
+		//art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types);
 		
-		lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest());
+		//lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest());
 		
 		cua.compute(courses, types, co.getFirstRequest(), co.getLastRequest());
 		
-		qlou.compute(courses, users, 0L, 1500000000L, 100L, new ArrayList<String>());
+		//qlou.compute(courses, users, 0L, 1500000000L, 100L, new ArrayList<String>());
 		
 	
 		ServiceCourseTitleSearch scts = new ServiceCourseTitleSearch();

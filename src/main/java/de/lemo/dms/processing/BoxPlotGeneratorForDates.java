@@ -261,14 +261,16 @@ public class BoxPlotGeneratorForDates {
 			// berechnen wie viele tatsächlich tatsächlich eingetragen werden müssen
 			final long tideCount = currenttide.size();
 			if (tideCount <= 0) {
-				final BoxPlot bp = new BoxPlot();
+				Long[] ar = new Long[1];
+				ar[0] = 0L;
+				final BoxPlot bp = this.calcBox(ar);
 				bp.setName(Integer.toString(i));
 				resultList[i] = bp;
 				continue;
 			}
 			Arrays.sort(dates);
 			final Date firstDay = dates[0];
-			long diff = this.hourDiff(firstDay, this.max) + 1;
+			long diff = this.tideDiff(firstDay, this.max) + 1;
 			diff = diff - tideCount;
 			int addCounter = 0;
 			if (diff >= 1) {
@@ -374,6 +376,20 @@ public class BoxPlotGeneratorForDates {
 		final long time = cal2.getTime().getTime() - cal1.getTime().getTime();
 		// Differenz in Tagen
 		final long days = Math.round(time / (24. * 60. * 60. * 1000.));
+		diff = Math.round(days);
+		return diff;
+	}
+	
+	private long tideDiff(final Date first, final Date last) {
+		long diff = 0;
+		final Calendar cal1 = new GregorianCalendar();
+		final Calendar cal2 = new GregorianCalendar();
+		cal1.setTime(first);
+		cal2.setTime(last);
+		// Differenz in ms
+		final long time = cal2.getTime().getTime() - cal1.getTime().getTime();
+		// Differenz in Tagen
+		final long days = Math.round(time / (4. * 60. * 60. * 1000.));
 		diff = Math.round(days);
 		return diff;
 	}
