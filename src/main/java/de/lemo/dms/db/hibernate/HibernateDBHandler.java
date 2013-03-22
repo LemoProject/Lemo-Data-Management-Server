@@ -40,7 +40,7 @@ public class HibernateDBHandler implements IDBHandler {
 		try {
 			int classOb = 0;
 			String className = "";
-			session.beginTransaction();
+			Transaction tx = session.beginTransaction();
 			int i = 0;
 			for (int j = 0; j < data.size(); j++) {
 				for (final Object obj : data.get(j))
@@ -65,9 +65,9 @@ public class HibernateDBHandler implements IDBHandler {
 			}
 			this.logger.info("Wrote " + classOb + " objects of class " + className + " to database.");
 			session.flush();
-			session.getTransaction().commit();
+			tx.commit();
 			session.clear();
-			this.closeSession(session);
+			//this.closeSession(session);
 		} catch (final HibernateException e)
 		{
 			logger.error(e.getMessage());

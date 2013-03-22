@@ -27,7 +27,6 @@ import de.lemo.dms.service.ServiceCourseTitleSearch;
 public class Test {
 
 	private static final Long ID_MOODLE23 = 4L;
-	private static final Long ID_CHEM = 3L;
 	private static final Long ID_MOODLE_NUMERIC = 5L;
 	private static final Long ID_MOODLE19 = 2L;
 	private static final Long ID_CLIX = 6L;
@@ -90,18 +89,19 @@ public class Test {
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_CLIX);
 		List<Long> courses = new ArrayList<Long>();
 		
-		/*
+		
 		courses.add(18508964L);
 		courses.add(21040950L);
 		courses.add(21040967L);
-		*/
 		
+		
+		/*
 		courses.add(4667155L);
 		courses.add(8074949L);
 		courses.add(10921956L);
 		courses.add(13617310L);
 		courses.add(17945446L);
-		
+		*/
 		connector.setCourseIdFilter(courses);
 		
 		connector.getData();

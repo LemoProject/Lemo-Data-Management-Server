@@ -273,6 +273,9 @@ public class ClixImporter {
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private final IConnector connector;
+	
+	/** Database-handler **/
+	private IDBHandler dbHandler;
 
 	public ClixImporter(final IConnector connector) {
 		this.connector = connector;
@@ -281,14 +284,15 @@ public class ClixImporter {
 	/**
 	 * Performs a extraction process for an entire Clix2010 database.
 	 * 
-	 * @param platformName
-	 *            the platform name
-	 * @return the clix data
+	 * @param dbConfig config-object for database connection
+	 * @param courses List of course-ids for course-data that shall be imported. 
+	 * 				  If empty a all courses are imported.
 	 */
 	public void getClixData(final DBConfigObject dbConfig, List<Long> courses)
 	{
 		final Clock c = new Clock();
 		final Long starttime = System.currentTimeMillis() / MAGIC_THOU;
+		this.dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
 		this.platformMining = new HashMap<Long, PlatformMining>();
 		// Do Import
@@ -310,28 +314,28 @@ public class ClixImporter {
 		config.setDatabaseModel("1.3");
 		config.setPlatform(this.connector.getPlatformId());
 		//To stop rounding errors
-		if(this.maxLog > 0)
-			this.maxLog++;
 		config.setLatestTimestamp(this.maxLog);
 
-		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
-		final Session miningSession = dbHandler.getMiningSession();
-		dbHandler.saveToDB(miningSession, config);
+		final Session miningSession = this.dbHandler.getMiningSession();
+		this.dbHandler.saveToDB(miningSession, config);
 		dbHandler.closeSession(miningSession);
 	}
 
 	/**
-	 * Performs a data-extraction for a Clix2010 database for all objects that are newer than the given time stamp.
+	 * Performs a data-extraction for a Clix2010 database for all objects that 
+	 * are newer than the given time stamp. Performs import in 7 day intervalls.
 	 * 
-	 * @param platformName
-	 *            the platform name
-	 * @param startTime
-	 *            the start time
+	 * @param dbConfig 	Config-object for database connection
+	 * @param startTime	The start time
+	 * @param courses 	List of course-ids for course-data that shall be imported. 
+	 * 				  	If empty a all courses are imported.
+
 	 */
 	public void updateClixData(final DBConfigObject dbConfig, Long startTime, List<Long> courses)
 	{
 		final Long currentSysTime = System.currentTimeMillis() / MAGIC_THOU;
 		Long upperLimit = 0L;
+		this.dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
 		this.platformMining = new HashMap<Long, PlatformMining>();
 
@@ -357,17 +361,14 @@ public class ClixImporter {
 		config.setDatabaseModel("1.3");
 		config.setPlatform(this.connector.getPlatformId());
 		config.setLatestTimestamp(this.maxLog);
-
-		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
-		final Session session = dbHandler.getMiningSession();
-		dbHandler.saveToDB(session, config);
-		dbHandler.closeSession(session);
+		final Session session = this.dbHandler.getMiningSession();
+		this.dbHandler.saveToDB(session, config);
+		this.dbHandler.closeSession(session);
 	}
 
 	/**
 	 * Generates and saves all objects.
 	 */
-	@SuppressWarnings("unchecked")
 	private void saveData()
 	{
 		try {
@@ -490,16 +491,17 @@ public class ClixImporter {
 			if (objects > 0)
 			{
 
-				final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
-				final Session session = dbHandler.getMiningSession();
+				final Session session = this.dbHandler.getMiningSession();
 				this.logger.info("Writing to DB");
 				dbHandler.saveCollectionToDB(session, updates);
 			} else {
 				this.logger.info("No new objects found.");
 			}
 
+			updates.clear();
 			this.clearSourceData();
-
+			
+			
 		} catch (final Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -533,12 +535,11 @@ public class ClixImporter {
 		this.wikiEntry.clear();
 
 	}
+	
 
 	/**
 	 * Looks, if there are already values in the Mining database and loads them, if necessary.
 	 * 
-	 * @param platformName
-	 *            the platform name
 	 */
 	@SuppressWarnings("unchecked")
 	private Long initialize()
@@ -546,11 +547,9 @@ public class ClixImporter {
 		Long readingtimestamp;
 		
 		try {
-			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
 			// accessing DB by creating a session and a transaction using HibernateUtil
-			final Session session = dbHandler.getMiningSession();
-			session.clear();
+			final Session session = this.dbHandler.getMiningSession();
 
 			ArrayList<?> l;
 			
@@ -560,182 +559,206 @@ public class ClixImporter {
 			if(readingtimestamp == null)
 			{
 				readingtimestamp = 0L;
-			}
-
-			Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log");
-			this.resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-			if (this.resourceLogMax == null) {
+				this.oldAssignmentMining = new HashMap<Long, AssignmentMining>();
+				this.oldChatMining = new HashMap<Long, ChatMining>();
+				this.oldCourseMining = new HashMap<Long, CourseMining>();
+				this.oldForumMining = new HashMap<Long, ForumMining>();
+				this.oldGroupMining = new HashMap<Long, GroupMining>();
+				this.oldLevelMining = new HashMap<Long, LevelMining>();
+				this.oldQuestionMining = new HashMap<Long, QuestionMining>();
+				this.oldQuizMining = new HashMap<Long, QuizMining>();
+				this.oldResourceMining = new HashMap<Long, ResourceMining>();
+				this.oldRoleMining = new HashMap<Long, RoleMining>();
+				this.oldScormMining = new HashMap<Long, ScormMining>();
+				this.oldUserMining = new HashMap<Long, UserMining>();
+				this.oldWikiMining = new HashMap<Long, WikiMining>();
+				
 				this.resourceLogMax = 0L;
-			}
-
-			logCount = session.createQuery("select max(log.id) from ChatLogMining log");
-			this.chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-			if (this.chatLogMax == null) {
 				this.chatLogMax = 0L;
-			}
-
-			logCount = session.createQuery("select max(log.id) from AssignmentLogMining log");
-			this.assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-			if (this.assignmentLogMax == null) {
 				this.assignmentLogMax = 0L;
-			}
-
-			logCount = session.createQuery("select max(log.id) from CourseLogMining log");
-			this.courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-			if (this.courseLogMax == null) {
 				this.courseLogMax = 0L;
-			}
-
-			logCount = session.createQuery("select max(log.id) from ForumLogMining log");
-			this.forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-			if (this.forumLogMax == null) {
 				this.forumLogMax = 0L;
-			}
-
-			logCount = session.createQuery("select max(log.id) from QuestionLogMining log");
-			this.questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-			if (this.questionLogMax == null) {
 				this.questionLogMax = 0L;
-			}
-
-			logCount = session.createQuery("select max(log.id) from QuizLogMining log");
-			this.quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-			if (this.quizLogMax == null) {
 				this.quizLogMax = 0L;
-			}
-
-			logCount = session.createQuery("select max(log.id) from ScormLogMining log");
-			this.scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-			if (this.scormLogMax == null) {
 				this.scormLogMax = 0L;
-			}
-
-			logCount = session.createQuery("select max(log.id) from WikiLogMining log");
-			this.wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-			if (this.wikiLogMax == null) {
 				this.wikiLogMax = 0L;
 			}
-
-			final Query oldCourse = session.createQuery("from CourseMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<CourseMining>) oldCourse.list();
-			this.oldCourseMining = new HashMap<Long, CourseMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldCourseMining.put(Long.valueOf(((CourseMining) l.get(i)).getId()), (CourseMining) l.get(i));
+			else
+			{
+				Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log");
+				this.resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+				if (this.resourceLogMax == null) {
+					this.resourceLogMax = 0L;
+				}
+	
+				logCount = session.createQuery("select max(log.id) from ChatLogMining log");
+				this.chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+				if (this.chatLogMax == null) {
+					this.chatLogMax = 0L;
+				}
+	
+				logCount = session.createQuery("select max(log.id) from AssignmentLogMining log");
+				this.assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+				if (this.assignmentLogMax == null) {
+					this.assignmentLogMax = 0L;
+				}
+	
+				logCount = session.createQuery("select max(log.id) from CourseLogMining log");
+				this.courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+				if (this.courseLogMax == null) {
+					this.courseLogMax = 0L;
+				}
+	
+				logCount = session.createQuery("select max(log.id) from ForumLogMining log");
+				this.forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+				if (this.forumLogMax == null) {
+					this.forumLogMax = 0L;
+				}
+	
+				logCount = session.createQuery("select max(log.id) from QuestionLogMining log");
+				this.questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+				if (this.questionLogMax == null) {
+					this.questionLogMax = 0L;
+				}
+	
+				logCount = session.createQuery("select max(log.id) from QuizLogMining log");
+				this.quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+				if (this.quizLogMax == null) {
+					this.quizLogMax = 0L;
+				}
+	
+				logCount = session.createQuery("select max(log.id) from ScormLogMining log");
+				this.scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+				if (this.scormLogMax == null) {
+					this.scormLogMax = 0L;
+				}
+	
+				logCount = session.createQuery("select max(log.id) from WikiLogMining log");
+				this.wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
+				if (this.wikiLogMax == null) {
+					this.wikiLogMax = 0L;
+				}
+	
+				final Query oldCourse = session.createQuery("from CourseMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<CourseMining>) oldCourse.list();
+				this.oldCourseMining = new HashMap<Long, CourseMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldCourseMining.put(Long.valueOf(((CourseMining) l.get(i)).getId()), (CourseMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldCourseMining.size() + " old CourseMinings.");
+	
+				final Query oldQuiz = session.createQuery("from QuizMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<QuizMining>) oldQuiz.list();
+				this.oldQuizMining = new HashMap<Long, QuizMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldQuizMining.put(Long.valueOf(((QuizMining) l.get(i)).getId()), (QuizMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldQuizMining.size() + " old QuizMinings.");
+	
+				final Query oldAssignment = session.createQuery("from AssignmentMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<AssignmentMining>) oldAssignment.list();
+				this.oldAssignmentMining = new HashMap<Long, AssignmentMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldAssignmentMining.put(Long.valueOf(((AssignmentMining) l.get(i)).getId()),
+							(AssignmentMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldAssignmentMining.size() + " old AssignmentMinings.");
+	
+				final Query oldScorm = session.createQuery("from ScormMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<ScormMining>) oldScorm.list();
+				this.oldScormMining = new HashMap<Long, ScormMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldScormMining.put(Long.valueOf(((ScormMining) l.get(i)).getId()), (ScormMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldScormMining.size() + " old ScormMinings.");
+	
+				final Query oldForum = session.createQuery("from ForumMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<ForumMining>) oldForum.list();
+				this.oldForumMining = new HashMap<Long, ForumMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldForumMining.put(Long.valueOf(((ForumMining) l.get(i)).getId()), (ForumMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldForumMining.size() + " old ForumMinings.");
+	
+				final Query oldResource = session.createQuery("from ResourceMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<ResourceMining>) oldResource.list();
+				this.oldResourceMining = new HashMap<Long, ResourceMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldResourceMining
+							.put(Long.valueOf(((ResourceMining) l.get(i)).getId()), (ResourceMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldResourceMining.size() + " old ForumMinings.");
+	
+				final Query oldUser = session.createQuery("from UserMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<UserMining>) oldUser.list();
+				this.oldUserMining = new HashMap<Long, UserMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldUserMining.put(Long.valueOf(((UserMining) l.get(i)).getId()), (UserMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldUserMining.size() + " old UserMinings.");
+	
+				final Query oldWiki = session.createQuery("from WikiMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<WikiMining>) oldWiki.list();
+				this.oldWikiMining = new HashMap<Long, WikiMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldWikiMining.put(Long.valueOf(((WikiMining) l.get(i)).getId()), (WikiMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldWikiMining.size() + " old WikiMinings.");
+	
+				final Query oldGroup = session.createQuery("from GroupMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<GroupMining>) oldGroup.list();
+				this.oldGroupMining = new HashMap<Long, GroupMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldGroupMining.put(Long.valueOf(((GroupMining) l.get(i)).getId()), (GroupMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldGroupMining.size() + " old GroupMinings.");
+	
+				final Query oldQuestion = session.createQuery("from QuestionMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<QuestionMining>) oldQuestion.list();
+				this.oldQuestionMining = new HashMap<Long, QuestionMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldQuestionMining
+							.put(Long.valueOf(((QuestionMining) l.get(i)).getId()), (QuestionMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldQuestionMining.size() + " old QuestionMinings.");
+	
+				final Query oldRole = session.createQuery("from RoleMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<RoleMining>) oldRole.list();
+				this.oldRoleMining = new HashMap<Long, RoleMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldRoleMining.put(Long.valueOf(((RoleMining) l.get(i)).getId()), (RoleMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldRoleMining.size() + " old RoleMinings.");
+	
+				final Query oldLevel = session.createQuery("from LevelMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<LevelMining>) oldLevel.list();
+				this.oldLevelMining = new HashMap<Long, LevelMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldLevelMining.put(Long.valueOf(((LevelMining) l.get(i)).getId()), (LevelMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldLevelMining.size() + " old LevelMinings.");
+	
+				final Query oldChat = session.createQuery("from ChatMining x where x.platform="
+						+ this.connector.getPlatformId() + " order by x.id asc");
+				l = (ArrayList<ChatMining>) oldChat.list();
+				this.oldChatMining = new HashMap<Long, ChatMining>();
+				for (int i = 0; i < l.size(); i++) {
+					this.oldChatMining.put(Long.valueOf(((ChatMining) l.get(i)).getId()), (ChatMining) l.get(i));
+				}
+				this.logger.info("Read " + this.oldChatMining.size() + " old ChatMinings.");
 			}
-			this.logger.info("Read " + this.oldCourseMining.size() + " old CourseMinings.");
-
-			final Query oldQuiz = session.createQuery("from QuizMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<QuizMining>) oldQuiz.list();
-			this.oldQuizMining = new HashMap<Long, QuizMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldQuizMining.put(Long.valueOf(((QuizMining) l.get(i)).getId()), (QuizMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldQuizMining.size() + " old QuizMinings.");
-
-			final Query oldAssignment = session.createQuery("from AssignmentMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<AssignmentMining>) oldAssignment.list();
-			this.oldAssignmentMining = new HashMap<Long, AssignmentMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldAssignmentMining.put(Long.valueOf(((AssignmentMining) l.get(i)).getId()),
-						(AssignmentMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldAssignmentMining.size() + " old AssignmentMinings.");
-
-			final Query oldScorm = session.createQuery("from ScormMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<ScormMining>) oldScorm.list();
-			this.oldScormMining = new HashMap<Long, ScormMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldScormMining.put(Long.valueOf(((ScormMining) l.get(i)).getId()), (ScormMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldScormMining.size() + " old ScormMinings.");
-
-			final Query oldForum = session.createQuery("from ForumMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<ForumMining>) oldForum.list();
-			this.oldForumMining = new HashMap<Long, ForumMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldForumMining.put(Long.valueOf(((ForumMining) l.get(i)).getId()), (ForumMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldForumMining.size() + " old ForumMinings.");
-
-			final Query oldResource = session.createQuery("from ResourceMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<ResourceMining>) oldResource.list();
-			this.oldResourceMining = new HashMap<Long, ResourceMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldResourceMining
-						.put(Long.valueOf(((ResourceMining) l.get(i)).getId()), (ResourceMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldResourceMining.size() + " old ForumMinings.");
-
-			final Query oldUser = session.createQuery("from UserMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<UserMining>) oldUser.list();
-			this.oldUserMining = new HashMap<Long, UserMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldUserMining.put(Long.valueOf(((UserMining) l.get(i)).getId()), (UserMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldUserMining.size() + " old UserMinings.");
-
-			final Query oldWiki = session.createQuery("from WikiMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<WikiMining>) oldWiki.list();
-			this.oldWikiMining = new HashMap<Long, WikiMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldWikiMining.put(Long.valueOf(((WikiMining) l.get(i)).getId()), (WikiMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldWikiMining.size() + " old WikiMinings.");
-
-			final Query oldGroup = session.createQuery("from GroupMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<GroupMining>) oldGroup.list();
-			this.oldGroupMining = new HashMap<Long, GroupMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldGroupMining.put(Long.valueOf(((GroupMining) l.get(i)).getId()), (GroupMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldGroupMining.size() + " old GroupMinings.");
-
-			final Query oldQuestion = session.createQuery("from QuestionMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<QuestionMining>) oldQuestion.list();
-			this.oldQuestionMining = new HashMap<Long, QuestionMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldQuestionMining
-						.put(Long.valueOf(((QuestionMining) l.get(i)).getId()), (QuestionMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldQuestionMining.size() + " old QuestionMinings.");
-
-			final Query oldRole = session.createQuery("from RoleMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<RoleMining>) oldRole.list();
-			this.oldRoleMining = new HashMap<Long, RoleMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldRoleMining.put(Long.valueOf(((RoleMining) l.get(i)).getId()), (RoleMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldRoleMining.size() + " old RoleMinings.");
-
-			final Query oldLevel = session.createQuery("from LevelMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<LevelMining>) oldLevel.list();
-			this.oldLevelMining = new HashMap<Long, LevelMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldLevelMining.put(Long.valueOf(((LevelMining) l.get(i)).getId()), (LevelMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldLevelMining.size() + " old LevelMinings.");
-
-			final Query oldChat = session.createQuery("from ChatMining x where x.platform="
-					+ this.connector.getPlatformId() + " order by x.id asc");
-			l = (ArrayList<ChatMining>) oldChat.list();
-			this.oldChatMining = new HashMap<Long, ChatMining>();
-			for (int i = 0; i < l.size(); i++) {
-				this.oldChatMining.put(Long.valueOf(((ChatMining) l.get(i)).getId()), (ChatMining) l.get(i));
-			}
-			this.logger.info("Read " + this.oldChatMining.size() + " old ChatMinings.");
-
 			
 		} catch (final Exception e)
 		{
@@ -756,7 +779,6 @@ public class ClixImporter {
 
 			// accessing DB by creating a session and a transaction using HibernateUtil
 			final Session session = ClixHibernateUtil.getSessionFactory(dbConfig).openSession();
-			session.clear();
 			
 			boolean hasCR = false;
 			if(courses != null && courses.size() > 0)
@@ -772,6 +794,7 @@ public class ClixImporter {
 
 			
 			//Get QTiTestPlayerResp tables
+			this.tQtiTestPlayerResp = new ArrayList<TQtiTestPlayerResp>();
 			Criteria criteria = session.createCriteria(TQtiTestPlayerResp.class, "obj");
 			if(hasCR)
 			{
@@ -784,6 +807,7 @@ public class ClixImporter {
 			logger.info("TQtiTestPlayerResp tables: " + this.tQtiTestPlayerResp.size());
 			
 			//Get QTiTestPlayer tables
+			this.tQtiTestPlayer = new ArrayList<TQtiTestPlayer>();
 			criteria = session.createCriteria(TQtiTestPlayer.class, "obj");
 			if(hasCR)
 			{
@@ -795,6 +819,7 @@ public class ClixImporter {
 			logger.info("TQtiTestPlayer tables: " + this.tQtiTestPlayer.size());
 			
 			//Get EComposing tables
+			this.eComposing = new ArrayList<EComposing>();
 			criteria = session.createCriteria(EComposing.class, "obj");
 			if(hasCR)
 			{
@@ -811,6 +836,7 @@ public class ClixImporter {
 			logger.info("EComposing tables: " + this.eComposing.size());
 			
 			//Get ExerciseGroup tables
+			this.exerciseGroup = new ArrayList<ExerciseGroup>();
 			criteria = session.createCriteria(ExerciseGroup.class, "obj");
 			if(hasCR)
 			{
@@ -821,6 +847,7 @@ public class ClixImporter {
 			this.logger.info("ExerciseGroup tables: " + this.exerciseGroup.size());
 			
 			//Get ExercisePersonalised tables
+			this.exercisePersonalised = new ArrayList<ExercisePersonalised>();
 			criteria = session.createCriteria(ExercisePersonalised.class, "obj");
 			if(hasCR)
 			{
@@ -867,6 +894,7 @@ public class ClixImporter {
 			this.logger.info("EComponent tables: " + this.eComponentMap.values().size());
 			
 			//Get TQtiContentStructure tables
+			
 			criteria = session.createCriteria(TQtiContentStructure.class, "obj");
 			if(hasCR)
 			{
@@ -981,11 +1009,19 @@ public class ClixImporter {
 			criteria = session.createCriteria(ForumEntry.class, "obj");
 			if(hasCR)
 			{
-				criteria.add(Restrictions.in("obj.forum", this.eComposingMap.keySet()));
+				if(!(empty = this.eComposingMap.isEmpty()))
+				{
+					criteria.add(Restrictions.in("obj.forum", this.eComposingMap.keySet()));
+				}
 			}
 			criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
-			this.forumEntry = criteria.list();
+			if(!empty)
+			{
+				this.forumEntry = criteria.list();
+			}
+			else
+				this.forumEntry = new ArrayList<ForumEntry>();
 			this.logger.info("ForumEntry tables: " + this.forumEntry.size());
 			
 
@@ -994,11 +1030,19 @@ public class ClixImporter {
 			criteria = session.createCriteria(ForumEntryState.class, "obj");
 			if(hasCR)
 			{
-				criteria.add(Restrictions.in("obj.forum", this.eComposingMap.keySet()));
+				if(!(empty = this.eComposingMap.isEmpty()))
+				{
+					criteria.add(Restrictions.in("obj.forum", this.eComposingMap.keySet()));
+				}
 			}
 			criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
-			this.forumEntryState = criteria.list();
+			if(!hasCR || !empty)
+			{
+				this.forumEntryState = criteria.list();
+			}
+			else
+				this.forumEntryState = new ArrayList<ForumEntryState>();
 			this.logger.info("ForumEntryState tables: " + this.forumEntryState.size());
 			
 			//Get LearningLog tables
@@ -1201,6 +1245,8 @@ public class ClixImporter {
 			logger.info("BiTrackContentImpressions tables: " + this.biTrackContentImpressions.size());
 			
 
+			session.clear();
+			session.close();
 			
 		} catch (final Exception e)
 		{
@@ -1223,7 +1269,6 @@ public class ClixImporter {
 		try {
 			// accessing DB by creating a session and a transaction using HibernateUtil
 			final Session session = ClixHibernateUtil.getSessionFactory(dbConfig).openSession();
-			session.clear();
 			
 			boolean hasCR = false;
 			if(courses != null && courses.size() > 0)
@@ -1685,11 +1730,12 @@ public class ClixImporter {
 			this.logger.info("BiTrackContentImpressions tables: " + this.biTrackContentImpressions.size());
 			
 
+			session.clear();
+			session.close();
 
 		} catch (final Exception e)
 		{
-			e.printStackTrace();
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 	}
@@ -2009,7 +2055,7 @@ public class ClixImporter {
 	 */
 	private Map<Long, RoleMining> generateRoleMining()
 	{
-		final HashMap<Long, RoleMining> roles = new HashMap<Long, RoleMining>();
+		this.roleMining = new HashMap<Long, RoleMining>();
 		try {
 			/*
 			for (final PlatformGroup loadedItem : this.platformGroup)
@@ -2043,48 +2089,56 @@ public class ClixImporter {
 				roles.put(item.getId(), item);
 			}
 			*/
+
+			if(this.oldRoleMining.size() == 0)
+			{
+				
 			
-			final RoleMining r = new RoleMining();
-			r.setId(0L);
-			r.setDescription("Admin");
-			r.setName("Admininstrator");
-			r.setName("Admininstrator");
-			r.setShortname("Administrator");
-			r.setSortOrder(0L);
-			r.setType(0);
+				final RoleMining r = new RoleMining();
+				r.setId(0L);
+				r.setDescription("Admin");
+				r.setName("Admininstrator");
+				r.setName("Admininstrator");
+				r.setShortname("Administrator");
+				r.setSortOrder(0L);
+				r.setType(0);
+				r.setPlatform(this.connector.getPlatformId());
+				
+				roleMining.put(r.getId(), r);
+				
+				final RoleMining r1 = new RoleMining();
+				r1.setId(1L);
+				r1.setDescription("Teacher");
+				r1.setName("Teacher");
+				r1.setName("Teacher");
+				r1.setShortname("Teacher");
+				r1.setSortOrder(1L);
+				r1.setType(1);
+				r1.setPlatform(this.connector.getPlatformId());
+				
+				roleMining.put(r1.getId(), r1);
+				
+				final RoleMining r2 = new RoleMining();
+				r2.setId(2L);
+				r2.setDescription("Student");
+				r2.setName("Student");
+				r2.setName("Student");
+				r2.setShortname("Student");
+				r2.setSortOrder(2L);
+				r2.setType(2);
+				r2.setPlatform(this.connector.getPlatformId());
+				
+				roleMining.put(r2.getId(), r2);
+			}
 			
-			roles.put(r.getId(), r);
-			
-			final RoleMining r1 = new RoleMining();
-			r1.setId(1L);
-			r1.setDescription("Teacher");
-			r1.setName("Teacher");
-			r1.setName("Teacher");
-			r1.setShortname("Teacher");
-			r1.setSortOrder(1L);
-			r1.setType(1);
-			
-			roles.put(r1.getId(), r1);
-			
-			final RoleMining r2 = new RoleMining();
-			r2.setId(2L);
-			r2.setDescription("Student");
-			r2.setName("Student");
-			r2.setName("Student");
-			r2.setShortname("Student");
-			r2.setSortOrder(2L);
-			r2.setType(2);
-			
-			roles.put(r2.getId(), r2);
 			
 			
-			
-			this.logger.info("Generated " + roles.size() + " RoleMinings.");
+			this.logger.info("Generated " + roleMining.size() + " RoleMinings.");
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
-		return roles;
+		return roleMining;
 	}
 
 	/**
@@ -2717,6 +2771,23 @@ public class ClixImporter {
 				}
 				if (teacher != null && student != null) {
 					break;
+				}
+			}
+			if(teacher == null)
+			{
+				for (RoleMining r : oldRoleMining.values())
+				{
+					if (r.getType() == 1) 
+					{
+						teacher = r;
+					}
+					else if (r.getType() == 2) 
+					{
+						student = r;
+					}
+					if (teacher != null && student != null) {
+						break;
+					}
 				}
 			}
 

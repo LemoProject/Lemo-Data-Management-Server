@@ -18,6 +18,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
@@ -47,6 +48,7 @@ public class ServiceCourseDetails {
 	 * 
 	 * @return	A CourseObject containing the information.
 	 */
+	@SuppressWarnings("unchecked")
 	@GET
 	@Path("{cid}")
 	public CourseObject getCourseDetails(@PathParam("cid") final Long id) {
@@ -69,8 +71,6 @@ public class ServiceCourseDetails {
 		{
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
-
-		@SuppressWarnings("unchecked")
 		ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
 		Collections.sort(logs);
 
@@ -127,8 +127,8 @@ public class ServiceCourseDetails {
 			{
 				criteria.add(Restrictions.in("log.user.id", userMap.values()));
 			}
-
-			@SuppressWarnings("unchecked")
+			criteria.setProjection(Projections.max("id"));
+			
 			ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
 			Collections.sort(logs);
 

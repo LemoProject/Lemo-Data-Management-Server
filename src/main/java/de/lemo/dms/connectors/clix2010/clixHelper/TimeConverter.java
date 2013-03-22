@@ -36,6 +36,10 @@ public final class TimeConverter {
 			final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			final Date d = sdf.parse(date);
 			t = d.getTime() / THOU;
+			if(d.getTime() % THOU > 499)
+			{
+				t++;
+			}
 
 		} catch (final Exception e)
 		{
