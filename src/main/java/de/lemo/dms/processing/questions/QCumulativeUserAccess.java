@@ -54,13 +54,23 @@ public class QCumulativeUserAccess extends Question {
 	@POST
 	public ResultListBoxPlot compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> course,
-			@FormParam(MetaParam.TYPES) final List<String> types,
+			@FormParam(MetaParam.TYPES) List<String> types,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
 		validateTimestamps(startTime, endTime);
 
 		final Set<ELearningObjectType> learnObjectTypes = ELearningObjectType.fromNames(types);
+		
+		if(types != null )
+		{
+			List<String> tmp = new ArrayList<String>();
+			for(String s : types)
+			{
+				tmp.add(s.toUpperCase());
+			}
+			types = tmp;
+		}
 
 		// generiere querys
 		final Map<ELearningObjectType, String> querys = this.generateQuerys(startTime,

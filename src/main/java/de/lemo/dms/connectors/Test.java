@@ -124,7 +124,7 @@ public class Test {
 		courses.add(11476L);
 		
 		ArrayList<String> types = new ArrayList<String>();
-		types.add("RESOURCE");
+		types.add("resource");
 		
 
 		
