@@ -25,6 +25,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 	@Override
 	public boolean equals(final IMappingClass o)
 	{
+		if (o != null) {} else return false;
 		if (!(o instanceof ResourceLogMining)) {
 			return false;
 		}
@@ -60,11 +61,13 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 		{
 			return 0;
 		}
-		if (this.timestamp > s.getTimestamp()) {
-			return 1;
-		}
-		if (this.timestamp < s.getTimestamp()) {
-			return -1;
+		if (s != null) {
+			if (this.timestamp > s.getTimestamp()) {
+				return 1;
+			}
+			if (this.timestamp < s.getTimestamp()) {
+				return -1;
+			}
 		}
 		return 0;
 	}

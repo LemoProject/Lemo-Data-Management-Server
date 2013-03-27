@@ -77,17 +77,20 @@ public class ArchiveLogMining implements ILogMining {
 		{
 			return 0;
 		}
-		if (this.timestamp > s.getTimestamp()) {
-			return 1;
-		}
-		if (this.timestamp < s.getTimestamp()) {
-			return -1;
+		if (s != null) {
+			if (this.timestamp > s.getTimestamp()) {
+				return 1;
+			}
+			if (this.timestamp < s.getTimestamp()) {
+				return -1;
+			}
 		}
 		return 0;
 	}
 
 	public boolean equals(final IMappingClass o)
 	{
+		if (o != null) {} else return false;
 		if (!(o instanceof ArchiveLogMining)) {
 			return false;
 		}

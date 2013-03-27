@@ -32,11 +32,13 @@ public class CourseLogMining implements IMappingClass, Comparable<CourseLogMinin
 		{
 			return 0;
 		}
-		if (this.timestamp > s.getTimestamp()) {
-			return 1;
-		}
-		if (this.timestamp < s.getTimestamp()) {
-			return -1;
+		if (s != null) {
+			if (this.timestamp > s.getTimestamp()) {
+				return 1;
+			}
+			if (this.timestamp < s.getTimestamp()) {
+				return -1;
+			}
 		}
 		return 0;
 	}
@@ -44,6 +46,7 @@ public class CourseLogMining implements IMappingClass, Comparable<CourseLogMinin
 	@Override
 	public boolean equals(final IMappingClass o)
 	{
+		if (o != null) {} else return false;
 		if (!(o instanceof CourseLogMining)) {
 			return false;
 		}

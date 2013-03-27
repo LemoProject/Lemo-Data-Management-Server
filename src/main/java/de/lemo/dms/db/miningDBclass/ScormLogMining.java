@@ -33,11 +33,13 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 		{
 			return 0;
 		}
-		if (this.timestamp > s.getTimestamp()) {
-			return 1;
-		}
-		if (this.timestamp < s.getTimestamp()) {
-			return -1;
+		if (s != null) {
+			if (this.timestamp > s.getTimestamp()) {
+				return 1;
+			}
+			if (this.timestamp < s.getTimestamp()) {
+				return -1;
+			}
 		}
 		return 0;
 	}
@@ -45,6 +47,7 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	@Override
 	public boolean equals(final IMappingClass o)
 	{
+		if (o != null) {} else return false;
 		if (!(o instanceof ScormLogMining)) {
 			return false;
 		}

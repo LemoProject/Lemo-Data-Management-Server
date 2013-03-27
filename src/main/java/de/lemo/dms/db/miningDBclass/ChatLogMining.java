@@ -34,11 +34,32 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 	public void setCourse(final CourseMining course) {
 		this.course = course;
 	}
+	
+	@Override
+	public int compareTo(final ILogMining o) {
+		ILogMining s;
+		try {
+			s = o;
+		} catch (final Exception e)
+		{
+			return 0;
+		}
+		if (s != null) {
+			if (this.timestamp > s.getTimestamp()) {
+				return 1;
+			}
+			if (this.timestamp < s.getTimestamp()) {
+				return -1;
+			}
+		}
+		return 0;
+	}
 
 	@Override
 	public boolean equals(final IMappingClass o)
 	{
-		if ((o == null) || !(o instanceof ChatLogMining)) {
+		if (o != null) {} else return false;
+		if (!(o instanceof ChatLogMining)) {
 			return false;
 		}
 		if ((o.getId() == this.getId()) && (o instanceof ChatLogMining)) {
@@ -148,23 +169,7 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 		}
 	}
 
-	@Override
-	public int compareTo(final ILogMining o) {
-		ILogMining s;
-		try {
-			s = o;
-		} catch (final Exception e)
-		{
-			return 0;
-		}
-		if (this.timestamp > s.getTimestamp()) {
-			return 1;
-		}
-		if (this.timestamp < s.getTimestamp()) {
-			return -1;
-		}
-		return 0;
-	}
+	
 
 	@Override
 	public String getAction() {

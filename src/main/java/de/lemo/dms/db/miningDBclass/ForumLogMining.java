@@ -36,11 +36,13 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 		{
 			return 0;
 		}
-		if (this.timestamp > s.getTimestamp()) {
-			return 1;
-		}
-		if (this.timestamp < s.getTimestamp()) {
-			return -1;
+		if (s != null) {
+			if (this.timestamp > s.getTimestamp()) {
+				return 1;
+			}
+			if (this.timestamp < s.getTimestamp()) {
+				return -1;
+			}
 		}
 		return 0;
 	}
@@ -48,7 +50,8 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	@Override
 	public boolean equals(final IMappingClass o)
 	{
-		if ((o == null) || !(o instanceof ForumLogMining)) {
+		if (o != null) {} else return false;
+		if (!(o instanceof ForumLogMining)) {
 			return false;
 		}
 		if ((o.getId() == this.getId()) && (o instanceof ForumLogMining)) {

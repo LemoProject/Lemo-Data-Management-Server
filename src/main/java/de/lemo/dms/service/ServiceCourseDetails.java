@@ -130,18 +130,19 @@ public class ServiceCourseDetails {
 			{
 				criteria.add(Restrictions.in("log.user.id", userMap.values()));
 			}
-			criteria.setProjection(Projections.max("id"));
+			//criteria.setProjection(Projections.max("id"));
 			
 			ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
 			Collections.sort(logs);
 
 			Long lastTime = 0L;
 			Long firstTime = 0L;
+			
 
 			if (logs.size() > 0)
 			{
-				lastTime = logs.get(logs.size() - 1).getTimestamp();
-				firstTime = logs.get(0).getTimestamp();
+				lastTime = logs.get(0).getTimestamp();
+				firstTime = logs.get(logs.size() - 1).getTimestamp();
 			}
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(),
 					courseMining.getTitle(), userMap.size(), lastTime, firstTime);
