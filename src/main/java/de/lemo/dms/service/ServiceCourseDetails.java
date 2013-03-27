@@ -18,6 +18,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
@@ -130,8 +131,12 @@ public class ServiceCourseDetails {
 			{
 				criteria.add(Restrictions.in("log.user.id", userMap.values()));
 			}
-			//criteria.setProjection(Projections.max("id"));
-			
+			//TODO Redefine projection for max id as detachable criteria (Subselect)
+			//DetachedCriteria sub = DetachedCriteria.forClass(ILogMining.class);
+			//	sub.setProjection(Projections.max("id"));
+			//
+			//criteria.add(Restrictions.eq("id",sub));
+				
 			ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
 			Collections.sort(logs);
 
