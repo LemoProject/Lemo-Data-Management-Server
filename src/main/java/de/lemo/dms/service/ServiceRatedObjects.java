@@ -63,12 +63,12 @@ public class ServiceRatedObjects {
 				res.add(obj.getRatedObject().getId() + "");
 				res.add(obj.getRatedObject().getTitle());
 			}
+			session.close();
 
 		} catch (final Exception e)
 		{
 			logger.error(e.getMessage());
 		}
-
 		return new ResultListStringObject(res);
 	}
 

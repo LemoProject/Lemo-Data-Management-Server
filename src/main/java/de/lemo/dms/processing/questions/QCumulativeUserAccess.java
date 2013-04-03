@@ -123,9 +123,11 @@ public class QCumulativeUserAccess extends Question {
 			final ResultListBoxPlot rlbp = new ResultListBoxPlot(l);
 			super.logger.debug("Resultlist created ...." + rlbp.toString()
 					+ " Number of entries: " + rlbp.getElements().size());
+			session.close();
 			return rlbp;
 		} catch (final Exception e) {
 			this.logger.error(e);
+			session.close();
 			return new ResultListBoxPlot();
 		}
 

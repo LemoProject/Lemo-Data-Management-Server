@@ -170,6 +170,7 @@ public class QCourseUserPaths extends Question {
 
 		result.put("nodes", nodes);
 		result.put("links", edges);
+		session.close();
 		return result;
 	}
 }

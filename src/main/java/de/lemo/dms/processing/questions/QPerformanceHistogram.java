@@ -175,7 +175,7 @@ public class QPerformanceHistogram extends Question {
 			}
 
 		}
-
+		session.close();
 		return new ResultListLongObject(Arrays.asList(results));
 	}
 

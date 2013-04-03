@@ -165,7 +165,7 @@ public class QLearningObjectUsage extends Question {
 			result.add(rri);
 		}
 		this.logger.info("Total returned entries: " + result.getResourceRequestInfos().size());
-		
+		session.close();
 		return result;
 	}
 }

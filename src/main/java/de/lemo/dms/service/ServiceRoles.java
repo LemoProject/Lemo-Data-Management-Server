@@ -44,7 +44,7 @@ public class ServiceRoles {
 			roles.add(new RoleObject(role.getId(), role.getName()));
 		}
 
-		dbHandler.closeSession(session);
+		session.close();
 		return new ResultListRoleObject(roles);
 	}
 

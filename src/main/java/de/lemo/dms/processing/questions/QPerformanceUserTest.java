@@ -229,7 +229,7 @@ public class QPerformanceUserTest {
 			}
 			i++;
 		}
-
+		session.close();
 		return new ResultListLongObject(Arrays.asList(results));
 	}
 

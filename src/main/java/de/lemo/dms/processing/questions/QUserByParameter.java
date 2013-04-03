@@ -140,7 +140,7 @@ public class QUserByParameter extends Question {
 		}
 
 		userIds = new ResultListLongObject(new ArrayList<Long>(users.values()));
-
+		session.close();
 		return userIds;
 
 	}
@@ -163,7 +163,8 @@ public class QUserByParameter extends Question {
 		if (!ids.isEmpty()) {
 			criteria.add(Restrictions.in("log." + type + ".id", ids));
 		}
-		return criteria.list();
+		List<ILogMining> r = criteria.list();
+		return r;
 
 	}
 }

@@ -101,6 +101,7 @@ public class QActivityResourceType extends Question {
 		if (rriMap.values() != null) {
 			result.addAll(rriMap.values());
 		}
+		session.close();
 		return result;
 	}
 

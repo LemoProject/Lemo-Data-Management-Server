@@ -167,7 +167,7 @@ public class QPerformanceBoxPlot extends Question {
 			results[i] = plotty;
 			i++;
 		}
-
+		session.close();
 		return new ResultListBoxPlot(Arrays.asList(results));
 	}
 

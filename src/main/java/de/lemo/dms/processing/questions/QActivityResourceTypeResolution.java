@@ -100,6 +100,7 @@ public class QActivityResourceTypeResolution extends Question {
 				}
 			}
 		}
+		session.close();
 
 		return result;
 	}

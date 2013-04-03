@@ -185,6 +185,7 @@ public class QUserLogHistory extends Question {
 
 		final ResultListUserLogObject rlupo = new ResultListUserLogObject(l);
 
+		session.close();
 		return rlupo;
 	}
 }

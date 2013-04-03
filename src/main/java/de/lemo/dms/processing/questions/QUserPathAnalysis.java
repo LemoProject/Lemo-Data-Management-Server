@@ -245,6 +245,7 @@ public class QUserPathAnalysis extends Question {
 				}
 			}
 		}
+		session.close();
 		return new ResultListUserPathGraph(nodes, links);
 	}
 

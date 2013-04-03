@@ -125,6 +125,7 @@ public class ServiceCourseTitleSearch {
 			}
 			
 		}
+		session.close();
 		return new ResultListCourseObject(result);
 	}
 

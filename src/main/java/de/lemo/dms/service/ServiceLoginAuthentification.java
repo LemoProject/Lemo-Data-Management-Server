@@ -60,6 +60,7 @@ public class ServiceLoginAuthentification {
 			logger.info("User " + login + " not found!");
 			res = new ResultListLongObject();
 		}
+		session.close();
 		return res;
 	}
 

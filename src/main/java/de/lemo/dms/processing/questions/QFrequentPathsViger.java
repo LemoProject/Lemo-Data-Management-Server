@@ -386,7 +386,7 @@ public class QFrequentPathsViger extends Question {
 			z++;
 		}
 		System.out.println("Wrote " + z + " logs.");
-
+		session.close();
 		return result;
 	}
 

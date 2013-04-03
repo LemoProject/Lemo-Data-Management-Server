@@ -203,7 +203,7 @@ public class QPerformanceUserTestBoxPlot {
 			results[i] = plotty;
 			i++;
 		}
-
+		session.close();
 		return new ResultListBoxPlot(Arrays.asList(results));
 	}
 	

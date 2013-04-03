@@ -122,7 +122,7 @@ public class ServiceUserInformation {
 			}
 			
 		}
-		
+		session.close();
 		return new ResultListCourseObject(courses);
 	}
 	
@@ -142,8 +142,9 @@ public class ServiceUserInformation {
 		// Set up db-connection
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
-		
-		return ((Long) session.createQuery("Select count(*) from CourseUserMining where user="+id+" and role in (Select id from RoleMining where type in (0,1))").uniqueResult());
+		Long r = ((Long) session.createQuery("Select count(*) from CourseUserMining where user="+id+" and role in (Select id from RoleMining where type in (0,1))").uniqueResult());
+		session.close();
+		return r;
 	}
 
 }
