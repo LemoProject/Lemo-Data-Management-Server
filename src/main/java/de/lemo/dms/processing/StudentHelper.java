@@ -48,6 +48,7 @@ public class StudentHelper {
 				i++;
 			}
 		}
+		session.close();
 		return users;
 	}
 	
@@ -76,6 +77,7 @@ public class StudentHelper {
 				i++;
 			}
 		}
+		session.close();
 		return users;
 	}
 }

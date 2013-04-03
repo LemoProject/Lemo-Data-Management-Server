@@ -88,7 +88,8 @@ public class ServiceCourseDetails {
 		CourseObject result =
 				new CourseObject(course.getId(), course.getShortname(), course.getTitle(), users.size(), lastTime, firstTime);
 
-		dbHandler.closeSession(session);
+		//dbHandler.closeSession(session);
+		session.close();
 		return result;
 	}
 
@@ -157,7 +158,7 @@ public class ServiceCourseDetails {
 		if (results.isEmpty()) {
 			System.out.println("Result List is empty");
 		} else for(CourseObject co : results) System.out.println("Result Course: "+ co.getDescription());
-		
+		session.close();
 		return new ResultListCourseObject(results);
 	}
 

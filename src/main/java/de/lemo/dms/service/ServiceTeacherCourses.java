@@ -75,6 +75,7 @@ public class ServiceTeacherCourses {
 		else {
 			result = new ResultListLongObject();
 		}
+		session.close();
 		return result;
 	}
 

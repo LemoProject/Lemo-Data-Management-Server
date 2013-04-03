@@ -184,6 +184,7 @@ public class QCourseActivity extends Question {
 		} else {
 			this.logger.info("Returning empty resultset.");
 		}
+		session.close();
 		return resultObject;
 	}
 }
