@@ -267,6 +267,8 @@ public class LogReader {
 			if (this.resLogId == null) {
 				this.resLogId = 0L;
 			}
+			
+			session.close();
 
 		} catch (final Exception e)
 		{
