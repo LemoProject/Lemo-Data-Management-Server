@@ -390,8 +390,8 @@ public class BoxPlotGeneratorForDates {
 		// Differenz in ms
 		final long time = cal2.getTime().getTime() - cal1.getTime().getTime();
 		// Differenz in Tagen
-		final long days = Math.round(time / (4. * 60. * 60. * 1000.));
-		diff = Math.round(days);
+		final long days = Math.round(time / (24. * 60. * 60. * 1000.));
+		diff = Math.round(days / WEEK);
 		return diff;
 	}
 
