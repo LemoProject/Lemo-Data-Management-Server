@@ -354,7 +354,6 @@ public class QFrequentPathsBIDE extends Question {
 
 			}
 			logger.debug("Wrote " + z + " user histories.");
-			session.close();
 
 		} catch (final Exception e)
 		{
@@ -539,7 +538,6 @@ public class QFrequentPathsBIDE extends Question {
 			z++;
 		}
 		logger.debug("Wrote " + z + " logs.");
-		session.close();
 		return result;
 	}
 
