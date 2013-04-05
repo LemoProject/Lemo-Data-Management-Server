@@ -70,6 +70,9 @@ public class QFrequentPathsBIDE extends Question {
 		
 		final List<UserPathNode> nodes = Lists.newArrayList();
 		final List<UserPathLink> links = Lists.newArrayList();
+		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+
+		final Session session = dbHandler.getMiningSession();
 
 		if (logger.isDebugEnabled()) {
 			StringBuffer buffer = new StringBuffer();
@@ -116,11 +119,11 @@ public class QFrequentPathsBIDE extends Question {
 			if (!sessionWise) {
 				sequenceDatabase.loadLinkedList(QFrequentPathsBIDE.generateLinkedList(courses, users, types, minLength,
 						maxLength,
-						startTime, endTime));
+						startTime, endTime, session));
 			} else {
 				sequenceDatabase.loadLinkedList(QFrequentPathsBIDE.generateLinkedListSessionBound(courses, users,
 						types, minLength,
-						maxLength, startTime, endTime));
+						maxLength, startTime, endTime, session));
 			}
 
 			final AlgoBIDEPlus algo = new AlgoBIDEPlus(minSup);
@@ -211,6 +214,7 @@ public class QFrequentPathsBIDE extends Question {
 			QFrequentPathsBIDE.internalIdToId.clear();
 			QFrequentPathsBIDE.idToInternalId.clear();
 		}
+		session.close();
 		return new ResultListUserPathGraph(nodes, links);
 	}
 
@@ -230,13 +234,10 @@ public class QFrequentPathsBIDE extends Question {
 	@SuppressWarnings("unchecked")
 	private static LinkedList<String> generateLinkedListSessionBound(final List<Long> courses, List<Long> users,
 			final List<String> types, final Long minLength, final Long maxLength, final Long starttime,
-			final Long endtime)
+			final Long endtime, Session session)
 	{
 		final LinkedList<String> result = new LinkedList<String>();
 		try {
-			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
-
-			final Session session = dbHandler.getMiningSession();
 
 			if(users == null || users.size() == 0)
 			{
@@ -378,16 +379,14 @@ public class QFrequentPathsBIDE extends Question {
 	@SuppressWarnings("unchecked")
 	private static LinkedList<String> generateLinkedList(final List<Long> courses, List<Long> users,
 			final List<String> types,
-			final Long minLength, final Long maxLength, final Long starttime, final Long endtime)
+			final Long minLength, final Long maxLength, final Long starttime, final Long endtime, Session session)
 	{
 		final LinkedList<String> result = new LinkedList<String>();
 		final boolean hasBorders = (minLength != null) && (maxLength != null) && (maxLength > 0)
 				&& (minLength < maxLength);
 		final boolean hasTypes = (types != null) && (types.size() > 0);
 
-		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
-		final Session session = dbHandler.getMiningSession();
 
 		Criteria criteria;
 		if(users == null || users.size() == 0)

@@ -109,13 +109,17 @@ public class QFrequentPathsViger extends Question {
 			logger.info("Parameter list: Start time: : " + startTime);
 			logger.info("Parameter list: End time: : " + endTime);
 		}
+		
+		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+
+		final Session session = dbHandler.getMiningSession();
 
 		try
 		{
 			final SequenceDatabase sequenceDatabase = new SequenceDatabase();
 
 			sequenceDatabase.loadLinkedList(QFrequentPathsViger.generateLinkedList(courses, users, types, minLength,
-					maxLength, startTime, endTime));
+					maxLength, startTime, endTime, session));
 
 			final AlgoFournierViger08 algo = new AlgoFournierViger08(minSup, 0L, 1L, 0L, 1000L, null, true, false);
 
@@ -206,6 +210,7 @@ public class QFrequentPathsViger extends Question {
 			QFrequentPathsViger.internalIdToId.clear();
 			QFrequentPathsViger.idToInternalId.clear();
 		}
+		session.close();
 		return new ResultListUserPathGraph(nodes, links);
 	}
 
@@ -225,16 +230,14 @@ public class QFrequentPathsViger extends Question {
 	@SuppressWarnings("unchecked")
 	private static LinkedList<String> generateLinkedList(final List<Long> courses, List<Long> users,
 			final List<String> types, final Long minLength, final Long maxLength, final Long starttime,
-			final Long endtime)
+			final Long endtime, Session session)
 	{
 		final LinkedList<String> result = new LinkedList<String>();
 		final boolean hasBorders = (minLength != null) && (maxLength != null) && (maxLength > 0)
 				&& (minLength < maxLength);
 		final boolean hasTypes = (types != null) && (types.size() > 0);
 
-		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
-		final Session session = dbHandler.getMiningSession();
 		
 		Criteria criteria;
 		if(users == null || users.size() == 0)
