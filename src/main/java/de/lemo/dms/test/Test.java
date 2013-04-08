@@ -24,7 +24,7 @@ public class Test {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
-		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 2, 2, 251, 0L, 500, 2));
+		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 2, 2, 251, 1325372400L, 500, 1));
 	}
 
 	public static void write()

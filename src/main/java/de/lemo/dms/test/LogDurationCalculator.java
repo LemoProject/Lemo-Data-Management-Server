@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * Calculates and sets the duration-attributes for a List of log-objects. The list "values" has not to be sorted
@@ -108,14 +109,14 @@ public final class LogDurationCalculator {
 	 * @param offset
 	 *            Offset for the ids. If the offset is "0", the oldest log-object gets the id "0".
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void createIds(final List<?> values, final int offset)
 	{
 
-		Collections.sort((ArrayList<ILogMining>) values);
+		Collections.sort((List<Comparable>)values);
 		for (int i = 0; i < values.size(); i++)
 		{
-			((ArrayList<ILogMining>) values).get(i).setId(i + offset);
+			((List<IMappingClass>) values).get(i).setId(i + offset);
 		}
 
 	}

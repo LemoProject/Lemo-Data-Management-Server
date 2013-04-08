@@ -702,7 +702,7 @@ public class ContentGenerator {
 							for (int h = 0; h < courseUserList.size(); h++) {
 								if ((aLog.getUser() == (courseUserList.get(h).getUser()))
 										&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-												+ "" + 2)) && (a.getMaxGrade() > 0))
+												+ "" + 3)) && (a.getMaxGrade() > 0))
 								{
 									aLog.setGrade(a.getMaxGrade() - randy.nextInt(a.getMaxGrade().intValue()));
 									aLog.setAction(assignmentActionTeacher[randy.nextInt(assignmentActionTeacher.length)]);
@@ -735,7 +735,7 @@ public class ContentGenerator {
 								for (int h = 0; h < courseUserList.size(); h++) {
 									if ((aLog.getUser() == (courseUserList.get(h).getUser()))
 											&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-													+ "" + 2)) && (a.getMaxGrade() > 0))
+													+ "" + 3)) && (a.getMaxGrade() > 0))
 									{
 										aLog.setGrade(a.getMaxGrade() - randy.nextInt(a.getMaxGrade().intValue()));
 										aLog.setAction(assignmentActionTeacher[randy.nextInt(assignmentActionTeacher.length)]);
@@ -984,7 +984,7 @@ public class ContentGenerator {
 							for (int h = 0; h < courseUserList.size(); h++) {
 								if ((sLog.getUser() == (courseUserList.get(h).getUser()))
 										&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-												+ "" + 2)) && (scorm.getMaxGrade() > 0))
+												+ "" + 3)) && (scorm.getMaxGrade() > 0))
 								{
 									sLog.setGrade(scorm.getMaxGrade() - randy.nextInt(scorm.getMaxGrade().intValue()));
 									sLog.setAction("report");
@@ -1017,7 +1017,7 @@ public class ContentGenerator {
 								for (int h = 0; h < courseUserList.size(); h++) {
 									if ((sLog.getUser() == (courseUserList.get(h).getUser()))
 											&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-													+ "" + 2)) && (scorm.getMaxGrade() > 0))
+													+ "" + 3)) && (scorm.getMaxGrade() > 0))
 									{
 										sLog.setGrade(scorm.getMaxGrade() - randy.nextInt(scorm.getMaxGrade().intValue()));
 										sLog.setAction("report");
@@ -1056,7 +1056,7 @@ public class ContentGenerator {
 							for (int h = 0; h < courseUserList.size(); h++) {
 								if ((qLog.getUser() == (courseUserList.get(h).getUser()))
 										&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-												+ "" + 2)) && (quiz.getMaxGrade() > 0))
+												+ "" + 3)) && (quiz.getMaxGrade() > 0))
 								{
 									qLog.setGrade(quiz.getMaxGrade() - randy.nextInt(quiz.getMaxGrade().intValue()));
 									qLog.setAction("report");
@@ -1093,7 +1093,7 @@ public class ContentGenerator {
 							for (int h = 0; h < courseUserList.size(); h++) {
 								if ((qLog.getUser() == (courseUserList.get(h).getUser()))
 										&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-												+ "" + 2)) && (quiz.getMaxGrade() > 0))
+												+ "" + 3)) && (quiz.getMaxGrade() > 0))
 								{
 									final int qNumber = MAGIC_TEN;
 									if (quiz.getMaxGrade() < qNumber) {
@@ -1135,7 +1135,7 @@ public class ContentGenerator {
 								for (int h = 0; h < courseUserList.size(); h++) {
 									if ((qLog.getUser() == (courseUserList.get(h).getUser()))
 											&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-													+ "" + 2)) && (quiz.getMaxGrade() > 0))
+													+ "" + 3)) && (quiz.getMaxGrade() > 0))
 									{
 										qLog.setGrade(quiz.getMaxGrade() - randy.nextInt(quiz.getMaxGrade().intValue()));
 										qLog.setAction("report");
@@ -1170,7 +1170,7 @@ public class ContentGenerator {
 								for (int h = 0; h < courseUserList.size(); h++) {
 									if ((qLog.getUser() == (courseUserList.get(h).getUser()))
 											&& (courseUserList.get(h).getRole().getId() == Long.valueOf(platform.getPrefix()
-													+ "" + 2)) && (quiz.getMaxGrade() > 0))
+													+ "" + 3)) && (quiz.getMaxGrade() > 0))
 									{
 										final int qNumber = MAGIC_TEN;
 										if (quiz.getMaxGrade() < qNumber) {

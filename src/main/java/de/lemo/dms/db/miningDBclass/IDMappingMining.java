@@ -67,7 +67,7 @@ public class IDMappingMining implements IMappingClass {
 		return this.id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(final long id) {
 		this.id = id;
 	}
 

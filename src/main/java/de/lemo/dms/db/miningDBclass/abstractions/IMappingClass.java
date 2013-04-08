@@ -15,6 +15,8 @@ package de.lemo.dms.db.miningDBclass.abstractions;
 public interface IMappingClass {
 
 	long getId();
+	
+	void setId(long id);
 
 	boolean equals(IMappingClass o);
 

@@ -48,7 +48,7 @@ public class PlatformMining implements IMappingClass {
 		this.type = type;
 	}
 
-	public void setId(final Long id) {
+	public void setId(final long id) {
 		this.id = id;
 	}
 

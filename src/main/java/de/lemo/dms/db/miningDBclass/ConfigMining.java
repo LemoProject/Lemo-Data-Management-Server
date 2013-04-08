@@ -126,4 +126,9 @@ public class ConfigMining implements IMappingClass {
 	public void setLatestTimestamp(long latestTimestamp) {
 		this.latestTimestamp = latestTimestamp;
 	}
+	
+	public void setId(long id)
+	{
+		
+	}
 }
