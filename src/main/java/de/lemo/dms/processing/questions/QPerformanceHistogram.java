@@ -26,6 +26,8 @@ import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
+import de.lemo.dms.processing.resulttype.ResultListStringObject;
+import de.lemo.dms.service.ServiceRatedObjects;
 
 /**
  * Results for the perfromance (test) of student
@@ -88,20 +90,49 @@ public class QPerformanceHistogram extends Question {
 			logger.info("Parameter list: End time: : " + endTime);
 		}
 
+
+
+
+
+		final Map<Long, Integer> obj = new HashMap<Long, Integer>();
+
+		if(quizzes.size() > 0)
+		{
+			for (int i = 0; i < quizzes.size(); i++)
+			{
+				obj.put(quizzes.get(i), i);
+			}
+		}
+		else
+		{
+			ServiceRatedObjects sro = new ServiceRatedObjects();
+			ResultListStringObject rso = sro.getRatedObjects(courses);
+			String s = new String();
+			int count = 0;
+			for(int i = 0; i < rso.getElements().size(); i++)
+			{
+				if((i + 1) % 3 != 0)
+				{
+					s += rso.getElements().get(i);
+				}
+				else
+				{
+					obj.put(Long.valueOf(s), count);
+					quizzes.add(Long.valueOf(s));
+					s= "";
+					count++;
+				}
+			}
+			
+		}
+		
 		// Determine length of result array
 		final int objects = resolution.intValue() * quizzes.size();
-
+		
 		final Long[] results = new Long[objects];
 		// Initialize result array
 		for (int i = 0; i < results.length; i++) {
 			results[i] = 0L;
-		}
-
-		final Map<Long, Integer> obj = new HashMap<Long, Integer>();
-
-		for (int i = 0; i < quizzes.size(); i++)
-		{
-			obj.put(quizzes.get(i), i);
 		}
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -167,7 +198,7 @@ public class QPerformanceHistogram extends Question {
 					}
 					// Increase count of specified interval
 					results[(resolution.intValue() * obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())))
-							+ pos] = results[(resolution.intValue() * obj
+							+ pos] = results           [(resolution.intValue() * obj
 							.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())))
 							+ pos] + 1;
 				}

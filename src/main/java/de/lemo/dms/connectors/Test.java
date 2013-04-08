@@ -15,6 +15,8 @@ import de.lemo.dms.processing.questions.QCourseActivity;
 import de.lemo.dms.processing.questions.QCumulativeUserAccess;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QLearningObjectUsage;
+import de.lemo.dms.processing.questions.QPerformanceHistogram;
+import de.lemo.dms.processing.questions.QPerformanceUserTest;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
 import de.lemo.dms.service.ServiceCourseDetails;
@@ -113,6 +115,7 @@ public class Test {
 	
 	public void test()
 	{
+		QPerformanceHistogram qput = new QPerformanceHistogram();
 		QFrequentPathsBIDE bid = new QFrequentPathsBIDE();
 		QCumulativeUserAccess cua = new QCumulativeUserAccess();
 		QCourseActivity qlou = new QCourseActivity();
@@ -124,7 +127,7 @@ public class Test {
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
 	//	users.add(2L);
-		courses.add(11476L);
+		courses.add(221L);
 		
 		ArrayList<String> types = new ArrayList<String>();
 		types.add("resource");
@@ -133,7 +136,7 @@ public class Test {
 		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
-		CourseObject co = scd.getCourseDetails(11476L);
+		//CourseObject co = scd.getCourseDetails(11476L);
 		
 		//art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types);
 		
@@ -143,9 +146,8 @@ public class Test {
 		
 		//qlou.compute(courses, users, 0L, 1500000000L, 100L, new ArrayList<String>());
 		
-		ResultListUserPathGraph r =  bid.compute(courses, users, types, 1L, 1000L, 0.7, false, 0L, 1500000000L);
+		qput.compute(courses, users, new ArrayList<Long>(), 100L, 0L, 1500000000L);
 	
-		r.getClass();
 		ServiceCourseTitleSearch scts = new ServiceCourseTitleSearch();
 		scts.getCoursesByText("Inform", null, null);
 		

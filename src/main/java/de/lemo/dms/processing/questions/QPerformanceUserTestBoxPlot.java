@@ -31,6 +31,8 @@ import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.BoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
+import de.lemo.dms.processing.resulttype.ResultListStringObject;
+import de.lemo.dms.service.ServiceRatedObjects;
 
 /**
  * Gathers and returns all all test results for every student and every test in a course
@@ -124,9 +126,34 @@ public class QPerformanceUserTestBoxPlot {
 
 		final Map<Long, Integer> obj = new HashMap<Long, Integer>();
 
-		for (int i = 0; i < quizzes.size(); i++)
+		if(quizzes.size() > 0)
 		{
-			obj.put(quizzes.get(i), i);
+			for (int i = 0; i < quizzes.size(); i++)
+			{
+				obj.put(quizzes.get(i), i);
+			}
+		}
+		else
+		{
+			ServiceRatedObjects sro = new ServiceRatedObjects();
+			ResultListStringObject rso = sro.getRatedObjects(courses);
+			String s = new String();
+			int count = 0;
+			for(int i = 0; i < rso.getElements().size(); i++)
+			{
+				if((i + 1) % 3 != 0)
+				{
+					s += rso.getElements().get(i);
+				}
+				else
+				{
+					obj.put(Long.valueOf(s), count);
+					quizzes.add(Long.valueOf(s));
+					s= "";
+					count++;
+				}
+			}
+			
 		}
 
 		
