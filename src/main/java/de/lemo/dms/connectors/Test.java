@@ -45,7 +45,7 @@ public class Test {
 		List<Long> courses = new ArrayList<Long>();
 		courses.add(7L);
 		
-		connector.setCourseIdFilter(courses);
+		//connector.setCourseIdFilter(courses);
 		
 		connector.getData();
 		
@@ -158,7 +158,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.test();
+		this.runMoodleNumericConn();
 		logger.info("Test finished");
 	}
 

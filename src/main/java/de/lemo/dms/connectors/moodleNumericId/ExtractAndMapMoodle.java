@@ -395,7 +395,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
  				criteria.add(Restrictions.in("obj.id", ids));
 		}
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		if(readingfromtimestamp > 0 )
+		{
+			criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(hasCR && empty)
 			this.userLms = new ArrayList<UserLMS>();
@@ -1010,7 +1013,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						insert.setRole(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getRoleid()),
 								this.roleMining, this.oldRoleMining);
 						insert.setPlatform(this.connector.getPlatformId());
-						insert.setUser(loadedItem2.getUserid(), this.userMining, this.oldUserMining);
+						insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getUserid()), this.userMining, this.oldUserMining);
 						insert.setEnrolstart(loadedItem2.getTimestart());
 						insert.setEnrolend(loadedItem2.getTimeend());
 						insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInstanceid()),

@@ -460,7 +460,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
  				criteria.add(Restrictions.in("obj.id", ids));
 		}
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		if(readingfromtimestamp > 0 )
+		{
+			criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
 			this.userLms = criteria.list();
