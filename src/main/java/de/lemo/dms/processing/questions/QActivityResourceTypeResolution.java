@@ -110,7 +110,7 @@ public class QActivityResourceTypeResolution extends Question {
 
 		final HashMap<String, ResourceRequestInfo> rri = new HashMap<String, ResourceRequestInfo>();
 		for (ILogMining log : logs) {
-			Long id = log.getLearnObjId();
+			Long id = Long.valueOf(log.getPrefix() + "" + log.getLearnObjId());
 			if (id != null) {
 				Long pos = new Double((log.getTimestamp() - startTime) / intervall).longValue();
 				if (pos > (resolution - 1)) {
