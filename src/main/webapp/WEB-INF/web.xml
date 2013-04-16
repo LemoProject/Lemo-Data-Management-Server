@@ -9,7 +9,7 @@
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>de.lemo.dms.service</param-value>
+      <param-value>de.lemo.dms.service;org.codehaus.jackson.jaxrs</param-value>
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
@@ -22,7 +22,7 @@
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>de.lemo.dms.processing.questions</param-value>
+      <param-value>de.lemo.dms.processing.questions;org.codehaus.jackson.jaxrs</param-value>
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
