@@ -127,26 +127,26 @@ public class Test {
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
 	//	users.add(2L);
-		courses.add(221L);
+		courses.add(1513617310L);
 		
 		ArrayList<String> types = new ArrayList<String>();
-		types.add("resource");
+		//types.add("resource");
 		
 
 		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
-		//CourseObject co = scd.getCourseDetails(11476L);
+		CourseObject co = scd.getCourseDetails(1513617310L);
 		
 		//art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types);
 		
-		//lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest());
+		lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest());
 		
 //		cua.compute(courses, types, co.getFirstRequest(), co.getLastRequest());
 		
 		//qlou.compute(courses, users, 0L, 1500000000L, 100L, new ArrayList<String>());
 		
-		qput.compute(courses, users, new ArrayList<Long>(), 100L, 0L, 1500000000L);
+		//qput.compute(courses, users, new ArrayList<Long>(), 100L, 0L, 1500000000L);
 	
 		ServiceCourseTitleSearch scts = new ServiceCourseTitleSearch();
 		scts.getCoursesByText("Inform", null, null);
@@ -158,7 +158,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodleNumericConn();
+		this.test();
 		logger.info("Test finished");
 	}
 

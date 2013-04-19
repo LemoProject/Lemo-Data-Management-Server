@@ -108,7 +108,7 @@ public class QLearningObjectUsage extends Question {
 					.substring(ilo.getClass().toString().lastIndexOf(".") + 1,
 							ilo.getClass().toString().lastIndexOf("Log"));
 
-			if ((types == null) || (types.size() == 0) || types.contains(obType.toUpperCase()))
+			if ((types == null) || (types.isEmpty()) || types.contains(obType.toUpperCase()))
 			{
 				requestedObjects.add(ilo.getPrefix() + " " + ilo.getLearnObjId());
 				final String id = ilo.getPrefix() + "_" + ilo.getLearnObjId() + "?" + obType + "$" + ilo.getTitle();
@@ -141,7 +141,7 @@ public class QLearningObjectUsage extends Question {
 				{
 					type = type.substring(0, type.indexOf("MINING"));
 				}
-				if(types.contains(type))
+				if(types.isEmpty() || types.contains(type))
 				{			
 					final ResourceRequestInfo rri = new ResourceRequestInfo(id,
 							ELearningObjectType.valueOf(type), 0L, 0L,
