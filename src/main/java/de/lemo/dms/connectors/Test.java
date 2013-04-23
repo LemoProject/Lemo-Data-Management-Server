@@ -99,13 +99,13 @@ public class Test {
 		courses.add(21040967L);
 		
 		
-		/*
+		
 		courses.add(4667155L);
 		courses.add(8074949L);
 		courses.add(10921956L);
 		courses.add(13617310L);
 		courses.add(17945446L);
-		*/
+		
 		connector.setCourseIdFilter(courses);
 		
 		connector.getData();
@@ -158,7 +158,7 @@ public class Test {
 	{
 		logger.info("Starting test");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.test();
+		this.runMoodleNumericConn();
 		logger.info("Test finished");
 	}
 
