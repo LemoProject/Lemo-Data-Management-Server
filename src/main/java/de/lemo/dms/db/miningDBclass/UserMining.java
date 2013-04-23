@@ -17,7 +17,7 @@ public class UserMining implements IMappingClass {
 
 	private long id;
 	private String login;
-	private Boolean gender;
+	private long gender;
 	private long lastLogin;
 	private long firstAccess;
 	private long lastAccess;
@@ -72,11 +72,11 @@ public class UserMining implements IMappingClass {
 		this.login = login;
 	}
 
-	public Boolean getGender() {
+	public long getGender() {
 		return this.gender;
 	}
 
-	public void setGender(final Boolean gender) {
+	public void setGender(final long gender) {
 		this.gender = gender;
 	}
 

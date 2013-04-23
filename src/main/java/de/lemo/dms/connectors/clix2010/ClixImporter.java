@@ -1890,9 +1890,13 @@ public class ClixImporter {
 					maxLog = TimeConverter.getTimestamp(loadedItem.getLastUpdated());
 
 				if (loadedItem.getGender() == 1) {
-					item.setGender(false);
-				} else {
-					item.setGender(true);
+					item.setGender(2);
+				} else if (loadedItem.getGender() == 2) {
+					item.setGender(1);
+				}
+				else
+				{
+					item.setGender(0);
 				}
 				item.setLogin(Encoder.createMD5(loadedItem.getLogin()));
 

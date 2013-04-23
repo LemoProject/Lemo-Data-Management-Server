@@ -480,6 +480,7 @@ public class LogReader {
 							else
 							{
 								u.setLastLogin(u.getCurrentLogin());
+								
 
 								if (u.getCurrentLogin() < lo.getTime()) {
 									u.setCurrentLogin(lo.getTime());
@@ -497,6 +498,7 @@ public class LogReader {
 							// If the user is unknown, create new user-object
 							final UserMining u = new UserMining();
 							u.setId(lo.getId());
+							u.setGender(0);
 							u.setFirstAccess(lo.getTime());
 							u.setLastAccess(lo.getTime());
 							// google-referrers aren't replaced with "-" although they are external
