@@ -75,7 +75,7 @@ public class ServiceCourseTitleSearch {
 			ids.add(course.getId());
 		}
 		
-		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(ids);
+		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(ids, new ArrayList<Long>());
 
 		for (CourseMining courseMining : courses) {
 			

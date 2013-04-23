@@ -62,11 +62,12 @@ public class QCourseActivity extends Question {
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
-			@FormParam(MetaParam.TYPES) final List<String> resourceTypes) {
+			@FormParam(MetaParam.TYPES) final List<String> resourceTypes,
+			@FormParam(MetaParam.GENDER) List<Long> gender){
 
 		validateTimestamps(startTime, endTime, resolution);
 		final Map<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();
-		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, gender);
 		// Set up db-connection
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
@@ -91,7 +92,7 @@ public class QCourseActivity extends Question {
 
 		// Calculate size of time intervalls
 		final double intervall = (endTime - startTime) / (resolution);
-		final Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses);
+		final Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses, gender);
 		final Map<Long, HashMap<Integer, Set<Long>>> userPerResStep = new HashMap<Long, HashMap<Integer, Set<Long>>>();
 
 		// Create and initialize array for results

@@ -69,7 +69,8 @@ public class QPerformanceUserTestBoxPlot {
 			@FormParam(MetaParam.QUIZ_IDS) final List<Long> quizzes,
 			@FormParam(MetaParam.RESOLUTION) Long resolution,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) final Long endTime) {
+			@FormParam(MetaParam.END_TIME) final Long endTime,
+			@FormParam(MetaParam.GENDER) final List<Long> gender) {
 
 		if (logger.isDebugEnabled()) {
 			if ((courses != null) && (courses.size() > 0))
@@ -101,11 +102,11 @@ public class QPerformanceUserTestBoxPlot {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 		}
 		else
 		{
-			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, gender);
 			List<Long> tmp = new ArrayList<Long>();
 			for(int i = 0; i < users.size(); i++)
 			{
@@ -222,7 +223,7 @@ public class QPerformanceUserTestBoxPlot {
 		c.add(-1d);
 		
 		int i = 0;
-		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses);
+		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses, gender);
 		for (final Entry<Long, ArrayList<Double>> e : fin.entrySet())
 		{
 			e.getValue().removeAll(c);
