@@ -24,6 +24,9 @@ class DataManagementServer {
 
 	private static final String DEFAULT_NAME = "Lemo Data Management Server";
 
+	// 5 minutes
+	private static final int DEFAULT_PATH_ANALYSIS_TIMEOUT = 300;
+
 	/**
 	 * Human readable name of the DMS server, may used for identification when
 	 * running multiple servers.
@@ -38,8 +41,18 @@ class DataManagementServer {
 	@XmlElement(name = "property")
 	public List<PropertyConfig> databaseProperties = Lists.newArrayList();
 
+	/**
+	 * Definitions of platform connectors.
+	 */
 	@XmlElementWrapper(name = "connectors", required = true)
 	@XmlElement(name = "connector")
 	public List<Connector> connectors = Lists.newArrayList();
+
+	/**
+	 * Timeout for path analysis threads in seconds. If omitted, the default timeout value is 5 minutes.
+	 * A value less than one indicates that no timeout should be used.
+	 */
+	@XmlElement(name = "path-analysis-timeout")
+	public int pathAnalysisTimeout = DEFAULT_PATH_ANALYSIS_TIMEOUT;
 
 }

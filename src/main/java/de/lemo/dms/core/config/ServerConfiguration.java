@@ -53,6 +53,7 @@ public enum ServerConfiguration {
 	private IDBHandler miningDbHandler;
 	private long startTime;
 	private String serverName;
+	private Integer pathAnalysisTimeout;
 
 	/**
 	 * Gets the instance of the server's configuration.
@@ -84,6 +85,10 @@ public enum ServerConfiguration {
 		final LemoConfig lemoConfig = this.readConfigFiles(contextPath);
 
 		this.serverName = lemoConfig.dataManagementServer.name;
+
+		if (lemoConfig.dataManagementServer.pathAnalysisTimeout > 0) {
+			this.pathAnalysisTimeout = lemoConfig.dataManagementServer.pathAnalysisTimeout;
+		}
 
 		this.logger.info("Inititalizing mining database");
 		final DBConfigObject miningDBConfig = this.createDBConfig(lemoConfig.dataManagementServer.databaseProperties);
@@ -220,6 +225,15 @@ public enum ServerConfiguration {
 	 */
 	public String getName() {
 		return this.serverName;
+	}
+
+	/**
+	 * The timeout or null if no timeout should be used.
+	 * 
+	 * @return timeout in seconds
+	 */
+	public Integer getPathAnalysisTimeout() {
+		return pathAnalysisTimeout;
 	}
 
 }
