@@ -17,12 +17,9 @@ import de.lemo.dms.connectors.ConnectorManager;
 import de.lemo.dms.connectors.EConnectorState;
 
 /**
- * return the state of the connector
- * ready = ready to load data
- * progress = load data is in progress
- * noconnector = no connector is selected
- * noconfiguration = something is wrong with the configuration
+ * Return the state of the connector update process.
  * 
+ * @see EConnectorState
  * @author Boris Wenzlaff
  */
 @Path("/getconnectorstate")

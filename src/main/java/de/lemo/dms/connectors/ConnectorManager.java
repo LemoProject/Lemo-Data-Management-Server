@@ -59,7 +59,7 @@ public enum ConnectorManager {
 	}
 
 	/**
-	 * update the database, all data will be loaded
+	 * Update the mining database, new data will be loaded from the platform.
 	 * 
 	 * @return true if updating has started
 	 */
@@ -74,8 +74,10 @@ public enum ConnectorManager {
 	}
 
 	/**
-	 * @return the state of the connector ready = ready to load data progress = load data is in progress noconnector =
-	 *         no connector is selected noconfiguration = something is wrong with the configuration
+	 * Information about the connector update process.
+	 * 
+	 * @see EConnectorState
+	 * @return the state of the connector update process
 	 */
 	public EConnectorState connectorState() {
 		if (this.connectors.isEmpty()) {

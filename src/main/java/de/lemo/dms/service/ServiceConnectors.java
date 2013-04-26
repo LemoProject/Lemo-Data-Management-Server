@@ -19,12 +19,11 @@ import de.lemo.dms.service.servicecontainer.SCConnector;
 import de.lemo.dms.service.servicecontainer.SCConnectors;
 
 /**
- * REST web service for the available connectors of the DMS
+ * REST web service to list available platform connectors
  * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  */
-
 @Path("/connectors")
 public class ServiceConnectors {
 
