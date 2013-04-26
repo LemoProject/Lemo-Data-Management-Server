@@ -16,17 +16,22 @@ public enum EConnectorState {
 	/**
 	 * No connector update is running, the user may start one.
 	 */
-	ready,
+	READY,
 	/**
 	 * A connector update is currently running, the user has to wait for it to finish.
 	 */
-	progress,
+	IN_PROGRESS,
 	/**
 	 * No connector update is running, there are no connector to update.
 	 */
-	noconnector,
+	NO_CONNECTORS,
 	/**
 	 * The configuration is faulty or missing.
 	 */
-	noconfiguration
+	CONFIGURATION_ERROR;
+
+	@Override
+	public String toString() {
+		return this.name().toLowerCase();
+	};
 }

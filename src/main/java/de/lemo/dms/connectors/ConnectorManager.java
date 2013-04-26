@@ -65,7 +65,7 @@ public enum ConnectorManager {
 	 */
 	public boolean startUpdateData(final IConnector connector) {
 		this.logger.info("Updating " + connector);
-		if ((this.getDataThread == null) || (this.connectorState() == EConnectorState.ready)) {
+		if ((this.getDataThread == null) || (this.connectorState() == EConnectorState.READY)) {
 			this.getDataThread = new ConnectorGetDataWorkerThread(connector);
 			this.getDataThread.start();
 			return true;
@@ -81,12 +81,19 @@ public enum ConnectorManager {
 	 */
 	public EConnectorState connectorState() {
 		if (this.connectors.isEmpty()) {
-			return EConnectorState.noconnector;
+			return EConnectorState.NO_CONNECTORS;
 		}
 		if (this.getDataThread.isAlive()) {
-			return EConnectorState.progress;
+			return EConnectorState.IN_PROGRESS;
 		}
-		return EConnectorState.ready;
+		return EConnectorState.READY;
+	}
+
+	public IConnector getUpdatingConnector() {
+		if (getDataThread != null) {
+			return getDataThread.getConnector();
+		}
+		return null;
 	}
 
 	/**

@@ -15,14 +15,16 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import de.lemo.dms.connectors.ConnectorManager;
 import de.lemo.dms.connectors.EConnectorState;
+import de.lemo.dms.connectors.IConnector;
 
 /**
  * Return the state of the connector update process.
  * 
  * @see EConnectorState
  * @author Boris Wenzlaff
+ * @author Leonard Kappe
  */
-@Path("/getconnectorstate")
+@Path("/connectors/state")
 public class ServiceConnectorState {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -30,12 +32,16 @@ public class ServiceConnectorState {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public JSONObject getConnectrorStateJson() {
-		logger.info("call for service: getConnectrorStateJson");
-		final ConnectorManager cm = ConnectorManager.getInstance();
-		final EConnectorState cs = cm.connectorState();
+		ConnectorManager manager = ConnectorManager.getInstance();
+
 		final JSONObject result = new JSONObject();
 		try {
-			result.put("state", cs.name());
+			result.put("state", manager.connectorState());
+
+			IConnector updatingConnector = manager.getUpdatingConnector();
+			if (updatingConnector != null) {
+				result.put("updating_connector_id", updatingConnector.getPlatformId());
+			}
 		} catch (final JSONException e) {
 			logger.warn(e.getMessage());
 		}
