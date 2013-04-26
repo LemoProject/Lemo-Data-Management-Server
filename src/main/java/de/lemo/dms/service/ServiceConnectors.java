@@ -7,12 +7,15 @@
 package de.lemo.dms.service;
 
 import java.util.List;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import com.google.common.collect.Lists;
 import de.lemo.dms.connectors.ConnectorManager;
 import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.service.servicecontainer.SCConnector;
 import de.lemo.dms.service.servicecontainer.SCConnectors;
 
 /**
@@ -22,15 +25,14 @@ import de.lemo.dms.service.servicecontainer.SCConnectors;
  * @author Leonard Kappe
  */
 
-@Path("/getavailableconnectors")
-public class ServiceGetAvailableConnectors {
+@Path("/connectors")
+public class ServiceConnectors {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public SCConnectors getAvailableConnecttorsJson() {
-		logger.info("call for service: getAvailableConnecttorsJson");
 		final SCConnectors rs = new SCConnectors();
 		rs.setConnectors(this.getConnectors());
 		return rs;
@@ -39,22 +41,20 @@ public class ServiceGetAvailableConnectors {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String getAvailableConnecttorsHtml() {
-		logger.info("call for service: getAvailableConnecttorsHtml");
 		final StringBuilder result = new StringBuilder();
 		result.append("<html><title>Available Connectors</title><body><h2>Available Connectors</h2><ul>");
-		for (final String s : this.getConnectors()) {
-			result.append("<li>").append(s).append("</li>");
+		for (final SCConnector s : this.getConnectors()) {
+			result.append("<li>").append(s.toString()).append("</li>");
 		}
 		result.append("</ul></body></html>");
 		return result.toString();
 	}
 
-	private List<String> getConnectors() {
-		final List<String> result = Lists.newArrayList();
+	private List<SCConnector> getConnectors() {
+		final List<SCConnector> result = Lists.newArrayList();
 		for (final IConnector connector : ConnectorManager.getInstance().getAvailableConnectors()) {
-			result.add(connector.toString());
+			result.add(new SCConnector(connector));
 		}
 		return result;
-
 	}
 }

@@ -17,13 +17,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class SCConnectors {
 
-	private List<String> connectors;
+	private List<SCConnector> connectors;
 
-	public List<String> getConnectors() {
+	public List<SCConnector> getConnectors() {
 		return this.connectors;
 	}
 
-	public void setConnectors(final List<String> connectors) {
+	public void setConnectors(final List<SCConnector> connectors) {
 		this.connectors = connectors;
 	}
 }

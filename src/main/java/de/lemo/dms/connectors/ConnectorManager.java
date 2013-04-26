@@ -6,6 +6,7 @@
 
 package de.lemo.dms.connectors;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -44,7 +45,7 @@ public enum ConnectorManager {
 	 * @return all available connectors
 	 */
 	public List<IConnector> getAvailableConnectors() {
-		return this.connectors;
+		return new ArrayList<IConnector>(connectors);
 	}
 
 	/**
