@@ -61,7 +61,7 @@ public enum ConnectorManager {
 	/**
 	 * update the database, all data will be loaded
 	 * 
-	 * @return true if loading has started
+	 * @return true if updating has started
 	 */
 	public boolean startUpdateData(final IConnector connector) {
 		this.logger.info("Updating " + connector);
@@ -75,8 +75,7 @@ public enum ConnectorManager {
 
 	/**
 	 * @return the state of the connector ready = ready to load data progress = load data is in progress noconnector =
-	 *         no
-	 *         connector is selected noconfiguration = something is wrong with the configuration
+	 *         no connector is selected noconfiguration = something is wrong with the configuration
 	 */
 	public EConnectorState connectorState() {
 		if (this.connectors.isEmpty()) {
@@ -136,5 +135,4 @@ public enum ConnectorManager {
 		dbHandler.closeSession(session);
 	}
 
-	
 }

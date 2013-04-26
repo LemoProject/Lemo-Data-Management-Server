@@ -26,7 +26,7 @@ import de.lemo.dms.connectors.EConnectorState;
  * @author Boris Wenzlaff
  */
 @Path("/getconnectorstate")
-public class ServiceGetConnectorState {
+public class ServiceConnectorState {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
