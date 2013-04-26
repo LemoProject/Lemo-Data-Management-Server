@@ -35,6 +35,7 @@ public interface IConnector {
 	 * @param fromTimestamp
 	 *            the from timestamp
 	 */
+	@Deprecated
 	void updateData(long fromTimestamp);
 
 	Long getPlatformId();
