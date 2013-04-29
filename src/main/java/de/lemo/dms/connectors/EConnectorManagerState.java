@@ -12,7 +12,7 @@ package de.lemo.dms.connectors;
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  */
-public enum EConnectorState {
+public enum EConnectorManagerState {
 	/**
 	 * No connector update is running, the user may start one.
 	 */
