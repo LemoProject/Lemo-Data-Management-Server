@@ -79,7 +79,7 @@ public class ServiceConnectorManager {
 	@POST
 	@Path("/update/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Boolean update(@PathParam("id") final Long connectorId) throws JSONException {
+	public Boolean update(@PathParam("id") final Long connectorId) {
 
 		final ConnectorManager manager = ConnectorManager.getInstance();
 		final IConnector connector = manager.getConnectorById(connectorId);
