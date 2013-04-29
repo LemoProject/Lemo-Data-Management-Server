@@ -61,7 +61,10 @@ public class ServiceConnectorManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	public SCConnectorManagerState state() {
 		ConnectorManager manager = ConnectorManager.getInstance();
-		SCConnector updatingConnector = new SCConnector(manager.getUpdatingConnector());
+		SCConnector updatingConnector = null;
+		if (manager.getUpdatingConnector() != null) {
+			updatingConnector = new SCConnector(manager.getUpdatingConnector());
+		}
 		EConnectorManagerState state = manager.connectorState();
 		logger.debug("Connector state: " + state);
 		return new SCConnectorManagerState(state, updatingConnector);

@@ -17,16 +17,16 @@ public class SCConnectorManagerState {
 	/**
 	 * @return the connectorState
 	 */
-	public EConnectorManagerState getConnectorState() {
+	public EConnectorManagerState getState() {
 		return state;
 	}
 
 	/**
-	 * @param connectorState
-	 *            the connectorState to set
+	 * @param state
+	 *            the state to set
 	 */
-	public void setConnectorState(EConnectorManagerState connectorState) {
-		this.state = connectorState;
+	public void setState(EConnectorManagerState state) {
+		this.state = state;
 	}
 
 	/**

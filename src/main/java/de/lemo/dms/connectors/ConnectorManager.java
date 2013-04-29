@@ -83,7 +83,7 @@ public enum ConnectorManager {
 		if (this.connectors.isEmpty()) {
 			return EConnectorManagerState.NO_CONNECTORS;
 		}
-		if (this.getDataThread.isAlive()) {
+		if (getDataThread != null && this.getDataThread.isAlive()) {
 			return EConnectorManagerState.IN_PROGRESS;
 		}
 		return EConnectorManagerState.READY;
