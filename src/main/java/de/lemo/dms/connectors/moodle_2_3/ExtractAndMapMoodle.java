@@ -2508,6 +2508,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setCurrentLogin(loadedItem.getCurrentlogin());
 			insert.setPlatform(this.connector.getPlatformId());
 			insert.setLogin(Encoder.createMD5(loadedItem.getUsername()));
+			insert.setGender(0);
 
 			userMining.put(insert.getId(), insert);
 		}

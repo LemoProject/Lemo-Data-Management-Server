@@ -10,11 +10,11 @@ import org.apache.log4j.Logger;
 import de.lemo.dms.connectors.IConnector;
 
 /**
- * Backround worker thread for the connectors.
+ * Background worker thread for the connectors.
+ * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  * @author Sebastian Schwarzrock
- *
  */
 public class ConnectorGetDataWorkerThread extends Thread {
 
@@ -25,9 +25,13 @@ public class ConnectorGetDataWorkerThread extends Thread {
 		this.connector = connector;
 	}
 
+	public IConnector getConnector() {
+		return connector;
+	}
+
 	@Override
 	public void run() {
-		this.logger.info("Running connector" + this.connector);
+		this.logger.info("Running connector update " + this.connector);
 		this.connector.getData();
 	}
 }

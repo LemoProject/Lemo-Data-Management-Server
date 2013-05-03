@@ -6,6 +6,7 @@
 
 package de.lemo.dms.connectors;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -44,7 +45,7 @@ public enum ConnectorManager {
 	 * @return all available connectors
 	 */
 	public List<IConnector> getAvailableConnectors() {
-		return this.connectors;
+		return new ArrayList<IConnector>(connectors);
 	}
 
 	/**
@@ -58,13 +59,13 @@ public enum ConnectorManager {
 	}
 
 	/**
-	 * update the database, all data will be loaded
+	 * Update the mining database, new data will be loaded from the platform.
 	 * 
-	 * @return true if loading has started
+	 * @return true if updating has started
 	 */
 	public boolean startUpdateData(final IConnector connector) {
 		this.logger.info("Updating " + connector);
-		if ((this.getDataThread == null) || (this.connectorState() == EConnectorState.ready)) {
+		if ((this.getDataThread == null) || (this.connectorState() == EConnectorManagerState.READY)) {
 			this.getDataThread = new ConnectorGetDataWorkerThread(connector);
 			this.getDataThread.start();
 			return true;
@@ -73,18 +74,26 @@ public enum ConnectorManager {
 	}
 
 	/**
-	 * @return the state of the connector ready = ready to load data progress = load data is in progress noconnector =
-	 *         no
-	 *         connector is selected noconfiguration = something is wrong with the configuration
+	 * Information about the connector update process.
+	 * 
+	 * @see EConnectorManagerState
+	 * @return the state of the connector update process
 	 */
-	public EConnectorState connectorState() {
+	public EConnectorManagerState connectorState() {
 		if (this.connectors.isEmpty()) {
-			return EConnectorState.noconnector;
+			return EConnectorManagerState.NO_CONNECTORS;
 		}
-		if (this.getDataThread.isAlive()) {
-			return EConnectorState.progress;
+		if (getDataThread != null && this.getDataThread.isAlive()) {
+			return EConnectorManagerState.IN_PROGRESS;
 		}
-		return EConnectorState.ready;
+		return EConnectorManagerState.READY;
+	}
+
+	public IConnector getUpdatingConnector() {
+		if (getDataThread != null) {
+			return getDataThread.getConnector();
+		}
+		return null;
 	}
 
 	/**
@@ -135,5 +144,4 @@ public enum ConnectorManager {
 		dbHandler.closeSession(session);
 	}
 
-	
 }

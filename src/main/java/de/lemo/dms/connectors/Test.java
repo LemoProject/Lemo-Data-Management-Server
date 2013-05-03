@@ -99,13 +99,13 @@ public class Test {
 		courses.add(21040967L);
 		
 		
-		/*
+		
 		courses.add(4667155L);
 		courses.add(8074949L);
 		courses.add(10921956L);
 		courses.add(13617310L);
 		courses.add(17945446L);
-		*/
+		
 		connector.setCourseIdFilter(courses);
 		
 		connector.getData();
@@ -127,26 +127,26 @@ public class Test {
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
 	//	users.add(2L);
-		courses.add(221L);
+		courses.add(1513617310L);
 		
 		ArrayList<String> types = new ArrayList<String>();
-		types.add("resource");
+		//types.add("resource");
 		
 
 		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
-		//CourseObject co = scd.getCourseDetails(11476L);
+		CourseObject co = scd.getCourseDetails(1513617310L);
 		
 		//art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types);
 		
-		//lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest());
+		lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest());
 		
 //		cua.compute(courses, types, co.getFirstRequest(), co.getLastRequest());
 		
 		//qlou.compute(courses, users, 0L, 1500000000L, 100L, new ArrayList<String>());
 		
-		qput.compute(courses, users, new ArrayList<Long>(), 100L, 0L, 1500000000L);
+		//qput.compute(courses, users, new ArrayList<Long>(), 100L, 0L, 1500000000L);
 	
 		ServiceCourseTitleSearch scts = new ServiceCourseTitleSearch();
 		scts.getCoursesByText("Inform", null, null);

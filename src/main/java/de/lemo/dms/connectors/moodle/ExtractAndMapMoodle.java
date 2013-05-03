@@ -1,4 +1,3 @@
-
 /**
  * File ./main/java/de/lemo/dms/connectors/moodle/ExtractAndMapMoodle.java
  * Date 2013-01-24
@@ -2565,6 +2564,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setLastAccess(loadedItem.getLastaccess());
 			insert.setCurrentLogin(loadedItem.getCurrentlogin());
 			insert.setPlatform(this.connector.getPlatformId());
+			insert.setGender(0);
 			userMining.put(insert.getId(), insert);
 		}
 		return userMining;

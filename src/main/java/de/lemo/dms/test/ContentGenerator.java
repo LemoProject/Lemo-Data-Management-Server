@@ -210,7 +210,7 @@ public class ContentGenerator {
 			user.setLastLogin(year - week - randy.nextInt(month));
 			user.setLastAccess(user.getLastLogin() + randy.nextInt(day));
 			user.setCurrentLogin(user.getLastAccess() + randy.nextInt(week));
-			user.setGender((i % 2) == 0);
+			user.setGender((i % 2) + 1);
 			user.setLogin(Encoder.createMD5(i + " " + df.format(dt)));
 			user.setPlatform(platform.getId());
 
