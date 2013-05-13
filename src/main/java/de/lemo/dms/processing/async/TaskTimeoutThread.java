@@ -17,17 +17,17 @@ import java.util.Map.Entry;
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  */
-public class ThreadPoolTimeoutThread extends Thread {
+public class TaskTimeoutThread extends Thread {
 
 	// check every 10 seconds
 	private static final int CHECK_INTERVALL = 10000;
 	private static final String NAME = "BideResultTimeout";
 
-	private Map<String, BideTask> tasks;
+	private Map<String, AsyncAnalysis> tasks;
 	private long maxProcessingTime;
 	private long maxResultLifeTime;
 
-	public ThreadPoolTimeoutThread(Map<String, BideTask> tasks, long maxProcessingTime, long maxResultLifeTime) {
+	public TaskTimeoutThread(Map<String, AsyncAnalysis> tasks, long maxProcessingTime, long maxResultLifeTime) {
 		super(NAME);
 		this.tasks = tasks;
 		this.maxProcessingTime = maxProcessingTime;
@@ -43,9 +43,9 @@ public class ThreadPoolTimeoutThread extends Thread {
 				System.out.println("Checking timeouts");
 
 				synchronized (tasks) {
-					for (Iterator<Entry<String, BideTask>> iterator = tasks.entrySet().iterator(); iterator.hasNext();) {
-						Entry<String, BideTask> entry = iterator.next();
-						BideTask task = entry.getValue();
+					for (Iterator<Entry<String, AsyncAnalysis>> iterator = tasks.entrySet().iterator(); iterator.hasNext();) {
+						Entry<String, AsyncAnalysis> entry = iterator.next();
+						AsyncAnalysis task = entry.getValue();
 
 						if (task.isRunning()) {
 							// check if the computation time reached the limit

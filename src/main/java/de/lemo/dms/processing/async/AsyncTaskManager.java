@@ -13,29 +13,26 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * File ThreadPool.java Date 22.04.2013 Project Lemo Learning Analytics Copyright TODO (INSERT COPYRIGHT)
- */
-
-/**
  * Threadpool to Manage that every user only can start one thread with the
  * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  */
-public class BideThreadPool {
+public class AsyncTaskManager {
 
+	// TODO arbitrary value, make configurable
 	private static final int MAX_THREADS = 10;
 
 	// TODO use enum singleton pattern
-	private static BideThreadPool INSTANCE = null;
+	private static AsyncTaskManager INSTANCE = null;
 
-	private ThreadPoolTimeoutThread resultTimeoutThread;
+	private TaskTimeoutThread resultTimeoutThread;
 	// TODO use own thread factory to set low priority!
 	private ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
 
-	private Map<String, BideTask> tasks = Collections.synchronizedMap(new HashMap<String, BideTask>());
+	private Map<String, AsyncAnalysis> tasks = Collections.synchronizedMap(new HashMap<String, AsyncAnalysis>());
 
-	private BideThreadPool() {
+	private AsyncTaskManager() {
 		// TODO load timeout from config
 		long computationTimeout = 5000;
 		long resultTimeout = 30000;
@@ -47,9 +44,9 @@ public class BideThreadPool {
 	 * 
 	 * @return Instance of the singleton
 	 */
-	protected static BideThreadPool getInstance() {
+	protected static AsyncTaskManager getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new BideThreadPool();
+			INSTANCE = new AsyncTaskManager();
 		}
 		return INSTANCE;
 	}
@@ -63,11 +60,11 @@ public class BideThreadPool {
 	 *            id of the user who started the thread
 	 * @return true if an old thread was already running and got stopped
 	 */
-	protected synchronized BideTask startTask(String taskId) {
+	protected synchronized AsyncAnalysis startTask(String taskId, Class<AsyncAnalysis> analysisType) {
 
 		// check if any task by this user is already running and delete any pending results
 		// boolean interrupted = false;
-		BideTask pendingTask = tasks.remove(taskId);
+		AsyncAnalysis pendingTask = tasks.remove(taskId);
 		if (pendingTask != null) {
 			System.out.println("cancelling pending task " + taskId);
 			pendingTask.cancel();
@@ -75,22 +72,38 @@ public class BideThreadPool {
 		}
 
 		// create a new task and let it run at some point later
-		BideTask bideTask = new BideTask(taskId);
+		AsyncAnalysis task = createTask(taskId, analysisType);
 		synchronized (executor) {
-			Future<?> future = executor.submit(bideTask);
-			bideTask.setFuture(future);
-			tasks.put(taskId, bideTask);
+			Future<?> future = executor.submit(task);
+			task.setFuture(future);
+			tasks.put(taskId, task);
 		}
-		return bideTask;
+
+		return task;
+	}
+
+	private AsyncAnalysis createTask(String taskId, Class<AsyncAnalysis> analysisType) {
+		AsyncAnalysis task = null;
+		try {
+			task = analysisType.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		task.setIaskID(taskId);
+		return task;
 	}
 
 	private void startResultTimeoutThread(long computationTimeout, long resultTimeout) {
-		resultTimeoutThread = new ThreadPoolTimeoutThread(tasks, computationTimeout, resultTimeout);
+		resultTimeoutThread = new TaskTimeoutThread(tasks, computationTimeout, resultTimeout);
 		resultTimeoutThread.setPriority(Thread.NORM_PRIORITY);
 		resultTimeoutThread.start();
 	}
 
-	public BideTask getTask(String key) {
+	public AsyncAnalysis getTask(String key) {
 		return tasks.get(key);
 	}
 }

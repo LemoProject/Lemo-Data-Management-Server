@@ -14,16 +14,18 @@ import java.util.concurrent.Future;
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  */
-public class BideTask implements Callable<Object> {
+public abstract class AsyncAnalysis implements Callable<Object> {
 
 	private long startTime;
 	private long endTime;
 	private String taskID;
 	private Future<?> future;
 
-	public BideTask(String taskId) {
+	public AsyncAnalysis(String taskId) {
 		this.taskID = taskId;
 	}
+
+	public abstract Object compute();
 
 	@Override
 	public synchronized Object call() throws InterruptedException {
@@ -33,24 +35,26 @@ public class BideTask implements Callable<Object> {
 		System.out.println("start thread " + this.taskID);
 
 		// simulate computation
-		while (true) {
-			if (Thread.interrupted()) {
-				System.out.println("task " + taskID + " interupted!");
-				cancel();
-				return null;
-			}
+		// while (true) {
+		// if (Thread.interrupted()) {
+		// System.out.println("task " + taskID + " interupted!");
+		// cancel();
+		// return null;
+		// }
+		//
+		// Thread.sleep(500);
+		//
+		// if (Math.random() > 0.9) {
+		// break;
+		// }
+		// }
 
-			Thread.sleep(500);
-
-			if (Math.random() > 0.9) {
-				break;
-			}
-		}
+		Object result = compute();
+		endTime = new Date().getTime();
 
 		System.out.println("thread " + this.taskID + " is finished");
 
-		endTime = new Date().getTime();
-		return "[this is the result of task " + taskID + "]";
+		return result;
 
 	}
 
@@ -73,6 +77,10 @@ public class BideTask implements Callable<Object> {
 
 	public boolean isCancelled() {
 		return future.isCancelled();
+	}
+
+	public void setIaskID(String taskID) {
+		this.taskID = taskID;
 	}
 
 	public String getTaskID() {
@@ -120,4 +128,5 @@ public class BideTask implements Callable<Object> {
 		String state = isRunning() ? "running" : (isCancelled() ? "canceled" : (isDone() ? "done" : "not yet started"));
 		return "Task " + getTaskID() + ", " + state;
 	}
+
 }
