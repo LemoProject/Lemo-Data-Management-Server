@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import de.lemo.dms.service.ServiceTaskManager;
 
 /**
  * Threadpool to Manage that every user only can start one thread with the
@@ -44,7 +45,7 @@ public class AsyncTaskManager {
 	 * 
 	 * @return Instance of the singleton
 	 */
-	protected static AsyncTaskManager getInstance() {
+	public static AsyncTaskManager getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new AsyncTaskManager();
 		}
@@ -52,15 +53,15 @@ public class AsyncTaskManager {
 	}
 
 	/**
-	 * Starts a new asynchronous task. The result may be polled by calling XXX with the task's ID. If any task with he
-	 * same
-	 * ID is queued, running or done, it will be canceled and any results will be removed.
+	 * Starts a new asynchronous task. The result may be polled from the {@link ServiceTaskManager} with the task's ID.
+	 * If any task with the same ID is queued, running or done, it will be canceled and any results will be removed.
 	 * 
 	 * @param taskId
-	 *            id of the user who started the thread
-	 * @return true if an old thread was already running and got stopped
+	 *            id to identify the task
+	 * @param task
+	 *            the task to add
 	 */
-	protected synchronized AsyncAnalysis startTask(String taskId, Class<AsyncAnalysis> analysisType) {
+	public synchronized void addTask(String taskId, AsyncAnalysis task) {
 
 		// check if any task by this user is already running and delete any pending results
 		// boolean interrupted = false;
@@ -72,29 +73,15 @@ public class AsyncTaskManager {
 		}
 
 		// create a new task and let it run at some point later
-		AsyncAnalysis task = createTask(taskId, analysisType);
 		synchronized (executor) {
 			Future<?> future = executor.submit(task);
 			task.setFuture(future);
 			tasks.put(taskId, task);
 		}
-
-		return task;
 	}
 
-	private AsyncAnalysis createTask(String taskId, Class<AsyncAnalysis> analysisType) {
-		AsyncAnalysis task = null;
-		try {
-			task = analysisType.newInstance();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		task.setIaskID(taskId);
-		return task;
+	public AsyncAnalysis getTask(String key) {
+		return tasks.get(key);
 	}
 
 	private void startResultTimeoutThread(long computationTimeout, long resultTimeout) {
@@ -103,7 +90,4 @@ public class AsyncTaskManager {
 		resultTimeoutThread.start();
 	}
 
-	public AsyncAnalysis getTask(String key) {
-		return tasks.get(key);
-	}
 }

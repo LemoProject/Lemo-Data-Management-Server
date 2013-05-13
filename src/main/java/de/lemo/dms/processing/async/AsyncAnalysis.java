@@ -21,10 +21,6 @@ public abstract class AsyncAnalysis implements Callable<Object> {
 	private String taskID;
 	private Future<?> future;
 
-	public AsyncAnalysis(String taskId) {
-		this.taskID = taskId;
-	}
-
 	public abstract Object compute();
 
 	@Override
