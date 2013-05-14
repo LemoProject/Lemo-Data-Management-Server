@@ -64,12 +64,10 @@ public class AsyncTaskManager {
 	public synchronized void addTask(String taskId, AsyncAnalysis task) {
 
 		// check if any task by this user is already running and delete any pending results
-		// boolean interrupted = false;
 		AsyncAnalysis pendingTask = tasks.remove(taskId);
 		if (pendingTask != null) {
 			System.out.println("cancelling pending task " + taskId);
 			pendingTask.cancel();
-			tasks.remove(taskId);
 		}
 
 		// create a new task and let it run at some point later

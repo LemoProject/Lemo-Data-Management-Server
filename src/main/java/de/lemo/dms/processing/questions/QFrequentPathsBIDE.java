@@ -54,7 +54,7 @@ public class QFrequentPathsBIDE extends Question {
 		// Tell the client where to find the result
 		Response response = null;
 		try {
-			response = Response.created(new URI(ServiceTaskManager.TASK_BASE_PATH + taskId)).build();
+			response = Response.created(new URI(ServiceTaskManager.TASK_POLLING_PATH + taskId)).build();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
