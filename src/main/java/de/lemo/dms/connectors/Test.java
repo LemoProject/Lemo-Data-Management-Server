@@ -156,10 +156,10 @@ public class Test {
 
 	public void run()
 	{
-		logger.info("Starting test");
+		logger.info("Starting Import");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodleNumericConn();
-		logger.info("Test finished");
+		this.runMoodle23Conn();
+		logger.info("Import finished");
 	}
 
 	/**
