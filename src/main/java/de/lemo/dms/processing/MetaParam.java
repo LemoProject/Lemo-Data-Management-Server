@@ -35,4 +35,5 @@ public interface MetaParam {
 	String SEARCH_TEXT = "stext";
 	String RESULT_AMOUNT = "res_amount";
 	String OFFSET = "offset";
+	String LEMO_USER_ID = "lemo_uid";
 }

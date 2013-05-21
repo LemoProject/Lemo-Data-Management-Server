@@ -57,7 +57,7 @@ public class TaskTimeoutThread extends Thread {
 							logger.trace(task + " - computation time " + computationTime + "/" + maxProcessingTime);
 							if (computationTime > maxProcessingTime) {
 								logger.info(task + "- computation timeout exceeded, task cancelled."
-										+ task.getTaskID());
+										+ task.getTaskId());
 
 								// cancel the task but don't remove it yet,
 								// so the user may get told that it got canceled by a timeout

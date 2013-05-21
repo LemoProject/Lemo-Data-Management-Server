@@ -61,6 +61,7 @@ public class AFrequentPathsBIDE extends AsyncAnalysis {
 	private Long endTime;
 
 	public AFrequentPathsBIDE(
+			final String taskId,
 			final List<Long> courses,
 			final List<Long> users,
 			final List<String> types,
@@ -70,6 +71,7 @@ public class AFrequentPathsBIDE extends AsyncAnalysis {
 			final boolean sessionWise,
 			final Long startTime,
 			final Long endTime) {
+		super(taskId);
 		this.courses = courses;
 		this.users = users;
 		this.types = types;

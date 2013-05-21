@@ -1,11 +1,15 @@
 package de.lemo.dms.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.concurrent.ExecutionException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import com.google.common.base.Charsets;
 import de.lemo.dms.processing.async.AsyncAnalysis;
 import de.lemo.dms.processing.async.AsyncTaskManager;
 
@@ -16,9 +20,9 @@ public class ServiceTaskManager {
 
 	@GET
 	@Path("{id}")
-	public Response taskResult(@PathParam("{id}") String taskID) {
+	public Response taskResult(@PathParam("{id}") String taskId) throws UnsupportedEncodingException {
 
-		AsyncAnalysis task = AsyncTaskManager.getInstance().getTask(taskID);
+		AsyncAnalysis task = AsyncTaskManager.getInstance().getTask(URLDecoder.decode(taskId, "UTF-8"));
 
 		if (task == null) {
 			return Response.status(Status.NOT_FOUND).build();

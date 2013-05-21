@@ -6,8 +6,10 @@
 
 package de.lemo.dms.processing.questions;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -30,6 +32,7 @@ public class QFrequentPathsBIDE extends Question {
 
 	@POST
 	public Response compute(
+			@FormParam(MetaParam.LEMO_USER_ID) final Long userId,
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
 			@FormParam(MetaParam.USER_IDS) final List<Long> users,
 			@FormParam(MetaParam.TYPES) final List<String> types,
@@ -38,29 +41,21 @@ public class QFrequentPathsBIDE extends Question {
 			@FormParam(MetaParam.MIN_SUP) final Double minSup,
 			@FormParam(MetaParam.SESSION_WISE) final boolean sessionWise,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) final Long endTime) {
+			@FormParam(MetaParam.END_TIME) final Long endTime) throws UnsupportedEncodingException, URISyntaxException {
 
 		validateTimestamps(startTime, endTime);
-	
-		// TODO get real user id
-		String userId = "test";
+
 		String taskId = userId + "-" + "BIDE";
-		logger.debug("frequentPaths");
-		AFrequentPathsBIDE task = new AFrequentPathsBIDE(courses, users, types, minLength, maxLength, minSup,
+		AFrequentPathsBIDE task = new AFrequentPathsBIDE(taskId, courses, users, types, minLength, maxLength, minSup,
 				sessionWise, startTime, endTime);
-		logger.debug("frequentPaths task " + task);
-		AsyncTaskManager.getInstance().addTask(taskId, task);
+
+		AsyncTaskManager.getInstance().addTask(task);
 
 		// Tell the client where to find the result
-		Response response = null;
-		try {
-			response = Response.created(new URI(ServiceTaskManager.TASK_POLLING_PATH + taskId)).build();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		logger.debug("frequentPaths response " + response);
-		return response;
+		URI resultPollingUri = new URI(ServiceTaskManager.TASK_POLLING_PATH + URLEncoder.encode(taskId, "UTF-8"));
+		logger.debug("Task results created at " + resultPollingUri);
+		
+		return Response.created(resultPollingUri).build();
 	}
 
 }

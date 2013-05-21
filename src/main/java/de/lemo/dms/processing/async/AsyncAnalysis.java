@@ -22,8 +22,12 @@ public abstract class AsyncAnalysis implements Callable<Object> {
 
 	private long startTime;
 	private long endTime;
-	private String taskID;
+	private String taskId;
 	private Future<?> future;
+
+	public AsyncAnalysis(String taskId) {
+		this.taskId = taskId;
+	}
 
 	public abstract Object compute();
 
@@ -60,12 +64,8 @@ public abstract class AsyncAnalysis implements Callable<Object> {
 		return future != null && future.isCancelled();
 	}
 
-	public void setIaskID(String taskID) {
-		this.taskID = taskID;
-	}
-
-	public String getTaskID() {
-		return taskID;
+	public String getTaskId() {
+		return taskId;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public abstract class AsyncAnalysis implements Callable<Object> {
 	@Override
 	public String toString() {
 		String state = isRunning() ? "running" : (isCancelled() ? "canceled" : (isDone() ? "done" : "not yet started"));
-		return "Task " + getTaskID() + ", " + state;
+		return "Task " + getTaskId() + ", " + state;
 	}
 
 }

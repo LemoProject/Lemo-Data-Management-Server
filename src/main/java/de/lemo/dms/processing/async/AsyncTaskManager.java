@@ -65,8 +65,9 @@ public class AsyncTaskManager {
 	 * @param task
 	 *            the task to add
 	 */
-	public synchronized void addTask(String taskId, AsyncAnalysis task) {
-
+	public synchronized void addTask(AsyncAnalysis task) {
+		String taskId = task.getTaskId();
+		
 		// check if any task by this user is already running and delete any pending results
 		AsyncAnalysis pendingTask = tasks.remove(taskId);
 		if (pendingTask != null) {

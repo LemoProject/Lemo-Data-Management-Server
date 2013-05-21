@@ -15,10 +15,7 @@ import java.util.Set;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import de.lemo.dms.connectors.ConnectorManager;
@@ -40,14 +37,6 @@ public enum ServerConfiguration {
 	 * Singleton instance.
 	 */
 	INSTANCE;
-
-	private static final String DEFAULT_PATTERN = "[%p] %d{ISO8601} [%c{1}] - %m%n";
-
-	{
-		// the very first place where we can initialize the logger
-		//Logger.getRootLogger().setLevel(Level.INFO);
-		//Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout(ServerConfiguration.DEFAULT_PATTERN)));
-	}
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private IDBHandler miningDbHandler;
