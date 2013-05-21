@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.apache.log4j.Logger;
 
 /**
  * Thread to remove old results. Check the task results creation date and removes any results that exceeded their life
@@ -22,6 +23,8 @@ public class TaskTimeoutThread extends Thread {
 	// check every 10 seconds
 	private static final int CHECK_INTERVALL = 10000;
 	private static final String NAME = "BideResultTimeout";
+
+	private final Logger logger = Logger.getLogger(getClass());
 
 	private Map<String, AsyncAnalysis> tasks;
 	private long maxProcessingTime;
@@ -40,36 +43,32 @@ public class TaskTimeoutThread extends Thread {
 				// sleep some arbitrary time
 				Thread.sleep(CHECK_INTERVALL);
 
-				System.out.println("Checking timeouts");
-
 				synchronized (tasks) {
-					for (Iterator<Entry<String, AsyncAnalysis>> iterator = tasks.entrySet().iterator(); iterator.hasNext();) {
+					logger.trace("Running timout check for " + tasks.size() + " tasks.");
+					
+					for (Iterator<Entry<String, AsyncAnalysis>> iterator = tasks.entrySet().iterator(); iterator
+							.hasNext();) {
 						Entry<String, AsyncAnalysis> entry = iterator.next();
 						AsyncAnalysis task = entry.getValue();
 
 						if (task.isRunning()) {
 							// check if the computation time reached the limit
 							long computationTime = new Date().getTime() - task.getStartTime();
-							System.out.println(task + " | computation time " + computationTime + "/"
-									+ maxProcessingTime);
+							logger.trace(task + " - computation time " + computationTime + "/" + maxProcessingTime);
 							if (computationTime > maxProcessingTime) {
-								// TODO log
-								System.out.println(task + " | " + "computation timeout limit reached, removing task "
+								logger.info(task + "- computation timeout exceeded, task cancelled."
 										+ task.getTaskID());
 
-								// cancel the task but don't remove it,
-								// so the user may knows that it got canceled by a timeout
+								// cancel the task but don't remove it yet,
+								// so the user may get told that it got canceled by a timeout
 								task.cancel();
 							}
 						} else if (task.isDone()) {
 							// check if the result life time reached the limit
 							long resultLifeTime = new Date().getTime() - task.getEndTime();
-							System.out.println(task + " | result time " + resultLifeTime + "/" + maxResultLifeTime);
 							if (task.isDone() && resultLifeTime > maxResultLifeTime) {
-								// TODO log
-								System.out.println(task + " | " + "result lifetime limit reached, removing result "
-										+ task.getTaskID());
 								iterator.remove();
+								logger.debug(task + " - result lifetime exceeded, result removed.");
 							}
 						}
 
@@ -78,8 +77,7 @@ public class TaskTimeoutThread extends Thread {
 			}
 		} catch (InterruptedException e) {
 			// this thread should never be interrupted, it should run forever
-			// TODO log
-			e.printStackTrace();
+			logger.fatal("Interrupted!", e);
 		}
 
 	}

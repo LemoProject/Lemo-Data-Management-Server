@@ -11,15 +11,19 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.apache.log4j.Logger;
 import de.lemo.dms.service.ServiceTaskManager;
 
 /**
- * Threadpool to Manage that every user only can start one thread with the
+ * Thread pool to ensure that a user can start any long running analysis only once. Instead of a result, the client gets
+ * an URL that may be polled until the processing has finished.
  * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  */
 public class AsyncTaskManager {
+
+	private final Logger logger = Logger.getLogger(getClass());
 
 	// TODO arbitrary value, make configurable
 	private static final int MAX_THREADS = 10;
@@ -66,7 +70,7 @@ public class AsyncTaskManager {
 		// check if any task by this user is already running and delete any pending results
 		AsyncAnalysis pendingTask = tasks.remove(taskId);
 		if (pendingTask != null) {
-			System.out.println("cancelling pending task " + taskId);
+			logger.debug("cancelled pending task: " + taskId);
 			pendingTask.cancel();
 		}
 
@@ -75,6 +79,7 @@ public class AsyncTaskManager {
 			Future<?> future = executor.submit(task);
 			task.setFuture(future);
 			tasks.put(taskId, task);
+			logger.debug("submitted task " + taskId);
 		}
 	}
 

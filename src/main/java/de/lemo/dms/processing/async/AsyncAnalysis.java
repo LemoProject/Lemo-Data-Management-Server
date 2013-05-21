@@ -9,12 +9,15 @@ import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import org.apache.log4j.Logger;
 
 /**
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  */
 public abstract class AsyncAnalysis implements Callable<Object> {
+
+	private final Logger logger = Logger.getLogger(getClass());
 
 	private long startTime;
 	private long endTime;
@@ -25,33 +28,14 @@ public abstract class AsyncAnalysis implements Callable<Object> {
 
 	@Override
 	public synchronized Object call() throws InterruptedException {
-
+		logger.debug(this + " - started.");
+		
 		startTime = new Date().getTime();
-
-		System.out.println("start thread " + this.taskID);
-
-		// simulate computation
-		// while (true) {
-		// if (Thread.interrupted()) {
-		// System.out.println("task " + taskID + " interupted!");
-		// cancel();
-		// return null;
-		// }
-		//
-		// Thread.sleep(500);
-		//
-		// if (Math.random() > 0.9) {
-		// break;
-		// }
-		// }
-
 		Object result = compute();
 		endTime = new Date().getTime();
 
-		System.out.println("thread " + this.taskID + " is finished");
-
+		logger.debug(this + " - finished.");
 		return result;
-
 	}
 
 	// TODO add some message why it got cancelled?
