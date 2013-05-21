@@ -7,6 +7,7 @@ package de.lemo.dms.processing.async;
 
 import java.util.Date;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
@@ -29,7 +30,7 @@ public abstract class AsyncAnalysis implements Callable<Object> {
 	@Override
 	public synchronized Object call() throws InterruptedException {
 		logger.debug(this + " - started.");
-		
+
 		startTime = new Date().getTime();
 		Object result = compute();
 		endTime = new Date().getTime();
@@ -89,11 +90,13 @@ public abstract class AsyncAnalysis implements Callable<Object> {
 		if (future.isDone()) {
 			try {
 				return future.get();
+			} catch (CancellationException e) {
+				// TODO document exceptions!
+				logger.info(this + " - cancelled", e);
 			} catch (InterruptedException e) {
-				// should never happen at this point, as the task is done
-				e.printStackTrace();
-				return null;
+				logger.info(this + " - interuppted", e);
 			}
+			return null;
 		} else {
 			throw new IllegalStateException("The task is not done yet.");
 		}

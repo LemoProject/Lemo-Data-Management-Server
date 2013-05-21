@@ -39,7 +39,7 @@ public class AsyncTaskManager {
 
 	private AsyncTaskManager() {
 		// TODO load timeout from config
-		long computationTimeout = 5000;
+		long computationTimeout = 10000;
 		long resultTimeout = 30000;
 		startResultTimeoutThread(computationTimeout, resultTimeout);
 	}
@@ -49,7 +49,7 @@ public class AsyncTaskManager {
 	 * 
 	 * @return Instance of the singleton
 	 */
-	public static AsyncTaskManager getInstance() {
+	public static synchronized AsyncTaskManager getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new AsyncTaskManager();
 		}

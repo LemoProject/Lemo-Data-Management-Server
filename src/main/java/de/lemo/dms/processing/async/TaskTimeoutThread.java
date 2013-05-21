@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 public class TaskTimeoutThread extends Thread {
 
 	// check every 10 seconds
-	private static final int CHECK_INTERVALL = 10000;
+	private static final int CHECK_INTERVALL = 1000;
 	private static final String NAME = "BideResultTimeout";
 
 	private final Logger logger = Logger.getLogger(getClass());
