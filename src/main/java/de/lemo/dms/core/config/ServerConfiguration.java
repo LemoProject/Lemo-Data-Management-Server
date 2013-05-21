@@ -45,8 +45,8 @@ public enum ServerConfiguration {
 
 	{
 		// the very first place where we can initialize the logger
-		Logger.getRootLogger().setLevel(Level.INFO);
-		Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout(ServerConfiguration.DEFAULT_PATTERN)));
+		//Logger.getRootLogger().setLevel(Level.INFO);
+		//Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout(ServerConfiguration.DEFAULT_PATTERN)));
 	}
 
 	private final Logger logger = Logger.getLogger(this.getClass());
