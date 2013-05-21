@@ -20,7 +20,7 @@ import de.lemo.dms.processing.questions.async.AFrequentPathsBIDE;
 import de.lemo.dms.service.ServiceTaskManager;
 
 /**
- * Read ther path data from the database and using the Bide algorithm to generates the frequent paths
+ * Read the path data from the database and using the Bide algorithm to generate the frequent paths
  * 
  * @author Sebastian Schwarzrock
  * @author Leonard Kappe
@@ -41,14 +41,14 @@ public class QFrequentPathsBIDE extends Question {
 			@FormParam(MetaParam.END_TIME) final Long endTime) {
 
 		validateTimestamps(startTime, endTime);
-
+	
 		// TODO get real user id
 		String userId = "test";
 		String taskId = userId + "-" + "BIDE";
-
+		logger.debug("frequentPaths");
 		AFrequentPathsBIDE task = new AFrequentPathsBIDE(courses, users, types, minLength, maxLength, minSup,
 				sessionWise, startTime, endTime);
-
+		logger.debug("frequentPaths task " + task);
 		AsyncTaskManager.getInstance().addTask(taskId, task);
 
 		// Tell the client where to find the result
@@ -59,6 +59,7 @@ public class QFrequentPathsBIDE extends Question {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		logger.debug("frequentPaths response " + response);
 		return response;
 	}
 

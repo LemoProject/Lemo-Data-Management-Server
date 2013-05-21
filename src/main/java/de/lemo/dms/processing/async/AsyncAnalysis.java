@@ -49,15 +49,15 @@ public abstract class AsyncAnalysis implements Callable<Object> {
 	 * @return true if the task is done
 	 */
 	public boolean isDone() {
-		return future.isDone();
+		return future != null && future.isDone();
 	}
 
 	public boolean isRunning() {
-		return startTime > 0 && !future.isDone();
+		return startTime > 0 && future != null && !future.isDone();
 	}
 
 	public boolean isCancelled() {
-		return future.isCancelled();
+		return future != null && future.isCancelled();
 	}
 
 	public void setIaskID(String taskID) {
