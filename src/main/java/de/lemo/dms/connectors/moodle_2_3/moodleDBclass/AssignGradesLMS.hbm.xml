@@ -14,6 +14,8 @@
 		<property name="assignment" column="assignment" type="long" />
 
 		<property name="user" column="userid" type="long" />
+		
+		<property name="grader" column="grader" type="long" />
 
 		<property name="grade" column="grade" type="double" />
 		

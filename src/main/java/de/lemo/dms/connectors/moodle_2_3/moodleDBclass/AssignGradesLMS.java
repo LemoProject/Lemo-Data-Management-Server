@@ -21,6 +21,7 @@ public class AssignGradesLMS {
 	private long assignment;
 	private long user;
 	private double grade;
+	private long grader;
 	private long timemodified;
 	private long timecreated;
 	
@@ -75,6 +76,14 @@ public class AssignGradesLMS {
 	
 	public void setTimecreated(long timecreated) {
 		this.timecreated = timecreated;
+	}
+
+	public long getGrader() {
+		return grader;
+	}
+
+	public void setGrader(long grader) {
+		this.grader = grader;
 	}
 
 

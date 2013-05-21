@@ -785,6 +785,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.scormLms = criteria.list();
 			logger.info("ScormLMS tables: " + this.scormLms.size());
+			
+
 
 			criteria = session.createCriteria(GradeItemsLMS.class, "obj");
 			if(hasCR)
@@ -959,6 +961,27 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		logger.info("ForumPostsModifiedLMS tables: " + this.forumPostsLms.size());
 
 		session.clear();
+		
+		criteria = session.createCriteria(AssignGradesLMS.class, "obj");
+		if(hasCR)
+		{
+			List<Long> tmp = new ArrayList<Long>();
+			for(AssignLMS assign : assignLms)
+			{
+				tmp.add(assign.getId());
+			}
+			
+			if(!(empty = tmp.isEmpty()))
+				criteria.add(Restrictions.in("obj.assignment", tmp));
+		}		
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.add(Restrictions.lt("obj.timemodified", readingtotimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(!(hasCR && empty))
+			this.assignGradesLms = criteria.list();
+		else
+			this.assignGradesLms = new ArrayList<AssignGradesLMS>();
+		logger.info("AssignGradesLMS tables: " + this.assignGradesLms.size());
 
 		criteria = session.createCriteria(GroupsMembersLMS.class, "obj");
 		if(hasCR)
@@ -2038,7 +2061,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setPlatform(this.connector.getPlatformId());
 
 				if ((insert.getUser() != null) && (insert.getAssignment() != null) && (insert.getCourse() != null)) {
-					assignmentLogMining.put(insert.getId(), insert);
+					//Ignore old assignment minings
+					//assignmentLogMining.put(insert.getId(), insert);
 				}
 			}
 			if (loadedItem.getModule().equals("assign"))
@@ -2051,6 +2075,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						this.oldUserMining);
 				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
+				insert.setPlatform(this.connector.getPlatformId());
 				
 				if(courseModules.containsKey(loadedItem.getCmid()))
 				{
@@ -2059,8 +2084,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					{
 						for(AssignGradesLMS ag : asGrd.get(courseModules.get(loadedItem.getCmid()).getInstance()))
 						{
-							if(ag.getUser() == loadedItem.getUserid() && ag.getTimemodified() == loadedItem.getTime())
-							{
+							if((ag.getUser() == loadedItem.getUserid() || ag.getGrader() == loadedItem.getUserid()) && ag.getTimemodified() == loadedItem.getTime())
+							{ 
 								insert.setGrade(ag.getGrade());
 								break;
 							}
@@ -2267,7 +2292,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							+ loadedItem2.getItemmodule());
 				}
 			}
-			assignmentMining.put(insert.getId(), insert);
+			//Ignore old assignment_minings
+			//assignmentMining.put(insert.getId(), insert);
 		}
 
 		final HashMap<Long, AssignmentMining> amTmp = new HashMap<Long, AssignmentMining>();
@@ -2296,16 +2322,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			{
 				if ((loadedItem2.getIteminstance() != null) && (loadedItem2.getItemmodule() != null))
 				{
-					this.logger.debug("Iteminstance " + loadedItem2.getIteminstance() + " AssignmentId"
+					this.logger.debug("Iteminstance " + loadedItem2.getIteminstance() + " AssignId"
 							+ loadedItem.getId());
 					if ((loadedItem.getId() == loadedItem2.getIteminstance().longValue())
-							&& loadedItem2.getItemmodule().equals("assignment")) {
+							&& loadedItem2.getItemmodule().equals("assign")) {
 						insert.setMaxGrade(loadedItem2.getGrademax());
 						break;
 					}
 				}
 				else {
-					this.logger.debug("Iteminstance or Itemmodule not found for AssignmentId" + loadedItem.getId()
+					this.logger.debug("Iteminstance or Itemmodule not found for AssignId" + loadedItem.getId()
 							+ " and type quiz and Iteminstance " + loadedItem2.getIteminstance() + " Itemmodule:"
 							+ loadedItem2.getItemmodule());
 				}
