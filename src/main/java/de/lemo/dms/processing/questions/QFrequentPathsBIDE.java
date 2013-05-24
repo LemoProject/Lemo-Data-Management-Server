@@ -54,8 +54,9 @@ public class QFrequentPathsBIDE extends Question {
 		// Tell the client where to find the result
 		URI resultPollingUri = new URI(ServiceTaskManager.TASK_POLLING_PATH + URLEncoder.encode(taskId, "UTF-8"));
 		logger.debug("Task results created at " + resultPollingUri);
-		
-		return Response.created(resultPollingUri).build();
+
+		// XXX the APPS uses the id in the entity, though it should probably use the absolute URL in the header
+		return Response.created(resultPollingUri).entity(taskId).build();
 	}
 
 }

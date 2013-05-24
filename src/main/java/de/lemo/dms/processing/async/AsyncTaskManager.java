@@ -39,8 +39,8 @@ public class AsyncTaskManager {
 
 	private AsyncTaskManager() {
 		// TODO load timeout from config
-		long computationTimeout = 10000;
-		long resultTimeout = 30000;
+		long computationTimeout = 360000;
+		long resultTimeout = 360000;
 		startResultTimeoutThread(computationTimeout, resultTimeout);
 	}
 
