@@ -50,7 +50,8 @@ public class QCourseUserPaths extends Question {
 	public JSONObject compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) Long endTime
+			@FormParam(MetaParam.END_TIME) Long endTime,
+			@FormParam(MetaParam.GENDER) List<Long> gender
 			) throws JSONException {
 
 		validateTimestamps(startTime, endTime);
@@ -62,7 +63,7 @@ public class QCourseUserPaths extends Question {
 		final Session session = dbHandler.getMiningSession();
 		
 		Criteria criteria;
-		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 
 		criteria = session.createCriteria(ILogMining.class, "log")
 				.add(Restrictions.in("log.course.id", courses))
@@ -87,7 +88,7 @@ public class QCourseUserPaths extends Question {
 
 		this.logger.info("Paths fetched: " + logs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
 		
-		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses); 
+		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses, gender); 
 
 		for (final ILogMining log : logs) 
 		{
