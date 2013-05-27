@@ -18,6 +18,8 @@ import de.lemo.dms.processing.questions.QLearningObjectUsage;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.questions.QPerformanceUserTest;
 import de.lemo.dms.processing.resulttype.CourseObject;
+import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
+import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
 import de.lemo.dms.service.ServiceCourseDetails;
 import de.lemo.dms.service.ServiceCourseTitleSearch;
@@ -119,16 +121,16 @@ public class Test {
 		QFrequentPathsBIDE bid = new QFrequentPathsBIDE();
 		QCumulativeUserAccess cua = new QCumulativeUserAccess();
 		QCourseActivity qlou = new QCourseActivity();
-		QLearningObjectUsage lou = new QLearningObjectUsage();
+		QActivityResourceType lou = new QActivityResourceType();
 		QActivityResourceType art = new QActivityResourceType();
 		
 		List<Long> gender = new ArrayList<Long>();
-		gender.add(0L);
 		
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
 	//	users.add(2L);
-		courses.add(1513617310L);
+		courses.add(11476L);
+
 		
 		ArrayList<String> types = new ArrayList<String>();
 		//types.add("resource");
@@ -137,11 +139,15 @@ public class Test {
 		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
-		CourseObject co = scd.getCourseDetails(1513617310L);
+		CourseObject co = scd.getCourseDetails(11476L);
 		
 		//art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types, gender);
 		
-		lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest(), gender);
+		ResultListResourceRequestInfo r = lou.compute(courses, co.getFirstRequest(), co.getLastRequest(), types, gender);
+		for(ResourceRequestInfo info : r.getResourceRequestInfos())
+		{
+			System.out.println(info.getRequests());
+		}
 		
 //		cua.compute(courses, types, co.getFirstRequest(), co.getLastRequest(), gender);
 		
