@@ -3,7 +3,5 @@
 .settings/
 *.log
 .project
-/src/de/lemo/dms/core/config.properties
 /src/de/lemo/dms/processing/Test.java
-/src/de/lemo/dms/connectors/Test.java
-/src/de/lemo/dms/core/default_config.properties
+/src/main/resources/log4j.properties
