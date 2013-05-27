@@ -19,6 +19,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
@@ -67,7 +68,7 @@ public class QActivityResourceType extends Question {
 			resourceTypes = tmp;
 		}
 		
-		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		Criteria criteria = session.createCriteria(ILogMining.class, "log");
 		criteria.add(Restrictions.in("log.course.id", courses))
 				.add(Restrictions.between("log.timestamp", startTime, endTime));
 				criteria.add(Restrictions.in("log.user.id", users));
@@ -99,6 +100,33 @@ public class QActivityResourceType extends Question {
 				}
 			}
 		}
+		
+		//Add unused Objects
+		criteria = session.createCriteria(ICourseLORelation.class, "aso");
+		criteria.add(Restrictions.in("aso.course.id", courses));
+		List<ICourseLORelation> asoList = criteria.list();
+		
+		for(ICourseLORelation aso : asoList)
+		{
+			Long id = Long.valueOf(aso.getLearningObject().getPrefix() + "" + aso.getLearningObject().getId());
+			if(!rriMap.containsKey(id))
+			{
+				String type = aso.getLearningObject().getClass().getSimpleName().toUpperCase();
+				if(type.contains("MINING"))
+				{
+					type = type.substring(0, type.indexOf("MINING"));
+				}
+				if(allTypes || resourceTypes.contains(type))
+				{			
+					final ResourceRequestInfo rri = new ResourceRequestInfo(id,
+							ELearningObjectType.valueOf(type), 0L, 0L,
+							aso.getLearningObject().getTitle(), 0L);
+					result.add(rri);
+					id++;
+				}
+			}
+		}
+		
 		if (rriMap.values() != null) {
 			result.addAll(rriMap.values());
 		}
