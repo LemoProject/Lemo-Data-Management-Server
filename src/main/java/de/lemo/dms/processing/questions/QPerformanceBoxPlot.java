@@ -60,7 +60,8 @@ public class QPerformanceBoxPlot extends Question {
 			@FormParam(MetaParam.QUIZ_IDS) List<Long> quizzes,
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) final Long endTime) {
+			@FormParam(MetaParam.END_TIME) final Long endTime,
+			@FormParam(MetaParam.GENDER) final List<Long> gender) {
 
 		validateTimestamps(startTime, endTime, resolution);
 		
@@ -97,11 +98,11 @@ public class QPerformanceBoxPlot extends Question {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 		}
 		else
 		{
-			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, gender);
 			List<Long> tmp = new ArrayList<Long>();
 			for(int i = 0; i < users.size(); i++)
 			{

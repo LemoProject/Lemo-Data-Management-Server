@@ -29,7 +29,7 @@ public class StudentHelper {
 	 * @param courses List of course identifiers
 	 * @return	Map<Long, Long> of identifiers (key-set) of students within the specified courses
 	 */
-	public static Map<Long, Long> getCourseStudentsAliasKeys(List<Long> courses)
+	public static Map<Long, Long> getCourseStudentsAliasKeys(List<Long> courses, List<Long> genders)
 	{
 		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 
@@ -44,8 +44,11 @@ public class StudentHelper {
 			// Only use students (type = 2) 
 			if (cu.getUser() != null && cu.getRole().getType() == 2)
 			{
-				users.put(i, cu.getUser().getId());
-				i++;
+				if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
+				{
+					users.put(i, cu.getUser().getId());
+					i++;
+				}
 			}
 		}
 		session.close();
@@ -58,7 +61,7 @@ public class StudentHelper {
 	 * @param courses List of course identifiers
 	 * @return	Map<Long, Long> of identifiers (key-set) of students within the specified courses
 	 */
-	public static Map<Long, Long> getCourseStudentsRealKeys(List<Long> courses)
+	public static Map<Long, Long> getCourseStudentsRealKeys(List<Long> courses, List<Long> genders)
 	{
 		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 
@@ -73,8 +76,11 @@ public class StudentHelper {
 			// Only use students (type = 2) 
 			if (cu.getUser() != null && cu.getRole().getType() == 2)
 			{
-				users.put(cu.getUser().getId(), i);
-				i++;
+				if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
+				{
+					users.put(cu.getUser().getId(), i);
+					i++;
+				}
 			}
 		}
 		session.close();

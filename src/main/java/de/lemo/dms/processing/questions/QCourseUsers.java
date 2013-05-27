@@ -28,7 +28,8 @@ public class QCourseUsers extends Question {
 	public ResultListLongObject compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) final Long endTime) {
+			@FormParam(MetaParam.END_TIME) final Long endTime,
+			@FormParam(MetaParam.GENDER) List<Long> gender) {
 
 		validateTimestamps(startTime, endTime);
 		/*
@@ -71,7 +72,7 @@ public class QCourseUsers extends Question {
 		}
 		 */
 
-		return new ResultListLongObject(new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).keySet()));
+		return new ResultListLongObject(new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).keySet()));
 	}
 
 }

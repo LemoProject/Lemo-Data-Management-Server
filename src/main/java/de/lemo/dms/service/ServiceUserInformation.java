@@ -72,7 +72,7 @@ public class ServiceUserInformation {
 		List<Long> l1 = new ArrayList<Long>();
 		l1.add(id);
 		
-		final List<Long> participants = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(l1).values());
+		final List<Long> participants = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(l1, new ArrayList<Long>()).values());
 
 		for (CourseMining course : courseList) 
 		{

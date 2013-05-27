@@ -10,6 +10,7 @@
 package de.lemo.dms.processing.questions;
 
 import static org.junit.Assert.*;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,7 @@ public class QCourseUsersTest {
         startTime = 0L;
         endTime = Long.MAX_VALUE;
 
-        ResultListLongObject result = instance.compute(courses, startTime, endTime);
+        ResultListLongObject result = instance.compute(courses, startTime, endTime, new ArrayList<Long>());
 
         assertNotNull(result);
         assertEquals(1247L, result.getElements().size());

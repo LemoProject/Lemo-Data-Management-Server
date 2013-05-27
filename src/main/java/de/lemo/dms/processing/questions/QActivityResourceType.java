@@ -42,7 +42,8 @@ public class QActivityResourceType extends Question {
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
-			@FormParam(MetaParam.TYPES) List<String> resourceTypes) {
+			@FormParam(MetaParam.TYPES) List<String> resourceTypes,
+			@FormParam(MetaParam.GENDER) List<Long> gender){
 
 		validateTimestamps(startTime, endTime);
 
@@ -50,7 +51,7 @@ public class QActivityResourceType extends Question {
 		boolean allTypes = resourceTypes.isEmpty();
 		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		
-		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 		if(users.isEmpty()) {
 			logger.warn("Could not find associated users.");
 			return new ResultListResourceRequestInfo();

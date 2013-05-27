@@ -122,7 +122,8 @@ public class Test {
 		QLearningObjectUsage lou = new QLearningObjectUsage();
 		QActivityResourceType art = new QActivityResourceType();
 		
-		
+		List<Long> gender = new ArrayList<Long>();
+		gender.add(0L);
 		
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
@@ -138,15 +139,15 @@ public class Test {
 		
 		CourseObject co = scd.getCourseDetails(1513617310L);
 		
-		//art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types);
+		//art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types, gender);
 		
-		lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest());
+		lou.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest(), gender);
 		
-//		cua.compute(courses, types, co.getFirstRequest(), co.getLastRequest());
+//		cua.compute(courses, types, co.getFirstRequest(), co.getLastRequest(), gender);
 		
-		//qlou.compute(courses, users, 0L, 1500000000L, 100L, new ArrayList<String>());
+		//qlou.compute(courses, users, 0L, 1500000000L, 100L, new ArrayList<String>(), gender);
 		
-		//qput.compute(courses, users, new ArrayList<Long>(), 100L, 0L, 1500000000L);
+		//qput.compute(courses, users, new ArrayList<Long>(), 100L, 0L, 1500000000L, gender);
 	
 		ServiceCourseTitleSearch scts = new ServiceCourseTitleSearch();
 		scts.getCoursesByText("Inform", null, null);
@@ -156,10 +157,10 @@ public class Test {
 
 	public void run()
 	{
-		logger.info("Starting test");
+		logger.info("Starting Import");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodleNumericConn();
-		logger.info("Test finished");
+		this.runMoodle23Conn();
+		logger.info("Import finished");
 	}
 
 	/**

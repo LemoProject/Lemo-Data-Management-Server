@@ -42,7 +42,8 @@ public class QActivityResourceTypeResolution extends Question {
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
-			@FormParam(MetaParam.TYPES) final List<String> resourceTypes) {
+			@FormParam(MetaParam.TYPES) final List<String> resourceTypes,
+			@FormParam(MetaParam.GENDER) List<Long> gender){
 
 		validateTimestamps(startTime, endTime, resolution);
 
@@ -55,7 +56,7 @@ public class QActivityResourceTypeResolution extends Question {
 		for (ELearningObjectType loType : ELearningObjectType.values()) {
 			if (allTypes || resourceTypes.contains(loType.name().toLowerCase())) {
 				Criteria criteria;
-				List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+				List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 				criteria = session.createCriteria(loType.getLogMiningType(), "log")
 						.add(Restrictions.between("log.timestamp", startTime, endTime));
 				criteria.add(Restrictions.in("log.course.id", courses));

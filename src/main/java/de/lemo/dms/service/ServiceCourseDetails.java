@@ -64,7 +64,7 @@ public class ServiceCourseDetails {
 		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
 		List<Long> cid = new ArrayList<Long>();
 		cid.add(id);
-		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(cid).values());
+		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(cid, new ArrayList<Long>()).values());
 		
 		criteria.add(Restrictions.eq("log.course.id", id));
 		if(users.size() > 0)
@@ -120,7 +120,7 @@ public class ServiceCourseDetails {
 		@SuppressWarnings("unchecked")
 		final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) criteria.list();
 
-		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, new ArrayList<Long>());
 		
 		for (CourseMining courseMining : ci) {
 			

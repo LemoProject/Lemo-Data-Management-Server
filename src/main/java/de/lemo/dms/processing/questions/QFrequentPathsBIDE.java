@@ -64,7 +64,8 @@ public class QFrequentPathsBIDE extends Question {
 			@FormParam(MetaParam.MIN_SUP) final Double minSup,
 			@FormParam(MetaParam.SESSION_WISE) final boolean sessionWise,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) final Long endTime) {
+			@FormParam(MetaParam.END_TIME) final Long endTime,
+			@FormParam(MetaParam.GENDER) List<Long> gender){
 
 		validateTimestamps(startTime, endTime);
 		
@@ -119,11 +120,11 @@ public class QFrequentPathsBIDE extends Question {
 			if (!sessionWise) {
 				sequenceDatabase.loadLinkedList(QFrequentPathsBIDE.generateLinkedList(courses, users, types, minLength,
 						maxLength,
-						startTime, endTime, session));
+						startTime, endTime, session, gender));
 			} else {
 				sequenceDatabase.loadLinkedList(QFrequentPathsBIDE.generateLinkedListSessionBound(courses, users,
 						types, minLength,
-						maxLength, startTime, endTime, session));
+						maxLength, startTime, endTime, session, gender));
 			}
 
 			final AlgoBIDEPlus algo = new AlgoBIDEPlus(minSup);
@@ -234,18 +235,18 @@ public class QFrequentPathsBIDE extends Question {
 	@SuppressWarnings("unchecked")
 	private static LinkedList<String> generateLinkedListSessionBound(final List<Long> courses, List<Long> users,
 			final List<String> types, final Long minLength, final Long maxLength, final Long starttime,
-			final Long endtime, Session session)
+			final Long endtime, Session session, List<Long> gender)
 	{
 		final LinkedList<String> result = new LinkedList<String>();
 		try {
 
 			if(users == null || users.size() == 0)
 			{
-				users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+				users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 			}
 			else
 			{
-				Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+				Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, gender);
 				List<Long> tmp = new ArrayList<Long>();
 				for(int i = 0; i < users.size(); i++)
 				{
@@ -378,7 +379,7 @@ public class QFrequentPathsBIDE extends Question {
 	@SuppressWarnings("unchecked")
 	private static LinkedList<String> generateLinkedList(final List<Long> courses, List<Long> users,
 			final List<String> types,
-			final Long minLength, final Long maxLength, final Long starttime, final Long endtime, Session session)
+			final Long minLength, final Long maxLength, final Long starttime, final Long endtime, Session session, List<Long> gender)
 	{
 		final LinkedList<String> result = new LinkedList<String>();
 		final boolean hasBorders = (minLength != null) && (maxLength != null) && (maxLength > 0)
@@ -390,11 +391,11 @@ public class QFrequentPathsBIDE extends Question {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 		}
 		else
 		{
-			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, gender);
 			List<Long> tmp = new ArrayList<Long>();
 			for(int i = 0; i < users.size(); i++)
 			{
