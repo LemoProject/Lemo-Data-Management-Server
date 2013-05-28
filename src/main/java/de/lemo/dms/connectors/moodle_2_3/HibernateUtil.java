@@ -50,6 +50,7 @@ public final class HibernateUtil {
 		// Add mapping classes
 
 		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/AssignLMS.hbm.xml");
+
 		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/EnrolLMS.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/UserEnrolmentsLMS.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ModulesLMS.hbm.xml");
@@ -75,8 +76,9 @@ public final class HibernateUtil {
 		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/RoleLMS.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ContextLMS.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/RoleAssignmentsLMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/AssignmentLMS.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/AssignmentSubmissionLMS.hbm.xml");
+		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/AssignGradesLMS.hbm.xml");
+		//cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/AssignmentLMS.hbm.xml");
+		//cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/AssignmentSubmissionLMS.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ScormLMS.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/GradeItemsLMS.hbm.xml");
 		cfg.addResource("de/lemo/dms/connectors/moodle_2_3/moodleDBclass/ChatLMS.hbm.xml");

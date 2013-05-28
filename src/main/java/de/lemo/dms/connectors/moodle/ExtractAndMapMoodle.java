@@ -835,10 +835,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				for(ContextLMS c : this.contextLms)
 				{
 					if(c.getContextlevel() == 50 && courses.contains(c.getInstanceid()))
-						ids.add(c.getId());
-		 			if(!(empty = ids.isEmpty()))
-						criteria.add(Restrictions.in("obj.contextid", ids));
+						ids.add(c.getId());		 			
 				}
+				if(!(empty = ids.isEmpty()))
+					criteria.add(Restrictions.in("obj.contextid", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(hasCR && empty)

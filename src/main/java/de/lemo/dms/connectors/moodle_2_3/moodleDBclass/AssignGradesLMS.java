@@ -5,10 +5,6 @@
  */
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
-
-import de.lemo.dms.db.miningDBclass.AssignmentMining;
-import de.lemo.dms.db.miningDBclass.UserMining;
-
 /**
  * Mapping class for table Assign.
  * 
@@ -20,7 +16,7 @@ public class AssignGradesLMS {
 	private long id;
 	private long assignment;
 	private long user;
-	private double grade;
+	private Double grade;
 	private long grader;
 	private long timemodified;
 	private long timecreated;
@@ -54,11 +50,11 @@ public class AssignGradesLMS {
 		this.user = user;
 	}
 
-	public double getGrade() {
+	public Double getGrade() {
 		return grade;
 	}
 	
-	public void setGrade(double grade) {
+	public void setGrade(Double grade) {
 		this.grade = grade;
 	}
 	
