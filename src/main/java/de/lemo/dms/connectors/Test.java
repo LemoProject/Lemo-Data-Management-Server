@@ -115,7 +115,7 @@ public class Test {
 		courses.add(495L);
 		courses.add(496L);
 		
-		connector.setCourseIdFilter(courses);
+		//connector.setCourseIdFilter(courses);
 		
 		connector.getData();
 		
@@ -145,9 +145,54 @@ public class Test {
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE_NUMERIC);
 		List<Long> courses = new ArrayList<Long>();
-		courses.add(1197L);
-		courses.add(1275L);
-		courses.add(1485L);
+		courses.add(164L);
+		courses.add(169L);
+		courses.add(170L);
+		courses.add(171L);
+		courses.add(172L);
+		courses.add(173L);
+		courses.add(174L);
+		courses.add(224L);
+		courses.add(236L);
+		courses.add(270L);
+		courses.add(303L);
+		courses.add(306L);
+		courses.add(310L);
+		courses.add(312L);
+		courses.add(328L);
+		courses.add(335L);
+		courses.add(397L);
+		courses.add(402L);
+		courses.add(408L);
+		courses.add(421L);
+		courses.add(424L);
+		courses.add(434L);
+		courses.add(440L);
+		courses.add(442L);
+		courses.add(491L);
+		courses.add(517L);
+		courses.add(534L);
+		courses.add(536L);
+		courses.add(537L);
+		courses.add(538L);
+		courses.add(547L);
+		courses.add(548L);
+		courses.add(549L);
+		courses.add(553L);
+		courses.add(580L);
+		courses.add(593L);
+		courses.add(615L);
+		courses.add(616L);
+		courses.add(668L);
+		courses.add(713L);
+		courses.add(717L);
+		courses.add(732L);
+		courses.add(755L);
+		courses.add(766L);
+		courses.add(767L);
+		courses.add(768L);
+		courses.add(789L);
+		courses.add(792L);
 		
 		connector.setCourseIdFilter(courses);
 		

@@ -176,7 +176,7 @@ public class QPerformanceHistogram extends Question {
 
 			final String key = log.getPrefix() + " " + log.getLearnObjId() + " " + log.getUser().getId();
 
-			if (singleResults.get(key) == null)
+			if (log.getGrade() != null && (singleResults.get(key) == null || log.getGrade() > singleResults.get(key).getGrade()))
 			{
 				singleResults.put(key, log);
 			}

@@ -237,10 +237,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			for(Object[] obj : tmpl)
 			{
 				ForumPostsLMS p = new ForumPostsLMS();
-				p.setId(((BigInteger) obj[0]).longValue());
-				p.setUserid(((BigInteger) obj[1]).longValue());
-				p.setCreated(((BigInteger) obj[2]).longValue());
-				p.setModified(((BigInteger) obj[3]).longValue());
+				p.setId(((Integer) obj[0]).longValue());
+				p.setUserid(((Integer) obj[1]).longValue());
+				p.setCreated(((Integer) obj[2]).longValue());
+				p.setModified(((Integer) obj[3]).longValue());
 				p.setSubject((String) obj[4]);
 				p.setMessage((String) obj[5]);
 				this.forumPostsLms.add(p);

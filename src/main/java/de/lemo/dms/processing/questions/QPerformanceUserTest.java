@@ -172,7 +172,7 @@ public class QPerformanceUserTest {
 
 			u.add(log.getUser().getId());
 			
-			if (log.getFinalGrade() != null && (singleResults.get(key) == null || log.getFinalGrade() > singleResults.get(key).getFinalGrade())) 
+			if (log.getFinalGrade() != null && (singleResults.get(key) == null || (log.getFinalGrade() > singleResults.get(key).getFinalGrade()))) 
 			{
 				singleResults.put(key, log);
 			}

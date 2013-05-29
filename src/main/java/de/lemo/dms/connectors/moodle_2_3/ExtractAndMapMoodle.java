@@ -2102,7 +2102,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					{
 						for(AssignGradesLMS ag : asGrd.get(courseModules.get(loadedItem.getCmid()).getInstance()))
 						{
-							if((ag.getUser() == loadedItem.getUserid() || ag.getGrader() == loadedItem.getUserid()) && ag.getTimemodified() == loadedItem.getTime())
+							if((ag.getUser() == loadedItem.getUserid() || ag.getGrader() == loadedItem.getUserid()) && loadedItem.getTime() >= ag.getTimemodified())
 							{ 
 								insert.setGrade(ag.getGrade());
 								break;
