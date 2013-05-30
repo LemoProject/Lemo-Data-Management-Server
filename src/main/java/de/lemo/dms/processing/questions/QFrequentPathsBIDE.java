@@ -15,9 +15,9 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
+import de.lemo.dms.processing.AnalysisTaskManager;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
-import de.lemo.dms.processing.async.AsyncTaskManager;
 import de.lemo.dms.processing.questions.async.AFrequentPathsBIDE;
 import de.lemo.dms.service.ServiceTaskManager;
 
@@ -49,7 +49,7 @@ public class QFrequentPathsBIDE extends Question {
 		AFrequentPathsBIDE task = new AFrequentPathsBIDE(taskId, courses, users, types, minLength, maxLength, minSup,
 				sessionWise, startTime, endTime);
 
-		AsyncTaskManager.getInstance().addTask(task);
+		AnalysisTaskManager.getInstance().addTask(task);
 
 		// Tell the client where to find the result
 		URI resultPollingUri = new URI(ServiceTaskManager.TASK_POLLING_PATH + URLEncoder.encode(taskId, "UTF-8"));

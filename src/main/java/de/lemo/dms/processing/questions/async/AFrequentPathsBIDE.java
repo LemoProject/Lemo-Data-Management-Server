@@ -29,8 +29,8 @@ import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.processing.AnalysisTask;
 import de.lemo.dms.processing.StudentHelper;
-import de.lemo.dms.processing.async.AsyncAnalysis;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
 import de.lemo.dms.processing.resulttype.UserPathLink;
 import de.lemo.dms.processing.resulttype.UserPathNode;
@@ -41,7 +41,7 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
  * 
  * @author Sebastian Schwarzrock
  */
-public class AFrequentPathsBIDE extends AsyncAnalysis {
+public class AFrequentPathsBIDE extends AnalysisTask {
 
 	private Map<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
 	private Map<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();

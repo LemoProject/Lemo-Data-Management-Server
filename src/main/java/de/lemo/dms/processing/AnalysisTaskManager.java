@@ -3,7 +3,7 @@
  * Date 22.04.2013
  * Project Lemo Learning Analytics
  */
-package de.lemo.dms.processing.async;
+package de.lemo.dms.processing;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import de.lemo.dms.service.ServiceTaskManager;
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  */
-public class AsyncTaskManager {
+public class AnalysisTaskManager {
 
 	private final Logger logger = Logger.getLogger(getClass());
 
@@ -29,15 +29,15 @@ public class AsyncTaskManager {
 	private static final int MAX_THREADS = 10;
 
 	// TODO use enum singleton pattern
-	private static AsyncTaskManager INSTANCE = null;
+	private static AnalysisTaskManager INSTANCE = null;
 
 	private TaskTimeoutThread resultTimeoutThread;
 	// TODO use own thread factory to set low priority!
 	private ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
 
-	private Map<String, AsyncAnalysis> tasks = Collections.synchronizedMap(new HashMap<String, AsyncAnalysis>());
+	private Map<String, AnalysisTask> tasks = Collections.synchronizedMap(new HashMap<String, AnalysisTask>());
 
-	private AsyncTaskManager() {
+	private AnalysisTaskManager() {
 		// TODO load timeout from config
 		long computationTimeout = 360000;
 		long resultTimeout = 360000;
@@ -49,9 +49,9 @@ public class AsyncTaskManager {
 	 * 
 	 * @return Instance of the singleton
 	 */
-	public static synchronized AsyncTaskManager getInstance() {
+	public static synchronized AnalysisTaskManager getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new AsyncTaskManager();
+			INSTANCE = new AnalysisTaskManager();
 		}
 		return INSTANCE;
 	}
@@ -65,11 +65,11 @@ public class AsyncTaskManager {
 	 * @param task
 	 *            the task to add
 	 */
-	public synchronized void addTask(AsyncAnalysis task) {
+	public synchronized void addTask(AnalysisTask task) {
 		String taskId = task.getTaskId();
 		
 		// check if any task by this user is already running and delete any pending results
-		AsyncAnalysis pendingTask = tasks.remove(taskId);
+		AnalysisTask pendingTask = tasks.remove(taskId);
 		if (pendingTask != null) {
 			logger.debug("cancelled pending task: " + taskId);
 			pendingTask.cancel();
@@ -84,7 +84,7 @@ public class AsyncTaskManager {
 		}
 	}
 
-	public AsyncAnalysis getTask(String key) {
+	public AnalysisTask getTask(String key) {
 		return tasks.get(key);
 	}
 

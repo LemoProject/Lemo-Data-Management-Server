@@ -3,7 +3,7 @@
  * Date 24.04.2013
  * Project Lemo Learning Analytics
  */
-package de.lemo.dms.processing.async;
+package de.lemo.dms.processing;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -26,11 +26,11 @@ public class TaskTimeoutThread extends Thread {
 
 	private final Logger logger = Logger.getLogger(getClass());
 
-	private Map<String, AsyncAnalysis> tasks;
+	private Map<String, AnalysisTask> tasks;
 	private long maxProcessingTime;
 	private long maxResultLifeTime;
 
-	public TaskTimeoutThread(Map<String, AsyncAnalysis> tasks, long maxProcessingTime, long maxResultLifeTime) {
+	public TaskTimeoutThread(Map<String, AnalysisTask> tasks, long maxProcessingTime, long maxResultLifeTime) {
 		super(NAME);
 		this.tasks = tasks;
 		this.maxProcessingTime = maxProcessingTime;
@@ -46,10 +46,10 @@ public class TaskTimeoutThread extends Thread {
 				synchronized (tasks) {
 					logger.trace("Running timout check for " + tasks.size() + " tasks.");
 					
-					for (Iterator<Entry<String, AsyncAnalysis>> iterator = tasks.entrySet().iterator(); iterator
+					for (Iterator<Entry<String, AnalysisTask>> iterator = tasks.entrySet().iterator(); iterator
 							.hasNext();) {
-						Entry<String, AsyncAnalysis> entry = iterator.next();
-						AsyncAnalysis task = entry.getValue();
+						Entry<String, AnalysisTask> entry = iterator.next();
+						AnalysisTask task = entry.getValue();
 
 						if (task.isRunning()) {
 							// check if the computation time reached the limit

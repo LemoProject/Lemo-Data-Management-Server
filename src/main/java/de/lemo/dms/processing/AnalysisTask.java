@@ -3,7 +3,7 @@
  * Date 22.04.2013
  * Project Lemo Learning Analytics
  */
-package de.lemo.dms.processing.async;
+package de.lemo.dms.processing;
 
 import java.util.Date;
 import java.util.concurrent.Callable;
@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * @author Boris Wenzlaff
  * @author Leonard Kappe
  */
-public abstract class AsyncAnalysis implements Callable<Object> {
+public abstract class AnalysisTask implements Callable<Object> {
 
 	private final Logger logger = Logger.getLogger(getClass());
 
@@ -25,7 +25,7 @@ public abstract class AsyncAnalysis implements Callable<Object> {
 	private String taskId;
 	private Future<?> future;
 
-	public AsyncAnalysis(String taskId) {
+	public AnalysisTask(String taskId) {
 		this.taskId = taskId;
 	}
 

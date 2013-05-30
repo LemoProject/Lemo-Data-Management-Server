@@ -9,8 +9,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
-import de.lemo.dms.processing.async.AsyncAnalysis;
-import de.lemo.dms.processing.async.AsyncTaskManager;
+import de.lemo.dms.processing.AnalysisTask;
+import de.lemo.dms.processing.AnalysisTaskManager;
 
 @Path("tasks")
 public class ServiceTaskManager {
@@ -23,7 +23,7 @@ public class ServiceTaskManager {
 	public Response taskResult(@PathParam("id") String taskId) throws UnsupportedEncodingException {
 
 		logger.debug("Lookup status of Task " + taskId);
-		AsyncAnalysis task = AsyncTaskManager.getInstance().getTask(URLDecoder.decode(taskId, "UTF-8"));
+		AnalysisTask task = AnalysisTaskManager.getInstance().getTask(URLDecoder.decode(taskId, "UTF-8"));
 
 		if (task == null) {
 			logger.warn("Task not found: Task " + taskId);
