@@ -20,6 +20,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.ForumLogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.ELearningObjectType;
@@ -112,7 +113,20 @@ public class QLearningObjectUsage extends Question {
 			if ((types == null) || (types.isEmpty()) || types.contains(obType.toUpperCase()))
 			{
 				requestedObjects.add(ilo.getPrefix() + " " + ilo.getLearnObjId());
-				final String id = ilo.getPrefix() + "_" + ilo.getLearnObjId() + "?" + obType + "$" + ilo.getTitle();
+				
+				final String id;
+				if(ilo.getClass().getSimpleName().toUpperCase().contains("FORUM"))
+				{
+					String title = ((ForumLogMining) ilo).getSubject();
+					if(title != null)
+						id = ilo.getPrefix() + "_" + ilo.getLearnObjId() + "?" + obType + "$" + title;
+					else
+						id = ilo.getPrefix() + "_" + ilo.getLearnObjId() + "?" + obType + "$" + ilo.getTitle();
+				}
+				else
+				{
+					id = ilo.getPrefix() + "_" + ilo.getLearnObjId() + "?" + obType + "$" + ilo.getTitle();
+				}
 				if (requests.get(id) == null)
 				{
 					final ArrayList<Long> al = new ArrayList<Long>();
@@ -121,6 +135,9 @@ public class QLearningObjectUsage extends Question {
 				} else {
 					requests.get(id).add(ilo.getUser().getId());
 				}
+				
+				
+				
 			}
 		}
 		

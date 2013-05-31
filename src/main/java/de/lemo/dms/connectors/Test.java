@@ -115,7 +115,7 @@ public class Test {
 		courses.add(495L);
 		courses.add(496L);
 		
-		//connector.setCourseIdFilter(courses);
+		connector.setCourseIdFilter(courses);
 		
 		connector.getData();
 		
@@ -236,6 +236,7 @@ public class Test {
 		QCourseActivity qlou = new QCourseActivity();
 		QActivityResourceType lou = new QActivityResourceType();
 		QActivityResourceType art = new QActivityResourceType();
+		QLearningObjectUsage u = new QLearningObjectUsage();
 		
 		List<Long> gender = new ArrayList<Long>();
 		
@@ -246,7 +247,7 @@ public class Test {
 
 		
 		ArrayList<String> types = new ArrayList<String>();
-		//types.add("resource");
+		types.add("FORUM");
 		
 
 		
@@ -256,11 +257,12 @@ public class Test {
 		
 		//art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types, gender);
 		
-		ResultListResourceRequestInfo r = lou.compute(courses, co.getFirstRequest(), co.getLastRequest(), types, gender);
-		for(ResourceRequestInfo info : r.getResourceRequestInfos())
+		ResultListResourceRequestInfo rril = u.compute(courses, users, types, co.getFirstRequest(), co.getLastRequest(), gender);
+		for(ResourceRequestInfo rri : rril.getResourceRequestInfos())
 		{
-			System.out.println(info.getRequests());
+			System.out.println(rri.getRequests() + " " + rri.getTitle());
 		}
+		
 		
 //		cua.compute(courses, types, co.getFirstRequest(), co.getLastRequest(), gender);
 		
@@ -278,7 +280,7 @@ public class Test {
 	{
 		logger.info("Starting Import");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodle23Conn();
+		this.test();
 		logger.info("Import finished");
 	}
 
