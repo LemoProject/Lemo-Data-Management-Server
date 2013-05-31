@@ -81,7 +81,6 @@
         <property name="hibernate.default_schema=lemo_db">lemo_db</property>
       </connector>
     </connectors>
-    <path-analysis-timeout>300</path-analysis-timeout>
   </dms>
 
 </config>

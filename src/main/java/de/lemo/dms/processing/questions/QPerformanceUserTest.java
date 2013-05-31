@@ -69,7 +69,8 @@ public class QPerformanceUserTest {
 			@FormParam(MetaParam.QUIZ_IDS) final List<Long> quizzes,
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) final Long endTime) {
+			@FormParam(MetaParam.END_TIME) final Long endTime,
+			@FormParam(MetaParam.GENDER) final List<Long> gender) {
 
 		if (logger.isDebugEnabled()) {
 			if ((courses != null) && (courses.size() > 0))
@@ -101,11 +102,11 @@ public class QPerformanceUserTest {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 		}
 		else
 		{
-			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, gender);
 			List<Long> tmp = new ArrayList<Long>();
 			for(int i = 0; i < users.size(); i++)
 			{
@@ -171,7 +172,7 @@ public class QPerformanceUserTest {
 
 			u.add(log.getUser().getId());
 			
-			if (log.getFinalGrade() != null && (singleResults.get(key) == null || log.getFinalGrade() > singleResults.get(key).getFinalGrade())) 
+			if (log.getFinalGrade() != null && (singleResults.get(key) == null || (log.getFinalGrade() > singleResults.get(key).getFinalGrade()))) 
 			{
 				singleResults.put(key, log);
 			}
@@ -243,7 +244,7 @@ public class QPerformanceUserTest {
 		}
 		
 		int i = quizzes.size();
-		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses);
+		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses, gender);
 		for(Entry<Long, ArrayList<Long>> entry : fin.entrySet())
 		{
 			//Insert user-id into result list

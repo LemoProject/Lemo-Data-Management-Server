@@ -61,7 +61,8 @@ public class QUserLogHistory extends Question {
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
 			@FormParam(MetaParam.USER_IDS) List<Long> users,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) final Long endTime) {
+			@FormParam(MetaParam.END_TIME) final Long endTime,
+			@FormParam(MetaParam.GENDER) final List<Long> gender) {
 
 		validateTimestamps(startTime, endTime);
 
@@ -71,11 +72,11 @@ public class QUserLogHistory extends Question {
 		Criteria criteria;
 		if(users == null || users.size() == 0)
 		{
-			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 		}
 		else
 		{
-			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, gender);
 			List<Long> tmp = new ArrayList<Long>();
 			for(int i = 0; i < users.size(); i++)
 			{

@@ -41,13 +41,14 @@ public class QFrequentPathsBIDE extends Question {
 			@FormParam(MetaParam.MIN_SUP) final Double minSup,
 			@FormParam(MetaParam.SESSION_WISE) final boolean sessionWise,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) final Long endTime) throws UnsupportedEncodingException, URISyntaxException {
+			@FormParam(MetaParam.END_TIME) final Long endTime,
+			@FormParam(MetaParam.GENDER) List<Long> gender) throws UnsupportedEncodingException, URISyntaxException {
 
 		validateTimestamps(startTime, endTime);
 
 		String taskId = userId + "-" + "BIDE";
 		AFrequentPathsBIDE task = new AFrequentPathsBIDE(taskId, courses, users, types, minLength, maxLength, minSup,
-				sessionWise, startTime, endTime);
+				sessionWise, startTime, endTime, gender);
 
 		AnalysisTaskManager.getInstance().addTask(task);
 

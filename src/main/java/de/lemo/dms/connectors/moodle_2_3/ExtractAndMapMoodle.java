@@ -22,6 +22,7 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.TextHelper;
+import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.AssignGradesLMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.AssignLMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.AssignmentLMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.AssignmentSubmissionsLMS;
@@ -102,6 +103,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	// LMS tables instances lists
 	/** The log_lms. */
 	private List<LogLMS> logLms;
+	private List<AssignGradesLMS> assignGradesLms;
 	private List<ResourceLMS> resourceLms;
 	private List<CourseLMS> courseLms;
 	private List<ForumLMS> forumLms;
@@ -117,8 +119,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	private List<RoleLMS> roleLms;
 	private List<ContextLMS> contextLms;
 	private List<RoleAssignmentsLMS> roleAssignmentsLms;
-	private List<AssignmentLMS> assignmentLms;
-	private List<AssignmentSubmissionsLMS> assignmentSubmissionLms;
 	private List<QuizGradesLMS> quizGradesLms;
 	private List<ForumDiscussionsLMS> forumDiscussionsLms;
 	private List<ScormLMS> scormLms;
@@ -165,6 +165,53 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.assignLms = criteria.list();
 		logger.info("AssignLMS tables: " + this.assignLms.size());
+		
+		criteria = session.createCriteria(ContextLMS.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.contextLms = criteria.list();
+		logger.info("ContextLMS tables: " + this.contextLms.size());
+		
+		criteria = session.createCriteria(RoleAssignmentsLMS.class, "obj");
+		if(hasCR)
+		{
+			ArrayList<Long> ids = new ArrayList<Long>();
+			for(ContextLMS c : this.contextLms)
+			{
+				if(c.getContextlevel() == 50 && courses.contains(c.getInstanceid()))
+					ids.add(c.getId());				
+			}
+			if(!(empty = ids.isEmpty()))
+				criteria.add(Restrictions.in("obj.contextid", ids));
+		}
+		
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(!(hasCR && empty))
+			this.roleAssignmentsLms = criteria.list();
+		else
+			this.roleAssignmentsLms = new ArrayList<RoleAssignmentsLMS>();
+		logger.info("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
+		
+		
+		
+		criteria = session.createCriteria(AssignGradesLMS.class, "obj");
+		if(hasCR)
+		{
+			List<Long> tmp = new ArrayList<Long>();
+			for(AssignLMS assign : assignLms)
+			{
+				tmp.add(assign.getId());
+			}
+			if(!(empty = tmp.isEmpty()))
+				criteria.add(Restrictions.in("obj.assignment", tmp));
+		}		
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(!(hasCR && empty))
+			this.assignGradesLms = criteria.list();
+		else
+			this.assignGradesLms = new ArrayList<AssignGradesLMS>();
+		logger.info("AssignGradesLMS tables: " + this.assignGradesLms.size());
 
 		criteria = session.createCriteria(EnrolLMS.class, "obj");
 		if(hasCR)
@@ -254,6 +301,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.chatLms = criteria.list();
 		logger.info("ChatLMS tables: " + this.chatLms.size());
+		
+
 
 		criteria = session.createCriteria(ChatLogLMS.class, "obj");
 		if(hasCR)
@@ -424,31 +473,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			this.questionLms = new ArrayList<QuestionLMS>();
 		logger.info("QuestionLMS tables: " + this.questionLms.size());
 		
-		criteria = session.createCriteria(ContextLMS.class, "obj");
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.contextLms = criteria.list();
-		logger.info("ContextLMS tables: " + this.contextLms.size());
-		
-		criteria = session.createCriteria(RoleAssignmentsLMS.class, "obj");
-		if(hasCR)
-		{
-			ArrayList<Long> ids = new ArrayList<Long>();
-			for(ContextLMS c : this.contextLms)
-			{
-				if(c.getContextlevel() == 50 && courses.contains(c.getInstanceid()))
-					ids.add(c.getId());
-				if(!(empty = ids.isEmpty()))
-					criteria.add(Restrictions.in("obj.contextid", ids));
-			}
-		}
-		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
-		if(!(hasCR && empty))
-			this.roleAssignmentsLms = criteria.list();
-		else
-			this.roleAssignmentsLms = new ArrayList<RoleAssignmentsLMS>();
-		logger.info("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
+
 
 		criteria = session.createCriteria(UserLMS.class, "obj");
 		if(hasCR)
@@ -476,7 +501,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		this.roleLms = criteria.list();
 		logger.info("RoleLMS tables: " + this.roleLms.size());
 
-		criteria = session.createCriteria(AssignmentLMS.class, "obj");
+		/*criteria = session.createCriteria(AssignmentLMS.class, "obj");
 		if(hasCR)
 		{
 			criteria.add(Restrictions.in("obj.course", courses));
@@ -486,7 +511,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.assignmentLms = criteria.list();
 		logger.info("AssignmentLMS tables: " + this.assignmentLms.size());
-
+		*/
+		/*
 		criteria = session.createCriteria(AssignmentSubmissionsLMS.class, "obj");
 		if(hasCR)
 		{
@@ -504,6 +530,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		else
 			this.assignmentSubmissionLms = new ArrayList<AssignmentSubmissionsLMS>();
 		logger.info("AssignmentSubmissionsLMS tables: " + this.assignmentSubmissionLms.size());
+		 */
 
 		criteria = session.createCriteria(QuizGradesLMS.class, "obj");
 		if(hasCR)
@@ -747,6 +774,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			this.contextLms = criteria.list();
 			logger.info("ContextLMS tables: " + this.contextLms.size());
 
+			/*
 			criteria = session.createCriteria(AssignmentLMS.class, "obj");
 			if(hasCR)
 			{
@@ -755,7 +783,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.assignmentLms = criteria.list();
 			logger.info("AssignmentLMS tables: " + this.assignmentLms.size());
-
+			*/
 			criteria = session.createCriteria(ScormLMS.class, "obj");
 			if(hasCR)
 			{
@@ -764,6 +792,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.scormLms = criteria.list();
 			logger.info("ScormLMS tables: " + this.scormLms.size());
+			
+
 
 			criteria = session.createCriteria(GradeItemsLMS.class, "obj");
 			if(hasCR)
@@ -781,10 +811,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				for(ContextLMS c : this.contextLms)
 				{
 					if(c.getContextlevel() == 50 && courses.contains(c.getInstanceid()))
-						ids.add(c.getId());
-					if(!(empty = ids.isEmpty()))
-						criteria.add(Restrictions.in("obj.contextid", ids));
+						ids.add(c.getId());					
 				}
+				if(!(empty = ids.isEmpty()))
+					criteria.add(Restrictions.in("obj.contextid", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!(hasCR && empty))
@@ -938,6 +968,27 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		logger.info("ForumPostsModifiedLMS tables: " + this.forumPostsLms.size());
 
 		session.clear();
+		
+		criteria = session.createCriteria(AssignGradesLMS.class, "obj");
+		if(hasCR)
+		{
+			List<Long> tmp = new ArrayList<Long>();
+			for(AssignLMS assign : assignLms)
+			{
+				tmp.add(assign.getId());
+			}
+			
+			if(!(empty = tmp.isEmpty()))
+				criteria.add(Restrictions.in("obj.assignment", tmp));
+		}		
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.add(Restrictions.lt("obj.timemodified", readingtotimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		if(!(hasCR && empty))
+			this.assignGradesLms = criteria.list();
+		else
+			this.assignGradesLms = new ArrayList<AssignGradesLMS>();
+		logger.info("AssignGradesLMS tables: " + this.assignGradesLms.size());
 
 		criteria = session.createCriteria(GroupsMembersLMS.class, "obj");
 		if(hasCR)
@@ -977,7 +1028,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 
 
-		
+		/*
 		criteria = session.createCriteria(AssignmentSubmissionsLMS.class, "obj");
 		if(hasCR)
 		{
@@ -995,7 +1046,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		else
 			this.assignmentSubmissionLms = new ArrayList<AssignmentSubmissionsLMS>();
 		logger.info("AssignmentSubmissionsLMS tables: " + this.userLms.size());
-
+		 */
+		
 		criteria = session.createCriteria(QuizGradesLMS.class, "obj");
 		if(hasCR)
 		{
@@ -1074,7 +1126,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		this.forumPostsLms.clear();
 		this.roleLms.clear();
 		this.roleAssignmentsLms.clear();
-		this.assignmentSubmissionLms.clear();
 	}
 
 	// methods for create and fill the mining-table instances
@@ -1230,7 +1281,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 		final HashMap<Long, CourseAssignmentMining> courseAssignmentMining = new HashMap<Long, CourseAssignmentMining>();
 
-		for (final AssignmentLMS loadedItem : this.assignmentLms)
+		for (final AssignLMS loadedItem : this.assignLms)
 		{
 			final CourseAssignmentMining insert = new CourseAssignmentMining();
 
@@ -1263,11 +1314,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final CourseChatMining insert = new CourseChatMining();
 
-			insert.setId(courseChatMining.size() + 1 + this.courseChatMax);
-			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse().getId()), this.courseMining,
+			insert.setId(loadedItem.getId());
+			insert.setCourse(loadedItem.getCourse().getId(), this.courseMining,
 					this.oldCourseMining);
 			insert.setPlatform(this.connector.getPlatformId());			
-			insert.setChat(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()),
+			insert.setChat(loadedItem.getId(),
 					this.chatMining, this.chatMining);
 			if ((insert.getCourse() != null) && (insert.getChat() != null)) {
 				courseChatMining.put(insert.getId(), insert);
@@ -1905,8 +1956,27 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		final HashMap<Long, AssignmentLogMining> assignmentLogMining = new HashMap<Long, AssignmentLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 		final HashMap<Long, ArrayList<AssignmentSubmissionsLMS>> asSub = new HashMap<Long, ArrayList<AssignmentSubmissionsLMS>>();
-
-		for (final AssignmentSubmissionsLMS as : this.assignmentSubmissionLms)
+		final HashMap<Long, ArrayList<AssignGradesLMS>> asGrd = new HashMap<Long, ArrayList<AssignGradesLMS>>();
+		final HashMap<Long, CourseModulesLMS> courseModules = new HashMap<Long, CourseModulesLMS>();
+		
+		long moduleid = 0;
+		for (final ModulesLMS loadedItem : this.modulesLms)
+		{
+			if (loadedItem.getName().equals("assign"))
+			{
+				moduleid = loadedItem.getId();
+				break;
+			}
+		}
+		
+		for(CourseModulesLMS cm : this.courseModulesLms)
+		{
+			if(cm.getModule() == moduleid)
+				courseModules.put(cm.getId(), cm);
+		}
+		
+		
+		/*for (final AssignmentSubmissionsLMS as : this.assignmentSubmissionLms)
 		{
 			if (asSub.get(as.getAssignment()) == null)
 			{
@@ -1915,6 +1985,19 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				asSub.put(as.getAssignment(), a);
 			} else {
 				asSub.get(as.getAssignment()).add(as);
+			}
+
+		}*/
+		
+		for (final AssignGradesLMS assignGrade : this.assignGradesLms)
+		{
+			if (asGrd.get(assignGrade.getAssignment()) == null)
+			{
+				final ArrayList<AssignGradesLMS> a = new ArrayList<AssignGradesLMS>();
+				a.add(assignGrade);
+				asGrd.put(assignGrade.getAssignment(), a);
+			} else {
+				asGrd.get(assignGrade.getAssignment()).add(assignGrade);
 			}
 
 		}
@@ -1945,6 +2028,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 
 			// insert assignments in assignment_log
+			/*
 			if (loadedItem.getModule().equals("assignment") && loadedItem.getInfo().matches("[0-9]++"))
 			{
 				final AssignmentLogMining insert = new AssignmentLogMining();
@@ -1995,8 +2079,40 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setPlatform(this.connector.getPlatformId());
 
 				if ((insert.getUser() != null) && (insert.getAssignment() != null) && (insert.getCourse() != null)) {
-					assignmentLogMining.put(insert.getId(), insert);
+					//Ignore old assignment minings
+					//assignmentLogMining.put(insert.getId(), insert);
 				}
+			}*/
+			if (loadedItem.getModule().equals("assign"))
+			{
+				AssignmentLogMining insert = new AssignmentLogMining();
+				insert.setId(assignmentLogMining.size() + 1 + this.assignmentLogMax);
+				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
+						this.courseMining, this.oldCourseMining);
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+						this.oldUserMining);
+				insert.setAction(loadedItem.getAction());
+				insert.setTimestamp(loadedItem.getTime());
+				insert.setPlatform(this.connector.getPlatformId());
+				
+				if(courseModules.containsKey(loadedItem.getCmid()))
+				{
+					insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + courseModules.get(loadedItem.getCmid()).getInstance()), assignmentMining, oldAssignmentMining);
+					if(asGrd.containsKey(courseModules.get(loadedItem.getCmid()).getInstance()))
+					{
+						for(AssignGradesLMS ag : asGrd.get(courseModules.get(loadedItem.getCmid()).getInstance()))
+						{
+							if((ag.getUser() == loadedItem.getUserid() || ag.getGrader() == loadedItem.getUserid()) && loadedItem.getTime() >= ag.getTimemodified())
+							{ 
+								insert.setGrade(ag.getGrade());
+								break;
+							}
+						}
+					}
+				}
+				if ((insert.getUser() != null) && (insert.getAssignment() != null) && (insert.getCourse() != null)) {
+					assignmentLogMining.put(insert.getId(), insert);
+				}				
 			}
 		}
 		for (final AssignmentLogMining r : assignmentLogMining.values())
@@ -2165,7 +2281,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		// Getting assignmentMining from Moodle's 'assignment'-table should be abandoned as quickly as possible due to
 		// overlapping
 		// primary-identifiers (assignment|assign)
-
+		/*
 		for (final AssignmentLMS loadedItem : this.assignmentLms)
 		{
 			final AssignmentMining insert = new AssignmentMining();
@@ -2194,9 +2310,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							+ loadedItem2.getItemmodule());
 				}
 			}
-			assignmentMining.put(insert.getId(), insert);
+			//Ignore old assignment_minings
+			//assignmentMining.put(insert.getId(), insert);
 		}
-
+		*/
 		final HashMap<Long, AssignmentMining> amTmp = new HashMap<Long, AssignmentMining>();
 		long moduleid = 0;
 		for (final ModulesLMS loadedItem : this.modulesLms)
@@ -2223,16 +2340,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			{
 				if ((loadedItem2.getIteminstance() != null) && (loadedItem2.getItemmodule() != null))
 				{
-					this.logger.debug("Iteminstance " + loadedItem2.getIteminstance() + " AssignmentId"
+					this.logger.debug("Iteminstance " + loadedItem2.getIteminstance() + " AssignId"
 							+ loadedItem.getId());
 					if ((loadedItem.getId() == loadedItem2.getIteminstance().longValue())
-							&& loadedItem2.getItemmodule().equals("assignment")) {
+							&& loadedItem2.getItemmodule().equals("assign")) {
 						insert.setMaxGrade(loadedItem2.getGrademax());
 						break;
 					}
 				}
 				else {
-					this.logger.debug("Iteminstance or Itemmodule not found for AssignmentId" + loadedItem.getId()
+					this.logger.debug("Iteminstance or Itemmodule not found for AssignId" + loadedItem.getId()
 							+ " and type quiz and Iteminstance " + loadedItem2.getIteminstance() + " Itemmodule:"
 							+ loadedItem2.getItemmodule());
 				}

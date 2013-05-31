@@ -59,6 +59,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 	private boolean sessionWise;
 	private Long startTime;
 	private Long endTime;
+	private List<Long> gender;
 
 	public AFrequentPathsBIDE(
 			final String taskId,
@@ -70,7 +71,8 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 			final Double minSup,
 			final boolean sessionWise,
 			final Long startTime,
-			final Long endTime) {
+			final Long endTime,
+			final List<Long> gender) {
 		super(taskId);
 		this.courses = courses;
 		this.users = users;
@@ -81,6 +83,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 		this.sessionWise = sessionWise;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.gender = gender;
 	}
 
 	public/* ResultListUserPathGraph */Object compute() {
@@ -135,12 +138,10 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 
 			if (!sessionWise) {
 				sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength,
-						maxLength,
-						startTime, endTime, session));
+						maxLength, startTime, endTime, session, gender));
 			} else {
 				sequenceDatabase.loadLinkedList(generateLinkedListSessionBound(courses, users,
-						types, minLength,
-						maxLength, startTime, endTime, session));
+						types, minLength, maxLength, startTime, endTime, session, gender));
 			}
 
 			final AlgoBIDEPlus algo = new AlgoBIDEPlus(minSup);
@@ -246,23 +247,24 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 	 *            Start time
 	 * @param endtime
 	 *            End time
+	 * @param gender 
 	 * @return The path to the generated file
 	 */
 	@SuppressWarnings("unchecked")
 	private LinkedList<String> generateLinkedListSessionBound(final List<Long> courses, List<Long> users,
 			final List<String> types, final Long minLength, final Long maxLength, final Long starttime,
-			final Long endtime, Session session)
+			final Long endtime, Session session, List<Long> gender)
 	{
 		final LinkedList<String> result = new LinkedList<String>();
 		try {
 
 			if (users == null || users.size() == 0)
 			{
-				users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+				users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 			}
 			else
 			{
-				Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+				Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, gender);
 				List<Long> tmp = new ArrayList<Long>();
 				for (int i = 0; i < users.size(); i++)
 				{
@@ -390,12 +392,13 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 	 *            Start time
 	 * @param endtime
 	 *            End time
+	 * @param gender2 
 	 * @return The path to the generated file
 	 */
 	@SuppressWarnings("unchecked")
 	private LinkedList<String> generateLinkedList(final List<Long> courses, List<Long> users,
 			final List<String> types,
-			final Long minLength, final Long maxLength, final Long starttime, final Long endtime, Session session)
+			final Long minLength, final Long maxLength, final Long starttime, final Long endtime, Session session, List<Long> gender2)
 	{
 		final LinkedList<String> result = new LinkedList<String>();
 		final boolean hasBorders = (minLength != null) && (maxLength != null) && (maxLength > 0)
@@ -405,11 +408,11 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 		Criteria criteria;
 		if (users == null || users.size() == 0)
 		{
-			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses).values());
+			users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 		}
 		else
 		{
-			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses);
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, gender);
 			List<Long> tmp = new ArrayList<Long>();
 			for (int i = 0; i < users.size(); i++)
 			{

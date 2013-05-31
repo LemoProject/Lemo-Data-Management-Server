@@ -316,7 +316,7 @@ public abstract class ExtractAndMap {
 		
 		if(readingtimestamp == null)
 		{
-			readingtimestamp = 0L;
+			readingtimestamp = -1L;
 		}
 
 		Query logCount = session.createQuery("select max(log.id) from ResourceLogMining log");
