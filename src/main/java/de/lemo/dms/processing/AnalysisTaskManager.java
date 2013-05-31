@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.service.ServiceTaskManager;
 
 /**
@@ -38,9 +39,8 @@ public class AnalysisTaskManager {
 	private Map<String, AnalysisTask> tasks = Collections.synchronizedMap(new HashMap<String, AnalysisTask>());
 
 	private AnalysisTaskManager() {
-		// TODO load timeout from config
-		long computationTimeout = 360000;
-		long resultTimeout = 360000;
+		long computationTimeout = ServerConfiguration.getInstance().getPathAnalysisTimeout();
+		long resultTimeout = computationTimeout;
 		startResultTimeoutThread(computationTimeout, resultTimeout);
 	}
 
