@@ -373,7 +373,7 @@ public class Test {
 		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
-		bid.compute(courses, users, types, 0L, 1000L, 0.9d, false, 0L, 1500000000L, gender);
+		//bid.compute(courses, users, types, 0L, 1000L, 0.9d, false, 0L, 1500000000L, gender);
 		
 		//CourseObject co = scd.getCourseDetails(11476L);
 		/*
