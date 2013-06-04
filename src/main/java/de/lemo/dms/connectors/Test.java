@@ -231,8 +231,11 @@ public class Test {
 		courses.add(218L);
 		courses.add(495L);
 		courses.add(496L);
+		courses.add(775L);
+		courses.add(317L);
+		courses.add(628L);
 		
-		connector.setCourseIdFilter(new ArrayList(courses));
+		//connector.setCourseIdFilter(new ArrayList(courses));
 		
 		connector.getData();
 		
@@ -360,18 +363,20 @@ public class Test {
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
 	//	users.add(2L);
-		courses.add(11476L);
+		courses.add(132000L);
 
 		
 		ArrayList<String> types = new ArrayList<String>();
-		types.add("FORUM");
+		//types.add("FORUM");
 		
 
 		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
-		//CourseObject co = scd.getCourseDetails(11476L);
+		bid.compute(courses, users, types, 0L, 1000L, 0.9d, false, 0L, 1500000000L, gender);
 		
+		//CourseObject co = scd.getCourseDetails(11476L);
+		/*
 		List<Long> teachers = new ArrayList<Long>();
 		teachers.add(132278L);
 		teachers.add(132344L);
@@ -379,7 +384,7 @@ public class Test {
 		teachers.add(132349L);
 		teachers.add(132342L);
 		teachers.add(13180L);
-		
+
 		List<Long> roles = new ArrayList<Long>();
 		roles.add(133L);
 
@@ -401,7 +406,7 @@ public class Test {
 		}
 		
 		System.out.println(i);
-	
+		 */
 		ServiceCourseTitleSearch scts = new ServiceCourseTitleSearch();
 		scts.getCoursesByText("Inform", null, null);
 		
