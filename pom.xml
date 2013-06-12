@@ -57,6 +57,16 @@
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
+		
+		<profile>
+			<id>htwm</id>
+			<properties>
+				<lemo-system-name>htwm</lemo-system-name>
+				<lemo-display-name>LeMo HtwMoodle</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+			</properties>
+		</profile>
 
 		<!-- partner profiles -->
 		<profile>

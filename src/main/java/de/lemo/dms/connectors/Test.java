@@ -25,6 +25,7 @@ import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QLearningObjectUsage;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.questions.QPerformanceUserTest;
+import de.lemo.dms.processing.questions.QUserPathAnalysis;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
@@ -357,22 +358,29 @@ public class Test {
 		QActivityResourceType lou = new QActivityResourceType();
 		QActivityResourceType art = new QActivityResourceType();
 		QLearningObjectUsage u = new QLearningObjectUsage();
+		QUserPathAnalysis qupa = new QUserPathAnalysis();
 		
 		List<Long> gender = new ArrayList<Long>();
 		
 		List<Long> courses = new ArrayList<Long>();
 		List<Long> users = new ArrayList<Long>();
 	//	users.add(2L);
-		courses.add(132000L);
+		courses.add(11476L);
 
 		
 		ArrayList<String> types = new ArrayList<String>();
-		//types.add("FORUM");
+		types.add("FORUM");
+		types.add("ASSIGNMENT");
+		types.add("QUESTION");
+		types.add("QUIZ");
+		types.add("RESOURCE");
 		
 
 		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
+		qupa.compute(courses, users, types, true, 1323418705L, 1338288322L, gender);
+		//qlou.compute(courses, users, 1323418705L, 1338288322L, 100L, types, gender);
 		//bid.compute(courses, users, types, 0L, 1000L, 0.9d, false, 0L, 1500000000L, gender);
 		
 		//CourseObject co = scd.getCourseDetails(11476L);
@@ -417,7 +425,7 @@ public class Test {
 	{
 		this.logger.info("Starting Import");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodle23Conn();
+		this.test();
 		this.logger.info("Import finished");
 	}
 
