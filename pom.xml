@@ -88,6 +88,26 @@
 				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
 			</properties>
 		</profile>
+		
+		<profile>
+			<id>hwr</id>
+			<properties>
+				<lemo-system-name>hwr</lemo-system-name>
+				<lemo-display-name>HWR Berlin</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>vfh</id>
+			<properties>
+				<lemo-system-name>vfh</lemo-system-name>
+				<lemo-display-name>VFH</lemo-display-name>
+				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
+				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
+			</properties>
+		</profile>
 
 		<profile>
 			<id>chem</id>
