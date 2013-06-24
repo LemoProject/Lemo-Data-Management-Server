@@ -21,14 +21,13 @@ import de.lemo.dms.core.config.ServerConfiguration;
  */
 public class DMSServletContextListener implements ServletContextListener {
 
-	private Logger logger;
+	private final Logger logger = Logger.getLogger(getClass());
 
 	@Override
 	public void contextInitialized(final ServletContextEvent sce) {
 		final ServletContext servletContext = sce.getServletContext();
 		final ServerConfiguration config = ServerConfiguration.getInstance();
 
-		this.logger = Logger.getLogger(this.getClass());
 		this.logger.info("Context initialized");
 		this.logger.info("ServerInfo:  " + servletContext.getServerInfo());
 		this.logger.info("ContextPath: " + servletContext.getContextPath());

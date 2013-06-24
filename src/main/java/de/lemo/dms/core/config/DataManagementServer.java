@@ -25,7 +25,7 @@ class DataManagementServer {
 	private static final String DEFAULT_NAME = "Lemo Data Management Server";
 
 	// 5 minutes
-	private static final int DEFAULT_PATH_ANALYSIS_TIMEOUT = 300;
+	private static final int DEFAULT_PATH_ANALYSIS_TIMEOUT = 60000 * 5;
 
 	/**
 	 * Human readable name of the DMS server, may used for identification when

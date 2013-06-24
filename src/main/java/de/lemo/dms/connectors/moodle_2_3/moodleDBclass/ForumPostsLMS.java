@@ -20,6 +20,7 @@ public class ForumPostsLMS {
 	private long modified;
 	private String subject;
 	private String message;
+	private long discussion;
 
 	public long getId() {
 		return this.id;
@@ -67,5 +68,13 @@ public class ForumPostsLMS {
 
 	public void setMessage(final String message) {
 		this.message = message;
+	}
+
+	public long getDiscussion() {
+		return discussion;
+	}
+
+	public void setDiscussion(long discussion) {
+		this.discussion = discussion;
 	}
 }

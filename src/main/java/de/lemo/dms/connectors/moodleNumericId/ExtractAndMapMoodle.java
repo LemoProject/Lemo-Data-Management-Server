@@ -230,7 +230,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				else
 					courseClause += ")";
 			}
-			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from mdl_forum_posts as posts JOIN mdl_log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp ");
+			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message,posts.discussion from mdl_forum_posts as posts JOIN mdl_log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp ");
 			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
 			List<Object[]> tmpl = forumPosts.list();
 			this.forumPostsLms = new ArrayList<ForumPostsLMS>();
@@ -243,6 +243,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				p.setModified(((Integer) obj[3]).longValue());
 				p.setSubject((String) obj[4]);
 				p.setMessage((String) obj[5]);
+				p.setDiscussion(((Integer) obj[6]).longValue());
 				this.forumPostsLms.add(p);
 			
 			}
@@ -729,7 +730,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				else
 					courseClause += ")";
 			}
-			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message from forum_posts as posts JOIN log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.created>=:readingtimestamp and posts.created<=:ceiling");
+			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message,posts.discussion from forum_posts as posts JOIN log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.created>=:readingtimestamp and posts.created<=:ceiling");
 			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
 			forumPosts.setParameter("ceiling", readingtotimestamp);
 			List<Object[]> tmpl = forumPosts.list();
@@ -744,6 +745,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				p.setModified(((BigInteger) obj[3]).longValue());
 				p.setSubject((String) obj[4]);
 				p.setMessage((String) obj[5]);
+				p.setDiscussion(((Integer) obj[6]).longValue());
 				
 				this.forumPostsLms.add(p);
 			
@@ -1333,6 +1335,19 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		final HashMap<Long, ForumLogMining> forumLogMining = new HashMap<Long, ForumLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 		final HashMap<Long, ForumDiscussionsLMS> forumDis = new HashMap<Long, ForumDiscussionsLMS>();
+		
+		final HashMap<Long, ForumDiscussionsLMS> discussions = new HashMap<Long, ForumDiscussionsLMS>();
+		final HashMap<Long, ForumPostsLMS> posts = new HashMap<Long, ForumPostsLMS>();
+		
+		for(ForumDiscussionsLMS dis : this.forumDiscussionsLms)
+		{
+			discussions.put(dis.getId(), dis);
+		}
+		
+		for(ForumPostsLMS post : this.forumPostsLms)
+		{
+			posts.put(post.getId(), post);
+		}
 
 		for (final ForumDiscussionsLMS fd : this.forumDiscussionsLms)
 		{
@@ -1377,17 +1392,27 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					insert.setForum(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
 							this.forumMining, this.oldForumMining);
 				}
-				else {
-					if ((loadedItem.getAction().equals("add discussion") || loadedItem.getAction().equals(
-							"view discussion"))
-							&& loadedItem.getInfo().matches("[0-9]+")) {
-						if (forumDis.get(Long.valueOf(loadedItem.getId())) != null) {
-							insert.setForum(
-									Long.valueOf(this.connector.getPrefix() + ""
-											+ forumDis.get(Long.valueOf(loadedItem.getId())).getForum()),
-									this.forumMining, this.oldForumMining);
-						}
+				else if((loadedItem.getAction().equals("add discussion") || loadedItem.getAction().equals(
+						"view discussion")) && loadedItem.getInfo().matches("[0-9]+")) 
+				{
+					if (discussions.containsKey(Long.valueOf(loadedItem.getInfo())))
+					{
+						Long f = discussions.get(Long.valueOf(loadedItem.getInfo())).getForum();
+						insert.setForum(Long.valueOf(this.connector.getPrefix() + "" + f),
+								this.forumMining, this.oldForumMining);
+						insert.setSubject(discussions.get(Long.valueOf(loadedItem.getInfo())).getName());
 					}
+				}
+				else if(loadedItem.getAction().equals("add post") && posts.containsKey(Long.valueOf(loadedItem.getInfo())))
+				{			
+					ForumPostsLMS p = posts.get(Long.valueOf(loadedItem.getInfo()));
+					if(discussions.containsKey(p.getDiscussion()))
+					{
+						insert.setForum(Long.valueOf(this.connector.getPrefix() + "" + discussions.get(p.getDiscussion()).getForum()),
+								this.forumMining, this.oldForumMining );
+						insert.setSubject(p.getSubject());
+						insert.setMessage(TextHelper.replaceString(p.getMessage()));
+					}					
 				}
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
@@ -1398,7 +1423,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							&& ((loadedItem2.getCreated() == loadedItem.getTime()) || (loadedItem2.getModified() == loadedItem
 									.getTime()))) {
 						insert.setMessage(TextHelper.replaceString(loadedItem2.getMessage()));
-						insert.setSubject(TextHelper.replaceString(loadedItem2.getSubject()));
+						insert.setSubject(loadedItem2.getSubject());
 						break;
 					}
 				}

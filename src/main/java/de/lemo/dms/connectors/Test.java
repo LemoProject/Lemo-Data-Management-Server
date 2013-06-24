@@ -7,9 +7,17 @@
 package de.lemo.dms.connectors;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
+import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.miningDBclass.CourseMining;
+import de.lemo.dms.db.miningDBclass.CourseUserMining;
 import de.lemo.dms.processing.questions.QActivityResourceType;
 import de.lemo.dms.processing.questions.QCourseActivity;
 import de.lemo.dms.processing.questions.QCumulativeUserAccess;
@@ -17,6 +25,7 @@ import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QLearningObjectUsage;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.questions.QPerformanceUserTest;
+import de.lemo.dms.processing.questions.QUserPathAnalysis;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResourceRequestInfo;
 import de.lemo.dms.processing.resulttype.ResultListResourceRequestInfo;
@@ -36,7 +45,7 @@ public class Test {
 	private static final Long ID_MOODLE_NUMERIC = 5L;
 	private static final Long ID_MOODLE19 = 2L;
 	private static final Long ID_CLIX = 6L;
-	final Logger logger = Logger.getLogger(this.getClass());
+	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	/**
 	 * Tests the Moodle(2.3)-connector. Configurations have to be altered accordingly.
@@ -44,8 +53,8 @@ public class Test {
 	public void runMoodle23Conn()
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE23);
-		List<Long> courses = new ArrayList<Long>();
-		courses.add(441L);
+		Set<Long> courses = new HashSet<Long>();
+		/*courses.add(441L);
 		courses.add(165L);
 		courses.add(169L);
 		courses.add(167L);
@@ -115,7 +124,119 @@ public class Test {
 		courses.add(495L);
 		courses.add(496L);
 		
-		//connector.setCourseIdFilter(courses);
+		logger.info(courses.add(43L));
+		logger.info(courses.add(73L));
+		logger.info(courses.add(142L));
+		logger.info(courses.add(168L));
+		logger.info(courses.add(212L));
+		logger.info(courses.add(238L));
+		logger.info(courses.add(239L));
+		logger.info(courses.add(240L));
+		logger.info(courses.add(273L));
+		logger.info(courses.add(366L));
+		logger.info(courses.add(434L));
+		logger.info(courses.add(441L));
+		logger.info(courses.add(481L));
+		logger.info(courses.add(513L));
+		logger.info(courses.add(533L));
+		logger.info(courses.add(550L));
+		logger.info(courses.add(572L));
+		logger.info(courses.add(574L));
+		logger.info(courses.add(732L));
+		*/
+		courses.add(73L);
+		courses.add(168L);
+		courses.add(238L);
+		courses.add(239L);
+		courses.add(240L);
+		courses.add(273L);
+		courses.add(366L);
+		courses.add(142L);
+		courses.add(434L);
+		courses.add(441L);
+		courses.add(212L);
+		courses.add(43L);
+		courses.add(481L);
+		courses.add(513L);
+		courses.add(534L);
+		courses.add(533L);
+		courses.add(550L);
+		courses.add(572L);
+		courses.add(574L);
+		courses.add(732L);
+		courses.add(165L);
+		courses.add(169L);
+		courses.add(167L);
+		courses.add(176L);
+		courses.add(177L);
+		courses.add(178L);
+		courses.add(179L);
+		courses.add(180L);
+		courses.add(189L);
+		courses.add(20L);
+		courses.add(19L);
+		courses.add(316L);
+		courses.add(318L);
+		courses.add(366L);
+		courses.add(429L);
+		courses.add(227L);
+		courses.add(514L);
+		courses.add(515L);
+		courses.add(516L);
+		courses.add(517L);
+		courses.add(518L);
+		courses.add(519L);
+		courses.add(520L);
+		courses.add(521L);
+		courses.add(522L);
+		courses.add(523L);
+		courses.add(524L);
+		courses.add(525L);
+		courses.add(526L);
+		courses.add(527L);
+		courses.add(528L);
+		courses.add(529L);
+		courses.add(530L);
+		courses.add(532L);
+		courses.add(533L);
+		courses.add(534L);
+		courses.add(535L);
+		courses.add(536L);
+		courses.add(537L);
+		courses.add(538L);
+		courses.add(539L);
+		courses.add(550L);
+		courses.add(399L);
+		courses.add(776L);
+		courses.add(231L);
+		courses.add(346L);
+		courses.add(373L);
+		courses.add(493L);
+		courses.add(494L);
+		courses.add(168L);
+		courses.add(212L);
+		courses.add(366L);
+		courses.add(232L);
+		courses.add(142L);
+		courses.add(441L);
+		courses.add(461L);
+		courses.add(481L);
+		courses.add(513L);
+		courses.add(217L);
+		courses.add(308L);
+		courses.add(327L);
+		courses.add(328L);
+		courses.add(382L);
+		courses.add(612L);
+		courses.add(213L);
+		courses.add(218L);
+		courses.add(495L);
+		courses.add(496L);
+		courses.add(775L);
+		courses.add(317L);
+		courses.add(628L);
+		
+		//connector.setCourseIdFilter(new ArrayList(courses));
 		
 		connector.getData();
 		
@@ -236,6 +357,8 @@ public class Test {
 		QCourseActivity qlou = new QCourseActivity();
 		QActivityResourceType lou = new QActivityResourceType();
 		QActivityResourceType art = new QActivityResourceType();
+		QLearningObjectUsage u = new QLearningObjectUsage();
+		QUserPathAnalysis qupa = new QUserPathAnalysis();
 		
 		List<Long> gender = new ArrayList<Long>();
 		
@@ -246,28 +369,52 @@ public class Test {
 
 		
 		ArrayList<String> types = new ArrayList<String>();
-		//types.add("resource");
+		types.add("FORUM");
+		types.add("ASSIGNMENT");
+		types.add("QUESTION");
+		types.add("QUIZ");
+		types.add("RESOURCE");
 		
 
 		
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
-		CourseObject co = scd.getCourseDetails(11476L);
+		qupa.compute(courses, users, types, true, 1323418705L, 1338288322L, gender);
+		//qlou.compute(courses, users, 1323418705L, 1338288322L, 100L, types, gender);
+		//bid.compute(courses, users, types, 0L, 1000L, 0.9d, false, 0L, 1500000000L, gender);
 		
-		//art.compute(courses, co.getFirstRequest(), co.getLastRequest(), types, gender);
+		//CourseObject co = scd.getCourseDetails(11476L);
+		/*
+		List<Long> teachers = new ArrayList<Long>();
+		teachers.add(132278L);
+		teachers.add(132344L);
+		teachers.add(132300L);
+		teachers.add(132349L);
+		teachers.add(132342L);
+		teachers.add(13180L);
+
+		List<Long> roles = new ArrayList<Long>();
+		roles.add(133L);
+
+		final ResultListResourceRequestInfo result = new ResultListResourceRequestInfo();
+		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+		final Session session = dbHandler.getMiningSession();
+
+		// Create criteria for log-file-search
+		Criteria criteria = session.createCriteria(CourseUserMining.class, "course");
+		criteria.add(Restrictions.in("course.user.id", teachers));
+		criteria.add(Restrictions.in("course.role.id", roles));
 		
-		ResultListResourceRequestInfo r = lou.compute(courses, co.getFirstRequest(), co.getLastRequest(), types, gender);
-		for(ResourceRequestInfo info : r.getResourceRequestInfos())
+		int i = 0;
+		for(CourseUserMining l : (ArrayList<CourseUserMining>)criteria.list())
 		{
-			System.out.println(info.getRequests());
+			String s = (""+l.getCourse().getId()).substring(2);
+			System.out.println("courses.add(" + s + "L);");
+			i++;
 		}
 		
-//		cua.compute(courses, types, co.getFirstRequest(), co.getLastRequest(), gender);
-		
-		//qlou.compute(courses, users, 0L, 1500000000L, 100L, new ArrayList<String>(), gender);
-		
-		//qput.compute(courses, users, new ArrayList<Long>(), 100L, 0L, 1500000000L, gender);
-	
+		System.out.println(i);
+		 */
 		ServiceCourseTitleSearch scts = new ServiceCourseTitleSearch();
 		scts.getCoursesByText("Inform", null, null);
 		
@@ -276,10 +423,10 @@ public class Test {
 
 	public void run()
 	{
-		logger.info("Starting Import");
+		this.logger.info("Starting Import");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.runMoodle23Conn();
-		logger.info("Import finished");
+		this.test();
+		this.logger.info("Import finished");
 	}
 
 	/**
