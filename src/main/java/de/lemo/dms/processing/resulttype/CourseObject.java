@@ -40,6 +40,8 @@ public class CourseObject {
 		this.description = description;
 		this.lastRequest = lastRequest;
 		this.firstRequest = firstRequest;
+		this.hash = hash;
+		this.genderSupport = genderSupport;
 	}
 
 	public void setId(final Long id) {
