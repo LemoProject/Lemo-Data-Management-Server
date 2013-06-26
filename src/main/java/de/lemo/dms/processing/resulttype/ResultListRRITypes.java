@@ -21,7 +21,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ResultListRRITypes {
 
 	private List<ResourceRequestInfo> assignments;
-	private List<ResourceRequestInfo> courses;
 	private List<ResourceRequestInfo> forums;
 	private List<ResourceRequestInfo> questions;
 	private List<ResourceRequestInfo> quiz;
@@ -32,10 +31,6 @@ public class ResultListRRITypes {
 
 	public void setAssignmentRRI(final List<ResourceRequestInfo> assignments) {
 		this.assignments = assignments;
-	}
-
-	public void setCourseRRI(final List<ResourceRequestInfo> courses) {
-		this.courses = courses;
 	}
 
 	public void setForumRRI(final List<ResourceRequestInfo> forums) {
@@ -69,13 +64,13 @@ public class ResultListRRITypes {
 	public ResultListRRITypes()
 	{
 		this.assignments = new ArrayList<ResourceRequestInfo>();
-		this.courses = new ArrayList<ResourceRequestInfo>();
 		this.forums = new ArrayList<ResourceRequestInfo>();
 		this.questions = new ArrayList<ResourceRequestInfo>();
 		this.quiz = new ArrayList<ResourceRequestInfo>();
 		this.resources = new ArrayList<ResourceRequestInfo>();
 		this.scorms = new ArrayList<ResourceRequestInfo>();
 		this.wikis = new ArrayList<ResourceRequestInfo>();
+		this.chats = new ArrayList<ResourceRequestInfo>();
 	}
 
 	@XmlElement
@@ -88,12 +83,6 @@ public class ResultListRRITypes {
 	public List<ResourceRequestInfo> getForumRRI()
 	{
 		return this.forums;
-	}
-
-	@XmlElement
-	public List<ResourceRequestInfo> getCoursesRRI()
-	{
-		return this.courses;
 	}
 
 	@XmlElement
