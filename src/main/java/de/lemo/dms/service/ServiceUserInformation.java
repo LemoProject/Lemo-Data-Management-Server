@@ -93,9 +93,10 @@ public class ServiceUserInformation {
 				firstTime = logs.get(0).getTimestamp();
 			}
 
+			ServiceCourseDetails scd = new ServiceCourseDetails();
 			final CourseObject courseObject = new CourseObject(course.getId(), course.getShortname(), course
 					.getTitle(),
-					participants.size(), lastTime, firstTime);
+					participants.size(), lastTime, firstTime, scd.getCourseHash(course.getId()), StudentHelper.getGenderSupport(course.getId()));
 			courses.add(courseObject);
 		}
 		dbHandler.closeSession(session);

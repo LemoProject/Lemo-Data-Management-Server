@@ -98,8 +98,9 @@ public class ServiceCourseTitleSearch {
 				lastTime = logs.get(logs.size() - 1).getTimestamp();
 				firstTime = logs.get(0).getTimestamp();
 			}
+			ServiceCourseDetails scd = new ServiceCourseDetails();
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(),
-					courseMining.getTitle(), userMap.size(), lastTime, firstTime);
+					courseMining.getTitle(), userMap.size(), lastTime, firstTime, scd.getCourseHash(courseMining.getId()), StudentHelper.getGenderSupport(courseMining.getId()));
 			result.add(co);
 		}
 		
