@@ -359,6 +359,10 @@ public class Test {
 		QActivityResourceType art = new QActivityResourceType();
 		QLearningObjectUsage u = new QLearningObjectUsage();
 		QUserPathAnalysis qupa = new QUserPathAnalysis();
+		ServiceCourseDetails scd = new ServiceCourseDetails();
+		
+		System.out.println(scd.getCourseHash(1319L));
+		System.out.println("-1482212630");
 		
 		List<Long> gender = new ArrayList<Long>();
 		
@@ -377,7 +381,6 @@ public class Test {
 		
 
 		
-		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
 		qupa.compute(courses, users, types, true, 1323418705L, 1338288322L, gender);
 		//qlou.compute(courses, users, 1323418705L, 1338288322L, 100L, types, gender);
