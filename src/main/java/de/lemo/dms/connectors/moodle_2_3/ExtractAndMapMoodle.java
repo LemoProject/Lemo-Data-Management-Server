@@ -2274,6 +2274,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setTimeModified(loadedItem.getTimemodified());
 			insert.setQtype("quiz");
 			insert.setPlatform(this.connector.getPlatformId());
+			insert.setMaxGrade(loadedItem.getSumgrade());
+			/*
 			for (final GradeItemsLMS loadedItem2 : this.gradeItemsLms)
 			{
 				if ((loadedItem2.getIteminstance() != null) && (loadedItem2.getItemmodule() != null)) {
@@ -2289,7 +2291,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							+ " and type quiz and Iteminstance " + loadedItem2.getIteminstance() + " Itemmodule:"
 							+ loadedItem2.getItemmodule());
 				}
-			}
+			}*/
 			quizMining.put(insert.getId(), insert);
 		}
 		return quizMining;

@@ -236,7 +236,7 @@ public class Test {
 		courses.add(317L);
 		courses.add(628L);
 		
-		//connector.setCourseIdFilter(new ArrayList(courses));
+		connector.setCourseIdFilter(new ArrayList(courses));
 		
 		connector.getData();
 		
@@ -428,7 +428,7 @@ public class Test {
 	{
 		this.logger.info("Starting Import");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		this.test();
+		this.runMoodle23Conn();
 		this.logger.info("Import finished");
 	}
 
