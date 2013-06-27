@@ -170,7 +170,7 @@ public class ServiceCourseDetails {
 	 * @return	A List of CourseObjects containing the information.
 	 */
 	@GET
-	@Path("/hash")
+	@Path("{cid}/hash")
 	public Long getCourseHash(@PathParam("cid") final Long id) {
 		
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -223,7 +223,7 @@ public class ServiceCourseDetails {
 	 * @return	A List of CourseObjects containing the information.
 	 */
 	@GET
-	@Path("/genderSupport")
+	@Path("{cid}/genderSupport")
 	public boolean getGenderSupport(@PathParam("cid") final Long id) {
 		
 		return StudentHelper.getGenderSupport(id);
