@@ -56,6 +56,7 @@ public class Version {
 	public String getServerVersion() {
 		String version = "unknown";
 		final File pomfile = new File(Version.POM);
+		this.logger.info("looking for Pom.xml at " + pomfile.getAbsolutePath());
 		Model model = null;
 		FileReader reader = null;
 		final MavenXpp3Reader mavenreader = new MavenXpp3Reader();
@@ -65,7 +66,7 @@ public class Version {
 			model.setPomFile(pomfile);
 			version = model.getVersion();
 		} catch (final Exception ex) {
-
+			this.logger.warn("Can't read from pom.xml\n" + ex.getMessage());
 		}
 		return version;
 	}
@@ -78,10 +79,8 @@ public class Version {
 	public String getDBVersion() {
 		String version = "unknown";
 		try {
-			ServerConfiguration.getInstance().loadConfig("/lemo");
-			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+			IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 			final Session session = dbHandler.getMiningSession();
-
 			final Criteria criteria = session.createCriteria(ConfigMining.class, "config");
 			criteria.setMaxResults(1);
 			final ConfigMining prop = (ConfigMining) criteria.list().get(0);

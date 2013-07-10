@@ -42,6 +42,7 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
+import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.StudentHelper;
@@ -104,7 +105,7 @@ public class ServiceCourseDetails {
 		}
 
 		CourseObject result =
-				new CourseObject(course.getId(), course.getShortname(), course.getTitle(), users.size(), lastTime, firstTime);
+				new CourseObject(course.getId(), course.getShortname(), course.getTitle(), users.size(), lastTime, firstTime, getCourseHash(id), StudentHelper.getGenderSupport(id));
 
 		//dbHandler.closeSession(session);
 		session.close();
@@ -169,7 +170,7 @@ public class ServiceCourseDetails {
 				firstTime = logs.get(logs.size() - 1).getTimestamp();
 			}
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(),
-					courseMining.getTitle(), userMap.size(), lastTime, firstTime);
+					courseMining.getTitle(), userMap.size(), lastTime, firstTime, getCourseHash(courseMining.getId()), StudentHelper.getGenderSupport(courseMining.getId()));
 			results.add(co);
 		}
 		
@@ -178,6 +179,74 @@ public class ServiceCourseDetails {
 		} else for(CourseObject co : results) System.out.println("Result Course: "+ co.getDescription());
 		session.close();
 		return new ResultListCourseObject(results);
+	}
+	
+	/**
+	 * Gets the details for a a list of courses including id, title, description, 
+	 * number of participants, time of first student-request, time of latest student-request.
+	 * 
+	 * @param id	List of course identifiers.
+	 * 
+	 * @return	A List of CourseObjects containing the information.
+	 */
+	@GET
+	@Path("{cid}/hash")
+	public Long getCourseHash(@PathParam("cid") final Long id) {
+		
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+		final Session session = dbHandler.getMiningSession();
+
+		CourseMining course = (CourseMining) session.get(CourseMining.class, id);
+		if (course == null) {
+			throw new ResourceNotFoundException("Course " + id);
+		}
+
+		Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		List<Long> cid = new ArrayList<Long>();
+		cid.add(id);
+		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsRealKeys(cid, new ArrayList<Long>()).values());
+		
+		criteria.add(Restrictions.eq("log.course.id", id));
+		if(users.size() > 0)
+		{
+			criteria.add(Restrictions.in("log.user.id", users));
+		}
+		ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
+		Collections.sort(logs);
+
+		Long lastTime = 0L;
+		Long firstTime = 0L;
+
+		if (logs.size() > 0)
+		{
+			lastTime = logs.get(logs.size() - 1).getTimestamp();
+			firstTime = logs.get(0).getTimestamp();
+		}
+		
+		criteria = session.createCriteria(ICourseLORelation.class, "lor");
+		criteria.add(Restrictions.eq("lor.course.id", id));
+		ArrayList<ICourseLORelation> lor = (ArrayList<ICourseLORelation>) criteria.list();
+		
+		Long hash = lastTime * 13 + firstTime * 17 + 19 * users.hashCode() + 23 * lor.hashCode();
+		//dbHandler.closeSession(session);
+		session.close();
+		
+		return hash;
+	}
+	
+	/**
+	 * Gets the details for a a list of courses including id, title, description, 
+	 * number of participants, time of first student-request, time of latest student-request.
+	 * 
+	 * @param id	List of course identifiers.
+	 * 
+	 * @return	A List of CourseObjects containing the information.
+	 */
+	@GET
+	@Path("{cid}/genderSupport")
+	public boolean getGenderSupport(@PathParam("cid") final Long id) {
+		
+		return StudentHelper.getGenderSupport(id);
 	}
 
 }

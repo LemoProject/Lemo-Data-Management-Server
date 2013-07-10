@@ -44,13 +44,15 @@ public class CourseObject {
 	private int participants;
 	private Long lastRequest;
 	private Long firstRequest;
+	private Long hash;
+	private boolean genderSupport;
 
 	public CourseObject()
 	{
 	}
 
 	public CourseObject(final Long id, final String title, final String description, final int participants,
-			final Long lastRequest, final Long firstRequest)
+			final Long lastRequest, final Long firstRequest, final Long hash, boolean genderSupport)
 	{
 		this.id = id;
 		this.title = title;
@@ -58,6 +60,8 @@ public class CourseObject {
 		this.description = description;
 		this.lastRequest = lastRequest;
 		this.firstRequest = firstRequest;
+		this.hash = hash;
+		this.genderSupport = genderSupport;
 	}
 
 	public void setId(final Long id) {
@@ -113,5 +117,21 @@ public class CourseObject {
 	@XmlElement
 	public Long getFirstRequest() {
 		return this.firstRequest;
+	}
+
+	public Long getHash() {
+		return hash;
+	}
+
+	public void setHash(Long hash) {
+		this.hash = hash;
+	}
+
+	public boolean isGenderSupport() {
+		return genderSupport;
+	}
+
+	public void setGenderSupport(boolean genderSupport) {
+		this.genderSupport = genderSupport;
 	}
 }

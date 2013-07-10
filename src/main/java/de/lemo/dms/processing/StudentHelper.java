@@ -106,4 +106,40 @@ public class StudentHelper {
 		session.close();
 		return users;
 	}
+	
+	/**
+	 * Returns a map containing all ids of students registered within the courses as keys and replacement-aliases as values.
+	 * 
+	 * @param courses List of course identifiers
+	 * @return	Map<Long, Long> of identifiers (key-set) of students within the specified courses
+	 */
+	public static boolean getGenderSupport(Long id)
+	{
+		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
+
+		Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+		criteria.add(Restrictions.eq("cu.course.id", id));
+		@SuppressWarnings("unchecked")
+		List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
+		int fem = 0;
+		int mal = 0;
+		
+		for (final CourseUserMining cu : courseUsers) {
+			// Only use students (type = 2) 
+			if (cu.getUser() != null && cu.getRole().getType() == 2)
+			{
+				if(cu.getUser().getGender() == 1)
+					fem++;
+				else if(cu.getUser().getGender() == 2)
+					mal++;
+				if(mal > 4 && fem > 4)
+				{
+					session.close();
+					return true;
+				}
+			}
+		}
+		session.close();
+		return false;
+	}
 }

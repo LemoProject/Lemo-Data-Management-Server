@@ -47,7 +47,7 @@
 	<property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.default_schema=lemo_db"></property>
+        <property name="hibernate.default_schema"></property>
       </connector>
       <connector platform-id="3" name="Chemgaroo" platform-type="Chemgaroo">
         <property name="lemo.log_file_path">C:\serverlogfile.log</property>
@@ -62,7 +62,7 @@
 		<property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.default_schema=lemo_db">public</property>
+        <property name="hibernate.default_schema">public</property>
       </connector>
       <connector platform-id="5" name="bbw1" platform-type="Moodle_1_9_Numeric">
         <property name="hibernate.connection.url">jdbc:postgresql://localhost/moodle</property>
@@ -70,7 +70,7 @@
 		<property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.default_schema=lemo_db">public</property>
+        <property name="hibernate.default_schema">public</property>
       </connector>
       <connector platform-id="6" name="clix" platform-type="Clix_2010">
         <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:clix</property>
@@ -78,7 +78,7 @@
 		<property name="hibernate.connection.password">lemo_dummypwd</property>
         <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
         <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
-        <property name="hibernate.default_schema=lemo_db">lemo_db</property>
+        <property name="hibernate.default_schema">lemo_db</property>
       </connector>
     </connectors>
   </dms>
