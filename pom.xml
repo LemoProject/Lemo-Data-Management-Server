@@ -294,7 +294,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>dms-${lemo-system-name}</finalName>
+		<finalName>${lemo-system-name}#dms</finalName>
 		<plugins>
 
 			<plugin>
