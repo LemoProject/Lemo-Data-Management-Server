@@ -66,7 +66,7 @@ public enum ESourcePlatform {
             break;
 
         case Moodle_1_9:
-            connector = new de.lemo.dms.connectors.moodle.ConnectorMoodle(config);
+            connector = new de.lemo.dms.connectors.moodle_1_9.ConnectorMoodle(config);
             break;
 
         // case Moodle_2_1:
@@ -77,7 +77,7 @@ public enum ESourcePlatform {
             break;
 
         case Moodle_1_9_Numeric:
-            connector = new de.lemo.dms.connectors.moodleNumericId.ConnectorMoodle(config);
+            connector = new de.lemo.dms.connectors.moodle_1_9.ConnectorMoodle(config);
             break;
 
         default:

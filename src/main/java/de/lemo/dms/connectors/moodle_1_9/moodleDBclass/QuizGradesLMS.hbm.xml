@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class
+		name="de.lemo.dms.connectors.moodle_1_9.moodleDBclass.QuizGradesLMS"
+		table="mdl_quiz_grades">
+
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="userid" column="userid" type="string" />
+
+		<property name="quiz" column="quiz" type="long" />
+
+		<property name="grade" column="grade" type="double" />
+
+		<property name="timemodified" column="timemodified" type="long" />
+
+	</class>
+
+</hibernate-mapping>
