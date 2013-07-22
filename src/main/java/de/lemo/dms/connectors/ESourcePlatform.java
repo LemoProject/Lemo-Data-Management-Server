@@ -28,8 +28,8 @@ public enum ESourcePlatform {
 
     Moodle_1_9,
     Moodle_1_9_Numeric,
-    Moodle_2_1,
-    Moodle_2_2,
+    // Moodle_2_1,
+    // Moodle_2_2,
     Moodle_2_3,
     Moodle_2_4,
     Clix_2010,
@@ -69,8 +69,8 @@ public enum ESourcePlatform {
             connector = new de.lemo.dms.connectors.moodle.ConnectorMoodle(config);
             break;
 
-        case Moodle_2_1:
-        case Moodle_2_2:
+        // case Moodle_2_1:
+        // case Moodle_2_2:
         case Moodle_2_3:
         case Moodle_2_4:
             connector = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle(config);
