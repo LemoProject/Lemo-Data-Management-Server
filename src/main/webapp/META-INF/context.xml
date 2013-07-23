@@ -3,4 +3,6 @@
 	<!-- Restrict access to localhost only -->
 	<Valve className="org.apache.catalina.valves.RemoteAddrValve"
 		allow="0:0:0:0:0:0:0:1,127\.0\.0\.1" />
+  <Valve className="org.apache.catalina.valves.RemoteHostValve"
+    allow="localhost"/>
 </Context>
