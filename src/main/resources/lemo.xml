@@ -9,6 +9,7 @@
   </apps>
   <!-- -->
   <dms name="Lemo DMS">
+    <version>${version}</version>
     <database>
       <!-- Maven replacement variables-->
     	<property name="hibernate.connection.url">${mining-hibernate-url}</property>
