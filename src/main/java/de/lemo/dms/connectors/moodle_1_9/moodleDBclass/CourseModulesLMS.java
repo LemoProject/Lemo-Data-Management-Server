@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/CourseModulesLMS.java
+ * File ./src/main/java/de/lemo/dms/connectors/moodle_1_9/moodleDBclass/CourseModulesLMS.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,7 +19,7 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Course_Modules_LMS.java
+ * File ./main/java/de/lemo/dms/connectors/moodle_1_9/moodleDBclass/Course_Modules_LMS.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  */

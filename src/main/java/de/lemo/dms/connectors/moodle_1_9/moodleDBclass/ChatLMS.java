@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/ChatLMS.java
+ * File ./src/main/java/de/lemo/dms/connectors/moodle_1_9/moodleDBclass/ChatLMS.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,7 +19,7 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/connectors/moodleNumericId/moodleDBclass/Chat_LMS.java
+ * File ./main/java/de/lemo/dms/connectors/moodle_1_9/moodleDBclass/Chat_LMS.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  */
