@@ -16,6 +16,8 @@ package de.lemo.dms.connectors;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
 import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.core.config.ServerConfiguration;
@@ -35,6 +37,8 @@ public enum ESourcePlatform {
     Clix_2010,
     Chemgaroo,
     Dummy, ;
+
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     /**
      * Create a new connector for this platform.
@@ -88,6 +92,10 @@ public enum ESourcePlatform {
         connector.setPlatformType(this);
         connector.setName(name);
         connector.setCourseIdFilter(filter);
+
+        logger.debug("Created connector " + connector);
+        logger.debug("Course filters: " + filter);
+        logger.debug("Database configuration: " + config.getProperties());
 
         return connector;
 

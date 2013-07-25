@@ -62,7 +62,7 @@ class Connector {
 	/**
 	 * List of connector IDs to be loaded by the connector. If no IDs are provided, all courses will be loaded.
 	 */
-	@XmlElement
+	@XmlElement(name="course-id-filter")
 	@XmlList
 	public List<Long> courseIdFilter = Lists.newArrayList();
 
