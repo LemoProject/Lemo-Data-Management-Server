@@ -27,7 +27,7 @@ Lemo Project Download
 Beschreibung
 --------------------------------------------------------------------------------
 LeMo ist eine webbasierte Learning Analytics Anwendung. Die Plattform erlaubt
-es Benutzern Daten aus verschiedenen Learning Management Systemen und aus 
+es Benutzern, Daten aus verschiedenen Learning Management Systemen und aus 
 Logdateien von Servern zu importieren und zu analysieren. Momentan werden die 
 Plattformen Moodle 1.9, Moodle 2.1 - 2.4 und Clix unterstützt. LeMo bietet eine 
 breite Palette von Analysen und Visualisierungen, u.a. wie sich die
@@ -112,7 +112,10 @@ kopiert werden.
 5. Tomcat neu starten
 ---------------------------------------
 z.B. mit /etc/init.d/tomcat6 restart oder über den XAMPP-Manager.
+
+---------------------------------------
 6. Installation Testen
+---------------------------------------
 Wenn im Browser die URL localhost:8080/lemo aufgerufen wird, sollte die
 Startseite von Lemo zu sehen sein. Nach dem Login mit dem vordefinierten
 Nutzer-Account (Name: user, Passwort: lemolemo) sollte unter dem Menüpunkt
@@ -159,7 +162,7 @@ Tomcat muss anschließend neu gestartet werden, um die Konfiguration zu
 ---------------------------------------
 8. Import
 ---------------------------------------
-Der Datenimport wird über das Admino-Dashboard eingeleitet. Im Abschnitt
+Der Datenimport wird über das Admin-Dashboard eingeleitet. Im Abschnitt
 "Datenadministration" werden alle Konnektoren aufgelistet. Der Import wird
 gestartet, wenn "Starte Aktualisierung" angeklickt wird.
 
