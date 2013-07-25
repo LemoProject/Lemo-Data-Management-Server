@@ -31,7 +31,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.ConfigMining;
 
 /**
- * read the version numbers from server and db
+ * Provides version numbers of the server and the mining database.
  * 
  * @author Boris Wenzlaff
  * @author Leonard Kappe
@@ -42,19 +42,17 @@ public class Version {
     private final Logger logger = Logger.getLogger(this.getClass());
 
     /**
-     * read the version number from the pom.xml
+     * Reads the server's version number property.
      * 
-     * @return version number from dms
+     * @return the DMS version
      */
     public String getServerVersion() {
         String version = "unknown";
         InputStream stream = Version.class.getResourceAsStream(VERSION_FILE_PATH);
         Properties prop = new Properties();
         try {
-            logger.info("Reading version from " + VERSION_FILE_PATH);
             prop.load(stream);
             version = prop.getProperty("lemo.version");
-            logger.info("Version: " + version);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,9 +60,9 @@ public class Version {
     }
 
     /**
-     * read the version number from the db
+     * Loads the database scheme's version number from the database.
      * 
-     * @return version number db
+     * @return the database version
      */
     public String getDBVersion() {
         String version = "unknown";
@@ -77,7 +75,7 @@ public class Version {
             version = prop.getDatabaseModel().toString();
 
         } catch (final Exception ex) {
-            this.logger.warn("cant read version from db\n" + ex.getMessage());
+            this.logger.error("Unable to read database version.", ex);
         }
         return version;
     }
