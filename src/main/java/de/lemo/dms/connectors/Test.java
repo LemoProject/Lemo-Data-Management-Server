@@ -62,8 +62,7 @@ import de.lemo.dms.service.ServiceCourseTitleSearch;
 public class Test {
 
 	private static final Long ID_MOODLE23 = 4L;
-	private static final Long ID_MOODLE_NUMERIC = 5L;
-	private static final Long ID_MOODLE19 = 2L;
+	private static final Long ID_MOODLE19 = 5L;
 	private static final Long ID_CLIX = 6L;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
@@ -74,96 +73,6 @@ public class Test {
 	{
 		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE23);
 		Set<Long> courses = new HashSet<Long>();
-		/*courses.add(441L);
-		courses.add(165L);
-		courses.add(169L);
-		courses.add(167L);
-		courses.add(176L);
-		courses.add(177L);
-		courses.add(178L);
-		courses.add(179L);
-		courses.add(180L);
-		courses.add(189L);
-		courses.add(20L);
-		courses.add(19L);
-		courses.add(316L);
-		courses.add(318L);
-		courses.add(366L);
-		courses.add(429L);
-		courses.add(227L);
-		courses.add(514L);
-		courses.add(515L);
-		courses.add(516L);
-		courses.add(517L);
-		courses.add(518L);
-		courses.add(519L);
-		courses.add(520L);
-		courses.add(521L);
-		courses.add(522L);
-		courses.add(523L);
-		courses.add(524L);
-		courses.add(525L);
-		courses.add(526L);
-		courses.add(527L);
-		courses.add(528L);
-		courses.add(529L);
-		courses.add(530L);
-		courses.add(532L);
-		courses.add(533L);
-		courses.add(534L);
-		courses.add(535L);
-		courses.add(536L);
-		courses.add(537L);
-		courses.add(538L);
-		courses.add(539L);
-		courses.add(550L);
-		courses.add(399L);
-		courses.add(776L);
-		courses.add(231L);
-		courses.add(346L);
-		courses.add(373L);
-		courses.add(493L);
-		courses.add(494L);
-		courses.add(168L);
-		courses.add(212L);
-		courses.add(366L);
-		courses.add(232L);
-		courses.add(142L);
-		courses.add(441L);
-		courses.add(461L);
-		courses.add(481L);
-		courses.add(513L);
-		courses.add(217L);
-		courses.add(308L);
-		courses.add(327L);
-		courses.add(328L);
-		courses.add(382L);
-		courses.add(612L);
-		courses.add(213L);
-		courses.add(218L);
-		courses.add(495L);
-		courses.add(496L);
-		
-		logger.info(courses.add(43L));
-		logger.info(courses.add(73L));
-		logger.info(courses.add(142L));
-		logger.info(courses.add(168L));
-		logger.info(courses.add(212L));
-		logger.info(courses.add(238L));
-		logger.info(courses.add(239L));
-		logger.info(courses.add(240L));
-		logger.info(courses.add(273L));
-		logger.info(courses.add(366L));
-		logger.info(courses.add(434L));
-		logger.info(courses.add(441L));
-		logger.info(courses.add(481L));
-		logger.info(courses.add(513L));
-		logger.info(courses.add(533L));
-		logger.info(courses.add(550L));
-		logger.info(courses.add(572L));
-		logger.info(courses.add(574L));
-		logger.info(courses.add(732L));
-		*/
 		courses.add(73L);
 		courses.add(168L);
 		courses.add(238L);
@@ -282,9 +191,9 @@ public class Test {
 	/**
 	 * Tests the Moodle(2.3)-connector. Configurations have to be altered accordingly.
 	 */
-	public void runMoodleNumericConn()
+	public void runMoodle19Conn()
 	{
-		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE_NUMERIC);
+		final IConnector connector = ConnectorManager.getInstance().getConnectorById(Test.ID_MOODLE19);
 		List<Long> courses = new ArrayList<Long>();
 		courses.add(164L);
 		courses.add(169L);

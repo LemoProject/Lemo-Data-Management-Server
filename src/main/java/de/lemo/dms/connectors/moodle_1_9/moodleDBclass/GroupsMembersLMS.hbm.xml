@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class
+		name="de.lemo.dms.connectors.moodle_1_9.moodleDBclass.GroupsMembersLMS"
+		table="mdl_groups_members">
+
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="groupid" column="groupid" type="long" />
+
+		<property name="userid" column="userid" type="long" />
+
+		<property name="timeadded" column="timeadded" type="long" />
+
+	</class>
+
+</hibernate-mapping>

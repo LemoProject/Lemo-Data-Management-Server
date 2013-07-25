@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="de.lemo.dms.connectors.moodle_1_9.moodleDBclass.RoleLMS"
+		table="mdl_role">
+
+		<id name="id" column="id" type="long">
+		</id>
+
+		<property name="name" column="name" type="string" />
+
+		<property name="shortname" column="shortname" type="string" />
+
+		<property name="description" column="description" type="text" />
+
+		<property name="sortorder" column="sortorder" type="long" />
+
+	</class>
+
+</hibernate-mapping>

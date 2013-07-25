@@ -1,20 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <config>
-  <!-- -->
-  <apps name="Lemo Apps">
-    <!--
-    You may ignore this element, it just ensures that there's
-    no conflict when mixing dms and apps config in the same file.
-    -->
-  </apps>
-  <!-- -->
   <dms name="Lemo DMS">
     <database>
-      <!-- Maven replacement variables-->
-    	<property name="hibernate.connection.url">${mining-hibernate-url}</property>
-	   	<property name="hibernate.connection.username">${mining-hibernate-username}</property>
-    	<property name="hibernate.connection.password">${mining-hibernate-password}</property>
-      <!-- main config-->
+      <!-- Maven replacement variables -->
+      <property name="hibernate.connection.url">${mining-hibernate-url}</property>
+       <property name="hibernate.connection.username">${mining-hibernate-username}</property>
+      <property name="hibernate.connection.password">${mining-hibernate-password}</property>
+      <!-- main config -->
       <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
       <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
@@ -23,7 +15,7 @@
       <property name="hibernate.hbm2ddl.auto">update</property>
       <property name="hibernate.cache.use_second_level_cache">false</property>
       <property name="hibernate.cache.use_query_level_cache">false</property>
-      <!-- connection pooling-->
+      <!-- connection pooling -->
       <property name="hibernate.c3p0.acquire_increment">3</property>
       <property name="hibernate.c3p0.min_size">3</property>
       <property name="hibernate.c3p0.timeout">60</property>
@@ -41,46 +33,39 @@
       <property name="hibernate.c3p0.testConnectionOnCheckout">true</property>
     </database>
     <connectors>
-      <connector platform-id="2" name="beuth1" platform-type="Moodle_1_9">
+      <connector platform-id="2" name="moodle19" platform-type="Moodle_1_9">
+        <course-id-filter><!-- whitespace seperated list of course IDs, if empty all course will be loaded. --></course-id-filter>
         <property name="hibernate.connection.url">jdbc:mysql://localhost/lmsmoodle?rewriteBatchedStatements=true</property>
-    	<property name="hibernate.connection.username">user</property>
-	<property name="hibernate.connection.password">password</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.default_schema"></property>
       </connector>
-      <connector platform-id="3" name="Chemgaroo" platform-type="Chemgaroo">
+      <connector platform-id="3" name="chemgaroo" platform-type="Chemgaroo">
         <property name="lemo.log_file_path">C:\serverlogfile.log</property>
         <property name="lemo.resource_metadata_path">C:\vsc</property>
         <property name="lemo.process_log_file">true</property>
         <property name="lemo.process_metadata">true</property>
         <property name="lemo.filter_log_file">true</property>
       </connector>
-      <connector platform-id="4" name="beuth2" platform-type="Moodle_2_3">
-      	<property name="hibernate.connection.url">jdbc:postgresql://localhost/moodle</property>
-		<property name="hibernate.connection.username">user</property>
-		<property name="hibernate.connection.password">password</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.default_schema">public</property>
-      </connector>
-      <connector platform-id="5" name="bbw1" platform-type="Moodle_1_9_Numeric">
+      <connector platform-id="4" name="moodle23" platform-type="Moodle_2_3">
         <property name="hibernate.connection.url">jdbc:postgresql://localhost/moodle</property>
-		<property name="hibernate.connection.username">user</property>
-		<property name="hibernate.connection.password">password</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.default_schema">public</property>
       </connector>
+
       <connector platform-id="6" name="clix" platform-type="Clix_2010">
         <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:clix</property>
-		<property name="hibernate.connection.username">lemo_dummy</property>
-		<property name="hibernate.connection.password">lemo_dummypwd</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
         <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
         <property name="hibernate.default_schema">lemo_db</property>
       </connector>
     </connectors>
   </dms>
-
 </config>

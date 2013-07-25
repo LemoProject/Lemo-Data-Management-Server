@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/connectors/moodle_2_3/ExtractAndMap.java
+ * File ./src/main/java/de/lemo/dms/connectors/moodle_1_9/ExtractAndMap.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,19 +19,20 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/connectors/moodle_2_3/ExtractAndMap.java
+ * File ./main/java/de/lemo/dms/connectors/moodle_1_9/ExtractAndMap.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  */
 
-package de.lemo.dms.connectors.moodle_2_3;
+package de.lemo.dms.connectors.moodle_1_9;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -89,167 +90,166 @@ import de.lemo.dms.db.miningDBclass.WikiMining;
  * Inherit from this class to make an extract class for a specific LMS.
  * Contains bundle of fields as container for LMS objects,
  * which are used for linking the tables.
+ * 
+ * @author Benjamin Wolf
+ * @author Sebastian Schwarzrock
  */
 public abstract class ExtractAndMap {
 
 	// lists of object tables which are new found in LMS DB
-	/** A List of new entries in the course table found in this run of the process. */
-
+	/** A map containing all CourseMining entries found in the database */
 	protected Map<Long, CourseMining> courseMining;
 
+	/** A map containing all PlatformMining entries found in the database */
 	protected Map<Long, PlatformMining> platformMining;
 
-	/** A List of new entries in the quiz table found in this run of the process. */
-	protected Map<Long, QuizMining> quizMining;
-
-	/** A List of new entries in the assignment table found in this run of the process. */
-	protected Map<Long, AssignmentMining> assignmentMining;
-
-	/** A List of new entries in the assignment table found in this run of the process. */
-	protected Map<Long, ScormMining> scormMining;
-
-	/** A List of new entries in the forum table found in this run of the process. */
-	protected Map<Long, ForumMining> forumMining;
-
-	/** A List of new entries in the resource table found in this run of the process. */
-	protected Map<Long, ResourceMining> resourceMining;
-
-	/** A List of new entries in the user table found in this run of the process. */
-	protected Map<Long, UserMining> userMining;
-
-	/** A List of new entries in the wiki table found in this run of the process. */
-	protected Map<Long, WikiMining> wikiMining;
-
-	/** A List of new entries in the group table found in this run of the process. */
-	protected Map<Long, GroupMining> groupMining;
-
-	/** A List of entries in the new question table found in this run of the process. */
-	protected Map<Long, QuestionMining> questionMining;
-
-	/** A List of entries in the new question table found in this run of the process. */
+	/** A map containing all QuizQuestionMining entries found in the database */
 	protected Map<Long, QuizQuestionMining> quizQuestionMining;
 
-	/** A List of entries in the new level table found in this run of the process. */
-	protected Map<Long, LevelMining> levelMining;
-
+	/** A map containing all CourseQuizMining entries found in the database */
 	protected Map<Long, CourseQuizMining> courseQuizMining;
 
-	/** A List of entries in the new role table found in this run of the process. */
+	/** A map containing all QuizMining entries found in the database */
+	protected Map<Long, QuizMining> quizMining;
+
+	/** A map containing all AssignmentMining entries found in the database */
+	protected Map<Long, AssignmentMining> assignmentMining;
+
+	/** A map containing all ScormMining entries found in the database */
+	protected Map<Long, ScormMining> scormMining;
+
+	/** A map containing all ForumMining entries found in the database */
+	protected Map<Long, ForumMining> forumMining;
+
+	/** A map containing all ResourceMining entries found in the database */
+	protected Map<Long, ResourceMining> resourceMining;
+
+	/** A map containing all UserMining entries found in the database */
+	protected Map<Long, UserMining> userMining;
+
+	/** A map containing all WikiMining entries found in the database */
+	protected Map<Long, WikiMining> wikiMining;
+
+	/** A map containing all GroupMining entries found in the database */
+	protected Map<Long, GroupMining> groupMining;
+
+	/** A map containing all QuestionMining entries found in the database */
+	protected Map<Long, QuestionMining> questionMining;
+
+	/** A map containing all RoleMining entries found in the database */
 	protected Map<Long, RoleMining> roleMining;
 
-	/** The chat_mining. */
+	/** A map containing all LevelMining entries found in the database */
+	protected Map<Long, LevelMining> levelMining;
+
+	/** A map containing all ChatMining entries found in the database */
 	protected Map<Long, ChatMining> chatMining;
 
-	/** The chat_log_mining. */
+	/** A map containing all ChatLogMining entries found in the database */
 	protected Map<Long, ChatLogMining> chatLogMining;
 
+	/** A map containing all PlatformMining entries found in the mining-database */
 	protected Map<Long, PlatformMining> oldPlatformMining;
 
-	// lists of object tables which are already in the mining DB
-	/** A List of entries in the course table, needed for linking reasons in the process. */
+	/** A map containing all CourseMining entries found in the mining-database */
 	protected Map<Long, CourseMining> oldCourseMining;
 
-	/** A List of entries in the quiz table, needed for linking reasons in the process. */
+	/** A map containing all QuizMining entries found in the mining-database */
 	protected Map<Long, QuizMining> oldQuizMining;
 
-	/** A List of entries in the assignment table, needed for linking reasons in the process. */
+	/** A map containing all AssignmentMining entries found in the mining-database */
 	protected Map<Long, AssignmentMining> oldAssignmentMining;
 
-	/** A List of entries in the scorm table, needed for linking reasons in the process. */
+	/** A map containing all ScormMining entries found in the mining-database */
 	protected Map<Long, ScormMining> oldScormMining;
 
-	/** A List of entries in the forum table, needed for linking reasons in the process. */
+	/** A map containing all ForumMining entries found in the mining-database */
 	protected Map<Long, ForumMining> oldForumMining;
 
-	/** A List of entries in the resource table, needed for linking reasons in the process. */
+	/** A map containing all ResourceMining entries found in the mining-database */
 	protected Map<Long, ResourceMining> oldResourceMining;
 
-	/** A List of entries in the user table, needed for linking reasons in the process. */
+	/** A map containing all UserMining entries found in the mining-database */
 	protected Map<Long, UserMining> oldUserMining;
 
-	/** A List of entries in the wiki table, needed for linking reasons in the process. */
+	/** A map containing all WikiMining entries found in the mining-database */
 	protected Map<Long, WikiMining> oldWikiMining;
 
-	/** A List of entries in the group table, needed for linking reasons in the process. */
+	/** A map containing all GroupMining entries found in the mining-database */
 	protected Map<Long, GroupMining> oldGroupMining;
 
-	/** A List of entries in the question table, needed for linking reasons in the process. */
+	/** A map containing all QuestionMining entries found in the mining-database */
 	protected Map<Long, QuestionMining> oldQuestionMining;
 
-	/** A List of entries in the role table, needed for linking reasons in the process. */
+	/** A map containing all RoleMining entries found in the mining-database */
 	protected Map<Long, RoleMining> oldRoleMining;
 
-	/** The old_level_mining. */
-	protected Map<Long, LevelMining> oldLevelMining;
-
-	/** A List of entries in the quiz_question table, needed for linking reasons in the process. */
+	/** A map containing all QuizQuestionMining entries found in the mining-database */
 	protected Map<Long, QuizQuestionMining> oldQuizQuestionMining;
 
-	/** A List of entries in the course_quiz table, needed for linking reasons in the process. */
+	/** A map containing all CourseQuizMining entries found in the mining-database */
 	protected Map<Long, CourseQuizMining> oldCourseQuizMining;
 
-	/** The old_chat_mining. */
+	/** A map containing all LevelMining entries found in the mining-database */
+	protected Map<Long, LevelMining> oldLevelMining;
+
+	/** A map containing all ChatMining entries found in the mining-database */
 	protected Map<Long, ChatMining> oldChatMining;
 
-	/** The old_chat_log_mining. */
+	/** A map containing all ChatLogMining entries found in the mining-database */
 	protected Map<Long, ChatLogMining> oldChatLogMining;
 
 	/** A list of objects used for submitting them to the DB. */
-	List<Collection<?>> updates;
-	/** A list of timestamps of the previous runs of the extractor. */
-	List<Timestamp> configMiningTimestamp;
+	protected List<Collection<?>> updates;
+	/** A list of time stamps of the previous runs of the extractor. */
+	protected List<Timestamp> configMiningTimestamp;
+
+	/** value of the highest user-id in the data set. Used for creating new numeric ids **/
+	protected long largestId;
+
 	/** Designates which entries should be read from the LMS Database during the process. */
 	private long starttime;
 
-	/** Database-handler **/
-	IDBHandler dbHandler;
+	private IDBHandler dbHandler;
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
+	private Clock c;
+
+	protected Long resourceLogMax;
+	protected Long chatLogMax;
+	protected Long assignmentLogMax;
+	protected Long courseLogMax;
+	protected Long forumLogMax;
+	protected Long questionLogMax;
+	protected Long quizLogMax;
+	protected Long scormLogMax;
+	protected Long wikiLogMax;
+	protected Long courseChatMax;
+	protected Long maxLog = 0L;
+
 	private final IConnector connector;
-	Long questionLogMax;
 
 	public ExtractAndMap(final IConnector connector) {
 		this.connector = connector;
 	}
 
-	protected Long courseLogMax;
-
-	protected Long assignmentLogMax;
-
-	protected Long forumLogMax;
-
-	protected Long quizLogMax;
-
-	protected Long scormLogMax;
-
-	protected Long wikiLogMax;
-
-	protected Long chatLogMax;
-
-	protected Long resourceLogMax;
-
-	protected Long courseChatMax;
-	
-	protected Long maxLog = 0L;
-	
-	private Clock c;
-
 	/**
 	 * Starts the extraction process by calling getLMS_tables() and saveMining_tables().
-	 * A timestamp can be given as optional argument.
-	 * When the argument is used the extraction begins after that timestamp.
-	 * When no argument is given the program starts with the timestamp of the last run.
+	 * A time stamp can be given as optional argument.
+	 * When the argument is used the extraction begins after that time stamp.
+	 * When no argument is given the program starts with the time stamp of the last run.
 	 * 
 	 * @param args
 	 *            Optional arguments for the process. Used for the selection of the ExtractAndMap Implementation and
-	 *            timestamp when the extraction should start.
+	 *            time stamp when the extraction should start.
 	 **/
 	public void start(final String[] args, final DBConfigObject sourceDBConf, List<Long> courses) {
 
 		this.dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		this.c = new Clock();
 		this.starttime = System.currentTimeMillis() / 1000;
+
 		final Session session = this.dbHandler.getMiningSession();
 
 		// get the status of the mining DB; load timestamp of last update and objects needed for associations
@@ -257,6 +257,7 @@ public abstract class ExtractAndMap {
 
 		this.dbHandler.saveToDB(session, new PlatformMining(this.connector.getPlatformId(), this.connector.getName(),
 				this.connector.getPlattformType().toString(), this.connector.getPrefix()));
+
 		logger.info("Initialized database in " + this.c.getAndReset());
 		// default call without parameter
 		if (args.length == 1)
@@ -299,6 +300,8 @@ public abstract class ExtractAndMap {
 					readingtimestamp2 += 172800;
 					this.logger.info("currenttimestamp:" + currenttimestamp);
 					this.saveMiningTables();
+					this.prepareMiningData();
+					this.clearMiningTables();
 				}
 			}
 			else {
@@ -323,17 +326,30 @@ public abstract class ExtractAndMap {
 	/**
 	 * Reads the Mining Database.
 	 * Initial informations needed to start the process of updating are collected here.
-	 * The Timestamp of the last run of the extractor is read from the config table
+	 * The time stamp of the last run of the extractor is read from the config table
 	 * and the objects which might been needed to associate are read and saved here.
 	 * 
-	 * @return The timestamp of the last run of the extractor. If this is the first run it will be set 0.
+	 * @return The time stamp of the last run of the extractor. If this is the first run it will be set 0.
 	 **/
 	@SuppressWarnings("unchecked")
 	public long getMiningInitial() {
 
+		// open a DB connection
 		final Session session = this.dbHandler.getMiningSession();
 
 		List<?> t;
+		
+		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from PlatformMining x order by x.id asc");
+		this.oldPlatformMining = new HashMap<Long, PlatformMining>();
+		if (t != null) {
+			for (int i = 0; i < t.size(); i++) {
+				this.oldPlatformMining.put(((PlatformMining) (t.get(i))).getId(), (PlatformMining) t.get(i));
+			}
+		}
+		logger.info("Loaded " + this.oldPlatformMining.size()
+				+ " PlatformMining objects from the mining database.");
+
+		this.platformMining = new HashMap<Long, PlatformMining>();
 
 		Long readingtimestamp;
 		readingtimestamp = (Long) session.createQuery("Select max(latestTimestamp) from ConfigMining where platform=" + this.connector.getPlatformId()).uniqueResult();
@@ -344,10 +360,17 @@ public abstract class ExtractAndMap {
 		}
 
 		// load objects which are already in Mining DB for associations
+		
+		Query couCaCount = session.createQuery("select max(cc.id) from CourseChatMining cc");
+		this.courseChatMax = ((ArrayList<Long>) couCaCount.list()).get(0);
+		if (this.courseChatMax == null) {
+			this.courseChatMax = 0L;
+		}
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from CourseMining x where x.platform="
 				+ this.connector.getPlatformId() + " order by x.id asc");
 		this.oldCourseMining = new HashMap<Long, CourseMining>();
+
 		for (int i = 0; i < t.size(); i++) {
 			this.oldCourseMining.put(((CourseMining) (t.get(i))).getId(), (CourseMining) t.get(i));
 		}
@@ -406,6 +429,7 @@ public abstract class ExtractAndMap {
 		t = this.dbHandler.performQuery(session, EQueryType.HQL,
 				"from WikiMining x where x.platform=" + this.connector.getPlatformId() + " order by x.id asc");
 		this.oldWikiMining = new HashMap<Long, WikiMining>();
+
 		for (int i = 0; i < t.size(); i++) {
 			this.oldWikiMining.put(((WikiMining) (t.get(i))).getId(), (WikiMining) t.get(i));
 		}
@@ -439,8 +463,7 @@ public abstract class ExtractAndMap {
 				+ this.connector.getPlatformId() + " order by x.id asc");
 		this.oldQuizQuestionMining = new HashMap<Long, QuizQuestionMining>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldQuizQuestionMining.put(((QuizQuestionMining) (t.get(i))).getQuestion().getId(),
-					(QuizQuestionMining) t.get(i));
+			this.oldQuizQuestionMining.put(((QuizQuestionMining) (t.get(i))).getId(), (QuizQuestionMining) t.get(i));
 		}
 		logger.info("Loaded " + this.oldQuizQuestionMining.size()
 				+ " QuizQuestionMining objects from the mining database.");
@@ -461,15 +484,7 @@ public abstract class ExtractAndMap {
 		}
 		logger.info("Loaded " + this.oldChatMining.size() + " ChatMining objects from the mining database.");
 
-		t = this.dbHandler.performQuery(session, EQueryType.HQL,
-				"from ChatMining x where x.platform=" + this.connector.getPlatformId() + " order by x.id asc");
-		this.oldChatMining = new HashMap<Long, ChatMining>();
-		for (int i = 0; i < t.size(); i++) {
-			this.oldChatMining.put(((ChatMining) (t.get(i))).getId(), (ChatMining) t.get(i));
-		}
-		logger.info("Loaded " + this.oldChatMining.size() + " ChatMining objects from the mining database.");
-
-
+		
 		Criteria criteria = session.createCriteria(ResourceLogMining.class);
 		ProjectionList pl = Projections.projectionList();
 		pl.add(Projections.max("id"));
@@ -477,13 +492,6 @@ public abstract class ExtractAndMap {
 		this.resourceLogMax = (Long) criteria.list().get(0);
 		if (this.resourceLogMax == null) {
 			this.resourceLogMax = 0L;
-		}
-		
-		criteria = session.createCriteria(CourseChatMining.class);
-		criteria.setProjection(pl);
-		this.courseChatMax = (Long) criteria.list().get(0);
-		if (this.courseChatMax == null) {
-			this.courseChatMax = 0L;
 		}
 		
 		criteria = session.createCriteria(ChatLogMining.class);
@@ -506,7 +514,7 @@ public abstract class ExtractAndMap {
 		if (this.courseLogMax == null) {
 			this.courseLogMax = 0L;
 		}
-		
+
 		criteria = session.createCriteria(ForumLogMining.class);
 		criteria.setProjection(pl);
 		this.forumLogMax = (Long) criteria.list().get(0);
@@ -520,21 +528,21 @@ public abstract class ExtractAndMap {
 		if (this.questionLogMax == null) {
 			this.questionLogMax = 0L;
 		}
-
+		
 		criteria = session.createCriteria(QuizLogMining.class);
 		criteria.setProjection(pl);
 		this.quizLogMax = (Long) criteria.list().get(0);
 		if (this.quizLogMax == null) {
 			this.quizLogMax = 0L;
 		}
-
+		
 		criteria = session.createCriteria(ScormLogMining.class);
 		criteria.setProjection(pl);
 		this.scormLogMax = (Long) criteria.list().get(0);
 		if (this.scormLogMax == null) {
 			this.scormLogMax = 0L;
 		}
-
+		
 		criteria = session.createCriteria(WikiLogMining.class);
 		criteria.setProjection(pl);
 		this.wikiLogMax = (Long) criteria.list().get(0);
@@ -543,22 +551,23 @@ public abstract class ExtractAndMap {
 		}
 
 		this.dbHandler.closeSession(session);
+
 		return readingtimestamp;
 	}
 
 	/**
 	 * Has to read the LMS Database.
-	 * It starts reading elements with timestamp readingtimestamp and higher.
+	 * It starts reading elements with time stamp readingtimestamp and higher.
 	 * It is supposed to be used for frequently and small updates.
 	 * For a greater Mass of Data it is suggested to use getLMS_tables(long, long);
 	 * If Hibernate is used to access the LMS DB too,
 	 * it is suggested to write the found tables into lists of
-	 * hibernate object model classes, which have to
+	 * Hibernate object model classes, which have to
 	 * be created as global variables in this class.
 	 * So they can be used in the generate methods of this class.
 	 * 
 	 * @param readingfromtimestamp
-	 *            Only elements with timestamp readingtimestamp and higher are read here.
+	 *            Only elements with time stamp readingtimestamp and higher are read here.
 	 *            *
 	 * @return the lM stables
 	 */
@@ -566,19 +575,19 @@ public abstract class ExtractAndMap {
 
 	/**
 	 * Has to read the LMS Database.
-	 * It reads elements with timestamp between readingfromtimestamp and readingtotimestamp.
+	 * It reads elements with time stamp between readingfromtimestamp and readingtotimestamp.
 	 * This method is used to read great DB in a step by step procedure.
-	 * That is necessary for a great mass of Data when handeling an existing DB for example.
+	 * That is necessary for a great mass of Data when handling an existing DB for example.
 	 * If Hibernate is used to access the LMS DB too,
 	 * it is suggested to write the found tables into lists of
-	 * hibernate object model classes, which have to
+	 * Hibernate object model classes, which have to
 	 * be created as global variables in this class.
 	 * So they can be used in the generate methods of this class.
 	 * 
 	 * @param readingfromtimestamp
-	 *            Only elements with timestamp readingfromtimestamp and higher are read here.
+	 *            Only elements with time stamp readingfromtimestamp and higher are read here.
 	 * @param readingtotimestamp
-	 *            Only elements with timestamp readingtotimestamp and lower are read here.
+	 *            Only elements with time stamp readingtotimestamp and lower are read here.
 	 *            *
 	 * @return the lM stables
 	 */
@@ -593,7 +602,6 @@ public abstract class ExtractAndMap {
 	 * Clears the lists of mining tables.
 	 **/
 	public void clearMiningTables() {
-
 		this.courseMining.clear();
 		this.quizMining.clear();
 		this.assignmentMining.clear();
@@ -605,15 +613,16 @@ public abstract class ExtractAndMap {
 		this.groupMining.clear();
 		this.questionMining.clear();
 		this.roleMining.clear();
-		this.chatMining.clear();
-		this.chatMining.clear();
 		this.levelMining.clear();
+		this.chatMining.clear();
+		this.chatMining.clear();
 	}
 
 	/**
 	 * Only for successive readings. This is meant to be done, when the gathered mining data has already
 	 * been saved and before the mining tables are cleared for the next iteration.
 	 */
+
 	public void prepareMiningData()
 	{
 		this.oldCourseMining.putAll(this.courseMining);
@@ -627,15 +636,15 @@ public abstract class ExtractAndMap {
 		this.oldGroupMining.putAll(this.groupMining);
 		this.oldQuestionMining.putAll(this.questionMining);
 		this.oldRoleMining.putAll(this.roleMining);
+		this.oldLevelMining.putAll(this.levelMining);
 		this.oldChatMining.putAll(this.chatMining);
 		this.oldQuizQuestionMining.putAll(this.quizQuestionMining);
 		this.oldCourseQuizMining.putAll(this.courseQuizMining);
-		this.oldLevelMining.putAll(this.levelMining);
 	}
 
 	/**
 	 * Generates and save the new tables for the mining DB.
-	 * We call the genereate-methods for each mining table to get the new entries.
+	 * We call the generate-methods for each mining table to get the new entries.
 	 * At last we create a Transaction and save the new entries to the DB.
 	 **/
 	public void saveMiningTables() {
@@ -735,39 +744,34 @@ public abstract class ExtractAndMap {
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseAssignmentMining entries in " + this.c.getAndReset() + " s. ");
-
-			this.updates.add(this.generateCourseScormMining().values());
-			objects += this.updates.get(this.updates.size() - 1).size();
-			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-					+ " CourseScormMining entries in " + this.c.getAndReset() + " s. ");
 			
 			this.updates.add(this.generateCourseChatMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseChatMining entries in " + this.c.getAndReset() + " s. ");
 
-			this.updates.add(this.generateLevelCourseMining().values());
+			this.updates.add(this.generateCourseScormMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-					+ " LevelCourseMining entries in " + this.c.getAndReset() + " s. ");
+					+ " CourseScormMining entries in " + this.c.getAndReset() + " s. ");
 
 			this.updates.add(this.generateLevelAssociationMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " LevelAssociationMining entries in " + this.c.getAndReset() + " s. ");
 
-			this.quizQuestionMining = this.generateQuizQuestionMining();
-			objects += this.quizQuestionMining.size();
-			logger.info("Generated " + this.quizQuestionMining.size() + " QuizQuestionMining entries in "
-					+ this.c.getAndReset() + " s. ");
-			this.updates.add(this.quizQuestionMining.values());
-
-			logger.info("\nAssociation tables:\n");
-
-			this.updates.add(this.generateCourseForumMining().values());
+			this.updates.add(this.generateLevelCourseMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-					+ " CourseForumMining entries in " + this.c.getAndReset() + " s. ");
+					+ " LevelCourseMining entries in " + this.c.getAndReset() + " s. ");
+
+			this.quizQuestionMining = this.generateQuizQuestionMining();
+			objects += this.quizQuestionMining.size();
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+					+ " QuizQuestionMining entries in " + this.c.getAndReset() + " s. ");
+
+			this.updates.add(this.quizQuestionMining.values());
+
 			this.updates.add(this.generateCourseGroupMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
@@ -775,14 +779,15 @@ public abstract class ExtractAndMap {
 
 			this.courseQuizMining = this.generateCourseQuizMining();
 			objects += this.courseQuizMining.size();
-			logger.info("Generated " + this.courseQuizMining.size() + " CourseQuizMining entries in "
-					+ this.c.getAndReset() + " s. ");
-			this.updates.add(this.courseQuizMining.values());
+			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+					+ " CourseQuizMining entries in " + this.c.getAndReset() + " s. ");
 
+			this.updates.add(this.courseQuizMining.values());
 			this.updates.add(this.generateCourseResourceMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseResourceMining entries in " + this.c.getAndReset() + " s. ");
+
 			this.updates.add(this.generateCourseWikiMining().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
@@ -790,19 +795,20 @@ public abstract class ExtractAndMap {
 
 		}
 
-		this.updates.add(this.generateCourseUserMining().values());
-		objects += this.updates.get(this.updates.size() - 1).size();
-		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-				+ " CourseUserMining entries in " + this.c.getAndReset() + " s. ");
-
 		this.updates.add(this.generateGroupUserMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " GroupUserMining entries in " + this.c.getAndReset() + " s. ");
+
 		this.updates.add(this.generateQuizUserMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " QuizUserMining entries in " + this.c.getAndReset() + " s. ");
+
+		this.updates.add(this.generateCourseUserMining().values());
+		objects += this.updates.get(this.updates.size() - 1).size();
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+				+ " CourseUserMining entries in " + this.c.getAndReset() + " s. ");
 
 		logger.info("\nLog tables:\n");
 
@@ -858,7 +864,7 @@ public abstract class ExtractAndMap {
 	// methods for create and fill the mining-table instances
 	/**
 	 * Has to create and fill the course_user table.
-	 * This table describes which user is enrolled in which course in which timesspan.
+	 * This table describes which user is enrolled in which course in which time span.
 	 * The attributes are described in the documentation of the course_user_mining class.
 	 * Please use the getter and setter predefined in the course_user_mining class to fill the tables within this
 	 * method.
@@ -920,6 +926,17 @@ public abstract class ExtractAndMap {
 	 * @return A list of instances of the course_assignment table representing class.
 	 **/
 	abstract Map<Long, CourseAssignmentMining> generateCourseAssignmentMining();
+	
+	/**
+	 * Has to create and fill the course_chat table.
+	 * This table describes which chats are used in which courses.
+	 * The attributes are described in the documentation of the course_chat_mining class.
+	 * Please use the getter and setter predefined in the course_chat_mining class to fill the tables within this
+	 * method.
+	 * 
+	 * @return A list of instances of the course_wiki table representing class.
+	 **/
+	abstract Map<Long, CourseChatMining> generateCourseChatMining();
 
 	/**
 	 * Has to create and fill the course_scorm table.
@@ -963,17 +980,6 @@ public abstract class ExtractAndMap {
 	 * @return A list of instances of the course_wiki table representing class.
 	 **/
 	abstract Map<Long, CourseWikiMining> generateCourseWikiMining();
-	
-	/**
-	 * Has to create and fill the course_chat table.
-	 * This table describes which chats are used in which courses.
-	 * The attributes are described in the documentation of the course_chat_mining class.
-	 * Please use the getter and setter predefined in the course_chat_mining class to fill the tables within this
-	 * method.
-	 * 
-	 * @return A list of instances of the course_wiki table representing class.
-	 **/
-	abstract Map<Long, CourseChatMining> generateCourseChatMining();
 
 	/**
 	 * Has to create and fill the forum_log table.
@@ -1180,20 +1186,6 @@ public abstract class ExtractAndMap {
 	abstract Map<Long, RoleMining> generateRoleMining();
 
 	/**
-	 * Generate chat mining.
-	 * 
-	 * @return the list
-	 */
-	abstract Map<Long, ChatMining> generateChatMining();
-
-	/**
-	 * Generate chat log mining.
-	 * 
-	 * @return the list
-	 */
-	abstract Map<Long, ChatLogMining> generateChatLogMining();
-
-	/**
 	 * Generate level mining.
 	 * 
 	 * @return the list
@@ -1213,5 +1205,19 @@ public abstract class ExtractAndMap {
 	 * @return the list
 	 */
 	abstract Map<Long, LevelCourseMining> generateLevelCourseMining();
+
+	/**
+	 * Generate chat mining.
+	 * 
+	 * @return the list
+	 */
+	abstract Map<Long, ChatMining> generateChatMining();
+
+	/**
+	 * Generate chat log mining.
+	 * 
+	 * @return the list
+	 */
+	abstract Map<Long, ChatLogMining> generateChatLogMining();
 
 }
