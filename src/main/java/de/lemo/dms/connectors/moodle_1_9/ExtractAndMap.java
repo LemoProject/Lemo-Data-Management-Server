@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/connectors/moodleNumericId/ExtractAndMap.java
+ * File ./src/main/java/de/lemo/dms/connectors/moodle_1_9/ExtractAndMap.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,13 +19,14 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/connectors/moodleNumericId/ExtractAndMap.java
+ * File ./main/java/de/lemo/dms/connectors/moodle_1_9/ExtractAndMap.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  */
 
 package de.lemo.dms.connectors.moodle_1_9;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,8 +34,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
@@ -354,63 +359,7 @@ public abstract class ExtractAndMap {
 			readingtimestamp = -1L;
 		}
 
-
-
 		// load objects which are already in Mining DB for associations
-
-		Query logCount = session.createQuery("select max(id) from ResourceLogMining");
-		this.resourceLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-		if (this.resourceLogMax == null) {
-			this.resourceLogMax = 0L;
-		}
-
-		logCount = session.createSQLQuery("select max(id) from chat_log");
-		this.chatLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-		if (this.chatLogMax == null) {
-			this.chatLogMax = 0L;
-		}
-
-		logCount = session.createSQLQuery("select max(id) from assignment_log");
-		this.assignmentLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-		if (this.assignmentLogMax == null) {
-			this.assignmentLogMax = 0L;
-		}
-
-		logCount = session.createSQLQuery("select max(id) from course_log");
-		this.courseLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-		if (this.courseLogMax == null) {
-			this.courseLogMax = 0L;
-		}
-
-		logCount = session.createSQLQuery("select max(id) from forum_log");
-		this.forumLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-		if (this.forumLogMax == null) {
-			this.forumLogMax = 0L;
-		}
-
-		logCount = session.createSQLQuery("select max(id) from question_log");
-		this.questionLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-		if (this.questionLogMax == null) {
-			this.questionLogMax = 0L;
-		}
-
-		logCount = session.createSQLQuery("select max(id) from quiz_log");
-		this.quizLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-		if (this.quizLogMax == null) {
-			this.quizLogMax = 0L;
-		}
-
-		logCount = session.createSQLQuery("select max(id) from scorm_log");
-		this.scormLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-		if (this.scormLogMax == null) {
-			this.scormLogMax = 0L;
-		}
-
-		logCount = session.createSQLQuery("select max(id) from wiki_log");
-		this.wikiLogMax = ((ArrayList<Long>) logCount.list()).get(0);
-		if (this.wikiLogMax == null) {
-			this.wikiLogMax = 0L;
-		}
 		
 		Query couCaCount = session.createQuery("select max(cc.id) from CourseChatMining cc");
 		this.courseChatMax = ((ArrayList<Long>) couCaCount.list()).get(0);
@@ -534,6 +483,72 @@ public abstract class ExtractAndMap {
 			this.oldChatMining.put(((ChatMining) (t.get(i))).getId(), (ChatMining) t.get(i));
 		}
 		logger.info("Loaded " + this.oldChatMining.size() + " ChatMining objects from the mining database.");
+
+		
+		Criteria criteria = session.createCriteria(ResourceLogMining.class);
+		ProjectionList pl = Projections.projectionList();
+		pl.add(Projections.max("id"));
+		criteria.setProjection(pl);
+		this.resourceLogMax = (Long) criteria.list().get(0);
+		if (this.resourceLogMax == null) {
+			this.resourceLogMax = 0L;
+		}
+		
+		criteria = session.createCriteria(ChatLogMining.class);
+		criteria.setProjection(pl);
+		this.chatLogMax = (Long) criteria.list().get(0);
+		if (this.chatLogMax == null) {
+			this.chatLogMax = 0L;
+		}
+		
+		criteria = session.createCriteria(AssignmentLogMining.class);
+		criteria.setProjection(pl);
+		this.assignmentLogMax = (Long) criteria.list().get(0);
+		if (this.assignmentLogMax == null) {
+			this.assignmentLogMax = 0L;
+		}
+		
+		criteria = session.createCriteria(CourseLogMining.class);
+		criteria.setProjection(pl);
+		this.courseLogMax = (Long) criteria.list().get(0);
+		if (this.courseLogMax == null) {
+			this.courseLogMax = 0L;
+		}
+
+		criteria = session.createCriteria(ForumLogMining.class);
+		criteria.setProjection(pl);
+		this.forumLogMax = (Long) criteria.list().get(0);
+		if (this.forumLogMax == null) {
+			this.forumLogMax = 0L;
+		}
+		
+		criteria = session.createCriteria(QuestionLogMining.class);
+		criteria.setProjection(pl);
+		this.questionLogMax = (Long) criteria.list().get(0);
+		if (this.questionLogMax == null) {
+			this.questionLogMax = 0L;
+		}
+		
+		criteria = session.createCriteria(QuizLogMining.class);
+		criteria.setProjection(pl);
+		this.quizLogMax = (Long) criteria.list().get(0);
+		if (this.quizLogMax == null) {
+			this.quizLogMax = 0L;
+		}
+		
+		criteria = session.createCriteria(ScormLogMining.class);
+		criteria.setProjection(pl);
+		this.scormLogMax = (Long) criteria.list().get(0);
+		if (this.scormLogMax == null) {
+			this.scormLogMax = 0L;
+		}
+		
+		criteria = session.createCriteria(WikiLogMining.class);
+		criteria.setProjection(pl);
+		this.wikiLogMax = (Long) criteria.list().get(0);
+		if (this.wikiLogMax == null) {
+			this.wikiLogMax = 0L;
+		}
 
 		this.dbHandler.closeSession(session);
 

@@ -80,9 +80,9 @@ public enum ESourcePlatform {
             connector = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle(config);
             break;
 
-        case Moodle_1_9_Numeric:
+/*        case Moodle_1_9_Numeric:
             connector = new de.lemo.dms.connectors.moodle_1_9.ConnectorMoodle(config);
-            break;
+            break;*/
 
         default:
             throw new RuntimeException("No Connector implementation found for '" + this.name() + "'.");
