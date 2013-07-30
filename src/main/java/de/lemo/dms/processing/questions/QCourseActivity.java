@@ -96,7 +96,7 @@ public class QCourseActivity extends Question {
 			users = new ArrayList<Long>(userMap.values());
 			if (users.isEmpty()) {
 				// TODO no users in course, maybe send some http error
-				this.logger.info("No users found for course. Returning empty resultset.");
+				this.logger.debug("No users found for course. Returning empty resultset.");
 				return new ResultListHashMapObject();
 			}
 		}

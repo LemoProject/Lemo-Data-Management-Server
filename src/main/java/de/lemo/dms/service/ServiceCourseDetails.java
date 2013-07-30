@@ -39,6 +39,8 @@ import javax.ws.rs.core.MediaType;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.CourseMining;
@@ -60,6 +62,8 @@ import de.lemo.dms.service.responses.ResourceNotFoundException;
 @Path("courses")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceCourseDetails {
+
+	private Logger logger;
 
 	/**
 	 * Gets the details for a single course including id, title, description, 
@@ -128,9 +132,9 @@ public class ServiceCourseDetails {
 		final ArrayList<CourseObject> results = new ArrayList<CourseObject>();
 
 		if (courses.isEmpty()) {
-			System.out.println("Courses List is empty");
+			logger.debug("Courses List is empty");
 			return new ResultListCourseObject(results);
-		} else for(Long id : courses) System.out.println("Looking for Course: "+ id);
+		} else for(Long id : courses) logger.debug("Looking for Course: "+ id);
 
 		// Set up db-connection
 		final Session session = dbHandler.getMiningSession();
@@ -175,8 +179,8 @@ public class ServiceCourseDetails {
 		}
 		
 		if (results.isEmpty()) {
-			System.out.println("Result List is empty");
-		} else for(CourseObject co : results) System.out.println("Result Course: "+ co.getDescription());
+			logger.debug("Result List is empty");
+		} else for(CourseObject co : results) logger.debug("Result Course: "+ co.getDescription());
 		session.close();
 		return new ResultListCourseObject(results);
 	}

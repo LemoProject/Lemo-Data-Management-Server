@@ -100,7 +100,7 @@ public class QPerformanceUserTest {
 				for (int i = 1; i < courses.size(); i++) {
 					buffer.append(", " + courses.get(i));
 				}
-				logger.info(buffer.toString());
+				logger.debug(buffer.toString());
 			}
 			if ((users != null) && (users.size() > 0))
 			{
@@ -109,11 +109,11 @@ public class QPerformanceUserTest {
 				for (int i = 1; i < users.size(); i++) {
 					buffer.append(", " + users.get(i));
 				}
-				logger.info(buffer.toString());
+				logger.debug(buffer.toString());
 			}
-			logger.info("Parameter list: Resolution: : " + resolution);
-			logger.info("Parameter list: Start time: : " + startTime);
-			logger.info("Parameter list: End time: : " + endTime);
+			logger.debug("Parameter list: Resolution: : " + resolution);
+			logger.debug("Parameter list: Start time: : " + startTime);
+			logger.debug("Parameter list: End time: : " + endTime);
 		}
 
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();

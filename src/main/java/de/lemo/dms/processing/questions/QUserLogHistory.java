@@ -201,7 +201,7 @@ public class QUserLogHistory extends Question {
 		// Sort the list (first by user and time stamp)
 		Collections.sort(l);
 		for (int i = 0; i < l.size(); i++) {
-			logger.info(l.get(i).getType());
+			logger.debug(l.get(i).getType());
 		}
 
 		final ResultListUserLogObject rlupo = new ResultListUserLogObject(l);

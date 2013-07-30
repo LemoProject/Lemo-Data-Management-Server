@@ -116,7 +116,7 @@ public class QLearningObjectUsage extends Question {
 
 		final List<ILogMining> logs = criteria.list();
 
-		this.logger.info("Total matched entries: " + logs.size());
+		this.logger.debug("Total matched entries: " + logs.size());
 
 		final HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
 		HashSet<String> requestedObjects = new HashSet<String>();
@@ -202,7 +202,7 @@ public class QLearningObjectUsage extends Question {
 			id++;
 			result.add(rri);
 		}
-		this.logger.info("Total returned entries: " + result.getResourceRequestInfos().size());
+		this.logger.debug("Total returned entries: " + result.getResourceRequestInfos().size());
 		session.close();
 		return result;
 	}

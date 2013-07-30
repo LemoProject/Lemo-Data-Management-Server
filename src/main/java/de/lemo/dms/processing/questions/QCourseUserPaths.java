@@ -94,19 +94,19 @@ public class QCourseUserPaths extends Question {
 		}
 		else
 		{
-			this.logger.info("No users found for courses. Returning empty JSONObject.");
+			this.logger.debug("No users found for courses. Returning empty JSONObject.");
 			return new JSONObject();
 		}
 
 		final List<ILogMining> logs = criteria.list();
 
-		this.logger.info("Found " + users.size() + " actions. " + +stopWatch.elapsedTime(TimeUnit.SECONDS));
+		this.logger.debug("Found " + users.size() + " actions. " + +stopWatch.elapsedTime(TimeUnit.SECONDS));
 
 		long courseCount = 0;
 		final BiMap<CourseMining, Long> courseNodePositions = HashBiMap.create();
 		final Map<Long/* user id */, List<Long/* course id */>> userPaths = Maps.newHashMap();
 
-		this.logger.info("Paths fetched: " + logs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
+		this.logger.debug("Paths fetched: " + logs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
 		
 		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses, gender); 
 
@@ -130,7 +130,7 @@ public class QCourseUserPaths extends Question {
 			nodeIDs.add(nodeID);
 		}
 
-		this.logger.info("userPaths: " + userPaths.size());
+		this.logger.debug("userPaths: " + userPaths.size());
 
 		final Map<Long /* node id */, List<UserPathLink>> coursePaths = Maps.newHashMap();
 
@@ -154,8 +154,8 @@ public class QCourseUserPaths extends Question {
 			}
 		}
 		stopWatch.stop();
-		this.logger.info("coursePaths: " + coursePaths.size());
-		this.logger.info("Total Fetched log entries: " + (logs.size() + logs.size()) + " log entries."
+		this.logger.debug("coursePaths: " + coursePaths.size());
+		this.logger.debug("Total Fetched log entries: " + (logs.size() + logs.size()) + " log entries."
 				+ stopWatch.elapsedTime(TimeUnit.SECONDS));
 
 		final Set<UserPathLink> links = Sets.newHashSet();
@@ -186,7 +186,7 @@ public class QCourseUserPaths extends Question {
 			edges.put(edgeJSON);
 		}
 
-		this.logger.info("Nodes: " + nodes.length() + ", Links: " + edges.length() + "   / time: "
+		this.logger.debug("Nodes: " + nodes.length() + ", Links: " + edges.length() + "   / time: "
 				+ stopWatch.elapsedTime(TimeUnit.SECONDS));
 
 		result.put("nodes", nodes);

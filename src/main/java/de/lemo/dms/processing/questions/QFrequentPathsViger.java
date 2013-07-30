@@ -38,10 +38,11 @@ import java.util.Map.Entry;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+
 import ca.pfv.spmf.sequentialpatterns.AlgoFournierViger08;
 import ca.pfv.spmf.sequentialpatterns.SequenceDatabase;
 import ca.pfv.spmf.sequentialpatterns.Sequences;
@@ -72,7 +73,7 @@ public class QFrequentPathsViger extends Question {
 	private static Map<String, List<Long>> requests = new HashMap<String, List<Long>>();
 	private static Map<String, Integer> idToInternalId = new HashMap<String, Integer>();
 	private static Map<Integer, String> internalIdToId = new HashMap<Integer, String>();
-	private Logger logger = Logger.getLogger(this.getClass());
+	private static Logger logger;
 
 	@POST
 	public ResultListUserPathGraph compute(
@@ -109,7 +110,7 @@ public class QFrequentPathsViger extends Question {
 				for (int i = 1; i < users.size(); i++) {
 					buffer.append(", " + users.get(i));
 				}
-				logger.info(buffer.toString());
+				logger.debug(buffer.toString());
 			}
 			if ((types != null) && (types.size() > 0))
 			{
@@ -118,17 +119,17 @@ public class QFrequentPathsViger extends Question {
 				for (int i = 1; i < types.size(); i++) {
 					buffer.append(", " + types.get(i));
 				}
-				logger.info(buffer.toString());
+				logger.debug(buffer.toString());
 			}
 			if ((minLength != null) && (maxLength != null) && (minLength < maxLength))
 			{
-				logger.info("Parameter list: Minimum path length: : " + minLength);
-				logger.info("Parameter list: Maximum path length: : " + maxLength);
+				logger.debug("Parameter list: Minimum path length: : " + minLength);
+				logger.debug("Parameter list: Maximum path length: : " + maxLength);
 			}
-			logger.info("Parameter list: Minimum Support: : " + minSup);
-			logger.info("Parameter list: Session Wise: : " + sessionWise);
-			logger.info("Parameter list: Start time: : " + startTime);
-			logger.info("Parameter list: End time: : " + endTime);
+			logger.debug("Parameter list: Minimum Support: : " + minSup);
+			logger.debug("Parameter list: Session Wise: : " + sessionWise);
+			logger.debug("Parameter list: Start time: : " + startTime);
+			logger.debug("Parameter list: End time: : " + endTime);
 		}
 		
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
@@ -147,7 +148,7 @@ public class QFrequentPathsViger extends Question {
 			// execute the algorithm
 			final Clock c = new Clock();
 			final Sequences res = algo.runAlgorithm(sequenceDatabase);
-			logger.info("Time for Hirate-calculation: " + c.get());
+			logger.debug("Time for Hirate-calculation: " + c.get());
 
 			final LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 			Long pathId = 0L;
@@ -158,7 +159,7 @@ public class QFrequentPathsViger extends Question {
 					String predecessor = null;
 					final Long absSup = Long.valueOf(res.getLevel(i).get(j).getAbsoluteSupport());
 					pathId++;
-					logger.info("New " + i + "-Sequence. Support : "
+					logger.debug("New " + i + "-Sequence. Support : "
 							+ res.getLevel(i).get(j).getAbsoluteSupport());
 					for (int k = 0; k < res.getLevel(i).get(j).size(); k++)
 					{
@@ -200,7 +201,7 @@ public class QFrequentPathsViger extends Question {
 
 				}
 			}
-			logger.info("\n");
+			logger.debug("\n");
 
 			for (final UserPathObject pathEntry : pathObjects.values()) {
 
@@ -286,7 +287,7 @@ public class QFrequentPathsViger extends Question {
 		criteria.add(Restrictions.between("log.timestamp", starttime, endtime));
 		final ArrayList<ILogMining> list = (ArrayList<ILogMining>) criteria.list();
 
-		System.out.println("Read " + list.size() + " logs.");
+		logger.debug("Read " + list.size() + " logs.");
 
 		int max = 0;
 
@@ -371,11 +372,11 @@ public class QFrequentPathsViger extends Question {
 		for (int i = 0; i < lengths.length; i++) {
 			if (lengths[i] != 0)
 			{
-				System.out.println("Paths of length " + i + "0 - " + (i + 1) + "0: " + lengths[i]);
+				logger.debug("Paths of length " + i + "0 - " + (i + 1) + "0: " + lengths[i]);
 			}
 		}
 
-		System.out.println("Generated " + uhis.size() + " user histories. Max length @ " + max);
+		logger.debug("Generated " + uhis.size() + " user histories. Max length @ " + max);
 
 		int z = 0;
 
@@ -409,7 +410,7 @@ public class QFrequentPathsViger extends Question {
 			result.add(line);
 			z++;
 		}
-		System.out.println("Wrote " + z + " logs.");
+		logger.debug("Wrote " + z + " logs.");
 		return result;
 	}
 
