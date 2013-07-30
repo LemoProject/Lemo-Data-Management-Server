@@ -21,7 +21,7 @@ Lemo Datamanagement Server Sourcecode
 	https://github.com/LemoProject/Lemo-Data-Management-Server
 
 Lemo Project Download
-	http://www.lemo-projekt.de/downloads/lemo.tar.gz
+	http://lemo.htw-berlin.de/Download/
 
 --------------------------------------------------------------------------------
 Beschreibung
