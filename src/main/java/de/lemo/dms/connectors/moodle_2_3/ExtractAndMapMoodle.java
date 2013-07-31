@@ -382,13 +382,48 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			for(Object[] obj : tmpl)
 			{
 				ForumPostsLMS p = new ForumPostsLMS();
-				p.setId(((BigInteger) obj[0]).longValue());
-				p.setUserid(((BigInteger) obj[1]).longValue());
-				p.setCreated(((BigInteger) obj[2]).longValue());
-				p.setModified(((BigInteger) obj[3]).longValue());
+				if(obj[0].getClass().equals(BigInteger.class))
+				{
+					p.setId(((BigInteger) obj[0]).longValue());
+				}
+				else
+				{
+					p.setId(((Integer) obj[0]).longValue());
+				}
+				if(obj[0].getClass().equals(BigInteger.class))
+				{
+					p.setUserid(((BigInteger) obj[1]).longValue());
+				}
+				else
+				{
+					p.setUserid(((Integer) obj[1]).longValue());
+				}
+				if(obj[0].getClass().equals(BigInteger.class))
+				{
+					p.setCreated(((BigInteger) obj[2]).longValue());
+				}
+				else
+				{
+					p.setCreated(((Integer) obj[2]).longValue());
+				}
+				if(obj[0].getClass().equals(BigInteger.class))
+				{
+					p.setModified(((BigInteger) obj[3]).longValue());
+				}
+				else
+				{
+					p.setModified(((Integer) obj[3]).longValue());
+				}
 				p.setSubject((String) obj[4]);
 				p.setMessage((String) obj[5]);
-				p.setDiscussion(((BigInteger) obj[6]).longValue());
+				if(obj[0].getClass().equals(BigInteger.class))
+				{
+					p.setDiscussion(((BigInteger) obj[6]).longValue());
+				}
+				else
+				{
+					p.setDiscussion(((Integer) obj[6]).longValue());
+				}
 				this.forumPostsLms.add(p);
 			
 			}
@@ -934,13 +969,48 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			for(Object[] obj : tmpl)
 			{
 				ForumPostsLMS p = new ForumPostsLMS();
-				p.setId(((BigInteger) obj[0]).longValue());
-				p.setUserid(((BigInteger) obj[1]).longValue());
-				p.setCreated(((BigInteger) obj[2]).longValue());
-				p.setModified(((BigInteger) obj[3]).longValue());
+				if(obj[0].getClass().equals(BigInteger.class))
+				{
+					p.setId(((BigInteger) obj[0]).longValue());
+				}
+				else
+				{
+					p.setId(((Integer) obj[0]).longValue());
+				}
+				if(obj[0].getClass().equals(BigInteger.class))
+				{
+					p.setUserid(((BigInteger) obj[1]).longValue());
+				}
+				else
+				{
+					p.setUserid(((Integer) obj[1]).longValue());
+				}
+				if(obj[0].getClass().equals(BigInteger.class))
+				{
+					p.setCreated(((BigInteger) obj[2]).longValue());
+				}
+				else
+				{
+					p.setCreated(((Integer) obj[2]).longValue());
+				}
+				if(obj[0].getClass().equals(BigInteger.class))
+				{
+					p.setModified(((BigInteger) obj[3]).longValue());
+				}
+				else
+				{
+					p.setModified(((Integer) obj[3]).longValue());
+				}
 				p.setSubject((String) obj[4]);
 				p.setMessage((String) obj[5]);
-				p.setDiscussion(((BigInteger) obj[6]).longValue());
+				if(obj[0].getClass().equals(BigInteger.class))
+				{
+					p.setDiscussion(((BigInteger) obj[6]).longValue());
+				}
+				else
+				{
+					p.setDiscussion(((Integer) obj[6]).longValue());
+				}
 				this.forumPostsLms.add(p);
 			
 			}
