@@ -34,6 +34,7 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+
 public class BiTrackContentImpressions implements IClixMappingClass {
 
 	private BiTrackContentImpressionsPK id;

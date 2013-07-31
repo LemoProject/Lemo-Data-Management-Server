@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table QuestionStates.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_question_states")
 public class QuestionStatesLMS {
 
 	private long id;
@@ -44,6 +52,7 @@ public class QuestionStatesLMS {
 	private double grade;
 	private long timestamp;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -52,6 +61,7 @@ public class QuestionStatesLMS {
 		this.id = id;
 	}
 
+	@Column(name="attempt")
 	public long getAttempt() {
 		return this.attempt;
 	}
@@ -60,6 +70,7 @@ public class QuestionStatesLMS {
 		this.attempt = attempt;
 	}
 
+	@Column(name="question")
 	public long getQuestion() {
 		return this.question;
 	}
@@ -68,6 +79,7 @@ public class QuestionStatesLMS {
 		this.question = question;
 	}
 
+	@Column(name="answer")
 	public String getAnswer() {
 		return this.answer;
 	}
@@ -76,6 +88,7 @@ public class QuestionStatesLMS {
 		this.answer = answer;
 	}
 
+	@Column(name="event")
 	public short getEvent() {
 		return this.event;
 	}
@@ -84,6 +97,7 @@ public class QuestionStatesLMS {
 		this.event = event;
 	}
 
+	@Column(name="penalty")
 	public double getPenalty() {
 		return this.penalty;
 	}
@@ -92,6 +106,7 @@ public class QuestionStatesLMS {
 		this.penalty = penalty;
 	}
 
+	@Column(name="raw_grade")
 	public double getRawGrade() {
 		return this.rawGrade;
 	}
@@ -100,6 +115,7 @@ public class QuestionStatesLMS {
 		this.rawGrade = rawGrade;
 	}
 
+	@Column(name="grade")
 	public double getGrade() {
 		return this.grade;
 	}
@@ -108,6 +124,7 @@ public class QuestionStatesLMS {
 		this.grade = grade;
 	}
 
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}

@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Role.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_role")
 public class RoleLMS {
 
 	private long id;
@@ -45,6 +53,7 @@ public class RoleLMS {
 		this.id = id;
 	}
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -53,10 +62,12 @@ public class RoleLMS {
 		this.name = name;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
 
+	@Column(name="shortname")
 	public String getShortname() {
 		return this.shortname;
 	}
@@ -65,6 +76,7 @@ public class RoleLMS {
 		this.shortname = shortname;
 	}
 
+	@Column(name="description")
 	public String getDescription() {
 		return this.description;
 	}
@@ -73,6 +85,7 @@ public class RoleLMS {
 		this.description = description;
 	}
 
+	@Column(name="sortorder")
 	public long getSortorder() {
 		return this.sortorder;
 	}
@@ -81,6 +94,7 @@ public class RoleLMS {
 		this.sortorder = sortorder;
 	}
 
+	@Column(name="archetype")
 	public String getArchetype() {
 		return archetype;
 	}

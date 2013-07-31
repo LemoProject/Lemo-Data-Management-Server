@@ -26,12 +26,19 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table CourseCategories.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+@Entity
+@Table(name = "mdl_course_categories")
 public class CourseCategoriesLMS {
 
 	private long id;
@@ -40,6 +47,7 @@ public class CourseCategoriesLMS {
 	private long depth;
 	private long timemodified;
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -48,6 +56,7 @@ public class CourseCategoriesLMS {
 		this.timemodified = timemodified;
 	}
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -56,6 +65,7 @@ public class CourseCategoriesLMS {
 		this.id = id;
 	}
 
+	@Column(name="name")
 	public String getTitle() {
 		return this.title;
 	}
@@ -64,6 +74,7 @@ public class CourseCategoriesLMS {
 		this.title = title;
 	}
 
+	@Column(name="path")
 	public String getPath() {
 		return this.path;
 	}
@@ -72,6 +83,7 @@ public class CourseCategoriesLMS {
 		this.path = path;
 	}
 
+	@Column(name="depth")
 	public long getDepth() {
 		return this.depth;
 	}

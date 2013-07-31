@@ -44,8 +44,6 @@ import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.TextHelper;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.AssignGradesLMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.AssignLMS;
-import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.AssignmentLMS;
-import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.AssignmentSubmissionsLMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.ChatLogLMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.ChatLMS;
 import de.lemo.dms.connectors.moodle_2_3.moodleDBclass.ContextLMS;
@@ -1238,8 +1236,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setStartDate(loadedItem.getStartdate());
-			insert.setEnrolStart(loadedItem.getEnrolstartdate());
-			insert.setEnrolEnd(loadedItem.getEnrolenddate());
 			insert.setTimeCreated(loadedItem.getTimecreated());
 			insert.setTimeModified(loadedItem.getTimemodified());
 			insert.setTitle(loadedItem.getFullname());
@@ -1997,7 +1993,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 		final HashMap<Long, AssignmentLogMining> assignmentLogMining = new HashMap<Long, AssignmentLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
-		final HashMap<Long, ArrayList<AssignmentSubmissionsLMS>> asSub = new HashMap<Long, ArrayList<AssignmentSubmissionsLMS>>();
 		final HashMap<Long, ArrayList<AssignGradesLMS>> asGrd = new HashMap<Long, ArrayList<AssignGradesLMS>>();
 		final HashMap<Long, CourseModulesLMS> courseModules = new HashMap<Long, CourseModulesLMS>();
 		

@@ -26,17 +26,26 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Modules.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_modules")
 public class ModulesLMS {
 
 	private long id;
 	private String name;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -45,6 +54,7 @@ public class ModulesLMS {
 		this.id = id;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}

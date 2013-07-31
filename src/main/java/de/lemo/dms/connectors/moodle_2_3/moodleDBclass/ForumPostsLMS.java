@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table ForumPosts.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_forum_posts")
 public class ForumPostsLMS {
 
 	private long id;
@@ -42,6 +50,7 @@ public class ForumPostsLMS {
 	private String message;
 	private long discussion;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -50,6 +59,7 @@ public class ForumPostsLMS {
 		this.id = id;
 	}
 
+	@Column(name="userid")
 	public long getUserid() {
 		return this.userid;
 	}
@@ -58,6 +68,7 @@ public class ForumPostsLMS {
 		this.userid = userid;
 	}
 
+	@Column(name="created")
 	public long getCreated() {
 		return this.created;
 	}
@@ -66,6 +77,7 @@ public class ForumPostsLMS {
 		this.created = created;
 	}
 
+	@Column(name="modified")
 	public long getModified() {
 		return this.modified;
 	}
@@ -74,6 +86,7 @@ public class ForumPostsLMS {
 		this.modified = modified;
 	}
 
+	@Column(name="subject")
 	public String getSubject() {
 		return this.subject;
 	}
@@ -82,6 +95,7 @@ public class ForumPostsLMS {
 		this.subject = subject;
 	}
 
+	@Column(name="message")
 	public String getMessage() {
 		return this.message;
 	}
@@ -90,6 +104,7 @@ public class ForumPostsLMS {
 		this.message = message;
 	}
 
+	@Column(name="discussion")
 	public long getDiscussion() {
 		return discussion;
 	}

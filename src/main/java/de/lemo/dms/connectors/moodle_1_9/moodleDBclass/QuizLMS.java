@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Quiz.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_quiz")
 public class QuizLMS {
 
 	private long id;
@@ -46,6 +54,7 @@ public class QuizLMS {
 	private long timecreated;
 	private long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -54,6 +63,7 @@ public class QuizLMS {
 		this.id = id;
 	}
 
+	@Column(name="course")
 	public long getCourse() {
 		return this.course;
 	}
@@ -62,6 +72,7 @@ public class QuizLMS {
 		this.course = course;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -70,6 +81,7 @@ public class QuizLMS {
 		this.name = name;
 	}
 
+	@Column(name="intro")
 	public String getIntro() {
 		return this.intro;
 	}
@@ -78,6 +90,7 @@ public class QuizLMS {
 		this.intro = intro;
 	}
 
+	@Column(name="questions")
 	public String getQuestions() {
 		return this.questions;
 	}
@@ -86,6 +99,7 @@ public class QuizLMS {
 		this.questions = questions;
 	}
 
+	@Column(name="timeopen")
 	public long getTimeopen() {
 		return this.timeopen;
 	}
@@ -94,6 +108,7 @@ public class QuizLMS {
 		this.timeopen = timeopen;
 	}
 
+	@Column(name="timeclose")
 	public long getTimeclose() {
 		return this.timeclose;
 	}
@@ -102,6 +117,7 @@ public class QuizLMS {
 		this.timeclose = timeclose;
 	}
 
+	@Column(name="sumgrades")
 	public long getSumgrade() {
 		return this.sumgrade;
 	}
@@ -110,6 +126,7 @@ public class QuizLMS {
 		this.sumgrade = sumgrade;
 	}
 
+	@Column(name="grade")
 	public long getGrade() {
 		return this.grade;
 	}
@@ -118,6 +135,7 @@ public class QuizLMS {
 		this.grade = grade;
 	}
 
+	@Column(name="timecreated")
 	public long getTimecreated() {
 		return this.timecreated;
 	}
@@ -126,6 +144,7 @@ public class QuizLMS {
 		this.timecreated = timecreated;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}

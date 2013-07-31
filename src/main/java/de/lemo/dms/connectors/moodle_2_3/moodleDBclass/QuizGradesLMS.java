@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table QuizGrades.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_quiz_grades")
 public class QuizGradesLMS {
 
 	private long id;
@@ -40,6 +48,7 @@ public class QuizGradesLMS {
 	private double grade;
 	private long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -48,6 +57,7 @@ public class QuizGradesLMS {
 		this.id = id;
 	}
 
+	@Column(name="userid")
 	public long getUserid() {
 		return this.userid;
 	}
@@ -56,6 +66,7 @@ public class QuizGradesLMS {
 		this.userid = userid;
 	}
 
+	@Column(name="grade")
 	public double getGrade() {
 		return this.grade;
 	}
@@ -64,6 +75,7 @@ public class QuizGradesLMS {
 		this.grade = grade;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -76,6 +88,7 @@ public class QuizGradesLMS {
 		this.quiz = quiz;
 	}
 
+	@Column(name="quiz")
 	public long getQuiz() {
 		return this.quiz;
 	}

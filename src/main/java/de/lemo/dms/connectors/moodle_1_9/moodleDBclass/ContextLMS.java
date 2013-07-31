@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Context.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_context")
 public class ContextLMS {
 
 	private long id;
@@ -40,6 +48,7 @@ public class ContextLMS {
 	private String path;
 	private long depth;
 
+	@Column(name="depth")
 	public long getDepth() {
 		return this.depth;
 	}
@@ -48,6 +57,7 @@ public class ContextLMS {
 		this.depth = depth;
 	}
 
+	@Column(name="path")
 	public String getPath() {
 		return this.path;
 	}
@@ -56,10 +66,12 @@ public class ContextLMS {
 		this.path = path;
 	}
 
+	
 	public void setId(final long id) {
 		this.id = id;
 	}
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -68,6 +80,7 @@ public class ContextLMS {
 		this.contextlevel = contextlevel;
 	}
 
+	@Column(name="contextlevel")
 	public long getContextlevel() {
 		return this.contextlevel;
 	}
@@ -76,6 +89,7 @@ public class ContextLMS {
 		this.instanceid = instanceid;
 	}
 
+	@Column(name="instanceid")
 	public long getInstanceid() {
 		return this.instanceid;
 	}

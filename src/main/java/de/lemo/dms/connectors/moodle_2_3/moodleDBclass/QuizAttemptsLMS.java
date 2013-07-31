@@ -26,12 +26,19 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table QuizAttempts.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+@Entity
+@Table(name = "mdl_quiz_attempts")
 public class QuizAttemptsLMS {
 
 	private long id;
@@ -44,6 +51,7 @@ public class QuizAttemptsLMS {
 	private long timefinish;
 	private long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -52,6 +60,7 @@ public class QuizAttemptsLMS {
 		this.id = id;
 	}
 
+	@Column(name="uniqueid")
 	public long getUniqueid() {
 		return this.uniqueid;
 	}
@@ -60,6 +69,7 @@ public class QuizAttemptsLMS {
 		this.uniqueid = uniqueid;
 	}
 
+	@Column(name="attempt")
 	public long getAttempt() {
 		return this.attempt;
 	}
@@ -68,6 +78,7 @@ public class QuizAttemptsLMS {
 		this.attempt = attempt;
 	}
 
+	@Column(name="userid")
 	public String getUserid() {
 		return this.userid;
 	}
@@ -76,6 +87,7 @@ public class QuizAttemptsLMS {
 		this.userid = userid;
 	}
 
+	@Column(name="quiz")
 	public long getQuiz() {
 		return this.quiz;
 	}
@@ -84,6 +96,7 @@ public class QuizAttemptsLMS {
 		this.quiz = quiz;
 	}
 
+	@Column(name="timestart")
 	public long getTimestart() {
 		return this.timestart;
 	}
@@ -92,6 +105,7 @@ public class QuizAttemptsLMS {
 		this.timestart = timestart;
 	}
 
+	@Column(name="timefinish")
 	public long getTimefinish() {
 		return this.timefinish;
 	}
@@ -100,6 +114,7 @@ public class QuizAttemptsLMS {
 		this.timefinish = timefinish;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -112,6 +127,7 @@ public class QuizAttemptsLMS {
 		this.sumgrades = sumgrades;
 	}
 
+	@Column(name="sumgrades")
 	public Double getSumgrades() {
 		return this.sumgrades;
 	}

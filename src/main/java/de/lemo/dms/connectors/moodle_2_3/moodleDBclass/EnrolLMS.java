@@ -26,17 +26,26 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Enrol.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_enrol")
 public class EnrolLMS {
 
 	private long id;
 	private long courseid;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -45,6 +54,7 @@ public class EnrolLMS {
 		this.id = id;
 	}
 
+	@Column(name="courseid")
 	public long getCourseid() {
 		return this.courseid;
 	}

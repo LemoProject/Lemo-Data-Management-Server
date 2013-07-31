@@ -26,18 +26,27 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table QuestionAnswers.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_question_answers")
 public class QuestionAnswersLMS {
 
 	private long id;
 	private long question;
 	private String answer;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -46,6 +55,7 @@ public class QuestionAnswersLMS {
 		this.id = id;
 	}
 
+	@Column(name="question")
 	public long getQuestion() {
 		return this.question;
 	}
@@ -54,6 +64,7 @@ public class QuestionAnswersLMS {
 		this.question = question;
 	}
 
+	@Column(name="answer")
 	public String getAnswer() {
 		return this.answer;
 	}

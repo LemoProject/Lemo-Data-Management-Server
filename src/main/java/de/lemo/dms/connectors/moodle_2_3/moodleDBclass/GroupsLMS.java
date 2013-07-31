@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Groups.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_groups")
 public class GroupsLMS {
 
 	private long id;
@@ -40,6 +48,7 @@ public class GroupsLMS {
 	private long timecreated;
 	private long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -48,6 +57,7 @@ public class GroupsLMS {
 		this.id = id;
 	}
 
+	@Column(name="courseid")
 	public long getCourseid() {
 		return this.courseid;
 	}
@@ -56,6 +66,7 @@ public class GroupsLMS {
 		this.courseid = courseid;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -64,6 +75,7 @@ public class GroupsLMS {
 		this.name = name;
 	}
 
+	@Column(name="timecreated")
 	public long getTimecreated() {
 		return this.timecreated;
 	}
@@ -72,6 +84,7 @@ public class GroupsLMS {
 		this.timecreated = timecreated;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}

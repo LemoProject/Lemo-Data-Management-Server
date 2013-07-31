@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table GradeGrades.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_grade_grades")
 public class GradeGradesLMS {
 
 	private long id;
@@ -42,6 +50,7 @@ public class GradeGradesLMS {
 	private Long timecreated;
 	private Long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -50,6 +59,7 @@ public class GradeGradesLMS {
 		this.id = id;
 	}
 
+	@Column(name="userid")
 	public long getUserid() {
 		return this.userid;
 	}
@@ -58,6 +68,7 @@ public class GradeGradesLMS {
 		this.userid = userid;
 	}
 
+	@Column(name="itemid")
 	public long getItemid() {
 		return this.itemid;
 	}
@@ -66,6 +77,7 @@ public class GradeGradesLMS {
 		this.itemid = itemid;
 	}
 
+	@Column(name="rawgrade")
 	public Double getRawgrade() {
 		return this.rawgrade;
 	}
@@ -74,6 +86,7 @@ public class GradeGradesLMS {
 		this.rawgrade = rawgrade;
 	}
 
+	@Column(name="finalgrade")
 	public Double getFinalgrade() {
 		return this.finalgrade;
 	}
@@ -82,6 +95,7 @@ public class GradeGradesLMS {
 		this.finalgrade = finalgrade;
 	}
 
+	@Column(name="timecreated")
 	public Long getTimecreated() {
 		return this.timecreated;
 	}
@@ -90,6 +104,7 @@ public class GradeGradesLMS {
 		this.timecreated = timecreated;
 	}
 
+	@Column(name="timemodified")
 	public Long getTimemodified() {
 		return this.timemodified;
 	}

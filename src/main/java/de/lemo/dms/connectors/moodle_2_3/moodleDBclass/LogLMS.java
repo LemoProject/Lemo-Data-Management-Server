@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Log.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_log")
 public class LogLMS {
 
 	private long id;
@@ -43,6 +51,7 @@ public class LogLMS {
 	private String action;
 	private String info;
 
+	@Column(name="module")
 	public String getModule() {
 		return this.module;
 	}
@@ -51,6 +60,7 @@ public class LogLMS {
 		this.module = module;
 	}
 
+	@Column(name="action")
 	public String getAction() {
 		return this.action;
 	}
@@ -59,6 +69,7 @@ public class LogLMS {
 		this.action = action;
 	}
 
+	@Column(name="info")
 	public String getInfo() {
 		return this.info;
 	}
@@ -67,6 +78,7 @@ public class LogLMS {
 		this.info = info;
 	}
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -75,6 +87,7 @@ public class LogLMS {
 		this.id = id;
 	}
 
+	@Column(name="time")
 	public long getTime() {
 		return this.time;
 	}
@@ -83,6 +96,7 @@ public class LogLMS {
 		this.time = time;
 	}
 
+	@Column(name="userid")
 	public long getUserid() {
 		return this.userid;
 	}
@@ -91,6 +105,7 @@ public class LogLMS {
 		this.userid = userid;
 	}
 
+	@Column(name="course")
 	public long getCourse() {
 		return this.course;
 	}
@@ -103,6 +118,7 @@ public class LogLMS {
 		this.cmid = cmid;
 	}
 
+	@Column(name="cmid")
 	public long getCmid() {
 		return this.cmid;
 	}

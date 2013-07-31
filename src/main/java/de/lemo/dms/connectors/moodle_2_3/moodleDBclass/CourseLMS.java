@@ -26,12 +26,19 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Course.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+@Entity
+@Table(name = "mdl_course")
 public class CourseLMS {
 
 	private long id;
@@ -41,10 +48,8 @@ public class CourseLMS {
 	private long startdate;
 	private long timecreated;
 	private long timemodified;
-	private long enrolstartdate;
-	private long enrolenddate;
-	private long enrolperiod;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -53,6 +58,7 @@ public class CourseLMS {
 		this.id = id;
 	}
 
+	@Column(name="fullname")
 	public String getFullname() {
 		return this.fullname;
 	}
@@ -61,6 +67,7 @@ public class CourseLMS {
 		this.fullname = fullname;
 	}
 
+	@Column(name="summary")
 	public String getSummary() {
 		return this.summary;
 	}
@@ -69,6 +76,7 @@ public class CourseLMS {
 		this.summary = summary;
 	}
 
+	@Column(name="timecreated")
 	public long getTimecreated() {
 		return this.timecreated;
 	}
@@ -77,6 +85,7 @@ public class CourseLMS {
 		this.timecreated = timecreated;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -85,22 +94,8 @@ public class CourseLMS {
 		this.timemodified = timemodified;
 	}
 
-	public long getEnrolstartdate() {
-		return this.enrolstartdate;
-	}
-
-	public void setEnrolstartdate(final long enrolstartdate) {
-		this.enrolstartdate = enrolstartdate;
-	}
-
-	public long getEnrolenddate() {
-		return this.enrolenddate;
-	}
-
-	public void setEnrolenddate(final long enrolenddate) {
-		this.enrolenddate = enrolenddate;
-	}
-
+	
+	@Column(name="startdate")
 	public long getStartdate() {
 		return this.startdate;
 	}
@@ -109,18 +104,11 @@ public class CourseLMS {
 		this.startdate = startdate;
 	}
 
-	public long getEnrolperiod() {
-		return this.enrolperiod;
-	}
-
-	public void setEnrolperiod(final long enrolperiod) {
-		this.enrolperiod = enrolperiod;
-	}
-
 	public void setShortname(final String shortname) {
 		this.shortname = shortname;
 	}
 
+	@Column(name="shortname")
 	public String getShortname() {
 		return this.shortname;
 	}

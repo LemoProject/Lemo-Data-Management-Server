@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Forum.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_forum")
 public class ForumLMS {
 
 	private long id;
@@ -43,6 +51,7 @@ public class ForumLMS {
 	private long assesstimefinish;
 	private long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -51,6 +60,7 @@ public class ForumLMS {
 		this.id = id;
 	}
 
+	@Column(name="course")
 	public long getCourse() {
 		return this.course;
 	}
@@ -59,6 +69,7 @@ public class ForumLMS {
 		this.course = course;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -67,6 +78,7 @@ public class ForumLMS {
 		this.name = name;
 	}
 
+	@Column(name="intro")
 	public String getIntro() {
 		return this.intro;
 	}
@@ -75,6 +87,7 @@ public class ForumLMS {
 		this.intro = intro;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -83,6 +96,7 @@ public class ForumLMS {
 		this.timemodified = timemodified;
 	}
 
+	@Column(name="assesstimestart")
 	public long getAssesstimestart() {
 		return this.assesstimestart;
 	}
@@ -91,6 +105,7 @@ public class ForumLMS {
 		this.assesstimestart = assesstimestart;
 	}
 
+	@Column(name="assesstimefinish")
 	public long getAssesstimefinish() {
 		return this.assesstimefinish;
 	}

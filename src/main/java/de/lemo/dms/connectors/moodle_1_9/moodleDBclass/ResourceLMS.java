@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Resource.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_resource")
 public class ResourceLMS {
 
 	private long id;
@@ -41,6 +49,7 @@ public class ResourceLMS {
 	private String summary;
 	private long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -49,6 +58,7 @@ public class ResourceLMS {
 		this.id = id;
 	}
 
+	@Column(name="course")
 	public long getCourse() {
 		return this.course;
 	}
@@ -57,6 +67,7 @@ public class ResourceLMS {
 		this.course = course;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -65,6 +76,7 @@ public class ResourceLMS {
 		this.name = name;
 	}
 
+	@Column(name="type")
 	public String getType() {
 		return this.type;
 	}
@@ -73,6 +85,7 @@ public class ResourceLMS {
 		this.type = type;
 	}
 
+	@Column(name="summary")
 	public String getSummary() {
 		return this.summary;
 	}
@@ -81,6 +94,7 @@ public class ResourceLMS {
 		this.summary = summary;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}

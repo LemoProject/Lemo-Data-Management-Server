@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Question.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_question")
 public class QuestionLMS {
 
 	private long id;
@@ -42,6 +50,7 @@ public class QuestionLMS {
 	private long timecreated;
 	private long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -50,6 +59,7 @@ public class QuestionLMS {
 		this.id = id;
 	}
 
+	@Column(name="category")
 	public long getCategory() {
 		return this.category;
 	}
@@ -58,6 +68,7 @@ public class QuestionLMS {
 		this.category = category;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -66,6 +77,7 @@ public class QuestionLMS {
 		this.name = name;
 	}
 
+	@Column(name="questiontext")
 	public String getQuestiontext() {
 		return this.questiontext;
 	}
@@ -74,6 +86,7 @@ public class QuestionLMS {
 		this.questiontext = questiontext;
 	}
 
+	@Column(name="qtype")
 	public String getQtype() {
 		return this.qtype;
 	}
@@ -82,6 +95,7 @@ public class QuestionLMS {
 		this.qtype = qtype;
 	}
 
+	@Column(name="timecreated")
 	public long getTimecreated() {
 		return this.timecreated;
 	}
@@ -90,6 +104,7 @@ public class QuestionLMS {
 		this.timecreated = timecreated;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}

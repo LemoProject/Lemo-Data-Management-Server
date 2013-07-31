@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table User.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_user")
 public class UserLMS {
 
 	private long id;
@@ -42,6 +50,7 @@ public class UserLMS {
 	private long timemodified;
 	private String login;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -50,6 +59,7 @@ public class UserLMS {
 		this.id = id;
 	}
 
+	@Column(name="firstaccess")
 	public long getFirstaccess() {
 		return this.firstaccess;
 	}
@@ -58,6 +68,7 @@ public class UserLMS {
 		this.firstaccess = firstaccess;
 	}
 
+	@Column(name="lastaccess")
 	public long getLastaccess() {
 		return this.lastaccess;
 	}
@@ -65,7 +76,9 @@ public class UserLMS {
 	public void setLastaccess(final long lastaccess) {
 		this.lastaccess = lastaccess;
 	}
-
+	
+	
+	@Column(name="lastlogin")
 	public long getLastlogin() {
 		return this.lastlogin;
 	}
@@ -73,7 +86,8 @@ public class UserLMS {
 	public void setLastlogin(final long lastlogin) {
 		this.lastlogin = lastlogin;
 	}
-
+	
+	@Column(name="currentlogin")
 	public long getCurrentlogin() {
 		return this.currentlogin;
 	}
@@ -81,7 +95,8 @@ public class UserLMS {
 	public void setCurrentlogin(final long currentlogin) {
 		this.currentlogin = currentlogin;
 	}
-
+	
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -90,6 +105,7 @@ public class UserLMS {
 		this.timemodified = timemodified;
 	}
 
+	@Column(name="username")
 	public String getLogin() {
 		return this.login;
 	}

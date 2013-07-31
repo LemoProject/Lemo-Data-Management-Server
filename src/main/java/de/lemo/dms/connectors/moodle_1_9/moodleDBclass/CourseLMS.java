@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Course.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_course")
 public class CourseLMS {
 
 	private long id;
@@ -45,6 +53,7 @@ public class CourseLMS {
 	private long enrolenddate;
 	private long enrolperiod;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -53,6 +62,7 @@ public class CourseLMS {
 		this.id = id;
 	}
 
+	@Column(name="fullname")
 	public String getFullname() {
 		return this.fullname;
 	}
@@ -61,6 +71,7 @@ public class CourseLMS {
 		this.fullname = fullname;
 	}
 
+	@Column(name="summary")
 	public String getSummary() {
 		return this.summary;
 	}
@@ -69,6 +80,7 @@ public class CourseLMS {
 		this.summary = summary;
 	}
 
+	@Column(name="timecreated")
 	public long getTimecreated() {
 		return this.timecreated;
 	}
@@ -77,6 +89,7 @@ public class CourseLMS {
 		this.timecreated = timecreated;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -85,6 +98,7 @@ public class CourseLMS {
 		this.timemodified = timemodified;
 	}
 
+	@Column(name="enrolstartdate")
 	public long getEnrolstartdate() {
 		return this.enrolstartdate;
 	}
@@ -93,6 +107,7 @@ public class CourseLMS {
 		this.enrolstartdate = enrolstartdate;
 	}
 
+	@Column(name="enrolenddate")
 	public long getEnrolenddate() {
 		return this.enrolenddate;
 	}
@@ -101,6 +116,7 @@ public class CourseLMS {
 		this.enrolenddate = enrolenddate;
 	}
 
+	@Column(name="startdate")
 	public long getStartdate() {
 		return this.startdate;
 	}
@@ -109,6 +125,7 @@ public class CourseLMS {
 		this.startdate = startdate;
 	}
 
+	@Column(name="enrolperiod")
 	public long getEnrolperiod() {
 		return this.enrolperiod;
 	}
@@ -121,6 +138,7 @@ public class CourseLMS {
 		this.shortname = shortname;
 	}
 
+	@Column(name="shortname")
 	public String getShortname() {
 		return this.shortname;
 	}

@@ -26,12 +26,19 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table GradeItems.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+@Entity
+@Table(name = "mdl_grade_items")
 public class GradeItemsLMS {
 
 	private long id;
@@ -43,6 +50,7 @@ public class GradeItemsLMS {
 	private long timecreated;
 	private long timemodified;
 
+	@Column(name="iteminstance")
 	public Long getIteminstance() {
 		return this.iteminstance;
 	}
@@ -50,7 +58,7 @@ public class GradeItemsLMS {
 	public void setIteminstance(final Long iteminstance) {
 		this.iteminstance = iteminstance;
 	}
-
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -59,6 +67,7 @@ public class GradeItemsLMS {
 		this.id = id;
 	}
 
+	@Column(name="itemmodule")
 	public String getItemmodule() {
 		return this.itemmodule;
 	}
@@ -67,6 +76,7 @@ public class GradeItemsLMS {
 		this.itemmodule = itemmodule;
 	}
 
+	@Column(name="timecreated")
 	public long getTimecreated() {
 		return this.timecreated;
 	}
@@ -75,6 +85,7 @@ public class GradeItemsLMS {
 		this.timecreated = timecreated;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -83,6 +94,7 @@ public class GradeItemsLMS {
 		this.timemodified = timemodified;
 	}
 
+	@Column(name="courseid")
 	public long getCourseid() {
 		return this.courseid;
 	}
@@ -91,6 +103,7 @@ public class GradeItemsLMS {
 		this.courseid = courseid;
 	}
 
+	@Column(name="itemname")
 	public String getItemname() {
 		return this.itemname;
 	}
@@ -103,6 +116,7 @@ public class GradeItemsLMS {
 		this.grademax = grademax;
 	}
 
+	@Column(name="grademax")
 	public double getGrademax() {
 		return this.grademax;
 	}

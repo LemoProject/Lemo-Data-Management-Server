@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table UserEnrolments.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_user_enrolments")
 public class UserEnrolmentsLMS {
 
 	private long id;
@@ -39,6 +47,7 @@ public class UserEnrolmentsLMS {
 	private long timestart;
 	private long timeend;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -47,6 +56,7 @@ public class UserEnrolmentsLMS {
 		this.id = id;
 	}
 
+	@Column(name="enrolid")
 	public long getEnrolid() {
 		return this.enrolid;
 	}
@@ -55,6 +65,7 @@ public class UserEnrolmentsLMS {
 		this.enrolid = enrolid;
 	}
 
+	@Column(name="timestart")
 	public long getTimestart() {
 		return this.timestart;
 	}
@@ -63,6 +74,7 @@ public class UserEnrolmentsLMS {
 		this.timestart = timestart;
 	}
 
+	@Column(name="timeend")
 	public long getTimeend() {
 		return this.timeend;
 	}

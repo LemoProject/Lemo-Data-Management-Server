@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table AssignmentSubmissions.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_assignment_submissions")
 public class AssignmentSubmissionsLMS {
 
 	private long id;
@@ -43,6 +51,7 @@ public class AssignmentSubmissionsLMS {
 	private long teacher;
 	private long timemarked;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -51,6 +60,7 @@ public class AssignmentSubmissionsLMS {
 		this.id = id;
 	}
 
+	@Column(name="assignment")
 	public long getAssignment() {
 		return this.assignment;
 	}
@@ -59,6 +69,7 @@ public class AssignmentSubmissionsLMS {
 		this.assignment = assignment;
 	}
 
+	@Column(name="userid")
 	public String getUserid() {
 		return this.userid;
 	}
@@ -67,6 +78,7 @@ public class AssignmentSubmissionsLMS {
 		this.userid = userid;
 	}
 
+	@Column(name="timecreated")
 	public long getTimecreated() {
 		return this.timecreated;
 	}
@@ -75,6 +87,7 @@ public class AssignmentSubmissionsLMS {
 		this.timecreated = timecreated;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -83,6 +96,7 @@ public class AssignmentSubmissionsLMS {
 		this.timemodified = timemodified;
 	}
 
+	@Column(name="teacher")
 	public long getTeacher() {
 		return this.teacher;
 	}
@@ -91,6 +105,7 @@ public class AssignmentSubmissionsLMS {
 		this.teacher = teacher;
 	}
 
+	@Column(name="timemarked")
 	public long getTimemarked() {
 		return this.timemarked;
 	}
@@ -103,6 +118,7 @@ public class AssignmentSubmissionsLMS {
 		this.grade = grade;
 	}
 
+	@Column(name="grade")
 	public long getGrade() {
 		return this.grade;
 	}

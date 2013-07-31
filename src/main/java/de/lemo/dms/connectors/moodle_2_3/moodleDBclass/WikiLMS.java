@@ -26,12 +26,19 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Wiki.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+@Entity
+@Table(name = "mdl_wiki")
 public class WikiLMS {
 
 	private long id;
@@ -41,6 +48,7 @@ public class WikiLMS {
 	// private String wtype; //enum('teacher','group','student')
 	private long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -49,6 +57,7 @@ public class WikiLMS {
 		this.id = id;
 	}
 
+	@Column(name="course")
 	public long getCourse() {
 		return this.course;
 	}
@@ -57,6 +66,7 @@ public class WikiLMS {
 		this.course = course;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -65,6 +75,7 @@ public class WikiLMS {
 		this.name = name;
 	}
 
+	@Column(name="intro")
 	public String getSummary() {
 		return this.summary;
 	}
@@ -73,6 +84,7 @@ public class WikiLMS {
 		this.summary = summary;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}

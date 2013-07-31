@@ -26,12 +26,19 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Assignment.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+@Entity
+@Table(name = "mdl_assignment")
 public class AssignmentLMS {
 
 	private long id;
@@ -43,6 +50,7 @@ public class AssignmentLMS {
 	private long timedue;
 	private String description;
 
+	@Column(name="description")
 	public String getDescription() {
 		return this.description;
 	}
@@ -51,6 +59,7 @@ public class AssignmentLMS {
 		this.description = description;
 	}
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -59,6 +68,7 @@ public class AssignmentLMS {
 		this.id = id;
 	}
 
+	@Column(name="course")
 	public long getCourse() {
 		return this.course;
 	}
@@ -67,6 +77,7 @@ public class AssignmentLMS {
 		this.course = course;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -75,6 +86,7 @@ public class AssignmentLMS {
 		this.name = name;
 	}
 
+	@Column(name="assignmenttype")
 	public String getAssignmenttype() {
 		return this.assignmenttype;
 	}
@@ -83,6 +95,7 @@ public class AssignmentLMS {
 		this.assignmenttype = assignmenttype;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -91,6 +104,7 @@ public class AssignmentLMS {
 		this.timemodified = timemodified;
 	}
 
+	@Column(name="timeavailable")
 	public long getTimeavailable() {
 		return this.timeavailable;
 	}
@@ -99,6 +113,7 @@ public class AssignmentLMS {
 		this.timeavailable = timeavailable;
 	}
 
+	@Column(name="timedue")
 	public long getTimedue() {
 		return this.timedue;
 	}

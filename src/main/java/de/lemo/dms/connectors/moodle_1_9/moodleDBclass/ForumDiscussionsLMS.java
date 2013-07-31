@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table ForumDiscussions.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_forum_discussions")
 public class ForumDiscussionsLMS {
 
 	private long id;
@@ -44,6 +52,7 @@ public class ForumDiscussionsLMS {
 	private long timestart;
 	private long timeend;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -52,6 +61,7 @@ public class ForumDiscussionsLMS {
 		this.id = id;
 	}
 
+	@Column(name="forum")
 	public long getForum() {
 		return this.forum;
 	}
@@ -60,6 +70,7 @@ public class ForumDiscussionsLMS {
 		this.forum = forum;
 	}
 
+	@Column(name="userid")
 	public String getUserid() {
 		return this.userid;
 	}
@@ -68,6 +79,7 @@ public class ForumDiscussionsLMS {
 		this.userid = userid;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -76,6 +88,7 @@ public class ForumDiscussionsLMS {
 		this.name = name;
 	}
 
+	@Column(name="firstpost")
 	public long getFirstpost() {
 		return this.firstpost;
 	}
@@ -84,6 +97,7 @@ public class ForumDiscussionsLMS {
 		this.firstpost = firstpost;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -92,6 +106,7 @@ public class ForumDiscussionsLMS {
 		this.timemodified = timemodified;
 	}
 
+	@Column(name="usermodified")
 	public String getUsermodified() {
 		return this.usermodified;
 	}
@@ -100,6 +115,7 @@ public class ForumDiscussionsLMS {
 		this.usermodified = usermodified;
 	}
 
+	@Column(name="timestart")
 	public long getTimestart() {
 		return this.timestart;
 	}
@@ -108,6 +124,7 @@ public class ForumDiscussionsLMS {
 		this.timestart = timestart;
 	}
 
+	@Column(name="timeend")
 	public long getTimeend() {
 		return this.timeend;
 	}

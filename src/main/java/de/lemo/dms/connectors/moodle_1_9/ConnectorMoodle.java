@@ -49,7 +49,7 @@ public class ConnectorMoodle extends AbstractConnector {
 	@Override
 	public boolean testConnections() {
 		try {
-			final Session session = MoodleNumericHibernateUtil.getSessionFactory(this.sourceDBConf).openSession();
+			final Session session = HibernateUtil.getSessionFactory(this.sourceDBConf).openSession();
 			session.close();
 
 			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();

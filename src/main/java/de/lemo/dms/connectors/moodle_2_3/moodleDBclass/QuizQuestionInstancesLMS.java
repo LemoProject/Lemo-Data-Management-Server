@@ -26,18 +26,27 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table QuizQuestionsInstances.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_quiz_question_instances")
 public class QuizQuestionInstancesLMS {
 
 	public long id;
 	public long quiz;
 	public long question;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -46,6 +55,7 @@ public class QuizQuestionInstancesLMS {
 		this.id = id;
 	}
 
+	@Column(name="quiz")
 	public long getQuiz() {
 		return this.quiz;
 	}
@@ -54,6 +64,7 @@ public class QuizQuestionInstancesLMS {
 		this.quiz = quiz;
 	}
 
+	@Column(name="question")
 	public long getQuestion() {
 		return this.question;
 	}

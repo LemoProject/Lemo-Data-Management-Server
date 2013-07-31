@@ -26,12 +26,19 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Assign.
  * 
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "mdl_assign")
 public class AssignLMS {
 
 	private long id;
@@ -40,6 +47,7 @@ public class AssignLMS {
 	private String description;
 	private long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -48,6 +56,7 @@ public class AssignLMS {
 		this.id = id;
 	}
 
+	@Column(name="course")
 	public long getCourse() {
 		return this.course;
 	}
@@ -56,6 +65,7 @@ public class AssignLMS {
 		this.course = course;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -64,6 +74,7 @@ public class AssignLMS {
 		this.name = name;
 	}
 
+	@Column(name="intro")
 	public String getDescription() {
 		return this.description;
 	}
@@ -72,6 +83,7 @@ public class AssignLMS {
 		this.description = description;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}

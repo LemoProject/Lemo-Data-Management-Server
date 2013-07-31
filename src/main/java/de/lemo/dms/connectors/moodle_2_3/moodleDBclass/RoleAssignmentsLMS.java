@@ -26,20 +26,26 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table RoleAssignments.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_role_assignments")
 public class RoleAssignmentsLMS {
 
 	private long id;
 	private long roleid;
 	private long contextid;
 	private String userid;
-	private long timestart;
-	private long timeend;
 	private long timemodified;
 	private long modifierid;
 
@@ -47,6 +53,7 @@ public class RoleAssignmentsLMS {
 		this.id = id;
 	}
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -55,10 +62,12 @@ public class RoleAssignmentsLMS {
 		this.roleid = roleid;
 	}
 
+	@Column(name="roleid")
 	public long getRoleid() {
 		return this.roleid;
 	}
 
+	@Column(name="contextid")
 	public long getContextid() {
 		return this.contextid;
 	}
@@ -67,6 +76,7 @@ public class RoleAssignmentsLMS {
 		this.contextid = contextid;
 	}
 
+	@Column(name="userid")
 	public String getUserid() {
 		return this.userid;
 	}
@@ -75,22 +85,7 @@ public class RoleAssignmentsLMS {
 		this.userid = userid;
 	}
 
-	public long getTimestart() {
-		return this.timestart;
-	}
-
-	public void setTimestart(final long timestart) {
-		this.timestart = timestart;
-	}
-
-	public long getTimeend() {
-		return this.timeend;
-	}
-
-	public void setTimeend(final long timeend) {
-		this.timeend = timeend;
-	}
-
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -103,6 +98,7 @@ public class RoleAssignmentsLMS {
 		this.modifierid = modifierid;
 	}
 
+	@Column(name="modifierid")
 	public long getModifierid() {
 		return this.modifierid;
 	}

@@ -26,12 +26,19 @@
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table ChatMessages.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+@Entity
+@Table(name = "mdl_chat_messages")
 public class ChatLogLMS {
 
 	private long id;
@@ -40,6 +47,7 @@ public class ChatLogLMS {
 	private String message;
 	private long timestamp;
 
+	@Column(name="userid")
 	public String getUser() {
 		return this.user;
 	}
@@ -48,6 +56,7 @@ public class ChatLogLMS {
 		this.user = user;
 	}
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -56,6 +65,7 @@ public class ChatLogLMS {
 		this.id = id;
 	}
 
+	@Column(name="chatid")
 	public long getChat() {
 		return this.chat;
 	}
@@ -64,6 +74,7 @@ public class ChatLogLMS {
 		this.chat = chat;
 	}
 
+	@Column(name="message")
 	public String getMessage() {
 		return this.message;
 	}
@@ -72,6 +83,7 @@ public class ChatLogLMS {
 		this.message = message;
 	}
 
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}

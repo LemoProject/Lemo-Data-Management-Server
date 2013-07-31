@@ -25,12 +25,21 @@
  */
 
 package de.lemo.dms.connectors.moodle_2_3.moodleDBclass;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
 /**
  * Mapping class for table Assign.
  * 
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "mdl_assign_grades")
 public class AssignGradesLMS {
 
 	private long id;
@@ -41,6 +50,8 @@ public class AssignGradesLMS {
 	private long timemodified;
 	private long timecreated;
 	
+	@Id
+	@Column(unique = true)
 	public long getId() {
 		return id;
 	}
@@ -50,7 +61,7 @@ public class AssignGradesLMS {
 	}
 	
 	
-	
+	@Column(name="assignment")
 	public long getAssignment() {
 		return assignment;
 	}
@@ -60,7 +71,7 @@ public class AssignGradesLMS {
 		this.assignment = assignment;
 	}
 
-	
+	@Column(name="userid")
 	public long getUser() {
 		return user;
 	}
@@ -70,6 +81,7 @@ public class AssignGradesLMS {
 		this.user = user;
 	}
 
+	@Column(name="grade")
 	public Double getGrade() {
 		return grade;
 	}
@@ -78,6 +90,7 @@ public class AssignGradesLMS {
 		this.grade = grade;
 	}
 	
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return timemodified;
 	}
@@ -86,6 +99,7 @@ public class AssignGradesLMS {
 		this.timemodified = timemodified;
 	}
 	
+	@Column(name="timecreated")
 	public long getTimecreated() {
 		return timecreated;
 	}
@@ -94,6 +108,7 @@ public class AssignGradesLMS {
 		this.timecreated = timecreated;
 	}
 
+	@Column(name="grader")
 	public long getGrader() {
 		return grader;
 	}

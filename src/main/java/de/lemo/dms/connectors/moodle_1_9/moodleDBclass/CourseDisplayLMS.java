@@ -26,18 +26,27 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table CourseDisplay.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_course_display")
 public class CourseDisplayLMS {
 
 	private long id;
 	private long course;
 	private long userid;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -46,6 +55,7 @@ public class CourseDisplayLMS {
 		this.id = id;
 	}
 
+	@Column(name="course")
 	public long getCourse() {
 		return this.course;
 	}
@@ -54,6 +64,7 @@ public class CourseDisplayLMS {
 		this.course = course;
 	}
 
+	@Column(name="userid")
 	public long getUserid() {
 		return this.userid;
 	}

@@ -26,12 +26,20 @@
 
 package de.lemo.dms.connectors.moodle_1_9.moodleDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table Scorm.
  * 
  * @author S.Schwarzrock, B.Wolf
  *
  */
+
+@Entity
+@Table(name = "mdl_scorm")
 public class ScormLMS {
 
 	private long id;
@@ -40,6 +48,7 @@ public class ScormLMS {
 	private double maxgrade;
 	private long timemodified;
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -48,6 +57,7 @@ public class ScormLMS {
 		this.id = id;
 	}
 
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -56,6 +66,7 @@ public class ScormLMS {
 		this.name = name;
 	}
 
+	@Column(name="course")
 	public long getCourse() {
 		return this.course;
 	}
@@ -64,6 +75,7 @@ public class ScormLMS {
 		this.course = course;
 	}
 
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return this.timemodified;
 	}
@@ -72,6 +84,7 @@ public class ScormLMS {
 		this.timemodified = timemodified;
 	}
 
+	@Column(name="maxgrade")
 	public double getMaxgrade() {
 		return this.maxgrade;
 	}
