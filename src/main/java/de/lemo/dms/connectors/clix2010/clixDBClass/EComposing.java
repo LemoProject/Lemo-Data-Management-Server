@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "E_COMPOSING")
 public class EComposing implements IClixMappingClass {
 
 	private Long id;
@@ -45,6 +52,7 @@ public class EComposing implements IClixMappingClass {
 	private Long composingType;
 	private String lastUpdated;
 
+	@Column(name="COMPOSINGTYPE_ID")
 	public Long getComposingType() {
 		return this.composingType;
 	}
@@ -53,6 +61,7 @@ public class EComposing implements IClixMappingClass {
 		this.composingType = composingType;
 	}
 
+	@Column(name="STARTDATE")
 	public String getStartDate() {
 		return this.startDate;
 	}
@@ -61,6 +70,7 @@ public class EComposing implements IClixMappingClass {
 		this.startDate = startDate;
 	}
 
+	@Column(name="ENDDATE")
 	public String getEndDate() {
 		return this.endDate;
 	}
@@ -69,6 +79,8 @@ public class EComposing implements IClixMappingClass {
 		this.endDate = endDate;
 	}
 
+	@Id
+	@Column(name="ID")
 	public Long getId() {
 		return this.id;
 	}
@@ -77,6 +89,7 @@ public class EComposing implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="COMPOSING_ID")
 	public Long getComposing() {
 		return this.composing;
 	}
@@ -85,6 +98,7 @@ public class EComposing implements IClixMappingClass {
 		this.composing = composing;
 	}
 
+	@Column(name="COMPONENT_ID")
 	public Long getComponent() {
 		return this.component;
 	}
@@ -93,6 +107,7 @@ public class EComposing implements IClixMappingClass {
 		this.component = component;
 	}
 
+	@Column(name="PARENT_ID")
 	public Long getParent() {
 		return this.parent;
 	}
@@ -101,6 +116,7 @@ public class EComposing implements IClixMappingClass {
 		this.parent = parent;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return lastUpdated;
 	}

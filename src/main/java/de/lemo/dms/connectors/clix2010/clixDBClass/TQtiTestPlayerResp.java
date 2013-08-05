@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "T_QTI_TESTPLAYER_RESP")
 public class TQtiTestPlayerResp implements IClixMappingClass {
 
 	private TQtiTestPlayerRespPK id;
@@ -50,6 +57,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 	private Long processStatus;
 	private String text;
 	
+	@EmbeddedId
 	public TQtiTestPlayerRespPK getId() {
 		return id;
 	}
@@ -58,6 +66,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.id = id;
 	}
 	
+	@Column(name="CANDIDATE_ID")
 	public Long getCandidate() {
 		return candidate;
 	}
@@ -66,6 +75,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.candidate = candidate;
 	}
 	
+	@Column(name="CONTAINER_ID")
 	public Long getContainer() {
 		return container;
 	}
@@ -74,6 +84,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.container = container;
 	}
 	
+	@Column(name="CONTENT_ID")
 	public Long getContent() {
 		return content;
 	}
@@ -82,6 +93,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.content = content;
 	}
 	
+	@Column(name="RESPONSE_ID")
 	public Long getResponse() {
 		return response;
 	}
@@ -90,6 +102,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.response = response;
 	}
 	
+	@Column(name="SUBITEM_POSITION")
 	public Long getSubitemPosition() {
 		return subitemPosition;
 	}
@@ -98,6 +111,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.subitemPosition = subitemPosition;
 	}
 	
+	@Column(name="TESTITEM_ID")
 	public Long getTestItem() {
 		return testItem;
 	}
@@ -106,6 +120,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.testItem = testItem;
 	}
 
+	@Column(name="EVALUATION_DATE")
 	public String getEvaluationDate() {
 		return evaluationDate;
 	}
@@ -114,6 +129,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.evaluationDate = evaluationDate;
 	}
 
+	@Column(name="EVALUATED_SCORE")
 	public Double getEvaluatedScore() {
 		return evaluatedScore;
 	}
@@ -122,6 +138,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.evaluatedScore = evaluatedScore;
 	}
 
+	@Column(name="ITEM_RESULT_STATUS")
 	public Long getItemResultStatus() {
 		return itemResultStatus;
 	}
@@ -130,6 +147,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.itemResultStatus = itemResultStatus;
 	}
 
+	@Column(name="ITEM_PROCESS_STATUS")
 	public Long getItemProcessStatus() {
 		return itemProcessStatus;
 	}
@@ -138,6 +156,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.itemProcessStatus = itemProcessStatus;
 	}
 	
+	@Column(name="PROCESS_STATUS")
 	public Long getProcessStatus() {
 		return processStatus;
 	}
@@ -146,6 +165,7 @@ public class TQtiTestPlayerResp implements IClixMappingClass {
 		this.processStatus = processStatus;
 	}
 
+	@Column(name="RESPONSE")
 	public String getText() {
 		return text;
 	}

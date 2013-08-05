@@ -28,6 +28,15 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -36,6 +45,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
  * This class represents the relationship between courses and wikis.
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "course_wiki")
 public class CourseWikiMining implements IMappingClass, ICourseLORelation{
 
 	private long id;
@@ -66,6 +77,7 @@ public class CourseWikiMining implements IMappingClass, ICourseLORelation{
 	 * @return the identifier for the association between course and wiki
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -85,6 +97,8 @@ public class CourseWikiMining implements IMappingClass, ICourseLORelation{
 	 * 
 	 * @return a course in which the wiki is used in
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -131,6 +145,8 @@ public class CourseWikiMining implements IMappingClass, ICourseLORelation{
 	 * 
 	 * @return the wiki which is used in the course in this entry
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="wiki_id")
 	public WikiMining getWiki() {
 		return this.wiki;
 	}
@@ -171,6 +187,7 @@ public class CourseWikiMining implements IMappingClass, ICourseLORelation{
 		}
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -180,6 +197,7 @@ public class CourseWikiMining implements IMappingClass, ICourseLORelation{
 	}
 
 	@Override
+	@Transient
 	public ILearningObject getLearningObject() {
 		return this.wiki;
 	}

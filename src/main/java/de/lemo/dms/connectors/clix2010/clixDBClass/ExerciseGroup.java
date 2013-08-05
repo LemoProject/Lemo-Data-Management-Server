@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,11 +39,15 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "EXERCISEGROUP")
 public class ExerciseGroup implements IClixMappingClass {
 
 	private long id;
 	private long associatedCourse;
 
+	@Id
+	@Column(name="EXERCISEGROUP_ID")
 	public long getId() {
 		return this.id;
 	}
@@ -47,6 +56,7 @@ public class ExerciseGroup implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="ASSOCIATED_COURSE_ID")
 	public long getAssociatedCourse() {
 		return this.associatedCourse;
 	}

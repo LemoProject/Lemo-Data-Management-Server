@@ -27,12 +27,23 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * This class represents the relationship between courses and user
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "course_user")
 public class CourseUserMining implements IMappingClass {
 
 	private long id;
@@ -61,6 +72,7 @@ public class CourseUserMining implements IMappingClass {
 	 * @return the identifier for the association between course and user
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -95,6 +107,8 @@ public class CourseUserMining implements IMappingClass {
 	 * 
 	 * @return the course in which the user is enroled
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -130,6 +144,7 @@ public class CourseUserMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the user was enroled in the course
 	 */
+	@Column(name="enrolstart")
 	public long getEnrolstart() {
 		return this.enrolStart;
 	}
@@ -149,6 +164,7 @@ public class CourseUserMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the user is not enroled any more
 	 */
+	@Column(name="enrolend")
 	public long getEnrolend() {
 		return this.enrolEnd;
 	}
@@ -168,6 +184,8 @@ public class CourseUserMining implements IMappingClass {
 	 * 
 	 * @return the user who is enroled in the course
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -222,6 +240,8 @@ public class CourseUserMining implements IMappingClass {
 	 * 
 	 * @return the role which the user has in the course
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="role_id")
 	public RoleMining getRole() {
 		return this.role;
 	}
@@ -251,6 +271,7 @@ public class CourseUserMining implements IMappingClass {
 		}
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

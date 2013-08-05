@@ -27,12 +27,20 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** 
  * This class represents the table for configuration information of the extraction tool.
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "config")
 public class ConfigMining implements IMappingClass {
 
 	private Timestamp lastModified;
@@ -42,6 +50,7 @@ public class ConfigMining implements IMappingClass {
 	private String databaseModel;
 	private long latestTimestamp;
 
+	@Column	(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -59,6 +68,8 @@ public class ConfigMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the mining db was updated the last time
 	 */
+	@Id
+	@Column	(name="lastmodified")
 	public Timestamp getLastModified() {
 		return this.lastModified;
 	}
@@ -77,6 +88,7 @@ public class ConfigMining implements IMappingClass {
 	 * @return when starting updates cyclic this will be the interval
 	 */
 
+	@Column	(name="extractcycle")
 	public long getExtractCycle() {
 		return this.extractCycle;
 	}
@@ -95,6 +107,7 @@ public class ConfigMining implements IMappingClass {
 	 * 
 	 * @return the time the last update needed to run
 	 */
+	@Column	(name="elapsed_time")
 	public long getElapsedTime() {
 		return this.elapsedTime;
 	}
@@ -109,6 +122,7 @@ public class ConfigMining implements IMappingClass {
 		this.elapsedTime = elapsedTime;
 	}
 
+	@Column	(name="database_model")
 	public String getDatabaseModel() {
 		return this.databaseModel;
 	}
@@ -118,6 +132,7 @@ public class ConfigMining implements IMappingClass {
 	}
 
 	@Override
+
 	public long getId() {
 		return this.lastModified.getTime();
 	}
@@ -139,6 +154,7 @@ public class ConfigMining implements IMappingClass {
 		return (int) lastModified.getTime();
 	}
 
+	@Column	(name="latest_timestamp")
 	public long getLatestTimestamp() {
 		return latestTimestamp;
 	}

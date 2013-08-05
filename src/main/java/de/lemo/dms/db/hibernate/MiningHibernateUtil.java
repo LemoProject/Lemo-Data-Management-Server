@@ -30,6 +30,7 @@ import java.util.Map.Entry;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.miningDBclass.*;
 
 /**
  * Startup Hibernate and provide access to the singleton SessionFactory
@@ -64,53 +65,56 @@ public final class MiningHibernateUtil {
 		for (final Entry<String, String> entry : dbConfig.getProperties().entrySet()) {
 			config.setProperty(entry.getKey(), entry.getValue());
 		}
-
+		
+		
 		// Meta
-		config.addResource("de/lemo/dms/db/miningDBclass/ConfigMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/IDMappingMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/PlatformMining.hbm.xml");
+		config.addAnnotatedClass(ConfigMining.class);
+		config.addAnnotatedClass(IDMappingMining.class);
+		config.addAnnotatedClass(PlatformMining.class);
 
 		// Object-classes
-		config.addResource("de/lemo/dms/db/miningDBclass/AssignmentMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/ChatMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/ForumMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/GroupMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/QuestionMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/QuizMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/ResourceMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/RoleMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/ScormMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/UserMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/WikiMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/LevelMining.hbm.xml");
+		config.addAnnotatedClass(AssignmentMining.class);
+		config.addAnnotatedClass(ChatMining.class);
+		config.addAnnotatedClass(CourseMining.class);
+		config.addAnnotatedClass(ForumMining.class);
+		config.addAnnotatedClass(GroupMining.class);
+		config.addAnnotatedClass(QuestionMining.class);
+		config.addAnnotatedClass(QuizMining.class);
+		config.addAnnotatedClass(ResourceMining.class);
+		config.addAnnotatedClass(RoleMining.class);
+		config.addAnnotatedClass(ScormMining.class);
+		config.addAnnotatedClass(UserMining.class);
+		config.addAnnotatedClass(WikiMining.class);
+		config.addAnnotatedClass(LevelMining.class);
 
 		// Association-classes
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseAssignmentMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseChatMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseForumMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseGroupMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseQuizMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseResourceMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseScormMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseUserMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseWikiMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/GroupUserMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/QuizQuestionMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/QuizUserMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/LevelCourseMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/LevelAssociationMining.hbm.xml");
+		
+		config.addAnnotatedClass(CourseAssignmentMining.class);
+		config.addAnnotatedClass(CourseChatMining.class);
+		config.addAnnotatedClass(CourseForumMining.class);
+		config.addAnnotatedClass(CourseGroupMining.class);
+		config.addAnnotatedClass(CourseQuizMining.class);
+		config.addAnnotatedClass(CourseResourceMining.class);
+		config.addAnnotatedClass(CourseScormMining.class);
+		config.addAnnotatedClass(CourseUserMining.class);
+		config.addAnnotatedClass(CourseWikiMining.class);
+		config.addAnnotatedClass(GroupUserMining.class);
+		config.addAnnotatedClass(QuizQuestionMining.class);
+		config.addAnnotatedClass(QuizUserMining.class);
+		config.addAnnotatedClass(LevelCourseMining.class);
+		config.addAnnotatedClass(LevelAssociationMining.class);
 
 		// Log-classes
-		config.addResource("de/lemo/dms/db/miningDBclass/AssignmentLogMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/ChatLogMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/CourseLogMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/ForumLogMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/ResourceLogMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/ScormLogMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/QuestionLogMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/QuizLogMining.hbm.xml");
-		config.addResource("de/lemo/dms/db/miningDBclass/WikiLogMining.hbm.xml");
+		
+		config.addAnnotatedClass(AssignmentLogMining.class);
+		config.addAnnotatedClass(ChatLogMining.class);
+		config.addAnnotatedClass(CourseLogMining.class);
+		config.addAnnotatedClass(ForumLogMining.class);
+		config.addAnnotatedClass(ResourceLogMining.class);
+		config.addAnnotatedClass(ScormLogMining.class);
+		config.addAnnotatedClass(QuestionLogMining.class);
+		config.addAnnotatedClass(QuizLogMining.class);
+		config.addAnnotatedClass(WikiLogMining.class);
 
 		return config.buildSessionFactory();
 	}

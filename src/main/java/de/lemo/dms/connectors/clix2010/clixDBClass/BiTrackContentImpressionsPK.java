@@ -28,23 +28,66 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 /**
  * Class for realization of primary key for BiTrackContentImpressions.
  * 
  * @author S.Schwarzrock
  *
  */
+@Embeddable
 public class BiTrackContentImpressionsPK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3194079312809898488L;
-	private Long content;
-	private String dayOfAccess;
-	private Long container;
-	private Long user;
-	private Long characteristic;
+	private Long content_id;
+	private String day_of_access;
+	private Long container_id;
+	private Long user_id;
+	private Long characteristic_id;
+
+	public Long getContent_id() {
+		return content_id;
+	}
+
+	public void setContent_id(Long content_id) {
+		this.content_id = content_id;
+	}
+
+	public String getDay_Of_Access() {
+		return day_of_access;
+	}
+
+	public void setDay_Of_Access(String dayOfAccess) {
+		this.day_of_access = dayOfAccess;
+	}
+
+	public Long getContainer_id() {
+		return container_id;
+	}
+
+	public void setContainer_id(Long container_id) {
+		this.container_id = container_id;
+	}
+
+	public Long getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
+	}
+
+	public Long getCharacteristic_id() {
+		return characteristic_id;
+	}
+
+	public void setCharacteristic_id(Long characteristic_id) {
+		this.characteristic_id = characteristic_id;
+	}
 
 	@Override
 	public boolean equals(final Object arg)
@@ -56,19 +99,19 @@ public class BiTrackContentImpressionsPK implements Serializable {
 			return false;
 		}
 		final BiTrackContentImpressionsPK a = (BiTrackContentImpressionsPK) arg;
-		if (a.getUser() != this.user) {
+		if (a.getUser_id() != this.user_id) {
 			return false;
 		}
-		if (a.getDayOfAccess() != this.dayOfAccess) {
+		if (a.getDay_Of_Access() != this.day_of_access) {
 			return false;
 		}
-		if (a.getContainer() != this.container) {
+		if (a.getContainer_id() != this.container_id) {
 			return false;
 		}
-		if (a.getContent() != this.content) {
+		if (a.getContent_id() != this.content_id) {
 			return false;
 		}
-		if (a.getCharacteristic() != this.characteristic) {
+		if (a.getCharacteristic_id() != this.characteristic_id) {
 			return false;
 		}
 		return true;
@@ -77,62 +120,22 @@ public class BiTrackContentImpressionsPK implements Serializable {
 	@Override
 	public int hashCode()
 	{
-		return (this.content.hashCode() * 17) + (this.characteristic.hashCode() * 19)
-				+ (this.container.hashCode() * 23) + (this.dayOfAccess.hashCode() * 29) + (this.user.hashCode() * 31);
+		return (this.content_id.hashCode() * 17) + (this.characteristic_id.hashCode() * 19)
+				+ (this.container_id.hashCode() * 23) + (this.day_of_access.hashCode() * 29) + (this.user_id.hashCode() * 31);
 	}
 
-	public long getContent() {
-		return this.content;
-	}
-
-	public void setContent(final long content) {
-		this.content = content;
-	}
-
-	public long getCharacteristic() {
-		return this.characteristic;
-	}
-
-	public void setCharacteristic(final long characteristic) {
-		this.characteristic = characteristic;
+	public BiTrackContentImpressionsPK(){
 	}
 
 	public BiTrackContentImpressionsPK(final long characteristic, final long content, final String dayOfAccess,
 			final long container, final long user)
 	{
-		this.characteristic = characteristic;
-		this.content = content;
-		this.dayOfAccess = dayOfAccess;
-		this.container = container;
-		this.user = user;
+		this.characteristic_id = characteristic;
+		this.content_id = content;
+		this.day_of_access = dayOfAccess;
+		this.container_id = container;
+		this.user_id = user;
 	}
 
-	public BiTrackContentImpressionsPK()
-	{
-
-	}
-
-	public String getDayOfAccess() {
-		return this.dayOfAccess;
-	}
-
-	public void setDayOfAccess(final String dayOfAccess) {
-		this.dayOfAccess = dayOfAccess;
-	}
-
-	public long getContainer() {
-		return this.container;
-	}
-
-	public void setContainer(final long container) {
-		this.container = container;
-	}
-
-	public long getUser() {
-		return this.user;
-	}
-
-	public void setUser(final long user) {
-		this.user = user;
-	}
+	
 }

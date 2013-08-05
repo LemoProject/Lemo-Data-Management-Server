@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "WIKI_ENTRY")
 public class WikiEntry implements IClixMappingClass {
 
 	private Long id;
@@ -45,21 +52,9 @@ public class WikiEntry implements IClixMappingClass {
 	private String publishingDate;
 	private String created;
 
+	@Column(name="CREATED")
 	public String getCreated() {
 		return this.created;
-	}
-
-	public String getString()
-	{
-		return "WikiEntry$$$"
-				+ this.id + "$$$"
-				+ this.getCreated() + "$$$"
-				+ this.getLastUpdated() + "$$$"
-				+ this.getPublishingDate() + "$$$"
-				+ this.getComponent() + "$$$"
-				+ this.getCreator() + "$$$"
-				+ this.getLastProcessor() + "$$$"
-				+ this.getPublisher();
 	}
 
 	public void setCreated(final String created) {
@@ -71,6 +66,8 @@ public class WikiEntry implements IClixMappingClass {
 
 	}
 
+	@Id
+	@Column(name="ENTRY_ID")
 	public Long getId() {
 		return this.id;
 	}
@@ -79,6 +76,7 @@ public class WikiEntry implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="COMPONENT_ID")
 	public Long getComponent() {
 		return this.component;
 	}
@@ -87,6 +85,7 @@ public class WikiEntry implements IClixMappingClass {
 		this.component = component;
 	}
 
+	@Column(name="CREATOR_ID")
 	public Long getCreator() {
 		return this.creator;
 	}
@@ -95,6 +94,7 @@ public class WikiEntry implements IClixMappingClass {
 		this.creator = creator;
 	}
 
+	@Column(name="LASTPROCESSOR_ID")
 	public Long getLastProcessor() {
 		return this.lastProcessor;
 	}
@@ -103,6 +103,7 @@ public class WikiEntry implements IClixMappingClass {
 		this.lastProcessor = lastProcessor;
 	}
 
+	@Column(name="PUBLISHER_ID")
 	public Long getPublisher() {
 		return this.publisher;
 	}
@@ -111,6 +112,7 @@ public class WikiEntry implements IClixMappingClass {
 		this.publisher = publisher;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return this.lastUpdated;
 	}
@@ -119,6 +121,7 @@ public class WikiEntry implements IClixMappingClass {
 		this.lastUpdated = lastUpdated;
 	}
 
+	@Column(name="PUBLISHINGDATE")
 	public String getPublishingDate() {
 		return this.publishingDate;
 	}

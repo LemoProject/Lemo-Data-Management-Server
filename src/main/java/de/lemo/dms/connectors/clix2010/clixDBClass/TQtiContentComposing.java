@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "T_QTI_CONTENTCOMPOSING")
 public class TQtiContentComposing implements IClixMappingClass {
 
 	private TQtiContentComposingPK id;
@@ -43,6 +50,7 @@ public class TQtiContentComposing implements IClixMappingClass {
 	private Long position;
 	
 	
+	@Column(name="CONTAINER_ID")
 	public Long getContainer() {
 		return container;
 	}
@@ -51,6 +59,7 @@ public class TQtiContentComposing implements IClixMappingClass {
 		this.container = container;
 	}
 	
+	@Column(name="CONTENT_ID")
 	public Long getContent() {
 		return content;
 	}
@@ -59,6 +68,7 @@ public class TQtiContentComposing implements IClixMappingClass {
 		this.content = content;
 	}
 	
+	@Column(name="CANDIDATE_ID")
 	public Long getCandidate() {
 		return candidate;
 	}
@@ -67,6 +77,7 @@ public class TQtiContentComposing implements IClixMappingClass {
 		this.candidate = candidate;
 	}
 	
+	@EmbeddedId
 	public TQtiContentComposingPK getId() {
 		return id;
 	}
@@ -75,6 +86,7 @@ public class TQtiContentComposing implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="POSITION_ID")
 	public Long getPosition() {
 		return position;
 	}

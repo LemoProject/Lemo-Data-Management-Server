@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "SCORM_SESSION_TIMES")
 public class ScormSessionTimes implements IClixMappingClass {
 
 	private ScormSessionTimesPK id;
@@ -44,6 +51,7 @@ public class ScormSessionTimes implements IClixMappingClass {
 	private String lastUpdated;
 	private String status;
 
+	@EmbeddedId
 	public ScormSessionTimesPK getId() {
 		return this.id;
 	}
@@ -57,6 +65,7 @@ public class ScormSessionTimes implements IClixMappingClass {
 
 	}
 
+	@Column(name="COMPONENT_ID")
 	public Long getComponent() {
 		return this.component;
 	}
@@ -65,6 +74,7 @@ public class ScormSessionTimes implements IClixMappingClass {
 		this.component = component;
 	}
 
+	@Column(name="PERSON_ID")
 	public Long getPerson() {
 		return this.person;
 	}
@@ -73,6 +83,7 @@ public class ScormSessionTimes implements IClixMappingClass {
 		this.person = person;
 	}
 
+	@Column(name="SCORE")
 	public String getScore() {
 		return this.score;
 	}
@@ -81,6 +92,7 @@ public class ScormSessionTimes implements IClixMappingClass {
 		this.score = score;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return this.lastUpdated;
 	}
@@ -89,6 +101,7 @@ public class ScormSessionTimes implements IClixMappingClass {
 		this.lastUpdated = lastUpdated;
 	}
 
+	@Column(name="STATUS")
 	public String getStatus() {
 		return this.status;
 	}

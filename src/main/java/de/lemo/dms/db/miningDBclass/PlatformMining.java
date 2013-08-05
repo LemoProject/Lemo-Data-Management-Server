@@ -26,12 +26,19 @@
 
 package de.lemo.dms.db.miningDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * Bean class for the platforms 
  *
  */
+@Entity
+@Table(name = "platform")
 public class PlatformMining implements IMappingClass {
 
 	private Long id;
@@ -52,6 +59,7 @@ public class PlatformMining implements IMappingClass {
 
 	}
 
+	@Column(name="name", length=1000)
 	public String getName() {
 		return this.name;
 	}
@@ -60,6 +68,7 @@ public class PlatformMining implements IMappingClass {
 		this.name = name;
 	}
 
+	@Column(name="type")
 	public String getType() {
 		return this.type;
 	}
@@ -73,6 +82,7 @@ public class PlatformMining implements IMappingClass {
 	}
 
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -93,6 +103,7 @@ public class PlatformMining implements IMappingClass {
 		return id.intValue();
 	}
 
+	@Column(name="prefix")
 	public Long getPrefix() {
 		return this.prefix;
 	}

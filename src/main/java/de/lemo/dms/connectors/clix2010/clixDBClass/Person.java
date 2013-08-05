@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "PERSON")
 public class Person implements IClixMappingClass {
 
 	private Long id;
@@ -49,6 +56,8 @@ public class Person implements IClixMappingClass {
 	}
 
 
+	@Id
+	@Column(name="PERSON_ID")
 	public Long getId() {
 		return this.id;
 	}
@@ -57,6 +66,7 @@ public class Person implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="LASTLOGINTIME")
 	public String getLastLoginTime() {
 		return this.lastLoginTime;
 	}
@@ -65,6 +75,7 @@ public class Person implements IClixMappingClass {
 		this.lastLoginTime = lastLoginTime;
 	}
 
+	@Column(name="FIRSTLOGINTIME")
 	public String getFirstLoginTime() {
 		return this.firstLoginTime;
 	}
@@ -73,6 +84,7 @@ public class Person implements IClixMappingClass {
 		this.firstLoginTime = firstLoginTime;
 	}
 
+	@Column(name="LOGIN")
 	public String getLogin() {
 		return this.login;
 	}
@@ -81,6 +93,7 @@ public class Person implements IClixMappingClass {
 		this.login = login;
 	}
 
+	@Column(name="SALUTATION_ID")
 	public Long getGender() {
 		return this.gender;
 	}
@@ -90,6 +103,7 @@ public class Person implements IClixMappingClass {
 	}
 
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return lastUpdated;
 	}

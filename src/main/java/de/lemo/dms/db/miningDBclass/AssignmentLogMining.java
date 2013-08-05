@@ -27,6 +27,16 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
@@ -36,16 +46,32 @@ import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
  * @author Sebastian Schwarzrock
  *
  */
+@Entity
+@Table(name = "assignment_log")
 public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLogObject {
 
+
 	private long id;
+	
 	private UserMining user;
+	
 	private CourseMining course;
+	
 	private AssignmentMining assignment;
+	
+
 	private Double grade;
+	
+
 	private String action;
+	
+
 	private long timestamp;
+	
+
 	private Long duration;
+	
+
 	private Long platform;
 
 	@Override
@@ -87,12 +113,14 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	}
 	
 	@Override
+	@Transient
 	public String getTitle()
 	{
 		return this.assignment == null ? null : this.assignment.getTitle();
 	}
 
 	@Override
+	@Transient
 	public Long getLearnObjId()
 	{
 		return this.assignment == null ? null : this.assignment.getId();
@@ -104,6 +132,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	 * @return the final grade of the user in this quiz
 	 */
 	@Override
+	@Transient
 	public Double getFinalGrade() {
 		return this.grade;
 	}
@@ -114,6 +143,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	 * @return the identifier of the log entry
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -135,6 +165,8 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	 * @return the user who interact with the quiz
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -181,6 +213,8 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	 * @return the course in which the action takes place
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -228,6 +262,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	 * @return the grade in this case of action
 	 */
 	@Override
+	@Column(name="grade")
 	public Double getGrade() {
 		return this.grade;
 	}
@@ -248,6 +283,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	 * @return the timestamp the action did occur
 	 */
 	@Override
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -268,6 +304,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	 * @return the action which occur
 	 */
 	@Override
+	@Column(name="action")
 	public String getAction() {
 		return this.action;
 	}
@@ -324,11 +361,15 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	 * 
 	 * @return the assignment in which the action takes place
 	 */
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="assignment_id")
 	public AssignmentMining getAssignment() {
 		return this.assignment;
 	}
 
 	@Override
+	@Column(name="duration")
 	public Long getDuration() {
 		return this.duration;
 	}
@@ -339,10 +380,12 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return 11L;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -352,6 +395,7 @@ public class AssignmentLogMining implements ILogMining, IMappingClass, IRatedLog
 	}
 
 	@Override
+	@Transient
 	public Double getMaxGrade() {
 		return this.assignment.getMaxGrade();
 	}

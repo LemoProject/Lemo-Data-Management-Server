@@ -30,6 +30,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -37,6 +44,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
  * This class represents the table chatmining. 
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "chat")
 public class ChatMining implements IMappingClass, ILearningObject {
 
 	private long id;
@@ -47,9 +56,11 @@ public class ChatMining implements IMappingClass, ILearningObject {
 	private Long platform;
 	private static final Long PREFIX = 19L;
 	
+
 	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
 	private Set<CourseChatMining> courseChats = new HashSet<CourseChatMining>();
 	
+	@Transient
 	public Long getPrefix()
 	{
 		return PREFIX;
@@ -82,6 +93,7 @@ public class ChatMining implements IMappingClass, ILearningObject {
 		return (int)id;
 	}
 	
+	@Transient
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -108,6 +120,7 @@ public class ChatMining implements IMappingClass, ILearningObject {
 
 
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -116,6 +129,7 @@ public class ChatMining implements IMappingClass, ILearningObject {
 		this.id = id;
 	}
 
+	@Column(name="title", length=1000)
 	public String getTitle() {
 		return this.title;
 	}
@@ -124,6 +138,7 @@ public class ChatMining implements IMappingClass, ILearningObject {
 		this.title = title;
 	}
 
+	@Column(name="description", length=1000)
 	public String getDescription() {
 		return this.description;
 	}
@@ -132,6 +147,7 @@ public class ChatMining implements IMappingClass, ILearningObject {
 		this.description = description;
 	}
 
+	@Column(name="chattime")
 	public long getChatTime() {
 		return this.chatTime;
 	}
@@ -140,10 +156,12 @@ public class ChatMining implements IMappingClass, ILearningObject {
 		this.chatTime = chatTime;
 	}
 
+	@OneToMany(mappedBy="chat")
 	public Set<ChatLogMining> getChatLogs() {
 		return this.chatLogs;
 	}
 	
+	@OneToMany(mappedBy="chat")
 	public Set<CourseChatMining> getCourseChats() {
 		return this.courseChats;
 	}
@@ -160,6 +178,7 @@ public class ChatMining implements IMappingClass, ILearningObject {
 		this.chatLogs.add(chatLog);
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

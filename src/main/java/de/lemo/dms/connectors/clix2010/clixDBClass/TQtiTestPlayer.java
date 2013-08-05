@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "T_QTI_TESTPLAYER")
 public class TQtiTestPlayer implements IClixMappingClass {
 
 	private TQtiTestPlayerPK id;
@@ -50,6 +57,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 	private Long runtimeStatus;
 	private String created;
 	
+	@EmbeddedId
 	public TQtiTestPlayerPK getId() {
 		return id;
 	}
@@ -58,6 +66,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.id = id;
 	}
 	
+	@Column(name="CANDIDATE_ID")
 	public Long getCandidate() {
 		return candidate;
 	}
@@ -66,6 +75,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.candidate = candidate;
 	}
 	
+	@Column(name="CONTAINER_ID")
 	public Long getContainer() {
 		return container;
 	}
@@ -74,6 +84,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.container = container;
 	}
 	
+	@Column(name="CONTENT_ID")
 	public Long getContent() {
 		return content;
 	}
@@ -82,6 +93,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.content = content;
 	}
 	
+	@Column(name="MAX_SCORE")
 	public Double getMaxScore() {
 		return maxScore;
 	}
@@ -90,6 +102,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.maxScore = maxScore;
 	}
 	
+	@Column(name="STARTED")
 	public String getStarted() {
 		return started;
 	}
@@ -98,6 +111,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.started = started;
 	}
 	
+	@Column(name="SAVED")
 	public String getSaved() {
 		return saved;
 	}
@@ -106,6 +120,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.saved = saved;
 	}
 	
+	@Column(name="EVALUATED")
 	public String getEvaluated() {
 		return evaluated;
 	}
@@ -114,6 +129,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.evaluated = evaluated;
 	}
 	
+	@Column(name="EVALUATED_SCORE")
 	public Double getEvaluatedScore() {
 		return evaluatedScore;
 	}
@@ -122,6 +138,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.evaluatedScore = evaluatedScore;
 	}
 	
+	@Column(name="RESULT_STATUS")
 	public Long getResultStatus() {
 		return resultStatus;
 	}
@@ -130,6 +147,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.resultStatus = resultStatus;
 	}
 	
+	@Column(name="REMAINING_DURATION")
 	public Long getRemainingDuration() {
 		return remainingDuration;
 	}
@@ -138,6 +156,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.remainingDuration = remainingDuration;
 	}
 
+	@Column(name="RUNTIME_STATUS")
 	public Long getRuntimeStatus() {
 		return runtimeStatus;
 	}
@@ -146,6 +165,7 @@ public class TQtiTestPlayer implements IClixMappingClass {
 		this.runtimeStatus = runtimeStatus;
 	}
 
+	@Column(name="CREATED")
 	public String getCreated() {
 		return created;
 	}

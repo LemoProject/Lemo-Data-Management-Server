@@ -31,6 +31,8 @@ import java.util.Map.Entry;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import com.google.common.collect.Maps;
+
+import de.lemo.dms.connectors.clix2010.clixDBClass.*;
 import de.lemo.dms.db.DBConfigObject;
 
 /**
@@ -68,33 +70,33 @@ public final class ClixHibernateUtil {
 		}
 
 		// add mapping classes
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/EComponent.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/LearningLog.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ChatProtocol.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/EComponentType.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/EComposing.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ExercisePersonalised.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ForumEntry.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ForumEntryState.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/Person.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PlatformGroup.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PlatformGroupSpecification.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/Portfolio.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PortfolioLog.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TeamExerciseGroup.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TGroupFullSpecification.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiContent.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiTestItemD.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiTestPlayerResp.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiTestPlayer.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiContentStructure.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiContentComposing.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/TQtiEvalAssessment.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/WikiEntry.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ExerciseGroup.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/PersonComponentAssignment.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/ScormSessionTimes.hbm.xml");
-		cfg.addResource("de/lemo/dms/connectors/clix2010/clixDBClass/BiTrackContentImpressions.hbm.xml");
+		cfg.addAnnotatedClass(EComponent.class);
+		cfg.addAnnotatedClass(LearningLog.class);
+		cfg.addAnnotatedClass(ChatProtocol.class);
+		cfg.addAnnotatedClass(EComponentType.class);
+		cfg.addAnnotatedClass(EComposing.class);
+		cfg.addAnnotatedClass(ExercisePersonalised.class);
+		cfg.addAnnotatedClass(ForumEntry.class);
+		cfg.addAnnotatedClass(ForumEntryState.class);
+		cfg.addAnnotatedClass(Person.class);
+		cfg.addAnnotatedClass(PlatformGroup.class);
+		cfg.addAnnotatedClass(PlatformGroupSpecification.class);
+		cfg.addAnnotatedClass(Portfolio.class);
+		cfg.addAnnotatedClass(PortfolioLog.class);
+		cfg.addAnnotatedClass(TeamExerciseGroup.class);
+		cfg.addAnnotatedClass(TGroupFullSpecification.class);
+		cfg.addAnnotatedClass(TQtiContent.class);
+		cfg.addAnnotatedClass(TQtiTestItemD.class);
+		cfg.addAnnotatedClass(TQtiTestPlayerResp.class);
+		cfg.addAnnotatedClass(TQtiTestPlayer.class);
+		cfg.addAnnotatedClass(TQtiContentStructure.class);
+		cfg.addAnnotatedClass(TQtiContentComposing.class);
+		cfg.addAnnotatedClass(TQtiEvalAssessment.class);
+		cfg.addAnnotatedClass(WikiEntry.class);
+		cfg.addAnnotatedClass(ExerciseGroup.class);
+		cfg.addAnnotatedClass(PersonComponentAssignment.class);
+		cfg.addAnnotatedClass(ScormSessionTimes.class);
+		cfg.addAnnotatedClass(BiTrackContentImpressions.class);
 
 		return cfg.buildSessionFactory();
 	}

@@ -27,11 +27,23 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 
 /** This class represents the log table for the quiz modules. */
+@Entity
+@Table(name = "quiz_log")
 public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject {
 
 	private long id;
@@ -83,6 +95,7 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	}
 	
 	@Override
+	@Column(name="duration")
 	public Long getDuration() {
 		return this.duration;
 	}
@@ -93,12 +106,14 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	}
 
 	@Override
+	@Transient
 	public String getTitle()
 	{
 		return this.quiz == null ? null : this.quiz.getTitle();
 	}
 
 	@Override
+	@Transient
 	public Long getLearnObjId()
 	{
 		return this.quiz == null ? null : this.quiz.getId();
@@ -110,6 +125,7 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	 * @return the identifier of the log entry
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -131,6 +147,8 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	 * @return the user who interact with the quiz
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -177,6 +195,8 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	 * @return the course in which the action takes place
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -224,6 +244,7 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	 * @return the grade in this case of action
 	 */
 	@Override
+	@Column(name="grade")
 	public Double getGrade() {
 		return this.grade;
 	}
@@ -244,6 +265,7 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	 * @return the timestamp the action did occur
 	 */
 	@Override
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -264,6 +286,7 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	 * @return the action which occur
 	 */
 	@Override
+	@Column(name="action")
 	public String getAction() {
 		return this.action;
 	}
@@ -293,6 +316,8 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	 * 
 	 * @return the quiz in which the action takes place
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="quiz_id")
 	public QuizMining getQuiz() {
 		return this.quiz;
 	}
@@ -326,10 +351,12 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return 14L;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -339,11 +366,13 @@ public class QuizLogMining implements ILogMining, IMappingClass, IRatedLogObject
 	}
 
 	@Override
+	@Transient
 	public Double getMaxGrade() {
 		return this.quiz.getMaxGrade();
 	}
 
 	@Override
+	@Transient
 	public Double getFinalGrade() {
 		return this.grade;
 	}

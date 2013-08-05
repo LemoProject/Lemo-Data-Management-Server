@@ -28,6 +28,15 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
@@ -38,6 +47,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
  * This class represents the relationship between the courses and assignments. 
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "course_assignment")
 public class CourseAssignmentMining implements ICourseLORelation, IMappingClass, ICourseRatedObjectAssociation {
 
 	private long id;
@@ -68,6 +79,8 @@ public class CourseAssignmentMining implements ICourseLORelation, IMappingClass,
 	 * @return a course in which the quiz is used
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -114,6 +127,8 @@ public class CourseAssignmentMining implements ICourseLORelation, IMappingClass,
 	 * 
 	 * @return the quiz which is used in the course
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="assignment_id")
 	public AssignmentMining getAssignment() {
 		return this.assignment;
 	}
@@ -171,10 +186,12 @@ public class CourseAssignmentMining implements ICourseLORelation, IMappingClass,
 	 * @return the identifier for the assoziation between course and assignment
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -184,16 +201,19 @@ public class CourseAssignmentMining implements ICourseLORelation, IMappingClass,
 	}
 
 	@Override
+	@Transient
 	public IRatedObject getRatedObject() {
 		return this.assignment;
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return this.assignment.getPrefix();
 	}
 
 	@Override
+	@Transient
 	public ILearningObject getLearningObject() {
 		return this.getAssignment();
 	}

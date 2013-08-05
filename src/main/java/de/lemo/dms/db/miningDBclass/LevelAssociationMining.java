@@ -27,6 +27,15 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
@@ -34,6 +43,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
  * @author Sebastian Schwarzrock
  *
  */
+@Entity
+@Table(name = "level_association")
 public class LevelAssociationMining implements IMappingClass {
 
 	private long id;
@@ -64,6 +75,7 @@ public class LevelAssociationMining implements IMappingClass {
 	 * @return the identifier for the association between levels
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -83,6 +95,8 @@ public class LevelAssociationMining implements IMappingClass {
 	 * 
 	 * @return a level in which the resource is used
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="upper_id")
 	public LevelMining getUpper() {
 		return this.upper;
 	}
@@ -128,6 +142,8 @@ public class LevelAssociationMining implements IMappingClass {
 	 * 
 	 * @return the degree which is used in the department
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="lower_id")
 	public LevelMining getLower() {
 		return this.lower;
 	}
@@ -169,6 +185,7 @@ public class LevelAssociationMining implements IMappingClass {
 		}
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

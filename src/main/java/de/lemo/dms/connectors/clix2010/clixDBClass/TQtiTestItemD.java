@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "T_QTI_TESTITEM_D")
 public class TQtiTestItemD implements IClixMappingClass {
 
 	private TQtiTestItemDPK id;
@@ -42,6 +49,7 @@ public class TQtiTestItemD implements IClixMappingClass {
 	private Long questionType;
 	private Long language;
 	
+	@EmbeddedId
 	public TQtiTestItemDPK getId() {
 		return id;
 	}
@@ -50,6 +58,7 @@ public class TQtiTestItemD implements IClixMappingClass {
 		this.id = id;
 	}
 	
+	@Column(name="CONTENT_ID")
 	public Long getContent() {
 		return content;
 	}
@@ -58,6 +67,7 @@ public class TQtiTestItemD implements IClixMappingClass {
 		this.content = content;
 	}
 	
+	@Column(name="QUESTION")
 	public String getQuestion() {
 		return question;
 	}
@@ -66,6 +76,7 @@ public class TQtiTestItemD implements IClixMappingClass {
 		this.question = question;
 	}
 	
+	@Column(name="QUESTION_TYPE")
 	public Long getQuestionType() {
 		return questionType;
 	}
@@ -74,6 +85,7 @@ public class TQtiTestItemD implements IClixMappingClass {
 		this.questionType = questionType;
 	}
 	
+	@Column(name="LANGUAGE_ID")
 	public Long getLanguage() {
 		return language;
 	}

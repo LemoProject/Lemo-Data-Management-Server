@@ -28,10 +28,20 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the table wiki. */
+@Entity
+@Table(name = "wiki")
 public class WikiMining implements IMappingClass, ILearningObject {
 
 	private long id;
@@ -42,10 +52,11 @@ public class WikiMining implements IMappingClass, ILearningObject {
 	private Long platform;
 	private static final Long PREFIX = 18L;
 
+
 	private Set<CourseWikiMining> courseWikis = new HashSet<CourseWikiMining>();
 	private Set<WikiLogMining> wikiLogs = new HashSet<WikiLogMining>();
 
-	
+	@Transient
 	public Long getPrefix()
 	{
 		return PREFIX;
@@ -74,6 +85,7 @@ public class WikiMining implements IMappingClass, ILearningObject {
 	 * @return the identifier of the wiki
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -94,6 +106,7 @@ public class WikiMining implements IMappingClass, ILearningObject {
 	 * @return the title of the wiki
 	 */
 	@Override
+	@Column(name="title", length=1000)
 	public String getTitle() {
 		return this.title;
 	}
@@ -113,6 +126,7 @@ public class WikiMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return a short text which describes the subject of the wiki
 	 */
+	@Column(name="summary", length=1000)
 	public String getSummary() {
 		return this.summary;
 	}
@@ -132,6 +146,7 @@ public class WikiMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the time stamp when the wiki was created
 	 */
+	@Column(name="timecreated")
 	public long getTimeCreated() {
 		return this.timeCreated;
 	}
@@ -151,6 +166,7 @@ public class WikiMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the time stamp when the quiz was changed the last time
 	 */
+	@Column(name="timemodified")
 	public long getTimeModified() {
 		return this.timeModified;
 	}
@@ -180,6 +196,7 @@ public class WikiMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return a set of entries in the course_wiki table which relate this wiki to courses
 	 */
+	@OneToMany(mappedBy="wiki")
 	public Set<CourseWikiMining> getCourseWikis() {
 		return this.courseWikis;
 	}
@@ -209,6 +226,7 @@ public class WikiMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return a set of entries in the wiki_log table which are related to this wiki
 	 */
+	@OneToMany(mappedBy="wiki")
 	public Set<WikiLogMining> getWikiLogs() {
 		return this.wikiLogs;
 	}
@@ -223,6 +241,7 @@ public class WikiMining implements IMappingClass, ILearningObject {
 		this.wikiLogs.add(wikiLog);
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

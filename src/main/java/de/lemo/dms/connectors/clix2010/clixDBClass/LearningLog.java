@@ -25,12 +25,19 @@
  */
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Mapping class for table LearningLog.
  * 
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "LEARNING_LOG")
 public class LearningLog {
 	
 	private Long id;
@@ -43,6 +50,8 @@ public class LearningLog {
 	private Double evaluatedScore;
 	private Long typeOfModification;
 	
+	@Id
+	@Column(name="LEARNING_LOG_ID")
 	public Long getId() {
 		return id;
 	}
@@ -51,6 +60,7 @@ public class LearningLog {
 		this.id = id;
 	}
 	
+	@Column(name="PERSON_ID")
 	public Long getPerson() {
 		return person;
 	}
@@ -59,6 +69,7 @@ public class LearningLog {
 		this.person = person;
 	}
 	
+	@Column(name="COURSE_ID")
 	public Long getCourse() {
 		return course;
 	}
@@ -67,6 +78,7 @@ public class LearningLog {
 		this.course = course;
 	}
 	
+	@Column(name="COMPONENT_ID")
 	public Long getComponent() {
 		return component;
 	}
@@ -75,6 +87,7 @@ public class LearningLog {
 		this.component = component;
 	}
 	
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return lastUpdated;
 	}
@@ -83,6 +96,7 @@ public class LearningLog {
 		this.lastUpdated = lastUpdated;
 	}
 	
+	@Column(name="START_DATE")
 	public String getStartDate() {
 		return startDate;
 	}
@@ -91,6 +105,7 @@ public class LearningLog {
 		this.startDate = startDate;
 	}
 	
+	@Column(name="END_DATE")
 	public String getEndDate() {
 		return endDate;
 	}
@@ -99,6 +114,7 @@ public class LearningLog {
 		this.endDate = endDate;
 	}
 	
+	@Column(name="EVALUATED_SCORE")
 	public Double getEvaluatedScore() {
 		return evaluatedScore;
 	}
@@ -107,6 +123,7 @@ public class LearningLog {
 		this.evaluatedScore = evaluatedScore;
 	}
 
+	@Column(name="TYPE_OF_MODIFICATION")
 	public Long getTypeOfModification() {
 		return typeOfModification;
 	}

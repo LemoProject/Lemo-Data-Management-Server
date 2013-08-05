@@ -27,11 +27,23 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedLogObject;
 
 /** This class represents the log table for the scorm modules. */
+@Entity
+@Table(name = "scorm_log")
 public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObject {
 
 	private long id;
@@ -83,6 +95,7 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	}
 	
 	@Override
+	@Column(name="duration")
 	public Long getDuration() {
 		return this.duration;
 	}
@@ -92,13 +105,14 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 		this.duration = duration;
 	}
 
-	@Override
+	@Transient
 	public String getTitle()
 	{
 		return this.scorm == null ? null : this.scorm.getTitle();
 	}
 
 	@Override
+	@Transient
 	public Long getLearnObjId()
 	{
 		return this.scorm == null ? null : this.scorm.getId();
@@ -111,6 +125,7 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	 * @return the identifier of the log entry
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -132,6 +147,8 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	 * @return the user who interact with the quiz
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -178,6 +195,8 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	 * @return the course in which the action takes place
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -225,6 +244,7 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	 * @return the grade in this case of action
 	 */
 	@Override
+	@Column(name="grade")
 	public Double getGrade() {
 		return this.grade;
 	}
@@ -245,6 +265,7 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	 * @return the timestamp the action did occur
 	 */
 	@Override
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -265,6 +286,7 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	 * @return the action which occur
 	 */
 	@Override
+	@Column(name="action")
 	public String getAction() {
 		return this.action;
 	}
@@ -321,15 +343,19 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	 * 
 	 * @return the scorm package in which the action takes place
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="scorm_id")
 	public ScormMining getScorm() {
 		return this.scorm;
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return 17L;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -339,11 +365,13 @@ public class ScormLogMining implements ILogMining, IMappingClass, IRatedLogObjec
 	}
 
 	@Override
+	@Transient
 	public Double getMaxGrade() {
 		return this.scorm.getMaxGrade();
 	}
 
 	@Override
+	@Transient
 	public Double getFinalGrade() {
 		return this.grade;
 	}

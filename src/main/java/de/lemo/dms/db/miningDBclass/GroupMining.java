@@ -28,12 +28,21 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * This class represents the table group.
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "groups")
 public class GroupMining implements IMappingClass {
 
 	private long id;
@@ -41,7 +50,9 @@ public class GroupMining implements IMappingClass {
 	private long timeModified;
 	private Long platform;
 
+
 	private Set<CourseGroupMining> courseGroups = new HashSet<CourseGroupMining>();
+
 	private Set<GroupUserMining> groupUsers = new HashSet<GroupUserMining>();
 
 	@Override
@@ -67,6 +78,7 @@ public class GroupMining implements IMappingClass {
 	 * @return the identifier of the group
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -86,6 +98,7 @@ public class GroupMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the group was created
 	 */
+	@Column(name="timecreated")
 	public long getTimeCreated() {
 		return this.timeCreated;
 	}
@@ -105,6 +118,7 @@ public class GroupMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the group was changed the last time
 	 */
+	@Column(name="timemodified")
 	public long getTimeModified() {
 		return this.timeModified;
 	}
@@ -134,6 +148,7 @@ public class GroupMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_group table which relate the group to the courses
 	 */
+	@OneToMany(mappedBy="group")
 	public Set<CourseGroupMining> getCourseGroups() {
 		return this.courseGroups;
 	}
@@ -163,6 +178,7 @@ public class GroupMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the group_user table which relate the group to the users
 	 */
+	@OneToMany(mappedBy="group")
 	public Set<GroupUserMining> getGroupUsers() {
 		return this.groupUsers;
 	}
@@ -177,6 +193,7 @@ public class GroupMining implements IMappingClass {
 		this.groupUsers.add(groupUser);
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

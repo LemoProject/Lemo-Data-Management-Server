@@ -28,20 +28,23 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 /**
  * Class for realization of primary key for ForumEntryState.
  * 
  * @author S.Schwarzrock
  *
  */
+@Embeddable
 public class ForumEntryStatePK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7895343428630427499L;
-	private Long user;
-	private Long entry;
+	private Long user_id;
+	private Long entry_id;
 
 	@Override
 	public boolean equals(final Object arg)
@@ -53,10 +56,10 @@ public class ForumEntryStatePK implements Serializable {
 			return false;
 		}
 		final ForumEntryStatePK a = (ForumEntryStatePK) arg;
-		if (a.getUser() != this.user) {
+		if (a.getUser_id() != this.user_id) {
 			return false;
 		}
-		if (a.getEntry() != this.entry) {
+		if (a.getEntry_id() != this.entry_id) {
 			return false;
 		}
 		return true;
@@ -66,25 +69,25 @@ public class ForumEntryStatePK implements Serializable {
 	public int hashCode()
 	{
 		int hc;
-		hc = this.entry.hashCode();
-		hc = (17 * hc) + this.user.hashCode();
+		hc = this.entry_id.hashCode();
+		hc = (17 * hc) + this.user_id.hashCode();
 		return hc;
 	}
 
-	public long getUser() {
-		return this.user;
+	public Long getUser_id() {
+		return user_id;
 	}
 
-	public void setUser(final long user) {
-		this.user = user;
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
 	}
 
-	public long getEntry() {
-		return this.entry;
+	public Long getEntry_id() {
+		return entry_id;
 	}
 
-	public void setEntry(final long entry) {
-		this.entry = entry;
+	public void setEntry_id(Long entry_id) {
+		this.entry_id = entry_id;
 	}
 
 	public ForumEntryStatePK()

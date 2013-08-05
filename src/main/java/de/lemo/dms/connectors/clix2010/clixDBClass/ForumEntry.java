@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "FORUM_ENTRY")
 public class ForumEntry implements IClixMappingClass {
 
 	private Long id;
@@ -43,6 +50,8 @@ public class ForumEntry implements IClixMappingClass {
 	private String title;
 	private String content;
 
+	@Id
+	@Column(name="ENTRY_ID")
 	public Long getId() {
 		return this.id;
 	}
@@ -51,6 +60,7 @@ public class ForumEntry implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="FORUM_ID")
 	public long getForum() {
 		return this.forum;
 	}
@@ -58,7 +68,7 @@ public class ForumEntry implements IClixMappingClass {
 	public void setForum(final Long forum) {
 		this.forum = forum;
 	}
-
+	@Column(name="LASTUPDATER_ID")
 	public Long getLastUpdater() {
 		return this.lastUpdater;
 	}
@@ -67,6 +77,7 @@ public class ForumEntry implements IClixMappingClass {
 		this.lastUpdater = lastUpdater;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return this.lastUpdated;
 	}
@@ -75,6 +86,7 @@ public class ForumEntry implements IClixMappingClass {
 		this.lastUpdated = lastUpdated;
 	}
 
+	@Column(name="TITLE")
 	public String getTitle() {
 		return this.title;
 	}
@@ -83,6 +95,7 @@ public class ForumEntry implements IClixMappingClass {
 		this.title = title;
 	}
 
+	@Column(name="CONTENT")
 	public String getContent() {
 		return this.content;
 	}

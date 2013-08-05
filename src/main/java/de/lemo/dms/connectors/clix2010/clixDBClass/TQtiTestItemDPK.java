@@ -28,29 +28,39 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 /**
  * Class for realization of primary key for TQtiTestItemDPK.
  * 
  * @author S.Schwarzrock
  *
  */
+@Embeddable
 public class TQtiTestItemDPK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4802836843072674394L;
-	private Long content;
-	private Long language;
+	private Long content_id;
+	private Long language_id;
 
 	
-	public Long getContent() {
-		return content;
+	public Long getContent_id() {
+		return content_id;
 	}
 
-	
-	public void setContent(Long content) {
-		this.content = content;
+	public void setContent_id(Long content_id) {
+		this.content_id = content_id;
+	}
+
+	public Long getLanguage_id() {
+		return language_id;
+	}
+
+	public void setLanguage_id(Long language_id) {
+		this.language_id = language_id;
 	}
 
 	@Override
@@ -63,10 +73,10 @@ public class TQtiTestItemDPK implements Serializable {
 			return false;
 		}
 		final TQtiTestItemDPK a = (TQtiTestItemDPK) arg;
-		if (a.getContent() != this.content) {
+		if (a.getContent_id() != this.content_id) {
 			return false;
 		}
-		if (a.getLanguage() != this.language) {
+		if (a.getLanguage_id() != this.language_id) {
 			return false;
 		}
 		return true;
@@ -75,18 +85,11 @@ public class TQtiTestItemDPK implements Serializable {
 	@Override
 	public int hashCode()
 	{
-		return (this.content.hashCode() * 17) + (this.language.hashCode() * 19);
+		return (this.content_id.hashCode() * 17) + (this.language_id.hashCode() * 19);
 	}
 
 	public TQtiTestItemDPK()
 	{
 	}
 
-	public Long getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(Long language) {
-		this.language = language;
-	}
 }

@@ -28,6 +28,14 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
@@ -36,6 +44,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
  * This class represents the table assignment. 
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "assignment")
 public class AssignmentMining implements IMappingClass, ILearningObject, IRatedObject {
 
 	private long id;
@@ -73,6 +83,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	 * 
 	 * @return the timestamp the assignment will be accessible after by students
 	 */
+	@Column(name="timeopen")
 	public long getTimeOpen() {
 		return this.timeOpen;
 	}
@@ -92,6 +103,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	 * 
 	 * @return the timestamp after that the assignment will be not accessible any more by students
 	 */
+	@Column(name="timeclose")
 	public long getTimeClose() {
 		return this.timeClose;
 	}
@@ -111,6 +123,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	 * 
 	 * @return the timestamp when the assignment was created
 	 */
+	@Column(name="timecreated")
 	public long getTimeCreated() {
 		return this.timeCreated;
 	}
@@ -130,6 +143,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	 * 
 	 * @return the timestamp when the assignment was changed the last time
 	 */
+	@Column(name="timemodified")
 	public long getTimeModified() {
 		return this.timeModified;
 	}
@@ -160,6 +174,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	 * @return the title of the assignment
 	 */
 	@Override
+	@Column(name="title", length=1000)
 	public String getTitle() {
 		return this.title;
 	}
@@ -170,6 +185,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	 * @return the identifier of the assignment
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -190,6 +206,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	 * @return the maximum grade which is set for the assignment
 	 */
 	@Override
+	@Column(name="maxgrade")
 	public Double getMaxGrade() {
 		return this.maxGrade;
 	}
@@ -219,6 +236,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	 * 
 	 * @return the type of this assignment
 	 */
+	@Column(name="type")
 	public String getType() {
 		return this.type;
 	}
@@ -238,6 +256,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	 * 
 	 * @return a set of entries in the quiz_log table which are related with this assignment
 	 */
+	@OneToMany(mappedBy="assignment")
 	public Set<AssignmentLogMining> getAssignmentLogs() {
 		return this.assignmentLogs;
 	}
@@ -267,6 +286,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	 * 
 	 * @return a set of entries in the course_assignment table which are related with this assignment
 	 */
+	@OneToMany(mappedBy="assignment")
 	public Set<CourseAssignmentMining> getCourseAssignments() {
 		return this.courseAssignments;
 	}
@@ -281,6 +301,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 		this.courseAssignments.add(courseAssignment);
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -290,6 +311,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return 11L;
 	}

@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "T_QTI_EVAL_ASSESSMENT")
 public class TQtiEvalAssessment implements IClixMappingClass {
 
 	private Long id;
@@ -44,26 +51,17 @@ public class TQtiEvalAssessment implements IClixMappingClass {
 	private Long evalCount;
 	private String lastInvocation;
 
+	@Id
+	@Column(name="EVALASS_ID")
 	public Long getId() {
 		return this.id;
-	}
-
-	public String getString()
-	{
-		return "TQtiEvalAssessment$$$"
-				+ this.id + "$$$"
-				+ this.getLastInvocation() + "$$$"
-				+ this.getAssessment() + "$$$"
-				+ this.getCandidate() + "$$$"
-				+ this.getComponent() + "$$$"
-				+ this.getEvalCount() + "$$$"
-				+ this.getEvaluatedScore();
 	}
 
 	public void setId(final Long id) {
 		this.id = id;
 	}
 
+	@Column(name="COMPONENT_ID")
 	public Long getComponent() {
 		return this.component;
 	}
@@ -72,6 +70,7 @@ public class TQtiEvalAssessment implements IClixMappingClass {
 		this.component = component;
 	}
 
+	@Column(name="CANDIDATE_ID")
 	public Long getCandidate() {
 		return this.candidate;
 	}
@@ -80,6 +79,7 @@ public class TQtiEvalAssessment implements IClixMappingClass {
 		this.candidate = candidate;
 	}
 
+	@Column(name="ASSESSMENT_ID")
 	public Long getAssessment() {
 		return this.assessment;
 	}
@@ -88,6 +88,7 @@ public class TQtiEvalAssessment implements IClixMappingClass {
 		this.assessment = assessment;
 	}
 
+	@Column(name="EVALUATED_SCORE")
 	public Long getEvaluatedScore() {
 		return this.evaluatedScore;
 	}
@@ -96,6 +97,7 @@ public class TQtiEvalAssessment implements IClixMappingClass {
 		this.evaluatedScore = evaluatedScore;
 	}
 
+	@Column(name="EVAL_COUNT")
 	public Long getEvalCount() {
 		return this.evalCount;
 	}
@@ -104,6 +106,7 @@ public class TQtiEvalAssessment implements IClixMappingClass {
 		this.evalCount = evalCount;
 	}
 
+	@Column(name="LASTINVOCATION")
 	public String getLastInvocation() {
 		return this.lastInvocation;
 	}

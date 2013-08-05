@@ -28,35 +28,41 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 /**
  * Class for realization of primary key for PlatformGroupSpecification.
  * 
  * @author S.Schwarzrock
  *
  */
+@Embeddable
 public class PlatformGroupSpecificationPK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5700969997735490626L;
-	private Long group;
-	private Long person;
+	private Long group_id;
+	private Long person_id;
 
-	public Long getGroup() {
-		return this.group;
+
+	
+	
+	public Long getGroup_id() {
+		return group_id;
 	}
 
-	public void setGroup(final Long group) {
-		this.group = group;
+	public void setGroup_id(Long group_id) {
+		this.group_id = group_id;
 	}
 
-	public long getPerson() {
-		return this.person;
+	public Long getPerson_id() {
+		return person_id;
 	}
 
-	public void setPerson(final Long person) {
-		this.person = person;
+	public void setPerson_id(Long person_id) {
+		this.person_id = person_id;
 	}
 
 	public PlatformGroupSpecificationPK()
@@ -66,8 +72,8 @@ public class PlatformGroupSpecificationPK implements Serializable {
 
 	public PlatformGroupSpecificationPK(final Long person, final Long group)
 	{
-		this.group = group;
-		this.person = person;
+		this.group_id = group;
+		this.person_id = person;
 	}
 
 	@Override
@@ -80,10 +86,10 @@ public class PlatformGroupSpecificationPK implements Serializable {
 			return false;
 		}
 		final PlatformGroupSpecificationPK a = (PlatformGroupSpecificationPK) arg;
-		if (a.getGroup() != this.group) {
+		if (a.getGroup_id() != this.group_id) {
 			return false;
 		}
-		if (a.getPerson() != this.person) {
+		if (a.getPerson_id() != this.person_id) {
 			return false;
 		}
 		return true;
@@ -93,8 +99,8 @@ public class PlatformGroupSpecificationPK implements Serializable {
 	public int hashCode()
 	{
 		int hc;
-		hc = this.group.hashCode();
-		hc = (17 * hc) + this.person.hashCode();
+		hc = this.group_id.hashCode();
+		hc = (17 * hc) + this.person_id.hashCode();
 		return hc;
 	}
 

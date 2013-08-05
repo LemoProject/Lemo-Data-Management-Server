@@ -28,10 +28,20 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the table resource. */
+@Entity
+@Table(name = "resource")
 public class ResourceMining implements IMappingClass, ILearningObject {
 
 	/** The id. */
@@ -54,12 +64,14 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	private long position;
 	private Long platform;
 	/** The course_resource. */
+
 	private Set<CourseResourceMining> courseResources = new HashSet<CourseResourceMining>();
 	/** The resource_log. */
 	private Set<ResourceLogMining> resourceLogs = new HashSet<ResourceLogMining>();
 	
 	private static final Long PREFIX = 16L;
 	
+	@Transient
 	public Long getPrefix()
 	{
 		return PREFIX;
@@ -82,6 +94,7 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the url
 	 */
+	@Column(name="url", length=1000)
 	public String getUrl() {
 		return this.url;
 	}
@@ -101,6 +114,7 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the position
 	 */
+	@Column(name="position")
 	public long getPosition() {
 		return this.position;
 	}
@@ -142,6 +156,7 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return The estimated difficulty of the resource.
 	 */
+	@Column(name="difficulty")
 	public String getDifficulty() {
 		return this.difficulty;
 	}
@@ -161,6 +176,7 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return The recommended processing time of the resource.
 	 */
+	@Column(name="processingtime")
 	public long getProcessingTime() {
 		return this.processingTime;
 	}
@@ -181,6 +197,7 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * @return the identifier of the resource
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -200,6 +217,7 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the type of the resource
 	 */
+	@Column(name="type")
 	public String getType() {
 		return this.type;
 	}
@@ -219,6 +237,7 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the timestamp when the resource was created
 	 */
+	@Column(name="timecreated")
 	public long getTimeCreated() {
 		return this.timeCreated;
 	}
@@ -237,7 +256,8 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * standard getter for the attribute timeModified.
 	 * 
 	 * @return the timestamp when the resource was changed the last time
-	 */
+	 */	
+	@Column(name="timemodified")
 	public long getTimeModified() {
 		return this.timeModified;
 	}
@@ -268,6 +288,7 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * @return the title of the resource
 	 */
 	@Override
+	@Column(name="title", length=1000)
 	public String getTitle() {
 		return this.title;
 	}
@@ -287,6 +308,7 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return a set of entries in the course_resource table which relate the resource to the courses
 	 */
+	@OneToMany(mappedBy="resource")
 	public Set<CourseResourceMining> getCourseResources() {
 		return this.courseResources;
 	}
@@ -316,6 +338,8 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return a set of entries in the resource_log table which are related to this resource
 	 */
+
+	@OneToMany(mappedBy="resource")
 	public Set<ResourceLogMining> getResourceLogs() {
 		return this.resourceLogs;
 	}
@@ -330,6 +354,7 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 		this.resourceLogs.add(resourceLog);
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

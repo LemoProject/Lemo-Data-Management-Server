@@ -27,9 +27,20 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the association between the quiz and the user. */
+@Entity
+@Table(name = "quiz_user")
 public class QuizUserMining implements IMappingClass {
 
 	private long id;
@@ -65,6 +76,7 @@ public class QuizUserMining implements IMappingClass {
 	 * @return the identifier for the association between quiz and user
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -84,6 +96,8 @@ public class QuizUserMining implements IMappingClass {
 	 * 
 	 * @return the user who is associated
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -130,6 +144,8 @@ public class QuizUserMining implements IMappingClass {
 	 * 
 	 * @return the course in which the action takes place
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")	 
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -176,6 +192,8 @@ public class QuizUserMining implements IMappingClass {
 	 * 
 	 * @return the quiz in which the action takes place
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="quiz_id")
 	public QuizMining getQuiz() {
 		return this.quiz;
 	}
@@ -222,6 +240,7 @@ public class QuizUserMining implements IMappingClass {
 	 * 
 	 * @return the raw grade of the user in this exercise
 	 */
+	@Column	(name="rawgrade")
 	public double getRawGrade() {
 		return this.rawGrade;
 	}
@@ -241,6 +260,7 @@ public class QuizUserMining implements IMappingClass {
 	 * 
 	 * @return the final grade of the user in this quiz
 	 */
+	@Column	(name="finalgrade")
 	public double getFinalGrade() {
 		return this.finalGrade;
 	}
@@ -260,6 +280,7 @@ public class QuizUserMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the grade was changed the last time
 	 */
+	@Column	(name="timemodified")
 	public long getTimeModified() {
 		return this.timeModified;
 	}
@@ -274,6 +295,7 @@ public class QuizUserMining implements IMappingClass {
 		this.timeModified = timeModified;
 	}
 
+	@Column	(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

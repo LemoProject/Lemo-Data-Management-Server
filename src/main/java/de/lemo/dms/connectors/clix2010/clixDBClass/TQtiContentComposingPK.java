@@ -28,19 +28,46 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 /**
  * Class for realization of primary key for TQtiContentComposing.
  * 
  * @author S.Schwarzrock
  *
  */
+@Embeddable
 public class TQtiContentComposingPK implements Serializable {
 
 	private static final long serialVersionUID = -4802836843072674394L;
-	private Long candidate;
-	private Long content;
-	private Long container;
+	private Long candidate_id;
+	private Long content_id;
+	private Long container_id;
 	
+	public Long getCandidate_id() {
+		return candidate_id;
+	}
+
+	public void setCandidate_id(Long candidate_id) {
+		this.candidate_id = candidate_id;
+	}
+
+	public Long getContent_id() {
+		return content_id;
+	}
+
+	public void setContent_id(Long content_id) {
+		this.content_id = content_id;
+	}
+
+	public Long getContainer_id() {
+		return container_id;
+	}
+
+	public void setContainer_id(Long container_id) {
+		this.container_id = container_id;
+	}
+
 	@Override
 	public boolean equals(final Object arg)
 	{
@@ -51,13 +78,13 @@ public class TQtiContentComposingPK implements Serializable {
 			return false;
 		}
 		final TQtiContentComposingPK a = (TQtiContentComposingPK) arg;
-		if (a.getCandidate() != this.candidate) {
+		if (a.getCandidate_id() != this.candidate_id) {
 			return false;
 		}
-		if (a.getContent() != this.content) {
+		if (a.getContent_id() != this.content_id) {
 			return false;
 		}
-		if (a.getContainer() != this.container) {
+		if (a.getContainer_id() != this.container_id) {
 			return false;
 		}
 		return true;
@@ -66,32 +93,6 @@ public class TQtiContentComposingPK implements Serializable {
 	@Override
 	public int hashCode()
 	{
-		return (this.content.hashCode() * 17) + (this.container.hashCode() * 19) + (this.candidate.hashCode() * 23);
+		return (this.content_id.hashCode() * 17) + (this.container_id.hashCode() * 19) + (this.candidate_id.hashCode() * 23);
 	}
-	
-	public Long getContainer() {
-		return container;
-	}
-	
-	public void setContainer(Long container) {
-		this.container = container;
-	}
-	
-	public Long getContent() {
-		return content;
-	}
-	
-	public void setContent(Long content) {
-		this.content = content;
-	}
-	
-	public Long getCandidate() {
-		return candidate;
-	}
-	
-	public void setCandidate(Long candidate) {
-		this.candidate = candidate;
-	}
-	
-	
 }

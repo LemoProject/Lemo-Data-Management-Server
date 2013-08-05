@@ -28,10 +28,20 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the table question. */
+@Entity
+@Table(name = "question")
 public class QuestionMining implements IMappingClass, ILearningObject {
 
 	private long id;
@@ -43,10 +53,12 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 	private Long platform;
 	private static final Long PREFIX = 13L;
 	
+	@Transient
 	public Long getPrefix()
 	{
 		return PREFIX;
 	}
+
 
 	private Set<QuizQuestionMining> quizQuestions = new HashSet<QuizQuestionMining>();
 	private Set<QuestionLogMining> questionLogs = new HashSet<QuestionLogMining>();
@@ -74,6 +86,7 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 	 * @return the identifier of the question
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -94,6 +107,7 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 	 * @return the title of the question
 	 */
 	@Override
+	@Column	(name="title", length=1000)
 	public String getTitle() {
 		return this.title;
 	}
@@ -113,6 +127,7 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the text of the question
 	 */
+	@Column	(name="text", length=1000)
 	public String getText() {
 		return this.text;
 	}
@@ -132,6 +147,7 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the type of the question
 	 */
+	@Column	(name="type")
 	public String getType() {
 		return this.type;
 	}
@@ -151,6 +167,7 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the timestamp when the question was created
 	 */
+	@Column	(name="timecreated")
 	public long getTimeCreated() {
 		return this.timeCreated;
 	}
@@ -170,6 +187,7 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the timestamp when the question was changed the last time
 	 */
+	@Column	(name="timemodified")
 	public long getTimeModified() {
 		return this.timeModified;
 	}
@@ -199,6 +217,7 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return a set of entries in the quiz_question table which which relate the quiz to questions
 	 */
+	@OneToMany(mappedBy="question")
 	public Set<QuizQuestionMining> getQuizQuestions() {
 		return this.quizQuestions;
 	}
@@ -228,6 +247,7 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return a set of entries in the question_log table which are related with the question
 	 */
+	@OneToMany(mappedBy="question")
 	public Set<QuestionLogMining> getQuestionLogs() {
 		return this.questionLogs;
 	}
@@ -242,6 +262,7 @@ public class QuestionMining implements IMappingClass, ILearningObject {
 		this.questionLogs.add(questionLog);
 	}
 
+	@Column	(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

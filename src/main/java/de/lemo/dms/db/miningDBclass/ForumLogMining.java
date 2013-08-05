@@ -27,6 +27,16 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -34,6 +44,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
  * This class represents the log table for the forum object.
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "forum_log")
 public class ForumLogMining implements ILogMining, IMappingClass {
 
 	private long id;
@@ -86,6 +98,7 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	}
 
 	@Override
+	@Column(name="duration")
 	public Long getDuration() {
 		return this.duration;
 	}
@@ -96,12 +109,14 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	}
 
 	@Override
+	@Transient
 	public String getTitle()
 	{
 		return this.forum == null ? null : this.forum.getTitle();
 	}
 
 	@Override
+	@Transient
 	public Long getLearnObjId()
 	{
 		return this.forum == null ? null : this.forum.getId();
@@ -113,6 +128,7 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 * @return the identifier of the log entry
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -133,6 +149,7 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the subject of the entry
 	 */
+	@Column(name="subject", length=1000)
 	public String getSubject() {
 		return this.subject;
 	}
@@ -152,6 +169,7 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the message of the entry
 	 */
+	@Column(name="message", length=1000)
 	public String getMessage() {
 		return this.message;
 	}
@@ -172,6 +190,7 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 * @return the time when the logged action occur
 	 */
 	@Override
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -192,6 +211,7 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 * @return the action which occur
 	 */
 	@Override
+	@Column(name="action")
 	public String getAction() {
 		return this.action;
 	}
@@ -212,6 +232,8 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 * @return the course in which the action takes place
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -285,6 +307,8 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the forum with which was interacted
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="forum_id")
 	public ForumMining getForum() {
 		return this.forum;
 	}
@@ -315,6 +339,8 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	 * @return the user who interact with the forum
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -346,10 +372,12 @@ public class ForumLogMining implements ILogMining, IMappingClass {
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return 15L;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

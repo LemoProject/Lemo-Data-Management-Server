@@ -26,6 +26,12 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +40,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "PERSON_COMPONENT_ASSIGNMENT")
 public class PersonComponentAssignment implements IClixMappingClass {
 
 	private PersonComponentAssignmentPK id;
@@ -42,6 +50,7 @@ public class PersonComponentAssignment implements IClixMappingClass {
 	private Long context;
 	private String firstEntered;
 
+	@Column(name="FIRST_ENTERED")
 	public String getFirstEntered() {
 		return this.firstEntered;
 	}
@@ -50,10 +59,12 @@ public class PersonComponentAssignment implements IClixMappingClass {
 		this.firstEntered = firstEntered;
 	}
 
+	@EmbeddedId
 	public PersonComponentAssignmentPK getId() {
 		return this.id;
 	}
 	
+	@Transient
 	public Long getLongId()
 	{
 		return Long.valueOf(component + "" + person);
@@ -63,6 +74,7 @@ public class PersonComponentAssignment implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="COMPONENT_ID")
 	public Long getComponent() {
 		return this.component;
 	}
@@ -71,6 +83,7 @@ public class PersonComponentAssignment implements IClixMappingClass {
 		this.component = component;
 	}
 
+	@Column(name="PERSON_ID")
 	public Long getPerson() {
 		return this.person;
 	}
@@ -79,6 +92,7 @@ public class PersonComponentAssignment implements IClixMappingClass {
 		this.person = person;
 	}
 
+	@Column(name="CONTEXT")
 	public Long getContext() {
 		return this.context;
 	}

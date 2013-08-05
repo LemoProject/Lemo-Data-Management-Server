@@ -28,6 +28,15 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
@@ -35,6 +44,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
 /** This class represents the relationship between the courses and scorm packages. */
+@Entity
+@Table(name = "course_scorm")
 public class CourseScormMining implements IMappingClass, ICourseLORelation, ICourseRatedObjectAssociation {
 
 	private long id;
@@ -65,6 +76,8 @@ public class CourseScormMining implements IMappingClass, ICourseLORelation, ICou
 	 * @return a course in which the quiz is used
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -110,6 +123,8 @@ public class CourseScormMining implements IMappingClass, ICourseLORelation, ICou
 	 * 
 	 * @return the scorm which is used in the course
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="scorm_id")
 	public ScormMining getScorm() {
 		return this.scorm;
 	}
@@ -166,10 +181,12 @@ public class CourseScormMining implements IMappingClass, ICourseLORelation, ICou
 	 * @return the identifier for the association between course and scorm
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -179,16 +196,19 @@ public class CourseScormMining implements IMappingClass, ICourseLORelation, ICou
 	}
 
 	@Override
+	@Transient
 	public IRatedObject getRatedObject() {
 		return this.scorm;
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return this.scorm.getPrefix();
 	}
 
 	@Override
+	@Transient
 	public ILearningObject getLearningObject() {
 		return this.scorm;
 	}

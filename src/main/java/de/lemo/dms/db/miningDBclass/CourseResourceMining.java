@@ -28,11 +28,22 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the relationship between courses and resources. */
+@Entity
+@Table(name = "course_resource")
 public class CourseResourceMining implements IMappingClass, ICourseLORelation {
 
 	private long id;
@@ -63,6 +74,7 @@ public class CourseResourceMining implements IMappingClass, ICourseLORelation {
 	 * @return the identifier for the association between course and resource
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -82,6 +94,8 @@ public class CourseResourceMining implements IMappingClass, ICourseLORelation {
 	 * 
 	 * @return a course in which the resource is used
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -127,6 +141,8 @@ public class CourseResourceMining implements IMappingClass, ICourseLORelation {
 	 * 
 	 * @return the resource which is used in the course
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="resource_id")
 	public ResourceMining getResource() {
 		return this.resource;
 	}
@@ -167,6 +183,7 @@ public class CourseResourceMining implements IMappingClass, ICourseLORelation {
 		}
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -176,6 +193,7 @@ public class CourseResourceMining implements IMappingClass, ICourseLORelation {
 	}
 
 	@Override
+	@Transient
 	public ILearningObject getLearningObject() {
 		return this.resource;
 	}

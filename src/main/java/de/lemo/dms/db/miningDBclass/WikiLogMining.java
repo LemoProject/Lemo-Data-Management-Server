@@ -27,10 +27,22 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the log table for the wiki object. */
+@Entity
+@Table(name = "wiki_log")
 public class WikiLogMining implements ILogMining, IMappingClass {
 
 	private long id;
@@ -81,6 +93,7 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	}
 
 	@Override
+	@Column(name="duration")
 	public Long getDuration() {
 		return this.duration;
 	}
@@ -91,12 +104,14 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	}
 
 	@Override
+	@Transient
 	public String getTitle()
 	{
 		return this.wiki == null ? null : this.wiki.getTitle();
 	}
 
 	@Override
+	@Transient
 	public Long getLearnObjId()
 	{
 		return this.wiki == null ? null : this.wiki.getId();
@@ -108,6 +123,7 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	 * @return the identifier of the log entry
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -129,6 +145,7 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	 * @return the action which occur
 	 */
 	@Override
+	@Column(name="action")
 	public String getAction() {
 		return this.action;
 	}
@@ -149,6 +166,7 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	 * @return the time stamp the action did occur
 	 */
 	@Override
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -169,6 +187,8 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	 * @return the the course in which the action on the wiki occur
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -216,6 +236,8 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	 * @return the user who interact with the resource
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -261,6 +283,8 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the wiki with which was interacted
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="wiki_id")
 	public WikiMining getWiki() {
 		return this.wiki;
 	}
@@ -302,10 +326,12 @@ public class WikiLogMining implements ILogMining, IMappingClass {
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return 18L;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

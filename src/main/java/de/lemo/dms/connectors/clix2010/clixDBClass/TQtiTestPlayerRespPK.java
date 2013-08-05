@@ -28,24 +28,76 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 /**
  * Class for realization of primary key for TQtiTestPlayerResp.
  * 
  * @author S.Schwarzrock
  *
  */
+@Embeddable
 public class TQtiTestPlayerRespPK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1333399944075685332L;
-	private Long candidate;
-	private Long container;
-	private Long content;
-	private Long response;
-	private Long subitemPosition;
-	private Long testItem;
+	private Long candidate_id;
+	private Long container_id;
+	private Long content_id;
+	
+	public Long getCandidate_id() {
+		return candidate_id;
+	}
+
+	public void setCandidate_id(Long candidate_id) {
+		this.candidate_id = candidate_id;
+	}
+
+	public Long getContainer_id() {
+		return container_id;
+	}
+
+	public void setContainer_id(Long container_id) {
+		this.container_id = container_id;
+	}
+
+	public Long getContent_id() {
+		return content_id;
+	}
+
+	public void setContent_id(Long content_id) {
+		this.content_id = content_id;
+	}
+
+	public Long getResponse_id() {
+		return response_id;
+	}
+
+	public void setResponse_id(Long response_id) {
+		this.response_id = response_id;
+	}
+
+	public Long getSubitem_position() {
+		return subitem_position;
+	}
+
+	public void setSubitem_position(Long subitem_position) {
+		this.subitem_position = subitem_position;
+	}
+
+	public Long getTestItem_id() {
+		return testItem_id;
+	}
+
+	public void setTestItem_id(Long testItem_id) {
+		this.testItem_id = testItem_id;
+	}
+
+	private Long response_id;
+	private Long subitem_position;
+	private Long testItem_id;
 
 	@Override
 	public boolean equals(final Object arg)
@@ -57,22 +109,22 @@ public class TQtiTestPlayerRespPK implements Serializable {
 			return false;
 		}
 		final TQtiTestPlayerRespPK a = (TQtiTestPlayerRespPK) arg;
-		if (a.getCandidate() != this.candidate) {
+		if (a.getCandidate_id() != this.candidate_id) {
 			return false;
 		}
-		if (a.getContainer() != this.container) {
+		if (a.getContainer_id() != this.container_id) {
 			return false;
 		}
-		if (a.getContent() != this.content) {
+		if (a.getContent_id() != this.content_id) {
 			return false;
 		}
-		if (a.getResponse() != this.response) {
+		if (a.getResponse_id() != this.response_id) {
 			return false;
 		}
-		if (a.getSubitemPosition() != this.subitemPosition) {
+		if (a.getSubitem_position() != this.subitem_position) {
 			return false;
 		}
-		if (a.getTestItem() != this.testItem) {
+		if (a.getTestItem_id() != this.testItem_id) {
 			return false;
 		}
 		return true;
@@ -81,8 +133,8 @@ public class TQtiTestPlayerRespPK implements Serializable {
 	@Override
 	public int hashCode()
 	{
-		return (this.candidate.hashCode() * 17) + (this.container.hashCode() * 19) + (this.content.hashCode() * 23)
-				+ (this.response.hashCode() * 29) + (this.subitemPosition.hashCode() * 31) + (this.testItem.hashCode() * 37);
+		return (this.candidate_id.hashCode() * 17) + (this.container_id.hashCode() * 19) + (this.content_id.hashCode() * 23)
+				+ (this.response_id.hashCode() * 29) + (this.subitem_position.hashCode() * 31) + (this.testItem_id.hashCode() * 37);
 	}
 
 	public TQtiTestPlayerRespPK()
@@ -91,62 +143,5 @@ public class TQtiTestPlayerRespPK implements Serializable {
 	}
 
 	
-	public Long getCandidate() {
-		return candidate;
-	}
-
 	
-	public void setCandidate(Long candidate) {
-		this.candidate = candidate;
-	}
-
-	
-	public Long getContainer() {
-		return container;
-	}
-
-	
-	public void setContainer(Long container) {
-		this.container = container;
-	}
-
-	
-	public Long getContent() {
-		return content;
-	}
-
-	
-	public void setContent(Long content) {
-		this.content = content;
-	}
-
-	
-	public Long getResponse() {
-		return response;
-	}
-
-	
-	public void setResponse(Long response) {
-		this.response = response;
-	}
-
-	
-	public Long getSubitemPosition() {
-		return subitemPosition;
-	}
-
-	
-	public void setSubitemPosition(Long subitemPosition) {
-		this.subitemPosition = subitemPosition;
-	}
-
-	
-	public Long getTestItem() {
-		return testItem;
-	}
-
-	
-	public void setTestItem(Long testItem) {
-		this.testItem = testItem;
-	}
 }

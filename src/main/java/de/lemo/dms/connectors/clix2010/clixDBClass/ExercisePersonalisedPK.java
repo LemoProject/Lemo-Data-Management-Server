@@ -28,22 +28,57 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 /**
  * Class for realization of primary key for ExercisePersonalised.
  * 
  * @author S.Schwarzrock
  *
  */
+@Embeddable
 public class ExercisePersonalisedPK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5514904557669519527L;
-	private Long exercise;
-	private Long user;
-	private Long exerciseSheet;
-	private Long community;
+	private Long exercise_id;
+	private Long user_id;
+	private Long exerciseSheet_id;
+	private Long community_id;
+
+	public Long getExercise_id() {
+		return exercise_id;
+	}
+
+	public void setExercise_id(Long exercise_id) {
+		this.exercise_id = exercise_id;
+	}
+
+	public Long getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
+	}
+
+	public Long getExerciseSheet_id() {
+		return exerciseSheet_id;
+	}
+
+	public void setExerciseSheet_id(Long exerciseSheet_id) {
+		this.exerciseSheet_id = exerciseSheet_id;
+	}
+
+	public Long getCommunity_id() {
+		return community_id;
+	}
+
+	public void setCommunity_id(Long community_id) {
+		this.community_id = community_id;
+	}
 
 	@Override
 	public boolean equals(final Object arg)
@@ -55,16 +90,16 @@ public class ExercisePersonalisedPK implements Serializable {
 			return false;
 		}
 		final ExercisePersonalisedPK a = (ExercisePersonalisedPK) arg;
-		if (a.getUser() != this.user) {
+		if (a.getUser_id() != this.user_id) {
 			return false;
 		}
-		if (a.getExercise() != this.exercise) {
+		if (a.getExercise_id() != this.exercise_id) {
 			return false;
 		}
-		if (a.getExerciseSheet() != this.exerciseSheet) {
+		if (a.getExerciseSheet_id() != this.exerciseSheet_id) {
 			return false;
 		}
-		if (a.getCommunity() != this.community) {
+		if (a.getCommunity_id() != this.community_id) {
 			return false;
 		}
 		return true;
@@ -73,41 +108,11 @@ public class ExercisePersonalisedPK implements Serializable {
 	@Override
 	public int hashCode()
 	{
-		return (this.community.hashCode() * 17) + (this.exercise.hashCode() * 19)
-				+ (this.exerciseSheet.hashCode() * 23) + (this.user.hashCode() * 29);
+		return (this.community_id.hashCode() * 17) + (this.exercise_id.hashCode() * 19)
+				+ (this.exerciseSheet_id.hashCode() * 23) + (this.user_id.hashCode() * 29);
 	}
 
-	public long getExerciseSheet() {
-		return this.exerciseSheet;
-	}
-
-	public void setExerciseSheet(final long exerciseSheet) {
-		this.exerciseSheet = exerciseSheet;
-	}
-
-	public long getCommunity() {
-		return this.community;
-	}
-
-	public void setCommunity(final long community) {
-		this.community = community;
-	}
-
-	public long getExercise() {
-		return this.exercise;
-	}
-
-	public void setExercise(final long exercise) {
-		this.exercise = exercise;
-	}
-
-	public long getUser() {
-		return this.user;
-	}
-
-	public void setUser(final long user) {
-		this.user = user;
-	}
+	
 
 	public ExercisePersonalisedPK()
 	{

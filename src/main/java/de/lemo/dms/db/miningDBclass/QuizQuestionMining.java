@@ -27,9 +27,20 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the relationship between quiz and questions. */
+@Entity
+@Table(name = "quiz_question")
 public class QuizQuestionMining implements IMappingClass {
 
 	private long id;
@@ -61,6 +72,7 @@ public class QuizQuestionMining implements IMappingClass {
 	 * @return the identifier for the association between quiz and question
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -80,6 +92,8 @@ public class QuizQuestionMining implements IMappingClass {
 	 * 
 	 * @return the quiz which is associated
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="quiz_id")
 	public QuizMining getQuiz() {
 		return this.quiz;
 	}
@@ -125,6 +139,8 @@ public class QuizQuestionMining implements IMappingClass {
 	 * 
 	 * @return the question which is associated
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="question_id")
 	public QuestionMining getQuestion() {
 		return this.question;
 	}
@@ -166,6 +182,7 @@ public class QuizQuestionMining implements IMappingClass {
 		}
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

@@ -27,12 +27,24 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * This class represents the log table for the course object.
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "course_log")
 public class CourseLogMining implements IMappingClass, Comparable<CourseLogMining> {
 
 	private long id;
@@ -82,6 +94,7 @@ public class CourseLogMining implements IMappingClass, Comparable<CourseLogMinin
 	}
 	
 
+	@Column(name="duration")
 	public Long getDuration() {
 		return this.duration;
 	}
@@ -92,12 +105,14 @@ public class CourseLogMining implements IMappingClass, Comparable<CourseLogMinin
 	}
 
 
+	@Transient
 	public String getTitle()
 	{
 		return this.course == null ? null : this.course.getTitle();
 	}
 
 
+	@Transient
 	public Long getLearnObjId()
 	{
 		return this.course == null ? null : this.course.getId();
@@ -109,6 +124,7 @@ public class CourseLogMining implements IMappingClass, Comparable<CourseLogMinin
 	 * @return the identifier of the log entry
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -128,6 +144,7 @@ public class CourseLogMining implements IMappingClass, Comparable<CourseLogMinin
 	 * 
 	 * @return the timestamp the action did occur
 	 */
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -147,6 +164,7 @@ public class CourseLogMining implements IMappingClass, Comparable<CourseLogMinin
 	 * 
 	 * @return the action which occur
 	 */
+	@Column(name="action")
 	public String getAction() {
 		return this.action;
 	}
@@ -166,6 +184,8 @@ public class CourseLogMining implements IMappingClass, Comparable<CourseLogMinin
 	 * 
 	 * @return the course in which the action takes place
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -211,6 +231,8 @@ public class CourseLogMining implements IMappingClass, Comparable<CourseLogMinin
 	 * 
 	 * @return the user who interact with the course
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -250,10 +272,12 @@ public class CourseLogMining implements IMappingClass, Comparable<CourseLogMinin
 		}
 	}
 
+	@Transient
 	public Long getPrefix() {
 		return 12L;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

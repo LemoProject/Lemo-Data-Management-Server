@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,16 +39,18 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "E_COMPONENTTYPE")
 public class EComponentType implements IClixMappingClass {
 
 	private Long id;
 	private Long component;
-	private Long componentType;
 	private Long characteristic;
 	private Long language;
 	private String uploadDir;
 	private String lastUpdated;
 
+	@Column(name="UPLOADDIRECTORY")
 	public String getUploadDir() {
 		return this.uploadDir;
 	}
@@ -52,14 +59,7 @@ public class EComponentType implements IClixMappingClass {
 		this.uploadDir = uploadDir;
 	}
 
-	public Long getCharacteristic() {
-		return this.characteristic;
-	}
-
-	public void setCharacteristic(final Long characteristic) {
-		this.characteristic = characteristic;
-	}
-
+	@Column(name="LANGUAGE_ID")
 	public Long getLanguage() {
 		return this.language;
 	}
@@ -68,6 +68,7 @@ public class EComponentType implements IClixMappingClass {
 		this.language = language;
 	}
 	
+	@Column(name="COMPONENT_ID")
 	public Long getComponent() {
 		return this.component;
 	}
@@ -76,6 +77,7 @@ public class EComponentType implements IClixMappingClass {
 		this.component = component;
 	}
 
+	@Column(name="CHARACTERISTIC_ID")
 	public Long getCharacteristicId() {
 		return this.characteristic;
 	}
@@ -84,14 +86,8 @@ public class EComponentType implements IClixMappingClass {
 		this.characteristic = characteristicId;
 	}
 
-	public Long getComponentType() {
-		return componentType;
-	}
-
-	public void setComponentType(Long componentType) {
-		this.componentType = componentType;
-	}
-
+	@Id
+	@Column(name="COMPONENTTYPE_ID")
 	public Long getId() {
 		return id;
 	}
@@ -100,6 +96,7 @@ public class EComponentType implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return lastUpdated;
 	}

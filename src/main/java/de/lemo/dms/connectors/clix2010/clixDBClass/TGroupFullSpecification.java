@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,26 +39,24 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "T_GROUPFULLSPECIFICATION")
 public class TGroupFullSpecification implements IClixMappingClass {
 
 	private Long group;
 	private Long person;
 
+	@Id
+	@Column(name="GROUP_ID")
 	public Long getGroup() {
 		return this.group;
-	}
-
-	public String getString()
-	{
-		return "TGroupFullSpecification$$$"
-				+ this.getGroup() + "$$$"
-				+ this.getPerson();
 	}
 
 	public void setGroup(final Long group) {
 		this.group = group;
 	}
 
+	@Column(name="PERSON_ID")
 	public Long getPerson() {
 		return this.person;
 	}

@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "EXERCISE_PERSONALISED")
 public class ExercisePersonalised implements IClixMappingClass {
 
 	private ExercisePersonalisedPK id;
@@ -45,6 +52,7 @@ public class ExercisePersonalised implements IClixMappingClass {
 	private Long exerciseSheet;
 	private Long community;
 
+	@EmbeddedId
 	public ExercisePersonalisedPK getId() {
 		return this.id;
 	}
@@ -53,6 +61,7 @@ public class ExercisePersonalised implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="EXERCISE_SHEET_ID")
 	public Long getExerciseSheet() {
 		return this.exerciseSheet;
 	}
@@ -61,6 +70,7 @@ public class ExercisePersonalised implements IClixMappingClass {
 		this.exerciseSheet = exerciseSheet;
 	}
 
+	@Column(name="COMMUNITY_ID")
 	public Long getCommunity() {
 		return this.community;
 	}
@@ -69,6 +79,7 @@ public class ExercisePersonalised implements IClixMappingClass {
 		this.community = community;
 	}
 
+	@Column(name="EXERCISE_ID")
 	public Long getExercise() {
 		return this.exercise;
 	}
@@ -77,6 +88,7 @@ public class ExercisePersonalised implements IClixMappingClass {
 		this.exercise = exercise;
 	}
 
+	@Column(name="USER_ID")
 	public Long getUser() {
 		return this.user;
 	}
@@ -85,6 +97,7 @@ public class ExercisePersonalised implements IClixMappingClass {
 		this.user = user;
 	}
 
+	@Column(name="POINTS")
 	public Long getPoints() {
 		return this.points;
 	}
@@ -93,6 +106,7 @@ public class ExercisePersonalised implements IClixMappingClass {
 		this.points = points;
 	}
 
+	@Column(name="UPLOAD_DATE")
 	public String getUploadDate() {
 		return this.uploadDate;
 	}

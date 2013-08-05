@@ -27,6 +27,15 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 
@@ -34,6 +43,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
  * This class represents the relationship between the courses and chat. 
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "course_chat")
 public class CourseChatMining implements ICourseLORelation{
 	
 	private long id;
@@ -93,6 +104,7 @@ public class CourseChatMining implements ICourseLORelation{
 		}
 	}
 	
+	@Id
 	public long getId() {
 		return id;
 	}
@@ -101,6 +113,8 @@ public class CourseChatMining implements ICourseLORelation{
 		this.id = id;
 	}
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return course;
 	}
@@ -109,7 +123,7 @@ public class CourseChatMining implements ICourseLORelation{
 		this.course = course;
 	}
 	
-	
+	@Column(name="platform")
 	public long getPlatform() {
 		return platform;
 	}
@@ -118,6 +132,8 @@ public class CourseChatMining implements ICourseLORelation{
 		this.platform = platform;
 	}
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="chat_id")
 	public ChatMining getChat() {
 		return chat;
 	}
@@ -128,6 +144,7 @@ public class CourseChatMining implements ICourseLORelation{
 
 
 	@Override
+	@Transient
 	public ILearningObject getLearningObject() {
 		return this.chat;
 	}

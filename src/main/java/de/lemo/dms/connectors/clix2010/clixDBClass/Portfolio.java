@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "PORTFOLIO")
 public class Portfolio implements IClixMappingClass {
 
 	private Long id;
@@ -44,6 +51,7 @@ public class Portfolio implements IClixMappingClass {
 	private Long course;
 	private String lastUpdated;
 
+	@Column(name="STARTDATE")
 	public String getStartDate() {
 		return this.startDate;
 	}
@@ -52,6 +60,7 @@ public class Portfolio implements IClixMappingClass {
 		this.startDate = startDate;
 	}
 
+	@Column(name="ENDDATE")
 	public String getEndDate() {
 		return this.endDate;
 	}
@@ -65,6 +74,8 @@ public class Portfolio implements IClixMappingClass {
 
 	}
 
+	@Id
+	@Column(name="PORTFOLIO_ID")
 	public Long getId() {
 		return this.id;
 	}
@@ -73,6 +84,7 @@ public class Portfolio implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="COMPONENT_ID")
 	public Long getComponent() {
 		return this.component;
 	}
@@ -81,6 +93,7 @@ public class Portfolio implements IClixMappingClass {
 		this.component = component;
 	}
 
+	@Column(name="PERSON_ID")
 	public Long getPerson() {
 		return this.person;
 	}
@@ -89,6 +102,7 @@ public class Portfolio implements IClixMappingClass {
 		this.person = person;
 	}
 
+	@Column(name="COURSE_ID")
 	public Long getCourse() {
 		return course;
 	}
@@ -97,6 +111,7 @@ public class Portfolio implements IClixMappingClass {
 		this.course = course;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return lastUpdated;
 	}

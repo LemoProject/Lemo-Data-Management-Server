@@ -29,10 +29,18 @@ package de.lemo.dms.db.miningDBclass;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /**
  * 
  * Bean class for the levels of hierarchy on the platform
  */
+@Entity
+@Table(name = "level")
 public class LevelMining {
 
 	private long id;
@@ -40,9 +48,12 @@ public class LevelMining {
 	private Long platform;
 	private long depth;
 
-	private Set<LevelAssociationMining> levelAssociations = new HashSet<LevelAssociationMining>();
+
+	private Set<LevelAssociationMining> levelUpperAssociations = new HashSet<LevelAssociationMining>();
+	private Set<LevelAssociationMining> levelLowerAssociations = new HashSet<LevelAssociationMining>();
 	private Set<LevelCourseMining> levelCourses = new HashSet<LevelCourseMining>();
 
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -51,6 +62,7 @@ public class LevelMining {
 		this.id = id;
 	}
 
+	@Column(name="title", length=1000)
 	public String getTitle() {
 		return this.title;
 	}
@@ -59,6 +71,7 @@ public class LevelMining {
 		this.title = title;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -73,8 +86,8 @@ public class LevelMining {
 	 * @param department_degree
 	 *            a set of entries in the department_degreee table which relate the degrees to the departments
 	 */
-	public void setLevelAssociations(final Set<LevelAssociationMining> levelAssociation) {
-		this.levelAssociations = levelAssociation;
+	public void setLevelUpperAssociations(final Set<LevelAssociationMining> levelAssociation) {
+		this.levelUpperAssociations = levelAssociation;
 	}
 
 	/**
@@ -82,8 +95,29 @@ public class LevelMining {
 	 * 
 	 * @return a set of entries in the department_degreee table which relate the degree to the departments
 	 */
-	public Set<LevelAssociationMining> getLevelAssociations() {
-		return this.levelAssociations;
+	@OneToMany(mappedBy="upper")
+	public Set<LevelAssociationMining> getLevelUpperAssociations() {
+		return this.levelUpperAssociations;
+	}
+	
+	/**
+	 * standard setter for the attribute department_degreee
+	 * 
+	 * @param department_degree
+	 *            a set of entries in the department_degreee table which relate the degrees to the departments
+	 */
+	public void setLevelLowerAssociations(final Set<LevelAssociationMining> levelLowerAssociation) {
+		this.levelLowerAssociations = levelLowerAssociation;
+	}
+
+	/**
+	 * standard getter for the attribute
+	 * 
+	 * @return a set of entries in the department_degreee table which relate the degree to the departments
+	 */
+	@OneToMany(mappedBy="lower")
+	public Set<LevelAssociationMining> getLevelLowerAssociations() {
+		return this.levelLowerAssociations;
 	}
 
 	/**
@@ -93,7 +127,7 @@ public class LevelMining {
 	 *            this entry will be added to the list of department_degree in this department
 	 */
 	public void addLevelAssociation(final LevelAssociationMining levelAssociationAdd) {
-		this.levelAssociations.add(levelAssociationAdd);
+		this.levelUpperAssociations.add(levelAssociationAdd);
 	}
 
 	/**
@@ -111,6 +145,8 @@ public class LevelMining {
 	 * 
 	 * @return a set of entries in the degree_course table which relate the degree to the courses
 	 */
+	
+	@OneToMany(mappedBy="level")
 	public Set<LevelCourseMining> getLevelCourses() {
 		return this.levelCourses;
 	}
@@ -125,6 +161,7 @@ public class LevelMining {
 		this.levelCourses.add(levelCourseAdd);
 	}
 
+	@Column(name="depth")
 	public long getDepth() {
 		return this.depth;
 	}

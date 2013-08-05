@@ -30,31 +30,67 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the table resource. */
+@Entity
+@Table(name = "user")
 public class UserMining implements IMappingClass {
 
+
 	private long id;
+	
+
 	private String login;
+	
+
 	private long gender;
+	
+
 	private long lastLogin;
+	
+
 	private long firstAccess;
+	
+
 	private long lastAccess;
+	
+
 	private long currentLogin;
+	
+
 	private Long platform;
 
+
 	private Set<CourseUserMining> courseUsers = new HashSet<CourseUserMining>();
+
 	private Set<GroupUserMining> groupUsers = new HashSet<GroupUserMining>();
+
 	private Set<ForumLogMining> forumLogs = new HashSet<ForumLogMining>();
+
 	private Set<WikiLogMining> wikiLogs = new HashSet<WikiLogMining>();
+
 	private Set<CourseLogMining> courseLogs = new HashSet<CourseLogMining>();
+
 	private Set<QuizLogMining> quizLogs = new HashSet<QuizLogMining>();
+
 	private Set<ScormLogMining> scormLogs = new HashSet<ScormLogMining>();
+
 	private Set<AssignmentLogMining> assignmentLogs = new HashSet<AssignmentLogMining>();
+
 	private Set<QuestionLogMining> questionLogs = new HashSet<QuestionLogMining>();
+
 	private Set<QuizUserMining> quizUsers = new HashSet<QuizUserMining>();
+
 	private Set<ResourceLogMining> resourceLogs = new HashSet<ResourceLogMining>();
+
 	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
 
 	@Override
@@ -80,10 +116,13 @@ public class UserMining implements IMappingClass {
 	 * @return the identifier of the user
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
 
+
+	@Column(name="login", length=1000)
 	public String getLogin() {
 		return this.login;
 	}
@@ -92,6 +131,8 @@ public class UserMining implements IMappingClass {
 		this.login = login;
 	}
 
+
+	@Column(name="gender")
 	public long getGender() {
 		return this.gender;
 	}
@@ -145,6 +186,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return the timestamp of the last time the user has logged in
 	 */
+	@Column(name="lastlogin")
 	public long getLastLogin() {
 		return this.lastLogin;
 	}
@@ -164,6 +206,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the user has made his first access to the LMS
 	 */
+	@Column(name="firstaccess")
 	public long getFirstAccess() {
 		return this.firstAccess;
 	}
@@ -183,6 +226,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the user has made the last access to the LMS
 	 */
+	@Column(name="lastaccess")
 	public long getLastAccess() {
 		return this.lastAccess;
 	}
@@ -202,6 +246,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the user has logged into the current session
 	 */
+	@Column(name="currentlogin")
 	public long getCurrentLogin() {
 		return this.currentLogin;
 	}
@@ -231,6 +276,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_user table which relate the user to courses
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<CourseUserMining> getCourseUsers() {
 		return this.courseUsers;
 	}
@@ -260,6 +306,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the group_user table which relate the user to groups
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<GroupUserMining> getGroupUsers() {
 		return this.groupUsers;
 	}
@@ -289,6 +336,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the forum_log table which contain actions of this user
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<ForumLogMining> getForumLogs() {
 		return this.forumLogs;
 	}
@@ -318,6 +366,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the wiki_log table which contain actions of this user
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<WikiLogMining> getWikiLogs() {
 		return this.wikiLogs;
 	}
@@ -347,6 +396,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_log table which contain actions of this user
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<CourseLogMining> getCourseLogs() {
 		return this.courseLogs;
 	}
@@ -376,6 +426,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the quiz_log table which contain actions of this user
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<QuizLogMining> getQuizLogs() {
 		return this.quizLogs;
 	}
@@ -405,6 +456,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the question_log table which contain actions of this user
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<QuestionLogMining> getQuestionLogs() {
 		return this.questionLogs;
 	}
@@ -434,6 +486,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the resource_log table which contain actions of this user
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<ResourceLogMining> getResourceLogs() {
 		return this.resourceLogs;
 	}
@@ -463,6 +516,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the quiz_user table which relate the user to the courses
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<QuizUserMining> getQuizUsers() {
 		return this.quizUsers;
 	}
@@ -492,6 +546,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the assignment_log table which contain actions of this user
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<AssignmentLogMining> getAssignmentLogs() {
 		return this.assignmentLogs;
 	}
@@ -521,6 +576,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the scorm_log table which contain actions of this user
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<ScormLogMining> getScormLogs() {
 		return this.scormLogs;
 	}
@@ -544,6 +600,7 @@ public class UserMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the scorm_log table which contain actions of this user
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<ChatLogMining> getChatLogs() {
 		return this.chatLogs;
 	}
@@ -558,6 +615,7 @@ public class UserMining implements IMappingClass {
 		this.chatLogs.add(chatLog);
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

@@ -28,11 +28,21 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
 /** This class represents the table assignment. */
+@Entity
+@Table(name = "scorm")
 public class ScormMining implements IMappingClass, ILearningObject, IRatedObject {
 
 	private long id;
@@ -44,6 +54,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	private long timeCreated;
 	private long timeModified;
 	private Long platform;
+
 
 	private Set<ScormLogMining> scormLogs = new HashSet<ScormLogMining>();
 	private Set<CourseScormMining> courseScorms = new HashSet<CourseScormMining>();
@@ -70,6 +81,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 * 
 	 * @return the timestamp the scorm package will be accessible after by students
 	 */
+	@Column(name="timeopen")
 	public long getTimeOpen() {
 		return this.timeOpen;
 	}
@@ -89,6 +101,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 * 
 	 * @return the timestamp after that the scorm package will be not accessible any more by students
 	 */
+	@Column(name="timeclose")
 	public long getTimeClose() {
 		return this.timeClose;
 	}
@@ -108,6 +121,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 * 
 	 * @return the timestamp when the scorm package was created
 	 */
+	@Column(name="timecreated")
 	public long getTimeCreated() {
 		return this.timeCreated;
 	}
@@ -127,6 +141,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 * 
 	 * @return the timestamp when the scorm package was changed the last time
 	 */
+	@Column(name="timemodified")
 	public long getTimeModified() {
 		return this.timeModified;
 	}
@@ -157,6 +172,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 * @return the title of the scorm package
 	 */
 	@Override
+	@Column(name="title", length=1000)
 	public String getTitle() {
 		return this.title;
 	}
@@ -167,6 +183,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 * @return the identifier of the scorm package
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -187,6 +204,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 * @return the maximum grade which is set for the scorm package
 	 */
 	@Override
+	@Column(name="maxgrade")
 	public Double getMaxGrade() {
 		return this.maxGrade;
 	}
@@ -216,6 +234,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 * 
 	 * @return the type of this scorm package
 	 */
+	@Column(name="type")
 	public String getType() {
 		return this.type;
 	}
@@ -235,6 +254,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 * 
 	 * @return a set of entries in the quiz_log table which are related with this scorm package
 	 */
+	@OneToMany(mappedBy="scorm")
 	public Set<ScormLogMining> getScormLogs() {
 		return this.scormLogs;
 	}
@@ -264,6 +284,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 * 
 	 * @return a set of entries in the course_scorm table which are related with this scorm package
 	 */
+	@OneToMany(mappedBy="scorm")
 	public Set<CourseScormMining> getCourseScorms() {
 		return this.courseScorms;
 	}
@@ -278,6 +299,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 		this.courseScorms.add(courseScorm);
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -287,6 +309,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return 17L;
 	}

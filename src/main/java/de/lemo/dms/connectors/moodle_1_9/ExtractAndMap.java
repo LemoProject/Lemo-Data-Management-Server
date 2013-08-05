@@ -550,8 +550,6 @@ public abstract class ExtractAndMap {
 			this.wikiLogMax = 0L;
 		}
 
-		this.dbHandler.closeSession(session);
-
 		return readingtimestamp;
 	}
 

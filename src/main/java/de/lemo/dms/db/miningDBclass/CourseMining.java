@@ -28,12 +28,22 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * This class represents the table course.
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "course")
 public class CourseMining implements IMappingClass {
 
 	private long id;
@@ -46,7 +56,9 @@ public class CourseMining implements IMappingClass {
 	private String shortname;
 	private Long platform;
 
+
 	private Set<CourseGroupMining> courseGroupSet = new HashSet<CourseGroupMining>();
+	@Transient
 	private Set<ChatMining> chats = new HashSet<ChatMining>();
 	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
 	private Set<CourseForumMining> courseForums = new HashSet<CourseForumMining>();
@@ -66,10 +78,7 @@ public class CourseMining implements IMappingClass {
 	private Set<ScormLogMining> scormLogs = new HashSet<ScormLogMining>();
 	private Set<CourseScormMining> courseScorms = new HashSet<CourseScormMining>();
 	private Set<LevelCourseMining> levelCourses = new HashSet<LevelCourseMining>();
-	private Set<CourseArchiveMining> courseArchives = new HashSet<CourseArchiveMining>();
 	private Set<CourseChatMining> courseChats = new HashSet<CourseChatMining>();
-	private Set<ArchiveMining> archives = new HashSet<ArchiveMining>();
-	private Set<ArchiveLogMining> archiveLogs = new HashSet<ArchiveLogMining>();
 
 	@Override
 	public boolean equals(final IMappingClass o)
@@ -94,6 +103,7 @@ public class CourseMining implements IMappingClass {
 	 * @return the identifier of the course
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -113,6 +123,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the course starts
 	 */
+	@Column(name="startdate")
 	public long getStartDate() {
 		return this.startDate;
 	}
@@ -132,6 +143,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return the timestamp after that the students can enrol themselfs to the course
 	 */
+	@Column(name="enrolstart")
 	public long getEnrolStart() {
 		return this.enrolStart;
 	}
@@ -151,6 +163,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return the timestamp after that the students can not enrol themself any more
 	 */
+	@Column(name="enrolend")
 	public long getEnrolEnd() {
 		return this.enrolEnd;
 	}
@@ -169,6 +182,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the course was created
 	 */
+	@Column(name="timecreated")
 	public long getTimeCreated() {
 		return this.timeCreated;
 	}
@@ -188,6 +202,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the course was changes for the last time
 	 */
+	@Column(name="timemodified")
 	public long getTimeModified() {
 		return this.timeModified;
 	}
@@ -207,6 +222,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_group table which shows the groups in this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseGroupMining> getCourseGroups() {
 		return this.courseGroupSet;
 	}
@@ -246,6 +262,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_forum table which relate the course to the forums
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseForumMining> getCourseForums() {
 		return this.courseForums;
 	}
@@ -275,6 +292,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_wiki table which shows the wikis in this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseWikiMining> getCourseWikis() {
 		return this.courseWikis;
 	}
@@ -304,6 +322,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_user table which shows the enroled users
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseUserMining> getCourseUsers() {
 		return this.courseUsers;
 	}
@@ -333,6 +352,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_quiz table which shows the quiz used in the course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseQuizMining> getCourseQuizzes() {
 		return this.courseQuizzes;
 	}
@@ -362,6 +382,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_resource table which shows the resources in this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseResourceMining> getCourseResources() {
 		return this.courseResources;
 	}
@@ -391,6 +412,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_log table which represent actions on this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseLogMining> getCourseLogs() {
 		return this.courseLogs;
 	}
@@ -420,6 +442,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the quiz_log table which are related to quiz in this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<QuizLogMining> getQuizLogs() {
 		return this.quizLogs;
 	}
@@ -449,6 +472,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the wiki_log table which are related to wikis in this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<WikiLogMining> getWikiLogs() {
 		return this.wikiLogs;
 	}
@@ -478,6 +502,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the question_log table which are related to questions in this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<QuestionLogMining> getQuestionLogs() {
 		return this.questionLogs;
 	}
@@ -507,6 +532,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the resource_log table which are related to resources in this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<ResourceLogMining> getResourceLogs() {
 		return this.resourceLogs;
 	}
@@ -536,6 +562,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the forum_log table which are related to forums in this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<ForumLogMining> getForumLogs() {
 		return this.forumLogs;
 	}
@@ -565,6 +592,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return the title of this course
 	 */
+	@Column(name="title", length=1000)
 	public String getTitle() {
 		return this.title;
 	}
@@ -584,6 +612,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a shortname for this course
 	 */
+	@Column(name="shortname", length=1000)
 	public String getShortname() {
 		return this.shortname;
 	}
@@ -593,6 +622,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the quiz_user table which are related to this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<QuizUserMining> getQuizUsers() {
 		return this.quizUsers;
 	}
@@ -632,6 +662,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the assignment_log table which are related to assignment in this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<AssignmentLogMining> getAssignmentLogs() {
 		return this.assignmentLogs;
 	}
@@ -657,16 +688,6 @@ public class CourseMining implements IMappingClass {
 	}
 	
 	/**
-	 * standard setter for the attribute course_archive
-	 * 
-	 * @param courseChats
-	 *            a set of entries in the course_assignment table which shows the assignments used in the course
-	 */
-	public void setCourseArchives(final Set<CourseArchiveMining> courseArchives) {
-		this.courseArchives = courseArchives;
-	}
-	
-	/**
 	 * standard setter for the attribute course_chat
 	 * 
 	 * @param courseChat
@@ -677,19 +698,11 @@ public class CourseMining implements IMappingClass {
 	}
 	
 	/**
-	 * standard getter for the attribute course_archive
-	 * 
-	 * @return a set of entries in the course_archive table which shows the archives used in the course
-	 */
-	public Set<CourseArchiveMining> getCourseArchives() {
-		return this.courseArchives;
-	}
-	
-	/**
 	 * standard getter for the attribute course_chat
 	 * 
 	 * @return a set of entries in the course_chat table which shows the chats used in the course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseChatMining> getCourseChats() {
 		return this.courseChats;
 	}
@@ -699,6 +712,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_assignment table which shows the assignment used in the course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseAssignmentMining> getCourseAssignments() {
 		return this.courseAssignments;
 	}
@@ -714,16 +728,6 @@ public class CourseMining implements IMappingClass {
 	}
 	
 	/**
-	 * standard add method for the attribute course_archive
-	 * 
-	 * @param courseAssignment
-	 *            this entry of the course_archive table will be added to this course
-	 */
-	public void addCourseArchive(final CourseArchiveMining courseArchive) {
-		this.courseArchives.add(courseArchive);
-	}
-	
-	/**
 	 * standard add method for the attribute course_chat
 	 * 
 	 * @param courseAssignment
@@ -731,14 +735,6 @@ public class CourseMining implements IMappingClass {
 	 */
 	public void addCourseChat(final CourseChatMining courseChat) {
 		this.courseChats.add(courseChat);
-	}
-	
-	public void addArchive(final ArchiveMining archive) {
-		this.archives.add(archive);
-	}
-
-	public void addArchiveLog(final ArchiveLogMining archiveLog) {
-		this.archiveLogs.add(archiveLog);
 	}
 	
 	public void addChat(final ChatMining chat) {
@@ -749,6 +745,7 @@ public class CourseMining implements IMappingClass {
 		this.chatLogs.add(chatLog);
 	}
 
+	@Transient
 	public Set<ChatMining> getChats() {
 		return this.chats;
 	}
@@ -757,6 +754,7 @@ public class CourseMining implements IMappingClass {
 		this.chats = chat;
 	}
 
+	@OneToMany(mappedBy="course")
 	public Set<ChatLogMining> getChatLogs() {
 		return this.chatLogs;
 	}
@@ -780,6 +778,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the scorm_log table which are related to scorm packages in this course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<ScormLogMining> getScormLogs() {
 		return this.scormLogs;
 	}
@@ -809,6 +808,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_scorm table which shows the scorm used in the course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseScormMining> getCourseScorms() {
 		return this.courseScorms;
 	}
@@ -838,6 +838,7 @@ public class CourseMining implements IMappingClass {
 	 * 
 	 * @return a set of entries in the course_scorm table which shows the scorm used in the course
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<LevelCourseMining> getLevelCourses() {
 		return this.levelCourses;
 	}
@@ -852,6 +853,7 @@ public class CourseMining implements IMappingClass {
 		this.levelCourses.add(levelCourse);
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

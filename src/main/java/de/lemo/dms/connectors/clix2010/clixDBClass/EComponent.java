@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "E_COMPONENT")
 public class EComponent implements IClixMappingClass {
 
 	private Long id;
@@ -46,6 +53,8 @@ public class EComponent implements IClixMappingClass {
 	private Long object;
 
 
+	@Id
+	@Column(name="COMPONENT_ID")
 	public Long getId() {
 		return this.id;
 	}
@@ -54,6 +63,7 @@ public class EComponent implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="TYPE_ID")
 	public Long getType() {
 		return this.type;
 	}
@@ -62,6 +72,7 @@ public class EComponent implements IClixMappingClass {
 		this.type = type;
 	}
 
+	@Column(name="NAME")
 	public String getName() {
 		return this.name;
 	}
@@ -70,6 +81,7 @@ public class EComponent implements IClixMappingClass {
 		this.name = name;
 	}
 
+	@Column(name="CREATIONDATE")
 	public String getCreationDate() {
 		return this.creationDate;
 	}
@@ -78,6 +90,7 @@ public class EComponent implements IClixMappingClass {
 		this.creationDate = creationDate;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return this.lastUpdated;
 	}
@@ -86,6 +99,7 @@ public class EComponent implements IClixMappingClass {
 		this.lastUpdated = lastUpdated;
 	}
 
+	@Column(name="STARTDATE")
 	public String getStartDate() {
 		return this.startDate;
 	}
@@ -94,6 +108,7 @@ public class EComponent implements IClixMappingClass {
 		this.startDate = startDate;
 	}
 
+	@Column(name="DESCRIPTION")
 	public String getDescription() {
 		return this.description;
 	}
@@ -102,6 +117,7 @@ public class EComponent implements IClixMappingClass {
 		this.description = description;
 	}
 
+	@Column(name="OBJECT_ID")
 	public Long getObject() {
 		return object;
 	}

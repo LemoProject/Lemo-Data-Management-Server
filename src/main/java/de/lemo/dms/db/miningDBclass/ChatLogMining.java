@@ -27,6 +27,16 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
@@ -34,6 +44,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
  * This class represents the table chatlog. 
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "chat_log")
 public class ChatLogMining implements IMappingClass, ILogMining {
 
 	private long id;
@@ -47,6 +59,8 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 	private static final Long PREFIX = 19L;
 
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -115,6 +129,7 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 	}
 
 	@Override
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -123,6 +138,8 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 		this.timestamp = timestamp;
 	}
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="chat_id")
 	public ChatMining getChat() {
 		return this.chat;
 	}
@@ -132,6 +149,8 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 	}
 
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -141,6 +160,7 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 	}
 
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -150,6 +170,7 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 		this.id = id;
 	}
 
+	@Column(name="message", length=1000)
 	public String getMessage() {
 		return this.message;
 	}
@@ -192,30 +213,36 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 	
 
 	@Override
+	@Transient
 	public String getAction() {
 		return "chat";
 	}
 
 	@Override
+	@Transient
 	public String getTitle() {
 		return this.chat.getTitle();
 	}
 
 	@Override
+	@Transient
 	public Long getLearnObjId() {
 		return this.getChat().getId();
 	}
 
 	@Override
+	@Column(name="duration")
 	public Long getDuration() {
 		return this.duration;
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return PREFIX;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

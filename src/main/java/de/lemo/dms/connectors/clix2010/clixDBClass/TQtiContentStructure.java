@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "T_QTI_CONTENTSTRUCTURE")
 public class TQtiContentStructure implements IClixMappingClass {
 
 	private Long id;
@@ -41,6 +48,8 @@ public class TQtiContentStructure implements IClixMappingClass {
 	private Long content;
 	private String created;
 	
+	@Id
+	@Column(name="STRUCTURE_ID")
 	public Long getId() {
 		return id;
 	}
@@ -49,6 +58,7 @@ public class TQtiContentStructure implements IClixMappingClass {
 		this.id = id;
 	}
 	
+	@Column(name="CONTAINER_ID")
 	public Long getContainer() {
 		return container;
 	}
@@ -57,6 +67,7 @@ public class TQtiContentStructure implements IClixMappingClass {
 		this.container = container;
 	}
 	
+	@Column(name="CONTENT_ID")
 	public Long getContent() {
 		return content;
 	}
@@ -65,6 +76,7 @@ public class TQtiContentStructure implements IClixMappingClass {
 		this.content = content;
 	}
 	
+	@Column(name="CREATED")
 	public String getCreated() {
 		return created;
 	}

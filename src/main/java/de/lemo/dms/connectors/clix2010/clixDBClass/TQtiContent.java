@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "T_QTI_CONTENT")
 public class TQtiContent implements IClixMappingClass {
 
 	private Long id;
@@ -42,6 +49,7 @@ public class TQtiContent implements IClixMappingClass {
 	private String name;
 	private Double score;
 	
+	@Column(name="CONTENT_NAME")
 	public String getName() {
 		return this.name;
 	}
@@ -54,7 +62,9 @@ public class TQtiContent implements IClixMappingClass {
 	{
 
 	}
-
+	
+	@Id
+	@Column(name="CONTENT_ID")
 	public Long getId() {
 		return this.id;
 	}
@@ -63,6 +73,7 @@ public class TQtiContent implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="CREATED")
 	public String getCreated() {
 		return this.created;
 	}
@@ -71,6 +82,7 @@ public class TQtiContent implements IClixMappingClass {
 		this.created = created;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return this.lastUpdated;
 	}
@@ -79,6 +91,7 @@ public class TQtiContent implements IClixMappingClass {
 		this.lastUpdated = lastUpdated;
 	}
 
+	@Column(name="SCORE")
 	public Double getScore() {
 		return score;
 	}

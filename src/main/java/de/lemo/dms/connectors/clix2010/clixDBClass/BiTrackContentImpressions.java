@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -35,8 +40,11 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  *
  */
 
+@Entity
+@Table(name = "BI_TRACKCONTENT_IMPRESSIONS")
 public class BiTrackContentImpressions implements IClixMappingClass {
 
+	
 	private BiTrackContentImpressionsPK id;
 
 	private Long content;
@@ -46,6 +54,7 @@ public class BiTrackContentImpressions implements IClixMappingClass {
 	private Long totalImpressions;
 	private Long characteristic;
 
+	@EmbeddedId
 	public BiTrackContentImpressionsPK getId() {
 		return this.id;
 	}
@@ -54,6 +63,7 @@ public class BiTrackContentImpressions implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="CONTENT_ID")
 	public Long getContent() {
 		return this.content;
 	}
@@ -62,6 +72,7 @@ public class BiTrackContentImpressions implements IClixMappingClass {
 		this.content = content;
 	}
 
+	@Column(name="CHARACTERISTIC_ID")
 	public Long getCharacteristic() {
 		return this.characteristic;
 	}
@@ -75,6 +86,7 @@ public class BiTrackContentImpressions implements IClixMappingClass {
 
 	}
 
+	@Column(name="DAY_OF_ACCESS")
 	public String getDayOfAccess() {
 		return this.dayOfAccess;
 	}
@@ -83,6 +95,7 @@ public class BiTrackContentImpressions implements IClixMappingClass {
 		this.dayOfAccess = dayOfAccess;
 	}
 
+	@Column(name="CONTAINER_ID")
 	public long getContainer() {
 		return this.container;
 	}
@@ -91,6 +104,7 @@ public class BiTrackContentImpressions implements IClixMappingClass {
 		this.container = container;
 	}
 
+	@Column(name="USER_ID")
 	public Long getUser() {
 		return this.user;
 	}
@@ -99,6 +113,7 @@ public class BiTrackContentImpressions implements IClixMappingClass {
 		this.user = user;
 	}
 
+	@Column(name="TOTAL_IMPRESSIONS")
 	public Long getTotalImpressions() {
 		return this.totalImpressions;
 	}

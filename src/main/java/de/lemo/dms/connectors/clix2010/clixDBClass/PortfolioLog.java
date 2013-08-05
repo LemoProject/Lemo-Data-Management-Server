@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "PORTFOLIO_LOG")
 public class PortfolioLog implements IClixMappingClass {
 
 	private Long id;
@@ -48,17 +55,8 @@ public class PortfolioLog implements IClixMappingClass {
 
 	}
 
-	public String getString()
-	{
-		return "PortfolioLog$$$"
-				+ this.id + "$$$"
-				+ this.getLastUpdated() + "$$$"
-				+ this.getComponent() + "$$$"
-				+ this.getLastUpdater() + "$$$"
-				+ this.getPerson() + "$$$"
-				+ this.getTypeOfModification();
-	}
-
+	@Id
+	@Column(name="PORTFOLIO_LOG_ID")
 	public Long getId() {
 		return this.id;
 	}
@@ -67,6 +65,7 @@ public class PortfolioLog implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="COMPONENT_ID")
 	public Long getComponent() {
 		return this.component;
 	}
@@ -75,6 +74,7 @@ public class PortfolioLog implements IClixMappingClass {
 		this.component = component;
 	}
 
+	@Column(name="PERSON_ID")
 	public Long getPerson() {
 		return this.person;
 	}
@@ -83,6 +83,7 @@ public class PortfolioLog implements IClixMappingClass {
 		this.person = person;
 	}
 
+	@Column(name="TYPE_OF_MODIFICATION")
 	public Long getTypeOfModification() {
 		return this.typeOfModification;
 	}
@@ -91,6 +92,7 @@ public class PortfolioLog implements IClixMappingClass {
 		this.typeOfModification = typeOfModification;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return this.lastUpdated;
 	}
@@ -99,6 +101,7 @@ public class PortfolioLog implements IClixMappingClass {
 		this.lastUpdated = lastUpdated;
 	}
 
+	@Column(name="LASTUPDATER_ID")
 	public Long getLastUpdater() {
 		return this.lastUpdater;
 	}

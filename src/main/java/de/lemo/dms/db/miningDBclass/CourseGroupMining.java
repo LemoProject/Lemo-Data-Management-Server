@@ -27,12 +27,23 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * This class represents the relationship between the courses and groups.
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "course_group")
 public class CourseGroupMining implements IMappingClass {
 
 	private long id;
@@ -58,6 +69,7 @@ public class CourseGroupMining implements IMappingClass {
 	 * @return the identifier for the association between course and group
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -82,6 +94,8 @@ public class CourseGroupMining implements IMappingClass {
 	 * 
 	 * @return a course in which the group is used
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -163,10 +177,13 @@ public class CourseGroupMining implements IMappingClass {
 	 * 
 	 * @return a group which is used in the course
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="group_id")
 	public GroupMining getGroup() {
 		return this.group;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

@@ -28,20 +28,39 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 /**
  * Class for realization of primary key for ScormSessionTimes.
  * 
  * @author S.Schwarzrock
  *
  */
+@Embeddable
 public class ScormSessionTimesPK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1333399944075685332L;
-	private Long component;
-	private Long person;
+	private Long component_id;
+	private Long person_id;
+
+	public Long getComponent_id() {
+		return component_id;
+	}
+
+	public void setComponent_id(Long component_id) {
+		this.component_id = component_id;
+	}
+
+	public Long getPerson_id() {
+		return person_id;
+	}
+
+	public void setPerson_id(Long person_id) {
+		this.person_id = person_id;
+	}
 
 	@Override
 	public boolean equals(final Object arg)
@@ -53,10 +72,10 @@ public class ScormSessionTimesPK implements Serializable {
 			return false;
 		}
 		final ScormSessionTimesPK a = (ScormSessionTimesPK) arg;
-		if (a.getComponent() != this.component) {
+		if (a.getComponent_id() != this.component_id) {
 			return false;
 		}
-		if (a.getPerson() != this.person) {
+		if (a.getPerson_id() != this.person_id) {
 			return false;
 		}
 		return true;
@@ -66,8 +85,8 @@ public class ScormSessionTimesPK implements Serializable {
 	public int hashCode()
 	{
 		int hc;
-		hc = this.person.hashCode();
-		hc = (17 * hc) + this.component.hashCode();
+		hc = this.person_id.hashCode();
+		hc = (17 * hc) + this.component_id.hashCode();
 		return hc;
 	}
 
@@ -78,24 +97,9 @@ public class ScormSessionTimesPK implements Serializable {
 
 	public ScormSessionTimesPK(final Long component, final long person)
 	{
-		this.component = component;
-		this.person = person;
+		this.component_id = component;
+		this.person_id = person;
 	}
 
-	public Long getComponent() {
-		return this.component;
-	}
-
-	public void setComponent(final Long component) {
-		this.component = component;
-	}
-
-	public Long getPerson() {
-		return this.person;
-	}
-
-	public void setPerson(final Long person) {
-		this.person = person;
-	}
-
+	
 }

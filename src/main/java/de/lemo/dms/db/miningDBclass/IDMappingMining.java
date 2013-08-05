@@ -26,12 +26,19 @@
 
 package de.lemo.dms.db.miningDBclass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /**
  * Bean for the id mappig with hibernate
  *
  */
+@Entity
+@Table(name = "id_mapping")
 public class IDMappingMining implements IMappingClass {
 
 	private Long id;
@@ -55,6 +62,7 @@ public class IDMappingMining implements IMappingClass {
 		return id.intValue();
 	}
 	
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -83,6 +91,7 @@ public class IDMappingMining implements IMappingClass {
 	}
 	
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -91,6 +100,7 @@ public class IDMappingMining implements IMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="hash")
 	public String getHash() {
 		return this.hash;
 	}

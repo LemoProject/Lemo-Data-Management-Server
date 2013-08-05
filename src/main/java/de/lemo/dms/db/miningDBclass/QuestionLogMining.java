@@ -27,10 +27,22 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the log table for the question object. */
+@Entity
+@Table(name = "question_log")
 public class QuestionLogMining implements ILogMining, IMappingClass {
 
 	private long id;
@@ -87,6 +99,7 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	}
 	
 	@Override
+	@Column(name="duration")
 	public Long getDuration() {
 		return this.duration;
 	}
@@ -97,12 +110,14 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	}
 
 	@Override
+	@Transient
 	public String getTitle()
 	{
 		return this.question == null ? null : this.question.getTitle();
 	}
 
 	@Override
+	@Transient
 	public Long getLearnObjId()
 	{
 		return this.question == null ? null : this.question.getId();
@@ -114,6 +129,7 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * @return the identifier for the log entry
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -145,6 +161,8 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * @return the course in which the action takes place
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -180,6 +198,7 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the type of the question
 	 */
+	@Column(name="type")
 	public String getType() {
 		return this.type;
 	}
@@ -199,6 +218,7 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the answers which are submittet with this action
 	 */
+	@Column(name="answers")
 	public String getAnswers() {
 		return this.answers;
 	}
@@ -219,6 +239,7 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * @return the timestamp the action did occur
 	 */
 	@Override
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -238,6 +259,7 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the penalty on the grade in this action
 	 */
+	@Column(name="penalty")
 	public double getPenalty() {
 		return this.penalty;
 	}
@@ -257,6 +279,7 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the raw grade in this action(grade without penalty)
 	 */
+	@Column(name="rawgrade")
 	public double getRawGrade() {
 		return this.rawGrade;
 	}
@@ -276,6 +299,7 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the final grade in this action(with penalty)
 	 */
+	@Column(name="finalgrade")
 	public Double getFinalGrade() {
 		return this.finalGrade;
 	}
@@ -295,6 +319,8 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the question with which is interacted
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="question_id")
 	public QuestionMining getQuestion() {
 		return this.question;
 	}
@@ -341,6 +367,8 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the quiz in which the action takes place
 	 */
+	@ManyToOne
+	@JoinColumn(name="quiz_id")
 	public QuizMining getQuiz() {
 		return this.quiz;
 	}
@@ -387,6 +415,8 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * @return the user who interact with the question
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -442,15 +472,18 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * @return the action which occur
 	 */
 	@Override
+	@Column(name="action")
 	public String getAction() {
 		return this.action;
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return 13L;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

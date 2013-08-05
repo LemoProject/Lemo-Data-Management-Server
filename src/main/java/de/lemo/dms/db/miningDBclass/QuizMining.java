@@ -29,12 +29,22 @@ package de.lemo.dms.db.miningDBclass;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 import de.lemo.dms.db.miningDBclass.abstractions.IRatedObject;
 
 /** This class represents the table quiz. */
 @SuppressWarnings("serial")
+@Entity
+@Table(name = "quiz")
 public class QuizMining implements Serializable, IMappingClass, ILearningObject, IRatedObject {
 
 	private long id;
@@ -46,6 +56,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	private Long platform;
 	private long timeCreated;
 	private long timeModified;
+
 
 	private Set<CourseQuizMining> courseQuizzes = new HashSet<CourseQuizMining>();
 	private Set<QuizQuestionMining> quizQuestions = new HashSet<QuizQuestionMining>();
@@ -65,6 +76,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 		return false;
 	}
 
+	@Column(name="type")
 	public String getType() {
 		return this.type;
 	}
@@ -101,6 +113,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * 
 	 * @return the timestamp the quiz will be accessible after by students
 	 */
+	@Column(name="timeopen")
 	public long getTimeOpen() {
 		return this.timeOpen;
 	}
@@ -120,6 +133,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * 
 	 * @return the timestamp after that the quiz will be not accessible any more by students
 	 */
+	@Column(name="timeclose")
 	public long getTimeClose() {
 		return this.timeClose;
 	}
@@ -139,6 +153,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * 
 	 * @return the timestamp when the quiz was created
 	 */
+	@Column(name="timecreated")
 	public long getTimeCreated() {
 		return this.timeCreated;
 	}
@@ -158,6 +173,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * 
 	 * @return the timestamp when the quiz was changed the last time
 	 */
+	@Column(name="timemodified")
 	public long getTimeModified() {
 		return this.timeModified;
 	}
@@ -188,6 +204,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * @return the title of the quiz
 	 */
 	@Override
+	@Column(name="title", length=1000)
 	public String getTitle() {
 		return this.title;
 	}
@@ -207,6 +224,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * 
 	 * @return a set of entries in the course_quiz association which which relate the quiz to courses
 	 */
+	@OneToMany(mappedBy="quiz")
 	public Set<CourseQuizMining> getCourseQuizzes() {
 		return this.courseQuizzes;
 	}
@@ -236,6 +254,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * 
 	 * @return a set of entries in the quiz_question table which which relate the quiz to questions
 	 */
+	@OneToMany(mappedBy="quiz")
 	public Set<QuizQuestionMining> getQuizQuestions() {
 		return this.quizQuestions;
 	}
@@ -265,6 +284,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * 
 	 * @return a set of entries in the quiz_log table which are related with this quiz
 	 */
+	@OneToMany(mappedBy="quiz")
 	public Set<QuizLogMining> getQuizLogs() {
 		return this.quizLogs;
 	}
@@ -294,6 +314,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * 
 	 * @return a set of entries in the question_log table which are related with the questions used in this quiz
 	 */
+	@OneToMany(mappedBy="quiz")
 	public Set<QuestionLogMining> getQuestionLogs() {
 		return this.questionLogs;
 	}
@@ -323,6 +344,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * 
 	 * @return the type of this quiz
 	 */
+	@Transient
 	public String getQtype() {
 		return this.type;
 	}
@@ -343,6 +365,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * @return the identifier for this quiz
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -353,6 +376,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * @return the maximum grade which is set for the quiz
 	 */
 	@Override
+	@Column(name="maxgrade")
 	public Double getMaxGrade() {
 		return this.maxGrade;
 	}
@@ -382,6 +406,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	 * 
 	 * @return a set of entries in the quiz_user table which relate the quiz to user
 	 */
+	@OneToMany(mappedBy="quiz")
 	public Set<QuizUserMining> getQuizUsers() {
 		return this.quizUsers;
 	}
@@ -396,6 +421,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 		this.quizUsers.add(quizUser);
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -405,6 +431,7 @@ public class QuizMining implements Serializable, IMappingClass, ILearningObject,
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return 14L;
 	}

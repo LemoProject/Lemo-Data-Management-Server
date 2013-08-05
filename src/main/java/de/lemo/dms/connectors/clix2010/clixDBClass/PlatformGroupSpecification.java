@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,27 +39,24 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "PLATFORMGROUPSPECIFICATION")
 public class PlatformGroupSpecification implements IClixMappingClass {
 
 	private Long group;
 	private Long person;
 	private PlatformGroupSpecificationPK id;
 
+	@EmbeddedId
 	public PlatformGroupSpecificationPK getId() {
 		return this.id;
-	}
-
-	public String getString()
-	{
-		return "PlatformGroupSpecification$$$"
-				+ this.getGroup() + "$$$" +
-				this.getPerson();
 	}
 
 	public void setId(final PlatformGroupSpecificationPK id) {
 		this.id = id;
 	}
 
+	@Column(name="GROUP_ID")
 	public Long getGroup() {
 		return this.group;
 	}
@@ -63,6 +65,7 @@ public class PlatformGroupSpecification implements IClixMappingClass {
 		this.group = group;
 	}
 
+	@Column(name="PERSON_ID")
 	public Long getPerson() {
 		return this.person;
 	}

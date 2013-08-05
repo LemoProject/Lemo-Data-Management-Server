@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "CHATPROTOCOL")
 public class ChatProtocol implements IClixMappingClass {
 
 	private Long id;
@@ -42,6 +49,8 @@ public class ChatProtocol implements IClixMappingClass {
 	private String chatSource;
 	private String lastUpdated;
 
+	@Id
+	@Column(name="CHATPROTOCOL_ID")
 	public Long getId() {
 		return this.id;
 	}
@@ -50,6 +59,7 @@ public class ChatProtocol implements IClixMappingClass {
 		this.id = id;
 	}
 
+	@Column(name="CHATROOM_ID")
 	public Long getChatroom() {
 		return this.chatroom;
 	}
@@ -58,6 +68,7 @@ public class ChatProtocol implements IClixMappingClass {
 		this.chatroom = chatroom;
 	}
 
+	@Column(name="PERSON_ID")
 	public Long getPerson() {
 		return this.person;
 	}
@@ -66,6 +77,7 @@ public class ChatProtocol implements IClixMappingClass {
 		this.person = person;
 	}
 
+	@Column(name="CHAT_SOURCE")
 	public String getChatSource() {
 		return this.chatSource;
 	}
@@ -74,6 +86,7 @@ public class ChatProtocol implements IClixMappingClass {
 		this.chatSource = chatSource;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return this.lastUpdated;
 	}

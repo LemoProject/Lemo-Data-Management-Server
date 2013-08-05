@@ -26,6 +26,11 @@
 
 package de.lemo.dms.connectors.clix2010.clixDBClass;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClass;
 
 /**
@@ -34,6 +39,8 @@ import de.lemo.dms.connectors.clix2010.clixDBClass.abstractions.IClixMappingClas
  * @author S.Schwarzrock
  *
  */
+@Entity
+@Table(name = "PLATFORMGROUP")
 public class PlatformGroup implements IClixMappingClass {
 
 	private Long id;
@@ -41,23 +48,17 @@ public class PlatformGroup implements IClixMappingClass {
 	private String lastUpdated;
 	private String created;
 
+	@Id
+	@Column(name="GROUP_ID")
 	public Long getId() {
 		return this.id;
-	}
-
-	public String getString()
-	{
-		return "PlatformGroup$$$"
-				+ this.id + "$$$"
-				+ this.getCreated() + "$$$"
-				+ this.getLastUpdated() + "$$$"
-				+ this.getTypeId();
 	}
 
 	public void setId(final Long id) {
 		this.id = id;
 	}
 
+	@Column(name="TYPE_ID")
 	public Long getTypeId() {
 		return this.typeId;
 	}
@@ -66,6 +67,7 @@ public class PlatformGroup implements IClixMappingClass {
 		this.typeId = typeId;
 	}
 
+	@Column(name="LASTUPDATED")
 	public String getLastUpdated() {
 		return this.lastUpdated;
 	}
@@ -74,6 +76,7 @@ public class PlatformGroup implements IClixMappingClass {
 		this.lastUpdated = lastUpdated;
 	}
 
+	@Column(name="CREATED")
 	public String getCreated() {
 		return this.created;
 	}

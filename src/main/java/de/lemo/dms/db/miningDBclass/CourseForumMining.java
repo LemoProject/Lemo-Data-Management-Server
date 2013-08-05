@@ -28,6 +28,15 @@ package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ICourseLORelation;
 import de.lemo.dms.db.miningDBclass.abstractions.ILearningObject;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
@@ -36,6 +45,8 @@ import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
  * This class represents the relationship between courses and forums.
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "course_forum")
 public class CourseForumMining implements IMappingClass, ICourseLORelation {
 
 	private long id;
@@ -66,6 +77,7 @@ public class CourseForumMining implements IMappingClass, ICourseLORelation {
 	 * @return the identifier for the association between course and forum
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -85,6 +97,8 @@ public class CourseForumMining implements IMappingClass, ICourseLORelation {
 	 * 
 	 * @return a course in which the forum is used
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -130,6 +144,8 @@ public class CourseForumMining implements IMappingClass, ICourseLORelation {
 	 * 
 	 * @return the forum which is used in the course
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="forum_id")
 	public ForumMining getForum() {
 		return this.forum;
 	}
@@ -170,6 +186,7 @@ public class CourseForumMining implements IMappingClass, ICourseLORelation {
 		}
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
@@ -179,6 +196,7 @@ public class CourseForumMining implements IMappingClass, ICourseLORelation {
 	}
 
 	@Override
+	@Transient
 	public ILearningObject getLearningObject() {
 		return this.forum;
 	}

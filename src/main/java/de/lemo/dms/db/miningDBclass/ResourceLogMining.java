@@ -27,10 +27,22 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** This class represents the log table for the resource object. */
+@Entity
+@Table(name = "resource_log")
 public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IMappingClass {
 
 	private long id;
@@ -61,12 +73,14 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 	}
 
 	@Override
+	@Transient
 	public String getTitle()
 	{
 		return this.resource == null ? null : this.resource.getTitle();
 	}
 
 	@Override
+	@Transient
 	public Long getLearnObjId()
 	{
 		return this.resource == null ? null : this.resource.getId();
@@ -98,6 +112,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 	 * @return The duration of the access.
 	 */
 	@Override
+	@Column(name="duration")
 	public Long getDuration() {
 		return this.duration;
 	}
@@ -113,6 +128,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 	 * @return the identifier of the log entry
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -134,6 +150,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 	 * @return the timestamp the action did occur
 	 */
 	@Override
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -164,6 +181,8 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 	 * @return the course in which the action takes place
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="course_id")
 	public CourseMining getCourse() {
 		return this.course;
 	}
@@ -201,6 +220,7 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 	 * @return the action which occur
 	 */
 	@Override
+	@Column(name="action")
 	public String getAction() {
 		return this.action;
 	}
@@ -230,6 +250,8 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 	 * 
 	 * @return the resource with which was interacted
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="resource_id")
 	public ResourceMining getResource() {
 		return this.resource;
 	}
@@ -276,6 +298,8 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 	 * @return the user who interact with the resource
 	 */
 	@Override
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -308,10 +332,12 @@ public class ResourceLogMining implements Comparable<ILogMining>, ILogMining, IM
 	}
 
 	@Override
+	@Transient
 	public Long getPrefix() {
 		return 16L;
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

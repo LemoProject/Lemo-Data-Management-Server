@@ -27,12 +27,23 @@
 package de.lemo.dms.db.miningDBclass;
 
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
 
 /** 
  * This class represents the relationship between groups and user.
  * @author Sebastian Schwarzrock
  */
+@Entity
+@Table(name = "group_user")
 public class GroupUserMining implements IMappingClass {
 
 	private long id;
@@ -59,6 +70,7 @@ public class GroupUserMining implements IMappingClass {
 	 * @return the identifier for the association between groups and users
 	 */
 	@Override
+	@Id
 	public long getId() {
 		return this.id;
 	}
@@ -83,6 +95,7 @@ public class GroupUserMining implements IMappingClass {
 	 * 
 	 * @return the timestamp when the user enters the group
 	 */
+	@Column(name="timestamp")
 	public long getTimestamp() {
 		return this.timestamp;
 	}
@@ -102,6 +115,8 @@ public class GroupUserMining implements IMappingClass {
 	 * 
 	 * @return the user who is member of the group
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	public UserMining getUser() {
 		return this.user;
 	}
@@ -147,6 +162,8 @@ public class GroupUserMining implements IMappingClass {
 	 * 
 	 * @return the group in which the user is member
 	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="group_id")
 	public GroupMining getGroup() {
 		return this.group;
 	}
@@ -188,6 +205,7 @@ public class GroupUserMining implements IMappingClass {
 		}
 	}
 
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}

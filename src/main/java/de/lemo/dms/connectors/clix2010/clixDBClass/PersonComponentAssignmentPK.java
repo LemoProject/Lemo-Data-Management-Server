@@ -28,43 +28,48 @@ package de.lemo.dms.connectors.clix2010.clixDBClass;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 /**
  * Class for realization of primary key for PersonComponentAssignment.
  * 
  * @author S.Schwarzrock
  *
  */
+@Embeddable
 public class PersonComponentAssignmentPK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5245182973491294243L;
-	private Long person;
-	private Long component;
+	private Long person_id;
+	private Long component_id;
 	private Long context;
 
-	public Long getPerson() {
-		return this.person;
+	
+
+	public Long getPerson_id() {
+		return person_id;
 	}
 
-	public void setPerson(final Long person) {
-		this.person = person;
+	public void setPerson_id(Long person_id) {
+		this.person_id = person_id;
 	}
 
-	public Long getComponent() {
-		return this.component;
+	public Long getComponent_id() {
+		return component_id;
 	}
 
-	public void setComponent(final Long component) {
-		this.component = component;
+	public void setComponent_id(Long component_id) {
+		this.component_id = component_id;
 	}
 
 	public Long getContext() {
-		return this.context;
+		return context;
 	}
 
-	public void setContext(final Long context) {
+	public void setContext(Long context) {
 		this.context = context;
 	}
 
@@ -83,10 +88,10 @@ public class PersonComponentAssignmentPK implements Serializable {
 			return false;
 		}
 		final PersonComponentAssignmentPK a = (PersonComponentAssignmentPK) arg;
-		if (a.getComponent() != this.component) {
+		if (a.getComponent_id() != this.component_id) {
 			return false;
 		}
-		if (a.getPerson() != this.person) {
+		if (a.getPerson_id() != this.person_id) {
 			return false;
 		}
 		if (a.getContext() != this.context) {
@@ -98,7 +103,7 @@ public class PersonComponentAssignmentPK implements Serializable {
 	@Override
 	public int hashCode()
 	{
-		return (this.person.hashCode() * 17) + (this.component.hashCode() * 19) + (this.context.hashCode() * 23);
+		return (this.person_id.hashCode() * 17) + (this.component_id.hashCode() * 19) + (this.context.hashCode() * 23);
 	}
 
 }
