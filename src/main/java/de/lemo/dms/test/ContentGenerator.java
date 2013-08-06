@@ -1224,6 +1224,10 @@ public class ContentGenerator {
 		all.add(roleList);
 		all.add(groupList);
 		all.add(levelList);
+		for(CourseMining c : courseList)
+		{
+			c.setShortname("Cou."+c.getShortname());
+		}
 		all.add(courseList);
 		all.add(resourceList);
 		all.add(forumList);
@@ -1233,6 +1237,7 @@ public class ContentGenerator {
 		all.add(scormList);
 		all.add(assignmentList);
 		all.add(platformList);
+		all.add(wikiList);
 
 		all.add(groupUserList);
 		all.add(courseUserList);
