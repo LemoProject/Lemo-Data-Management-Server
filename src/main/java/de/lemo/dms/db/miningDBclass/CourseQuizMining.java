@@ -188,7 +188,7 @@ public class CourseQuizMining implements IMappingClass, ICourseLORelation, ICour
 		return this.id;
 	}
 
-	@Column(name="paltform")
+	@Column(name="platform")
 	public Long getPlatform() {
 		return this.platform;
 	}
