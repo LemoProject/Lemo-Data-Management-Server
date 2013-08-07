@@ -35,6 +35,7 @@ import org.hibernate.criterion.Projections;
 import com.google.common.collect.Lists;
 import de.lemo.dms.core.ConnectorGetDataWorkerThread;
 import de.lemo.dms.core.config.ServerConfiguration;
+import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.miningDBclass.PlatformMining;
 
@@ -76,6 +77,21 @@ public enum ConnectorManager {
 	public void addConnector(final IConnector connector) {
 		this.saveOrUpdateConnectorInfo(connector);
 		this.connectors.add(connector);
+	}
+	
+	public IConnector createNewConnector(Long platformId, Long prefix, String name, String platformType, List<String> properties, List<Long> courseIdFilter)
+	{
+		ESourcePlatform platform = ESourcePlatform.valueOf(platformType);
+		DBConfigObject config = new DBConfigObject();
+		if(!properties.isEmpty()){
+			for(int i = 0; i < properties.size() - 1; i += 2)
+			{
+				config.setProperty(properties.get(i), properties.get(i + 1));
+			}
+		}		
+		IConnector connector = platform.newConnector(platformId, name, config, courseIdFilter);
+		this.addConnector(connector);
+		return connector;
 	}
 
 	/**

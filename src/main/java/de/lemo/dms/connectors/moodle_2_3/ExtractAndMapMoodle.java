@@ -37,6 +37,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.connectors.Encoder;
@@ -184,11 +185,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		this.assignLms = criteria.list();
 		logger.info("AssignLMS tables: " + this.assignLms.size());
 		
+		//Read Context
 		criteria = session.createCriteria(ContextLMS.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.contextLms = criteria.list();
 		logger.info("ContextLMS tables: " + this.contextLms.size());
 		
+		//Read RoleAssignments
 		criteria = session.createCriteria(RoleAssignmentsLMS.class, "obj");
 		if(hasCR)
 		{
@@ -211,7 +214,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		logger.info("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
 		
 		
-		
+		//Read Assign
 		criteria = session.createCriteria(AssignGradesLMS.class, "obj");
 		if(hasCR)
 		{
@@ -222,7 +225,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 			if(!(empty = tmp.isEmpty()))
 				criteria.add(Restrictions.in("obj.assignment", tmp));
-		}		
+		}
 		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
@@ -231,6 +234,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			this.assignGradesLms = new ArrayList<AssignGradesLMS>();
 		logger.info("AssignGradesLMS tables: " + this.assignGradesLms.size());
 
+		//Read Enrol
 		criteria = session.createCriteria(EnrolLMS.class, "obj");
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.courseid", courses));
@@ -238,11 +242,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		this.enrolLms = criteria.list();
 		logger.info("EnrolLMS tables: " + this.enrolLms.size());
 
+		//Read Modules
 		criteria = session.createCriteria(ModulesLMS.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.modulesLms = criteria.list();
 		logger.info("ModulesLMS tables: " + this.modulesLms.size());
 
+		//Read UserEnrolments
 		criteria = session.createCriteria(UserEnrolmentsLMS.class, "obj");
 		if(hasCR)
 		{
@@ -259,6 +265,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			this.userEnrolmentsLms = new ArrayList<UserEnrolmentsLMS>();
 		logger.info("UserEnrolmentsLMS tables: " + this.userEnrolmentsLms.size());
 
+		//Read CourseModules
 		criteria = session.createCriteria(CourseModulesLMS.class, "obj");
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
@@ -266,14 +273,18 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		this.courseModulesLms = criteria.list();
 		logger.info("CourseModulesLMS tables: " + this.courseModulesLms.size());
 
+		//Read Log
 		criteria = session.createCriteria(LogLMS.class, "obj");
-		if(hasCR)
+		if(hasCR){
 			criteria.add(Restrictions.in("obj.course", courses));
+		}
 		criteria.add(Restrictions.gt("obj.time", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.logLms = criteria.list();
 		logger.info("LogLMS tables: " + this.logLms.size());
-
+		
+		
+		//Read Resource
 		criteria = session.createCriteria(ResourceLMS.class, "obj");
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
