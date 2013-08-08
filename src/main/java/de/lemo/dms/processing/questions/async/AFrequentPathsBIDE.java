@@ -173,7 +173,6 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 
 			final LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 			Long pathId = 0L;
-			int uz = res.getLevelCount();
 			for (int i = res.getLevelCount() - 1; i >= 0; i--)
 			{
 				for (int j = 0; j < res.getLevel(i).size(); j++)

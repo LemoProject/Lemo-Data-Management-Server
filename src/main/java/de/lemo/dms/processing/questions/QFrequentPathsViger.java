@@ -41,7 +41,6 @@ import javax.ws.rs.Path;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.slf4j.Logger;
 
 import ca.pfv.spmf.sequentialpatterns.AlgoFournierViger08;
 import ca.pfv.spmf.sequentialpatterns.SequenceDatabase;
@@ -69,11 +68,10 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
 @Path("frequentPathsViger")
 public class QFrequentPathsViger extends Question {
 
-	private static Map<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
-	private static Map<String, List<Long>> requests = new HashMap<String, List<Long>>();
-	private static Map<String, Integer> idToInternalId = new HashMap<String, Integer>();
-	private static Map<Integer, String> internalIdToId = new HashMap<Integer, String>();
-	private static Logger logger;
+	private Map<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
+	private Map<String, List<Long>> requests = new HashMap<String, List<Long>>();
+	private Map<String, Integer> idToInternalId = new HashMap<String, Integer>();
+	private Map<Integer, String> internalIdToId = new HashMap<Integer, String>();
 
 	@POST
 	public ResultListUserPathGraph compute(
@@ -140,7 +138,7 @@ public class QFrequentPathsViger extends Question {
 		{
 			final SequenceDatabase sequenceDatabase = new SequenceDatabase();
 
-			sequenceDatabase.loadLinkedList(QFrequentPathsViger.generateLinkedList(courses, users, types, minLength,
+			sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength,
 					maxLength, startTime, endTime, session, gender));
 
 			final AlgoFournierViger08 algo = new AlgoFournierViger08(minSup, 0L, 1L, 0L, 1000L, null, true, false);
@@ -164,10 +162,10 @@ public class QFrequentPathsViger extends Question {
 					for (int k = 0; k < res.getLevel(i).get(j).size(); k++)
 					{
 
-						final String obId = QFrequentPathsViger.internalIdToId.get(res.getLevel(i).get(j).get(k)
+						final String obId = this.internalIdToId.get(res.getLevel(i).get(j).get(k)
 								.getItems().get(0).getId());
 
-						final ILogMining ilo = QFrequentPathsViger.idToLogM.get(obId);
+						final ILogMining ilo = this.idToLogM.get(obId);
 
 						final String type = ilo.getClass().getSimpleName();
 
@@ -179,8 +177,8 @@ public class QFrequentPathsViger extends Question {
 									posId,
 									new UserPathObject(posId, ilo.getTitle(), absSup, type,
 											Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,
-											Long.valueOf(QFrequentPathsViger.requests.get(obId).size()), Long
-													.valueOf(new HashSet<Long>(QFrequentPathsViger.requests.get(obId))
+											Long.valueOf(this.requests.get(obId).size()), Long
+													.valueOf(new HashSet<Long>(this.requests.get(obId))
 															.size())));
 
 							// Increment or create predecessor edge
@@ -192,8 +190,8 @@ public class QFrequentPathsViger extends Question {
 									posId,
 									new UserPathObject(posId, ilo.getTitle(), absSup,
 											type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, Long
-													.valueOf(QFrequentPathsViger.requests.get(obId).size()), Long
-													.valueOf(new HashSet<Long>(QFrequentPathsViger.requests.get(obId))
+													.valueOf(this.requests.get(obId).size()), Long
+													.valueOf(new HashSet<Long>(this.requests.get(obId))
 															.size())));
 						}
 						predecessor = posId;
@@ -227,10 +225,10 @@ public class QFrequentPathsViger extends Question {
 			
 		} finally
 		{
-			QFrequentPathsViger.requests.clear();
-			QFrequentPathsViger.idToLogM.clear();
-			QFrequentPathsViger.internalIdToId.clear();
-			QFrequentPathsViger.idToInternalId.clear();
+			this.requests.clear();
+			this.idToLogM.clear();
+			this.internalIdToId.clear();
+			this.idToInternalId.clear();
 		}
 		session.close();
 		return new ResultListUserPathGraph(nodes, links);
@@ -250,7 +248,7 @@ public class QFrequentPathsViger extends Question {
 	 * @return The path to the generated file
 	 */
 	@SuppressWarnings("unchecked")
-	private static LinkedList<String> generateLinkedList(final List<Long> courses, List<Long> users,
+	private LinkedList<String> generateLinkedList(final List<Long> courses, List<Long> users,
 			final List<String> types, final Long minLength, final Long maxLength, final Long starttime,
 			final Long endtime, Session session, List<Long> gender)
 	{
@@ -326,10 +324,10 @@ public class QFrequentPathsViger extends Question {
 			boolean containsType = false;
 			for (final ILogMining iLog : uLog)
 			{
-				if (QFrequentPathsViger.idToInternalId.get(iLog.getPrefix() + " " + iLog.getLearnObjId()) == null)
+				if (this.idToInternalId.get(iLog.getPrefix() + " " + iLog.getLearnObjId()) == null)
 				{
-					QFrequentPathsViger.internalIdToId.put(id, iLog.getPrefix() + " " + iLog.getLearnObjId());
-					QFrequentPathsViger.idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearnObjId(), id);
+					this.internalIdToId.put(id, iLog.getPrefix() + " " + iLog.getLearnObjId());
+					this.idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearnObjId(), id);
 					id++;
 				}
 				if (hasTypes) {
@@ -386,24 +384,24 @@ public class QFrequentPathsViger extends Question {
 			String line = "";
 			for (int i = 0; i < l.size(); i++)
 			{
-				if (QFrequentPathsViger.idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null) {
-					QFrequentPathsViger.idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(),
+				if (this.idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null) {
+					this.idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(),
 							l.get(i));
 				}
 
 				// Update request numbers
-				if (QFrequentPathsViger.requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
+				if (this.requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
 				{
 					final ArrayList<Long> us = new ArrayList<Long>();
 					us.add(l.get(i).getUser().getId());
-					QFrequentPathsViger.requests.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), us);
+					this.requests.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), us);
 				} else {
-					QFrequentPathsViger.requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(
+					this.requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(
 							l.get(i).getUser().getId());
 				}
 				// The id of the object gets the prefix, indicating it's class. This is important for distinction
 				// between objects of different ILogMining-classes but same ids
-				line += "<" + i + "> " + QFrequentPathsViger.idToInternalId.get(l.get(i).getPrefix() + " "
+				line += "<" + i + "> " + this.idToInternalId.get(l.get(i).getPrefix() + " "
 						+ l.get(i).getLearnObjId()) + " -1 ";
 			}
 			line += "-2";
