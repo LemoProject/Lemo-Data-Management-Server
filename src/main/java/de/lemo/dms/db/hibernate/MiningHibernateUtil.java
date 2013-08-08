@@ -30,7 +30,7 @@ import java.util.Map.Entry;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.miningDBclass.*;
+import de.lemo.dms.db.mapping.*;
 
 /**
  * Startup Hibernate and provide access to the singleton SessionFactory

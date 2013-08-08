@@ -48,7 +48,7 @@ import com.google.common.collect.Maps;
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILogMining;
 import de.lemo.dms.processing.AnalysisTask;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;

@@ -37,7 +37,7 @@ import de.lemo.dms.core.ConnectorGetDataWorkerThread;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.PlatformMining;
+import de.lemo.dms.db.mapping.PlatformMining;
 
 /**
  * Handles all connector instances.

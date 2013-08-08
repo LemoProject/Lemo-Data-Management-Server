@@ -44,14 +44,14 @@ import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.CourseMining;
-import de.lemo.dms.db.miningDBclass.CourseResourceMining;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
-import de.lemo.dms.db.miningDBclass.IDMappingMining;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-import de.lemo.dms.db.miningDBclass.ResourceMining;
-import de.lemo.dms.db.miningDBclass.RoleMining;
-import de.lemo.dms.db.miningDBclass.UserMining;
+import de.lemo.dms.db.mapping.CourseMining;
+import de.lemo.dms.db.mapping.CourseResourceMining;
+import de.lemo.dms.db.mapping.CourseUserMining;
+import de.lemo.dms.db.mapping.IDMappingMining;
+import de.lemo.dms.db.mapping.ResourceLogMining;
+import de.lemo.dms.db.mapping.ResourceMining;
+import de.lemo.dms.db.mapping.RoleMining;
+import de.lemo.dms.db.mapping.UserMining;
 
 /**
  * The Class LogReader. Reads Chemgapedia's server-logs and saves the found objects into the database.

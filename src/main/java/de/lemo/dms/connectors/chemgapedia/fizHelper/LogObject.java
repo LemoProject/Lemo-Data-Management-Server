@@ -28,9 +28,9 @@ package de.lemo.dms.connectors.chemgapedia.fizHelper;
 
 import java.util.Iterator;
 import java.util.List;
-import de.lemo.dms.db.miningDBclass.CourseMining;
-import de.lemo.dms.db.miningDBclass.IDMappingMining;
-import de.lemo.dms.db.miningDBclass.UserMining;
+import de.lemo.dms.db.mapping.CourseMining;
+import de.lemo.dms.db.mapping.IDMappingMining;
+import de.lemo.dms.db.mapping.UserMining;
 
 /**
  * The Class LogObject. An object of this class holds the information of a single line in a log-file.

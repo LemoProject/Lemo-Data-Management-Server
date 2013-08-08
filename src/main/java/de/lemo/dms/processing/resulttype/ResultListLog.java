@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILogMining;
 
 /**
  * represents a list for Log objects which is use to transfer data from

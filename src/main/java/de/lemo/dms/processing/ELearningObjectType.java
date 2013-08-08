@@ -29,15 +29,15 @@ package de.lemo.dms.processing;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
-import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
-import de.lemo.dms.db.miningDBclass.ChatLogMining;
-import de.lemo.dms.db.miningDBclass.ForumLogMining;
-import de.lemo.dms.db.miningDBclass.QuestionLogMining;
-import de.lemo.dms.db.miningDBclass.QuizLogMining;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-import de.lemo.dms.db.miningDBclass.ScormLogMining;
-import de.lemo.dms.db.miningDBclass.WikiLogMining;
-import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.AssignmentLogMining;
+import de.lemo.dms.db.mapping.ChatLogMining;
+import de.lemo.dms.db.mapping.ForumLogMining;
+import de.lemo.dms.db.mapping.QuestionLogMining;
+import de.lemo.dms.db.mapping.QuizLogMining;
+import de.lemo.dms.db.mapping.ResourceLogMining;
+import de.lemo.dms.db.mapping.ScormLogMining;
+import de.lemo.dms.db.mapping.WikiLogMining;
+import de.lemo.dms.db.mapping.abstractions.ILogMining;
 
 /**
  * <em>Learning Object</em> types with corresponding {@link ILogMining} implementations.

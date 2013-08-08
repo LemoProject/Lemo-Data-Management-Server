@@ -39,13 +39,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.CourseMining;
-import de.lemo.dms.db.miningDBclass.CourseResourceMining;
-import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
-import de.lemo.dms.db.miningDBclass.LevelCourseMining;
-import de.lemo.dms.db.miningDBclass.LevelMining;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-import de.lemo.dms.db.miningDBclass.ResourceMining;
+import de.lemo.dms.db.mapping.CourseMining;
+import de.lemo.dms.db.mapping.CourseResourceMining;
+import de.lemo.dms.db.mapping.LevelAssociationMining;
+import de.lemo.dms.db.mapping.LevelCourseMining;
+import de.lemo.dms.db.mapping.LevelMining;
+import de.lemo.dms.db.mapping.ResourceLogMining;
+import de.lemo.dms.db.mapping.ResourceMining;
 
 /**
  * Class to test the chemgapedia data creator

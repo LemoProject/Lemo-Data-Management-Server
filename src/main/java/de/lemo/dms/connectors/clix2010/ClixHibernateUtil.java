@@ -32,7 +32,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import com.google.common.collect.Maps;
 
-import de.lemo.dms.connectors.clix2010.clixDBClass.*;
+import de.lemo.dms.connectors.clix2010.mapping.*;
 import de.lemo.dms.db.DBConfigObject;
 
 /**

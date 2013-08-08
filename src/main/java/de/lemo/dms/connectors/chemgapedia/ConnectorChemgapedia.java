@@ -36,7 +36,7 @@ import de.lemo.dms.connectors.chemgapedia.fizHelper.XMLPackageParser;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.ConfigMining;
+import de.lemo.dms.db.mapping.ConfigMining;
 
 /**
  * Connector implementation for the platform Chemgapedia

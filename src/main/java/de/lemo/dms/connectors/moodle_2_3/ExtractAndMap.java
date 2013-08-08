@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -45,44 +44,44 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.AssignmentLogMining;
-import de.lemo.dms.db.miningDBclass.AssignmentMining;
-import de.lemo.dms.db.miningDBclass.ChatLogMining;
-import de.lemo.dms.db.miningDBclass.ChatMining;
-import de.lemo.dms.db.miningDBclass.ConfigMining;
-import de.lemo.dms.db.miningDBclass.CourseAssignmentMining;
-import de.lemo.dms.db.miningDBclass.CourseChatMining;
-import de.lemo.dms.db.miningDBclass.CourseForumMining;
-import de.lemo.dms.db.miningDBclass.CourseGroupMining;
-import de.lemo.dms.db.miningDBclass.CourseLogMining;
-import de.lemo.dms.db.miningDBclass.CourseMining;
-import de.lemo.dms.db.miningDBclass.CourseQuizMining;
-import de.lemo.dms.db.miningDBclass.CourseResourceMining;
-import de.lemo.dms.db.miningDBclass.CourseScormMining;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
-import de.lemo.dms.db.miningDBclass.CourseWikiMining;
-import de.lemo.dms.db.miningDBclass.ForumLogMining;
-import de.lemo.dms.db.miningDBclass.ForumMining;
-import de.lemo.dms.db.miningDBclass.GroupMining;
-import de.lemo.dms.db.miningDBclass.GroupUserMining;
-import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
-import de.lemo.dms.db.miningDBclass.LevelCourseMining;
-import de.lemo.dms.db.miningDBclass.LevelMining;
-import de.lemo.dms.db.miningDBclass.PlatformMining;
-import de.lemo.dms.db.miningDBclass.QuestionLogMining;
-import de.lemo.dms.db.miningDBclass.QuestionMining;
-import de.lemo.dms.db.miningDBclass.QuizLogMining;
-import de.lemo.dms.db.miningDBclass.QuizMining;
-import de.lemo.dms.db.miningDBclass.QuizQuestionMining;
-import de.lemo.dms.db.miningDBclass.QuizUserMining;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
-import de.lemo.dms.db.miningDBclass.ResourceMining;
-import de.lemo.dms.db.miningDBclass.RoleMining;
-import de.lemo.dms.db.miningDBclass.ScormLogMining;
-import de.lemo.dms.db.miningDBclass.ScormMining;
-import de.lemo.dms.db.miningDBclass.UserMining;
-import de.lemo.dms.db.miningDBclass.WikiLogMining;
-import de.lemo.dms.db.miningDBclass.WikiMining;
+import de.lemo.dms.db.mapping.AssignmentLogMining;
+import de.lemo.dms.db.mapping.AssignmentMining;
+import de.lemo.dms.db.mapping.ChatLogMining;
+import de.lemo.dms.db.mapping.ChatMining;
+import de.lemo.dms.db.mapping.ConfigMining;
+import de.lemo.dms.db.mapping.CourseAssignmentMining;
+import de.lemo.dms.db.mapping.CourseChatMining;
+import de.lemo.dms.db.mapping.CourseForumMining;
+import de.lemo.dms.db.mapping.CourseGroupMining;
+import de.lemo.dms.db.mapping.CourseLogMining;
+import de.lemo.dms.db.mapping.CourseMining;
+import de.lemo.dms.db.mapping.CourseQuizMining;
+import de.lemo.dms.db.mapping.CourseResourceMining;
+import de.lemo.dms.db.mapping.CourseScormMining;
+import de.lemo.dms.db.mapping.CourseUserMining;
+import de.lemo.dms.db.mapping.CourseWikiMining;
+import de.lemo.dms.db.mapping.ForumLogMining;
+import de.lemo.dms.db.mapping.ForumMining;
+import de.lemo.dms.db.mapping.GroupMining;
+import de.lemo.dms.db.mapping.GroupUserMining;
+import de.lemo.dms.db.mapping.LevelAssociationMining;
+import de.lemo.dms.db.mapping.LevelCourseMining;
+import de.lemo.dms.db.mapping.LevelMining;
+import de.lemo.dms.db.mapping.PlatformMining;
+import de.lemo.dms.db.mapping.QuestionLogMining;
+import de.lemo.dms.db.mapping.QuestionMining;
+import de.lemo.dms.db.mapping.QuizLogMining;
+import de.lemo.dms.db.mapping.QuizMining;
+import de.lemo.dms.db.mapping.QuizQuestionMining;
+import de.lemo.dms.db.mapping.QuizUserMining;
+import de.lemo.dms.db.mapping.ResourceLogMining;
+import de.lemo.dms.db.mapping.ResourceMining;
+import de.lemo.dms.db.mapping.RoleMining;
+import de.lemo.dms.db.mapping.ScormLogMining;
+import de.lemo.dms.db.mapping.ScormMining;
+import de.lemo.dms.db.mapping.UserMining;
+import de.lemo.dms.db.mapping.WikiLogMining;
+import de.lemo.dms.db.mapping.WikiMining;
 
 /**
  * The main class of the extraction process.
@@ -328,7 +327,6 @@ public abstract class ExtractAndMap {
 	 * 
 	 * @return The timestamp of the last run of the extractor. If this is the first run it will be set 0.
 	 **/
-	@SuppressWarnings("unchecked")
 	public long getMiningInitial() {
 
 		final Session session = this.dbHandler.getMiningSession();

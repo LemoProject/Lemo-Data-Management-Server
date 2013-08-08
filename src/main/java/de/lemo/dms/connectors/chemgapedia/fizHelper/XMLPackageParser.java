@@ -51,13 +51,13 @@ import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.CourseMining;
-import de.lemo.dms.db.miningDBclass.CourseResourceMining;
-import de.lemo.dms.db.miningDBclass.IDMappingMining;
-import de.lemo.dms.db.miningDBclass.LevelAssociationMining;
-import de.lemo.dms.db.miningDBclass.LevelCourseMining;
-import de.lemo.dms.db.miningDBclass.LevelMining;
-import de.lemo.dms.db.miningDBclass.ResourceMining;
+import de.lemo.dms.db.mapping.CourseMining;
+import de.lemo.dms.db.mapping.CourseResourceMining;
+import de.lemo.dms.db.mapping.IDMappingMining;
+import de.lemo.dms.db.mapping.LevelAssociationMining;
+import de.lemo.dms.db.mapping.LevelCourseMining;
+import de.lemo.dms.db.mapping.LevelMining;
+import de.lemo.dms.db.mapping.ResourceMining;
 
 /**
  * The Class XMLPackageParser. Created for the processing of Chemgapedia's VLU-files

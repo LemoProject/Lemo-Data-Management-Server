@@ -33,7 +33,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
-import de.lemo.dms.db.miningDBclass.CourseUserMining;
+import de.lemo.dms.db.mapping.CourseUserMining;
 
 /**
  * Helper class for course-student relations

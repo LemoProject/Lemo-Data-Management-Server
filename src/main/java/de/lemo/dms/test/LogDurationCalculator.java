@@ -31,8 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
-import de.lemo.dms.db.miningDBclass.abstractions.ILogMining;
-import de.lemo.dms.db.miningDBclass.abstractions.IMappingClass;
+import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.IMappingClass;
 
 /**
  * Calculates and sets the duration-attributes for a List of log-objects. The list "values" has not to be sorted

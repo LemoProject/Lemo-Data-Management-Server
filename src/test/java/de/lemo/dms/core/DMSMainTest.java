@@ -42,7 +42,7 @@ import com.google.common.collect.Lists;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.miningDBclass.ResourceLogMining;
+import de.lemo.dms.db.mapping.ResourceLogMining;
 
 class TestUserThread extends Thread {
 
