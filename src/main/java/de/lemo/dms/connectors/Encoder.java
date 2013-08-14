@@ -26,6 +26,7 @@
 
 package de.lemo.dms.connectors;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -36,6 +37,8 @@ import java.security.NoSuchAlgorithmException;
  * @author Leonard Kappe
  */
 public final class Encoder {
+	
+	private final static String salt = "5f4$LtW9,M-§278GSp17";
 
 	private Encoder() {
 
@@ -44,7 +47,8 @@ public final class Encoder {
 	private static MessageDigest md;
 	static {
 		try {
-			md = MessageDigest.getInstance("MD5");
+			md = MessageDigest.getInstance("SHA");
+			md.update(salt.getBytes());
 		} catch (NoSuchAlgorithmException e) {
 			// md5 is always available, it's a java platform requirement
 		}
@@ -58,11 +62,9 @@ public final class Encoder {
 	 * @return MD5-encoded string
 	 */
 	public static String createMD5(String in) {
-		final byte byteData[] = Encoder.md.digest(in.getBytes());
-		final StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < byteData.length; i++) {
-			sb.append(Integer.toHexString((byteData[i] & 0xff) + 0x100).substring(1));
-		}
-		return sb.toString();
+		Encoder.md.update((in + salt).getBytes());
+		String encrypted = (new BigInteger (md.digest())).toString(16);
+	
+		return encrypted;
 	}
 }
