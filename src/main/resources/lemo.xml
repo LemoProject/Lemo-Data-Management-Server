@@ -50,7 +50,6 @@
         <property name="lemo.filter_log_file">true</property>
       </connector>
       <connector platform-id="4" name="moodle23" platform-type="Moodle_2_3">
-      	<course-id-filter></course-id-filter>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost/moodle</property>
         <property name="hibernate.connection.username">user</property>
         <property name="hibernate.connection.password">password</property>
@@ -60,7 +59,6 @@
       </connector>
 
       <connector platform-id="6" name="clix" platform-type="Clix_2010">
-      	<course-id-filter></course-id-filter>
         <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:clix</property>
         <property name="hibernate.connection.username">user</property>
         <property name="hibernate.connection.password">password</property>
