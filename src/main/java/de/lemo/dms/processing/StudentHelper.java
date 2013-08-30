@@ -51,27 +51,31 @@ public class StudentHelper {
 	 */
 	public static Map<Long, Long> getCourseStudentsAliasKeys(List<Long> courses, List<Long> genders)
 	{
-		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-
+		
 		Map<Long, Long> users = new HashMap<Long, Long>();
-		Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
-		criteria.add(Restrictions.in("cu.course.id", courses));
-		criteria.addOrder(Order.asc("cu.user.id"));
-		@SuppressWarnings("unchecked")
-		List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
-		Long i = 1L;
-		for (final CourseUserMining cu : courseUsers) {
-			// Only use students (type = 2) 
-			if (cu.getUser() != null && cu.getRole().getType() == 2)
-			{
-				if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
+		if(courses != null && !courses.isEmpty())
+		{
+			final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
+		
+			Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+			criteria.add(Restrictions.in("cu.course.id", courses));
+			criteria.addOrder(Order.asc("cu.user.id"));
+			@SuppressWarnings("unchecked")
+			List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
+			Long i = 1L;
+			for (final CourseUserMining cu : courseUsers) {
+				// Only use students (type = 2) 
+				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{
-					users.put(i, cu.getUser().getId());
-					i++;
+					if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
+					{
+						users.put(i, cu.getUser().getId());
+						i++;
+					}
 				}
 			}
+			session.close();
 		}
-		session.close();
 		return users;
 	}
 	
@@ -83,27 +87,31 @@ public class StudentHelper {
 	 */
 	public static Map<Long, Long> getCourseStudentsRealKeys(List<Long> courses, List<Long> genders)
 	{
-		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-
+		
 		Map<Long, Long> users = new HashMap<Long, Long>();
-		Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
-		criteria.add(Restrictions.in("cu.course.id", courses));
-		criteria.addOrder(Order.asc("cu.user.id"));
-		@SuppressWarnings("unchecked")
-		List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
-		Long i = 1L;
-		for (final CourseUserMining cu : courseUsers) {
-			// Only use students (type = 2) 
-			if (cu.getUser() != null && cu.getRole().getType() == 2)
-			{
-				if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
+		
+		if(courses != null && !courses.isEmpty())
+		{
+			final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();			
+			Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+			criteria.add(Restrictions.in("cu.course.id", courses));
+			criteria.addOrder(Order.asc("cu.user.id"));
+			@SuppressWarnings("unchecked")
+			List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
+			Long i = 1L;
+			for (final CourseUserMining cu : courseUsers) {
+				// Only use students (type = 2) 
+				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{
-					users.put(cu.getUser().getId(), i);
-					i++;
+					if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
+					{
+						users.put(cu.getUser().getId(), i);
+						i++;
+					}
 				}
 			}
+			session.close();
 		}
-		session.close();
 		return users;
 	}
 	
@@ -114,32 +122,35 @@ public class StudentHelper {
 	 * @return	Map<Long, Long> of identifiers (key-set) of students within the specified courses
 	 */
 	public static boolean getGenderSupport(Long id)
-	{
-		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-
-		Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
-		criteria.add(Restrictions.eq("cu.course.id", id));
-		@SuppressWarnings("unchecked")
-		List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
-		int fem = 0;
-		int mal = 0;
-		
-		for (final CourseUserMining cu : courseUsers) {
-			// Only use students (type = 2) 
-			if (cu.getUser() != null && cu.getRole().getType() == 2)
-			{
-				if(cu.getUser().getGender() == 1)
-					fem++;
-				else if(cu.getUser().getGender() == 2)
-					mal++;
-				if(mal > 4 && fem > 4)
+	{		
+		if(id != null)
+		{
+			final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
+	
+			Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+			criteria.add(Restrictions.eq("cu.course.id", id));
+			@SuppressWarnings("unchecked")
+			List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
+			int fem = 0;
+			int mal = 0;
+			
+			for (final CourseUserMining cu : courseUsers) {
+				// Only use students (type = 2) 
+				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{
-					session.close();
-					return true;
+					if(cu.getUser().getGender() == 1)
+						fem++;
+					else if(cu.getUser().getGender() == 2)
+						mal++;
+					if(mal > 4 && fem > 4)
+					{
+						session.close();
+						return true;
+					}
 				}
 			}
+			session.close();
 		}
-		session.close();
 		return false;
 	}
 }

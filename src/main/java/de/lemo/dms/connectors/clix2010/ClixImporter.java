@@ -1046,7 +1046,7 @@ public class ClixImporter {
 
 		
 		//Get ForumEntryState tables
-		/*criteria = session.createCriteria(ForumEntryState.class, "obj");
+		criteria = session.createCriteria(ForumEntryState.class, "obj");
 		if(hasCR)
 		{
 			if(!(empty = this.eComposingMap.isEmpty()))
@@ -1060,7 +1060,7 @@ public class ClixImporter {
 		{
 			this.forumEntryState = criteria.list();
 		}
-		else*/
+		else
 			this.forumEntryState = new ArrayList<ForumEntryState>();
 		this.logger.info("ForumEntryState tables: " + this.forumEntryState.size());
 		
@@ -1132,7 +1132,7 @@ public class ClixImporter {
 
 		
 		//Get PlatformGroupSpecification tables
-		/*criteria = session.createCriteria(PlatformGroupSpecification.class, "obj");
+		criteria = session.createCriteria(PlatformGroupSpecification.class, "obj");
 		if(hasCR)
 		{
 			Set<Long> ids = new HashSet<Long>();
@@ -1144,7 +1144,7 @@ public class ClixImporter {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
 			this.platformGroupSpecification = criteria.list();
-		else*/
+		else
 			this.platformGroupSpecification = new ArrayList<PlatformGroupSpecification>();
 		this.logger.info("PlatformGroupSpecification tables: " + this.platformGroupSpecification.size());	
 		
@@ -2328,7 +2328,7 @@ public class ClixImporter {
 			{
 				EComponentType ect = eCTypes.get(loadedItem.getType());
 				final ScormMining item = new ScormMining();
-				if (ect != null && (ect.getUploadDir().toLowerCase().contains("scorm") && ((ect.getCharacteristicId() == 10L || ect.getCharacteristicId() == 1L))))
+				if (ect != null && (ect.getUploadDir().toLowerCase().contains("scorm")))
 				{
 					item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 					item.setTitle(loadedItem.getName());
