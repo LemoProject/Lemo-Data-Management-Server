@@ -131,10 +131,11 @@ public class ServiceCourseDetails {
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final ArrayList<CourseObject> results = new ArrayList<CourseObject>();
 
-		if (courses.isEmpty()) {
+		if (courses == null || courses.isEmpty()) {
 			logger.debug("Courses List is empty");
 			return new ResultListCourseObject(results);
-		} else for(Long id : courses) logger.debug("Looking for Course: "+ id);
+		} else 
+			for(Long id : courses) logger.debug("Looking for Course: "+ id);
 
 		// Set up db-connection
 		final Session session = dbHandler.getMiningSession();
