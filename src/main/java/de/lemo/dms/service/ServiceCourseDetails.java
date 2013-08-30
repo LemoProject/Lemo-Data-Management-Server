@@ -39,7 +39,7 @@ import javax.ws.rs.core.MediaType;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.slf4j.Logger;
+import org.apache.log4j.Logger;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
@@ -63,7 +63,7 @@ import de.lemo.dms.service.responses.ResourceNotFoundException;
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceCourseDetails {
 
-	private Logger logger;
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	/**
 	 * Gets the details for a single course including id, title, description, 
@@ -131,11 +131,10 @@ public class ServiceCourseDetails {
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final ArrayList<CourseObject> results = new ArrayList<CourseObject>();
 
-		if (courses == null || courses.isEmpty()) {
+		if (courses.isEmpty()) {
 			logger.debug("Courses List is empty");
 			return new ResultListCourseObject(results);
-		} else 
-			for(Long id : courses) logger.debug("Looking for Course: "+ id);
+		} else for(Long id : courses) logger.debug("Looking for Course: "+ id);
 
 		// Set up db-connection
 		final Session session = dbHandler.getMiningSession();
