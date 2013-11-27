@@ -308,7 +308,7 @@ public class ClixImporter {
 	 * @param courses List of course-ids for course-data that shall be imported. 
 	 * 				  If empty a all courses are imported.
 	 */
-	public void getClixData(final DBConfigObject dbConfig, List<Long> courses)
+	public void getClixData(final DBConfigObject dbConfig, List<Long> courses, List<String> logins)
 	{
 		final Clock c = new Clock();
 		final Long starttime = System.currentTimeMillis() / MAGIC_THOU;
@@ -321,7 +321,7 @@ public class ClixImporter {
 
 		this.logger.info("\n" + c.getAndReset() + " (initializing)" + "\n");
 
-		this.loadData(dbConfig, courses, startTime);
+		this.loadData(dbConfig, courses, logins, startTime);
 		this.logger.info(c.getAndReset() + " (loading data)" );
 		this.saveData();
 		this.logger.info(c.getAndReset() + " (saving data)" );
@@ -351,7 +351,7 @@ public class ClixImporter {
 	 * 				  	If empty a all courses are imported.
 
 	 */
-	public void updateClixData(final DBConfigObject dbConfig, Long startTime, List<Long> courses)
+	public void updateClixData(final DBConfigObject dbConfig, Long startTime, List<Long> courses, List<String> logins)
 	{
 		final Long currentSysTime = System.currentTimeMillis() / MAGIC_THOU;
 		Long upperLimit = 0L;
@@ -367,7 +367,7 @@ public class ClixImporter {
 			this.initialize();
 
 			// Do Update
-			this.loadData(dbConfig, startTime, upperLimit, courses);
+			this.loadData(dbConfig, startTime, upperLimit, courses, logins);
 
 			this.saveData();
 
@@ -793,7 +793,7 @@ public class ClixImporter {
 	 * Loads all necessary tables from the Clix2010 database.
 	 */
 	@SuppressWarnings("unchecked")
-	private void loadData(final DBConfigObject dbConfig, List<Long> courses, long startTime)
+	private void loadData(final DBConfigObject dbConfig, List<Long> courses, List<String> logins, long startTime)
 	{
 
 		// accessing DB by creating a session and a transaction using HibernateUtil
@@ -803,6 +803,30 @@ public class ClixImporter {
 		if(courses != null && courses.size() > 0)
 			hasCR = true; 
 		boolean empty = false;
+		
+		if(logins != null && !logins.isEmpty())
+		{
+			List<Long> newCourses = new ArrayList<Long>();
+			Criteria criteria = session.createCriteria(Person.class, "obj");
+			criteria.add(Restrictions.in("obj.login", logins));
+			List<Long> usId = new ArrayList<Long>();
+			
+			for(Person p : (List<Person>) criteria.list())
+				usId.add(p.getId());
+			
+			if(!usId.isEmpty())
+			{
+				criteria = session.createCriteria(PersonComponentAssignment.class, "obj");
+				criteria.add(Restrictions.in("obj.person", usId));
+				for(PersonComponentAssignment pca : (List<PersonComponentAssignment>) criteria.list())
+					newCourses.add(pca.getComponent());
+				
+				courses.addAll(newCourses);
+				
+			}
+			
+		}
+		
 
 		this.logger.info("Starting data extraction.");
 		
@@ -1277,7 +1301,7 @@ public class ClixImporter {
 	 *            the end
 	 */
 	@SuppressWarnings("unchecked")
-	private void loadData(final DBConfigObject dbConfig, final Long start, final Long end, List<Long> courses)
+	private void loadData(final DBConfigObject dbConfig, final Long start, final Long end, List<Long> courses, List<String> logins)
 	{
 		// accessing DB by creating a session and a transaction using HibernateUtil
 		final Session session = ClixHibernateUtil.getSessionFactory(dbConfig).openSession();

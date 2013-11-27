@@ -63,7 +63,7 @@ public class ConnectorClix extends AbstractConnector {
 	@Override
 	public void getData() {
 		final ClixImporter ci = new ClixImporter(this);
-		ci.getClixData(this.config, this.getCourseIdFilter());
+		ci.getClixData(this.config, this.getCourseIdFilter(), this.getCourseLoginFilter());
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class ConnectorClix extends AbstractConnector {
 	@Override
 	public void updateData(final long fromTimestamp) {
 		final ClixImporter ci = new ClixImporter(this);
-		ci.updateClixData(this.config, fromTimestamp, this.getCourseIdFilter());
+		ci.updateClixData(this.config, fromTimestamp, this.getCourseIdFilter(), this.getCourseLoginFilter());
 	}
 
 }

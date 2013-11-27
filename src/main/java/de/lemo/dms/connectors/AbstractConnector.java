@@ -41,6 +41,7 @@ public abstract class AbstractConnector implements IConnector {
 	private Long prefix;
 	private ESourcePlatform platform;
 	private List<Long> courseIdFilter = Collections.emptyList();
+	private List<String> courseLoginFilter = Collections.emptyList();
 	
 	@Override
 	public Long getPlatformId() {
@@ -97,6 +98,15 @@ public abstract class AbstractConnector implements IConnector {
 	 */
 	public List<Long> getCourseIdFilter() {
 		return courseIdFilter;
+	}
+	
+	/**
+	 * The list of course IDs to be loaded by a connectors.
+	 * 
+	 * @return a list of course IDs
+	 */
+	public List<String> getCourseLoginFilter() {
+		return courseLoginFilter;
 	}
 
 	/**

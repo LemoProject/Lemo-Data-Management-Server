@@ -70,6 +70,8 @@ public interface IConnector {
 
 	List<Long> getCourseIdFilter();
 	
+	List<String> getCourseLoginFilter();
+	
 	void setCourseIdFilter(List<Long> courses);
 
 }
