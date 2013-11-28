@@ -60,13 +60,13 @@
 
       <connector platform-id="6" name="clix" platform-type="Clix_2010">
       	<course-id-filter></course-id-filter>
-      	<course-login-filter>forte gfrank</course-login-filter>
-        <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:clix</property>
-        <property name="hibernate.connection.username">forte</property>
-        <property name="hibernate.connection.password">3PuTs#7</property>
+      	<course-login-filter></course-login-filter>
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:oracle</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
         <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
-        <property name="hibernate.default_schema">CLIX_DB</property>
+        <property name="hibernate.default_schema"></property>
       </connector>
     </connectors>
   </dms>
