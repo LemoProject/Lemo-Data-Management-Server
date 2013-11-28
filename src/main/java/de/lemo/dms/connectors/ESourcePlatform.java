@@ -54,7 +54,7 @@ public enum ESourcePlatform {
      *            list of course IDs to be loaded - loads all courses if empty
      * @return
      */
-    public IConnector newConnector(final Long id, final String name, final DBConfigObject config, List<Long> filter) {
+    public IConnector newConnector(final Long id, final String name, final DBConfigObject config, List<Long> filter, List<String> logins) {
         AbstractConnector connector;
         switch(this) {
 
@@ -94,6 +94,7 @@ public enum ESourcePlatform {
         connector.setPlatformType(this);
         connector.setName(name);
         connector.setCourseIdFilter(filter);
+        connector.setCourseLoginFilter(logins);
 
         logger.debug("Created connector " + connector);
         logger.debug("Course filters: " + filter);

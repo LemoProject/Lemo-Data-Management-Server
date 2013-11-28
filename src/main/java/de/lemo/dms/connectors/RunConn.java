@@ -39,13 +39,14 @@ import de.lemo.dms.core.config.ServerConfiguration;
 public class RunConn {
 
 	private static final Long ID_MOODLE23 = 4L;
+	private static final Long ID_CLIX = 6L;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	public void run()
 	{
 		this.logger.info("Starting Import");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		final IConnector connector = ConnectorManager.getInstance().getConnectorById(RunConn.ID_MOODLE23);
+		final IConnector connector = ConnectorManager.getInstance().getConnectorById(RunConn.ID_CLIX);
 		connector.getData();
 		this.logger.info("Import finished");
 	}

@@ -79,7 +79,7 @@ public enum ConnectorManager {
 		this.connectors.add(connector);
 	}
 	
-	public IConnector createNewConnector(Long platformId, Long prefix, String name, String platformType, List<String> properties, List<Long> courseIdFilter)
+	public IConnector createNewConnector(Long platformId, Long prefix, String name, String platformType, List<String> properties, List<Long> courseIdFilter, List<String> logins)
 	{
 		ESourcePlatform platform = ESourcePlatform.valueOf(platformType);
 		DBConfigObject config = new DBConfigObject();
@@ -89,7 +89,7 @@ public enum ConnectorManager {
 				config.setProperty(properties.get(i), properties.get(i + 1));
 			}
 		}		
-		IConnector connector = platform.newConnector(platformId, name, config, courseIdFilter);
+		IConnector connector = platform.newConnector(platformId, name, config, courseIdFilter, logins);
 		this.addConnector(connector);
 		return connector;
 	}

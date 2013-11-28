@@ -171,7 +171,7 @@ public enum ServerConfiguration {
             ESourcePlatform platform = ESourcePlatform.valueOf(connectorConfig.platformType);
             DBConfigObject config = this.createDBConfig(connectorConfig.properties);
             result.add(platform.newConnector(connectorConfig.platformId, connectorConfig.name, config,
-                connectorConfig.courseIdFilter));
+                connectorConfig.courseIdFilter, connectorConfig.courseLoginFilter));
         }
         return result;
     }

@@ -61,7 +61,7 @@ public class ExercisePersonalised implements IClixMappingClass {
 		this.id = id;
 	}
 
-	@Column(name="EXERCISE_SHEET_ID")
+	@Column(name="EXERCISESHEET_ID")
 	public Long getExerciseSheet() {
 		return this.exerciseSheet;
 	}

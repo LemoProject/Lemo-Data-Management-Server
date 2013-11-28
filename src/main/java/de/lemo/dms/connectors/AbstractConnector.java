@@ -117,4 +117,12 @@ public abstract class AbstractConnector implements IConnector {
 		this.courseIdFilter = courseIdFilter;
 	}
 	
+	/**
+	 * @param courseLoginFilter
+	 *            a list of course logins
+	 */
+	public void setCourseLoginFilter(List<String> courseLoginFilter) {
+		this.courseLoginFilter = courseLoginFilter;
+	}
+	
 }

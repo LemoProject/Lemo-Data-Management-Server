@@ -34,14 +34,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.CriteriaHelper;
 import de.lemo.dms.connectors.TextHelper;
 import de.lemo.dms.connectors.clix2010.mapping.BiTrackContentImpressions;
 import de.lemo.dms.connectors.clix2010.mapping.ChatProtocol;
@@ -808,7 +812,7 @@ public class ClixImporter {
 		{
 			List<Long> newCourses = new ArrayList<Long>();
 			Criteria criteria = session.createCriteria(Person.class, "obj");
-			criteria.add(Restrictions.in("obj.login", logins));
+			criteria.add(CriteriaHelper.in("obj.login", logins));
 			List<Long> usId = new ArrayList<Long>();
 			
 			for(Person p : (List<Person>) criteria.list())
@@ -817,15 +821,18 @@ public class ClixImporter {
 			if(!usId.isEmpty())
 			{
 				criteria = session.createCriteria(PersonComponentAssignment.class, "obj");
-				criteria.add(Restrictions.in("obj.person", usId));
+				criteria.add(CriteriaHelper.in("obj.person", usId));
 				for(PersonComponentAssignment pca : (List<PersonComponentAssignment>) criteria.list())
 					newCourses.add(pca.getComponent());
 				
 				courses.addAll(newCourses);
+				hasCR = true;
+				logger.info(newCourses.toString());
 				
 			}
 			
 		}
+		
 		
 
 		this.logger.info("Starting data extraction.");
@@ -841,7 +848,7 @@ public class ClixImporter {
 		Criteria criteria = session.createCriteria(TQtiTestPlayerResp.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.container", courses));
+			criteria.add(CriteriaHelper.in("obj.container", courses));
 		}
 		criteria.add(Restrictions.gt("obj.evaluationDate", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -854,7 +861,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(TQtiTestPlayer.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.container", courses));
+			criteria.add(CriteriaHelper.in("obj.container", courses));
 		}
 		criteria.add(Restrictions.gt("obj.created", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -866,7 +873,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(EComposing.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.composing", courses));
+			criteria.add(CriteriaHelper.in("obj.composing", courses));
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -883,7 +890,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(ExerciseGroup.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.associatedCourse", courses));
+			criteria.add(CriteriaHelper.in("obj.associatedCourse", courses));
 		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.exerciseGroup = criteria.list();
@@ -898,7 +905,7 @@ public class ClixImporter {
 			for(ExerciseGroup eg : this.exerciseGroup)
 				ids.add(eg.getId());
 			if(!(empty = ids.isEmpty()))
-				criteria.add(Restrictions.in("obj.community", ids));
+				criteria.add(CriteriaHelper.in("obj.community", ids));
 		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
@@ -910,6 +917,8 @@ public class ClixImporter {
 
 		Set<Long> tmpComp = new HashSet<Long>();
 		
+		
+		
 		//Get EComponent tables
 		criteria = session.createCriteria(EComponent.class, "obj");			
 		if(hasCR)
@@ -919,7 +928,10 @@ public class ClixImporter {
 			for(ExercisePersonalised eP : this.exercisePersonalised)
 				tmpComp.add(eP.getExercise());
 			if(!(empty = tmpComp.isEmpty()))
-				criteria.add(Restrictions.in("obj.id", tmpComp));
+			{
+				criteria.add(CriteriaHelper.in("obj.id", new ArrayList<Long>(tmpComp)));
+				//criteria.add(CriteriaHelper.in("obj.id", tmpComp));
+			}
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -947,7 +959,7 @@ public class ClixImporter {
 			{
 				
 				criteria = session.createCriteria(TQtiContentStructure.class, "obj");
-				criteria.add(Restrictions.in("obj.container", newKeys));
+				criteria.add(CriteriaHelper.in("obj.container", newKeys));
 				List<TQtiContentStructure> t = criteria.list();
 				newKeys.clear();
 				for(TQtiContentStructure tqs : t )
@@ -959,7 +971,7 @@ public class ClixImporter {
 			}
 			criteria = session.createCriteria(TQtiContentStructure.class, "obj");
 			if(!(empty = allKeys.isEmpty()))
-				criteria.add(Restrictions.in("obj.container", allKeys));
+				criteria.add(CriteriaHelper.in("obj.container", allKeys));
 		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
@@ -976,7 +988,7 @@ public class ClixImporter {
 			for(TQtiContentStructure tqs : this.tQtiContentStructure)
 				tmp1.add(tqs.getContent());
 			if(!(empty = tmp1.isEmpty()))
-				criteria.add(Restrictions.in("obj.container", tmp1));
+				criteria.add(CriteriaHelper.in("obj.container", tmp1));
 		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
@@ -1001,7 +1013,7 @@ public class ClixImporter {
 				ids.add(tqs.getContent());
 			}
 			if(!(empty = ids.isEmpty()))
-				criteria.add(Restrictions.in("obj.id", ids));
+				criteria.add(CriteriaHelper.in("obj.id", ids));
 					
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
@@ -1018,7 +1030,7 @@ public class ClixImporter {
 		{
 			HashSet<Long> tmp1 = new HashSet<Long>(this.eComposingMap.keySet());
 			if(!(empty = tmp1.isEmpty()))
-				criteria.add(Restrictions.in("obj.chatroom", tmp1));
+				criteria.add(CriteriaHelper.in("obj.chatroom", tmp1));
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1039,7 +1051,7 @@ public class ClixImporter {
 				ids.add(eg.getType());
 			}
 			//if(!(empty = ids.isEmpty()))
-			//criteria.add(Restrictions.in("obj.id", ids));
+			//criteria.add(CriteriaHelper.in("obj.id", ids));
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1054,7 +1066,7 @@ public class ClixImporter {
 		{
 			if(!(empty = this.eComposingMap.isEmpty()))
 			{
-				criteria.add(Restrictions.in("obj.forum", this.eComposingMap.keySet()));
+				criteria.add(CriteriaHelper.in("obj.forum", this.eComposingMap.keySet()));
 			}
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
@@ -1075,7 +1087,7 @@ public class ClixImporter {
 		{
 			if(!(empty = this.eComposingMap.isEmpty()))
 			{
-				criteria.add(Restrictions.in("obj.forum", this.eComposingMap.keySet()));
+				criteria.add(CriteriaHelper.in("obj.forum", this.eComposingMap.keySet()));
 			}
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
@@ -1092,7 +1104,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(LearningLog.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.course", courses));
+			criteria.add(CriteriaHelper.in("obj.course", courses));
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1103,7 +1115,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(Portfolio.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));			
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1114,7 +1126,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(PortfolioLog.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1125,7 +1137,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(PersonComponentAssignment.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.personComponentAssignment = criteria.list();
@@ -1143,7 +1155,7 @@ public class ClixImporter {
 			for(PersonComponentAssignment eP : this.personComponentAssignment)
 				ids.add(eP.getPerson());
 			if(!(empty = ids.isEmpty()))
-				criteria.add(Restrictions.in("obj.id", ids));
+				criteria.add(CriteriaHelper.in("obj.id", ids));
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1163,7 +1175,7 @@ public class ClixImporter {
 			for(Person eg : this.person)
 				ids.add(eg.getId());
 			if(!(empty = ids.isEmpty()))
-				criteria.add(Restrictions.in("obj.person", ids));
+				criteria.add(CriteriaHelper.in("obj.person", ids));
 		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
@@ -1180,7 +1192,7 @@ public class ClixImporter {
 			for(PlatformGroupSpecification eg : this.platformGroupSpecification)
 				ids.add(eg.getGroup());
 			if(!(empty = ids.isEmpty()))
-				criteria.add(Restrictions.in("obj.id", ids));
+				criteria.add(CriteriaHelper.in("obj.id", ids));
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1194,7 +1206,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(ScormSessionTimes.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1205,7 +1217,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(TeamExerciseGroup.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.teamExerciseGroup = criteria.list();
@@ -1222,7 +1234,7 @@ public class ClixImporter {
 			}
 			if(!(empty = ids.isEmpty()))
 			{
-				criteria.add(Restrictions.in("obj.content", ids));
+				criteria.add(CriteriaHelper.in("obj.content", ids));
 			}
 		}
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1241,7 +1253,7 @@ public class ClixImporter {
 			for(TeamExerciseGroup eg : this.teamExerciseGroup)
 				ids.add(eg.getId());
 			if(!(empty = ids.isEmpty()))
-				criteria.add(Restrictions.in("obj.component", ids));
+				criteria.add(CriteriaHelper.in("obj.group", ids));
 		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
@@ -1256,7 +1268,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(TQtiEvalAssessment.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.add(Restrictions.gt("obj.lastInvocation", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1267,7 +1279,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(WikiEntry.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.add(Restrictions.gt("obj.lastUpdated", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1280,7 +1292,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(BiTrackContentImpressions.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.container", courses));
+			criteria.add(CriteriaHelper.in("obj.container", courses));
 		}
 		criteria.add(Restrictions.gt("obj.dayOfAccess", startStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1311,6 +1323,30 @@ public class ClixImporter {
 			hasCR = true; 
 		
 		boolean empty = true;
+		
+		if(logins != null && !logins.isEmpty())
+		{
+			List<Long> newCourses = new ArrayList<Long>();
+			Criteria criteria = session.createCriteria(Person.class, "obj");
+			criteria.add(CriteriaHelper.in("obj.login", logins));
+			List<Long> usId = new ArrayList<Long>();
+			
+			for(Person p : (List<Person>) criteria.list())
+				usId.add(p.getId());
+			
+			if(!usId.isEmpty())
+			{
+				criteria = session.createCriteria(PersonComponentAssignment.class, "obj");
+				criteria.add(CriteriaHelper.in("obj.person", usId));
+				for(PersonComponentAssignment pca : (List<PersonComponentAssignment>) criteria.list())
+					newCourses.add(pca.getComponent());
+				
+				courses.addAll(newCourses);
+				hasCR = true;
+				
+			}
+			
+		}
 
 		this.logger.info("Starting data extraction.");
 
@@ -1330,7 +1366,7 @@ public class ClixImporter {
 			criteria = session.createCriteria(EComposing.class, "obj");
 			if(hasCR)
 			{
-				criteria.add(Restrictions.in("obj.composing", courses));
+				criteria.add(CriteriaHelper.in("obj.composing", courses));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.eComposing = criteria.list();
@@ -1344,7 +1380,7 @@ public class ClixImporter {
 			criteria = session.createCriteria(Portfolio.class, "obj");
 			if(hasCR)
 			{
-				criteria.add(Restrictions.in("obj.component", courses));
+				criteria.add(CriteriaHelper.in("obj.component", courses));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.portfolio = criteria.list();
@@ -1354,7 +1390,7 @@ public class ClixImporter {
 			criteria = session.createCriteria(PersonComponentAssignment.class, "obj");
 			if(hasCR)
 			{
-				criteria.add(Restrictions.in("obj.component", courses));
+				criteria.add(CriteriaHelper.in("obj.component", courses));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.personComponentAssignment = criteria.list();
@@ -1364,7 +1400,7 @@ public class ClixImporter {
 			criteria = session.createCriteria(ExerciseGroup.class, "obj");
 			if(hasCR)
 			{
-				criteria.add(Restrictions.in("obj.associatedCourse", courses));
+				criteria.add(CriteriaHelper.in("obj.associatedCourse", courses));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.exerciseGroup = criteria.list();
@@ -1378,7 +1414,7 @@ public class ClixImporter {
 				for(ExerciseGroup eg : this.exerciseGroup)
 					ids.add(eg.getId());
 				if(!(empty = ids.isEmpty()))
-					criteria.add(Restrictions.in("obj.community", ids));
+					criteria.add(CriteriaHelper.in("obj.community", ids));
 			}
 			criteria.add(Restrictions.between("obj.uploadDate", startStr, endStr));
 			criteria.addOrder(Property.forName("obj.id").asc());
@@ -1398,7 +1434,7 @@ public class ClixImporter {
 				for(ExercisePersonalised eP : this.exercisePersonalised)
 					tmpComp.add(eP.getExercise());
 				if(!(empty = tmpComp.isEmpty()))
-					criteria.add(Restrictions.in("obj.id", tmpComp));
+					criteria.add(CriteriaHelper.in("obj.id", tmpComp));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			final List<EComponent> tmp;
@@ -1424,7 +1460,7 @@ public class ClixImporter {
 					ids.add(eg.getType());
 				}
 				//if(!(empty = ids.isEmpty()))
-				//criteria.add(Restrictions.in("obj.id", ids));
+				//criteria.add(CriteriaHelper.in("obj.id", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.eComponentType = criteria.list();
@@ -1442,7 +1478,7 @@ public class ClixImporter {
 				{
 					
 					criteria = session.createCriteria(TQtiContentStructure.class, "obj");
-					criteria.add(Restrictions.in("obj.container", newKeys));
+					criteria.add(CriteriaHelper.in("obj.container", newKeys));
 					List<TQtiContentStructure> t = criteria.list();
 					newKeys.clear();
 					for(TQtiContentStructure tqs : t )
@@ -1454,7 +1490,7 @@ public class ClixImporter {
 				}
 				criteria = session.createCriteria(TQtiContentStructure.class, "obj");
 				if(!(empty = allKeys.isEmpty()))
-					criteria.add(Restrictions.in("obj.container", allKeys));
+					criteria.add(CriteriaHelper.in("obj.container", allKeys));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!(hasCR && empty))
@@ -1471,7 +1507,7 @@ public class ClixImporter {
 				for(TQtiContentStructure tqs : this.tQtiContentStructure)
 					tmp1.add(tqs.getContent());
 				if(!(empty = tmp1.isEmpty()))
-					criteria.add(Restrictions.in("obj.container", tmp1));
+					criteria.add(CriteriaHelper.in("obj.container", tmp1));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!(hasCR && empty))
@@ -1492,7 +1528,7 @@ public class ClixImporter {
 				for(PersonComponentAssignment eP : this.personComponentAssignment)
 					ids.add(eP.getPerson());
 				if(!(empty = ids.isEmpty()))
-					criteria.add(Restrictions.in("obj.id", ids));
+					criteria.add(CriteriaHelper.in("obj.id", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!(hasCR && empty))
@@ -1509,7 +1545,7 @@ public class ClixImporter {
 				for(Person eg : this.person)
 					ids.add(eg.getId());
 				if(!(empty = ids.isEmpty()))
-					criteria.add(Restrictions.in("obj.person", ids));
+					criteria.add(CriteriaHelper.in("obj.person", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!hasCR || !empty)
@@ -1526,7 +1562,7 @@ public class ClixImporter {
 				for(PlatformGroupSpecification eg : this.platformGroupSpecification)
 					ids.add(eg.getGroup());
 				if(!(empty = ids.isEmpty()))
-					criteria.add(Restrictions.in("obj.id", ids));
+					criteria.add(CriteriaHelper.in("obj.id", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!(hasCR && empty))
@@ -1551,7 +1587,7 @@ public class ClixImporter {
 					ids.add(tqs.getContent());
 				}
 				if(!(empty = ids.isEmpty()))
-					criteria.add(Restrictions.in("obj.id", ids));
+					criteria.add(CriteriaHelper.in("obj.id", ids));
 						
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
@@ -1573,7 +1609,7 @@ public class ClixImporter {
 				}
 				if(!(empty = ids.isEmpty()))
 				{
-					criteria.add(Restrictions.in("obj.content", ids));
+					criteria.add(CriteriaHelper.in("obj.content", ids));
 				}
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
@@ -1587,7 +1623,7 @@ public class ClixImporter {
 			criteria = session.createCriteria(TeamExerciseGroup.class, "obj");
 			if(hasCR)
 			{
-				criteria.add(Restrictions.in("obj.component", courses));
+				criteria.add(CriteriaHelper.in("obj.component", courses));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.teamExerciseGroup = criteria.list();
@@ -1602,7 +1638,7 @@ public class ClixImporter {
 				for(TeamExerciseGroup eg : this.teamExerciseGroup)
 					ids.add(eg.getId());
 				if(!(empty = ids.isEmpty()))
-					criteria.add(Restrictions.in("obj.component", ids));
+					criteria.add(CriteriaHelper.in("obj.group", ids));
 			}
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!(hasCR && empty))
@@ -1619,7 +1655,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(TQtiTestPlayerResp.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.container", courses));
+			criteria.add(CriteriaHelper.in("obj.container", courses));
 		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.tQtiTestPlayerResp = criteria.list();
@@ -1629,7 +1665,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(LearningLog.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.course", courses));
+			criteria.add(CriteriaHelper.in("obj.course", courses));
 		}
 		criteria.add(Restrictions.between("obj.lastUpdated", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1640,7 +1676,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(Portfolio.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.add(Restrictions.between("obj.lastUpdated", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1651,7 +1687,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(PortfolioLog.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.add(Restrictions.between("obj.lastUpdated", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1664,7 +1700,7 @@ public class ClixImporter {
 		{
 			HashSet<Long> tmp1 = new HashSet<Long>(this.eComposingMap.keySet());
 			if(!(empty = tmp1.isEmpty()))
-				criteria.add(Restrictions.in("obj.chatroom", tmp1));
+				criteria.add(CriteriaHelper.in("obj.chatroom", tmp1));
 		}
 		criteria.add(Restrictions.between("obj.lastUpdated", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1678,7 +1714,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(ForumEntry.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.forum", this.eComposingMap.keySet()));
+			criteria.add(CriteriaHelper.in("obj.forum", this.eComposingMap.keySet()));
 		}
 		criteria.add(Restrictions.between("obj.lastUpdated", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1690,7 +1726,7 @@ public class ClixImporter {
 		if(hasCR)
 		{
 			if(!this.eComposingMap.isEmpty())
-			criteria.add(Restrictions.in("obj.forum", this.eComposingMap.keySet()));
+			criteria.add(CriteriaHelper.in("obj.forum", this.eComposingMap.keySet()));
 		}
 		criteria.add(Restrictions.between("obj.lastUpdated", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1704,7 +1740,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(TQtiEvalAssessment.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.add(Restrictions.between("obj.lastInvocation", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1715,7 +1751,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(ScormSessionTimes.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.add(Restrictions.between("obj.lastUpdated", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1726,7 +1762,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(WikiEntry.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.component", courses));
+			criteria.add(CriteriaHelper.in("obj.component", courses));
 		}
 		criteria.add(Restrictions.between("obj.lastUpdated", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1741,7 +1777,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(TQtiTestPlayer.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.container", courses));
+			criteria.add(CriteriaHelper.in("obj.container", courses));
 		}
 		criteria.add(Restrictions.between("obj.created", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -1758,7 +1794,7 @@ public class ClixImporter {
 		criteria = session.createCriteria(BiTrackContentImpressions.class, "obj");
 		if(hasCR)
 		{
-			criteria.add(Restrictions.in("obj.container", courses));
+			criteria.add(CriteriaHelper.in("obj.container", courses));
 		}
 		criteria.add(Restrictions.between("obj.dayOfAccess", startStr, endStr));
 		criteria.addOrder(Property.forName("obj.id").asc());

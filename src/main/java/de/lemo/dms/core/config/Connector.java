@@ -68,7 +68,7 @@ class Connector {
 	
 	@XmlElement(name="course-login-filter")
 	@XmlList
-	public List<Long> courseLoginFilter = Lists.newArrayList();
+	public List<String> courseLoginFilter = Lists.newArrayList();
 
 	/**
 	 * Hibernate-style <code>&lt;property&gt;</code> elements, used for source
