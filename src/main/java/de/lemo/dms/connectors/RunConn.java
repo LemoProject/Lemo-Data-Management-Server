@@ -46,7 +46,7 @@ public class RunConn {
 	{
 		this.logger.info("Starting Import");
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		final IConnector connector = ConnectorManager.getInstance().getConnectorById(RunConn.ID_CLIX);
+		final IConnector connector = ConnectorManager.getInstance().getConnectorById(RunConn.ID_MOODLE23);
 		connector.getData();
 		this.logger.info("Import finished");
 	}

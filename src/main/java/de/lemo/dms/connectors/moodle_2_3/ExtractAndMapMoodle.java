@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -39,6 +40,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.TextHelper;
@@ -163,7 +165,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void getLMStables(final DBConfigObject dbConfig, final long readingfromtimestamp, List<Long> courses) {
+	public void getLMStables(final DBConfigObject dbConfig, final long readingfromtimestamp, List<Long> courses, List<String> logins) {
 
 		// accessing DB by creating a session and a transaction using HibernateUtil
 		final Session session = HibernateUtil.getSessionFactory(dbConfig).openSession();
@@ -173,22 +175,71 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		boolean hasCR = false;
 		if(courses != null && courses.size() > 0)
 			hasCR = true; 
+		else
+			courses = new ArrayList<Long>();
 		
 		boolean empty = false;
 		
+		//Read Context
+		Criteria criteria = session.createCriteria(ContextLMS.class, "obj");
+		List<Long> contextLevels = new ArrayList<Long>();
+		contextLevels.add(40L);
+		contextLevels.add(50L);
+		
+		criteria.add(Restrictions.in("obj.contextlevel", contextLevels));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.contextLms = criteria.list();
+		logger.info("ContextLMS tables: " + this.contextLms.size());
+		
+		if(logins != null && !logins.isEmpty())
+		{
+			List<String> archetypes = new ArrayList<String>();
+			List<Long> roleIds = new ArrayList<Long>();
+			List<String> userIds = new ArrayList<String>();
+			
+			archetypes.add("manager");
+			archetypes.add("coursecreator");
+			archetypes.add("teacher");
+			archetypes.add("editingteacher");
+			
+			criteria = session.createCriteria(RoleLMS.class, "obj");
+			criteria.add(Restrictions.in("obj.archetype", archetypes));
+			for(RoleLMS role : (List<RoleLMS>)criteria.list())
+				roleIds.add(role.getId());
+			
+			criteria = session.createCriteria(UserLMS.class, "obj");
+			criteria.add(Restrictions.in("obj.username", logins));
+			for(UserLMS user : (List<UserLMS>)criteria.list())
+				userIds.add(user.getId()+"");
+			
+			criteria = session.createCriteria(RoleAssignmentsLMS.class, "obj");
+			criteria.add(Restrictions.in("obj.userid", userIds));
+			criteria.add(Restrictions.in("obj.roleid", roleIds));
+			for(ContextLMS c : this.contextLms)
+			{
+				for(RoleAssignmentsLMS ra : (List<RoleAssignmentsLMS>)criteria.list())
+				{
+					if(c.getContextlevel() == 50 && c.getId() == ra.getContextid())
+					{
+						courses.add(c.getInstanceid());
+						hasCR = true;
+					}
+				}
+			}
+			
+			
+		}
+		
 		// reading the LMS Database, create tables as lists of instances of the DB-table classes
-		Criteria criteria = session.createCriteria(AssignLMS.class, "obj");
+		criteria = session.createCriteria(AssignLMS.class, "obj");
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.assignLms = criteria.list();
 		logger.info("AssignLMS tables: " + this.assignLms.size());
 		
-		//Read Context
-		criteria = session.createCriteria(ContextLMS.class, "obj");
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.contextLms = criteria.list();
-		logger.info("ContextLMS tables: " + this.contextLms.size());
+
+
 		
 		//Read RoleAssignments
 		criteria = session.createCriteria(RoleAssignmentsLMS.class, "obj");
@@ -680,7 +731,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void getLMStables(final DBConfigObject dbConf, final long readingfromtimestamp, final long readingtotimestamp, List<Long> courses) {
+	public void getLMStables(final DBConfigObject dbConf, final long readingfromtimestamp, final long readingtotimestamp, List<Long> courses, List<String> logins) {
 
 		// accessing DB by creating a session and a transaction using HibernateUtil
 		final Session session = HibernateUtil.getSessionFactory(dbConf).openSession();
@@ -697,6 +748,56 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		boolean empty = false;
 		
 		if (this.userLms == null) {
+			
+			//Read Context
+			criteria = session.createCriteria(ContextLMS.class, "obj");
+			List<Long> contextLevels = new ArrayList<Long>();
+			contextLevels.add(40L);
+			contextLevels.add(50L);
+			
+			criteria.add(Restrictions.in("obj.contextlevel", contextLevels));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.contextLms = criteria.list();
+			logger.info("ContextLMS tables: " + this.contextLms.size());
+			
+			if(logins != null && !logins.isEmpty())
+			{
+				List<String> archetypes = new ArrayList<String>();
+				List<Long> roleIds = new ArrayList<Long>();
+				List<String> userIds = new ArrayList<String>();
+				
+				archetypes.add("manager");
+				archetypes.add("coursecreator");
+				archetypes.add("teacher");
+				archetypes.add("editingteacher");
+				
+				criteria = session.createCriteria(RoleLMS.class, "obj");
+				criteria.add(Restrictions.in("obj.archetype", archetypes));
+				for(RoleLMS role : (List<RoleLMS>)criteria.list())
+					roleIds.add(role.getId());
+				
+				criteria = session.createCriteria(UserLMS.class, "obj");
+				criteria.add(Restrictions.in("obj.username", logins));
+				for(UserLMS user : (List<UserLMS>)criteria.list())
+					userIds.add(user.getId()+"");
+				
+				criteria = session.createCriteria(RoleAssignmentsLMS.class, "obj");
+				criteria.add(Restrictions.in("obj.userid", userIds));
+				criteria.add(Restrictions.in("obj.roleid", roleIds));
+				for(ContextLMS c : this.contextLms)
+				{
+					for(RoleAssignmentsLMS ra : (List<RoleAssignmentsLMS>)criteria.list())
+					{
+						if(c.getContextlevel() == 50 && c.getId() == ra.getContextid())
+						{
+							courses.add(c.getInstanceid());
+							hasCR = true;
+						}
+					}
+				}
+				
+				
+			}
 
 			criteria = session.createCriteria(AssignLMS.class, "obj");
 			if(hasCR)
@@ -832,11 +933,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			logger.info("RoleLMS tables: " + this.roleLms.size());
 
 			session.clear();
-
-			criteria = session.createCriteria(ContextLMS.class, "obj");
-			criteria.addOrder(Property.forName("obj.id").asc());
-			this.contextLms = criteria.list();
-			logger.info("ContextLMS tables: " + this.contextLms.size());
 
 			/*
 			criteria = session.createCriteria(AssignmentLMS.class, "obj");

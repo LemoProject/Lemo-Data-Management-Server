@@ -67,7 +67,7 @@ public class ConnectorMoodle extends AbstractConnector {
 		final String[] s = new String[1];
 		s[0] = "ExtractAndMapMoodle";
 
-		extract.start(s, this.config, this.getCourseIdFilter());
+		extract.start(s, this.config, this.getCourseIdFilter(), this.getCourseLoginFilter());
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class ConnectorMoodle extends AbstractConnector {
 		final String[] s = new String[2];
 		s[0] = "ExtractAndMapMoodle";
 		s[1] = fromTimestamp + "";
-		extract.start(s, this.config, this.getCourseIdFilter());
+		extract.start(s, this.config, this.getCourseIdFilter(), this.getCourseLoginFilter());
 
 	}
 
