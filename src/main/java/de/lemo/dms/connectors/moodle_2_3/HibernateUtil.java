@@ -28,8 +28,10 @@ package de.lemo.dms.connectors.moodle_2_3;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
 import com.google.common.collect.Maps;
 
 import de.lemo.dms.connectors.moodle_2_3.mapping.AssignGradesLMS;
@@ -50,6 +52,7 @@ import de.lemo.dms.connectors.moodle_2_3.mapping.GroupsLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.GroupsMembersLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.LogLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.ModulesLMS;
+import de.lemo.dms.connectors.moodle_2_3.mapping.PageLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.QuestionLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.QuestionStatesLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.QuizAttemptsLMS;
@@ -57,6 +60,7 @@ import de.lemo.dms.connectors.moodle_2_3.mapping.QuizGradesLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.QuizLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.QuizQuestionInstancesLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.ResourceLMS;
+import de.lemo.dms.connectors.moodle_2_3.mapping.UrlLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.RoleAssignmentsLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.RoleLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.ScormLMS;
@@ -124,6 +128,8 @@ public final class HibernateUtil {
 		cfg.addAnnotatedClass(QuizQuestionInstancesLMS.class);
 		cfg.addAnnotatedClass(WikiLMS.class);
 		cfg.addAnnotatedClass(ResourceLMS.class);
+		cfg.addAnnotatedClass(PageLMS.class);
+		cfg.addAnnotatedClass(UrlLMS.class);
 		cfg.addAnnotatedClass(UserLMS.class);
 		cfg.addAnnotatedClass(RoleLMS.class);
 		cfg.addAnnotatedClass(ContextLMS.class);

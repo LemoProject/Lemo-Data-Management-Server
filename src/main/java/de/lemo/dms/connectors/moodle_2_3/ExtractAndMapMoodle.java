@@ -62,6 +62,7 @@ import de.lemo.dms.connectors.moodle_2_3.mapping.GroupsLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.GroupsMembersLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.LogLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.ModulesLMS;
+import de.lemo.dms.connectors.moodle_2_3.mapping.PageLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.QuestionLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.QuestionStatesLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.QuizLMS;
@@ -69,6 +70,7 @@ import de.lemo.dms.connectors.moodle_2_3.mapping.QuizAttemptsLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.QuizGradesLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.QuizQuestionInstancesLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.ResourceLMS;
+import de.lemo.dms.connectors.moodle_2_3.mapping.UrlLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.RoleLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.RoleAssignmentsLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.ScormLMS;
@@ -125,6 +127,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	private List<LogLMS> logLms;
 	private List<AssignGradesLMS> assignGradesLms;
 	private List<ResourceLMS> resourceLms;
+	private List<UrlLMS> urlLms;
+	private List<PageLMS> pageLms;
 	private List<CourseLMS> courseLms;
 	private List<ForumLMS> forumLms;
 	private List<WikiLMS> wikiLms;
@@ -343,7 +347,29 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.resourceLms = criteria.list();
 		logger.info("ResourceLMS tables: " + this.resourceLms.size());
+		
+		//Read Urls
+		criteria = session.createCriteria(UrlLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.course", courses));
+		
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.urlLms = criteria.list();
+		logger.info("UrlLMS tables: " + this.urlLms.size());
+		
+		//Read Pages
+		criteria = session.createCriteria(PageLMS.class, "obj");
+		if(hasCR)
+			criteria.add(Restrictions.in("obj.course", courses));
+		
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.pageLms = criteria.list();
+		logger.info("UrlLMS tables: " + this.pageLms.size());
 
+		
+		//Read Quiz
 		criteria = session.createCriteria(QuizLMS.class, "obj");
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
@@ -353,6 +379,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		this.quizLms = criteria.list();
 		logger.info("QuizLMS tables: " + this.quizLms.size());
 		
+		//Read QuizAttempts
 		criteria = session.createCriteria(QuizAttemptsLMS.class, "obj");
 		if(hasCR)
 			if(hasCR)
@@ -372,6 +399,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			this.quizAttemptsLms = new ArrayList<QuizAttemptsLMS>();
 		logger.info("QuizAttemptsLMS tables: " + this.quizAttemptsLms.size());
 
+		
+		//Read Chats
 		criteria = session.createCriteria(ChatLMS.class, "obj");
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
@@ -382,7 +411,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		logger.info("ChatLMS tables: " + this.chatLms.size());
 		
 
-
+		//Read ChatLog
 		criteria = session.createCriteria(ChatLogLMS.class, "obj");
 		if(hasCR)
 		{
@@ -847,6 +876,27 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.resourceLms = criteria.list();
 			logger.info("ResourceLMS tables: " + this.resourceLms.size());
+			
+			
+			//Read Urls
+			criteria = session.createCriteria(UrlLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.course", courses));
+			
+			criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.urlLms = criteria.list();
+			logger.info("UrlLMS tables: " + this.urlLms.size());
+			
+			//Read Pages
+			criteria = session.createCriteria(PageLMS.class, "obj");
+			if(hasCR)
+				criteria.add(Restrictions.in("obj.course", courses));
+			
+			criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.pageLms = criteria.list();
+			logger.info("UrlLMS tables: " + this.pageLms.size());
 
 			criteria = session.createCriteria(CourseLMS.class, "obj");
 			if(hasCR)
@@ -1561,7 +1611,37 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final CourseResourceMining insert = new CourseResourceMining();
 
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getId()));
+			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
+					this.oldCourseMining);
+			insert.setResource(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()), this.resourceMining,
+					this.oldResourceMining);
+			insert.setPlatform(this.connector.getPlatformId());
+			if ((insert.getCourse() != null) && (insert.getResource() != null)) {
+				courseResourceMining.put(insert.getId(), insert);
+			}
+		}
+		
+		for (final UrlLMS loadedItem : this.urlLms)
+		{
+			final CourseResourceMining insert = new CourseResourceMining();
+
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "2" + loadedItem.getId()));
+			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
+					this.oldCourseMining);
+			insert.setResource(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()), this.resourceMining,
+					this.oldResourceMining);
+			insert.setPlatform(this.connector.getPlatformId());
+			if ((insert.getCourse() != null) && (insert.getResource() != null)) {
+				courseResourceMining.put(insert.getId(), insert);
+			}
+		}
+		
+		for (final PageLMS loadedItem : this.pageLms)
+		{
+			final CourseResourceMining insert = new CourseResourceMining();
+
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "3" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
 					this.oldCourseMining);
 			insert.setResource(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()), this.resourceMining,
@@ -2709,9 +2789,42 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final ResourceMining insert = new ResourceMining();
 
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setPlatform(this.connector.getPlatformId());
+			insert.setType("resource");
+
+			// Get time of creation
+
+			insert.setTimeModified(loadedItem.getTimemodified());
+
+			resource.put(insert.getId(), insert);
+		}
+		
+		for (final UrlLMS loadedItem : this.urlLms)
+		{
+			final ResourceMining insert = new ResourceMining();
+
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "2" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getName());
+			insert.setPlatform(this.connector.getPlatformId());
+			insert.setType("url");
+
+			// Get time of creation
+
+			insert.setTimeModified(loadedItem.getTimemodified());
+
+			resource.put(insert.getId(), insert);
+		}
+		
+		for (final PageLMS loadedItem : this.pageLms)
+		{
+			final ResourceMining insert = new ResourceMining();
+
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "3" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getName());
+			insert.setPlatform(this.connector.getPlatformId());
+			insert.setType("page");
 
 			// Get time of creation
 
@@ -2778,7 +2891,73 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setAction(loadedItem.getAction());
 
 				if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setResource(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
+					insert.setResource(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getInfo()),
+							this.resourceMining, this.oldResourceMining);
+				}
+				insert.setTimestamp(loadedItem.getTime());
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
+				if ((insert.getResource() == null) && !(loadedItem.getAction().equals("view all"))) {
+					this.logger.debug("In ResourceLogMining, resource not found for log: " + loadedItem.getId()
+							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
+							+ " and action: " + loadedItem.getAction());
+				}
+				if ((insert.getCourse() != null) && (insert.getResource() != null) && (insert.getUser() != null)) {
+					resourceLogMining.put(insert.getId(), insert);
+				}
+
+			}
+			
+			if (loadedItem.getModule().equals("url")) {
+				final ResourceLogMining insert = new ResourceLogMining();
+				insert.setPlatform(this.connector.getPlatformId());
+
+				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
+
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+						this.oldUserMining);
+				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
+						this.courseMining, this.oldCourseMining);
+				insert.setAction(loadedItem.getAction());
+
+				if (loadedItem.getInfo().matches("[0-9]+")) {
+					insert.setResource(Long.valueOf(this.connector.getPrefix() + "2" + loadedItem.getInfo()),
+							this.resourceMining, this.oldResourceMining);
+				}
+				insert.setTimestamp(loadedItem.getTime());
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
+				if ((insert.getResource() == null) && !(loadedItem.getAction().equals("view all"))) {
+					this.logger.debug("In ResourceLogMining, resource not found for log: " + loadedItem.getId()
+							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
+							+ " and action: " + loadedItem.getAction());
+				}
+				if ((insert.getCourse() != null) && (insert.getResource() != null) && (insert.getUser() != null)) {
+					resourceLogMining.put(insert.getId(), insert);
+				}
+
+			}
+			
+			if (loadedItem.getModule().equals("page")) {
+				final ResourceLogMining insert = new ResourceLogMining();
+				insert.setPlatform(this.connector.getPlatformId());
+
+				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
+
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+						this.oldUserMining);
+				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
+						this.courseMining, this.oldCourseMining);
+				insert.setAction(loadedItem.getAction());
+
+				if (loadedItem.getInfo().matches("[0-9]+")) {
+					insert.setResource(Long.valueOf(this.connector.getPrefix() + "3" + loadedItem.getInfo()),
 							this.resourceMining, this.oldResourceMining);
 				}
 				insert.setTimestamp(loadedItem.getTime());
