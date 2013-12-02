@@ -30,12 +30,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -124,6 +126,7 @@ public class ServiceCourseDetails {
 	 * 
 	 * @return	A List of CourseObjects containing the information.
 	 */
+	@SuppressWarnings("unchecked")
 	@GET
 	@Path("/multi")
 	public ResultListCourseObject getCoursesDetails(@QueryParam(MetaParam.COURSE_IDS) final List<Long> courses) {
@@ -142,7 +145,6 @@ public class ServiceCourseDetails {
 		Criteria criteria = session.createCriteria(CourseMining.class, "course");
 		criteria.add(Restrictions.in("course.id", courses));
 
-		@SuppressWarnings("unchecked")
 		final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) criteria.list();
 
 		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, new ArrayList<Long>());
@@ -193,6 +195,7 @@ public class ServiceCourseDetails {
 	 * 
 	 * @return	A List of CourseObjects containing the information.
 	 */
+	@SuppressWarnings("unchecked")
 	@GET
 	@Path("{cid}/hash")
 	public Long getCourseHash(@PathParam("cid") final Long id) {

@@ -28,7 +28,6 @@ package de.lemo.dms.test;
 
 import org.hibernate.Session;
 
-import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 
