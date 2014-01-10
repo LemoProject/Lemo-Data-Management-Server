@@ -1081,7 +1081,7 @@ public class ClixImporter {
 
 		
 		//Get ForumEntryState tables
-		criteria = session.createCriteria(ForumEntryState.class, "obj");
+		/*criteria = session.createCriteria(ForumEntryState.class, "obj");
 		if(hasCR)
 		{
 			if(!(empty = this.eComposingMap.isEmpty()))
@@ -1095,7 +1095,7 @@ public class ClixImporter {
 		{
 			this.forumEntryState = criteria.list();
 		}
-		else
+		else*/
 			this.forumEntryState = new ArrayList<ForumEntryState>();
 		this.logger.info("ForumEntryState tables: " + this.forumEntryState.size());
 		
@@ -1167,7 +1167,7 @@ public class ClixImporter {
 
 		
 		//Get PlatformGroupSpecification tables
-		criteria = session.createCriteria(PlatformGroupSpecification.class, "obj");
+		/*criteria = session.createCriteria(PlatformGroupSpecification.class, "obj");
 		if(hasCR)
 		{
 			Set<Long> ids = new HashSet<Long>();
@@ -1179,7 +1179,7 @@ public class ClixImporter {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
 			this.platformGroupSpecification = criteria.list();
-		else
+		else*/
 			this.platformGroupSpecification = new ArrayList<PlatformGroupSpecification>();
 		this.logger.info("PlatformGroupSpecification tables: " + this.platformGroupSpecification.size());	
 		
@@ -1537,7 +1537,7 @@ public class ClixImporter {
 			this.logger.info("Person tables: " + this.person.size());
 			
 			//Get PlatformGroupSpecification tables
-			criteria = session.createCriteria(PlatformGroupSpecification.class, "obj");
+			/*criteria = session.createCriteria(PlatformGroupSpecification.class, "obj");
 			if(hasCR)
 			{
 				Set<Long> ids = new HashSet<Long>();
@@ -1549,7 +1549,7 @@ public class ClixImporter {
 			criteria.addOrder(Property.forName("obj.id").asc());
 			if(!hasCR || !empty)
 				this.platformGroupSpecification = criteria.list();
-			else
+			else*/
 				this.platformGroupSpecification = new ArrayList<PlatformGroupSpecification>();
 			this.logger.info("PlatformGroupSpecification tables: " + this.platformGroupSpecification.size());
 			

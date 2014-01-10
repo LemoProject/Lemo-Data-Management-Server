@@ -216,9 +216,9 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	/**
 	 * standard getter for the attribute answers
 	 * 
-	 * @return the answers which are submittet with this action
+	 * @return the answers which are submitted with this action
 	 */
-	@Column(name="answers")
+	@Column(name="answers", length=1000)
 	public String getAnswers() {
 		return this.answers;
 	}
