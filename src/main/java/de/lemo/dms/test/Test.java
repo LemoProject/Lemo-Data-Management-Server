@@ -26,10 +26,15 @@
 
 package de.lemo.dms.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Session;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.processing.questions.QPerformanceHistogram;
+import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 /**
  * sollte gelöscht werden
@@ -46,6 +51,26 @@ public class Test {
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 2, 2, 251, 1325372400L, 500, 1));
+	}
+	
+	public static void testAssignment()
+	{
+		ServerConfiguration.getInstance().loadConfig("/lemo");
+		QPerformanceHistogram qph = new QPerformanceHistogram();
+		
+		List<Long> courses = new ArrayList<Long>();
+		List<Long> users = new ArrayList<Long>();
+		List<Long> quizzes = new ArrayList<Long>();
+		List<Long> gender = new ArrayList<Long>();
+		courses.add(11961L);
+		Long resolution = 100L;
+		Long startTime = 0L;
+		Long endTime = 1478305674L;
+		
+		
+		
+		ResultListLongObject rl = qph.compute(courses, users, quizzes, resolution, startTime, endTime, gender);
+		System.out.println();
 	}
 
 	public static void write()
@@ -72,6 +97,6 @@ public class Test {
 	public static void main(final String[] args)
 	{
 		
-		Test.gen();
+		Test.testAssignment();
 	}
 }

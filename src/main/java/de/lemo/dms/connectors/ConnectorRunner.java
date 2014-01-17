@@ -26,7 +26,11 @@
 
 package de.lemo.dms.connectors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 
 
@@ -36,19 +40,26 @@ import de.lemo.dms.core.config.ServerConfiguration;
  * 
  * @author s.schwarzrock
  */
-public class RunConn {
+public class ConnectorRunner {
 
-	private static final Long ID_MOODLE23 = 4L;
-	private static final Long ID_CLIX = 6L;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
-	public void run()
+	
+	public void runConnectors(List<String> connectorNames )
 	{
-		this.logger.info("Starting Import");
+		
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		final IConnector connector = ConnectorManager.getInstance().getConnectorById(RunConn.ID_CLIX);
-		connector.getData();
-		this.logger.info("Import finished");
+		List<IConnector> conns = ConnectorManager.getInstance().getAvailableConnectors();
+
+		for(IConnector c : conns)
+		{
+			if((connectorNames.isEmpty() || connectorNames.contains(c.getName())) && c.testConnections())
+			{	
+				this.logger.info("Starting Import for connector " + c.getName());
+				c.getData();
+				this.logger.info("Import finished");
+			}
+		}
 	}
 
 	/**
@@ -58,9 +69,12 @@ public class RunConn {
 	 */
 	public static void main(final String[] args)
 	{
-
-		final RunConn t = new RunConn();
-		t.run();
+		List<String> names = new ArrayList<String>();
+		if(args != null && args.length > 0)
+			for(String s : args)
+				names.add(s);
+		final ConnectorRunner t = new ConnectorRunner();
+		t.runConnectors(names);
 	}
 
 }

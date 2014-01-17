@@ -223,9 +223,7 @@ public class QPerformanceHistogram extends Question {
 							.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())))
 							+ pos] + 1;
 				}
-
 			}
-
 		}
 		session.close();
 		return new ResultListLongObject(Arrays.asList(results));

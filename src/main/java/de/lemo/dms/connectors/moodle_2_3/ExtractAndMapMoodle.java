@@ -2573,42 +2573,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 		final HashMap<Long, AssignmentMining> assignmentMining = new HashMap<Long, AssignmentMining>();
 
-		// Getting assignmentMining from Moodle's 'assignment'-table should be abandoned as quickly as possible due to
-		// overlapping
-		// primary-identifiers (assignment|assign)
-		/*
-		for (final AssignmentLMS loadedItem : this.assignmentLms)
-		{
-			final AssignmentMining insert = new AssignmentMining();
-
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setTitle(loadedItem.getName());
-			insert.setTimeOpen(loadedItem.getTimeavailable());
-			insert.setTimeClose(loadedItem.getTimedue());
-			insert.setTimeModified(loadedItem.getTimemodified());
-			insert.setPlatform(this.connector.getPlatformId());
-			for (final GradeItemsLMS loadedItem2 : this.gradeItemsLms)
-			{
-				if ((loadedItem2.getIteminstance() != null) && (loadedItem2.getItemmodule() != null))
-				{
-					this.logger.debug("Iteminstance " + loadedItem2.getIteminstance() + " AssignmentId"
-							+ loadedItem.getId());
-					if ((loadedItem.getId() == loadedItem2.getIteminstance().longValue())
-							&& loadedItem2.getItemmodule().equals("assignment")) {
-						insert.setMaxGrade(loadedItem2.getGrademax());
-						break;
-					}
-				}
-				else {
-					this.logger.debug("Iteminstance or Itemmodule not found for AssignmentId" + loadedItem.getId()
-							+ " and type quiz and Iteminstance " + loadedItem2.getIteminstance() + " Itemmodule:"
-							+ loadedItem2.getItemmodule());
-				}
-			}
-			//Ignore old assignment_minings
-			//assignmentMining.put(insert.getId(), insert);
-		}
-		*/
+		
 		final HashMap<Long, AssignmentMining> amTmp = new HashMap<Long, AssignmentMining>();
 		long moduleid = 0;
 		for (final ModulesLMS loadedItem : this.modulesLms)
