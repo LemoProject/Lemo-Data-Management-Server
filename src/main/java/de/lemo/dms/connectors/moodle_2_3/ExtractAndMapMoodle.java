@@ -229,9 +229,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						hasCR = true;
 					}
 				}
-			}
-			
-			
+			}			
 		}
 		
 		// reading the LMS Database, create tables as lists of instances of the DB-table classes
@@ -241,9 +239,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.assignLms = criteria.list();
 		logger.info("AssignLMS tables: " + this.assignLms.size());
-		
-
-
 		
 		//Read RoleAssignments
 		criteria = session.createCriteria(RoleAssignmentsLMS.class, "obj");
@@ -259,7 +254,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				criteria.add(Restrictions.in("obj.contextid", ids));
 		}
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
 			this.roleAssignmentsLms = criteria.list();
@@ -343,7 +338,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.resourceLms = criteria.list();
 		logger.info("ResourceLMS tables: " + this.resourceLms.size());
@@ -353,7 +348,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.urlLms = criteria.list();
 		logger.info("UrlLMS tables: " + this.urlLms.size());
@@ -363,7 +358,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.pageLms = criteria.list();
 		logger.info("UrlLMS tables: " + this.pageLms.size());
@@ -374,7 +369,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.quizLms = criteria.list();
 		logger.info("QuizLMS tables: " + this.quizLms.size());
@@ -405,7 +400,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.chatLms = criteria.list();
 		logger.info("ChatLMS tables: " + this.chatLms.size());
@@ -432,7 +427,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		criteria = session.createCriteria(CourseCategoriesLMS.class, "obj");
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.courseCategoriesLms = criteria.list();
 		logger.info("CourseCategoriesLMS tables: " + this.courseCategoriesLms.size());
@@ -441,7 +436,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.id", courses));
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.courseLms = criteria.list();
 		logger.info("CourseLMS tables: " + this.courseLms.size());
@@ -524,7 +518,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.forumLms = criteria.list();
 		logger.info("ForumLMS tables: " + this.forumLms.size());
@@ -533,7 +527,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.courseid", courses));
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.groupLms = criteria.list();
 		logger.info("GroupsLMS tables: " + this.groupLms.size());
@@ -542,7 +536,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.wikiLms = criteria.list();
 		logger.info("WikiLMS tables: " + this.wikiLms.size());
@@ -557,7 +551,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
  			if(!(empty = ids.isEmpty()))
  				criteria.add(Restrictions.in("obj.groupid", ids));
 		}
-		criteria.add(Restrictions.gt("obj.timeadded", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timeadded", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
 			this.groupMembersLms = criteria.list();
@@ -609,7 +603,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
  				criteria.add(Restrictions.in("obj.id", ids));
 		}
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
 			this.questionLms = criteria.list();
@@ -628,11 +622,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
  			if(!(empty = ids.isEmpty()))
  				criteria.add(Restrictions.in("obj.id", ids));
 		}
-		
-		if(readingfromtimestamp > 0 )
-		{
-			criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
-		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
 			this.userLms = criteria.list();
@@ -644,37 +633,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.roleLms = criteria.list();
 		logger.info("RoleLMS tables: " + this.roleLms.size());
-
-		/*criteria = session.createCriteria(AssignmentLMS.class, "obj");
-		if(hasCR)
-		{
-			criteria.add(Restrictions.in("obj.course", courses));
-		}
-		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.assignmentLms = criteria.list();
-		logger.info("AssignmentLMS tables: " + this.assignmentLms.size());
-		*/
-		/*
-		criteria = session.createCriteria(AssignmentSubmissionsLMS.class, "obj");
-		if(hasCR)
-		{
-			ArrayList<Long> ids = new ArrayList<Long>();
- 			for(AssignmentLMS e : this.assignmentLms)
- 				ids.add(e.getId());
- 			if(!(empty = ids.isEmpty()))
- 				criteria.add(Restrictions.in("obj.assignment", ids));
-		}
-		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
-		if(!(hasCR && empty))
-			this.assignmentSubmissionLms = criteria.list();
-		else
-			this.assignmentSubmissionLms = new ArrayList<AssignmentSubmissionsLMS>();
-		logger.info("AssignmentSubmissionsLMS tables: " + this.assignmentSubmissionLms.size());
-		 */
 
 		criteria = session.createCriteria(QuizGradesLMS.class, "obj");
 		if(hasCR)
@@ -718,7 +676,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			criteria.add(Restrictions.in("obj.course", courses));
 		}
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.scormLms = criteria.list();
 		logger.info("ScormLMS tables: " + this.scormLms.size());
@@ -744,7 +702,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
  				criteria.add(Restrictions.in("obj.itemid", ids));
 		}
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
 			this.gradeGradesLms = criteria.list();
@@ -2267,20 +2225,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			if(cm.getModule() == moduleid)
 				courseModules.put(cm.getId(), cm);
 		}
-		
-		
-		/*for (final AssignmentSubmissionsLMS as : this.assignmentSubmissionLms)
-		{
-			if (asSub.get(as.getAssignment()) == null)
-			{
-				final ArrayList<AssignmentSubmissionsLMS> a = new ArrayList<AssignmentSubmissionsLMS>();
-				a.add(as);
-				asSub.put(as.getAssignment(), a);
-			} else {
-				asSub.get(as.getAssignment()).add(as);
-			}
-
-		}*/
 		
 		for (final AssignGradesLMS assignGrade : this.assignGradesLms)
 		{
