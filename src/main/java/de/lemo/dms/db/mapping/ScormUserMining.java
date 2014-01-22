@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/db/mapping/QuizUserMining.java
+ * File ./src/main/java/de/lemo/dms/db/mapping/ScormUserMining.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,7 +19,7 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/db/mapping/QuizUserMining.java
+ * File ./main/java/de/lemo/dms/db/mapping/ScormUserMining.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  */
@@ -38,36 +38,28 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.IMappingClass;
-import de.lemo.dms.db.mapping.abstractions.IRatedObject;
 import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
 
-/** This class represents the association between the quiz and the user. */
+/** This class represents the association between the scorm and the user. */
 @Entity
-@Table(name = "quiz_user")
-public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
+@Table(name = "scorm_user")
+public class ScormUserMining implements IMappingClass, IRatedUserAssociation {
 
 	private long id;
 	private UserMining user;
 	private CourseMining course;
-	private QuizMining quiz;
-	private double rawGrade;
+	private ScormMining scorm;
 	private double finalGrade;
 	private long timeModified;
 	private Long platform;
 
 	@Override
-	@Transient
-	public Long getPrefix() {
-		return 14L;
-	}
-	
-	@Override
 	public boolean equals(final IMappingClass o)
 	{
-		if (!(o instanceof QuizUserMining)) {
+		if (!(o instanceof ScormUserMining)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof QuizUserMining)) {
+		if ((o.getId() == this.getId()) && (o instanceof ScormUserMining)) {
 			return true;
 		}
 		return false;
@@ -82,7 +74,7 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 	/**
 	 * standard getter for the attribute id
 	 * 
-	 * @return the identifier for the association between quiz and user
+	 * @return the identifier for the association between scorm and user
 	 */
 	@Override
 	@Id
@@ -94,7 +86,7 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 	 * standard setter for the attribute id
 	 * 
 	 * @param id
-	 *            the identifier for the association between quiz and user
+	 *            the identifier for the association between scorm and user
 	 */
 	public void setId(final long id) {
 		this.id = id;
@@ -138,12 +130,12 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 		if (userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addQuizUser(this);
+			userMining.get(user).addScormUser(this);
 		}
 		if ((this.user == null) && (oldUserMining.get(user) != null))
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addQuizUser(this);
+			oldUserMining.get(user).addScormUser(this);
 		}
 
 	}
@@ -187,87 +179,67 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 		if (courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addQuizUser(this);
+			courseMining.get(course).addScormUser(this);
 		}
 		if ((this.course == null) && (oldCourseMining.get(course) != null))
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addQuizUser(this);
+			oldCourseMining.get(course).addScormUser(this);
 		}
 	}
 
 	/**
-	 * standard getter for the attribute quiz
+	 * standard getter for the attribute scorm
 	 * 
-	 * @return the quiz in which the action takes place
+	 * @return the scorm in which the action takes place
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="quiz_id")
-	public QuizMining getQuiz() {
-		return this.quiz;
+	@JoinColumn(name="scorm_id")
+	public ScormMining getScorm() {
+		return this.scorm;
 	}
 
 	/**
-	 * standard setter for the attribute quiz
+	 * standard setter for the attribute scorm
 	 * 
-	 * @param quiz
-	 *            the quiz in which the action takes place
+	 * @param scorm
+	 *            the scorm in which the action takes place
 	 */
-	public void setQuiz(final QuizMining quiz) {
-		this.quiz = quiz;
+	public void setScorm(final ScormMining scorm) {
+		this.scorm = scorm;
 	}
 
 	/**
-	 * parameterized setter for the attribute quiz
+	 * parameterized setter for the attribute scorm
 	 * 
 	 * @param id
-	 *            the id of the quiz in which the action takes place
-	 * @param quizMining
-	 *            a list of new added quiz, which is searched for the quiz with the qid and qtype submitted in the other
+	 *            the id of the scorm in which the action takes place
+	 * @param scormMining
+	 *            a list of new added scorm, which is searched for the scorm with the qid and qtype submitted in the other
 	 *            parameters
-	 * @param oldQuizMining
-	 *            a list of quiz in the miningdatabase, which is searched for the quiz with the qid and qtype submitted
+	 * @param oldScormMining
+	 *            a list of scorm in the miningdatabase, which is searched for the scorm with the qid and qtype submitted
 	 *            in the other parameters
 	 */
-	public void setQuiz(final long quiz, final Map<Long, QuizMining> quizMining,
-			final Map<Long, QuizMining> oldQuizMining) {
+	public void setScorm(final long scorm, final Map<Long, ScormMining> scormMining,
+			final Map<Long, ScormMining> oldScormMining) {
 
-		if (quizMining.get(quiz) != null)
+		if (scormMining.get(scorm) != null)
 		{
-			this.quiz = quizMining.get(quiz);
-			quizMining.get(quiz).addQuizUser(this);
+			this.scorm = scormMining.get(scorm);
+			scormMining.get(scorm).addScormUser(this);
 		}
-		if ((this.quiz == null) && (oldQuizMining.get(quiz) != null))
+		if ((this.scorm == null) && (oldScormMining.get(scorm) != null))
 		{
-			this.quiz = oldQuizMining.get(quiz);
-			oldQuizMining.get(quiz).addQuizUser(this);
+			this.scorm = oldScormMining.get(scorm);
+			oldScormMining.get(scorm).addScormUser(this);
 		}
-	}
-
-	/**
-	 * standard getter for the attribute rawgrade
-	 * 
-	 * @return the raw grade of the user in this exercise
-	 */
-	@Column	(name="rawgrade")
-	public double getRawGrade() {
-		return this.rawGrade;
-	}
-
-	/**
-	 * standard setter for the attribute rawgrade
-	 * 
-	 * @param rawGrade
-	 *            the raw grade of the user in this quiz
-	 */
-	public void setRawGrade(final double rawGrade) {
-		this.rawGrade = rawGrade;
 	}
 
 	/**
 	 * standard getter for the attribute finalgrade
 	 * 
-	 * @return the final grade of the user in this quiz
+	 * @return the final grade of the user in this scorm
 	 */
 	@Column	(name="finalgrade")
 	public double getFinalGrade() {
@@ -278,7 +250,7 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 	 * standard setter for the attribute finalgrade
 	 * 
 	 * @param finalGrade
-	 *            the final grade of the user in this quiz
+	 *            the final grade of the user in this scorm
 	 */
 	public void setFinalGrade(final double finalGrade) {
 		this.finalGrade = finalGrade;
@@ -315,13 +287,19 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 
 	@Override
 	@Transient
+	public Long getPrefix() {
+		return 17L;
+	}
+
+	@Override
+	@Transient
 	public Long getLearnObjId() {
-		return this.getQuiz().getId();
+		return this.getScorm().getId();
 	}
 
 	@Override
 	@Transient
 	public Double getMaxGrade() {
-		return this.getQuiz().getMaxGrade();
+		return this.getScorm().getMaxGrade();
 	}
 }

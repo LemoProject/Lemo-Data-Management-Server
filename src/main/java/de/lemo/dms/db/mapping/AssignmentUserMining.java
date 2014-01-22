@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/db/mapping/QuizUserMining.java
+ * File ./src/main/java/de/lemo/dms/db/mapping/AssignmentUserMining.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,7 +19,7 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/db/mapping/QuizUserMining.java
+ * File ./main/java/de/lemo/dms/db/mapping/AssignmentUserMining.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  */
@@ -41,33 +41,33 @@ import de.lemo.dms.db.mapping.abstractions.IMappingClass;
 import de.lemo.dms.db.mapping.abstractions.IRatedObject;
 import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
 
-/** This class represents the association between the quiz and the user. */
+/** This class represents the association between the assignment and the user. */
 @Entity
-@Table(name = "quiz_user")
-public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
+@Table(name = "assignment_user")
+public class AssignmentUserMining implements IMappingClass, IRatedUserAssociation {
 
 	private long id;
 	private UserMining user;
 	private CourseMining course;
-	private QuizMining quiz;
-	private double rawGrade;
+	private AssignmentMining assignment;
 	private double finalGrade;
 	private long timeModified;
 	private Long platform;
 
+	
 	@Override
 	@Transient
 	public Long getPrefix() {
-		return 14L;
+		return 11L;
 	}
 	
 	@Override
 	public boolean equals(final IMappingClass o)
 	{
-		if (!(o instanceof QuizUserMining)) {
+		if (!(o instanceof AssignmentUserMining)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof QuizUserMining)) {
+		if ((o.getId() == this.getId()) && (o instanceof AssignmentUserMining)) {
 			return true;
 		}
 		return false;
@@ -82,7 +82,7 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 	/**
 	 * standard getter for the attribute id
 	 * 
-	 * @return the identifier for the association between quiz and user
+	 * @return the identifier for the association between assignment and user
 	 */
 	@Override
 	@Id
@@ -94,7 +94,7 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 	 * standard setter for the attribute id
 	 * 
 	 * @param id
-	 *            the identifier for the association between quiz and user
+	 *            the identifier for the association between assignment and user
 	 */
 	public void setId(final long id) {
 		this.id = id;
@@ -138,12 +138,12 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 		if (userMining.get(user) != null)
 		{
 			this.user = userMining.get(user);
-			userMining.get(user).addQuizUser(this);
+			userMining.get(user).addAssignmentUser(this);
 		}
 		if ((this.user == null) && (oldUserMining.get(user) != null))
 		{
 			this.user = oldUserMining.get(user);
-			oldUserMining.get(user).addQuizUser(this);
+			oldUserMining.get(user).addAssignmentUser(this);
 		}
 
 	}
@@ -187,87 +187,67 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 		if (courseMining.get(course) != null)
 		{
 			this.course = courseMining.get(course);
-			courseMining.get(course).addQuizUser(this);
+			courseMining.get(course).addAssignmentUser(this);
 		}
 		if ((this.course == null) && (oldCourseMining.get(course) != null))
 		{
 			this.course = oldCourseMining.get(course);
-			oldCourseMining.get(course).addQuizUser(this);
+			oldCourseMining.get(course).addAssignmentUser(this);
 		}
 	}
 
 	/**
-	 * standard getter for the attribute quiz
+	 * standard getter for the attribute assignment
 	 * 
-	 * @return the quiz in which the action takes place
+	 * @return the assignment in which the action takes place
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="quiz_id")
-	public QuizMining getQuiz() {
-		return this.quiz;
+	@JoinColumn(name="assignment_id")
+	public AssignmentMining getAssignment() {
+		return this.assignment;
 	}
 
 	/**
-	 * standard setter for the attribute quiz
+	 * standard setter for the attribute assignment
 	 * 
-	 * @param quiz
-	 *            the quiz in which the action takes place
+	 * @param assignment
+	 *            the assignment in which the action takes place
 	 */
-	public void setQuiz(final QuizMining quiz) {
-		this.quiz = quiz;
+	public void setAssignment(final AssignmentMining assignment) {
+		this.assignment = assignment;
 	}
 
 	/**
-	 * parameterized setter for the attribute quiz
+	 * parameterized setter for the attribute assignment
 	 * 
 	 * @param id
-	 *            the id of the quiz in which the action takes place
-	 * @param quizMining
-	 *            a list of new added quiz, which is searched for the quiz with the qid and qtype submitted in the other
+	 *            the id of the assignment in which the action takes place
+	 * @param assignmentMining
+	 *            a list of new added assignment, which is searched for the assignment with the qid and qtype submitted in the other
 	 *            parameters
-	 * @param oldQuizMining
-	 *            a list of quiz in the miningdatabase, which is searched for the quiz with the qid and qtype submitted
+	 * @param oldAssignmentMining
+	 *            a list of assignment in the miningdatabase, which is searched for the assignment with the qid and qtype submitted
 	 *            in the other parameters
 	 */
-	public void setQuiz(final long quiz, final Map<Long, QuizMining> quizMining,
-			final Map<Long, QuizMining> oldQuizMining) {
+	public void setAssignment(final long assignment, final Map<Long, AssignmentMining> assignmentMining,
+			final Map<Long, AssignmentMining> oldAssignmentMining) {
 
-		if (quizMining.get(quiz) != null)
+		if (assignmentMining.get(assignment) != null)
 		{
-			this.quiz = quizMining.get(quiz);
-			quizMining.get(quiz).addQuizUser(this);
+			this.assignment = assignmentMining.get(assignment);
+			assignmentMining.get(assignment).addAssignmentUser(this);
 		}
-		if ((this.quiz == null) && (oldQuizMining.get(quiz) != null))
+		if ((this.assignment == null) && (oldAssignmentMining.get(assignment) != null))
 		{
-			this.quiz = oldQuizMining.get(quiz);
-			oldQuizMining.get(quiz).addQuizUser(this);
+			this.assignment = oldAssignmentMining.get(assignment);
+			oldAssignmentMining.get(assignment).addAssignmentUser(this);
 		}
-	}
-
-	/**
-	 * standard getter for the attribute rawgrade
-	 * 
-	 * @return the raw grade of the user in this exercise
-	 */
-	@Column	(name="rawgrade")
-	public double getRawGrade() {
-		return this.rawGrade;
-	}
-
-	/**
-	 * standard setter for the attribute rawgrade
-	 * 
-	 * @param rawGrade
-	 *            the raw grade of the user in this quiz
-	 */
-	public void setRawGrade(final double rawGrade) {
-		this.rawGrade = rawGrade;
 	}
 
 	/**
 	 * standard getter for the attribute finalgrade
 	 * 
-	 * @return the final grade of the user in this quiz
+	 * @return the final grade of the user in this assignment
 	 */
 	@Column	(name="finalgrade")
 	public double getFinalGrade() {
@@ -278,7 +258,7 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 	 * standard setter for the attribute finalgrade
 	 * 
 	 * @param finalGrade
-	 *            the final grade of the user in this quiz
+	 *            the final grade of the user in this assignment
 	 */
 	public void setFinalGrade(final double finalGrade) {
 		this.finalGrade = finalGrade;
@@ -316,12 +296,12 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 	@Override
 	@Transient
 	public Long getLearnObjId() {
-		return this.getQuiz().getId();
+		return this.getAssignment().getId();
 	}
 
 	@Override
 	@Transient
 	public Double getMaxGrade() {
-		return this.getQuiz().getMaxGrade();
+		return this.getAssignment().getMaxGrade();
 	}
 }

@@ -60,6 +60,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 
 	private Set<AssignmentLogMining> assignmentLogs = new HashSet<AssignmentLogMining>();
 	private Set<CourseAssignmentMining> courseAssignments = new HashSet<CourseAssignmentMining>();
+	private Set<AssignmentUserMining> assignmentUsers = new HashSet<AssignmentUserMining>();
 
 	@Override
 	public boolean equals(final IMappingClass o)
@@ -254,7 +255,7 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	/**
 	 * standard getter for the attribute assignment_log
 	 * 
-	 * @return a set of entries in the quiz_log table which are related with this assignment
+	 * @return a set of entries in the assignment_log table which are related with this assignment
 	 */
 	@OneToMany(mappedBy="assignment")
 	public Set<AssignmentLogMining> getAssignmentLogs() {
@@ -314,5 +315,35 @@ public class AssignmentMining implements IMappingClass, ILearningObject, IRatedO
 	@Transient
 	public Long getPrefix() {
 		return 11L;
+	}
+	
+	/**
+	 * standard setter for the attribute assignment_user
+	 * 
+	 * @param assignmentUsers
+	 *            a set of entries in the assignment_user table which relate the assignment to user
+	 */
+	public void setAssignmentUsers(final Set<AssignmentUserMining> assignmentUsers) {
+		this.assignmentUsers = assignmentUsers;
+	}
+
+	/**
+	 * standard getter for the attribute assignment_user
+	 * 
+	 * @return a set of entries in the assignment_user table which relate the assignment to user
+	 */
+	@OneToMany(mappedBy="assignment")
+	public Set<AssignmentUserMining> getAssignmentUsers() {
+		return this.assignmentUsers;
+	}
+
+	/**
+	 * standard add method for the attribute assignment_user
+	 * 
+	 * @param assignmentUser
+	 *            this entry will be added to the list of assignment_user in this assignment
+	 */
+	public void addAssignmentUser(final AssignmentUserMining assignmentUser) {
+		this.assignmentUsers.add(assignmentUser);
 	}
 }

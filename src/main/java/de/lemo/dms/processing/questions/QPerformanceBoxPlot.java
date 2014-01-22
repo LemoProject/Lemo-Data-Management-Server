@@ -33,15 +33,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.abstractions.IRatedLogObject;
+import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -131,7 +135,7 @@ public class QPerformanceBoxPlot extends Question {
 			users = tmp;
 		}
 
-		criteria = session.createCriteria(IRatedLogObject.class, "log");
+		criteria = session.createCriteria(IRatedUserAssociation.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
@@ -140,42 +144,19 @@ public class QPerformanceBoxPlot extends Question {
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
 
-		final ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
+		final ArrayList<IRatedUserAssociation> list = (ArrayList<IRatedUserAssociation>) criteria.list();
 
-		final HashMap<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>();
-		Collections.sort(list);
 
-		// This is for making sure there is just one entry per student and test
-		for (int i = list.size() - 1; i >= 0; i--)
+		for (final IRatedUserAssociation assc : list)
 		{
-			final IRatedLogObject log = list.get(i);
-
-			final String key = log.getPrefix() + " " + log.getLearnObjId() + " " + log.getUser().getId();
-			if ((quizzes.size() == 0) || quizzes.contains(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())))
-			{
-				if ((singleResults.get(key) == null) && (log.getFinalGrade() != null)
-						&& (log.getMaxGrade() != null))
-				{
-					if (values.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) == null)
-					{
-						final ArrayList<Double> v = new ArrayList<Double>();
-						values.put(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId()), v);
-					}
-					singleResults.put(key, log);
-				}
-			}
-		}
-
-		for (final IRatedLogObject log : singleResults.values())
-		{
-			final Long name = Long.valueOf(log.getPrefix() + "" + log.getLearnObjId());
+			final Long name = Long.valueOf(assc.getPrefix() + "" + assc.getLearnObjId());
 			if (values.get(name) == null)
 			{
 				final ArrayList<Double> v = new ArrayList<Double>();
 				values.put(name, v);
 			}
 
-			values.get(name).add(log.getFinalGrade() / ((log.getMaxGrade() / resolution)));
+			values.get(name).add(assc.getFinalGrade() / ((assc.getMaxGrade() / resolution)));
 		}
 
 		BoxPlot[] results = new BoxPlot[values.keySet().size()];

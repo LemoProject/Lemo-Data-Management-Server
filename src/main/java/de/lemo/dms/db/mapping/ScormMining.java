@@ -58,6 +58,7 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 
 	private Set<ScormLogMining> scormLogs = new HashSet<ScormLogMining>();
 	private Set<CourseScormMining> courseScorms = new HashSet<CourseScormMining>();
+	private Set<ScormUserMining> scormUsers = new HashSet<ScormUserMining>();
 
 	@Override
 	public boolean equals(final IMappingClass o)
@@ -297,6 +298,36 @@ public class ScormMining implements IMappingClass, ILearningObject, IRatedObject
 	 */
 	public void addCourseScorm(final CourseScormMining courseScorm) {
 		this.courseScorms.add(courseScorm);
+	}
+	
+	/**
+	 * standard setter for the attribute course_scorm
+	 * 
+	 * @param courseScorms
+	 *            a set of entries in the course_scorm table which are related with this scorm package
+	 */
+	public void setScormUsers(final Set<ScormUserMining> scormsUsers) {
+		this.scormUsers = scormsUsers;
+	}
+
+	/**
+	 * standard getter for the attribute course_scorm
+	 * 
+	 * @return a set of entries in the course_scorm table which are related with this scorm package
+	 */
+	@OneToMany(mappedBy="scorm")
+	public Set<ScormUserMining> getScormUsers() {
+		return this.scormUsers;
+	}
+
+	/**
+	 * standard setter for the attribute course_scorm
+	 * 
+	 * @param courseScorm
+	 *            this entry will be added to the list of course_scorm in this scorm package
+	 */
+	public void addScormUser(final ScormUserMining scormUser) {
+		this.scormUsers.add(scormUser);
 	}
 
 	@Column(name="platform")

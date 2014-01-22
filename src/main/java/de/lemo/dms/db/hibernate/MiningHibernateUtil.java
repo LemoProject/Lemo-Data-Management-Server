@@ -101,6 +101,8 @@ public final class MiningHibernateUtil {
 		config.addAnnotatedClass(GroupUserMining.class);
 		config.addAnnotatedClass(QuizQuestionMining.class);
 		config.addAnnotatedClass(QuizUserMining.class);
+		config.addAnnotatedClass(AssignmentUserMining.class);
+		config.addAnnotatedClass(ScormUserMining.class);
 		config.addAnnotatedClass(LevelCourseMining.class);
 		config.addAnnotatedClass(LevelAssociationMining.class);
 

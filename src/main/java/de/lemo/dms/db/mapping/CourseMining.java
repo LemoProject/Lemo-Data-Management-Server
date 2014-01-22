@@ -73,6 +73,8 @@ public class CourseMining implements IMappingClass {
 	private Set<QuizLogMining> quizLogs = new HashSet<QuizLogMining>();
 	private Set<AssignmentLogMining> assignmentLogs = new HashSet<AssignmentLogMining>();
 	private Set<QuizUserMining> quizUsers = new HashSet<QuizUserMining>();
+	private Set<AssignmentUserMining> assignmentUsers = new HashSet<AssignmentUserMining>();
+	private Set<ScormUserMining> scormUsers = new HashSet<ScormUserMining>();
 	private Set<QuestionLogMining> questionLogs = new HashSet<QuestionLogMining>();
 	private Set<ResourceLogMining> resourceLogs = new HashSet<ResourceLogMining>();
 	private Set<ScormLogMining> scormLogs = new HashSet<ScormLogMining>();
@@ -626,6 +628,28 @@ public class CourseMining implements IMappingClass {
 	public Set<QuizUserMining> getQuizUsers() {
 		return this.quizUsers;
 	}
+	
+	/**
+	 * standard getter for the attribute assignment_user
+	 * 
+	 * @return a set of entries in the assignment_user table which are related to this course
+	 */
+	@OneToMany(mappedBy="course")
+	public Set<AssignmentUserMining> getAssignmentUsers() {
+		return this.assignmentUsers;
+	}
+	
+	
+	
+	/**
+	 * standard setter for the attribute assignment_user
+	 * 
+	 * @param assignmentUser
+	 *            a set of entries in the assignment_user table which are related to this course
+	 */
+	public void setAssignmentUsers(final Set<AssignmentUserMining> assignmentUser) {
+		this.assignmentUsers = assignmentUser;
+	}
 
 	/**
 	 * standard setter for the attribute quiz_user
@@ -645,6 +669,46 @@ public class CourseMining implements IMappingClass {
 	 */
 	public void addQuizUser(final QuizUserMining quizUser) {
 		this.quizUsers.add(quizUser);
+	}
+	
+	/**
+	 * standard add method for the attribute assignment_user
+	 * 
+	 * @param assignmentUser
+	 *            this entry of the assignment_user table will be added to this course
+	 */
+	public void addAssignmentUser(final AssignmentUserMining assignmentUser) {
+		this.assignmentUsers.add(assignmentUser);
+	}
+	
+	/**
+	 * standard add method for the attribute scorm_user
+	 * 
+	 * @param scormUser
+	 *            this entry of the scorm_user table will be added to this course
+	 */
+	public void addScormUser(final ScormUserMining scormUser) {
+		this.scormUsers.add(scormUser);
+	}
+	
+	/**
+	 * standard getter for the attribute scorm_user
+	 * 
+	 * @return a set of entries in the scorm_user table which are related to this course
+	 */
+	@OneToMany(mappedBy="course")
+	public Set<ScormUserMining> getScormUsers() {
+		return this.scormUsers;
+	}
+	
+	/**
+	 * standard setter for the attribute scorm_user
+	 * 
+	 * @param scormUser
+	 *            a set of entries in the scorm_user table which are related to this course
+	 */
+	public void setScormUsers(final Set<ScormUserMining> scormUser) {
+		this.scormUsers = scormUser;
 	}
 
 	/**

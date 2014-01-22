@@ -80,6 +80,7 @@ import de.lemo.dms.connectors.moodle_2_3.mapping.WikiLMS;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
+import de.lemo.dms.db.mapping.AssignmentUserMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
 import de.lemo.dms.db.mapping.ChatMining;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
@@ -111,6 +112,7 @@ import de.lemo.dms.db.mapping.ResourceMining;
 import de.lemo.dms.db.mapping.RoleMining;
 import de.lemo.dms.db.mapping.ScormLogMining;
 import de.lemo.dms.db.mapping.ScormMining;
+import de.lemo.dms.db.mapping.ScormUserMining;
 import de.lemo.dms.db.mapping.UserMining;
 import de.lemo.dms.db.mapping.WikiLogMining;
 import de.lemo.dms.db.mapping.WikiMining;
@@ -2687,6 +2689,42 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 		}
 		return quizUserMining;
+	}
+	
+	@Override
+	public Map<Long, AssignmentUserMining> generateAssignmentUserMining() {
+		final HashMap<Long, AssignmentUserMining> assignmentUserMining = new HashMap<Long, AssignmentUserMining>();
+		
+		for(AssignGradesLMS loadedItem : this.assignGradesLms)
+		{
+			AssignmentUserMining insert = new AssignmentUserMining();
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getAssignment()), assignmentMining, oldAssignmentMining);
+			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), userMining, oldUserMining);
+			insert.setFinalGrade(loadedItem.getGrade());
+			insert.setTimeModified(loadedItem.getTimemodified());
+			insert.setPlatform(this.connector.getPlatformId());
+			
+			for(AssignLMS loadedItem2 : this.assignLms)
+			{
+				if(loadedItem2.getId() == loadedItem.getAssignment())
+				{
+					insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getCourse()), courseMining, oldCourseMining);
+					break;
+				}
+			}
+			
+			if(insert.getUser() != null && insert.getCourse() != null && insert.getAssignment() != null)
+			assignmentUserMining.put(insert.getId(), insert);
+		}
+		return assignmentUserMining;
+	}
+	
+	@Override
+	public Map<Long, ScormUserMining> generateScormUserMining() {
+		final HashMap<Long, ScormUserMining> scormUserMining = new HashMap<Long, ScormUserMining>();
+		
+		return scormUserMining;
 	}
 
 	@Override

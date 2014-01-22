@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -46,6 +47,7 @@ import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
+import de.lemo.dms.db.mapping.AssignmentUserMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
 import de.lemo.dms.db.mapping.ChatMining;
 import de.lemo.dms.db.mapping.ConfigMining;
@@ -79,6 +81,7 @@ import de.lemo.dms.db.mapping.ResourceMining;
 import de.lemo.dms.db.mapping.RoleMining;
 import de.lemo.dms.db.mapping.ScormLogMining;
 import de.lemo.dms.db.mapping.ScormMining;
+import de.lemo.dms.db.mapping.ScormUserMining;
 import de.lemo.dms.db.mapping.UserMining;
 import de.lemo.dms.db.mapping.WikiLogMining;
 import de.lemo.dms.db.mapping.WikiMining;
@@ -801,6 +804,11 @@ public abstract class ExtractAndMap {
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " QuizUserMining entries in " + this.c.getAndReset() + " s. ");
+		
+		this.updates.add(this.generateAssignmentUserMining().values());
+		objects += this.updates.get(this.updates.size() - 1).size();
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+				+ " AssignmentUserMining entries in " + this.c.getAndReset() + " s. ");
 
 		logger.info("\nLog tables:\n");
 
@@ -1064,6 +1072,26 @@ public abstract class ExtractAndMap {
 	 * @return A list of instances of the quiz_user table representing class.
 	 **/
 	abstract Map<Long, QuizUserMining> generateQuizUserMining();
+	
+	/**
+	 * Has to create and fill the assignment_user table.
+	 * This table describes which user gets which grade in which assignment.
+	 * The attributes are described in the documentation of the assignment_user_mining class.
+	 * Please use the getter and setter predefined in the assignment_user_mining class to fill the tables within this method.
+	 * 
+	 * @return A list of instances of the assignment_user table representing class.
+	 **/
+	abstract Map<Long, AssignmentUserMining> generateAssignmentUserMining();
+	
+	/**
+	 * Has to create and fill the scorm_user table.
+	 * This table describes which user gets which grade in which scorm.
+	 * The attributes are described in the documentation of the scorm_user_mining class.
+	 * Please use the getter and setter predefined in the scorm_user_mining class to fill the tables within this method.
+	 * 
+	 * @return A list of instances of the scorm_user table representing class.
+	 **/
+	abstract Map<Long, ScormUserMining> generateScormUserMining();
 
 	/**
 	 * Has to create and fill the quiz table.
