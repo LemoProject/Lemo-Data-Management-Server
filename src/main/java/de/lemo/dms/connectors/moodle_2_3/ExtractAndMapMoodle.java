@@ -190,6 +190,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		contextLevels.add(40L);
 		contextLevels.add(50L);
 		
+		//Read ContextLevels
 		criteria.add(Restrictions.in("obj.contextlevel", contextLevels));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.contextLms = criteria.list();
@@ -263,7 +264,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		logger.info("RoleAssignmentsLMS tables: " + this.roleAssignmentsLms.size());
 		
 		
-		//Read Assign
+		//Read AssignGrades
 		criteria = session.createCriteria(AssignGradesLMS.class, "obj");
 		if(hasCR)
 		{
@@ -687,7 +688,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			criteria.add(Restrictions.in("obj.courseid", courses));
 		}
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.gradeItemsLms = criteria.list();
 		logger.info("GradeItemsLMS tables: " + this.gradeItemsLms.size());
@@ -1297,8 +1298,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
  			if(!(empty = ids.isEmpty()))
  				criteria.add(Restrictions.in("obj.itemid", ids));
 		}
-		criteria.add(Restrictions.lt("obj.timemodified", readingtotimestamp));
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.lt("obj.timemodified", readingtotimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		if(!(hasCR && empty))
 			this.gradeGradesLms = criteria.list();
