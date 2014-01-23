@@ -50,7 +50,7 @@ public class ScormUserMining implements IMappingClass, IRatedUserAssociation {
 	private CourseMining course;
 	private ScormMining scorm;
 	private double finalGrade;
-	private long timeModified;
+	private long timemodified;
 	private Long platform;
 
 	@Override
@@ -262,8 +262,8 @@ public class ScormUserMining implements IMappingClass, IRatedUserAssociation {
 	 * @return the timestamp when the grade was changed the last time
 	 */
 	@Column	(name="timemodified")
-	public long getTimeModified() {
-		return this.timeModified;
+	public long getTimemodified() {
+		return this.timemodified;
 	}
 
 	/**
@@ -272,8 +272,8 @@ public class ScormUserMining implements IMappingClass, IRatedUserAssociation {
 	 * @param timeModified
 	 *            the timestamp when the grade was changed the last time
 	 */
-	public void setTimeModified(final long timeModified) {
-		this.timeModified = timeModified;
+	public void setTimemodified(final long timeModified) {
+		this.timemodified = timeModified;
 	}
 
 	@Column	(name="platform")

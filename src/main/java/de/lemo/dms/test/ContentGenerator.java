@@ -591,7 +591,7 @@ public class ContentGenerator {
 							} else {
 								qu.setFinalGrade(0.0d);
 							}
-							qu.setTimeModified(q.getTimeOpen()
+							qu.setTimemodified(q.getTimeOpen()
 									+ randy.nextInt(Integer.valueOf("" + (q.getTimeClose() - q.getTimeOpen()))));
 							qu.setUser(courseUserList.get(courseUserList.size() - m).getUser());
 

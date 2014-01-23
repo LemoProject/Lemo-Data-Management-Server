@@ -28,20 +28,22 @@ package de.lemo.dms.processing.questions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.abstractions.IRatedLogObject;
+import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -110,11 +112,7 @@ public class QPerformanceHistogram extends Question {
 			logger.debug("Parameter list: Start time: : " + startTime);
 			logger.debug("Parameter list: End time: : " + endTime);
 		}
-
-
-
-
-
+		
 		final Map<Long, Integer> obj = new HashMap<Long, Integer>();
 
 		if(quizzes.size() > 0)
@@ -175,8 +173,8 @@ public class QPerformanceHistogram extends Question {
 			users = tmp;
 		}
 
-		criteria = session.createCriteria(IRatedLogObject.class, "log");
-		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
+		criteria = session.createCriteria(IRatedUserAssociation.class, "log");
+		criteria.add(Restrictions.between("log.timemodified", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
 		}
@@ -184,43 +182,26 @@ public class QPerformanceHistogram extends Question {
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
 
-		final ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
+		final ArrayList<IRatedUserAssociation> list = (ArrayList<IRatedUserAssociation>) criteria.list();
 
-		final Map<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>();
-		Collections.sort(list);
-
-		// This is for making sure there is just one entry per student and test
-		for (int i = list.size() - 1; i >= 0; i--)
+		for (final IRatedUserAssociation association : list)
 		{
-			final IRatedLogObject log = list.get(i);
-
-			final String key = log.getPrefix() + " " + log.getLearnObjId() + " " + log.getUser().getId();
-
-			if (log.getGrade() != null && (singleResults.get(key) == null || log.getGrade() > singleResults.get(key).getGrade()))
-			{
-				singleResults.put(key, log);
-			}
-		}
-
-		for (final IRatedLogObject log : singleResults.values())
-		{
-			if ((obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null)
-					&& (log.getFinalGrade() != null) &&
-					(log.getMaxGrade() != null) && (log.getMaxGrade() > 0))
+			if ((obj.get(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())) != null)
+					&& (association.getMaxGrade() != null) && (association.getMaxGrade() > 0))
 			{
 				// Determine size of each interval
-				final Double step = log.getMaxGrade() / resolution;
+				final Double step = association.getMaxGrade() / resolution;
 				if (step > 0d)
 				{
 					// Determine interval for specific grade
-					int pos = (int) (log.getFinalGrade() / step);
+					int pos = (int) (association.getFinalGrade() / step);
 					if (pos > (resolution - 1)) {
 						pos = resolution.intValue() - 1;
 					}
 					// Increase count of specified interval
-					results[(resolution.intValue() * obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())))
+					results[(resolution.intValue() * obj.get(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())))
 							+ pos] = results           [(resolution.intValue() * obj
-							.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())))
+							.get(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())))
 							+ pos] + 1;
 				}
 			}

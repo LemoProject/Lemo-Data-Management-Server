@@ -2346,7 +2346,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setRawGrade(loadedItem.getRawgrade());
 			}
 			if (loadedItem.getTimemodified() != null) {
-				insert.setTimeModified(loadedItem.getTimemodified());
+				insert.setTimemodified(loadedItem.getTimemodified());
 			}
 
 			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,

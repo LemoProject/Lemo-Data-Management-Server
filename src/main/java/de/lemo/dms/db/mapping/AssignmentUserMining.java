@@ -38,7 +38,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.IMappingClass;
-import de.lemo.dms.db.mapping.abstractions.IRatedObject;
 import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
 
 /** This class represents the association between the assignment and the user. */
@@ -51,7 +50,7 @@ public class AssignmentUserMining implements IMappingClass, IRatedUserAssociatio
 	private CourseMining course;
 	private AssignmentMining assignment;
 	private double finalGrade;
-	private long timeModified;
+	private long timemodified;
 	private Long platform;
 
 	
@@ -270,8 +269,8 @@ public class AssignmentUserMining implements IMappingClass, IRatedUserAssociatio
 	 * @return the timestamp when the grade was changed the last time
 	 */
 	@Column	(name="timemodified")
-	public long getTimeModified() {
-		return this.timeModified;
+	public long getTimemodified() {
+		return this.timemodified;
 	}
 
 	/**
@@ -280,8 +279,8 @@ public class AssignmentUserMining implements IMappingClass, IRatedUserAssociatio
 	 * @param timeModified
 	 *            the timestamp when the grade was changed the last time
 	 */
-	public void setTimeModified(final long timeModified) {
-		this.timeModified = timeModified;
+	public void setTimemodified(final long timeModified) {
+		this.timemodified = timeModified;
 	}
 
 	@Column	(name="platform")

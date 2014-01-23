@@ -29,11 +29,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -46,7 +44,7 @@ import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.abstractions.IRatedLogObject;
+import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.BoxPlot;
@@ -135,15 +133,17 @@ public class QPerformanceUserTestBoxPlot {
 			users = tmp;
 		}
 		
-		criteria = session.createCriteria(IRatedLogObject.class, "log");
-		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
+		criteria = session.createCriteria(IRatedUserAssociation.class, "log");
+		criteria.add(Restrictions.between("log.timemodified", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
 		}
-		if(users != null && users.size() > 0)
+		if ((users != null) && (users.size() > 0)) {
 			criteria.add(Restrictions.in("log.user.id", users));
-		
-		final ArrayList<IRatedLogObject> list = (ArrayList<IRatedLogObject>) criteria.list();
+		}
+
+		final ArrayList<IRatedUserAssociation> list = (ArrayList<IRatedUserAssociation>) criteria.list();
+
 
 		final Map<Long, Integer> obj = new HashMap<Long, Integer>();
 
@@ -176,62 +176,40 @@ public class QPerformanceUserTestBoxPlot {
 			}
 			
 		}
-
 		
-		final Map<String, IRatedLogObject> singleResults = new HashMap<String, IRatedLogObject>();
-		Collections.sort(list);
-		
-		Set<Long> u = new HashSet<Long>();
-
-		// This is for making sure there is just one entry per student and test
-		for (int i = list.size() - 1; i >= 0; i--)
-		{
-			final IRatedLogObject log = list.get(i);
-
-			final String key = log.getPrefix() + " " + log.getLearnObjId() + " " + log.getUser().getId();
-
-			u.add(log.getUser().getId());
-			
-			if (log.getFinalGrade() != null && (singleResults.get(key) == null || log.getFinalGrade() > singleResults.get(key).getFinalGrade())) 
-			{
-				singleResults.put(key, log);
-
-			}
-		}		
 		Map<Long, ArrayList<Double>> fin = new HashMap<Long, ArrayList<Double>>();
 		
-		for (final IRatedLogObject log : singleResults.values())
+		for (final IRatedUserAssociation association : list)
 		{
-			if ((obj.get(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())) != null)
-					&& (log.getFinalGrade() != null) &&
-					(log.getMaxGrade() != null) && (log.getMaxGrade() > 0))
+			if ((obj.get(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())) != null)
+					&& (association.getMaxGrade() != null) && (association.getMaxGrade() > 0))
 			{
 				Double step;
 				// Determine size of each interval
 				if(resolution == null || resolution == 0)
 					resolution = 100L;
-				step = log.getMaxGrade() / resolution;
+				step = association.getMaxGrade() / resolution;
 				if (step > 0d)
 				{
 					// Determine interval for specific grade
-					Integer pos = (int) (log.getFinalGrade() / step);
+					Integer pos = (int) (association.getFinalGrade() / step);
 					if (pos > (resolution - 1)) {
 						pos = resolution.intValue() - 1;
 					}
 					
-					if(fin.get(log.getUser().getId()) == null)
+					if(fin.get(association.getUser().getId()) == null)
 					{
 						ArrayList<Double> l = new ArrayList<Double>();
 						for(int i = 0; i < quizzes.size(); i++)
 						{
 							l.add(-1d);
 						}
-						fin.put(log.getUser().getId(), l);
-						fin.get(log.getUser().getId()).set(quizzes.indexOf(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())), pos.doubleValue());
+						fin.put(association.getUser().getId(), l);
+						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())), pos.doubleValue());
 					}
 					else
 					{
-						fin.get(log.getUser().getId()).set(quizzes.indexOf(Long.valueOf(log.getPrefix() + "" + log.getLearnObjId())), pos.doubleValue());
+						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())), pos.doubleValue());
 					}
 				}
 			}

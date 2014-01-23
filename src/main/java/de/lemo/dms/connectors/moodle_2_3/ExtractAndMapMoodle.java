@@ -2665,7 +2665,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setRawGrade(loadedItem.getRawgrade());
 			}
 			if (loadedItem.getTimemodified() != null) {
-				insert.setTimeModified(loadedItem.getTimemodified());
+				insert.setTimemodified(loadedItem.getTimemodified());
 			}
 			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
 					this.oldUserMining);
@@ -2702,7 +2702,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getAssignment()), assignmentMining, oldAssignmentMining);
 			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), userMining, oldUserMining);
 			insert.setFinalGrade(loadedItem.getGrade());
-			insert.setTimeModified(loadedItem.getTimemodified());
+			insert.setTimemodified(loadedItem.getTimemodified());
 			insert.setPlatform(this.connector.getPlatformId());
 			
 			for(AssignLMS loadedItem2 : this.assignLms)

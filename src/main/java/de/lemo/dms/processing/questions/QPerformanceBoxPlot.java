@@ -44,7 +44,6 @@ import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.abstractions.IRatedLogObject;
 import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -136,7 +135,7 @@ public class QPerformanceBoxPlot extends Question {
 		}
 
 		criteria = session.createCriteria(IRatedUserAssociation.class, "log");
-		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
+		criteria.add(Restrictions.between("log.timemodified", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
 		}
@@ -147,16 +146,16 @@ public class QPerformanceBoxPlot extends Question {
 		final ArrayList<IRatedUserAssociation> list = (ArrayList<IRatedUserAssociation>) criteria.list();
 
 
-		for (final IRatedUserAssociation assc : list)
+		for (final IRatedUserAssociation association : list)
 		{
-			final Long name = Long.valueOf(assc.getPrefix() + "" + assc.getLearnObjId());
+			final Long name = Long.valueOf(association.getPrefix() + "" + association.getLearnObjId());
 			if (values.get(name) == null)
 			{
 				final ArrayList<Double> v = new ArrayList<Double>();
 				values.put(name, v);
 			}
 
-			values.get(name).add(assc.getFinalGrade() / ((assc.getMaxGrade() / resolution)));
+			values.get(name).add(association.getFinalGrade() / ((association.getMaxGrade() / resolution)));
 		}
 
 		BoxPlot[] results = new BoxPlot[values.keySet().size()];

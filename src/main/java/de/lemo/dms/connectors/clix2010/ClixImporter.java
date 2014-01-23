@@ -2682,7 +2682,7 @@ public class ClixImporter {
 				item.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getAssessment()),
 						this.quizMining, this.oldQuizMining);
 				item.setFinalGrade(loadedItem.getEvaluatedScore());
-				item.setTimeModified(TimeConverter.getTimestamp(loadedItem.getLastInvocation()));
+				item.setTimemodified(TimeConverter.getTimestamp(loadedItem.getLastInvocation()));
 				item.setPlatform(this.connector.getPlatformId());
 
 				if ((item.getCourse() != null) && (item.getQuiz() != null) && (item.getUser() != null)) {

@@ -899,7 +899,7 @@ public class TestDataCreatorMoodle {
 			lms.setRawgrade(item.getRawGrade());
 			lms.setFinalgrade(item.getFinalGrade());
 			lms.setUserid(item.getUser().getId());
-			lms.setTimemodified(item.getTimeModified());
+			lms.setTimemodified(item.getTimemodified());
 			lms.setItemid(TestDataCreatorMoodle.gradeItemsLms.size() + 1);
 
 			final GradeItemsLMS lms2 = new GradeItemsLMS();
