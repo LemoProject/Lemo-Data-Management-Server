@@ -32,6 +32,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -109,6 +110,7 @@ public class ForumMining implements IMappingClass, ILearningObject {
 	 * @return the title of the forum
 	 */
 	@Override
+	@Lob
 	@Column(name="title", length=1000)
 	public String getTitle() {
 		return this.title;
@@ -129,7 +131,8 @@ public class ForumMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return a summary of the topic in the forum
 	 */
-	@Column(name="summary", length=1000)
+	@Lob
+	@Column(name="summary")
 	public String getSummary() {
 		return this.summary;
 	}

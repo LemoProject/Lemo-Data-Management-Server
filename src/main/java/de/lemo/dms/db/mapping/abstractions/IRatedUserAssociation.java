@@ -14,7 +14,7 @@ public interface IRatedUserAssociation {
 	
 	UserMining getUser();
 	
-	double getFinalGrade();
+	Double getFinalGrade();
 	
 	Long getPrefix();
 	

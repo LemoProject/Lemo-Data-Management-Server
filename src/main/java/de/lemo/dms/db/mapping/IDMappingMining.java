@@ -29,6 +29,7 @@ package de.lemo.dms.db.mapping;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import de.lemo.dms.db.mapping.abstractions.IMappingClass;
@@ -100,6 +101,7 @@ public class IDMappingMining implements IMappingClass {
 		this.id = id;
 	}
 
+	@Lob
 	@Column(name="hash")
 	public String getHash() {
 		return this.hash;

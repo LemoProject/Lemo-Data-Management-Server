@@ -32,6 +32,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -107,7 +108,8 @@ public class RoleMining implements IMappingClass {
 	 * 
 	 * @return the full name of the role
 	 */
-	@Column(name="name", length=1000)
+	@Lob
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}
@@ -127,7 +129,8 @@ public class RoleMining implements IMappingClass {
 	 * 
 	 * @return the shortname of the role
 	 */
-	@Column(name="shortname", length=1000)
+	@Lob
+	@Column(name="shortname")
 	public String getShortname() {
 		return this.shortname;
 	}

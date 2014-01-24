@@ -2417,7 +2417,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setPlatform(this.connector.getPlatformId());
-
+				
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
 						this.oldUserMining);
 
@@ -2701,7 +2701,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getAssignment()), assignmentMining, oldAssignmentMining);
 			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), userMining, oldUserMining);
-			insert.setFinalGrade(loadedItem.getGrade());
+			if(loadedItem.getGrade() != null)
+			{
+				insert.setFinalGrade(loadedItem.getGrade());
+			}
 			insert.setTimemodified(loadedItem.getTimemodified());
 			insert.setPlatform(this.connector.getPlatformId());
 			

@@ -269,7 +269,7 @@ public class QuizUserMining implements IMappingClass, IRatedUserAssociation {
 	 * @return the final grade of the user in this quiz
 	 */
 	@Column	(name="finalgrade")
-	public double getFinalGrade() {
+	public Double getFinalGrade() {
 		return this.finalGrade;
 	}
 

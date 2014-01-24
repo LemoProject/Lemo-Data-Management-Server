@@ -57,16 +57,11 @@ public class ConnectorRunner {
 			{	
 				this.logger.info("Starting Import for connector " + c.getName());
 				c.getData();
-				this.logger.info("Import finished");
+				this.logger.info("Import finished for connector " + c.getName());
 			}
 		}
 	}
 
-	/**
-	 * main method for test case 
-	 * TODO move to unit test
-	 * @param args
-	 */
 	public static void main(final String[] args)
 	{
 		List<String> names = new ArrayList<String>();

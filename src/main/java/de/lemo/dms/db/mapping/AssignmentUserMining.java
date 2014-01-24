@@ -249,7 +249,7 @@ public class AssignmentUserMining implements IMappingClass, IRatedUserAssociatio
 	 * @return the final grade of the user in this assignment
 	 */
 	@Column	(name="finalgrade")
-	public double getFinalGrade() {
+	public Double getFinalGrade() {
 		return this.finalGrade;
 	}
 

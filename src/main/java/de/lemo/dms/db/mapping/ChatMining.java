@@ -33,6 +33,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -129,7 +130,8 @@ public class ChatMining implements IMappingClass, ILearningObject {
 		this.id = id;
 	}
 
-	@Column(name="title", length=1000)
+	@Lob
+	@Column(name="title")
 	public String getTitle() {
 		return this.title;
 	}

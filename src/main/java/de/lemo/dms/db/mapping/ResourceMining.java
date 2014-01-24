@@ -32,6 +32,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -94,7 +95,8 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * 
 	 * @return the url
 	 */
-	@Column(name="url", length=1000)
+	@Lob
+	@Column(name="url")
 	public String getUrl() {
 		return this.url;
 	}
@@ -288,7 +290,8 @@ public class ResourceMining implements IMappingClass, ILearningObject {
 	 * @return the title of the resource
 	 */
 	@Override
-	@Column(name="title", length=1000)
+	@Lob
+	@Column(name="title")
 	public String getTitle() {
 		return this.title;
 	}

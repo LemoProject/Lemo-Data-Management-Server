@@ -29,6 +29,7 @@ package de.lemo.dms.db.mapping;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import de.lemo.dms.db.mapping.abstractions.IMappingClass;
@@ -59,7 +60,8 @@ public class PlatformMining implements IMappingClass {
 
 	}
 
-	@Column(name="name", length=1000)
+	@Lob
+	@Column(name="name")
 	public String getName() {
 		return this.name;
 	}

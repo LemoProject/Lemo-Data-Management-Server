@@ -33,6 +33,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -218,7 +219,8 @@ public class QuestionLogMining implements ILogMining, IMappingClass {
 	 * 
 	 * @return the answers which are submitted with this action
 	 */
-	@Column(name="answers", length=1000)
+	@Lob
+	@Column(name="answers")
 	public String getAnswers() {
 		return this.answers;
 	}
