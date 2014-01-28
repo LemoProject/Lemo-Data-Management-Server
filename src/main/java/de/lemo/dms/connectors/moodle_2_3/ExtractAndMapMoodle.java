@@ -689,7 +689,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			criteria.add(Restrictions.in("obj.courseid", courses));
 		}
 		
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.gradeItemsLms = criteria.list();
 		logger.info("GradeItemsLMS tables: " + this.gradeItemsLms.size());
