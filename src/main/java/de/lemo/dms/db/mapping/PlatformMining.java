@@ -43,14 +43,14 @@ import de.lemo.dms.db.mapping.abstractions.IMappingClass;
 public class PlatformMining implements IMappingClass {
 
 	private Long id;
-	private String name;
+	private String title;
 	private String type;
 	private Long prefix;
 
-	public PlatformMining(final Long id, final String name, final String type, final Long prefix)
+	public PlatformMining(final Long id, final String title, final String type, final Long prefix)
 	{
 		this.id = id;
-		this.name = name;
+		this.title = title;
 		this.type = type;
 		this.prefix = prefix;
 	}
@@ -61,13 +61,13 @@ public class PlatformMining implements IMappingClass {
 	}
 
 	@Lob
-	@Column(name="name")
-	public String getName() {
-		return this.name;
+	@Column(name="title")
+	public String getTitle() {
+		return this.title;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setTitle(final String title) {
+		this.title = title;
 	}
 
 	@Column(name="type")

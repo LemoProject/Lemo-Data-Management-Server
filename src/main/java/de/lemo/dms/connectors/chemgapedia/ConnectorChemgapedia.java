@@ -36,7 +36,7 @@ import de.lemo.dms.connectors.chemgapedia.fizHelper.XMLPackageParser;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.ConfigMining;
+import de.lemo.dms.db.mapping.Config;
 
 /**
  * Connector implementation for the platform Chemgapedia
@@ -133,7 +133,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 			}
 
 			final Long endtime = System.currentTimeMillis() / THOU;
-			final ConfigMining config = new ConfigMining();
+			final Config config = new Config();
 			config.setLastModifiedLong(System.currentTimeMillis());
 			config.setElapsedTime((endtime) - (starttime));
 			config.setDatabaseModel("1.3");
@@ -172,7 +172,7 @@ public class ConnectorChemgapedia extends AbstractConnector {
 			}
 
 			final Long endtime = System.currentTimeMillis() / THOU;
-			final ConfigMining config = new ConfigMining();
+			final Config config = new Config();
 			config.setLastModifiedLong(System.currentTimeMillis());
 			config.setElapsedTime((endtime) - (starttime));
 			config.setDatabaseModel("1.3");

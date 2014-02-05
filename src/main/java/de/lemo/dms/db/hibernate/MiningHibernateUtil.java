@@ -68,13 +68,39 @@ public final class MiningHibernateUtil {
 		
 		
 		// Meta
-		config.addAnnotatedClass(ConfigMining.class);
-		config.addAnnotatedClass(IDMappingMining.class);
-		config.addAnnotatedClass(PlatformMining.class);
+		config.addAnnotatedClass(Config.class);
+		config.addAnnotatedClass(Platform.class);
+		
+		//Objects
+		config.addAnnotatedClass(User.class);
+		config.addAnnotatedClass(Resource.class);
+		config.addAnnotatedClass(Course.class);
+		config.addAnnotatedClass(Task.class);
+		
+		//Types
+		config.addAnnotatedClass(ResourceType.class);
+		config.addAnnotatedClass(TaskType.class);
+		
+		//Relations
+		config.addAnnotatedClass(TaskUser.class);
+		config.addAnnotatedClass(CourseResource.class);
+		config.addAnnotatedClass(CourseTask.class);
+		
+		//Logs
+		config.addAnnotatedClass(EventLog.class);
+		config.addAnnotatedClass(CollaborativeLog.class);
+		config.addAnnotatedClass(Assessment.class);
+		config.addAnnotatedClass(TaskLog.class);
 
+
+
+						
+		
+
+		/*
 		// Object-classes
 		config.addAnnotatedClass(AssignmentMining.class);
-		config.addAnnotatedClass(ChatMining.class);
+		config.addAnnotatedClass(Resource.class);
 		config.addAnnotatedClass(CourseMining.class);
 		config.addAnnotatedClass(ForumMining.class);
 		config.addAnnotatedClass(GroupMining.class);
@@ -116,7 +142,7 @@ public final class MiningHibernateUtil {
 		config.addAnnotatedClass(ScormLogMining.class);
 		config.addAnnotatedClass(QuestionLogMining.class);
 		config.addAnnotatedClass(QuizLogMining.class);
-		config.addAnnotatedClass(WikiLogMining.class);
+		config.addAnnotatedClass(WikiLogMining.class);*/
 
 		return config.buildSessionFactory();
 	}

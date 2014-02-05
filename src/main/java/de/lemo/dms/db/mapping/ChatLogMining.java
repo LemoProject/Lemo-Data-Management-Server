@@ -50,7 +50,7 @@ import de.lemo.dms.db.mapping.abstractions.IMappingClass;
 public class ChatLogMining implements IMappingClass, ILogMining {
 
 	private long id;
-	private ChatMining chat;
+	private Resource chat;
 	private UserMining user;
 	private String message;
 	private long timestamp;
@@ -141,11 +141,11 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="chat_id")
-	public ChatMining getChat() {
+	public Resource getChat() {
 		return this.chat;
 	}
 
-	public void setChat(final ChatMining chat) {
+	public void setChat(final Resource chat) {
 		this.chat = chat;
 	}
 
@@ -196,8 +196,8 @@ public class ChatLogMining implements IMappingClass, ILogMining {
 		}
 	}
 
-	public void setChat(final long chat, final Map<Long, ChatMining> chatMining,
-			final Map<Long, ChatMining> oldChatMining)
+	public void setChat(final long chat, final Map<Long, Resource> chatMining,
+			final Map<Long, Resource> oldChatMining)
 	{
 
 		if (chatMining.get(chat) != null)

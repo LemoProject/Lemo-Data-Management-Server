@@ -60,7 +60,7 @@ public class CourseMining implements IMappingClass {
 
 	private Set<CourseGroupMining> courseGroupSet = new HashSet<CourseGroupMining>();
 	@Transient
-	private Set<ChatMining> chats = new HashSet<ChatMining>();
+	private Set<Resource> chats = new HashSet<Resource>();
 	private Set<ChatLogMining> chatLogs = new HashSet<ChatLogMining>();
 	private Set<CourseForumMining> courseForums = new HashSet<CourseForumMining>();
 	private Set<CourseWikiMining> courseWikis = new HashSet<CourseWikiMining>();
@@ -804,7 +804,7 @@ public class CourseMining implements IMappingClass {
 		this.courseChats.add(courseChat);
 	}
 	
-	public void addChat(final ChatMining chat) {
+	public void addChat(final Resource chat) {
 		this.chats.add(chat);
 	}
 
@@ -813,11 +813,11 @@ public class CourseMining implements IMappingClass {
 	}
 
 	@Transient
-	public Set<ChatMining> getChats() {
+	public Set<Resource> getChats() {
 		return this.chats;
 	}
 
-	public void setChats(final Set<ChatMining> chat) {
+	public void setChats(final Set<Resource> chat) {
 		this.chats = chat;
 	}
 

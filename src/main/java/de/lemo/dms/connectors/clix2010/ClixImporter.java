@@ -81,8 +81,8 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
-import de.lemo.dms.db.mapping.ChatMining;
-import de.lemo.dms.db.mapping.ConfigMining;
+import de.lemo.dms.db.mapping.Resource;
+import de.lemo.dms.db.mapping.Config;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
 import de.lemo.dms.db.mapping.CourseChatMining;
 import de.lemo.dms.db.mapping.CourseForumMining;
@@ -238,7 +238,7 @@ public class ClixImporter {
 	/** The role_mining. */
 	private Map<Long, RoleMining> roleMining;
 	/** The chat_mining. */
-	private Map<Long, ChatMining> chatMining;
+	private Map<Long, Resource> chatMining;
 	/** The level_mining. */
 	private Map<Long, LevelMining> oldLevelMining;
 	/** The quiz_question_mining. */
@@ -291,7 +291,7 @@ public class ClixImporter {
 	/** The old_role_mining. */
 	private Map<Long, RoleMining> oldRoleMining;
 	/** The old_chat_mining. */
-	private Map<Long, ChatMining> oldChatMining;
+	private Map<Long, Resource> oldChatMining;
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -331,7 +331,7 @@ public class ClixImporter {
 
 		// Create and save config-object
 		final Long endtime = System.currentTimeMillis() / MAGIC_THOU;
-		final ConfigMining config = new ConfigMining();
+		final Config config = new Config();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (starttime));
 		config.setDatabaseModel("1.3");
@@ -378,7 +378,7 @@ public class ClixImporter {
 		}
 
 		final Long endtime = System.currentTimeMillis() / MAGIC_THOU;
-		final ConfigMining config = new ConfigMining();
+		final Config config = new Config();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (currentSysTime));
 		config.setDatabaseModel("1.3");
@@ -583,7 +583,7 @@ public class ClixImporter {
 			{
 				readingtimestamp = 0L;
 				this.oldAssignmentMining = new HashMap<Long, AssignmentMining>();
-				this.oldChatMining = new HashMap<Long, ChatMining>();
+				this.oldChatMining = new HashMap<Long, Resource>();
 				this.oldCourseMining = new HashMap<Long, CourseMining>();
 				this.oldForumMining = new HashMap<Long, ForumMining>();
 				this.oldGroupMining = new HashMap<Long, GroupMining>();
@@ -775,10 +775,10 @@ public class ClixImporter {
 	
 				final Query oldChat = session.createQuery("from ChatMining x where x.platform="
 						+ this.connector.getPlatformId() + " order by x.id asc");
-				l = (ArrayList<ChatMining>) oldChat.list();
-				this.oldChatMining = new HashMap<Long, ChatMining>();
+				l = (ArrayList<Resource>) oldChat.list();
+				this.oldChatMining = new HashMap<Long, Resource>();
 				for (int i = 0; i < l.size(); i++) {
-					this.oldChatMining.put(Long.valueOf(((ChatMining) l.get(i)).getId()), (ChatMining) l.get(i));
+					this.oldChatMining.put(Long.valueOf(((Resource) l.get(i)).getId()), (Resource) l.get(i));
 				}
 				this.logger.info("Read " + this.oldChatMining.size() + " old ChatMinings.");
 			}
@@ -1813,8 +1813,8 @@ public class ClixImporter {
 	 * 
 	 * @return HashMap with ChatMining-objects
 	 */
-	private Map<Long, ChatMining> generateChatMining() {
-		final HashMap<Long, ChatMining> chats = new HashMap<Long, ChatMining>();
+	private Map<Long, Resource> generateChatMining() {
+		final HashMap<Long, Resource> chats = new HashMap<Long, Resource>();
 		final HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
 		for (final EComponentType loadedItem : this.eComponentType) {
 			//if (loadedItem.getCharacteristicId() == 8L) {
@@ -1827,7 +1827,7 @@ public class ClixImporter {
 				EComponentType ect = eCTypes.get(loadedItem.getType());
 				if (ect != null && (ect.getUploadDir().toLowerCase().contains("chat")) )
 				{
-					final ChatMining item = new ChatMining();
+					final Resource item = new Resource();
 					item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 					item.setTitle(loadedItem.getName());
 					item.setDescription(loadedItem.getDescription());

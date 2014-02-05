@@ -80,10 +80,10 @@ public class ChatMining implements IMappingClass, ILearningObject {
 	@Override
 	public boolean equals(final IMappingClass o)
 	{
-		if (!(o instanceof ChatMining)) {
+		if (!(o instanceof Resource)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof ChatMining)) {
+		if ((o.getId() == this.getId()) && (o instanceof Resource)) {
 			return true;
 		}
 		return false;

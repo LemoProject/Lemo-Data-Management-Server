@@ -82,7 +82,12 @@ import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
 import de.lemo.dms.db.mapping.AssignmentUserMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
-import de.lemo.dms.db.mapping.ChatMining;
+import de.lemo.dms.db.mapping.CollaborativeLog;
+import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.CourseResource;
+import de.lemo.dms.db.mapping.CourseUser;
+import de.lemo.dms.db.mapping.EventLog;
+import de.lemo.dms.db.mapping.Resource;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
 import de.lemo.dms.db.mapping.CourseChatMining;
 import de.lemo.dms.db.mapping.CourseForumMining;
@@ -109,10 +114,13 @@ import de.lemo.dms.db.mapping.QuizQuestionMining;
 import de.lemo.dms.db.mapping.QuizUserMining;
 import de.lemo.dms.db.mapping.ResourceLogMining;
 import de.lemo.dms.db.mapping.ResourceMining;
+import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.db.mapping.RoleMining;
 import de.lemo.dms.db.mapping.ScormLogMining;
 import de.lemo.dms.db.mapping.ScormMining;
 import de.lemo.dms.db.mapping.ScormUserMining;
+import de.lemo.dms.db.mapping.TaskLog;
+import de.lemo.dms.db.mapping.User;
 import de.lemo.dms.db.mapping.UserMining;
 import de.lemo.dms.db.mapping.WikiLogMining;
 import de.lemo.dms.db.mapping.WikiMining;
@@ -1337,9 +1345,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	// methods for create and fill the mining-table instances
 
 	@Override
-	public Map<Long, CourseUserMining> generateCourseUserMining() {
+	public Map<Long, CourseUser> generateCourseUserMining() {
 
-		final HashMap<Long, CourseUserMining> courseUserMining = new HashMap<Long, CourseUserMining>();
+		final HashMap<Long, CourseUser> courseUserMining = new HashMap<Long, CourseUser>();
 
 		for (final ContextLMS loadedItem : this.contextLms)
 		{
@@ -1347,7 +1355,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				for (final RoleAssignmentsLMS loadedItem2 : this.roleAssignmentsLms)
 				{
 					if (loadedItem2.getContextid() == loadedItem.getId()) {
-						final CourseUserMining insert = new CourseUserMining();
+						final CourseUser insert = new CourseUser();
 
 						insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getId()));
 						insert.setRole(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getRoleid()),
@@ -1364,29 +1372,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				}
 			}
 		}
-
-		for (final CourseUserMining courseUser : courseUserMining.values())
-		{
-			long enrolid = 0;
-			for (final EnrolLMS loadedItem : this.enrolLms)
-			{
-				if (Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourseid()) == courseUser.getCourse()
-						.getId())
-				{
-					enrolid = loadedItem.getId();
-					break;
-				}
-			}
-			for (final UserEnrolmentsLMS loadedItem : this.userEnrolmentsLms)
-			{
-				if (loadedItem.getEnrolid() == enrolid)
-				{
-					courseUser.setEnrolstart(loadedItem.getTimestart());
-					courseUser.setEnrolend(loadedItem.getTimeend());
-				}
-			}
-		}
-
 		return courseUserMining;
 	}
 
@@ -1413,16 +1398,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseMining> generateCourseMining() {
+	public Map<Long, Course> generateCourseMining() {
 
-		final HashMap<Long, CourseMining> courseMining = new HashMap<Long, CourseMining>();
+		final HashMap<Long, Course> courseMining = new HashMap<Long, Course>();
 		for (final CourseLMS loadedItem : this.courseLms)
 		{
-			final CourseMining insert = new CourseMining();
+			final Course insert = new Course();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setStartDate(loadedItem.getStartdate());
-			insert.setTimeCreated(loadedItem.getTimecreated());
 			insert.setTimeModified(loadedItem.getTimemodified());
 			insert.setTitle(loadedItem.getFullname());
 			insert.setShortname(loadedItem.getShortname());
@@ -1514,7 +1498,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 		final HashMap<Long, CourseChatMining> courseChatMining = new HashMap<Long, CourseChatMining>();
 
-		for (final ChatMining loadedItem : this.chatMining.values())
+		for (final Resource loadedItem : this.chatMining.values())
 		{
 			final CourseChatMining insert = new CourseChatMining();
 
@@ -1563,13 +1547,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseResourceMining> generateCourseResourceMining() {
+	public Map<Long, CourseResource> generateCourseResourceMining() {
 
-		final HashMap<Long, CourseResourceMining> courseResourceMining = new HashMap<Long, CourseResourceMining>();
+		final HashMap<Long, CourseResource> courseResourceMining = new HashMap<Long, CourseResource>();
 
 		for (final ResourceLMS loadedItem : this.resourceLms)
 		{
-			final CourseResourceMining insert = new CourseResourceMining();
+			final CourseResource insert = new CourseResource();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -1584,7 +1568,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final UrlLMS loadedItem : this.urlLms)
 		{
-			final CourseResourceMining insert = new CourseResourceMining();
+			final CourseResource insert = new CourseResource();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "2" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -1599,7 +1583,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final PageLMS loadedItem : this.pageLms)
 		{
-			final CourseResourceMining insert = new CourseResourceMining();
+			final CourseResource insert = new CourseResource();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "3" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -1842,37 +1826,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		return forumLogMining;
 	}
 
-	@Override
-	public Map<Long, ForumMining> generateForumMining() {
-
-		final HashMap<Long, ForumMining> forumMining = new HashMap<Long, ForumMining>();
-
-		for (final ForumLMS loadedItem : this.forumLms)
-		{
-			final ForumMining insert = new ForumMining();
-
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setTimeModified(loadedItem.getTimemodified());
-			insert.setTitle(loadedItem.getName());
-			insert.setSummary(loadedItem.getIntro());
-			insert.setPlatform(this.connector.getPlatformId());
-			forumMining.put(insert.getId(), insert);
-		}
-
-		for (final LogLMS loadedItem : this.logLms)
-		{
-			if ((forumMining.get(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCmid())) != null)
-					&& ((forumMining.get(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCmid()))
-							.getTimeCreated() == 0) || (forumMining.get(
-							Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCmid())).getTimeCreated() > loadedItem
-							.getTime())))
-			{
-				forumMining.get(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCmid())).setTimeCreated(
-						loadedItem.getTime());
-			}
-		}
-		return forumMining;
-	}
 
 	@Override
 	public Map<Long, GroupUserMining> generateGroupUserMining() {
@@ -2205,9 +2158,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, AssignmentLogMining> generateAssignmentLogMining() {
+	public Map<Long, TaskLog> generateTaskLogMining() {
 
-		final HashMap<Long, AssignmentLogMining> assignmentLogMining = new HashMap<Long, AssignmentLogMining>();
+		final HashMap<Long, TaskLog> taskLogs = new HashMap<Long, TaskLog>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 		final HashMap<Long, ArrayList<AssignGradesLMS>> asGrd = new HashMap<Long, ArrayList<AssignGradesLMS>>();
 		final HashMap<Long, CourseModulesLMS> courseModules = new HashMap<Long, CourseModulesLMS>();
@@ -2247,90 +2200,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			// Creates a list of time stamps for every user indicating requests
 			// We later use this lists to determine the time a user accessed a resource
-			if (users.get(uid) == null)
-			{
-				// if the user isn't already listed, create a new key
-				final ArrayList<Long> times = new ArrayList<Long>();
-				times.add(loadedItem.getTime());
-				users.put(uid, times);
-			}
-			else
-			{
-				final ArrayList<Long> times = users.get(uid);
-				if (loadedItem.getAction().equals("login")) {
-					times.add(0L);
-				}
-				if (!times.contains(loadedItem.getTime())) {
-					times.add(loadedItem.getTime());
-				}
-				users.put(uid, times);
-			}
-
-			// insert assignments in assignment_log
-			/*
-			if (loadedItem.getModule().equals("assignment") && loadedItem.getInfo().matches("[0-9]++"))
-			{
-				final AssignmentLogMining insert = new AssignmentLogMining();
-				insert.setId(assignmentLogMining.size() + 1 + this.assignmentLogMax);
-				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
-						this.courseMining, this.oldCourseMining);
-				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
-						this.oldUserMining);
-				insert.setAction(loadedItem.getAction());
-				insert.setTimestamp(loadedItem.getTime());
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
-				
-				insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
-						this.assignmentMining, this.oldAssignmentMining);
-				insert.setPlatform(this.connector.getPlatformId());
-
-				if ((insert.getAssignment() != null) && (insert.getUser() != null) && (insert.getCourse() != null))
-				{
-					if (asSub.get(Long.valueOf(loadedItem.getInfo())) != null) {
-						for (final AssignmentSubmissionsLMS loadedItem2 : asSub
-								.get(Long.valueOf(loadedItem.getInfo())))
-						{
-							if ((loadedItem2.getAssignment() == Long.valueOf(loadedItem.getInfo()))
-									&& loadedItem2.getUserid().equals(loadedItem.getUserid()))
-							{
-								insert.setGrade((double) loadedItem2.getGrade());
-								break;
-							}
-						}
-					}
-				}
-
-				if (insert.getAssignment() == null) {
-					this.logger.debug("In AssignmentLogMining, assignment not found for log: " + loadedItem.getId()
-							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo());
-				}
-				if (insert.getCourse() == null) {
-					this.logger.debug("In AssignmentLogMining, course not found for log: " + loadedItem.getId()
-							+ " and course: " + loadedItem.getCourse());
-				}
-				if (insert.getUser() == null) {
-					this.logger.debug("In AssignmentLogMining, user not found for log: " + loadedItem.getId()
-							+ " and user: " + loadedItem.getUserid());
-				}
-				insert.setPlatform(this.connector.getPlatformId());
-
-				if ((insert.getUser() != null) && (insert.getAssignment() != null) && (insert.getCourse() != null)) {
-					//Ignore old assignment minings
-					//assignmentLogMining.put(insert.getId(), insert);
-				}
-			}*/
 			if (loadedItem.getModule().equals("assign"))
 			{
-				AssignmentLogMining insert = new AssignmentLogMining();
-				insert.setId(assignmentLogMining.size() + 1 + this.assignmentLogMax);
+				TaskLog insert = new TaskLog();
+				insert.setId(taskLogs.size() + 1 + this.taskLogMax);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
 						this.oldUserMining);
-				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
 				insert.setPlatform(this.connector.getPlatformId());
 				
@@ -2350,32 +2227,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					}
 				}
 				if ((insert.getUser() != null) && (insert.getAssignment() != null) && (insert.getCourse() != null)) {
-					assignmentLogMining.put(insert.getId(), insert);
+					taskLogs.put(insert.getId(), insert);
 				}				
 			}
 		}
-		for (final AssignmentLogMining r : assignmentLogMining.values())
-		{
-			if (r.getUser() != null)
-			{
-				long duration = -1;
-				final ArrayList<Long> times = users.get(r.getUser().getId());
-
-				final int pos = times.indexOf(r.getTimestamp());
-				if ((pos > -1) && (pos < (times.size() - 1))) {
-					if (times.get(pos + 1) != 0) {
-						duration = times.get(pos + 1) - times.get(pos);
-					}
-				}
-				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
-				}
-				r.setDuration(duration);
-			}
-		}
-
-		return assignmentLogMining;
+		return taskLogs;
 	}
 
 	@Override
@@ -2731,73 +2587,87 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, ResourceMining> generateResourceMining() {
+	public Map<Long, Resource> generateResourceMining() {
 
-		final HashMap<Long, ResourceMining> resource = new HashMap<Long, ResourceMining>();
+		final HashMap<Long, Resource> resource = new HashMap<Long, Resource>();
 
 		for (final ResourceLMS loadedItem : this.resourceLms)
 		{
-			final ResourceMining insert = new ResourceMining();
+			final Resource insert = new Resource();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setPlatform(this.connector.getPlatformId());
-			insert.setType("resource");
+			//insert.setType("resource");
 
 			// Get time of creation
-
-			insert.setTimeModified(loadedItem.getTimemodified());
 
 			resource.put(insert.getId(), insert);
 		}
 		
 		for (final UrlLMS loadedItem : this.urlLms)
 		{
-			final ResourceMining insert = new ResourceMining();
+			final Resource insert = new Resource();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "2" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setPlatform(this.connector.getPlatformId());
-			insert.setType("url");
-
-			// Get time of creation
-
-			insert.setTimeModified(loadedItem.getTimemodified());
+			//insert.setType("url");
 
 			resource.put(insert.getId(), insert);
 		}
 		
 		for (final PageLMS loadedItem : this.pageLms)
 		{
-			final ResourceMining insert = new ResourceMining();
+			final Resource insert = new Resource();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "3" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setPlatform(this.connector.getPlatformId());
-			insert.setType("page");
-
-			// Get time of creation
-
-			insert.setTimeModified(loadedItem.getTimemodified());
+			//insert.setType("page");
 
 			resource.put(insert.getId(), insert);
 		}
-
-		for (final LogLMS loadedItem : this.logLms)
+		
+		for (final ChatLMS loadedItem : this.chatLms)
 		{
-			if ((resource.get(loadedItem.getCmid()) != null)
-					&& ((resource.get(loadedItem.getCmid()).getTimeCreated() == 0) || (resource.get(
-							loadedItem.getCmid()).getTimeCreated() > loadedItem.getTime())))
-			{
-				resource.get(loadedItem.getCmid()).setTimeCreated(loadedItem.getTime());
-			}
+			final Resource insert = new Resource();
+
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getTitle());
+			insert.setPlatform(this.connector.getPlatformId());
+
+			resource.put(insert.getId(), insert);
+			
 		}
+		
+		for (final ForumLMS loadedItem : this.forumLms)
+		{
+			final Resource insert = new Resource();
+
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getName());
+			insert.setPlatform(this.connector.getPlatformId());
+
+			resource.put(insert.getId(), insert);
+		}
+		
+		for (final WikiLMS loadedItem : this.wikiLms)
+		{
+			final Resource insert = new Resource();
+
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getName());
+			insert.setPlatform(this.connector.getPlatformId());
+			resource.put(insert.getId(), insert);
+		}
+		
 		return resource;
 	}
 
 	@Override
-	public Map<Long, ResourceLogMining> generateResourceLogMining() {
-		final HashMap<Long, ResourceLogMining> resourceLogMining = new HashMap<Long, ResourceLogMining>();
+	public Map<Long, EventLog> generateEventLogMining() {
+		final HashMap<Long, EventLog> resourceLogMining = new HashMap<Long, EventLog>();
 		// A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her
 		// requests times.
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
@@ -2829,16 +2699,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 
 			if (loadedItem.getModule().equals("resource")) {
-				final ResourceLogMining insert = new ResourceLogMining();
+				final EventLog insert = new EventLog();
 				insert.setPlatform(this.connector.getPlatformId());
 
-				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
+				insert.setId(resourceLogMining.size() + 1 + this.eventLogMax);
 
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
 						this.oldUserMining);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
-				insert.setAction(loadedItem.getAction());
 
 				if (loadedItem.getInfo().matches("[0-9]+")) {
 					insert.setResource(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getInfo()),
@@ -2862,16 +2731,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 			
 			if (loadedItem.getModule().equals("url")) {
-				final ResourceLogMining insert = new ResourceLogMining();
+				final EventLog insert = new EventLog();
 				insert.setPlatform(this.connector.getPlatformId());
 
-				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
+				insert.setId(resourceLogMining.size() + 1 + this.eventLogMax);
 
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
 						this.oldUserMining);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
-				insert.setAction(loadedItem.getAction());
 
 				if (loadedItem.getInfo().matches("[0-9]+")) {
 					insert.setResource(Long.valueOf(this.connector.getPrefix() + "2" + loadedItem.getInfo()),
@@ -2895,17 +2763,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 			
 			if (loadedItem.getModule().equals("page")) {
-				final ResourceLogMining insert = new ResourceLogMining();
+				final EventLog insert = new EventLog();
 				insert.setPlatform(this.connector.getPlatformId());
 
-				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
+				insert.setId(resourceLogMining.size() + 1 + this.eventLogMax);
 
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
 						this.oldUserMining);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
-				insert.setAction(loadedItem.getAction());
-
 				if (loadedItem.getInfo().matches("[0-9]+")) {
 					insert.setResource(Long.valueOf(this.connector.getPrefix() + "3" + loadedItem.getInfo()),
 							this.resourceMining, this.oldResourceMining);
@@ -2927,46 +2793,20 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			}
 		}
-		// For
-		for (final ResourceLogMining r : resourceLogMining.values())
-		{
-			if (r.getUser() != null)
-			{
-				long duration = -1;
-				final ArrayList<Long> times = users.get(r.getUser().getId());
-
-				final int pos = times.indexOf(r.getTimestamp());
-				if ((pos > -1) && (pos < (times.size() - 1))) {
-					if (times.get(pos + 1) != 0) {
-						duration = times.get(pos + 1) - times.get(pos);
-					}
-				}
-				// All duration that are longer than one hour are cut to an hour
-				if (duration > 3600) {
-					duration = 3600;
-				}
-				r.setDuration(duration);
-			}
-		}
 		return resourceLogMining;
 	}
 
 	@Override
-	public Map<Long, UserMining> generateUserMining() {
+	public Map<Long, User> generateUserMining() {
 
-		final HashMap<Long, UserMining> userMining = new HashMap<Long, UserMining>();
+		final HashMap<Long, User> userMining = new HashMap<Long, User>();
 
 		for (final UserLMS loadedItem : this.userLms)
 		{
 
-			final UserMining insert = new UserMining();
+			final User insert = new User();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-
-			insert.setLastLogin(loadedItem.getLastlogin());
-			insert.setFirstAccess(loadedItem.getFirstaccess());
-			insert.setLastAccess(loadedItem.getLastaccess());
-			insert.setCurrentLogin(loadedItem.getCurrentlogin());
 			insert.setPlatform(this.connector.getPlatformId());
 			insert.setLogin(Encoder.createMD5(loadedItem.getUsername()));
 			insert.setGender(0);
@@ -3071,46 +2911,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, WikiMining> generateWikiMining() {
-
-		final HashMap<Long, WikiMining> wikiMining = new HashMap<Long, WikiMining>();
-
-		for (final WikiLMS loadedItem : this.wikiLms)
-		{
-			final WikiMining insert = new WikiMining();
-
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setTitle(loadedItem.getName());
-			insert.setSummary(loadedItem.getSummary());
-			insert.setTimeModified(loadedItem.getTimemodified());
-			insert.setPlatform(this.connector.getPlatformId());
-			wikiMining.put(insert.getId(), insert);
-		}
-		for (final LogLMS loadedItem : this.logLms)
-		{
-			if (loadedItem.getModule().equals("Wiki")
-					&& (wikiMining.get(loadedItem.getCmid()) != null)
-					&& ((wikiMining.get(loadedItem.getCmid()).getTimeCreated() == 0) || (wikiMining.get(
-							loadedItem.getCmid()).getTimeCreated() > loadedItem.getTime())))
-			{
-				wikiMining.get(loadedItem.getCmid()).setTimeCreated(loadedItem.getTime());
-			}
-		}
-		return wikiMining;
-	}
-
-	@Override
-	public Map<Long, RoleMining> generateRoleMining() {
+	public Map<Long, Role> generateRoleMining() {
 		// generate role tables
-		final HashMap<Long, RoleMining> roleMining = new HashMap<Long, RoleMining>();
+		final HashMap<Long, Role> roleMining = new HashMap<Long, Role>();
 
 		for (final RoleLMS loadedItem : this.roleLms)
 		{
-			final RoleMining insert = new RoleMining();
+			final Role insert = new Role();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setName(loadedItem.getName());
-			insert.setShortname(loadedItem.getShortname());
+			insert.setTitle(loadedItem.getName());
 			insert.setDescription(loadedItem.getDescription());
 			insert.setSortOrder(loadedItem.getSortorder());
 			insert.setPlatform(this.connector.getPlatformId());
@@ -3128,113 +2938,24 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		return roleMining;
 	}
 
-	@Override
-	public Map<Long, LevelMining> generateLevelMining() {
-		final HashMap<Long, LevelMining> levelMining = new HashMap<Long, LevelMining>();
-
-		for (final CourseCategoriesLMS loadedItem : this.courseCategoriesLms)
-		{
-			final LevelMining insert = new LevelMining();
-
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setTitle(loadedItem.getTitle());
-			insert.setPlatform(this.connector.getPlatformId());
-			insert.setDepth(loadedItem.getDepth());
-			levelMining.put(insert.getId(), insert);
-
-		}
-		return levelMining;
-	}
 
 	@Override
-	public Map<Long, LevelAssociationMining> generateLevelAssociationMining() {
-		final HashMap<Long, LevelAssociationMining> levelAssociation = new HashMap<Long, LevelAssociationMining>();
-
-		for (final CourseCategoriesLMS loadedItem : this.courseCategoriesLms)
-		{
-			final String[] s = loadedItem.getPath().split("/");
-			if (s.length >= 3)
-			{
-				final LevelAssociationMining insert = new LevelAssociationMining();
-				insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-				insert.setLower(Long.valueOf(this.connector.getPrefix() + "" + s[s.length - 1]), this.levelMining,
-						this.oldLevelMining);
-				insert.setUpper(Long.valueOf(this.connector.getPrefix() + "" + s[s.length - 2]), this.levelMining,
-						this.oldLevelMining);
-				insert.setPlatform(this.connector.getPlatformId());
-
-				if ((insert.getLower() != null) && (insert.getUpper() != null)) {
-					levelAssociation.put(insert.getId(), insert);
-				}
-			}
-		}
-		return levelAssociation;
-	}
-
-	@Override
-	public Map<Long, LevelCourseMining> generateLevelCourseMining() {
-		final HashMap<Long, LevelCourseMining> levelCourse = new HashMap<Long, LevelCourseMining>();
-
-		for (final ContextLMS loadedItem : this.contextLms)
-		{
-			if ((loadedItem.getDepth() >= 4) && (loadedItem.getContextlevel() == 50))
-			{
-				final LevelCourseMining insert = new LevelCourseMining();
-
-				final String[] s = loadedItem.getPath().split("/");
-				insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInstanceid()),
-						this.courseMining, this.oldCourseMining);
-				insert.setPlatform(this.connector.getPlatformId());
-				for (final ContextLMS loadedItem2 : this.contextLms)
-				{
-					if ((loadedItem2.getContextlevel() == 40) && (loadedItem2.getId() == Integer.parseInt(s[3])))
-					{
-						insert.setLevel(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getInstanceid()),
-								this.levelMining, this.oldLevelMining);
-						break;
-					}
-				}
-				if ((insert.getLevel() != null) && (insert.getCourse() != null)) {
-					levelCourse.put(insert.getId(), insert);
-				}
-			}
-		}
-		return levelCourse;
-	}
-
-	@Override
-	public Map<Long, ChatMining> generateChatMining() {
-		final HashMap<Long, ChatMining> chatMining = new HashMap<Long, ChatMining>();
-
-		for (final ChatLMS loadedItem : this.chatLms)
-		{
-			final ChatMining insert = new ChatMining();
-
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setChatTime(loadedItem.getChattime());
-			insert.setDescription(loadedItem.getDescription());
-			insert.setTitle(loadedItem.getTitle());
-			insert.setPlatform(this.connector.getPlatformId());
-			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
-					this.oldCourseMining);
-
-			if (insert.getCourse() != null) {
-				chatMining.put(insert.getId(), insert);
-			}
-		}
-
-		return chatMining;
-	}
-
-	@Override
-	public Map<Long, ChatLogMining> generateChatLogMining() {
-		final HashMap<Long, ChatLogMining> chatLogMining = new HashMap<Long, ChatLogMining>();
+	public Map<Long, CollaborativeLog> generateCollaborativeLogMining() {
+		final HashMap<Long, CollaborativeLog> collaborativeLogs = new HashMap<Long, CollaborativeLog>();
 
 		for (final ChatLogLMS loadedItem : this.chatLogLms)
 		{
+			
+			Map<Long, Long> chatCourses = new HashMap<Long, Long>();
+			for(ChatLMS chat : this.chatLms)
+			{
+				chatCourses.put(chat.getId(), chat.getCourse());
+			}
+			
+			
+			
 			final ChatLogMining insert = new ChatLogMining();
-			insert.setId(chatLogMining.size() + 1 + this.chatLogMax);
+			insert.setId(collaborativeLogs.size() + 1 + this.chatLogMax);
 			insert.setChat(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getChat()), this.chatMining,
 					this.oldChatMining);
 			insert.setMessage(TextHelper.replaceString(loadedItem.getMessage()));
@@ -3260,11 +2981,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						+ " and chat: " + loadedItem.getChat());
 			}
 			if ((insert.getChat() != null) && (insert.getUser() != null) && (insert.getCourse() != null)) {
-				chatLogMining.put(insert.getId(), insert);
+				collaborativeLogs.put(insert.getId(), insert);
 			}
 
 		}
-		return chatLogMining;
+		return collaborativeLogs;
 	}
 
 }

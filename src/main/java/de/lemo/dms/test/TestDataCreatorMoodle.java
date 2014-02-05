@@ -67,7 +67,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
-import de.lemo.dms.db.mapping.ChatMining;
+import de.lemo.dms.db.mapping.Resource;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
 import de.lemo.dms.db.mapping.CourseForumMining;
 import de.lemo.dms.db.mapping.CourseGroupMining;
@@ -110,7 +110,7 @@ public class TestDataCreatorMoodle {
 
 	private List<AssignmentMining> assignmentList;
 	private List<AssignmentLogMining> assignmentLogList;
-	private List<ChatMining> chatList;
+	private List<Resource> chatList;
 	private List<ChatLogMining> chatLogList;
 	private List<CourseMining> courseList;
 	private List<CourseLogMining> courseLogList;
@@ -581,7 +581,7 @@ public class TestDataCreatorMoodle {
 			TestDataCreatorMoodle.chatLogLms.add(lms);
 		}
 
-		for (final ChatMining item : this.chatList)
+		for (final Resource item : this.chatList)
 		{
 			final ChatLMS lms = new ChatLMS();
 			lms.setId(item.getId());
@@ -638,7 +638,7 @@ public class TestDataCreatorMoodle {
 		this.assignmentLogList = (ArrayList<AssignmentLogMining>) assLogQuery.list();
 
 		final Query chaQuery = session.createQuery("from ChatMining x order by x.id asc");
-		this.chatList = (ArrayList<ChatMining>) chaQuery.list();
+		this.chatList = (ArrayList<Resource>) chaQuery.list();
 
 		final Query chaLogQuery = session.createQuery("from ChatLogMining x order by x.id asc");
 		this.chatLogList = (ArrayList<ChatLogMining>) chaLogQuery.list();

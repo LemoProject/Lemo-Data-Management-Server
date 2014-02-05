@@ -28,7 +28,7 @@ import org.hibernate.Session;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.ConfigMining;
+import de.lemo.dms.db.mapping.Config;
 
 /**
  * Provides version numbers of the server and the mining database.
@@ -69,9 +69,9 @@ public class Version {
         try {
             IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
             final Session session = dbHandler.getMiningSession();
-            final Criteria criteria = session.createCriteria(ConfigMining.class, "config");
+            final Criteria criteria = session.createCriteria(Config.class, "config");
             criteria.setMaxResults(1);
-            final ConfigMining prop = (ConfigMining) criteria.list().get(0);
+            final Config prop = (Config) criteria.list().get(0);
             version = prop.getDatabaseModel().toString();
 
         } catch (final Exception ex) {

@@ -37,8 +37,8 @@ import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
-import de.lemo.dms.db.mapping.ChatMining;
-import de.lemo.dms.db.mapping.ConfigMining;
+import de.lemo.dms.db.mapping.Resource;
+import de.lemo.dms.db.mapping.Config;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
 import de.lemo.dms.db.mapping.CourseForumMining;
 import de.lemo.dms.db.mapping.CourseGroupMining;
@@ -153,7 +153,7 @@ public class ContentGenerator {
 		final ArrayList<ScormMining> scormList = new ArrayList<ScormMining>();
 		final ArrayList<QuizMining> quizList = new ArrayList<QuizMining>();
 		final ArrayList<QuestionMining> questionList = new ArrayList<QuestionMining>();
-		final ArrayList<ChatMining> chatList = new ArrayList<ChatMining>();
+		final ArrayList<Resource> chatList = new ArrayList<Resource>();
 		final ArrayList<UserMining> userList = new ArrayList<UserMining>();
 		final ArrayList<RoleMining> roleList = new ArrayList<RoleMining>();
 		final ArrayList<GroupMining> groupList = new ArrayList<GroupMining>();
@@ -602,7 +602,7 @@ public class ContentGenerator {
 					// Create Chats
 					for (int l = 1; l < 2; l++)
 					{
-						final ChatMining c = new ChatMining();
+						final Resource c = new Resource();
 						c.setId(Long.valueOf(platform.getPrefix() + "" + (forumList.size() + 1)));
 						c.setCourse(cou);
 						c.setTitle("Chat " + i + "." + j + "." + k + "." + l);
@@ -778,7 +778,7 @@ public class ContentGenerator {
 							cLog.setCourse(cou);
 							cLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 							cLog.setChat(chatList.get((chatList.size() - 1)));
-							final ChatMining chat = cLog.getChat();
+							final Resource chat = cLog.getChat();
 	
 							mult = (int) ((startdate + year) - chat.getChatTime()) / Integer.valueOf(cou.getShortname());
 							time = (int) chat.getChatTime() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));
@@ -1296,7 +1296,7 @@ public class ContentGenerator {
 		all.add(chatLogList);
 
 		// Create and save config-object
-		final ConfigMining config = new ConfigMining();
+		final Config config = new Config();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime(1);
 		config.setDatabaseModel("1.3");
@@ -1304,7 +1304,7 @@ public class ContentGenerator {
 		config.setExtractCycle(1);
 		config.setLatestTimestamp(maxLog);
 
-		final ArrayList<ConfigMining> confList = new ArrayList<ConfigMining>();
+		final ArrayList<Config> confList = new ArrayList<Config>();
 		confList.add(config);
 
 		all.add(confList);

@@ -49,8 +49,8 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
-import de.lemo.dms.db.mapping.ChatMining;
-import de.lemo.dms.db.mapping.ConfigMining;
+import de.lemo.dms.db.mapping.Resource;
+import de.lemo.dms.db.mapping.Config;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
 import de.lemo.dms.db.mapping.CourseChatMining;
 import de.lemo.dms.db.mapping.CourseForumMining;
@@ -143,7 +143,7 @@ public abstract class ExtractAndMap {
 	protected Map<Long, LevelMining> levelMining;
 
 	/** A map containing all ChatMining entries found in the database */
-	protected Map<Long, ChatMining> chatMining;
+	protected Map<Long, Resource> chatMining;
 
 	/** A map containing all ChatLogMining entries found in the database */
 	protected Map<Long, ChatLogMining> chatLogMining;
@@ -194,7 +194,7 @@ public abstract class ExtractAndMap {
 	protected Map<Long, LevelMining> oldLevelMining;
 
 	/** A map containing all ChatMining entries found in the mining-database */
-	protected Map<Long, ChatMining> oldChatMining;
+	protected Map<Long, Resource> oldChatMining;
 
 	/** A map containing all ChatLogMining entries found in the mining-database */
 	protected Map<Long, ChatLogMining> oldChatLogMining;
@@ -312,7 +312,7 @@ public abstract class ExtractAndMap {
 
 		// calculate running time of extract process
 		final long endtime = System.currentTimeMillis() / 1000;
-		final ConfigMining config = new ConfigMining();
+		final Config config = new Config();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (this.starttime));
 		config.setDatabaseModel("1.3");
@@ -478,9 +478,9 @@ public abstract class ExtractAndMap {
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL,
 				"from ChatMining x where x.platform=" + this.connector.getPlatformId() + " order by x.id asc");
-		this.oldChatMining = new HashMap<Long, ChatMining>();
+		this.oldChatMining = new HashMap<Long, Resource>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldChatMining.put(((ChatMining) (t.get(i))).getId(), (ChatMining) t.get(i));
+			this.oldChatMining.put(((Resource) (t.get(i))).getId(), (Resource) t.get(i));
 		}
 		logger.info("Loaded " + this.oldChatMining.size() + " ChatMining objects from the mining database.");
 
@@ -1209,7 +1209,7 @@ public abstract class ExtractAndMap {
 	 * 
 	 * @return the list
 	 */
-	abstract Map<Long, ChatMining> generateChatMining();
+	abstract Map<Long, Resource> generateChatMining();
 
 	/**
 	 * Generate chat log mining.

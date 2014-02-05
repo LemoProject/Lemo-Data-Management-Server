@@ -74,7 +74,7 @@ import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
-import de.lemo.dms.db.mapping.ChatMining;
+import de.lemo.dms.db.mapping.Resource;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
 import de.lemo.dms.db.mapping.CourseChatMining;
 import de.lemo.dms.db.mapping.CourseForumMining;
@@ -1301,7 +1301,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 		final HashMap<Long, CourseChatMining> courseChatMining = new HashMap<Long, CourseChatMining>();
 
-		for (final ChatMining loadedItem : this.chatMining.values())
+		for (final Resource loadedItem : this.chatMining.values())
 		{
 			final CourseChatMining insert = new CourseChatMining();
 
@@ -2747,12 +2747,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, ChatMining> generateChatMining() {
-		final HashMap<Long, ChatMining> chatMining = new HashMap<Long, ChatMining>();
+	public Map<Long, Resource> generateChatMining() {
+		final HashMap<Long, Resource> chatMining = new HashMap<Long, Resource>();
 
 		for (final ChatLMS loadedItem : this.chatLms)
 		{
-			final ChatMining insert = new ChatMining();
+			final Resource insert = new Resource();
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setChatTime(loadedItem.getChattime());
 			insert.setDescription(loadedItem.getDescription());
