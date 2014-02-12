@@ -2633,7 +2633,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final Resource insert = new Resource();
 
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "4" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getTitle());
 			insert.setPlatform(this.connector.getPlatformId());
 
@@ -2645,7 +2645,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final Resource insert = new Resource();
 
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "5" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setPlatform(this.connector.getPlatformId());
 
@@ -2656,7 +2656,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final Resource insert = new Resource();
 
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "6" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setPlatform(this.connector.getPlatformId());
 			resource.put(insert.getId(), insert);

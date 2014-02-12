@@ -26,7 +26,6 @@
 
 package de.lemo.dms.db.mapping;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
