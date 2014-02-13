@@ -54,7 +54,7 @@ public class Course implements IMapping{
 	
 	private Set<CourseResource> courseResources = new HashSet<CourseResource>();
 	private Set<CourseTask> courseTasks = new HashSet<CourseTask>();
-	private Set<EventLog> eventLogs = new HashSet<EventLog>();
+	private Set<ViewLog> eventLogs = new HashSet<ViewLog>();
 	private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
 	private Set<CollaborativeLog> collaborativeLogs = new HashSet<CollaborativeLog>();
 	private Set<TaskUser> taskUsers = new HashSet<TaskUser>();
@@ -260,16 +260,16 @@ public class Course implements IMapping{
 		this.courseTasks.add(courseTask);
 	}
 	
-	public void setEventLogs(final Set<EventLog> eventLog) {
+	public void setEventLogs(final Set<ViewLog> eventLog) {
 		this.eventLogs = eventLog;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<EventLog> getEventLogs() {
+	public Set<ViewLog> getEventLogs() {
 		return this.eventLogs;
 	}
 
-	public void addEventLog(final EventLog eventLog) {
+	public void addEventLog(final ViewLog eventLog) {
 		this.eventLogs.add(eventLog);
 	}
 	

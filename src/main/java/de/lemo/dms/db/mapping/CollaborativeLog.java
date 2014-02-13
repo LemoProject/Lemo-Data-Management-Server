@@ -26,6 +26,8 @@
 
 package de.lemo.dms.db.mapping;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -190,6 +192,51 @@ public class CollaborativeLog implements IMapping, ILog{
 
 	public void setParent(Resource parent) {
 		this.parent = parent;
+	}
+	
+	public void setCourse(final long course, final Map<Long, Course> courses,
+			final Map<Long, Course> oldCourses) {
+
+		if (courses.get(course) != null)
+		{
+			this.course = courses.get(course);
+			courses.get(course).addCollaborativeLog(this);
+		}
+		if ((this.course == null) && (oldCourses.get(course) != null))
+		{
+			this.course = oldCourses.get(course);
+			oldCourses.get(course).addCollaborativeLog(this);
+		}
+	}
+	
+	public void setUser(final long user, final Map<Long, User> users,
+			final Map<Long, User> oldUsers) {
+
+		if (users.get(user) != null)
+		{
+			this.user = users.get(user);
+			users.get(user).addCollaborativeLog(this);
+		}
+		if ((this.user == null) && (oldUsers.get(user) != null))
+		{
+			this.user = oldUsers.get(user);
+			oldUsers.get(user).addCollaborativeLog(this);
+		}
+	}
+	
+	public void setResource(final long resource, final Map<Long, Resource> resources,
+			final Map<Long, Resource> oldResources) {
+
+		if (resources.get(resource) != null)
+		{
+			this.resource = resources.get(resource);
+			resources.get(resource).addCollaborativeLog(this);
+		}
+		if ((this.resource == null) && (oldResources.get(resource) != null))
+		{
+			this.resource = oldResources.get(resource);
+			oldResources.get(resource).addCollaborativeLog(this);
+		}
 	}
 	
 }

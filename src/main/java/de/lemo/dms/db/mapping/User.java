@@ -51,7 +51,7 @@ public class User implements IMapping{
 	
 	private Set<TaskUser> taskUsers = new HashSet<TaskUser>();
 	private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
-	private Set<EventLog> eventLogs= new HashSet<EventLog>();
+	private Set<ViewLog> eventLogs= new HashSet<ViewLog>();
 	private Set<CollaborativeLog> collaborativeLogs = new HashSet<CollaborativeLog>();
 	private Set<Assessment> assessments = new HashSet<Assessment>();
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
@@ -81,18 +81,18 @@ public class User implements IMapping{
 	 * @return the eventLogs
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<EventLog> getEventLogs() {
+	public Set<ViewLog> getEventLogs() {
 		return eventLogs;
 	}
 
 	/**
 	 * @param eventLogs the eventLogs to set
 	 */
-	public void setEventLogs(Set<EventLog> eventLogs) {
+	public void setEventLogs(Set<ViewLog> eventLogs) {
 		this.eventLogs = eventLogs;
 	}
 	
-	public void addEventLog(EventLog eventLog)
+	public void addEventLog(ViewLog eventLog)
 	{
 		this.eventLogs.add(eventLog);
 	}

@@ -51,7 +51,7 @@ import de.lemo.dms.db.mapping.Course;
 import de.lemo.dms.db.mapping.CourseResource;
 import de.lemo.dms.db.mapping.CourseTask;
 import de.lemo.dms.db.mapping.CourseUser;
-import de.lemo.dms.db.mapping.EventLog;
+import de.lemo.dms.db.mapping.ViewLog;
 import de.lemo.dms.db.mapping.Platform;
 import de.lemo.dms.db.mapping.Resource;
 import de.lemo.dms.db.mapping.Config;
@@ -125,7 +125,7 @@ public abstract class ExtractAndMap {
 		this.connector = connector;
 	}
 
-	protected Long eventLogMax;
+	protected Long viewLogMax;
 
 	protected Long collaborativeLogMax;
 
@@ -342,13 +342,13 @@ public abstract class ExtractAndMap {
 		}
 		logger.info("Loaded " + this.oldTaskUserMining.size() + " TaskUser objects from the mining database.");
 
-		Criteria criteria = session.createCriteria(EventLog.class);
+		Criteria criteria = session.createCriteria(ViewLog.class);
 		ProjectionList pl = Projections.projectionList();
 		pl.add(Projections.max("id"));
 		criteria.setProjection(pl);
-		this.eventLogMax = (Long) criteria.list().get(0);
-		if (this.eventLogMax == null) {
-			this.eventLogMax = 0L;
+		this.viewLogMax = (Long) criteria.list().get(0);
+		if (this.viewLogMax == null) {
+			this.viewLogMax = 0L;
 		}
 		
 		criteria = session.createCriteria(CollaborativeLog.class);
@@ -537,7 +537,7 @@ public abstract class ExtractAndMap {
 		
 		logger.info("\nLog tables:\n");
 
-		this.updates.add(this.generateEventLogMining().values());
+		this.updates.add(this.generateViewLogMining().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " EventLogMining entries in " + this.c.getAndReset() + " s. ");
@@ -634,7 +634,7 @@ public abstract class ExtractAndMap {
 	 * 
 	 * @return A list of instances of the course_log table representing class.
 	 **/
-	abstract Map<Long, EventLog> generateEventLogMining();
+	abstract Map<Long, ViewLog> generateViewLogMining();
 
 
 	/**

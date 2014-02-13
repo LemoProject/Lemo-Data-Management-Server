@@ -55,7 +55,7 @@ public class Resource implements IMapping{
 	private long platform;
 	
 	private Set<CourseResource> courseResources = new HashSet<CourseResource>();	
-	private Set<EventLog> eventLogs = new HashSet<EventLog>();
+	private Set<ViewLog> eventLogs = new HashSet<ViewLog>();
 	private Set<CollaborativeLog> collaborativeLogs = new HashSet<CollaborativeLog>();
 	
 	public boolean equals(final IMapping o) {
@@ -110,17 +110,17 @@ public class Resource implements IMapping{
 		this.type = type;
 	}
 	
-	public void setEventLogs(final Set<EventLog> eventLogs) {
+	public void setEventLogs(final Set<ViewLog> eventLogs) {
 		this.eventLogs = eventLogs;
 	}
 
 
 	@OneToMany(mappedBy="resource")
-	public Set<EventLog> getEventLogs() {
+	public Set<ViewLog> getEventLogs() {
 		return this.eventLogs;
 	}
 
-	public void addEventLog(final EventLog eventLogs) {
+	public void addEventLog(final ViewLog eventLogs) {
 		this.eventLogs.add(eventLogs);
 	}
 	
