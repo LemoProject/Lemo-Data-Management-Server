@@ -55,6 +55,7 @@ public class Task implements IMapping{
 	private Long platform;
 	private TaskType type;
 	private Task parent;
+	private double maxGrade;
 	private long timeopen;
 	private long timeclose;
 	
@@ -206,6 +207,20 @@ public class Task implements IMapping{
 	public void addTaskLog(TaskLog taskLog)
 	{
 		this.taskLogs.add(taskLog);
+	}
+
+	/**
+	 * @return the maxGrade
+	 */
+	public double getMaxGrade() {
+		return maxGrade;
+	}
+
+	/**
+	 * @param maxGrade the maxGrade to set
+	 */
+	public void setMaxGrade(double maxGrade) {
+		this.maxGrade = maxGrade;
 	}
 
 }

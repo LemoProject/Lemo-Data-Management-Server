@@ -86,6 +86,7 @@ import de.lemo.dms.db.mapping.CollaborativeLog;
 import de.lemo.dms.db.mapping.Course;
 import de.lemo.dms.db.mapping.CourseResource;
 import de.lemo.dms.db.mapping.CourseUser;
+import de.lemo.dms.db.mapping.Task;
 import de.lemo.dms.db.mapping.ViewLog;
 import de.lemo.dms.db.mapping.Resource;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
@@ -2088,7 +2089,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				
 				if(courseModules.containsKey(loadedItem.getCmid()))
 				{
-					insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + courseModules.get(loadedItem.getCmid()).getInstance()), assignmentMining, oldAssignmentMining);
+					insert.setTask(Long.valueOf(this.connector.getPrefix() + "" + courseModules.get(loadedItem.getCmid()).getInstance()), taskMining, oldTaskMining);
 					if(asGrd.containsKey(courseModules.get(loadedItem.getCmid()).getInstance()))
 					{
 						for(AssignGradesLMS ag : asGrd.get(courseModules.get(loadedItem.getCmid()).getInstance()))
@@ -2101,7 +2102,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						}
 					}
 				}
-				if ((insert.getUser() != null) && (insert.getAssignment() != null) && (insert.getCourse() != null)) {
+				if ((insert.getUser() != null) && (insert.getTask() != null) && (insert.getCourse() != null)) {
 					taskLogs.put(insert.getId(), insert);
 				}				
 			}
@@ -2181,35 +2182,19 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setQtype("quiz");
 			insert.setPlatform(this.connector.getPlatformId());
 			insert.setMaxGrade(loadedItem.getSumgrade());
-			/*
-			for (final GradeItemsLMS loadedItem2 : this.gradeItemsLms)
-			{
-				if ((loadedItem2.getIteminstance() != null) && (loadedItem2.getItemmodule() != null)) {
-					this.logger.debug("Iteminstance" + loadedItem2.getIteminstance() + " QuizId" + loadedItem.getId());
-					if ((loadedItem.getId() == loadedItem2.getIteminstance().longValue())
-							&& loadedItem2.getItemmodule().equals("quiz")) {
-						insert.setMaxGrade(loadedItem2.getGrademax());
-						break;
-					}
-				}
-				else {
-					this.logger.debug("Iteminstance or Itemmodule not found for QuizId" + loadedItem.getId()
-							+ " and type quiz and Iteminstance " + loadedItem2.getIteminstance() + " Itemmodule:"
-							+ loadedItem2.getItemmodule());
-				}
-			}*/
+
 			quizMining.put(insert.getId(), insert);
 		}
 		return quizMining;
 	}
 
 	@Override
-	public Map<Long, AssignmentMining> generateAssignmentMining() {
+	public Map<Long, Task> generateTaskMining() {
 
-		final HashMap<Long, AssignmentMining> assignmentMining = new HashMap<Long, AssignmentMining>();
+		final HashMap<Long, Task> taskMining = new HashMap<Long, Task>();
 
 		
-		final HashMap<Long, AssignmentMining> amTmp = new HashMap<Long, AssignmentMining>();
+		final HashMap<Long, Task> amTmp = new HashMap<Long, Task>();
 		long moduleid = 0;
 		for (final ModulesLMS loadedItem : this.modulesLms)
 		{
@@ -2222,13 +2207,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 		for (final AssignLMS loadedItem : this.assignLms)
 		{
-			final AssignmentMining insert = new AssignmentMining();
+			final Task insert = new Task();
 
 			final long course = loadedItem.getCourse();
 
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "01" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
-			insert.setTimeModified(loadedItem.getTimemodified());
 			insert.setPlatform(this.connector.getPlatformId());
 
 			for (final GradeItemsLMS loadedItem2 : this.gradeItemsLms)
@@ -2250,22 +2234,25 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				}
 			}
 
-			for (final CourseModulesLMS loadedItem3 : this.courseModulesLms)
-			{
-				if ((loadedItem3.getCourse() == course) && (loadedItem3.getModule() == moduleid))
-				{
-					insert.setTimeOpen(loadedItem3.getAvailablefrom());
-					insert.setTimeClose(loadedItem3.getAvailableuntil());
-					break;
-				}
-			}
-
 			amTmp.put(insert.getId(), insert);
 		}
 
-		assignmentMining.putAll(amTmp);
+		taskMining.putAll(amTmp);
+		
+		for (final QuizLMS loadedItem : this.quizLms)
+		{
 
-		return assignmentMining;
+			final Task insert = new Task();
+
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getName());
+			insert.setPlatform(this.connector.getPlatformId());
+			insert.setMaxGrade(loadedItem.getSumgrade());
+
+			taskMining.put(insert.getId(), insert);
+		}
+
+		return taskMining;
 	}
 
 	@Override
