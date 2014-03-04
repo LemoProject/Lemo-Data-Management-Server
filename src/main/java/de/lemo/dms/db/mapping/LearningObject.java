@@ -26,6 +26,7 @@
 
 package de.lemo.dms.db.mapping;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -45,24 +46,22 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_resource")
-public class Resource implements IMapping{
+@Table(name = "lemo_learning_object")
+public class LearningObject implements IMapping{
 
 	private long id;
 	private String title;
-	private String url;
-	private ResourceType type;
-	private long platform;
+	private LearningObjectType type;
 	
-	private Set<CourseResource> courseResources = new HashSet<CourseResource>();	
-	private Set<ViewLog> eventLogs = new HashSet<ViewLog>();
+	private Set<CourseLearningObject> courseLearningObjects = new HashSet<CourseLearningObject>();	
+	private Set<ViewLog> viewLogs = new HashSet<ViewLog>();
 	private Set<CollaborativeLog> collaborativeLogs = new HashSet<CollaborativeLog>();
 	
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof Resource)) {
+		if (!(o instanceof LearningObject)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof Resource)) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningObject)) {
 			return true;
 		}
 		return false;
@@ -92,46 +91,37 @@ public class Resource implements IMapping{
 		this.title = title;
 	}
 	
-	@Lob
-	@Column(name="url")
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="type_id")
-	public ResourceType getType() {
+	public LearningObjectType getType() {
 		return type;
 	}
-	public void setType(ResourceType type) {
+	public void setType(LearningObjectType type) {
 		this.type = type;
 	}
 	
-	public void setEventLogs(final Set<ViewLog> eventLogs) {
-		this.eventLogs = eventLogs;
+	public void setViewLogs(final Set<ViewLog> viewLogs) {
+		this.viewLogs = viewLogs;
 	}
 
 
-	@OneToMany(mappedBy="resource")
-	public Set<ViewLog> getEventLogs() {
-		return this.eventLogs;
+	@OneToMany(mappedBy="learningObject")
+	public Set<ViewLog> getViewLogs() {
+		return this.viewLogs;
 	}
 
-	public void addEventLog(final ViewLog eventLogs) {
-		this.eventLogs.add(eventLogs);
+	public void addViewLog(final ViewLog viewLog) {
+		this.viewLogs.add(viewLog);
 	}
 	
 	/**
 	 * standard setter for the attribute course_resource.
 	 * 
-	 * @param courseResources
+	 * @param courseLearningObjects
 	 *            a set of entries in the course_resource table which relate the resource to the courses
 	 */
-	public void setCourseResources(final Set<CourseResource> courseResources) {
-		this.courseResources = courseResources;
+	public void setCourseLearningObjects(final Set<CourseLearningObject> courseLearningObjects) {
+		this.courseLearningObjects = courseLearningObjects;
 	}
 
 	/**
@@ -139,25 +129,25 @@ public class Resource implements IMapping{
 	 * 
 	 * @return a set of entries in the course_resource table which relate the resource to the courses
 	 */
-	@OneToMany(mappedBy="resource")
-	public Set<CourseResource> getCourseResources() {
-		return this.courseResources;
+	@OneToMany(mappedBy="learningObject")
+	public Set<CourseLearningObject> getCourseLearningObjects() {
+		return this.courseLearningObjects;
 	}
 
 	/**
 	 * standard add method for the attribute course_resource.
 	 * 
-	 * @param courseResource
+	 * @param courseLearningObject
 	 *            this entry will be added to the list of course_resource in this resource
 	 */
-	public void addCourseResource(final CourseResource courseResource) {
-		this.courseResources.add(courseResource);
+	public void addCourseLearningObject(final CourseLearningObject courseLearningObject) {
+		this.courseLearningObjects.add(courseLearningObject);
 	}
 
 	/**
 	 * @return the collaborativeLogs
 	 */
-	@OneToMany(mappedBy="resource")
+	@OneToMany(mappedBy="learningObject")
 	public Set<CollaborativeLog> getCollaborativeLogs() {
 		return collaborativeLogs;
 	}
@@ -174,19 +164,19 @@ public class Resource implements IMapping{
 		this.collaborativeLogs.add(collaboritiveLog);
 	}
 
-	/**
-	 * @return the platform
-	 */
-	@Column(name="platform")
-	public long getPlatform() {
-		return platform;
-	}
-
-	/**
-	 * @param platform the platform to set
-	 */
-	public void setPlatform(long platform) {
-		this.platform = platform;
-	}
 	
+	public void setType(final String title, final Map<String, LearningObjectType> learningObjectTypes,
+			final Map<String, LearningObjectType> oldLearningObjectTypes) {
+
+		if (learningObjectTypes.get(title) != null)
+		{
+			this.type = learningObjectTypes.get(title);
+			learningObjectTypes.get(title).addLearningObject(this);
+		}
+		if ((this.type == null) && (oldLearningObjectTypes.get(title) != null))
+		{
+			this.type = oldLearningObjectTypes.get(title);
+			oldLearningObjectTypes.get(title).addLearningObject(this);
+		}
+	}
 }

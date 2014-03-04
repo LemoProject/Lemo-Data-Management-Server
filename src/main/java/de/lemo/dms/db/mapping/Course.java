@@ -27,12 +27,16 @@
 package de.lemo.dms.db.mapping;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -44,18 +48,14 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
 public class Course implements IMapping{
 	
 	private long id;
+	private Platform platform;
 	private String title;
-	private String shortname;
-	private long startDate;
-	private long enrolStart;
-	private long enrolEnd;
-	private long platform;
 	private long timeModified;
 	
-	private Set<CourseResource> courseResources = new HashSet<CourseResource>();
+	private Set<CourseLearningObject> courseResources = new HashSet<CourseLearningObject>();
 	private Set<CourseTask> courseTasks = new HashSet<CourseTask>();
 	private Set<ViewLog> eventLogs = new HashSet<ViewLog>();
-	private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
+	private Set<SubmissionLog> taskLogs = new HashSet<SubmissionLog>();
 	private Set<CollaborativeLog> collaborativeLogs = new HashSet<CollaborativeLog>();
 	private Set<TaskUser> taskUsers = new HashSet<TaskUser>();
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
@@ -107,81 +107,6 @@ public class Course implements IMapping{
 		this.title = title;
 	}
 
-	/**
-	 * @return the shortname
-	 */
-	@Lob
-	@Column(name="shortname")
-	public String getShortname() {
-		return shortname;
-	}
-
-	/**
-	 * @param shortname the shortname to set
-	 */
-	public void setShortname(String shortname) {
-		this.shortname = shortname;
-	}
-
-	/**
-	 * @return the startDate
-	 */
-	@Column(name="startdate")
-	public long getStartDate() {
-		return startDate;
-	}
-
-	/**
-	 * @param startDate the startDate to set
-	 */
-	public void setStartDate(long startDate) {
-		this.startDate = startDate;
-	}
-
-	/**
-	 * @return the enrolStart
-	 */
-	@Column(name="enrolstart")
-	public long getEnrolStart() {
-		return enrolStart;
-	}
-
-	/**
-	 * @param enrolStart the enrolStart to set
-	 */
-	public void setEnrolStart(long enrolStart) {
-		this.enrolStart = enrolStart;
-	}
-
-	/**
-	 * @return the enrolEnd
-	 */
-	@Column(name="enrolend")
-	public long getEnrolEnd() {
-		return enrolEnd;
-	}
-
-	/**
-	 * @param enrolEnd the enrolEnd to set
-	 */
-	public void setEnrolEnd(long enrolEnd) {
-		this.enrolEnd = enrolEnd;
-	}
-
-	/**
-	 * @return the platform
-	 */
-	@Column(name="platform")
-	public long getPlatform() {
-		return platform;
-	}
-
-	/**
-	 * @param platform the platform to set
-	 */
-	public void setPlatform(long platform) {
-		this.platform = platform;
-	}
 
 	/**
 	 * @return the timeModified
@@ -206,7 +131,7 @@ public class Course implements IMapping{
 	 * @param courseResource
 	 *            a set of entries in the course_resource table which shows the resources in this course
 	 */
-	public void setCourseResources(final Set<CourseResource> courseResource) {
+	public void setCourseResources(final Set<CourseLearningObject> courseResource) {
 		this.courseResources = courseResource;
 	}
 
@@ -216,7 +141,7 @@ public class Course implements IMapping{
 	 * @return a set of entries in the course_resource table which shows the resources in this course
 	 */
 	@OneToMany(mappedBy="course")
-	public Set<CourseResource> getCourseResources() {
+	public Set<CourseLearningObject> getCourseResources() {
 		return this.courseResources;
 	}
 
@@ -226,7 +151,7 @@ public class Course implements IMapping{
 	 * @param courseResource
 	 *            this entry of the course_resource table will be added to this course
 	 */
-	public void addCourseResource(final CourseResource courseResource) {
+	public void addCourseResource(final CourseLearningObject courseResource) {
 		this.courseResources.add(courseResource);
 	}
 	
@@ -273,16 +198,16 @@ public class Course implements IMapping{
 		this.eventLogs.add(eventLog);
 	}
 	
-	public void setTaskLogs(final Set<TaskLog> taskLog) {
+	public void setTaskLogs(final Set<SubmissionLog> taskLog) {
 		this.taskLogs = taskLog;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<TaskLog> getTaskLogs() {
+	public Set<SubmissionLog> getTaskLogs() {
 		return this.taskLogs;
 	}
 
-	public void addTaskLog(final TaskLog taskLog) {
+	public void addTaskLog(final SubmissionLog taskLog) {
 		this.taskLogs.add(taskLog);
 	}
 	
@@ -322,6 +247,7 @@ public class Course implements IMapping{
 	/**
 	 * @return the courseUsers
 	 */
+	@OneToMany(mappedBy="course")
 	public Set<CourseUser> getCourseUsers() {
 		return courseUsers;
 	}
@@ -336,6 +262,37 @@ public class Course implements IMapping{
 	public void addCourseUser(CourseUser courseUser)
 	{
 		this.courseUsers.add(courseUser);
+	}
+
+	/**
+	 * @return the platform
+	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="platform_id")
+	public Platform getPlatform() {
+		return platform;
+	}
+
+	/**
+	 * @param platform the platform to set
+	 */
+	public void setPlatform(Platform platform) {
+		this.platform = platform;
+	}
+	
+	public void setPlatform(final long platform, final Map<Long, Platform> platforms,
+			final Map<Long, Platform> oldPlatforms) {
+
+		if (platforms.get(platform) != null)
+		{
+			this.platform = platforms.get(platform);
+			platforms.get(platform).addCourse(this);
+		}
+		if ((this.platform == null) && (oldPlatforms.get(platform) != null))
+		{
+			this.platform = oldPlatforms.get(platform);
+			oldPlatforms.get(platform).addCourse(this);
+		}
 	}
 
 

@@ -29,6 +29,7 @@ import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -37,20 +38,19 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
 
 /** This class represents the relationship between courses and resources. */
 @Entity
-@Table(name = "lemo_course_resource")
-public class CourseResource implements IMapping {
+@Table(name = "lemo_course_learning_object")
+public class CourseLearningObject implements IMapping {
 	
 	private long id;
 	private Course course;
-	private Resource resource;
-	private Long platform;
+	private LearningObject learningObject;
 	
 	
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof CourseResource)) {
+		if (!(o instanceof CourseLearningObject)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof CourseResource)) {
+		if ((o.getId() == this.getId()) && (o instanceof CourseLearningObject)) {
 			return true;
 		}
 		return false;
@@ -92,17 +92,17 @@ public class CourseResource implements IMapping {
 		}
 	}
 	
-	public void setResource(final long resource, final Map<Long, Resource> resources,
-			final Map<Long, Resource> oldResources) {
-		if (resources.get(resource) != null)
+	public void setLearningObject(final long learningObject, final Map<Long, LearningObject> learningObjects,
+			final Map<Long, LearningObject> oldLearningObjects) {
+		if (learningObjects.get(learningObject) != null)
 		{
-			this.resource = resources.get(resource);
-			resources.get(resource).addCourseResource(this);
+			this.learningObject = learningObjects.get(learningObject);
+			learningObjects.get(learningObject).addCourseLearningObject(this);
 		}
-		if ((this.resource == null) && (oldResources.get(resource) != null))
+		if ((this.learningObject == null) && (oldLearningObjects.get(learningObject) != null))
 		{
-			this.resource = oldResources.get(resource);
-			oldResources.get(resource).addCourseResource(this);
+			this.learningObject = oldLearningObjects.get(learningObject);
+			oldLearningObjects.get(learningObject).addCourseLearningObject(this);
 		}
 	}
 
@@ -111,23 +111,24 @@ public class CourseResource implements IMapping {
 	 * @return the resource
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="resource_id")
-	public Resource getResource() {
-		return resource;
+	@JoinColumn(name="learning_object_id")
+	public LearningObject getLearningObject() {
+		return learningObject;
 	}
 
 
 	/**
-	 * @param resource the resource to set
+	 * @param learningObject the resource to set
 	 */
-	public void setResource(Resource resource) {
-		this.resource = resource;
+	public void setLearningObject(LearningObject learningObject) {
+		this.learningObject = learningObject;
 	}
 
 
 	/**
 	 * @return the id
 	 */
+	@Id
 	public long getId() {
 		return id;
 	}
@@ -139,23 +140,4 @@ public class CourseResource implements IMapping {
 	public void setId(long id) {
 		this.id = id;
 	}
-
-
-	/**
-	 * @return the platform
-	 */
-	public Long getPlatform() {
-		return platform;
-	}
-
-
-	/**
-	 * @param platform the platform to set
-	 */
-	public void setPlatform(Long platform) {
-		this.platform = platform;
-	}
-	
-	
-
 }

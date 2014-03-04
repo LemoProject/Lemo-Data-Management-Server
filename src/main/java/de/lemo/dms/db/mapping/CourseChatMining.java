@@ -49,7 +49,7 @@ public class CourseChatMining implements ICourseLORelation{
 	
 	private long id;
 	private CourseMining course;
-	private Resource chat;
+	private LearningObject chat;
 	private long platform;
 	
 	/**
@@ -90,8 +90,8 @@ public class CourseChatMining implements ICourseLORelation{
 	 *            a list of course in the miningdatabase, which is searched for the course with the id submitted in the
 	 *            course parameter
 	 */
-	public void setChat(final long chat, final Map<Long, Resource> chatMining,
-			final Map<Long, Resource> oldChatMining) {
+	public void setChat(final long chat, final Map<Long, LearningObject> chatMining,
+			final Map<Long, LearningObject> oldChatMining) {
 		if (chatMining.get(chat) != null)
 		{
 			this.chat = chatMining.get(chat);
@@ -134,11 +134,11 @@ public class CourseChatMining implements ICourseLORelation{
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="chat_id")
-	public Resource getChat() {
+	public LearningObject getChat() {
 		return chat;
 	}
 
-	public void setChat(Resource chat) {
+	public void setChat(LearningObject chat) {
 		this.chat = chat;
 	}
 

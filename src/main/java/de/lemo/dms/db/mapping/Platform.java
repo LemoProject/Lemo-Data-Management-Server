@@ -1,9 +1,13 @@
 package de.lemo.dms.db.mapping;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.lemo.dms.db.mapping.abstractions.IMapping;
@@ -21,12 +25,18 @@ public class Platform implements IMapping {
 	private String type;
 	private Long prefix;
 	
+	private Set<Course> courses = new HashSet<Course>();
+	
 	public Platform(final Long id, final String title, final String type, final Long prefix)
 	{
 		this.id = id;
 		this.title = title;
 		this.type = type;
 		this.prefix = prefix;
+	}
+	
+	public Platform()
+	{
 	}
 	
 	public boolean equals(final IMapping o) {
@@ -98,6 +108,26 @@ public class Platform implements IMapping {
 	 */
 	public void setPrefix(Long prefix) {
 		this.prefix = prefix;
+	}
+
+	/**
+	 * @return the courses
+	 */
+	@OneToMany(mappedBy="platform")
+	public Set<Course> getCourses() {
+		return courses;
+	}
+	
+	public void addCourse(final Course course)
+	{
+		this.courses.add(course);
+	}
+
+	/**
+	 * @param courses the courses to set
+	 */
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
 	}
 	
 	

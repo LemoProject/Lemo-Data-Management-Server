@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -70,12 +71,12 @@ public class TaskType implements IMapping {
 		this.tasks = tasks;
 	}
 
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="type")
 	public Set<Task> getTasks() {
 		return this.tasks;
 	}
 
-	public void addResourceLog(final Task task) {
+	public void addTask(final Task task) {
 		this.tasks.add(task);
 	}
 

@@ -31,6 +31,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -45,34 +46,34 @@ public class User implements IMapping{
 
 
 	private long id;
-	private String login;
+	private String authentication;
 	private long gender;
-	private long platform;
 	
 	private Set<TaskUser> taskUsers = new HashSet<TaskUser>();
-	private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
+	private Set<SubmissionLog> taskLogs = new HashSet<SubmissionLog>();
 	private Set<ViewLog> eventLogs= new HashSet<ViewLog>();
 	private Set<CollaborativeLog> collaborativeLogs = new HashSet<CollaborativeLog>();
 	private Set<Assessment> assessments = new HashSet<Assessment>();
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
+	private Set<Assessment> graders = new HashSet<Assessment>();
 	
 	
 	/**
 	 * @return the taskLogs
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<TaskLog> getTaskLogs() {
+	public Set<SubmissionLog> getTaskLogs() {
 		return taskLogs;
 	}
 
 	/**
 	 * @param taskLogs the taskLogs to set
 	 */
-	public void setTaskLogs(Set<TaskLog> taskLogs) {
+	public void setTaskLogs(Set<SubmissionLog> taskLogs) {
 		this.taskLogs = taskLogs;
 	}
 	
-	public void addTaskLog(TaskLog taskLog)
+	public void addTaskLog(SubmissionLog taskLog)
 	{
 		this.taskLogs.add(taskLog);
 	}
@@ -140,16 +141,16 @@ public class User implements IMapping{
 	/**
 	 * @return the login
 	 */
-	@Column(name="login")
+	@Column(name="authentication")
 	public String getLogin() {
-		return login;
+		return authentication;
 	}
 
 	/**
 	 * @param login the login to set
 	 */
 	public void setLogin(String login) {
-		this.login = login;
+		this.authentication = login;
 	}
 
 	/**
@@ -166,22 +167,6 @@ public class User implements IMapping{
 	public void setGender(long gender) {
 		this.gender = gender;
 	}
-
-	/**
-	 * @return the platform
-	 */
-	@Column(name="platform")
-	public long getPlatform() {
-		return platform;
-	}
-
-	/**
-	 * @param platform the platform to set
-	 */
-	public void setPlatform(long platform) {
-		this.platform = platform;
-	}
-
 
 
 	public boolean equals(final IMapping o) {
@@ -202,6 +187,7 @@ public class User implements IMapping{
 	/**
 	 * @return the id
 	 */
+	@Id
 	public long getId() {
 		return id;
 	}
@@ -236,6 +222,7 @@ public class User implements IMapping{
 	/**
 	 * @return the courseUsers
 	 */
+	@OneToMany(mappedBy="user")
 	public Set<CourseUser> getCourseUsers() {
 		return courseUsers;
 	}
@@ -250,6 +237,26 @@ public class User implements IMapping{
 	public void addCourseUser(CourseUser courseUser)
 	{
 		this.courseUsers.add(courseUser);
+	}
+
+	/**
+	 * @return the graders
+	 */
+	@OneToMany(mappedBy="grader")
+	public Set<Assessment> getGraders() {
+		return graders;
+	}
+
+	/**
+	 * @param graders the graders to set
+	 */
+	public void setGraders(Set<Assessment> graders) {
+		this.graders = graders;
+	}
+	
+	public void addGrader(Assessment grader)
+	{
+		this.graders.add(grader);
 	}
 	
 }

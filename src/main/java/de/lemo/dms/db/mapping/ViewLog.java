@@ -50,10 +50,9 @@ public class ViewLog implements IMapping, ILog {
 	private long id;
 	private Course course;
 	private User user;
-	private Resource resource;
+	private LearningObject learningObject;
 	private long timestamp;
 	private Long duration;
-	private Long platform;
 	
 	@Override
 	public boolean equals(final IMapping o) {
@@ -130,15 +129,15 @@ public class ViewLog implements IMapping, ILog {
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="resource_id")
-	public Resource getResource() {
-		return resource;
+	@JoinColumn(name="learning_object_id")
+	public LearningObject getLearningObject() {
+		return learningObject;
 	}
 	
 	
 	
-	public void setResource(Resource resource) {
-		this.resource = resource;
+	public void setLearningObject(LearningObject learningObject) {
+		this.learningObject = learningObject;
 	}
 	
 	
@@ -165,17 +164,6 @@ public class ViewLog implements IMapping, ILog {
 		this.duration = duration;
 	}
 	
-	
-	@Column(name="platform")
-	public Long getPlatform() {
-		return platform;
-	}
-	
-	
-	
-	public void setPlatform(Long platform) {
-		this.platform = platform;
-	}
 	
 	
 	public void setCourse(final long course, final Map<Long, Course> courses,
@@ -208,18 +196,18 @@ public class ViewLog implements IMapping, ILog {
 		}
 	}
 	
-	public void setResource(final long resource, final Map<Long, Resource> resources,
-			final Map<Long, Resource> oldResources) {
+	public void setLearningObject(final long learningObject, final Map<Long, LearningObject> learningObjects,
+			final Map<Long, LearningObject> oldLearningObjects) {
 
-		if (resources.get(resource) != null)
+		if (learningObjects.get(learningObject) != null)
 		{
-			this.resource = resources.get(resource);
-			resources.get(resource).addEventLog(this);
+			this.learningObject = learningObjects.get(learningObject);
+			learningObjects.get(learningObject).addViewLog(this);
 		}
-		if ((this.resource == null) && (oldResources.get(resource) != null))
+		if ((this.learningObject == null) && (oldLearningObjects.get(learningObject) != null))
 		{
-			this.resource = oldResources.get(resource);
-			oldResources.get(resource).addEventLog(this);
+			this.learningObject = oldLearningObjects.get(learningObject);
+			oldLearningObjects.get(learningObject).addViewLog(this);
 		}
 	}
 

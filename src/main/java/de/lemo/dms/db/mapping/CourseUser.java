@@ -3,26 +3,30 @@ package de.lemo.dms.db.mapping;
 import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
+@Entity
+@Table(name = "lemo_course_user")
 public class CourseUser implements IMapping {
 	
 	private long id;
 	private Course course;
 	private User user;
 	private Role role;
-	private long platform;
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof Resource)) {
+		if (!(o instanceof LearningObject)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof Resource)) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningObject)) {
 			return true;
 		}
 		return false;
@@ -36,6 +40,7 @@ public class CourseUser implements IMapping {
 	/**
 	 * @return the id
 	 */
+	@Id
 	public long getId() {
 		return id;
 	}
@@ -95,21 +100,6 @@ public class CourseUser implements IMapping {
 		this.role = role;
 	}
 
-	/**
-	 * @return the platform
-	 */
-	@Column(name="platform")
-	public long getPlatform() {
-		return platform;
-	}
-
-	/**
-	 * @param platform the platform to set
-	 */
-	public void setPlatform(long platform) {
-		this.platform = platform;
-	}
-	
 	public void setCourse(final long course, final Map<Long, Course> courses,
 			final Map<Long, Course> oldCourses) {
 		if (courses.get(course) != null)

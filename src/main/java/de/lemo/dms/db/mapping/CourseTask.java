@@ -29,6 +29,7 @@ import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -43,7 +44,6 @@ public class CourseTask implements IMapping {
 	private long id;
 	private Course course;
 	private Task task;
-	private Long platform;
 	
 	public boolean equals(final IMapping o) {
 		if (!(o instanceof CourseTask)) {
@@ -108,11 +108,26 @@ public class CourseTask implements IMapping {
 	public void setTask(Task task) {
 		this.task = task;
 	}
+	
+	public void setTask(final long task, final Map<Long, Task> tasks,
+			final Map<Long, Task> oldTasks) {
+		if (tasks.get(task) != null)
+		{
+			this.task = tasks.get(task);
+			tasks.get(task).addCourseTask(this);
+		}
+		if ((this.task == null) && (oldTasks.get(task) != null))
+		{
+			this.task = oldTasks.get(task);
+			oldTasks.get(task).addCourseTask(this);
+		}
+	}
 
 
 	/**
 	 * @return the id
 	 */
+	@Id
 	public long getId() {
 		return id;
 	}
@@ -124,23 +139,4 @@ public class CourseTask implements IMapping {
 	public void setId(long id) {
 		this.id = id;
 	}
-
-
-	/**
-	 * @return the platform
-	 */
-	public Long getPlatform() {
-		return platform;
-	}
-
-
-	/**
-	 * @param platform the platform to set
-	 */
-	public void setPlatform(Long platform) {
-		this.platform = platform;
-	}
-	
-	
-
 }

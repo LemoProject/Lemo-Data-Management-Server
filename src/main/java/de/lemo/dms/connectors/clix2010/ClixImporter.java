@@ -81,7 +81,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
-import de.lemo.dms.db.mapping.Resource;
+import de.lemo.dms.db.mapping.LearningObject;
 import de.lemo.dms.db.mapping.Config;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
 import de.lemo.dms.db.mapping.CourseChatMining;
@@ -238,7 +238,7 @@ public class ClixImporter {
 	/** The role_mining. */
 	private Map<Long, RoleMining> roleMining;
 	/** The chat_mining. */
-	private Map<Long, Resource> chatMining;
+	private Map<Long, LearningObject> chatMining;
 	/** The level_mining. */
 	private Map<Long, LevelMining> oldLevelMining;
 	/** The quiz_question_mining. */
@@ -291,7 +291,7 @@ public class ClixImporter {
 	/** The old_role_mining. */
 	private Map<Long, RoleMining> oldRoleMining;
 	/** The old_chat_mining. */
-	private Map<Long, Resource> oldChatMining;
+	private Map<Long, LearningObject> oldChatMining;
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -583,7 +583,7 @@ public class ClixImporter {
 			{
 				readingtimestamp = 0L;
 				this.oldAssignmentMining = new HashMap<Long, AssignmentMining>();
-				this.oldChatMining = new HashMap<Long, Resource>();
+				this.oldChatMining = new HashMap<Long, LearningObject>();
 				this.oldCourseMining = new HashMap<Long, CourseMining>();
 				this.oldForumMining = new HashMap<Long, ForumMining>();
 				this.oldGroupMining = new HashMap<Long, GroupMining>();
@@ -775,10 +775,10 @@ public class ClixImporter {
 	
 				final Query oldChat = session.createQuery("from ChatMining x where x.platform="
 						+ this.connector.getPlatformId() + " order by x.id asc");
-				l = (ArrayList<Resource>) oldChat.list();
-				this.oldChatMining = new HashMap<Long, Resource>();
+				l = (ArrayList<LearningObject>) oldChat.list();
+				this.oldChatMining = new HashMap<Long, LearningObject>();
 				for (int i = 0; i < l.size(); i++) {
-					this.oldChatMining.put(Long.valueOf(((Resource) l.get(i)).getId()), (Resource) l.get(i));
+					this.oldChatMining.put(Long.valueOf(((LearningObject) l.get(i)).getId()), (LearningObject) l.get(i));
 				}
 				this.logger.info("Read " + this.oldChatMining.size() + " old ChatMinings.");
 			}
@@ -1813,8 +1813,8 @@ public class ClixImporter {
 	 * 
 	 * @return HashMap with ChatMining-objects
 	 */
-	private Map<Long, Resource> generateChatMining() {
-		final HashMap<Long, Resource> chats = new HashMap<Long, Resource>();
+	private Map<Long, LearningObject> generateChatMining() {
+		final HashMap<Long, LearningObject> chats = new HashMap<Long, LearningObject>();
 		final HashMap<Long, EComponentType> eCTypes = new HashMap<Long, EComponentType>();
 		for (final EComponentType loadedItem : this.eComponentType) {
 			//if (loadedItem.getCharacteristicId() == 8L) {
@@ -1827,7 +1827,7 @@ public class ClixImporter {
 				EComponentType ect = eCTypes.get(loadedItem.getType());
 				if (ect != null && (ect.getUploadDir().toLowerCase().contains("chat")) )
 				{
-					final Resource item = new Resource();
+					final LearningObject item = new LearningObject();
 					item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 					item.setTitle(loadedItem.getName());
 					item.setDescription(loadedItem.getDescription());

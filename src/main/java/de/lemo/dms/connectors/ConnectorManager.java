@@ -28,15 +28,19 @@ package de.lemo.dms.connectors;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
+
 import com.google.common.collect.Lists;
+
 import de.lemo.dms.core.ConnectorGetDataWorkerThread;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.Platform;
 import de.lemo.dms.db.mapping.PlatformMining;
 
 /**
@@ -154,7 +158,7 @@ public enum ConnectorManager {
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
-		PlatformMining platform = (PlatformMining) session.get(PlatformMining.class, connector.getPlatformId());
+		Platform platform = (Platform) session.get(Platform.class, connector.getPlatformId());
 
 		if (platform == null) {
 			// save new platform
@@ -165,7 +169,7 @@ public enum ConnectorManager {
 			if (maxPrefix == null) {
 				maxPrefix = 10L;
 			}
-			platform = new PlatformMining();
+			platform = new Platform();
 			platform.setId(connector.getPlatformId());
 			platform.setPrefix(maxPrefix + 1);
 
@@ -173,7 +177,7 @@ public enum ConnectorManager {
 		final AbstractConnector ac = (AbstractConnector) connector;
 		ac.setPrefix(platform.getPrefix());
 		// update name
-		platform.setName(connector.getName());
+		platform.setTitle(connector.getName());
 		platform.setType(connector.getPlattformType().name());
 
 		dbHandler.saveToDB(session, platform);

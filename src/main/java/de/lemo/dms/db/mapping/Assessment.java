@@ -1,5 +1,7 @@
 package de.lemo.dms.db.mapping;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,7 +18,7 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
 public class Assessment implements IMapping{
 	
 	private long id;
-	private TaskLog taskLog;
+	private SubmissionLog submissionLog;
 	private User grader;
 	private double grade;
 	private String feedback;
@@ -54,16 +56,17 @@ public class Assessment implements IMapping{
 	 * @return the taskLog
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="task_log_id")
-	public TaskLog getTaskLog() {
-		return taskLog;
+	@JoinColumn(name="submission_log_id")
+	public SubmissionLog getTaskLog() {
+		return submissionLog;
 	}
 	/**
 	 * @param taskLog the taskLog to set
 	 */
-	public void setTaskLog(TaskLog taskLog) {
-		this.taskLog = taskLog;
+	public void setTaskLog(SubmissionLog taskLog) {
+		this.submissionLog = taskLog;
 	}
+	
 	/**
 	 * @return the grader
 	 */
@@ -77,6 +80,21 @@ public class Assessment implements IMapping{
 	 */
 	public void setGrader(User grader) {
 		this.grader = grader;
+	}
+	
+	public void setGrader(final long grader, final Map<Long, User> users,
+			final Map<Long, User> oldUsers) {
+
+		if (users.get(grader) != null)
+		{
+			this.grader = users.get(grader);
+			users.get(grader).addGrader(this);
+		}
+		if ((this.grader == null) && (oldUsers.get(grader) != null))
+		{
+			this.grader = oldUsers.get(grader);
+			oldUsers.get(grader).addGrader(this);
+		}
 	}
 	/**
 	 * @return the grade

@@ -1,7 +1,10 @@
 package de.lemo.dms.db.mapping;
 
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -20,7 +23,6 @@ public class TaskUser implements IMapping{
 	private Course course;
 	private User user;
 	private Task task;
-	private long platform;
 	private double grade;
 	private long timemodified;
 	
@@ -44,6 +46,7 @@ public class TaskUser implements IMapping{
 	/**
 	 * @return the id
 	 */
+	@Id
 	public long getId() {
 		return id;
 	}
@@ -67,6 +70,22 @@ public class TaskUser implements IMapping{
 	public void setCourse(Course course) {
 		this.course = course;
 	}
+	
+	public void setCourse(final long course, final Map<Long, Course> courses,
+			final Map<Long, Course> oldCourses) {
+
+		if (courses.get(course) != null)
+		{
+			this.course = courses.get(course);
+			courses.get(course).addTaskUser(this);
+		}
+		if ((this.course == null) && (oldCourses.get(course) != null))
+		{
+			this.course = oldCourses.get(course);
+			oldCourses.get(course).addTaskUser(this);
+		}
+	}
+	
 	/**
 	 * @return the user
 	 */
@@ -80,6 +99,21 @@ public class TaskUser implements IMapping{
 	 */
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public void setUser(final long user, final Map<Long, User> users,
+			final Map<Long, User> oldUsers) {
+
+		if (users.get(user) != null)
+		{
+			this.user = users.get(user);
+			users.get(user).addTaskUser(this);
+		}
+		if ((this.user == null) && (oldUsers.get(user) != null))
+		{
+			this.user = oldUsers.get(user);
+			oldUsers.get(user).addTaskUser(this);
+		}
 	}
 	/**
 	 * @return the task
@@ -95,17 +129,20 @@ public class TaskUser implements IMapping{
 	public void setTask(Task task) {
 		this.task = task;
 	}
-	/**
-	 * @return the platform
-	 */
-	public long getPlatform() {
-		return platform;
-	}
-	/**
-	 * @param platform the platform to set
-	 */
-	public void setPlatform(long platform) {
-		this.platform = platform;
+	
+	public void setTask(final long task, final Map<Long, Task> tasks,
+			final Map<Long, Task> oldTasks) {
+
+		if (tasks.get(task) != null)
+		{
+			this.task = tasks.get(task);
+			tasks.get(task).addTaskUser(this);
+		}
+		if ((this.task == null) && (oldTasks.get(task) != null))
+		{
+			this.task = oldTasks.get(task);
+			oldTasks.get(task).addTaskUser(this);
+		}
 	}
 	/**
 	 * @return the grade

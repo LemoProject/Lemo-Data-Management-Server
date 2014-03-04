@@ -73,24 +73,26 @@ public final class MiningHibernateUtil {
 		
 		//Objects
 		config.addAnnotatedClass(User.class);
-		config.addAnnotatedClass(Resource.class);
+		config.addAnnotatedClass(LearningObject.class);
 		config.addAnnotatedClass(Course.class);
 		config.addAnnotatedClass(Task.class);
+		config.addAnnotatedClass(Role.class);
 		
 		//Types
-		config.addAnnotatedClass(ResourceType.class);
+		config.addAnnotatedClass(LearningObjectType.class);
 		config.addAnnotatedClass(TaskType.class);
 		
 		//Relations
 		config.addAnnotatedClass(TaskUser.class);
-		config.addAnnotatedClass(CourseResource.class);
+		config.addAnnotatedClass(CourseLearningObject.class);
 		config.addAnnotatedClass(CourseTask.class);
+		config.addAnnotatedClass(CourseUser.class);
 		
 		//Logs
 		config.addAnnotatedClass(ViewLog.class);
 		config.addAnnotatedClass(CollaborativeLog.class);
 		config.addAnnotatedClass(Assessment.class);
-		config.addAnnotatedClass(TaskLog.class);
+		config.addAnnotatedClass(SubmissionLog.class);
 
 
 

@@ -37,7 +37,7 @@ import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
-import de.lemo.dms.db.mapping.Resource;
+import de.lemo.dms.db.mapping.LearningObject;
 import de.lemo.dms.db.mapping.Config;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
 import de.lemo.dms.db.mapping.CourseForumMining;
@@ -153,7 +153,7 @@ public class ContentGenerator {
 		final ArrayList<ScormMining> scormList = new ArrayList<ScormMining>();
 		final ArrayList<QuizMining> quizList = new ArrayList<QuizMining>();
 		final ArrayList<QuestionMining> questionList = new ArrayList<QuestionMining>();
-		final ArrayList<Resource> chatList = new ArrayList<Resource>();
+		final ArrayList<LearningObject> chatList = new ArrayList<LearningObject>();
 		final ArrayList<UserMining> userList = new ArrayList<UserMining>();
 		final ArrayList<RoleMining> roleList = new ArrayList<RoleMining>();
 		final ArrayList<GroupMining> groupList = new ArrayList<GroupMining>();
@@ -602,7 +602,7 @@ public class ContentGenerator {
 					// Create Chats
 					for (int l = 1; l < 2; l++)
 					{
-						final Resource c = new Resource();
+						final LearningObject c = new LearningObject();
 						c.setId(Long.valueOf(platform.getPrefix() + "" + (forumList.size() + 1)));
 						c.setCourse(cou);
 						c.setTitle("Chat " + i + "." + j + "." + k + "." + l);
@@ -778,7 +778,7 @@ public class ContentGenerator {
 							cLog.setCourse(cou);
 							cLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 							cLog.setChat(chatList.get((chatList.size() - 1)));
-							final Resource chat = cLog.getChat();
+							final LearningObject chat = cLog.getChat();
 	
 							mult = (int) ((startdate + year) - chat.getChatTime()) / Integer.valueOf(cou.getShortname());
 							time = (int) chat.getChatTime() + (randy.nextInt(mult) * Integer.valueOf(cou.getShortname()));

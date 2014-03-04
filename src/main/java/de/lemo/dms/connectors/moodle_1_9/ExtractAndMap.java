@@ -49,7 +49,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.AssignmentLogMining;
 import de.lemo.dms.db.mapping.AssignmentMining;
 import de.lemo.dms.db.mapping.ChatLogMining;
-import de.lemo.dms.db.mapping.Resource;
+import de.lemo.dms.db.mapping.LearningObject;
 import de.lemo.dms.db.mapping.Config;
 import de.lemo.dms.db.mapping.CourseAssignmentMining;
 import de.lemo.dms.db.mapping.CourseChatMining;
@@ -143,7 +143,7 @@ public abstract class ExtractAndMap {
 	protected Map<Long, LevelMining> levelMining;
 
 	/** A map containing all ChatMining entries found in the database */
-	protected Map<Long, Resource> chatMining;
+	protected Map<Long, LearningObject> chatMining;
 
 	/** A map containing all ChatLogMining entries found in the database */
 	protected Map<Long, ChatLogMining> chatLogMining;
@@ -194,7 +194,7 @@ public abstract class ExtractAndMap {
 	protected Map<Long, LevelMining> oldLevelMining;
 
 	/** A map containing all ChatMining entries found in the mining-database */
-	protected Map<Long, Resource> oldChatMining;
+	protected Map<Long, LearningObject> oldChatMining;
 
 	/** A map containing all ChatLogMining entries found in the mining-database */
 	protected Map<Long, ChatLogMining> oldChatLogMining;
@@ -478,9 +478,9 @@ public abstract class ExtractAndMap {
 
 		t = this.dbHandler.performQuery(session, EQueryType.HQL,
 				"from ChatMining x where x.platform=" + this.connector.getPlatformId() + " order by x.id asc");
-		this.oldChatMining = new HashMap<Long, Resource>();
+		this.oldChatMining = new HashMap<Long, LearningObject>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldChatMining.put(((Resource) (t.get(i))).getId(), (Resource) t.get(i));
+			this.oldChatMining.put(((LearningObject) (t.get(i))).getId(), (LearningObject) t.get(i));
 		}
 		logger.info("Loaded " + this.oldChatMining.size() + " ChatMining objects from the mining database.");
 
@@ -1209,7 +1209,7 @@ public abstract class ExtractAndMap {
 	 * 
 	 * @return the list
 	 */
-	abstract Map<Long, Resource> generateChatMining();
+	abstract Map<Long, LearningObject> generateChatMining();
 
 	/**
 	 * Generate chat log mining.

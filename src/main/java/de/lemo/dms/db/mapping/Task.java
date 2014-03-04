@@ -28,6 +28,7 @@ package de.lemo.dms.db.mapping;
 
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -52,16 +53,13 @@ public class Task implements IMapping{
 
 	private long id;
 	private String title;
-	private Long platform;
 	private TaskType type;
 	private Task parent;
 	private double maxGrade;
-	private long timeopen;
-	private long timeclose;
 	
 	private Set<CourseTask> courseTasks = new HashSet<CourseTask>();
 	private Set<TaskUser> taskUsers = new HashSet<TaskUser>();
-	private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
+	private Set<SubmissionLog> taskLogs = new HashSet<SubmissionLog>();
 	
 	@Override
 	public boolean equals(final IMapping o) {
@@ -98,15 +96,6 @@ public class Task implements IMapping{
 		this.title = title;
 	}
 
-	@Column(name="platform")
-	public Long getPlatform() {
-		return this.platform;
-	}
-
-	public void setPlatform(final Long platform) {
-		this.platform = platform;
-	}
-
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="type_id")
 	public TaskType getType() {
@@ -125,24 +114,6 @@ public class Task implements IMapping{
 
 	public void setParent(Task parent) {
 		this.parent = parent;
-	}
-
-	@Column(name="timeopen")
-	public long getTimeopen() {
-		return timeopen;
-	}
-
-	public void setTimeopen(long timeopen) {
-		this.timeopen = timeopen;
-	}
-
-	@Column(name="timeclose")
-	public long getTimeclose() {
-		return timeclose;
-	}
-
-	public void setTimeclose(long timeclose) {
-		this.timeclose = timeclose;
 	}
 	
 	/**
@@ -193,18 +164,18 @@ public class Task implements IMapping{
 	 * @return the taskLogs
 	 */
 	@OneToMany(mappedBy="task")
-	public Set<TaskLog> getTaskLogs() {
+	public Set<SubmissionLog> getTaskLogs() {
 		return taskLogs;
 	}
 
 	/**
 	 * @param taskLogs the taskLogs to set
 	 */
-	public void setTaskLogs(Set<TaskLog> taskLogs) {
+	public void setTaskLogs(Set<SubmissionLog> taskLogs) {
 		this.taskLogs = taskLogs;
 	}
 	
-	public void addTaskLog(TaskLog taskLog)
+	public void addTaskLog(SubmissionLog taskLog)
 	{
 		this.taskLogs.add(taskLog);
 	}
@@ -212,6 +183,7 @@ public class Task implements IMapping{
 	/**
 	 * @return the maxGrade
 	 */
+	@Column(name="maxgrade")
 	public double getMaxGrade() {
 		return maxGrade;
 	}
@@ -221,6 +193,21 @@ public class Task implements IMapping{
 	 */
 	public void setMaxGrade(double maxGrade) {
 		this.maxGrade = maxGrade;
+	}
+	
+	public void setType(final String name, final Map<String, TaskType> taskTypes,
+			final Map<String, TaskType> oldTaskTypes) {
+
+		if (taskTypes.get(name) != null)
+		{
+			this.type = taskTypes.get(name);
+			taskTypes.get(name).addTask(this);
+		}
+		if ((this.type == null) && (oldTaskTypes.get(name) != null))
+		{
+			this.type = oldTaskTypes.get(name);
+			oldTaskTypes.get(name).addTask(this);
+		}
 	}
 
 }

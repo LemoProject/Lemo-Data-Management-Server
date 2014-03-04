@@ -4,18 +4,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
+@Entity
+@Table(name = "lemo_role")
 public class Role implements IMapping{
 
 	private long id;
 	private String title;
-	private String description;
 	private long sortOrder;
-	private Long platform;
 	private long type;
 	
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
@@ -52,22 +55,6 @@ public class Role implements IMapping{
 	}
 
 	/**
-	 * @return the description
-	 */
-	@Lob
-	@Column(name="title")
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
 	 * @return the sortOrder
 	 */
 	@Column(name="sortorder")
@@ -80,21 +67,6 @@ public class Role implements IMapping{
 	 */
 	public void setSortOrder(long sortOrder) {
 		this.sortOrder = sortOrder;
-	}
-
-	/**
-	 * @return the platform
-	 */
-	@Column(name="platform")
-	public Long getPlatform() {
-		return platform;
-	}
-
-	/**
-	 * @param platform the platform to set
-	 */
-	public void setPlatform(Long platform) {
-		this.platform = platform;
 	}
 
 	/**
@@ -130,6 +102,7 @@ public class Role implements IMapping{
 	/**
 	 * @return the courseUsers
 	 */
+	@OneToMany(mappedBy="role")
 	public Set<CourseUser> getCourseUsers() {
 		return courseUsers;
 	}

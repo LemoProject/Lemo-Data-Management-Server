@@ -12,19 +12,19 @@ import javax.persistence.Table;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
 @Entity
-@Table(name = "lemo_collaborative_type")
-public class CollaborativeType implements IMapping {
-	
+@Table(name = "lemo_learning_object_type")
+public class LearningObjectType implements IMapping {
+
 	private long id;
 	private String type;
 	
-	private Set<Resource> resources = new HashSet<Resource>();
+	private Set<LearningObject> learningObjects = new HashSet<LearningObject>();
 	
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof CollaborativeType)) {
+		if (!(o instanceof LearningObjectType)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof CollaborativeType)) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningObjectType)) {
 			return true;
 		}
 		return false;
@@ -66,17 +66,18 @@ public class CollaborativeType implements IMapping {
 		this.type = type;
 	}
 	
-	public void setTasks(final Set<Resource> resources) {
-		this.resources = resources;
+	public void setLearningObjects(final Set<LearningObject> learningObjects) {
+		this.learningObjects = learningObjects;
 	}
 
-	@OneToMany(mappedBy="resource")
-	public Set<Resource> getResources() {
-		return this.resources;
+	@OneToMany(mappedBy="type")
+	public Set<LearningObject> getLearningObjects() {
+		return this.learningObjects;
 	}
 
-	public void addResource(final Resource resource) {
-		this.resources.add(resource);
+	public void addLearningObject(final LearningObject learningObject) {
+		this.learningObjects.add(learningObject);
 	}
+
 
 }

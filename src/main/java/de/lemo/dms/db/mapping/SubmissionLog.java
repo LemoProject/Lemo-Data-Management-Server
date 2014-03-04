@@ -47,25 +47,24 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_task_log")
-public class TaskLog implements IMapping, ILog{
+@Table(name = "lemo_submission_log")
+public class SubmissionLog implements IMapping, ILog{
 
 	private long id;
 	private Course course;
 	private User user;
 	private Task task;
 	private long timestamp;
-	private Long platform;
 	private String answer;
 	
 	private Set<Assessment> assessments = new HashSet<Assessment>();
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof TaskLog)) {
+		if (!(o instanceof SubmissionLog)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof TaskLog)) {
+		if ((o.getId() == this.getId()) && (o instanceof SubmissionLog)) {
 			return true;
 		}
 		return false;
@@ -168,16 +167,6 @@ public class TaskLog implements IMapping, ILog{
 		this.timestamp = timestamp;
 	}
 	
-	
-	@Column(name="platform")
-	public Long getPlatform() {
-		return platform;
-	}
-	
-	
-	public void setPlatform(Long platform) {
-		this.platform = platform;
-	}
 	
 	@Lob
 	@Column(name="answer")

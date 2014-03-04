@@ -51,11 +51,10 @@ public class CollaborativeLog implements IMapping, ILog{
 	private long id;
 	private Course course;
 	private User user;
-	private Resource resource;
+	private LearningObject learningObject;
 	private long timestamp;
 	private String text;
-	private Resource parent;
-	private Long platform;
+	private LearningObject parent;
 	
 	@Override
 	public boolean equals(final IMapping o) {
@@ -132,15 +131,15 @@ public class CollaborativeLog implements IMapping, ILog{
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="resource_id")
-	public Resource getResource() {
-		return resource;
+	@JoinColumn(name="learning_object_id")
+	public LearningObject getLearningObject() {
+		return learningObject;
 	}
 	
 	
 	
-	public void setResource(Resource resource) {
-		this.resource = resource;
+	public void setLearningObject(LearningObject learningObject) {
+		this.learningObject = learningObject;
 	}
 	
 	
@@ -155,20 +154,6 @@ public class CollaborativeLog implements IMapping, ILog{
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
-	
-	
-	
-	@Column(name="platform")
-	public Long getPlatform() {
-		return platform;
-	}
-	
-	
-	
-	public void setPlatform(Long platform) {
-		this.platform = platform;
-	}
-
 
 	@Lob
 	@Column(name="text")
@@ -184,13 +169,15 @@ public class CollaborativeLog implements IMapping, ILog{
 
 
 
-	public Resource getParent() {
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="parent_id")
+	public LearningObject getParent() {
 		return parent;
 	}
 
 
 
-	public void setParent(Resource parent) {
+	public void setParent(LearningObject parent) {
 		this.parent = parent;
 	}
 	
@@ -224,17 +211,17 @@ public class CollaborativeLog implements IMapping, ILog{
 		}
 	}
 	
-	public void setResource(final long resource, final Map<Long, Resource> resources,
-			final Map<Long, Resource> oldResources) {
+	public void setResource(final long resource, final Map<Long, LearningObject> resources,
+			final Map<Long, LearningObject> oldResources) {
 
 		if (resources.get(resource) != null)
 		{
-			this.resource = resources.get(resource);
+			this.learningObject = resources.get(resource);
 			resources.get(resource).addCollaborativeLog(this);
 		}
-		if ((this.resource == null) && (oldResources.get(resource) != null))
+		if ((this.learningObject == null) && (oldResources.get(resource) != null))
 		{
-			this.resource = oldResources.get(resource);
+			this.learningObject = oldResources.get(resource);
 			oldResources.get(resource).addCollaborativeLog(this);
 		}
 	}
