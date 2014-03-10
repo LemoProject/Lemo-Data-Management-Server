@@ -29,15 +29,18 @@ package de.lemo.dms.processing.questions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -92,16 +95,17 @@ public class QActivityResourceTypeResolution extends Question {
 
 				switch (loType) {
 					case ASSESSMENT:
-						result.setQuestionRRI(rriList);
+						result.setAssessmentRRI(rriList);
 						break;
-					case CHAT:
-						result.setChatRRI(rriList);
+					case SUBMISSION:
+						result.setSubmissionRRI(rriList);
 						break;
-					case FORUM:
-						result.setForumRRI(rriList);
+					case VIEW:
+						result.setViewRRI(rriList);
 						break;
+						/*
 					case QUESTION:
-						result.setQuestionRRI(rriList);
+						result.setSubmissionRRI(rriList);
 						break;
 					case QUIZ:
 						result.setQuizRRI(rriList);
@@ -115,7 +119,7 @@ public class QActivityResourceTypeResolution extends Question {
 					case WIKI:
 						result.setWikiRRI(rriList);
 						break;
-
+						 */
 					default:
 						break;
 				}
@@ -126,12 +130,12 @@ public class QActivityResourceTypeResolution extends Question {
 		return result;
 	}
 
-	private HashMap<String, ResourceRequestInfo> loadLogMining(List<ILogMining> logs, ELearningObjectType type,
+	private HashMap<String, ResourceRequestInfo> loadLogMining(List<ILog> logs, ELearningObjectType type,
 			long startTime, long endTime, long resolution, double intervall) {
 
 		final HashMap<String, ResourceRequestInfo> rri = new HashMap<String, ResourceRequestInfo>();
-		for (ILogMining log : logs) {
-			Long id = Long.valueOf(log.getPrefix() + "" + log.getLearnObjId());
+		for (ILog log : logs) {
+			Long id = log.getLearningObjectId();
 			if (id != null) {
 				Long pos = new Double((log.getTimestamp() - startTime) / intervall).longValue();
 				if (pos > (resolution - 1)) {

@@ -17,7 +17,7 @@ public interface ILog extends Comparable<ILog>  {
 	
 	ILearningObject getLearningObject();
 	
-	long getLearningObjectId();
+	Long getLearningObjectId();
 
 	void setId(long id);
 	

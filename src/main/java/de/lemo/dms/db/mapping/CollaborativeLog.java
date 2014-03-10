@@ -225,5 +225,15 @@ public class CollaborativeLog implements IMapping, ILog{
 			oldResources.get(resource).addCollaborativeLog(this);
 		}
 	}
+
+	@Override
+	public String getTitle() {
+		return this.getLearningObject().getTitle();
+	}
+
+	@Override
+	public long getLearningObjectId() {
+		return this.getLearningObject().getId();
+	}
 	
 }

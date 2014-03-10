@@ -44,16 +44,16 @@ public class ResultListRRITypes {
 	private List<ResourceRequestInfo> views;
 	private List<ResourceRequestInfo> submissions;
 
-	public void setAssignmentRRI(final List<ResourceRequestInfo> assignments) {
-		this.assessments = assignments;
+	public void setAssessmentRRI(final List<ResourceRequestInfo> assessments) {
+		this.assessments = assessments;
 	}
 
-	public void setForumRRI(final List<ResourceRequestInfo> forums) {
-		this.views = forums;
+	public void setViewRRI(final List<ResourceRequestInfo> views) {
+		this.views = views;
 	}
 
-	public void setQuestionRRI(final List<ResourceRequestInfo> questions) {
-		this.submissions = questions;
+	public void setSubmissionRRI(final List<ResourceRequestInfo> submissions) {
+		this.submissions = submissions;
 	}
 	
 	public ResultListRRITypes()
@@ -64,19 +64,19 @@ public class ResultListRRITypes {
 	}
 
 	@XmlElement
-	public List<ResourceRequestInfo> getAssignmentRRI()
+	public List<ResourceRequestInfo> getAssessmentRRI()
 	{
 		return this.assessments;
 	}
 
 	@XmlElement
-	public List<ResourceRequestInfo> getForumRRI()
+	public List<ResourceRequestInfo> getViewRRI()
 	{
 		return this.views;
 	}
 
 	@XmlElement
-	public List<ResourceRequestInfo> getQuestionsRRI()
+	public List<ResourceRequestInfo> getSubmissionRRI()
 	{
 		return this.submissions;
 	}

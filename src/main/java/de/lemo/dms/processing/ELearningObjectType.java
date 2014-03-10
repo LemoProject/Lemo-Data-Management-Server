@@ -75,7 +75,7 @@ public enum ELearningObjectType {
 	 *            an ILogMining implementation
 	 * @return the corresponding enum constant
 	 */
-	public static ELearningObjectType fromLogMiningType(final ILog log) {
+	public static ELearningObjectType fromLogType(final ILog log) {
 		for (final ELearningObjectType learnObjectType : ELearningObjectType.values()) {
 			if (log != null && learnObjectType.getLogMiningType().equals(log.getClass())) {
 				return learnObjectType;

@@ -35,9 +35,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -45,11 +47,14 @@ import org.hibernate.criterion.Restrictions;
 import ca.pfv.spmf.sequentialpatterns.AlgoFournierViger08;
 import ca.pfv.spmf.sequentialpatterns.SequenceDatabase;
 import ca.pfv.spmf.sequentialpatterns.Sequences;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.db.mapping.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -68,7 +73,7 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
 @Path("frequentPathsViger")
 public class QFrequentPathsViger extends Question {
 
-	private Map<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
+	private Map<String, ILog> idToLogM = new HashMap<String, ILog>();
 	private Map<String, List<Long>> requests = new HashMap<String, List<Long>>();
 	private Map<String, Integer> idToInternalId = new HashMap<String, Integer>();
 	private Map<Integer, String> internalIdToId = new HashMap<Integer, String>();
@@ -165,7 +170,7 @@ public class QFrequentPathsViger extends Question {
 						final String obId = this.internalIdToId.get(res.getLevel(i).get(j).get(k)
 								.getItems().get(0).getId());
 
-						final ILogMining ilo = this.idToLogM.get(obId);
+						final ILog ilo = this.idToLogM.get(obId);
 
 						final String type = ilo.getClass().getSimpleName();
 
@@ -176,7 +181,7 @@ public class QFrequentPathsViger extends Question {
 							pathObjects.put(
 									posId,
 									new UserPathObject(posId, ilo.getTitle(), absSup, type,
-											Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,
+											0d, ilo.getPrefix(), pathId,
 											Long.valueOf(this.requests.get(obId).size()), Long
 													.valueOf(new HashSet<Long>(this.requests.get(obId))
 															.size())));
@@ -275,7 +280,7 @@ public class QFrequentPathsViger extends Question {
 			users = tmp;
 		}
 
-		criteria = session.createCriteria(ILogMining.class, "log");
+		criteria = session.createCriteria(ILog.class, "log");
 		if (courses.size() > 0) {
 			criteria.add(Restrictions.in("log.course.id", courses));
 		}
@@ -283,22 +288,22 @@ public class QFrequentPathsViger extends Question {
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
 		criteria.add(Restrictions.between("log.timestamp", starttime, endtime));
-		final ArrayList<ILogMining> list = (ArrayList<ILogMining>) criteria.list();
+		final ArrayList<ILog> list = (ArrayList<ILog>) criteria.list();
 
 		logger.debug("Read " + list.size() + " logs.");
 
 		int max = 0;
 
-		final HashMap<Long, ArrayList<ILogMining>> logMap = new HashMap<Long, ArrayList<ILogMining>>();
+		final HashMap<Long, ArrayList<ILog>> logMap = new HashMap<Long, ArrayList<ILog>>();
 
 		for (int i = 0; i < list.size(); i++)
 		{
-			if ((list.get(i).getUser() != null) && (list.get(i).getLearnObjId() != null)) {
+			if ((list.get(i).getUser() != null) && (list.get(i).getLearningObjectId() != null)) {
 				// If there isn't a user history for this user-id create a new one
 				if (logMap.get(list.get(i).getUser().getId()) == null)
 				{
 					// User histories are saved in an ArrayList of ILogMining-objects
-					final ArrayList<ILogMining> a = new ArrayList<ILogMining>();
+					final ArrayList<ILog> a = new ArrayList<ILog>();
 					// Add current ILogMining-object to user-history
 					a.add(list.get(i));
 					// Add user history to the user history map
@@ -315,21 +320,22 @@ public class QFrequentPathsViger extends Question {
 		}
 
 		// Just changing the container for the user histories
-		final ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>();
+		final ArrayList<ArrayList<ILog>> uhis = new ArrayList<ArrayList<ILog>>();
 		int id = 1;
-		for (final ArrayList<ILogMining> uLog : logMap.values())
+		for (final ArrayList<ILog> uLog : logMap.values())
 		{
 
-			final ArrayList<ILogMining> tmp = new ArrayList<ILogMining>();
+			final ArrayList<ILog> tmp = new ArrayList<ILog>();
 			boolean containsType = false;
-			for (final ILogMining iLog : uLog)
+			for (final ILog iLog : uLog)
 			{
-				if (this.idToInternalId.get(iLog.getPrefix() + " " + iLog.getLearnObjId()) == null)
+				/*
+				if (this.idToInternalId.get(iLog.getPrefix() + " " + iLog.getLearningObjectId()) == null)
 				{
-					this.internalIdToId.put(id, iLog.getPrefix() + " " + iLog.getLearnObjId());
-					this.idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearnObjId(), id);
+					this.internalIdToId.put(id, iLog.getPrefix() + " " + iLog.getLearningObjectId());
+					this.idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearningObjectId(), id);
 					id++;
-				}
+				}*/
 				if (hasTypes) {
 					for (final String type : types)
 					{
@@ -379,30 +385,30 @@ public class QFrequentPathsViger extends Question {
 		int z = 0;
 
 		// Convert all user histories or "paths" into the format, that is requested by the BIDE-algorithm-class
-		for (final ArrayList<ILogMining> l : uhis)
+		for (final ArrayList<ILog> l : uhis)
 		{
 			String line = "";
 			for (int i = 0; i < l.size(); i++)
 			{
-				if (this.idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null) {
-					this.idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(),
+				/*
+				if (this.idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId()) == null) {
+					this.idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId(),
 							l.get(i));
-				}
+				}*/
 
 				// Update request numbers
-				if (this.requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
+				if (this.requests.get(l.get(i).getLearningObjectId()) == null)
 				{
 					final ArrayList<Long> us = new ArrayList<Long>();
 					us.add(l.get(i).getUser().getId());
-					this.requests.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), us);
+					this.requests.put("" +l.get(i).getLearningObjectId(), us);
 				} else {
-					this.requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(
+					this.requests.get(l.get(i).getLearningObjectId()).add(
 							l.get(i).getUser().getId());
 				}
 				// The id of the object gets the prefix, indicating it's class. This is important for distinction
 				// between objects of different ILogMining-classes but same ids
-				line += "<" + i + "> " + this.idToInternalId.get(l.get(i).getPrefix() + " "
-						+ l.get(i).getLearnObjId()) + " -1 ";
+				line += "<" + i + "> " + l.get(i).getLearningObjectId() + " -1 ";
 			}
 			line += "-2";
 			result.add(line);

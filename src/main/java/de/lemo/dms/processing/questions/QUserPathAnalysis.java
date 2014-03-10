@@ -157,7 +157,7 @@ public class QUserPathAnalysis extends Question {
 					 * criteria restriction?
 					 */
 					// Check if ILog-object has acceptable learningObjectType
-					if (ELearningObjectType.fromLogMiningType(log).toString().toUpperCase().equals(type))
+					if (ELearningObjectType.fromLogType(log).toString().toUpperCase().equals(type))
 					{
 						typeOk = true;
 						break;
@@ -194,7 +194,7 @@ public class QUserPathAnalysis extends Question {
 						skippedLogs++;
 						continue;
 					}
-					final String learnObjType = ELearningObjectType.fromLogMiningType(current).toString();
+					final String learnObjType = ELearningObjectType.fromLogType(current).toString();
 					final String type = current
 							.getClass()
 							.toString()

@@ -41,7 +41,6 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.Platform;
-import de.lemo.dms.db.mapping.PlatformMining;
 
 /**
  * Handles all connector instances.
@@ -163,7 +162,7 @@ public enum ConnectorManager {
 		if (platform == null) {
 			// save new platform
 			final Criteria criteria = session
-					.createCriteria(PlatformMining.class)
+					.createCriteria(Platform.class)
 					.setProjection(Projections.max("prefix"));
 			Long maxPrefix = (Long) criteria.uniqueResult();
 			if (maxPrefix == null) {

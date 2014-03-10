@@ -18,8 +18,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
-import de.lemo.dms.connectors.clix2010.ConnectorClix;
+//import de.lemo.dms.connectors.chemgapedia.ConnectorChemgapedia;
+//import de.lemo.dms.connectors.clix2010.ConnectorClix;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
 
@@ -28,15 +28,15 @@ import de.lemo.dms.db.DBConfigObject;
  */
 public enum ESourcePlatform {
 
-    Moodle_1_9,
-    Moodle_1_9_Numeric,
+    //Moodle_1_9,
+    //Moodle_1_9_Numeric,
     // Moodle_2_1,
     // Moodle_2_2,
     Moodle_2_3,
     Moodle_2_4,
     Moodle_2_5,
-    Clix_2010,
-    Chemgaroo,
+    //Clix_2010,
+    //Chemgaroo,
     Dummy, ;
 
     private final Logger logger = Logger.getLogger(this.getClass());
@@ -58,21 +58,21 @@ public enum ESourcePlatform {
         AbstractConnector connector;
         switch(this) {
 
-        case Chemgaroo:
+        /*case Chemgaroo:
             connector = new ConnectorChemgapedia(config);
             break;
 
         case Clix_2010:
             connector = new ConnectorClix(config);
-            break;
+            break;*/
 
         case Dummy:
             connector = new ConnectorDummy();
             break;
 
-        case Moodle_1_9:
+       /* case Moodle_1_9:
             connector = new de.lemo.dms.connectors.moodle_1_9.ConnectorMoodle(config);
-            break;
+            break;*/
 
         // case Moodle_2_1:
         // case Moodle_2_2:

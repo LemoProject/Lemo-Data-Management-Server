@@ -42,7 +42,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -140,13 +140,13 @@ public class QCourseActivity extends Question {
 			this.logger.info("Course Activity Request - CA Selection: NO Items selected ");
 		}
 
-		final Criteria criteria = session.createCriteria(ILogMining.class, "log")
+		final Criteria criteria = session.createCriteria(ILog.class, "log")
 				.add(Restrictions.in("log.course.id", courses))
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
 				.add(Restrictions.in("log.user.id", users));
 
 		@SuppressWarnings("unchecked")
-		List<ILogMining> logs = criteria.list();
+		List<ILog> logs = criteria.list();
 
 		for (int i = 0; i < logs.size(); i++)
 		{
