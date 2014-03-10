@@ -28,12 +28,14 @@ package de.lemo.dms.processing;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
-import de.lemo.dms.db.mapping.CourseUserMining;
+import de.lemo.dms.db.mapping.CourseUser;
 
 /**
  * Helper class for course-student relations
@@ -57,13 +59,13 @@ public class StudentHelper {
 		{
 			final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		
-			Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+			Criteria criteria = session.createCriteria(CourseUser.class, "cu");
 			criteria.add(Restrictions.in("cu.course.id", courses));
 			criteria.addOrder(Order.asc("cu.user.id"));
 			@SuppressWarnings("unchecked")
-			List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
+			List<CourseUser> courseUsers = (List<CourseUser>) criteria.list();
 			Long i = 1L;
-			for (final CourseUserMining cu : courseUsers) {
+			for (final CourseUser cu : courseUsers) {
 				// Only use students (type = 2) 
 				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{
@@ -93,13 +95,13 @@ public class StudentHelper {
 		if(courses != null && !courses.isEmpty())
 		{
 			final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();			
-			Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+			Criteria criteria = session.createCriteria(CourseUser.class, "cu");
 			criteria.add(Restrictions.in("cu.course.id", courses));
 			criteria.addOrder(Order.asc("cu.user.id"));
 			@SuppressWarnings("unchecked")
-			List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
+			List<CourseUser> courseUsers = (List<CourseUser>) criteria.list();
 			Long i = 1L;
-			for (final CourseUserMining cu : courseUsers) {
+			for (final CourseUser cu : courseUsers) {
 				// Only use students (type = 2) 
 				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{
@@ -127,14 +129,14 @@ public class StudentHelper {
 		{
 			final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 	
-			Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+			Criteria criteria = session.createCriteria(CourseUser.class, "cu");
 			criteria.add(Restrictions.eq("cu.course.id", id));
 			@SuppressWarnings("unchecked")
-			List<CourseUserMining> courseUsers = (List<CourseUserMining>) criteria.list();
+			List<CourseUser> courseUsers = (List<CourseUser>) criteria.list();
 			int fem = 0;
 			int mal = 0;
 			
-			for (final CourseUserMining cu : courseUsers) {
+			for (final CourseUser cu : courseUsers) {
 				// Only use students (type = 2) 
 				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{

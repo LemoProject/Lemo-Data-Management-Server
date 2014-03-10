@@ -29,15 +29,11 @@ package de.lemo.dms.processing;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
-import de.lemo.dms.db.mapping.AssignmentLogMining;
-import de.lemo.dms.db.mapping.ChatLogMining;
-import de.lemo.dms.db.mapping.ForumLogMining;
-import de.lemo.dms.db.mapping.QuestionLogMining;
-import de.lemo.dms.db.mapping.QuizLogMining;
-import de.lemo.dms.db.mapping.ResourceLogMining;
-import de.lemo.dms.db.mapping.ScormLogMining;
-import de.lemo.dms.db.mapping.WikiLogMining;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+
+import de.lemo.dms.db.mapping.Assessment;
+import de.lemo.dms.db.mapping.SubmissionLog;
+import de.lemo.dms.db.mapping.ViewLog;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 
 /**
  * <em>Learning Object</em> types with corresponding {@link ILogMining} implementations.
@@ -46,18 +42,20 @@ import de.lemo.dms.db.mapping.abstractions.ILogMining;
  */
 public enum ELearningObjectType {
 
-	ASSIGNMENT(AssignmentLogMining.class),
-	CHAT(ChatLogMining.class),
-	FORUM(ForumLogMining.class),
+	VIEW(ViewLog.class),
+	SUBMISSION(SubmissionLog.class),
+	ASSESSMENT(Assessment.class)
+	/*,
 	QUESTION(QuestionLogMining.class),
 	QUIZ(QuizLogMining.class),
 	RESOURCE(ResourceLogMining.class),
 	SCORM(ScormLogMining.class),
-	WIKI(WikiLogMining.class), ;
+	WIKI(WikiLogMining.class), 
+	*/;
 
-	private Class<? extends ILogMining> type;
+	private Class<? extends ILog> type;
 
-	private ELearningObjectType(final Class<? extends ILogMining> type) {
+	private ELearningObjectType(final Class<? extends ILog> type) {
 		this.type = type;
 	}
 
@@ -66,7 +64,7 @@ public enum ELearningObjectType {
 	 * 
 	 * @return the type of the corresponding {@link ILogMining} implementation
 	 */
-	public Class<? extends ILogMining> getLogMiningType() {
+	public Class<? extends ILog> getLogMiningType() {
 		return this.type;
 	}
 
@@ -77,7 +75,7 @@ public enum ELearningObjectType {
 	 *            an ILogMining implementation
 	 * @return the corresponding enum constant
 	 */
-	public static ELearningObjectType fromLogMiningType(final ILogMining log) {
+	public static ELearningObjectType fromLogMiningType(final ILog log) {
 		for (final ELearningObjectType learnObjectType : ELearningObjectType.values()) {
 			if (log != null && learnObjectType.getLogMiningType().equals(log.getClass())) {
 				return learnObjectType;

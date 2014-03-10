@@ -38,7 +38,7 @@ import de.lemo.dms.db.IDBHandler;
  */
 public class Test {
 
-
+/*
 	public static void gen()
 	{
 		final ContentGenerator conGen = new ContentGenerator();
@@ -69,9 +69,11 @@ public class Test {
 	 * TODO move to unit test
 	 * @param args
 	 */
+	/*
 	public static void main(final String[] args)
 	{
 		
 		Test.gen();
 	}
+	*/
 }

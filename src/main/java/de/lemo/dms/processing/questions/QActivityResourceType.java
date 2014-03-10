@@ -32,15 +32,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -88,25 +91,25 @@ public class QActivityResourceType extends Question {
 			resourceTypes = tmp;
 		}
 		
-		Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		Criteria criteria = session.createCriteria(ILog.class, "log");
 		criteria.add(Restrictions.in("log.course.id", courses))
 				.add(Restrictions.between("log.timestamp", startTime, endTime));
 				criteria.add(Restrictions.in("log.user.id", users));
 
-		final List<ILogMining> logs = criteria.list();		
+		final List<ILog> logs = criteria.list();		
 		
 		final Map<Long, ResourceRequestInfo> rriMap = new HashMap<Long, ResourceRequestInfo>();
 		final Map<Long, Set<Long>> userMap = new HashMap<Long, Set<Long>>();
-		for(ILogMining log : logs)
+		for(ILog log : logs)
 		{
 			String type = log.getClass().getSimpleName().toUpperCase();
 			if(type.contains("LOG"))
 			{
 				type = type.substring(0, type.indexOf("LOG"));
 			}
-			if (log.getLearnObjId() != null && log.getUser() != null && (resourceTypes.contains(type) || allTypes))
+			if (log.getUser() != null && (resourceTypes.contains(type) || allTypes))
 			{
-				Long id = Long.valueOf(log.getPrefix() + "" + log.getLearnObjId());
+				Long id = Long.valueOf(log.getLearningObjectId());
 				if (rriMap.get(id) == null) {
 					Set<Long> userSet = new HashSet<Long>();
 					userSet.add(log.getUser().getId());
@@ -128,7 +131,7 @@ public class QActivityResourceType extends Question {
 		
 		for(ICourseLORelation aso : asoList)
 		{
-			Long id = Long.valueOf(aso.getLearningObject().getPrefix() + "" + aso.getLearningObject().getId());
+			Long id = Long.valueOf(aso.getLearningObject().getId());
 			if(!rriMap.containsKey(id))
 			{
 				String type = aso.getLearningObject().getClass().getSimpleName().toUpperCase();

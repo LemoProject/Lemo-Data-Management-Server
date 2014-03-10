@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import de.lemo.dms.db.mapping.abstractions.IMapping;
+import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
 
 /** 
  * This class represents the table task. 
@@ -17,7 +18,7 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  */
 @Entity
 @Table(name = "lemo_task_user")
-public class TaskUser implements IMapping{
+public class TaskUser implements IMapping, IRatedUserAssociation{
 	
 	private long id;
 	private Course course;
@@ -167,6 +168,21 @@ public class TaskUser implements IMapping{
 	 */
 	public void setTimemodified(long timemodified) {
 		this.timemodified = timemodified;
+	}
+
+	@Override
+	public Double getFinalGrade() {
+		return this.getGrade();
+	}
+
+	@Override
+	public Long getLearnObjId() {
+		return this.task.getId();
+	}
+
+	@Override
+	public Double getMaxGrade() {
+		return this.task.getMaxGrade();
 	}
 
 }

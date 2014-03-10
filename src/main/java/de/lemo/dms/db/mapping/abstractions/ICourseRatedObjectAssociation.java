@@ -26,7 +26,7 @@
 
 package de.lemo.dms.db.mapping.abstractions;
 
-import de.lemo.dms.db.mapping.CourseMining;
+import de.lemo.dms.db.mapping.Course;
 
 /**
  * Interface for the association between the course and an rated object
@@ -38,7 +38,7 @@ public interface ICourseRatedObjectAssociation {
 
 	IRatedObject getRatedObject();
 
-	CourseMining getCourse();
+	Course getCourse();
 	
 	Long getPrefix();
 

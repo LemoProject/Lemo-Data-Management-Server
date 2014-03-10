@@ -27,7 +27,7 @@
 
 package de.lemo.dms.db.mapping.abstractions;
 
-import de.lemo.dms.db.mapping.CourseMining;
+import de.lemo.dms.db.mapping.Course;
 
 /**
  * Interface for all Course-LearningObject-Association-Classes
@@ -37,7 +37,7 @@ public interface ICourseLORelation {
 	
 	long getId();
 	
-	CourseMining getCourse();
+	Course getCourse();
 	
 	ILearningObject getLearningObject();
 	

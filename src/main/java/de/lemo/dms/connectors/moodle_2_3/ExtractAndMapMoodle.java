@@ -1740,7 +1740,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				
 				if(courseModules.containsKey(loadedItem.getCmid()))
 				{
-					insert.setTask(Long.valueOf(this.connector.getPrefix() + "01" + courseModules.get(loadedItem.getCmid()).getInstance()), taskMining, oldTaskMining);
+					insert.setTask(Long.valueOf(this.connector.getPrefix() + "07" + courseModules.get(loadedItem.getCmid()).getInstance()), taskMining, oldTaskMining);
 					if(assignGrades.containsKey(courseModules.get(loadedItem.getCmid()).getInstance()))
 					{
 						for(AssignGradesLMS ag : assignGrades.get(courseModules.get(loadedItem.getCmid()).getInstance()))
@@ -1782,7 +1782,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				}
 				
 				if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setTask(Long.valueOf(this.connector.getPrefix() + "02" + loadedItem.getInfo()),
+					insert.setTask(Long.valueOf(this.connector.getPrefix() + "09" + loadedItem.getInfo()),
 							this.taskMining, this.oldTaskMining);
 				}
 			}
@@ -1801,7 +1801,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 				if (loadedItem.getInfo().matches("[0-9]+"))
 				{
-					insert.setTask(Long.valueOf(this.connector.getPrefix() + "03" + loadedItem.getInfo()),
+					insert.setTask(Long.valueOf(this.connector.getPrefix() + "08" + loadedItem.getInfo()),
 							this.taskMining, this.oldTaskMining);
 				}
 				insert.setTimestamp(loadedItem.getTime());
@@ -1817,7 +1817,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					{
 						final long id = Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getUserid());
 
-						if ((Long.valueOf(this.connector.getPrefix() + "03" + loadedItem2.getQuiz()) == insert.getTask()
+						if ((Long.valueOf(this.connector.getPrefix() + "08" + loadedItem2.getQuiz()) == insert.getTask()
 								.getId())
 								&& (id == insert.getUser().getId())
 								&& (loadedItem2.getTimemodified() == insert.getTimestamp()))
@@ -1864,7 +1864,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.taskTypeMining.put(type.getType(), type);
 			}
 
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "01" + loadedItem.getId()));
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "07" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setType("Assign", this.taskTypeMining, this.oldTaskTypeMining);
 			
@@ -1905,7 +1905,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.taskTypeMining.put(type.getType(), type);
 			}
 
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "03" + loadedItem.getId()));
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "08" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setMaxGrade(loadedItem.getSumgrade());
 			insert.setType("Quiz", this.taskTypeMining, this.oldTaskTypeMining);
@@ -1925,7 +1925,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.taskTypeMining.put(type.getType(), type);
 			}
 
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "02" + loadedItem.getId()));
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "09" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setMaxGrade(loadedItem.getMaxgrade());
 			insert.setType("Scorm", this.taskTypeMining, this.oldTaskTypeMining);
@@ -1996,7 +1996,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			TaskUser insert = new TaskUser();
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setTask(Long.valueOf(this.connector.getPrefix() + "01" + loadedItem.getAssignment()), taskMining, oldTaskMining);
+			insert.setTask(Long.valueOf(this.connector.getPrefix() + "07" + loadedItem.getAssignment()), taskMining, oldTaskMining);
 			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), userMining, oldUserMining);
 			if(loadedItem.getGrade() != null)
 			{
@@ -2036,7 +2036,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				if ((loadedItem2.getId() == loadedItem.getItemid()) && (loadedItem2.getIteminstance() != null)) {
 					insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getCourseid()),
 							this.courseMining, this.oldCourseMining);
-					insert.setTask(Long.valueOf(this.connector.getPrefix() + "02" + loadedItem2.getIteminstance()),
+					insert.setTask(Long.valueOf(this.connector.getPrefix() + "08" + loadedItem2.getIteminstance()),
 							this.taskMining, this.oldTaskMining);
 					if ((insert.getTask() != null) && (insert.getUser() != null)) {
 						taskUserMining.put(insert.getId(), insert);

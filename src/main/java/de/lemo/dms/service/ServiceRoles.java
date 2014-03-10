@@ -27,15 +27,18 @@
 package de.lemo.dms.service;
 
 import java.util.ArrayList;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import org.hibernate.Session;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.RoleMining;
+import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.processing.resulttype.ResultListRoleObject;
 import de.lemo.dms.processing.resulttype.RoleObject;
 
@@ -55,13 +58,13 @@ public class ServiceRoles {
 		final Session session = dbHandler.getMiningSession();
 
 		@SuppressWarnings("unchecked")
-		final ArrayList<RoleMining> roleMining = (ArrayList<RoleMining>) dbHandler.performQuery(session,
+		final ArrayList<Role> roleMining = (ArrayList<Role>) dbHandler.performQuery(session,
 				EQueryType.HQL,
 				"from RoleMining");
 
 		final ArrayList<RoleObject> roles = new ArrayList<RoleObject>();
-		for (final RoleMining role : roleMining) {
-			roles.add(new RoleObject(role.getId(), role.getName()));
+		for (final Role role : roleMining) {
+			roles.add(new RoleObject(role.getId(), role.getTitle()));
 		}
 
 		session.close();

@@ -1,7 +1,7 @@
 package de.lemo.dms.db.mapping.abstractions;
 
-import de.lemo.dms.db.mapping.CourseMining;
-import de.lemo.dms.db.mapping.UserMining;
+import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.User;
 
 
 /**
@@ -10,13 +10,11 @@ import de.lemo.dms.db.mapping.UserMining;
  */
 public interface IRatedUserAssociation {
 
-	CourseMining getCourse();
+	Course getCourse();
 	
-	UserMining getUser();
+	User getUser();
 	
 	Double getFinalGrade();
-	
-	Long getPrefix();
 	
 	Long getLearnObjId();
 	

@@ -27,13 +27,16 @@
 package de.lemo.dms.processing.resulttype;
 
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+
+import de.lemo.dms.db.mapping.abstractions.ILog;
 
 /**
  * represents a list for Log objects which is use to transfer data from
@@ -52,13 +55,13 @@ public class ResultListLog {
 		/* JAXB no-arg default constructor */
 	}
 
-	public ResultListLog(final List<ILogMining> dbLog) {
+	public ResultListLog(final List<ILog> dbLog) {
 		try {
-			for (final ILogMining log : dbLog) {
+			for (final ILog log : dbLog) {
 				final JSONObject logJSON = new JSONObject();
 				logJSON.put("id", log.getId());
 				logJSON.put("time", log.getTimestamp());
-				logJSON.put("action", log.getAction());
+				logJSON.put("action", "");
 				logJSON.put("course", log.getCourse());
 				logJSON.put("user", log.getUser());
 

@@ -39,6 +39,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
 /** 
@@ -47,7 +48,7 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  */
 @Entity
 @Table(name = "lemo_learning_object")
-public class LearningObject implements IMapping{
+public class LearningObject implements IMapping, ILearningObject{
 
 	private long id;
 	private String title;

@@ -40,6 +40,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 /**
@@ -222,6 +223,22 @@ public class SubmissionLog implements IMapping, ILog{
 			this.task = oldTasks.get(task);
 			oldTasks.get(task).addTaskLog(this);
 		}
+	}
+
+	@Override
+	public long getLearningObjectId() {
+		return this.getTask().getId();
+	}
+
+	@Override
+	public ILearningObject getLearningObject() {
+		return this.getTask();
+	}
+
+	@Override
+	public String getTitle() {
+		
+		return this.getTask().getTitle();
 	}
 	
 }

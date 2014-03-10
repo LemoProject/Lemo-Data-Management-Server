@@ -30,19 +30,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.CourseMining;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.CourseObject;
@@ -83,23 +86,23 @@ public class ServiceCourseTitleSearch {
 		final Session session = dbHandler.getMiningSession();
 		
 
-		Criteria criteria = session.createCriteria(CourseMining.class, "course");
+		Criteria criteria = session.createCriteria(Course.class, "course");
 		criteria.add(Restrictions.ilike("course.title", text, MatchMode.ANYWHERE));
 
 		@SuppressWarnings("unchecked")
-		final ArrayList<CourseMining> courses = (ArrayList<CourseMining>) criteria.list();
+		final ArrayList<Course> courses = (ArrayList<Course>) criteria.list();
 		List<Long> ids = new ArrayList<Long>();
 		
-		for(CourseMining course : courses)
+		for(Course course : courses)
 		{
 			ids.add(course.getId());
 		}
 		
 		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(ids, new ArrayList<Long>());
 
-		for (CourseMining courseMining : courses) {
+		for (Course courseMining : courses) {
 			
-			criteria = session.createCriteria(ILogMining.class, "log");
+			criteria = session.createCriteria(ILog.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
 			if(userMap.size() > 0)
 			{
@@ -107,7 +110,7 @@ public class ServiceCourseTitleSearch {
 			}
 
 			@SuppressWarnings("unchecked")
-			ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
+			ArrayList<ILog> logs = (ArrayList<ILog>) criteria.list();
 			Collections.sort(logs);
 
 			Long lastTime = 0L;
@@ -119,7 +122,7 @@ public class ServiceCourseTitleSearch {
 				firstTime = logs.get(0).getTimestamp();
 			}
 			ServiceCourseDetails scd = new ServiceCourseDetails();
-			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(),
+			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
 					courseMining.getTitle(), userMap.size(), lastTime, firstTime, scd.getCourseHash(courseMining.getId()), StudentHelper.getGenderSupport(courseMining.getId()));
 			result.add(co);
 		}

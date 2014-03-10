@@ -29,21 +29,24 @@ package de.lemo.dms.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.CourseMining;
-import de.lemo.dms.db.mapping.CourseUserMining;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.CourseUser;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
@@ -79,12 +82,12 @@ public class ServiceUserInformation {
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 		
-		Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+		Criteria criteria = session.createCriteria(CourseUser.class, "cu");
 		criteria.add(Restrictions.eq("cu.user.id", id));
-		List<CourseUserMining> couUseMin = criteria.list();
+		List<CourseUser> couUseMin = criteria.list();
 
-		final ArrayList<CourseMining> courseList = new ArrayList<CourseMining>();
-		for(CourseUserMining courseUser : couUseMin)
+		final ArrayList<Course> courseList = new ArrayList<Course>();
+		for(CourseUser courseUser : couUseMin)
 		{
 			courseList.add(courseUser.getCourse());
 		}
@@ -94,15 +97,15 @@ public class ServiceUserInformation {
 		
 		final List<Long> participants = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(l1, new ArrayList<Long>()).values());
 
-		for (CourseMining course : courseList) 
+		for (Course course : courseList) 
 		{
-			criteria = session.createCriteria(ILogMining.class, "log");
+			criteria = session.createCriteria(ILog.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", course.getId()));
 			if(participants.size() > 0)
 			{
 				criteria.add(Restrictions.in("log.user.id", participants));
 			}
-			List<ILogMining> logs = criteria.list();
+			List<ILog> logs = criteria.list();
 			Collections.sort(logs);
 			Long lastTime = 0L;
 			Long firstTime = 0L;
@@ -114,7 +117,7 @@ public class ServiceUserInformation {
 			}
 
 			ServiceCourseDetails scd = new ServiceCourseDetails();
-			final CourseObject courseObject = new CourseObject(course.getId(), course.getShortname(), course
+			final CourseObject courseObject = new CourseObject(course.getId(), course.getTitle(), course
 					.getTitle(),
 					participants.size(), lastTime, firstTime, scd.getCourseHash(course.getId()), StudentHelper.getGenderSupport(course.getId()));
 			courses.add(courseObject);

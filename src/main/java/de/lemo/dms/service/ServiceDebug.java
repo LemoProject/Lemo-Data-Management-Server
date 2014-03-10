@@ -27,21 +27,19 @@
 package de.lemo.dms.service;
 
 import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import org.hibernate.Session;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.AssignmentLogMining;
-import de.lemo.dms.db.mapping.CourseLogMining;
-import de.lemo.dms.db.mapping.ForumLogMining;
-import de.lemo.dms.db.mapping.QuestionLogMining;
-import de.lemo.dms.db.mapping.QuizLogMining;
-import de.lemo.dms.db.mapping.ResourceLogMining;
-import de.lemo.dms.db.mapping.ScormLogMining;
-import de.lemo.dms.db.mapping.WikiLogMining;
+import de.lemo.dms.db.mapping.CollaborativeLog;
+import de.lemo.dms.db.mapping.SubmissionLog;
+import de.lemo.dms.db.mapping.ViewLog;
 
 /**
  * Service for debugging messages
@@ -110,23 +108,11 @@ public class ServiceDebug {
 				List<?> result = null;
 				int resultCount = 0;
 				try {
-					result = miningSession.createCriteria(AssignmentLogMining.class, "log").setMaxResults(1).list();
+					result = miningSession.createCriteria(ViewLog.class, "log").setMaxResults(1).list();
 					resultCount += result.size();
-					result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(1).list();
+					result = miningSession.createCriteria(SubmissionLog.class, "log").setMaxResults(1).list();
 					resultCount += result.size();
-					result = miningSession.createCriteria(CourseLogMining.class, "log").setMaxResults(1).list();
-					resultCount += result.size();
-					result = miningSession.createCriteria(ForumLogMining.class, "log").setMaxResults(1).list();
-					resultCount += result.size();
-					result = miningSession.createCriteria(QuestionLogMining.class, "log").setMaxResults(1).list();
-					resultCount += result.size();
-					result = miningSession.createCriteria(QuizLogMining.class, "log").setMaxResults(1).list();
-					resultCount += result.size();
-					result = miningSession.createCriteria(ResourceLogMining.class, "log").setMaxResults(1).list();
-					resultCount += result.size();
-					result = miningSession.createCriteria(ScormLogMining.class, "log").setMaxResults(1).list();
-					resultCount += result.size();
-					result = miningSession.createCriteria(WikiLogMining.class, "log").setMaxResults(1).list();
+					result = miningSession.createCriteria(CollaborativeLog.class, "log").setMaxResults(1).list();
 					resultCount += result.size();
 				} catch (final Exception exeption) {
 

@@ -85,13 +85,13 @@ public class QActivityResourceTypeResolution extends Question {
 					criteria.add(Restrictions.in("log.user.id", users));
 				}
 				
-				final List<ILogMining> logs = criteria.list();
+				final List<ILog> logs = criteria.list();
 				HashMap<String, ResourceRequestInfo> rri = loadLogMining(logs, loType,
 						startTime, endTime, resolution, intervall);
 				ArrayList<ResourceRequestInfo> rriList = new ArrayList<ResourceRequestInfo>(rri.values());
 
 				switch (loType) {
-					case ASSIGNMENT:
+					case ASSESSMENT:
 						result.setQuestionRRI(rriList);
 						break;
 					case CHAT:

@@ -27,19 +27,22 @@
 package de.lemo.dms.service;
 
 import java.util.ArrayList;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.UserMining;
+import de.lemo.dms.db.mapping.User;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
@@ -60,13 +63,13 @@ public class ServiceLoginAuthentification {
 
 		final String loginHash = Encoder.createMD5(login);
 
-		final Criteria criteria = session.createCriteria(UserMining.class, "users");
-		criteria.add(Restrictions.eq("users.login", loginHash));
+		final Criteria criteria = session.createCriteria(User.class, "users");
+		criteria.add(Restrictions.eq("users.authentication", loginHash));
 
 		logger.info("Looking for user:" + login);
 
 		@SuppressWarnings("unchecked")
-		ArrayList<UserMining> results = (ArrayList<UserMining>) criteria.list();
+		ArrayList<User> results = (ArrayList<User>) criteria.list();
 
 		ResultListLongObject res;
 

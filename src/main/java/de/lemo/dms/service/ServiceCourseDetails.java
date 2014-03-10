@@ -45,9 +45,9 @@ import org.apache.log4j.Logger;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.CourseMining;
+import de.lemo.dms.db.mapping.Course;
 import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.CourseObject;
@@ -83,12 +83,12 @@ public class ServiceCourseDetails {
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
-		CourseMining course = (CourseMining) session.get(CourseMining.class, id);
+		Course course = (Course) session.get(Course.class, id);
 		if (course == null) {
 			throw new ResourceNotFoundException("Course " + id);
 		}
 
-		final Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		final Criteria criteria = session.createCriteria(ILog.class, "log");
 		List<Long> cid = new ArrayList<Long>();
 		cid.add(id);
 		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(cid, new ArrayList<Long>()).values());
@@ -98,7 +98,7 @@ public class ServiceCourseDetails {
 		{
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
-		ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
+		ArrayList<ILog> logs = (ArrayList<ILog>) criteria.list();
 		Collections.sort(logs);
 
 		Long lastTime = 0L;
@@ -111,7 +111,7 @@ public class ServiceCourseDetails {
 		}
 
 		CourseObject result =
-				new CourseObject(course.getId(), course.getShortname(), course.getTitle(), users.size(), lastTime, firstTime, getCourseHash(id), StudentHelper.getGenderSupport(id));
+				new CourseObject(course.getId(), course.getTitle(), course.getTitle(), users.size(), lastTime, firstTime, getCourseHash(id), StudentHelper.getGenderSupport(id));
 
 		//dbHandler.closeSession(session);
 		session.close();
@@ -142,16 +142,16 @@ public class ServiceCourseDetails {
 		// Set up db-connection
 		final Session session = dbHandler.getMiningSession();
 
-		Criteria criteria = session.createCriteria(CourseMining.class, "course");
+		Criteria criteria = session.createCriteria(Course.class, "course");
 		criteria.add(Restrictions.in("course.id", courses));
 
-		final ArrayList<CourseMining> ci = (ArrayList<CourseMining>) criteria.list();
+		final ArrayList<Course> ci = (ArrayList<Course>) criteria.list();
 
 		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, new ArrayList<Long>());
 		
-		for (CourseMining courseMining : ci) {
+		for (Course courseMining : ci) {
 			
-			criteria = session.createCriteria(ILogMining.class, "log");
+			criteria = session.createCriteria(ILog.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
 			if(userMap.size() > 0)
 			{
@@ -163,7 +163,7 @@ public class ServiceCourseDetails {
 			//
 			//criteria.add(Restrictions.eq("id",sub));
 				
-			ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
+			ArrayList<ILog> logs = (ArrayList<ILog>) criteria.list();
 			Collections.sort(logs);
 
 			Long lastTime = 0L;
@@ -175,7 +175,7 @@ public class ServiceCourseDetails {
 				lastTime = logs.get(0).getTimestamp();
 				firstTime = logs.get(logs.size() - 1).getTimestamp();
 			}
-			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getShortname(),
+			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
 					courseMining.getTitle(), userMap.size(), lastTime, firstTime, getCourseHash(courseMining.getId()), StudentHelper.getGenderSupport(courseMining.getId()));
 			results.add(co);
 		}
@@ -203,12 +203,12 @@ public class ServiceCourseDetails {
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
-		CourseMining course = (CourseMining) session.get(CourseMining.class, id);
+		Course course = (Course) session.get(Course.class, id);
 		if (course == null) {
 			throw new ResourceNotFoundException("Course " + id);
 		}
 
-		Criteria criteria = session.createCriteria(ILogMining.class, "log");
+		Criteria criteria = session.createCriteria(ILog.class, "log");
 		List<Long> cid = new ArrayList<Long>();
 		cid.add(id);
 		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsRealKeys(cid, new ArrayList<Long>()).values());
@@ -218,7 +218,7 @@ public class ServiceCourseDetails {
 		{
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
-		ArrayList<ILogMining> logs = (ArrayList<ILogMining>) criteria.list();
+		ArrayList<ILog> logs = (ArrayList<ILog>) criteria.list();
 		Collections.sort(logs);
 
 		Long lastTime = 0L;

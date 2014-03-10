@@ -211,6 +211,17 @@ public class ViewLog implements IMapping, ILog {
 		}
 	}
 
+	@Override
+	public long getLearningObjectId() {
+		return this.getLearningObject().getId();
+	}
+
+	@Override
+	public String getTitle() {
+		
+		return this.getLearningObject().getTitle();
+	}
+
 	
 
 }

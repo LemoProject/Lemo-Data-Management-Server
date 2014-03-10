@@ -36,6 +36,4 @@ public interface IRatedObject extends ILearningObject {
 
 	Double getMaxGrade();
 
-	Long getPrefix();
-
 }

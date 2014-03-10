@@ -27,17 +27,20 @@
 package de.lemo.dms.service;
 
 import java.util.ArrayList;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.CourseUserMining;
+import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
@@ -71,7 +74,7 @@ public class ServiceTeacherCourses {
 		types.add(0L);
 		types.add(1L);
 
-		final Criteria criteria = session.createCriteria(CourseUserMining.class, "cu");
+		final Criteria criteria = session.createCriteria(CourseUser.class, "cu");
 		if(id != null)
 		{
 			criteria.add(Restrictions.eq("cu.user.id", id));
@@ -82,12 +85,12 @@ public class ServiceTeacherCourses {
 		{
 			criteria.add(Restrictions.ge("cu.enrolStart", startTime));
 		}
-		ArrayList<CourseUserMining> results = (ArrayList<CourseUserMining>) criteria.list();
+		ArrayList<CourseUser> results = (ArrayList<CourseUser>) criteria.list();
 
 		if (results != null && results.size() > 0)
 		{
 			ArrayList<Long> l = new ArrayList<Long>();
-			for (CourseUserMining cu : results) {
+			for (CourseUser cu : results) {
 				l.add(cu.getCourse().getId());
 			}
 			result = new ResultListLongObject(l);

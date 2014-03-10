@@ -34,44 +34,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import de.lemo.dms.connectors.Encoder;
-import de.lemo.dms.db.mapping.AssignmentLogMining;
-import de.lemo.dms.db.mapping.AssignmentMining;
-import de.lemo.dms.db.mapping.ChatLogMining;
 import de.lemo.dms.db.mapping.LearningObject;
 import de.lemo.dms.db.mapping.Config;
-import de.lemo.dms.db.mapping.CourseAssignmentMining;
-import de.lemo.dms.db.mapping.CourseForumMining;
-import de.lemo.dms.db.mapping.CourseGroupMining;
-import de.lemo.dms.db.mapping.CourseLogMining;
-import de.lemo.dms.db.mapping.CourseMining;
-import de.lemo.dms.db.mapping.CourseQuizMining;
-import de.lemo.dms.db.mapping.CourseResourceMining;
-import de.lemo.dms.db.mapping.CourseScormMining;
-import de.lemo.dms.db.mapping.CourseUserMining;
-import de.lemo.dms.db.mapping.CourseWikiMining;
-import de.lemo.dms.db.mapping.ForumLogMining;
-import de.lemo.dms.db.mapping.ForumMining;
-import de.lemo.dms.db.mapping.GroupMining;
-import de.lemo.dms.db.mapping.GroupUserMining;
-import de.lemo.dms.db.mapping.LevelAssociationMining;
-import de.lemo.dms.db.mapping.LevelCourseMining;
-import de.lemo.dms.db.mapping.LevelMining;
-import de.lemo.dms.db.mapping.PlatformMining;
-import de.lemo.dms.db.mapping.QuestionLogMining;
-import de.lemo.dms.db.mapping.QuestionMining;
-import de.lemo.dms.db.mapping.QuizLogMining;
-import de.lemo.dms.db.mapping.QuizMining;
-import de.lemo.dms.db.mapping.QuizQuestionMining;
-import de.lemo.dms.db.mapping.QuizUserMining;
-import de.lemo.dms.db.mapping.ResourceLogMining;
-import de.lemo.dms.db.mapping.ResourceMining;
-import de.lemo.dms.db.mapping.RoleMining;
-import de.lemo.dms.db.mapping.ScormLogMining;
-import de.lemo.dms.db.mapping.ScormMining;
-import de.lemo.dms.db.mapping.UserMining;
-import de.lemo.dms.db.mapping.WikiLogMining;
-import de.lemo.dms.db.mapping.WikiMining;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
 
 /**
  * Generates data for an test db system
@@ -80,7 +44,7 @@ import de.lemo.dms.db.mapping.abstractions.ILogMining;
  */
 public class ContentGenerator {
 
-	private ESystem system;
+/*	private ESystem system;
 	private static final int MAGIC_THREE = 3;
 	private static final int MAGIC_FIVE = 5;
 	private static final int MAGIC_EIGHT = 8;
@@ -92,6 +56,8 @@ public class ContentGenerator {
 	 * @author Sebastian Schwarzrock
 	 *
 	 */
+	
+	/*
 	enum EResourceType {
 		File,
 		Directory,
@@ -105,6 +71,7 @@ public class ContentGenerator {
 	 * @author Sebastian Schwarzrock
 	 *
 	 */
+	/*
 	enum EQuestionType {
 		Pathetic,
 		Easy,
@@ -113,11 +80,12 @@ public class ContentGenerator {
 		Sphinxesque
 	}
 	
+	
 	/**
 	 * Enum for LM systems
 	 * @author Sebastian Schwarzrock
 	 *
-	 */
+	 *//*
 	enum ESystem {
 		fiz,
 		moodle,
@@ -135,6 +103,7 @@ public class ContentGenerator {
 	 * @param characteristic	1=semi-authentic, 2=squares
 	 * @return
 	 */
+	/*
 	public List<Collection<?>> generateMiningDB(final Integer topLevels, final Integer levelPerTopLevel,
 			final Integer coursesPerLevel, final Integer users, final Long startdate, final int logsPerLearnObject, int characteristic)
 	{
@@ -1311,5 +1280,6 @@ public class ContentGenerator {
 
 		return all;
 	}
+	*/
 
 }

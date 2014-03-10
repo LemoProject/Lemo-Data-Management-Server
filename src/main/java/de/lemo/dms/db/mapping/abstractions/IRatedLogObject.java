@@ -32,11 +32,9 @@ package de.lemo.dms.db.mapping.abstractions;
  * @author Leonard Kappe
  * @author Sebastian Schwarzrock
  */
-public interface IRatedLogObject extends ILogMining {
+public interface IRatedLogObject extends ILog {
 
 	Double getGrade();
-
-	Double getFinalGrade();
 
 	Double getMaxGrade();
 

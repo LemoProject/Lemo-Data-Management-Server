@@ -11,11 +11,14 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import de.lemo.dms.db.mapping.abstractions.ILearningObject;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
+import de.lemo.dms.db.mapping.abstractions.IRatedObject;
 
 @Entity
 @Table(name = "lemo_assessment")
-public class Assessment implements IMapping{
+public class Assessment implements IMapping, ILog, IRatedObject{
 	
 	private long id;
 	private SubmissionLog submissionLog;
@@ -123,8 +126,59 @@ public class Assessment implements IMapping{
 	public void setFeedback(String feedback) {
 		this.feedback = feedback;
 	}
-	
-	
-	
 
+	@Override
+	public int compareTo(final ILog arg0) {
+		ILog s;
+		try {
+			s = arg0;
+		} catch (final Exception e)
+		{
+			return 0;
+		}
+		if (s != null) {
+			if (this.submissionLog.getTimestamp() > s.getTimestamp()) {
+				return 1;
+			}
+			if (this.submissionLog.getTimestamp() < s.getTimestamp()) {
+				return -1;
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public long getTimestamp() {
+		return this.submissionLog.getTimestamp();
+	}
+
+	@Override
+	public User getUser() {
+		return this.submissionLog.getUser();
+	}
+
+	@Override
+	public Course getCourse() {
+		return this.submissionLog.getCourse();
+	}
+
+	@Override
+	public String getTitle() {
+		return this.submissionLog.getTask().getTitle();
+	}
+
+	@Override
+	public Double getMaxGrade() {
+		return this.submissionLog.getTask().getMaxGrade();
+	}
+
+	@Override
+	public long getLearningObjectId() {
+		return this.submissionLog.getTask().getId();
+	}
+
+	@Override
+	public ILearningObject getLearningObject() {
+		return this.submissionLog.getTask();
+	}
 }
