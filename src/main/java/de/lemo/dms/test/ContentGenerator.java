@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import de.lemo.dms.connectors.Encoder;
-import de.lemo.dms.db.mapping.LearningObject;
+import de.lemo.dms.db.mapping.CollaborativeObject;
 import de.lemo.dms.db.mapping.Config;
 
 /**

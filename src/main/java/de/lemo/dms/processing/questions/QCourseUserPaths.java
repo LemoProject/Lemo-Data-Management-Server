@@ -32,25 +32,29 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.CourseMining;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -85,10 +89,9 @@ public class QCourseUserPaths extends Question {
 		Criteria criteria;
 		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
 
-		criteria = session.createCriteria(ILogMining.class, "log")
+		criteria = session.createCriteria(ILog.class, "log")
 				.add(Restrictions.in("log.course.id", courses))
-				.add(Restrictions.between("log.timestamp", startTime, endTime))
-				.add(Restrictions.eq("log.action", "view"));
+				.add(Restrictions.between("log.timestamp", startTime, endTime));
 		if (!users.isEmpty()) {
 				criteria.add(Restrictions.in("log.user.id", users));
 		}
@@ -98,22 +101,22 @@ public class QCourseUserPaths extends Question {
 			return new JSONObject();
 		}
 
-		final List<ILogMining> logs = criteria.list();
+		final List<ILog> logs = criteria.list();
 
 		this.logger.debug("Found " + users.size() + " actions. " + +stopWatch.elapsedTime(TimeUnit.SECONDS));
 
 		long courseCount = 0;
-		final BiMap<CourseMining, Long> courseNodePositions = HashBiMap.create();
+		final BiMap<Course, Long> courseNodePositions = HashBiMap.create();
 		final Map<Long/* user id */, List<Long/* course id */>> userPaths = Maps.newHashMap();
 
 		this.logger.debug("Paths fetched: " + logs.size() + ". " + stopWatch.elapsedTime(TimeUnit.SECONDS));
 		
 		Map<Long, Long> idToAlias = StudentHelper.getCourseStudentsRealKeys(courses, gender); 
 
-		for (final ILogMining log : logs) 
+		for (final ILog log : logs) 
 		{
 			
-			final CourseMining course = log.getCourse();
+			final Course course = log.getCourse();
 			Long nodeID = courseNodePositions.get(course);
 			if (nodeID == null) {
 				nodeID = courseCount++;

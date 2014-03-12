@@ -148,7 +148,7 @@ public class QPerformanceBoxPlot extends Question {
 
 		for (final IRatedUserAssociation association : list)
 		{
-			final Long name = Long.valueOf(association.getPrefix() + "" + association.getLearnObjId());
+			final Long name = association.getLearnObjId();
 			if (values.get(name) == null)
 			{
 				final ArrayList<Double> v = new ArrayList<Double>();

@@ -131,10 +131,10 @@ public class QActivityResourceType extends Question {
 		
 		for(ICourseLORelation aso : asoList)
 		{
-			Long id = Long.valueOf(aso.getLearningObject().getId());
+			Long id = Long.valueOf(aso.getLearningObj().getId());
 			if(!rriMap.containsKey(id))
 			{
-				String type = aso.getLearningObject().getClass().getSimpleName().toUpperCase();
+				String type = aso.getLearningObj().getClass().getSimpleName().toUpperCase();
 				if(type.contains("MINING"))
 				{
 					type = type.substring(0, type.indexOf("MINING"));
@@ -142,8 +142,8 @@ public class QActivityResourceType extends Question {
 				if(allTypes || resourceTypes.contains(type))
 				{			
 					final ResourceRequestInfo rri = new ResourceRequestInfo(id,
-							ELearningObjectType.valueOf(type), 0L, 0L,
-							aso.getLearningObject().getTitle(), 0L);
+							ELearningObjectType.valueOf(aso.getType()), 0L, 0L,
+							aso.getLearningObj().getTitle(), 0L);
 					result.add(rri);
 					id++;
 				}

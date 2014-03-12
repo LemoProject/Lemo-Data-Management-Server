@@ -50,9 +50,9 @@ public class User implements IMapping{
 	private long gender;
 	
 	private Set<TaskUser> taskUsers = new HashSet<TaskUser>();
-	private Set<SubmissionLog> taskLogs = new HashSet<SubmissionLog>();
-	private Set<ViewLog> eventLogs= new HashSet<ViewLog>();
-	private Set<CollaborativeLog> collaborativeLogs = new HashSet<CollaborativeLog>();
+	private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
+	private Set<LearningObjectLog> eventLogs= new HashSet<LearningObjectLog>();
+	private Set<CollaborativeObjectLog> collaborativeLogs = new HashSet<CollaborativeObjectLog>();
 	private Set<Assessment> assessments = new HashSet<Assessment>();
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
 	private Set<Assessment> graders = new HashSet<Assessment>();
@@ -62,18 +62,18 @@ public class User implements IMapping{
 	 * @return the taskLogs
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<SubmissionLog> getTaskLogs() {
+	public Set<TaskLog> getTaskLogs() {
 		return taskLogs;
 	}
 
 	/**
 	 * @param taskLogs the taskLogs to set
 	 */
-	public void setTaskLogs(Set<SubmissionLog> taskLogs) {
+	public void setTaskLogs(Set<TaskLog> taskLogs) {
 		this.taskLogs = taskLogs;
 	}
 	
-	public void addTaskLog(SubmissionLog taskLog)
+	public void addTaskLog(TaskLog taskLog)
 	{
 		this.taskLogs.add(taskLog);
 	}
@@ -82,18 +82,18 @@ public class User implements IMapping{
 	 * @return the eventLogs
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<ViewLog> getEventLogs() {
+	public Set<LearningObjectLog> getEventLogs() {
 		return eventLogs;
 	}
 
 	/**
 	 * @param eventLogs the eventLogs to set
 	 */
-	public void setEventLogs(Set<ViewLog> eventLogs) {
+	public void setEventLogs(Set<LearningObjectLog> eventLogs) {
 		this.eventLogs = eventLogs;
 	}
 	
-	public void addEventLog(ViewLog eventLog)
+	public void addEventLog(LearningObjectLog eventLog)
 	{
 		this.eventLogs.add(eventLog);
 	}
@@ -102,18 +102,18 @@ public class User implements IMapping{
 	 * @return the collaborativeLogs
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<CollaborativeLog> getCollaborativeLogs() {
+	public Set<CollaborativeObjectLog> getCollaborativeLogs() {
 		return collaborativeLogs;
 	}
 
 	/**
 	 * @param collaborativeLogs the collaborativeLogs to set
 	 */
-	public void setCollaborativeLogs(Set<CollaborativeLog> collaborativeLogs) {
+	public void setCollaborativeLogs(Set<CollaborativeObjectLog> collaborativeLogs) {
 		this.collaborativeLogs = collaborativeLogs;
 	}
 	
-	public void addCollaborativeLog(CollaborativeLog collaborativeLog)
+	public void addCollaborativeLog(CollaborativeObjectLog collaborativeLog)
 	{
 		this.collaborativeLogs.add(collaborativeLog);
 	}

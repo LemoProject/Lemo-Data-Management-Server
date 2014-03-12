@@ -38,6 +38,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
@@ -55,14 +56,13 @@ public class LearningObject implements IMapping, ILearningObject{
 	private LearningObjectType type;
 	
 	private Set<CourseLearningObject> courseLearningObjects = new HashSet<CourseLearningObject>();	
-	private Set<ViewLog> viewLogs = new HashSet<ViewLog>();
-	private Set<CollaborativeLog> collaborativeLogs = new HashSet<CollaborativeLog>();
+	private Set<LearningObjectLog> viewLogs = new HashSet<LearningObjectLog>();
 	
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof LearningObject)) {
+		if (!(o instanceof CollaborativeObject)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof LearningObject)) {
+		if ((o.getId() == this.getId()) && (o instanceof CollaborativeObject)) {
 			return true;
 		}
 		return false;
@@ -101,17 +101,17 @@ public class LearningObject implements IMapping, ILearningObject{
 		this.type = type;
 	}
 	
-	public void setViewLogs(final Set<ViewLog> viewLogs) {
+	public void setViewLogs(final Set<LearningObjectLog> viewLogs) {
 		this.viewLogs = viewLogs;
 	}
 
 
 	@OneToMany(mappedBy="learningObject")
-	public Set<ViewLog> getViewLogs() {
+	public Set<LearningObjectLog> getViewLogs() {
 		return this.viewLogs;
 	}
 
-	public void addViewLog(final ViewLog viewLog) {
+	public void addViewLog(final LearningObjectLog viewLog) {
 		this.viewLogs.add(viewLog);
 	}
 	
@@ -145,27 +145,7 @@ public class LearningObject implements IMapping, ILearningObject{
 		this.courseLearningObjects.add(courseLearningObject);
 	}
 
-	/**
-	 * @return the collaborativeLogs
-	 */
-	@OneToMany(mappedBy="learningObject")
-	public Set<CollaborativeLog> getCollaborativeLogs() {
-		return collaborativeLogs;
-	}
 
-	/**
-	 * @param collaborativeLogs the collaborativeLogs to set
-	 */
-	public void setCollaborativeLogs(Set<CollaborativeLog> collaborativeLogs) {
-		this.collaborativeLogs = collaborativeLogs;
-	}
-	
-	public void addCollaborativeLog(CollaborativeLog collaboritiveLog)
-	{
-		this.collaborativeLogs.add(collaboritiveLog);
-	}
-
-	
 	public void setType(final String title, final Map<String, LearningObjectType> learningObjectTypes,
 			final Map<String, LearningObjectType> oldLearningObjectTypes) {
 
@@ -179,5 +159,11 @@ public class LearningObject implements IMapping, ILearningObject{
 			this.type = oldLearningObjectTypes.get(title);
 			oldLearningObjectTypes.get(title).addLearningObject(this);
 		}
+	}
+
+	@Override
+	@Transient
+	public String getLOType() {
+		return this.getType().getType();
 	}
 }

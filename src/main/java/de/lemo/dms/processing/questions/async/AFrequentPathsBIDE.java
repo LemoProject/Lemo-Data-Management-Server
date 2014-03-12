@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,7 +47,7 @@ import com.google.common.collect.Maps;
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.AnalysisTask;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.ResultListUserPathGraph;
@@ -63,10 +62,8 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
  */
 public class AFrequentPathsBIDE extends AnalysisTask {
 
-	private Map<String, ILogMining> idToLogM = new HashMap<String, ILogMining>();
-	private Map<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
-	private Map<String, Integer> idToInternalId = new HashMap<String, Integer>();
-	private Map<Integer, String> internalIdToId = new HashMap<Integer, String>();
+	private Map<Long, ILog> idToLogM = new HashMap<Long, ILog>();
+	private Map<Long, ArrayList<Long>> requests = new HashMap<Long, ArrayList<Long>>();
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -156,13 +153,8 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 
 			final SequenceDatabase sequenceDatabase = new SequenceDatabase();
 
-			if (!sessionWise) {
-				sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength,
-						maxLength, startTime, endTime, session, gender));
-			} else {
-				sequenceDatabase.loadLinkedList(generateLinkedListSessionBound(courses, users,
-						types, minLength, maxLength, startTime, endTime, session, gender));
-			}
+			sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength,
+			maxLength, startTime, endTime, session, gender));
 
 			final AlgoBIDEPlus algo = new AlgoBIDEPlus(minSup);
 
@@ -185,10 +177,9 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 					for (int k = 0; k < res.getLevel(i).get(j).size(); k++)
 					{
 
-						final String obId = internalIdToId.get(res.getLevel(i).get(j).get(k)
-								.getItems().get(0).getId());
+						final Long obId = res.getLevel(i).get(j).get(k).getItems().get(0).getId();
 
-						final ILogMining ilo = idToLogM.get(obId);
+						final ILog ilo = idToLogM.get(obId);
 
 						final String type = ilo.getClass().getSimpleName();
 
@@ -199,7 +190,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 							pathObjects.put(
 									posId,
 									new UserPathObject(posId, ilo.getTitle(), absSup, type,
-											Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId,
+											0d, ilo.getPrefix(), pathId,
 											Long.valueOf(requests.get(obId).size()), Long
 													.valueOf(new HashSet<Long>(
 															requests.get(obId)).size())));
@@ -212,7 +203,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 							pathObjects.put(
 									posId,
 									new UserPathObject(posId, ilo.getTitle(), absSup,
-											type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, Long
+											type, 0d, ilo.getPrefix(), pathId, Long
 													.valueOf(requests.get(obId).size()), Long
 													.valueOf(new HashSet<Long>(
 															requests.get(obId)).size())));
@@ -248,158 +239,12 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 		{
 			requests.clear();
 			idToLogM.clear();
-			internalIdToId.clear();
-			idToInternalId.clear();
 		}
 		session.close();
 		return new ResultListUserPathGraph(nodes, links);
 	}
 
-	/**
-	 * Generates the necessary list of input-strings, containing the sequences (user paths) for the BIDE+ algorithm
-	 * 
-	 * @param courses
-	 *            Course-Ids
-	 * @param users
-	 *            User-Ids
-	 * @param starttime
-	 *            Start time
-	 * @param endtime
-	 *            End time
-	 * @param gender 
-	 * @return The path to the generated file
-	 */
-	@SuppressWarnings("unchecked")
-	private LinkedList<String> generateLinkedListSessionBound(final List<Long> courses, List<Long> users,
-			final List<String> types, final Long minLength, final Long maxLength, final Long starttime,
-			final Long endtime, Session session, List<Long> gender)
-	{
-		final LinkedList<String> result = new LinkedList<String>();
-		try {
-
-			if (users == null || users.size() == 0)
-			{
-				users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(courses, gender).values());
-			}
-			else
-			{
-				Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, gender);
-				List<Long> tmp = new ArrayList<Long>();
-				for (int i = 0; i < users.size(); i++)
-				{
-					tmp.add(userMap.get(users.get(i)));
-				}
-				users = tmp;
-			}
-
-			final Criteria criteria = session.createCriteria(ILogMining.class, "log");
-			if (courses.size() > 0) {
-				criteria.add(Restrictions.in("log.course.id", courses));
-			}
-			if (users.size() > 0) {
-				criteria.add(Restrictions.in("log.user.id", users));
-			}
-			criteria.add(Restrictions.between("log.timestamp", starttime, endtime));
-			final ArrayList<ILogMining> list = (ArrayList<ILogMining>) criteria.list();
-
-			logger.debug("Read " + list.size() + " logs.");
-			final ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>();
-
-			final HashMap<Long, ArrayList<ILogMining>> logMap = new HashMap<Long, ArrayList<ILogMining>>();
-			int max = 0;
-			for (int i = 0; i < list.size(); i++)
-			{
-				if ((list.get(i).getUser() != null) && (list.get(i).getLearnObjId() != null)) {
-					if (logMap.get(list.get(i).getUser().getId()) == null)
-					{
-						final ArrayList<ILogMining> a = new ArrayList<ILogMining>();
-						a.add(list.get(i));
-						logMap.put(list.get(i).getUser().getId(), a);
-						if (logMap.get(list.get(i).getUser().getId()).size() > max) {
-							max = logMap.get(list.get(i).getUser().getId()).size();
-						}
-					}
-					else
-					{
-
-						logMap.get(list.get(i).getUser().getId()).add(list.get(i));
-						Collections.sort(logMap.get(list.get(i).getUser().getId()));
-						if (logMap.get(list.get(i).getUser().getId()).size() > max) {
-							max = logMap.get(list.get(i).getUser().getId()).size();
-						}
-						if (list.get(i).getDuration() == -1)
-						{
-							uhis.add(new ArrayList<ILogMining>(logMap.get(list.get(i).getUser().getId())));
-							logMap.remove(list.get(i).getUser().getId());
-						}
-					}
-				}
-			}
-
-			uhis.addAll(logMap.values());
-
-			final Integer[] lengths = new Integer[(max / 10) + 1];
-			for (int i = 0; i < lengths.length; i++) {
-				lengths[i] = 0;
-			}
-
-			for (int i = 0; i < uhis.size(); i++)
-			{
-				lengths[uhis.get(i).size() / 10]++;
-			}
-
-			for (int i = 0; i < lengths.length; i++) {
-				if (lengths[i] != 0)
-				{
-					logger.debug("Paths of length " + i + "0 - " + (i + 1) + "0: " + lengths[i]);
-				}
-			}
-
-			logger.debug("Generated " + uhis.size() + " user histories. Max length @ " + max);
-
-			int z = 0;
-
-			// Write data to output file
-			for (final Iterator<ArrayList<ILogMining>> iter = uhis.iterator(); iter.hasNext();)
-			{
-				final ArrayList<ILogMining> l = iter.next();
-				if (l.size() > 5)
-				{
-					String line = "";
-					for (int i = 0; i < l.size(); i++)
-					{
-						if (idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null) {
-							idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(),
-									l.get(i));
-						}
-
-						if (requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
-						{
-							final ArrayList<Long> us = new ArrayList<Long>();
-							us.add(l.get(i).getUser().getId());
-							requests.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), us);
-						} else {
-							requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(
-									l.get(i).getUser().getId());
-						}
-
-						line += l.get(i).getPrefix() + "" + l.get(i).getLearnObjId() + " -1 ";
-					}
-					line += "-2";
-					result.add(line);
-					z++;
-				}
-
-			}
-			logger.debug("Wrote " + z + " user histories.");
-
-		} catch (final Exception e)
-		{
-			logger.error(e.getMessage());
-		}
-		return result;
-	}
-
+	
 	/**
 	 * Generates the necessary list of input-strings, containing the sequences (user paths) for the BIDE+ algorithm
 	 * 
@@ -440,7 +285,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 			users = tmp;
 		}
 
-		criteria = session.createCriteria(ILogMining.class, "log");
+		criteria = session.createCriteria(ILog.class, "log");
 		if (courses.size() > 0) {
 			criteria.add(Restrictions.in("log.course.id", courses));
 		}
@@ -448,22 +293,22 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
 		criteria.add(Restrictions.between("log.timestamp", starttime, endtime));
-		final ArrayList<ILogMining> list = (ArrayList<ILogMining>) criteria.list();
+		final ArrayList<ILog> list = (ArrayList<ILog>) criteria.list();
 
 		logger.debug("Read " + list.size() + " logs.");
 
 		int max = 0;
 
-		final HashMap<Long, ArrayList<ILogMining>> logMap = new HashMap<Long, ArrayList<ILogMining>>();
+		final HashMap<Long, ArrayList<ILog>> logMap = new HashMap<Long, ArrayList<ILog>>();
 
 		for (int i = 0; i < list.size(); i++)
 		{
-			if ((list.get(i).getUser() != null) && (list.get(i).getLearnObjId() != null)) {
+			if ((list.get(i).getUser() != null) && (list.get(i).getLearningObjectId() != null)) {
 				// If there isn't a user history for this user-id create a new one
 				if (logMap.get(list.get(i).getUser().getId()) == null)
 				{
 					// User histories are saved in an ArrayList of ILogMining-objects
-					final ArrayList<ILogMining> a = new ArrayList<ILogMining>();
+					final ArrayList<ILog> a = new ArrayList<ILog>();
 					// Add current ILogMining-object to user-history
 					a.add(list.get(i));
 					// Add user history to the user history map
@@ -480,21 +325,21 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 		}
 
 		// Just changing the container for the user histories
-		final ArrayList<ArrayList<ILogMining>> uhis = new ArrayList<ArrayList<ILogMining>>();
-		int id = 1;
-		for (final ArrayList<ILogMining> uLog : logMap.values())
+		final ArrayList<ArrayList<ILog>> uhis = new ArrayList<ArrayList<ILog>>();
+		for (final ArrayList<ILog> uLog : logMap.values())
 		{
 
-			final ArrayList<ILogMining> tmp = new ArrayList<ILogMining>();
+			final ArrayList<ILog> tmp = new ArrayList<ILog>();
 			boolean containsType = false;
-			for (final ILogMining iLog : uLog)
+			for (final ILog iLog : uLog)
 			{
+				/*
 				if (idToInternalId.get(iLog.getPrefix() + " " + iLog.getLearnObjId()) == null)
 				{
 					internalIdToId.put(id, iLog.getPrefix() + " " + iLog.getLearnObjId());
 					idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearnObjId(), id);
 					id++;
-				}
+				}*/
 				if (hasTypes) {
 					for (final String type : types)
 					{
@@ -544,30 +389,22 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 
 		int z = 0;
 		// Convert all user histories or "paths" into the format, that is requested by the BIDE-algorithm-class
-		for (final ArrayList<ILogMining> l : uhis)
+		for (final ArrayList<ILog> l : uhis)
 		{
 			String line = "";
 			for (int i = 0; i < l.size(); i++)
 			{
-				if (idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null) {
-					idToLogM
-							.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), l.get(i));
-				}
-
 				// Update request numbers
-				if (requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null)
+				if (requests.get(l.get(i).getLearningObjectId()) == null)
 				{
 					final ArrayList<Long> us = new ArrayList<Long>();
 					us.add(l.get(i).getUser().getId());
-					requests.put(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId(), us);
+					requests.put(l.get(i).getLearningObjectId(), us);
 				} else {
-					requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()).add(
+					requests.get(l.get(i).getLearningObjectId()).add(
 							l.get(i).getUser().getId());
 				}
-				// The id of the object gets the prefix, indicating it's class. This is important for distinction
-				// between objects of different ILogMining-classes but same ids
-				line += idToInternalId
-						.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
+				line += l.get(i).getLearningObjectId() + " -1 ";
 			}
 			line += "-2";
 			logger.debug(line);

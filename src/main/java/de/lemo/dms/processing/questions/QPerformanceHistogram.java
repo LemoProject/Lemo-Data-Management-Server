@@ -186,7 +186,7 @@ public class QPerformanceHistogram extends Question {
 
 		for (final IRatedUserAssociation association : list)
 		{
-			if ((obj.get(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())) != null)
+			if ((obj.get(association.getLearnObjId()) != null)
 					&& (association.getMaxGrade() != null) && (association.getMaxGrade() > 0))
 			{
 				// Determine size of each interval
@@ -199,9 +199,9 @@ public class QPerformanceHistogram extends Question {
 						pos = resolution.intValue() - 1;
 					}
 					// Increase count of specified interval
-					results[(resolution.intValue() * obj.get(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())))
+					results[(resolution.intValue() * association.getLearnObjId().intValue())
 							+ pos] = results           [(resolution.intValue() * obj
-							.get(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())))
+							.get(association.getLearnObjId().intValue()))
 							+ pos] + 1;
 				}
 			}

@@ -21,4 +21,8 @@ public interface ILog extends Comparable<ILog>  {
 
 	void setId(long id);
 	
+	long getPrefix();
+	
+	String getType();
+	
 }

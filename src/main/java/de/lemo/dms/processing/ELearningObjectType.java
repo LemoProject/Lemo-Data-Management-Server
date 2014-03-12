@@ -30,9 +30,9 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
 
-import de.lemo.dms.db.mapping.Assessment;
-import de.lemo.dms.db.mapping.SubmissionLog;
-import de.lemo.dms.db.mapping.ViewLog;
+import de.lemo.dms.db.mapping.CollaborativeObjectLog;
+import de.lemo.dms.db.mapping.TaskLog;
+import de.lemo.dms.db.mapping.LearningObjectLog;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 
 /**
@@ -42,9 +42,9 @@ import de.lemo.dms.db.mapping.abstractions.ILog;
  */
 public enum ELearningObjectType {
 
-	VIEW(ViewLog.class),
-	SUBMISSION(SubmissionLog.class),
-	ASSESSMENT(Assessment.class)
+	LEARNINGOBJECT(LearningObjectLog.class),
+	TASK(TaskLog.class),
+	COLLABORATIVEOBJECT(CollaborativeObjectLog.class)
 	/*,
 	QUESTION(QuestionLogMining.class),
 	QUIZ(QuizLogMining.class),

@@ -39,6 +39,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
@@ -48,8 +49,8 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_submission_log")
-public class SubmissionLog implements IMapping, ILog{
+@Table(name = "lemo_task_log")
+public class TaskLog implements IMapping, ILog{
 
 	private long id;
 	private Course course;
@@ -57,15 +58,16 @@ public class SubmissionLog implements IMapping, ILog{
 	private Task task;
 	private long timestamp;
 	private String answer;
+	private static Long PREFIX = 11L;
 	
 	private Set<Assessment> assessments = new HashSet<Assessment>();
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof SubmissionLog)) {
+		if (!(o instanceof TaskLog)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof SubmissionLog)) {
+		if ((o.getId() == this.getId()) && (o instanceof TaskLog)) {
 			return true;
 		}
 		return false;
@@ -226,19 +228,34 @@ public class SubmissionLog implements IMapping, ILog{
 	}
 
 	@Override
-	public long getLearningObjectId() {
+	@Transient
+	public Long getLearningObjectId() {
 		return this.getTask().getId();
 	}
 
 	@Override
+	@Transient
 	public ILearningObject getLearningObject() {
 		return this.getTask();
 	}
 
 	@Override
+	@Transient
 	public String getTitle() {
 		
 		return this.getTask().getTitle();
+	}
+
+	@Override
+	@Transient
+	public long getPrefix() {
+		return PREFIX;
+	}
+
+	@Override
+	@Transient
+	public String getType() {
+		return "TASK";
 	}
 	
 }

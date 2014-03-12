@@ -73,6 +73,7 @@ public final class MiningHibernateUtil {
 		
 		//Objects
 		config.addAnnotatedClass(User.class);
+		config.addAnnotatedClass(CollaborativeObject.class);
 		config.addAnnotatedClass(LearningObject.class);
 		config.addAnnotatedClass(Course.class);
 		config.addAnnotatedClass(Task.class);
@@ -81,70 +82,20 @@ public final class MiningHibernateUtil {
 		//Types
 		config.addAnnotatedClass(LearningObjectType.class);
 		config.addAnnotatedClass(TaskType.class);
+		config.addAnnotatedClass(CollaborativeObjectType.class);
 		
 		//Relations
 		config.addAnnotatedClass(TaskUser.class);
-		config.addAnnotatedClass(CourseLearningObject.class);
 		config.addAnnotatedClass(CourseTask.class);
+		config.addAnnotatedClass(CourseCollaborativeObject.class);
+		config.addAnnotatedClass(CourseLearningObject.class);
 		config.addAnnotatedClass(CourseUser.class);
 		
 		//Logs
-		config.addAnnotatedClass(ViewLog.class);
-		config.addAnnotatedClass(CollaborativeLog.class);
+		config.addAnnotatedClass(LearningObjectLog.class);
+		config.addAnnotatedClass(CollaborativeObjectLog.class);
 		config.addAnnotatedClass(Assessment.class);
-		config.addAnnotatedClass(SubmissionLog.class);
-
-
-
-						
-		
-
-		/*
-		// Object-classes
-		config.addAnnotatedClass(AssignmentMining.class);
-		config.addAnnotatedClass(Resource.class);
-		config.addAnnotatedClass(CourseMining.class);
-		config.addAnnotatedClass(ForumMining.class);
-		config.addAnnotatedClass(GroupMining.class);
-		config.addAnnotatedClass(QuestionMining.class);
-		config.addAnnotatedClass(QuizMining.class);
-		config.addAnnotatedClass(ResourceMining.class);
-		config.addAnnotatedClass(RoleMining.class);
-		config.addAnnotatedClass(ScormMining.class);
-		config.addAnnotatedClass(UserMining.class);
-		config.addAnnotatedClass(WikiMining.class);
-		config.addAnnotatedClass(LevelMining.class);
-
-		// Association-classes
-		
-		config.addAnnotatedClass(CourseAssignmentMining.class);
-		config.addAnnotatedClass(CourseChatMining.class);
-		config.addAnnotatedClass(CourseForumMining.class);
-		config.addAnnotatedClass(CourseGroupMining.class);
-		config.addAnnotatedClass(CourseQuizMining.class);
-		config.addAnnotatedClass(CourseResourceMining.class);
-		config.addAnnotatedClass(CourseScormMining.class);
-		config.addAnnotatedClass(CourseUserMining.class);
-		config.addAnnotatedClass(CourseWikiMining.class);
-		config.addAnnotatedClass(GroupUserMining.class);
-		config.addAnnotatedClass(QuizQuestionMining.class);
-		config.addAnnotatedClass(QuizUserMining.class);
-		config.addAnnotatedClass(AssignmentUserMining.class);
-		config.addAnnotatedClass(ScormUserMining.class);
-		config.addAnnotatedClass(LevelCourseMining.class);
-		config.addAnnotatedClass(LevelAssociationMining.class);
-
-		// Log-classes
-		
-		config.addAnnotatedClass(AssignmentLogMining.class);
-		config.addAnnotatedClass(ChatLogMining.class);
-		config.addAnnotatedClass(CourseLogMining.class);
-		config.addAnnotatedClass(ForumLogMining.class);
-		config.addAnnotatedClass(ResourceLogMining.class);
-		config.addAnnotatedClass(ScormLogMining.class);
-		config.addAnnotatedClass(QuestionLogMining.class);
-		config.addAnnotatedClass(QuizLogMining.class);
-		config.addAnnotatedClass(WikiLogMining.class);*/
+		config.addAnnotatedClass(TaskLog.class);
 
 		return config.buildSessionFactory();
 	}

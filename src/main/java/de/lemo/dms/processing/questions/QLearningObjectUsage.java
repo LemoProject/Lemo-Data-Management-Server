@@ -32,17 +32,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.ForumLogMining;
 import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILearningObject;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -105,7 +108,7 @@ public class QLearningObjectUsage extends Question {
 		final Session session = dbHandler.getMiningSession();
 
 		// Create criteria for log-file-search
-		Criteria criteria = session.createCriteria(ILogMining.class, "log")
+		Criteria criteria = session.createCriteria(ILog.class, "log")
 				.add(Restrictions.between("log.timestamp", startTime, endTime));
 		if (!courses.isEmpty()) {
 			criteria.add(Restrictions.in("log.course.id", courses));
@@ -114,14 +117,14 @@ public class QLearningObjectUsage extends Question {
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
 
-		final List<ILogMining> logs = criteria.list();
+		final List<ILog> logs = criteria.list();
 
 		this.logger.debug("Total matched entries: " + logs.size());
 
 		final HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
-		HashSet<String> requestedObjects = new HashSet<String>();
+		HashSet<Long> requestedObjects = new HashSet<Long>();
 		
-		for (final ILogMining ilo : logs)
+		for (final ILog ilo : logs)
 		{
 			// TODO use Class.getSimpleName() instead?
 			final String obType = ilo
@@ -132,21 +135,22 @@ public class QLearningObjectUsage extends Question {
 
 			if ((types == null) || (types.isEmpty()) || types.contains(obType.toUpperCase()))
 			{
-				requestedObjects.add(ilo.getPrefix() + " " + ilo.getLearnObjId());
+				requestedObjects.add(ilo.getLearningObjectId());
 				
 				final String id;
+				/*
 				if(ilo.getClass().getSimpleName().toUpperCase().contains("FORUM"))
 				{
 					String title = ((ForumLogMining) ilo).getSubject();
 					if(title != null)
-						id = ilo.getPrefix() + "_" + ilo.getLearnObjId() + "?" + obType + "$" + title;
+						id = ilo.getPrefix() + "_" + ilo.getLearningObjectId() + "?" + obType + "$" + title;
 					else
-						id = ilo.getPrefix() + "_" + ilo.getLearnObjId() + "?" + obType + "$" + ilo.getTitle();
+						id = ilo.getPrefix() + "_" + ilo.getLearningObjectId() + "?" + obType + "$" + ilo.getTitle();
 				}
 				else
-				{
-					id = ilo.getPrefix() + "_" + ilo.getLearnObjId() + "?" + obType + "$" + ilo.getTitle();
-				}
+				{*/
+				id = ilo.getLearningObjectId() + "?" + obType + "$" + ilo.getTitle();
+				//}
 				if (requests.get(id) == null)
 				{
 					final ArrayList<Long> al = new ArrayList<Long>();
@@ -171,19 +175,17 @@ public class QLearningObjectUsage extends Question {
 		
 		for(ICourseLORelation aso : asoList)
 		{
-			String obId = aso.getLearningObject().getPrefix() + " " + aso.getLearningObject().getId();
+			Long obId = aso.getLearningObj().getId();
 			if(!requestedObjects.contains(obId))
 			{
-				String type = aso.getLearningObject().getClass().getSimpleName().toUpperCase();
-				if(type.contains("MINING"))
-				{
-					type = type.substring(0, type.indexOf("MINING"));
-				}
-				if(types.isEmpty() || types.contains(type))
+				ILearningObject ilo = aso.getLearningObj();
+				ilo.getId();
+
+				if(types.isEmpty() || types.contains(ilo.getClass().getSimpleName()))
 				{			
 					final ResourceRequestInfo rri = new ResourceRequestInfo(id,
-							ELearningObjectType.valueOf(type), 0L, 0L,
-							aso.getLearningObject().getTitle(), 0L);
+							ELearningObjectType.valueOf(ilo.getClass().getSimpleName()), 0L, 0L,
+							aso.getLearningObj().getTitle(), 0L);
 					result.add(rri);
 					id++;
 				}

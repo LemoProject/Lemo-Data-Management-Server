@@ -79,7 +79,7 @@ public class ServiceRatedObjects {
 			for (final ICourseRatedObjectAssociation obj : list)
 			{
 				// Simple name is not needed so far - will break App-server implementation !!!
-				res.add(obj.getRatedObject().getPrefix().toString());
+				res.add("11");
 				res.add(obj.getRatedObject().getId() + "");
 				res.add(obj.getRatedObject().getTitle());
 			}

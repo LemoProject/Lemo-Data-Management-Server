@@ -38,7 +38,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.BoxPlotGeneratorForDates;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
@@ -103,12 +103,12 @@ public class QCumulativeUserAccess extends Question {
 		final BoxPlotGeneratorForDates bpg = new BoxPlotGeneratorForDates();
 		try {
 			
-			Criteria criteria = session.createCriteria(ILogMining.class, "log");
+			Criteria criteria = session.createCriteria(ILog.class, "log");
 			criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 			criteria.add(Restrictions.in("log.course.id", course));
-			List<ILogMining> logs = criteria.list();
+			List<ILog> logs = criteria.list();
 			
-			for(ILogMining log : logs)
+			for(ILog log : logs)
 			{
 				String type = log.getClass().getSimpleName().toUpperCase();
 				if(type.indexOf("LOG") > -1)

@@ -38,8 +38,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.CourseUserMining;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.CourseUser;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -92,7 +92,7 @@ public class QUserByParameter extends Question {
 		final Session session = dbHandler.getMiningSession();
 
 		// Global list for log items
-		List<ILogMining> logs = new ArrayList<ILogMining>();
+		List<ILog> logs = new ArrayList<ILog>();
 
 		// look up if types-restriction is set or the object-list contains at least one pair
 		if (!types.isEmpty() || objects.size() > 1) {
@@ -105,7 +105,7 @@ public class QUserByParameter extends Question {
 					if (!courses.isEmpty()) {
 						criteria.add(Restrictions.in("log.course.id", courses));
 					}
-					List<ILogMining> loadLogMining = loadLogMining(criteria, objects, typeName);
+					List<ILog> loadLogMining = loadLogMining(criteria, objects, typeName);
 					if (loadLogMining != null) {
 						logs.addAll(loadLogMining);
 					}
@@ -113,14 +113,14 @@ public class QUserByParameter extends Question {
 			}
 		} else {
 			// If object list and type restriction aren't set, do a more general scan of the database
-			final Criteria criteria = session.createCriteria(ILogMining.class, "log")
+			final Criteria criteria = session.createCriteria(ILog.class, "log")
 					.add(Restrictions.between("log.timestamp", startTime, endTime));
 			if (!courses.isEmpty()) {
 				criteria.add(Restrictions.in("log.course.id", courses));
 			}
 
 			@SuppressWarnings("unchecked")
-			List<ILogMining> loadLogMining = criteria.list();
+			List<ILog> loadLogMining = criteria.list();
 			logs = loadLogMining;
 		}
 
@@ -131,12 +131,12 @@ public class QUserByParameter extends Question {
 		// Working with several courses and roles-per-course will only mess up everything
 		if (!roles.isEmpty()) {
 			usersWithinRoles = new HashMap<Long, Long>();
-			final Criteria criteria = session.createCriteria(CourseUserMining.class, "log")
+			final Criteria criteria = session.createCriteria(CourseUser.class, "log")
 					.add(Restrictions.in("log.role.id", roles))
 					.add(Restrictions.in("log.course.id", courses));
 
 			@SuppressWarnings("unchecked")
-			final List<CourseUserMining> uwr = criteria.list();
+			final List<CourseUser> uwr = criteria.list();
 
 			for (int i = 0; i < uwr.size(); i++) {
 				if (uwr.get(i).getUser() != null) {
@@ -166,7 +166,7 @@ public class QUserByParameter extends Question {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<ILogMining> loadLogMining(Criteria criteria, List<String> objects, String type) {
+	private List<ILog> loadLogMining(Criteria criteria, List<String> objects, String type) {
 
 		List<Long> ids = new ArrayList<Long>(objects.size() / 2);
 		if (objects.contains(type)) {
@@ -183,7 +183,7 @@ public class QUserByParameter extends Question {
 		if (!ids.isEmpty()) {
 			criteria.add(Restrictions.in("log." + type + ".id", ids));
 		}
-		List<ILogMining> r = criteria.list();
+		List<ILog> r = criteria.list();
 		return r;
 
 	}

@@ -44,7 +44,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -115,7 +115,7 @@ public class QUserPathAnalysis extends Question {
 		}
 		
 		// Create criteria for log-file-search
-		criteria = session.createCriteria(ILogMining.class, "log");
+		criteria = session.createCriteria(ILog.class, "log");
 
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		criteria.addOrder(Order.asc("log.timestamp"));
@@ -129,7 +129,7 @@ public class QUserPathAnalysis extends Question {
 		}
 
 		@SuppressWarnings("unchecked")
-		final List<ILogMining> list = criteria.list();
+		final List<ILog> list = criteria.list();
 
 		Collections.sort(list);
 
@@ -139,11 +139,11 @@ public class QUserPathAnalysis extends Question {
 		final LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 
 		// Map for user histories
-		final HashMap<Long, List<ILogMining>> userHis = Maps.newHashMap();
+		final HashMap<Long, List<ILog>> userHis = Maps.newHashMap();
 
 		int skippedUsers = 0;
 		// Generate user histories
-		for (final ILogMining log : list) {
+		for (final ILog log : list) {
 			if (log.getUser() == null) {
 				skippedUsers++;
 				continue;
@@ -170,7 +170,7 @@ public class QUserPathAnalysis extends Question {
 				{
 					// If user is new create a new entry in the hash map and add
 					// log item
-					userHis.put(log.getUser().getId(), new ArrayList<ILogMining>());
+					userHis.put(log.getUser().getId(), new ArrayList<ILog>());
 					userHis.get(log.getUser().getId()).add(log);
 				} else {
 					userHis.get(log.getUser().getId()).add(log);
@@ -182,14 +182,14 @@ public class QUserPathAnalysis extends Question {
 
 		int skippedLogs = 0;
 		// Generate paths from user histories
-		for (final List<ILogMining> l : userHis.values()) {
+		for (final List<ILog> l : userHis.values()) {
 			String predNode = null;
 			for (int i = 0; i < l.size(); i++) {
 				if ((l.get(i) != null) && (l.get(i).getUser() != null))
 				{
-					final ILogMining current = l.get(i);
+					final ILog current = l.get(i);
 
-					final Long learnObjId = current.getLearnObjId();
+					final Long learnObjId = current.getLearningObjectId();
 					if (learnObjId == null) {
 						skippedLogs++;
 						continue;
@@ -213,12 +213,12 @@ public class QUserPathAnalysis extends Question {
 							// If the node is new create entry in hash map
 							cIdPos = String.valueOf(pathObjects.size());
 							pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L, type,
-									Double.valueOf(current.getDuration()), 1L, 0L, 0L, 0L));
+									0d, 1L, 0L, 0L, 0L));
 						}
 						else
 						{
 							// If the node is already known, increase weight
-							pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
+							pathObjects.get(cId).increaseWeight(0d);
 							cIdPos = knownPath.getId();
 						}
 
@@ -229,16 +229,16 @@ public class QUserPathAnalysis extends Question {
 					{
 						final String cIdPos = String.valueOf(pathObjects.size());
 						pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L,
-								type, Double.valueOf(current.getDuration()), 1L, 0L, 0L, 0L));
+								type, 0d, 1L, 0L, 0L, 0L));
 					} else {
-						pathObjects.get(cId).increaseWeight(Double.valueOf(current.getDuration()));
+						pathObjects.get(cId).increaseWeight(0d);
 					}
-
+/*
 					if (considerLogouts && (current.getDuration() == -1L)) {
 						predNode = null;
-					} else {
+					} else {*/
 						predNode = cId;
-					}
+					//}
 				}
 			}
 		}

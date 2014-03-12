@@ -40,12 +40,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ResultListRRITypes {
 
-	private List<ResourceRequestInfo> assessments;
+	private List<ResourceRequestInfo> collaboratives;
 	private List<ResourceRequestInfo> views;
 	private List<ResourceRequestInfo> submissions;
 
-	public void setAssessmentRRI(final List<ResourceRequestInfo> assessments) {
-		this.assessments = assessments;
+	public void setCollaborativeRRI(final List<ResourceRequestInfo> collaboratives) {
+		this.collaboratives = collaboratives;
 	}
 
 	public void setViewRRI(final List<ResourceRequestInfo> views) {
@@ -58,15 +58,15 @@ public class ResultListRRITypes {
 	
 	public ResultListRRITypes()
 	{
-		this.assessments = new ArrayList<ResourceRequestInfo>();
+		this.collaboratives = new ArrayList<ResourceRequestInfo>();
 		this.views = new ArrayList<ResourceRequestInfo>();
 		this.submissions = new ArrayList<ResourceRequestInfo>();
 	}
 
 	@XmlElement
-	public List<ResourceRequestInfo> getAssessmentRRI()
+	public List<ResourceRequestInfo> getCollaborativeRRI()
 	{
-		return this.assessments;
+		return this.collaboratives;
 	}
 
 	@XmlElement

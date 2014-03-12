@@ -35,6 +35,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
@@ -44,8 +45,8 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_view_log")
-public class ViewLog implements IMapping, ILog {
+@Table(name = "lemo_learning_object_log")
+public class LearningObjectLog implements IMapping, ILog {
 
 	private long id;
 	private Course course;
@@ -53,13 +54,14 @@ public class ViewLog implements IMapping, ILog {
 	private LearningObject learningObject;
 	private long timestamp;
 	private Long duration;
+	private static Long PREFIX = 16L;
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof ViewLog)) {
+		if (!(o instanceof LearningObjectLog)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof ViewLog)) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningObjectLog)) {
 			return true;
 		}
 		return false;
@@ -212,14 +214,28 @@ public class ViewLog implements IMapping, ILog {
 	}
 
 	@Override
-	public long getLearningObjectId() {
+	@Transient
+	public Long getLearningObjectId() {
 		return this.getLearningObject().getId();
 	}
 
 	@Override
+	@Transient
 	public String getTitle() {
 		
 		return this.getLearningObject().getTitle();
+	}
+
+	@Override
+	@Transient
+	public long getPrefix() {
+		return PREFIX;
+	}
+
+	@Override
+	@Transient
+	public String getType() {
+		return "LEARNINGOBJECT";
 	}
 
 	

@@ -53,10 +53,11 @@ public class Course implements IMapping{
 	private long timeModified;
 	
 	private Set<CourseLearningObject> courseResources = new HashSet<CourseLearningObject>();
+	private Set<CourseCollaborativeObject> courseCollaborativeObjects = new HashSet<CourseCollaborativeObject>();
 	private Set<CourseTask> courseTasks = new HashSet<CourseTask>();
-	private Set<ViewLog> eventLogs = new HashSet<ViewLog>();
-	private Set<SubmissionLog> taskLogs = new HashSet<SubmissionLog>();
-	private Set<CollaborativeLog> collaborativeLogs = new HashSet<CollaborativeLog>();
+	private Set<LearningObjectLog> eventLogs = new HashSet<LearningObjectLog>();
+	private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
+	private Set<CollaborativeObjectLog> collaborativeLogs = new HashSet<CollaborativeObjectLog>();
 	private Set<TaskUser> taskUsers = new HashSet<TaskUser>();
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
 	
@@ -185,42 +186,42 @@ public class Course implements IMapping{
 		this.courseTasks.add(courseTask);
 	}
 	
-	public void setEventLogs(final Set<ViewLog> eventLog) {
+	public void setEventLogs(final Set<LearningObjectLog> eventLog) {
 		this.eventLogs = eventLog;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<ViewLog> getEventLogs() {
+	public Set<LearningObjectLog> getEventLogs() {
 		return this.eventLogs;
 	}
 
-	public void addEventLog(final ViewLog eventLog) {
+	public void addEventLog(final LearningObjectLog eventLog) {
 		this.eventLogs.add(eventLog);
 	}
 	
-	public void setTaskLogs(final Set<SubmissionLog> taskLog) {
+	public void setTaskLogs(final Set<TaskLog> taskLog) {
 		this.taskLogs = taskLog;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<SubmissionLog> getTaskLogs() {
+	public Set<TaskLog> getTaskLogs() {
 		return this.taskLogs;
 	}
 
-	public void addTaskLog(final SubmissionLog taskLog) {
+	public void addTaskLog(final TaskLog taskLog) {
 		this.taskLogs.add(taskLog);
 	}
 	
-	public void setCollaborativeLogs(final Set<CollaborativeLog> collaborativeLog) {
+	public void setCollaborativeLogs(final Set<CollaborativeObjectLog> collaborativeLog) {
 		this.collaborativeLogs = collaborativeLog;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<CollaborativeLog> getCollaborativeLogs() {
+	public Set<CollaborativeObjectLog> getCollaborativeLogs() {
 		return this.collaborativeLogs;
 	}
 
-	public void addCollaborativeLog(final CollaborativeLog collaborativeLog) {
+	public void addCollaborativeLog(final CollaborativeObjectLog collaborativeLog) {
 		this.collaborativeLogs.add(collaborativeLog);
 	}
 
@@ -293,6 +294,19 @@ public class Course implements IMapping{
 			this.platform = oldPlatforms.get(platform);
 			oldPlatforms.get(platform).addCourse(this);
 		}
+	}
+	
+	public void setCourseCollaborativeObjects(final Set<CourseCollaborativeObject> courseCollaborativeObjects) {
+		this.courseCollaborativeObjects = courseCollaborativeObjects;
+	}
+
+	@OneToMany(mappedBy="course")
+	public Set<CourseCollaborativeObject> getCourseCollaborativeObjects() {
+		return this.courseCollaborativeObjects;
+	}
+
+	public void addCourseCollaborativeObject(final CourseCollaborativeObject courseCollaborativeObject) {
+		this.courseCollaborativeObjects.add(courseCollaborativeObject);
 	}
 
 

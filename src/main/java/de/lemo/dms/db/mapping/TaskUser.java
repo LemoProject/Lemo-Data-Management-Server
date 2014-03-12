@@ -2,12 +2,14 @@ package de.lemo.dms.db.mapping;
 
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
@@ -148,6 +150,7 @@ public class TaskUser implements IMapping, IRatedUserAssociation{
 	/**
 	 * @return the grade
 	 */
+	@Column(name="grade")
 	public double getGrade() {
 		return grade;
 	}
@@ -160,6 +163,7 @@ public class TaskUser implements IMapping, IRatedUserAssociation{
 	/**
 	 * @return the timemodified
 	 */
+	@Column(name="timemodified")
 	public long getTimemodified() {
 		return timemodified;
 	}
@@ -171,16 +175,19 @@ public class TaskUser implements IMapping, IRatedUserAssociation{
 	}
 
 	@Override
+	@Transient
 	public Double getFinalGrade() {
 		return this.getGrade();
 	}
 
 	@Override
+	@Transient
 	public Long getLearnObjId() {
 		return this.task.getId();
 	}
 
 	@Override
+	@Transient
 	public Double getMaxGrade() {
 		return this.task.getMaxGrade();
 	}

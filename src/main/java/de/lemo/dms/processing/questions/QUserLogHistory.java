@@ -40,14 +40,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.AssignmentLogMining;
-import de.lemo.dms.db.mapping.ForumLogMining;
-import de.lemo.dms.db.mapping.QuestionLogMining;
-import de.lemo.dms.db.mapping.QuizLogMining;
-import de.lemo.dms.db.mapping.ResourceLogMining;
-import de.lemo.dms.db.mapping.ScormLogMining;
-import de.lemo.dms.db.mapping.WikiLogMining;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -104,7 +97,7 @@ public class QUserLogHistory extends Question {
 			}
 			users = tmp;
 		}
-		criteria = session.createCriteria(ILogMining.class, "log");
+		criteria = session.createCriteria(ILog.class, "log");
 		criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 		if(users != null && users.size() > 0)
 			criteria.add(Restrictions.in("log.user.id", users));
@@ -112,7 +105,7 @@ public class QUserLogHistory extends Question {
 			criteria.add(Restrictions.in("log.course.id", courses));
 		}
 
-		final List<ILogMining> logs = criteria.list();
+		final List<ILog> logs = criteria.list();
 
 		// HashMap for all user-histories
 		final HashMap<Long, List<UserLogObject>> userPaths = new HashMap<Long, List<UserLogObject>>();
@@ -121,60 +114,11 @@ public class QUserLogHistory extends Question {
 		for (int i = 0; i < logs.size(); i++)
 		{
 
-			String title = "";
-			String type = "";
-			ILogMining ilm = null;
 
-			// the log entry has to be cast to its respective class to get its title
-			if (logs.get(i).getClass().equals(AssignmentLogMining.class)
-					&& (((AssignmentLogMining) logs.get(i)).getAssignment() != null))
-			{
-				ilm = logs.get(i);
-				type = "assignment";
-				title = ((AssignmentLogMining) ilm).getAssignment().getTitle();
-			}
-			if (logs.get(i).getClass().equals(ForumLogMining.class)
-					&& (((ForumLogMining) logs.get(i)).getForum() != null))
-			{
-				ilm = logs.get(i);
-				type = "forum";
-				title = ((ForumLogMining) ilm).getForum().getTitle();
-			}
-
-			if (logs.get(i).getClass().equals(QuizLogMining.class) && (((QuizLogMining) logs.get(i)).getQuiz() != null))
-			{
-				ilm = logs.get(i);
-				type = "quiz";
-				title = ((QuizLogMining) ilm).getQuiz().getTitle();
-			}
-			if (logs.get(i).getClass().equals(QuestionLogMining.class)
-					&& (((QuestionLogMining) logs.get(i)).getQuestion() != null))
-			{
-				ilm = logs.get(i);
-				type = "question";
-				title = ((QuestionLogMining) ilm).getQuestion().getTitle();
-			}
-			if (logs.get(i).getClass().equals(ResourceLogMining.class)
-					&& (((ResourceLogMining) logs.get(i)).getResource() != null))
-			{
-				ilm = logs.get(i);
-				type = "resource";
-				title = ((ResourceLogMining) ilm).getResource().getTitle();
-			}
-			if (logs.get(i).getClass().equals(WikiLogMining.class) && (((WikiLogMining) logs.get(i)).getWiki() != null))
-			{
-				ilm = logs.get(i);
-				type = "wiki";
-				title = ((WikiLogMining) ilm).getWiki().getTitle();
-			}
-
-			if (logs.get(i).getClass().equals(ScormLogMining.class)
-					&& (((ScormLogMining) logs.get(i)).getScorm() != null))
-			{
-				ilm = logs.get(i);
-				type = "scorm";
-				title = ((ScormLogMining) ilm).getScorm().getTitle();
-			}
+			ILog ilm = logs.get(i);
+			String type = ilm.getLearningObject().getLOType();
+			String title = ilm.getTitle();
+			
 			if (ilm != null) {
 				if (userPaths.get(logs.get(i).getUser().getId()) == null)
 				{

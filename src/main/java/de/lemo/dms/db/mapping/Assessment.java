@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
@@ -18,13 +19,14 @@ import de.lemo.dms.db.mapping.abstractions.IRatedObject;
 
 @Entity
 @Table(name = "lemo_assessment")
-public class Assessment implements IMapping, ILog, IRatedObject{
+public class Assessment implements IMapping, IRatedObject{
 	
 	private long id;
-	private SubmissionLog submissionLog;
+	private TaskLog submissionLog;
 	private User grader;
 	private double grade;
 	private String feedback;
+	private static Long PREFIX = 11L;
 	
 	public boolean equals(final IMapping o) {
 		if (!(o instanceof Assessment)) {
@@ -60,13 +62,13 @@ public class Assessment implements IMapping, ILog, IRatedObject{
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="submission_log_id")
-	public SubmissionLog getTaskLog() {
+	public TaskLog getTaskLog() {
 		return submissionLog;
 	}
 	/**
 	 * @param taskLog the taskLog to set
 	 */
-	public void setTaskLog(SubmissionLog taskLog) {
+	public void setTaskLog(TaskLog taskLog) {
 		this.submissionLog = taskLog;
 	}
 	
@@ -127,7 +129,6 @@ public class Assessment implements IMapping, ILog, IRatedObject{
 		this.feedback = feedback;
 	}
 
-	@Override
 	public int compareTo(final ILog arg0) {
 		ILog s;
 		try {
@@ -147,38 +148,51 @@ public class Assessment implements IMapping, ILog, IRatedObject{
 		return 0;
 	}
 
-	@Override
+	@Transient
 	public long getTimestamp() {
 		return this.submissionLog.getTimestamp();
 	}
 
-	@Override
+	@Transient
 	public User getUser() {
 		return this.submissionLog.getUser();
 	}
 
-	@Override
+	@Transient
 	public Course getCourse() {
 		return this.submissionLog.getCourse();
 	}
 
 	@Override
+	@Transient
 	public String getTitle() {
 		return this.submissionLog.getTask().getTitle();
 	}
 
 	@Override
+	@Transient
 	public Double getMaxGrade() {
 		return this.submissionLog.getTask().getMaxGrade();
 	}
 
-	@Override
-	public long getLearningObjectId() {
+	@Transient
+	public Long getLearningObjectId() {
 		return this.submissionLog.getTask().getId();
 	}
 
-	@Override
+	@Transient
 	public ILearningObject getLearningObject() {
 		return this.submissionLog.getTask();
+	}
+
+	@Transient
+	public long getPrefix() {
+		return PREFIX;
+	}
+
+	@Override
+	@Transient
+	public String getLOType() {
+		return this.submissionLog.getTask().getType().getType();
 	}
 }

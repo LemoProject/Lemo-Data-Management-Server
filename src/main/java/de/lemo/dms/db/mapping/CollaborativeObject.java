@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/db/mapping/Task.java
+ * File ./src/main/java/de/lemo/dms/db/mapping/Resource.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,14 +19,12 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/db/mapping/Task.java
+ * File ./main/java/de/lemo/dms/db/mapping/Resource.java
  * Date 2014-02-04
  * Project Lemo Learning Analytics
  */
 
 package de.lemo.dms.db.mapping;
-
-
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -46,86 +44,71 @@ import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
 /** 
- * This class represents the table task. 
+ * This class represents the table resource. 
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_task")
-public class Task implements IMapping, ILearningObject{
+@Table(name = "lemo_collaborative_object")
+public class CollaborativeObject implements IMapping, ILearningObject{
 
 	private long id;
 	private String title;
-	private TaskType type;
-	private Task parent;
-	private double maxGrade;
+	private CollaborativeObjectType type;
 	
-	private Set<CourseTask> courseTasks = new HashSet<CourseTask>();
-	private Set<TaskUser> taskUsers = new HashSet<TaskUser>();
-	private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
+	private Set<CourseCollaborativeObject> courseCollaborativeObjects = new HashSet<CourseCollaborativeObject>();	
+	private Set<CollaborativeObjectLog> collaborativeLogs = new HashSet<CollaborativeObjectLog>();
 	
-	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof Task)) {
+		if (!(o instanceof LearningObject)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof Task)) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningObject)) {
 			return true;
 		}
 		return false;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		return (int)id;
+		return (int) id;
 	}
 
+
+	
 	@Id
 	public long getId() {
-		return this.id;
+		return id;
 	}
-
-	public void setId(final long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
-
+	
 	@Lob
 	@Column(name="title")
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
-
-	public void setTitle(final String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="type_id")
-	public TaskType getType() {
+	public CollaborativeObjectType getType() {
 		return type;
 	}
-
-	public void setType(TaskType type) {
+	public void setType(CollaborativeObjectType type) {
 		this.type = type;
-	}
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="parent_id")
-	public Task getParent() {
-		return parent;
-	}
-
-	public void setParent(Task parent) {
-		this.parent = parent;
 	}
 	
 	/**
 	 * standard setter for the attribute course_resource.
 	 * 
-	 * @param courseResources
+	 * @param courseLearningObjects
 	 *            a set of entries in the course_resource table which relate the resource to the courses
 	 */
-	public void setCourseTasks(final Set<CourseTask> courseTasks) {
-		this.courseTasks = courseTasks;
+	public void setCourseCollaborativeObjects(final Set<CourseCollaborativeObject> courseCollaborativeObjects) {
+		this.courseCollaborativeObjects = courseCollaborativeObjects;
 	}
 
 	/**
@@ -133,82 +116,54 @@ public class Task implements IMapping, ILearningObject{
 	 * 
 	 * @return a set of entries in the course_resource table which relate the resource to the courses
 	 */
-	@OneToMany(mappedBy="task")
-	public Set<CourseTask> getCourseTasks() {
-		return this.courseTasks;
+	@OneToMany(mappedBy="collaborativeObject")
+	public Set<CourseCollaborativeObject> getCourseCollaborativeObjects() {
+		return this.courseCollaborativeObjects;
 	}
 
 	/**
 	 * standard add method for the attribute course_resource.
 	 * 
-	 * @param courseResource
+	 * @param courseLearningObject
 	 *            this entry will be added to the list of course_resource in this resource
 	 */
-	public void addCourseTask(final CourseTask courseTask) {
-		this.courseTasks.add(courseTask);
-	}
-	
-	public void setTaskUsers(final Set<TaskUser> taskUsers) {
-		this.taskUsers = taskUsers;
-	}
-
-
-	@OneToMany(mappedBy="task")
-	public Set<TaskUser> getTaskUsers() {
-		return this.taskUsers;
-	}
-
-	public void addTaskUser(final TaskUser taskUsers) {
-		this.taskUsers.add(taskUsers);
+	public void addCourseCollaborativeObject(final CourseCollaborativeObject courseCollaborativeObject) {
+		this.courseCollaborativeObjects.add(courseCollaborativeObject);
 	}
 
 	/**
-	 * @return the taskLogs
+	 * @return the collaborativeLogs
 	 */
-	@OneToMany(mappedBy="task")
-	public Set<TaskLog> getTaskLogs() {
-		return taskLogs;
+	@OneToMany(mappedBy="collaborativeObject")
+	public Set<CollaborativeObjectLog> getCollaborativeLogs() {
+		return collaborativeLogs;
 	}
 
 	/**
-	 * @param taskLogs the taskLogs to set
+	 * @param collaborativeLogs the collaborativeLogs to set
 	 */
-	public void setTaskLogs(Set<TaskLog> taskLogs) {
-		this.taskLogs = taskLogs;
+	public void setCollaborativeLogs(Set<CollaborativeObjectLog> collaborativeLogs) {
+		this.collaborativeLogs = collaborativeLogs;
 	}
 	
-	public void addTaskLog(TaskLog taskLog)
+	public void addCollaborativeLog(CollaborativeObjectLog collaboritiveLog)
 	{
-		this.taskLogs.add(taskLog);
+		this.collaborativeLogs.add(collaboritiveLog);
 	}
 
-	/**
-	 * @return the maxGrade
-	 */
-	@Column(name="maxgrade")
-	public double getMaxGrade() {
-		return maxGrade;
-	}
-
-	/**
-	 * @param maxGrade the maxGrade to set
-	 */
-	public void setMaxGrade(double maxGrade) {
-		this.maxGrade = maxGrade;
-	}
 	
-	public void setType(final String name, final Map<String, TaskType> taskTypes,
-			final Map<String, TaskType> oldTaskTypes) {
+	public void setType(final String title, final Map<String, CollaborativeObjectType> collaborativeObjectTypes,
+			final Map<String, CollaborativeObjectType> oldCollaborativeObjectTypes) {
 
-		if (taskTypes.get(name) != null)
+		if (collaborativeObjectTypes.get(title) != null)
 		{
-			this.type = taskTypes.get(name);
-			taskTypes.get(name).addTask(this);
+			this.type = collaborativeObjectTypes.get(title);
+			collaborativeObjectTypes.get(title).addCollaborativeObject(this);
 		}
-		if ((this.type == null) && (oldTaskTypes.get(name) != null))
+		if ((this.type == null) && (oldCollaborativeObjectTypes.get(title) != null))
 		{
-			this.type = oldTaskTypes.get(name);
-			oldTaskTypes.get(name).addTask(this);
+			this.type = oldCollaborativeObjectTypes.get(title);
+			oldCollaborativeObjectTypes.get(title).addCollaborativeObject(this);
 		}
 	}
 
@@ -217,5 +172,4 @@ public class Task implements IMapping, ILearningObject{
 	public String getLOType() {
 		return this.getType().getType();
 	}
-
 }

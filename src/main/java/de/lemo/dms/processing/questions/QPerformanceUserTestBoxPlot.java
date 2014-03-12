@@ -181,7 +181,7 @@ public class QPerformanceUserTestBoxPlot {
 		
 		for (final IRatedUserAssociation association : list)
 		{
-			if ((obj.get(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())) != null)
+			if ((obj.get(association.getLearnObjId()) != null)
 					&& (association.getMaxGrade() != null) && (association.getMaxGrade() > 0))
 			{
 				Double step;
@@ -205,11 +205,11 @@ public class QPerformanceUserTestBoxPlot {
 							l.add(-1d);
 						}
 						fin.put(association.getUser().getId(), l);
-						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())), pos.doubleValue());
+						fin.get(association.getUser().getId()).set(quizzes.indexOf(association.getLearnObjId()), pos.doubleValue());
 					}
 					else
 					{
-						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())), pos.doubleValue());
+						fin.get(association.getUser().getId()).set(quizzes.indexOf(association.getLearnObjId()), pos.doubleValue());
 					}
 				}
 			}

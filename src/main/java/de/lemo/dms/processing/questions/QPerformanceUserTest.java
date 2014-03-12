@@ -188,7 +188,7 @@ public class QPerformanceUserTest {
 
 		for (final IRatedUserAssociation association : list)
 		{
-			if ((obj.get(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())) != null)
+			if ((obj.get(association.getLearnObjId()) != null)
 					&& (association.getMaxGrade() != null) && (association.getMaxGrade() > 0))
 			{
 				Double step = 1d;
@@ -211,11 +211,11 @@ public class QPerformanceUserTest {
 							l.add(-1L);
 						}
 						fin.put(association.getUser().getId(), l);
-						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())), pos.longValue());
+						fin.get(association.getUser().getId()).set(quizzes.indexOf(association.getLearnObjId()), pos.longValue());
 					}
 					else
 					{
-						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(association.getPrefix() + "" + association.getLearnObjId())), pos.longValue());
+						fin.get(association.getUser().getId()).set(quizzes.indexOf(association.getLearnObjId()), pos.longValue());
 					}
 				}
 
@@ -231,7 +231,7 @@ public class QPerformanceUserTest {
 		HashMap<Long, Double> maxGrades = new HashMap<Long, Double>();
 		for(ICourseRatedObjectAssociation aso : q)
 		{
-			maxGrades.put(Long.valueOf(aso.getPrefix() + "" + aso.getRatedObject().getId()), aso.getRatedObject().getMaxGrade());
+			maxGrades.put(aso.getRatedObject().getId(), aso.getRatedObject().getMaxGrade());
 		}
 		
 		//Determine maximum number of points for every quiz

@@ -41,19 +41,19 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
 
 /** This class represents the relationship between courses and resources. */
 @Entity
-@Table(name = "lemo_course_learning_object")
-public class CourseLearningObject implements IMapping, ICourseLORelation {
+@Table(name = "lemo_course_collaborative_object")
+public class CourseCollaborativeObject implements IMapping, ICourseLORelation {
 	
 	private long id;
 	private Course course;
-	private LearningObject learningObject;
+	private CollaborativeObject collaborativeObject;
 	
 	
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof CourseLearningObject)) {
+		if (!(o instanceof CourseCollaborativeObject)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof CourseLearningObject)) {
+		if ((o.getId() == this.getId()) && (o instanceof CourseCollaborativeObject)) {
 			return true;
 		}
 		return false;
@@ -86,26 +86,26 @@ public class CourseLearningObject implements IMapping, ICourseLORelation {
 		if (courses.get(course) != null)
 		{
 			this.course = courses.get(course);
-			courses.get(course).addCourseResource(this);
+			courses.get(course).addCourseCollaborativeObject(this);
 		}
 		if ((this.course == null) && (oldCourses.get(course) != null))
 		{
 			this.course = oldCourses.get(course);
-			oldCourses.get(course).addCourseResource(this);
+			oldCourses.get(course).addCourseCollaborativeObject(this);
 		}
 	}
 	
-	public void setLearningObject(final long learningObject, final Map<Long, LearningObject> learningObjects,
-			final Map<Long, LearningObject> oldLearningObjects) {
-		if (learningObjects.get(learningObject) != null)
+	public void setCollaborativeObject(final long collaborativeObject, final Map<Long, CollaborativeObject> collaborativeObjects,
+			final Map<Long, CollaborativeObject> oldCollaborativeObjects) {
+		if (collaborativeObjects.get(collaborativeObject) != null)
 		{
-			this.learningObject = learningObjects.get(learningObject);
-			learningObjects.get(learningObject).addCourseLearningObject(this);
+			this.collaborativeObject = collaborativeObjects.get(collaborativeObject);
+			collaborativeObjects.get(collaborativeObject).addCourseCollaborativeObject(this);
 		}
-		if ((this.learningObject == null) && (oldLearningObjects.get(learningObject) != null))
+		if ((this.collaborativeObject == null) && (oldCollaborativeObjects.get(collaborativeObject) != null))
 		{
-			this.learningObject = oldLearningObjects.get(learningObject);
-			oldLearningObjects.get(learningObject).addCourseLearningObject(this);
+			this.collaborativeObject = oldCollaborativeObjects.get(collaborativeObject);
+			oldCollaborativeObjects.get(collaborativeObject).addCourseCollaborativeObject(this);
 		}
 	}
 
@@ -114,17 +114,17 @@ public class CourseLearningObject implements IMapping, ICourseLORelation {
 	 * @return the resource
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="learning_object_id")
-	public LearningObject getLearningObject() {
-		return this.learningObject;
+	@JoinColumn(name="collaborative_object_id")
+	public CollaborativeObject getCollaborativeObject() {
+		return collaborativeObject;
 	}
 
 
 	/**
 	 * @param learningObject the resource to set
 	 */
-	public void setLearningObject(LearningObject learningObject) {
-		this.learningObject = learningObject;
+	public void setCollaborativeObject(CollaborativeObject collaborativeObject) {
+		this.collaborativeObject = collaborativeObject;
 	}
 
 
@@ -144,16 +144,15 @@ public class CourseLearningObject implements IMapping, ICourseLORelation {
 		this.id = id;
 	}
 
-	
 	@Override
 	@Transient
 	public ILearningObject getLearningObj() {
-		return this.learningObject;
+		return this.getCollaborativeObject();
 	}
-	
+
 	@Override
 	@Transient
 	public String getType() {
-		return "LEARNINGOBJECT";
+		return "COLLABORATIVEOBJECT";
 	}
 }

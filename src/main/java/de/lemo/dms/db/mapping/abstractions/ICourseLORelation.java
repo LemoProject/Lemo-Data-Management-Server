@@ -39,7 +39,10 @@ public interface ICourseLORelation {
 	
 	Course getCourse();
 	
-	ILearningObject getLearningObject();
+	ILearningObject getLearningObj();
+	
+	
+	String getType();
 	
 
 }

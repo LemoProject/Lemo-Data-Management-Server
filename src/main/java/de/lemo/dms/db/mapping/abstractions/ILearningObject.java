@@ -37,5 +37,7 @@ public interface ILearningObject {
 	long getId();
 
 	String getTitle();
+	
+	String getLOType();
 
 }

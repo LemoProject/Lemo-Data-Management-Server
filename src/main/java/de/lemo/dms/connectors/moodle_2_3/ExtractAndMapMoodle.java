@@ -80,19 +80,22 @@ import de.lemo.dms.connectors.moodle_2_3.mapping.UserLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.WikiLMS;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.mapping.Assessment;
-import de.lemo.dms.db.mapping.CollaborativeLog;
+import de.lemo.dms.db.mapping.CollaborativeObjectLog;
+import de.lemo.dms.db.mapping.CollaborativeObject;
+import de.lemo.dms.db.mapping.CollaborativeObjectType;
 import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.CourseCollaborativeObject;
 import de.lemo.dms.db.mapping.CourseLearningObject;
 import de.lemo.dms.db.mapping.CourseTask;
 import de.lemo.dms.db.mapping.CourseUser;
+import de.lemo.dms.db.mapping.LearningObject;
 import de.lemo.dms.db.mapping.LearningObjectType;
 import de.lemo.dms.db.mapping.Task;
 import de.lemo.dms.db.mapping.TaskType;
 import de.lemo.dms.db.mapping.TaskUser;
-import de.lemo.dms.db.mapping.ViewLog;
-import de.lemo.dms.db.mapping.LearningObject;
+import de.lemo.dms.db.mapping.LearningObjectLog;
 import de.lemo.dms.db.mapping.Role;
-import de.lemo.dms.db.mapping.SubmissionLog;
+import de.lemo.dms.db.mapping.TaskLog;
 import de.lemo.dms.db.mapping.User;
 
 /**
@@ -1382,7 +1385,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.logger.debug("course not found for course-assignment: " + loadedItem.getId() + " and course: "
 						+ loadedItem.getCourse());
 			}
-			insert.setTask(Long.valueOf(this.connector.getPrefix() + "01" + loadedItem.getId()),
+			insert.setTask(Long.valueOf(this.connector.getPrefix() + "07" + loadedItem.getId()),
 					this.taskMining, this.oldTaskMining);
 			if ((insert.getCourse() != null) && (insert.getTask() != null)) {
 				courseTaskMining.put(insert.getId(), insert);
@@ -1396,7 +1399,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
 					this.oldCourseMining);
-			insert.setTask(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()), this.taskMining,
+			insert.setTask(Long.valueOf(this.connector.getPrefix() + "09" + loadedItem.getId()), this.taskMining,
 					this.oldTaskMining);
 			if ((insert.getCourse() != null) && (insert.getTask() != null)) {
 				courseTaskMining.put(insert.getId(), insert);
@@ -1411,7 +1414,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
 					this.oldCourseMining);
-			insert.setTask(Long.valueOf(this.connector.getPrefix() + "03" + loadedItem.getId()), this.taskMining,
+			insert.setTask(Long.valueOf(this.connector.getPrefix() + "08" + loadedItem.getId()), this.taskMining,
 					this.oldTaskMining);
 			if ((insert.getCourse() != null) && (insert.getTask() != null)) {
 				courseTaskMining.put(insert.getId(), insert);
@@ -1423,9 +1426,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseLearningObject> generateCourseResourceMining() {
+	public Map<Long, CourseLearningObject> generateCourseLearningObjectMining() {
 
-		final HashMap<Long, CourseLearningObject> courseResourceMining = new HashMap<Long, CourseLearningObject>();
+		final HashMap<Long, CourseLearningObject> courseLearningObjectMining = new HashMap<Long, CourseLearningObject>();
 
 		for (final ResourceLMS loadedItem : this.resourceLms)
 		{
@@ -1434,10 +1437,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "01" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
 					this.oldCourseMining);
-			insert.setLearningObject(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()), this.learningObjectMining,
+			insert.setLearningObject(Long.valueOf(this.connector.getPrefix() + "01" + loadedItem.getId()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearningObject() != null)) {
-				courseResourceMining.put(insert.getId(), insert);
+				courseLearningObjectMining.put(insert.getId(), insert);
 			}
 		}
 		
@@ -1448,10 +1451,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "02" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
 					this.oldCourseMining);
-			insert.setLearningObject(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()), this.learningObjectMining,
+			insert.setLearningObject(Long.valueOf(this.connector.getPrefix() + "02" + loadedItem.getId()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearningObject() != null)) {
-				courseResourceMining.put(insert.getId(), insert);
+				courseLearningObjectMining.put(insert.getId(), insert);
 			}
 		}
 		
@@ -1462,55 +1465,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "03" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
 					this.oldCourseMining);
-			insert.setLearningObject(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()), this.learningObjectMining,
+			insert.setLearningObject(Long.valueOf(this.connector.getPrefix() + "03" + loadedItem.getId()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearningObject() != null)) {
-				courseResourceMining.put(insert.getId(), insert);
+				courseLearningObjectMining.put(insert.getId(), insert);
 			}
 		}
 		
-		for (final Entry<Long, Long> loadedItem : this.chatCourse.entrySet())
-		{
-			final CourseLearningObject insert = new CourseLearningObject();
-
-			insert.setId(loadedItem.getKey());
-			insert.setCourse(loadedItem.getValue(), this.courseMining, this.oldCourseMining);	
-			insert.setLearningObject(loadedItem.getKey(),
-					this.learningObjectMining, this.learningObjectMining);
-			if ((insert.getCourse() != null) && (insert.getLearningObject() != null)) {
-				courseResourceMining.put(insert.getId(), insert);
-			}
-		}
-		
-		for (final ForumLMS loadedItem : this.forumLms)
-		{
-			final CourseLearningObject insert = new CourseLearningObject();
-
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
-					this.oldCourseMining);
-			insert.setLearningObject(Long.valueOf(this.connector.getPrefix() + "05" + loadedItem.getId()), this.learningObjectMining,
-					this.oldLearningObjectMining);
-			if ((insert.getCourse() != null) && (insert.getLearningObject() != null)) {
-				courseResourceMining.put(insert.getId(), insert);
-			}
-		}
-		
-		for (final WikiLMS loadedItem : this.wikiLms)
-		{
-			final CourseLearningObject insert = new CourseLearningObject();
-
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
-					this.oldCourseMining);
-			insert.setLearningObject(Long.valueOf(this.connector.getPrefix() + "06" + loadedItem.getId()), this.learningObjectMining,
-					this.oldLearningObjectMining);
-			if ((insert.getCourse() != null) && (insert.getLearningObject() != null)) {
-				courseResourceMining.put(insert.getId(), insert);
-			}
-		}
-		
-		return courseResourceMining;
+		return courseLearningObjectMining;
 	}
 
 
@@ -1691,9 +1653,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 	
 	@Override
-	public Map<Long, SubmissionLog> generateTaskLogMining() {
+	public Map<Long, TaskLog> generateTaskLogMining() {
 
-		final HashMap<Long, SubmissionLog> taskLogs = new HashMap<Long, SubmissionLog>();
+		final HashMap<Long, TaskLog> taskLogs = new HashMap<Long, TaskLog>();
 		final HashMap<Long, ArrayList<AssignGradesLMS>> assignGrades = new HashMap<Long, ArrayList<AssignGradesLMS>>();
 		final HashMap<Long, CourseModulesLMS> courseModules = new HashMap<Long, CourseModulesLMS>();
 		
@@ -1730,7 +1692,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			if (loadedItem.getModule().equals("assign"))
 			{
-				SubmissionLog insert = new SubmissionLog();
+				TaskLog insert = new TaskLog();
 				insert.setId(taskLogs.size() + 1 + this.taskLogMax);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
@@ -1765,7 +1727,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 			
 			if (loadedItem.getModule().equals("scorm")) {
-				final SubmissionLog insert = new SubmissionLog();
+				final TaskLog insert = new TaskLog();
 
 				insert.setId(taskLogs.size() + 1 + this.taskLogMax);
 
@@ -1790,7 +1752,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			
 			if (loadedItem.getModule().equals("quiz"))
 			{
-				final SubmissionLog insert = new SubmissionLog();
+				final TaskLog insert = new TaskLog();
 
 				insert.setId(taskLogs.size() + 1 + this.taskLogMax);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
@@ -2110,78 +2072,19 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			learningObjects.put(insert.getId(), insert);
 		}
-		
-		for (final ChatLMS loadedItem : this.chatLms)
-		{
-			final LearningObject insert = new LearningObject();
-
-			if(!this.learningObjectTypeMining.containsKey("Chat") && !this.oldLearningObjectTypeMining.containsKey("Chat"))
-			{
-				LearningObjectType type = new LearningObjectType();
-				type.setType("Chat");
-				type.setId(this.learningObjectTypeMax + 1 + this.learningObjectTypeMining.size());
-				this.learningObjectTypeMining.put(type.getType(), type);
-			}
-			
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "04" + loadedItem.getId()));
-			insert.setTitle(loadedItem.getTitle());
-			this.chatCourse.put(insert.getId(), Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()));
-			insert.setType("Chat", this.learningObjectTypeMining, this.oldLearningObjectTypeMining);
-			
-			learningObjects.put(insert.getId(), insert);
-			
-		}
-		
-		for (final ForumLMS loadedItem : this.forumLms)
-		{
-			final LearningObject insert = new LearningObject();
-
-			if(!this.learningObjectTypeMining.containsKey("Forum") && !this.oldLearningObjectTypeMining.containsKey("Forum"))
-			{
-				LearningObjectType type = new LearningObjectType();
-				type.setType("Forum");
-				type.setId(this.learningObjectTypeMax + 1 + this.learningObjectTypeMining.size());
-				this.learningObjectTypeMining.put(type.getType(), type);
-			}
-			
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "05" + loadedItem.getId()));
-			insert.setTitle(loadedItem.getName());
-			insert.setType("Forum", this.learningObjectTypeMining, this.oldLearningObjectTypeMining);
-
-			learningObjects.put(insert.getId(), insert);
-		}
-		
-		for (final WikiLMS loadedItem : this.wikiLms)
-		{
-			final LearningObject insert = new LearningObject();
-
-			if(!this.learningObjectTypeMining.containsKey("Wiki") && !this.oldLearningObjectTypeMining.containsKey("Wiki"))
-			{
-				LearningObjectType type = new LearningObjectType();
-				type.setType("Wiki");
-				type.setId(this.learningObjectTypeMax + 1 + this.learningObjectTypeMining.size());
-				this.learningObjectTypeMining.put(type.getType(), type);
-			}
-			
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "06" + loadedItem.getId()));
-			insert.setTitle(loadedItem.getName());
-			insert.setType("Wiki", this.learningObjectTypeMining, this.oldLearningObjectTypeMining);
-			
-			learningObjects.put(insert.getId(), insert);
-		}
-		
+				
 		return learningObjects;
 	}
 
 	@Override
-	public Map<Long, ViewLog> generateViewLogMining() {
-		final HashMap<Long, ViewLog> viewLogMining = new HashMap<Long, ViewLog>();
+	public Map<Long, LearningObjectLog> generateViewLogMining() {
+		final HashMap<Long, LearningObjectLog> viewLogMining = new HashMap<Long, LearningObjectLog>();
 		// A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her
 		// requests times.
 
 		for (final LogLMS loadedItem : this.logLms)
 		{
-			final ViewLog insert = new ViewLog();
+			final LearningObjectLog insert = new LearningObjectLog();
 
 			insert.setId(viewLogMining.size() + 1 + this.viewLogMax);
 
@@ -2313,17 +2216,17 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 
 	@Override
-	public Map<Long, CollaborativeLog> generateCollaborativeLogMining() {
-		final HashMap<Long, CollaborativeLog> collaborativeLogs = new HashMap<Long, CollaborativeLog>();
+	public Map<Long, CollaborativeObjectLog> generateCollaborativeLogMining() {
+		final HashMap<Long, CollaborativeObjectLog> collaborativeLogs = new HashMap<Long, CollaborativeObjectLog>();
 		final HashMap<Long, CourseModulesLMS> couMod = new HashMap<Long, CourseModulesLMS>();
 
 		for (final ChatLogLMS loadedItem : this.chatLogLms)
 		{
-			final CollaborativeLog insert = new CollaborativeLog();
+			final CollaborativeObjectLog insert = new CollaborativeObjectLog();
 			
 			insert.setId(collaborativeLogs.size() + 1 + this.collaborativeLogMax);
-			insert.setResource(Long.valueOf(this.connector.getPrefix() + "04" + loadedItem.getChat()), this.learningObjectMining,
-					this.oldLearningObjectMining);
+			insert.setCollaborativeObject(Long.valueOf(this.connector.getPrefix() + "04" + loadedItem.getChat()), this.collaborativeObjectMining,
+					this.oldCollaborativeObjectMining);
 			insert.setText(TextHelper.replaceString(loadedItem.getMessage()));
 			insert.setTimestamp(loadedItem.getTimestamp());
 			if(insert.getTimestamp() > maxLog)
@@ -2365,7 +2268,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			if (loadedItem.getModule().equals("forum")) {
 
-				final CollaborativeLog insert = new CollaborativeLog();
+				final CollaborativeObjectLog insert = new CollaborativeObjectLog();
 
 				insert.setId(collaborativeLogs.size() + 1 + this.collaborativeLogMax);
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
@@ -2373,8 +2276,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 				if ((loadedItem.getAction().equals("view forum") || loadedItem.getAction().equals("subscribe"))
 						&& loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setResource(Long.valueOf(this.connector.getPrefix() + "05" + loadedItem.getInfo()),
-							this.learningObjectMining, this.oldLearningObjectMining);
+					insert.setCollaborativeObject(Long.valueOf(this.connector.getPrefix() + "05" + loadedItem.getInfo()),
+							this.collaborativeObjectMining, this.oldCollaborativeObjectMining);
 				}
 				else if((loadedItem.getAction().equals("add discussion") || loadedItem.getAction().equals(
 							"view discussion")) && loadedItem.getInfo().matches("[0-9]+")) 
@@ -2382,8 +2285,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					if (discussions.containsKey(Long.valueOf(loadedItem.getInfo())))
 					{
 						Long f = discussions.get(Long.valueOf(loadedItem.getInfo())).getForum();
-						insert.setResource(Long.valueOf(this.connector.getPrefix() + "05" + f),
-								this.learningObjectMining, this.oldLearningObjectMining);
+						insert.setCollaborativeObject(Long.valueOf(this.connector.getPrefix() + "05" + f),
+								this.collaborativeObjectMining, this.oldCollaborativeObjectMining);
 					}
 				}
 				else if(loadedItem.getAction().equals("add post") && posts.containsKey(Long.valueOf(loadedItem.getInfo())))
@@ -2391,8 +2294,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					ForumPostsLMS p = posts.get(Long.valueOf(loadedItem.getInfo()));
 					if(discussions.containsKey(p.getDiscussion()))
 					{
-						insert.setResource(Long.valueOf(this.connector.getPrefix() + "05" + discussions.get(p.getDiscussion()).getForum()),
-								this.learningObjectMining, this.oldLearningObjectMining );
+						insert.setCollaborativeObject(Long.valueOf(this.connector.getPrefix() + "05" + discussions.get(p.getDiscussion()).getForum()),
+								this.collaborativeObjectMining, this.oldCollaborativeObjectMining );
 						insert.setText(TextHelper.replaceString(p.getMessage()));
 					}					
 				}
@@ -2423,14 +2326,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			
 			if (loadedItem.getModule().equals("wiki"))
 			{
-				final CollaborativeLog insert = new CollaborativeLog();
+				final CollaborativeObjectLog insert = new CollaborativeObjectLog();
 
 				insert.setId(collaborativeLogs.size() + 1 + this.collaborativeLogMax);
 				if (couMod.get(loadedItem.getCmid()) != null) {
-					insert.setResource(
+					insert.setCollaborativeObject(
 							Long.valueOf(this.connector.getPrefix() + "06"
-									+ couMod.get(loadedItem.getCmid()).getInstance()), this.learningObjectMining,
-							this.oldLearningObjectMining);
+									+ couMod.get(loadedItem.getCmid()).getInstance()), this.collaborativeObjectMining,
+							this.oldCollaborativeObjectMining);
 				}
 				
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
@@ -2463,6 +2366,127 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	
 	public Map<String, TaskType> generateTaskTypeMining(){
 		return this.taskTypeMining;
+	}
+
+	@Override
+	public Map<Long, CourseCollaborativeObject> generateCourseCollaborativeObjectMining() {
+		
+		final HashMap<Long, CourseCollaborativeObject> courseCollaboratives = new HashMap<Long, CourseCollaborativeObject>();
+
+		
+		for (final Entry<Long, Long> loadedItem : this.chatCourse.entrySet())
+		{
+			final CourseCollaborativeObject insert = new CourseCollaborativeObject();
+
+			insert.setId(loadedItem.getKey());
+			insert.setCourse(loadedItem.getValue(), this.courseMining, this.oldCourseMining);	
+			insert.setCollaborativeObject(loadedItem.getKey(),
+					this.collaborativeObjectMining, this.collaborativeObjectMining);
+			if ((insert.getCourse() != null) && (insert.getCollaborativeObject() != null)) {
+				courseCollaboratives.put(insert.getId(), insert);
+			}
+		}
+		
+		for (final ForumLMS loadedItem : this.forumLms)
+		{
+			final CourseCollaborativeObject insert = new CourseCollaborativeObject();
+
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
+					this.oldCourseMining);
+			insert.setCollaborativeObject(Long.valueOf(this.connector.getPrefix() + "05" + loadedItem.getId()), this.collaborativeObjectMining,
+					this.oldCollaborativeObjectMining);
+			if ((insert.getCourse() != null) && (insert.getCollaborativeObject() != null)) {
+				courseCollaboratives.put(insert.getId(), insert);
+			}
+		}
+		
+		for (final WikiLMS loadedItem : this.wikiLms)
+		{
+			final CourseCollaborativeObject insert = new CourseCollaborativeObject();
+
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
+					this.oldCourseMining);
+			insert.setCollaborativeObject(Long.valueOf(this.connector.getPrefix() + "06" + loadedItem.getId()), this.collaborativeObjectMining,
+					this.oldCollaborativeObjectMining);
+			if ((insert.getCourse() != null) && (insert.getCollaborativeObject() != null)) {
+				courseCollaboratives.put(insert.getId(), insert);
+			}
+		}
+		
+		return courseCollaboratives;
+	}
+
+	@Override
+	public Map<Long, CollaborativeObject> generateCollaborativeObjectMining() {
+		final HashMap<Long, CollaborativeObject> collaborativeObjects = new HashMap<Long, CollaborativeObject>();
+		
+		for (final ChatLMS loadedItem : this.chatLms)
+		{
+			final CollaborativeObject insert = new CollaborativeObject();
+
+			if(!this.collaborativeObjectTypeMining.containsKey("Chat") && !this.oldCollaborativeObjectTypeMining.containsKey("Chat"))
+			{
+				CollaborativeObjectType type = new CollaborativeObjectType();
+				type.setType("Chat");
+				type.setId(this.collaborativeObjectTypeMax + 1 + this.collaborativeObjectTypeMining.size());
+				this.collaborativeObjectTypeMining.put(type.getType(), type);
+			}
+			
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "04" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getTitle());
+			this.chatCourse.put(insert.getId(), Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()));
+			insert.setType("Chat", this.collaborativeObjectTypeMining, this.oldCollaborativeObjectTypeMining);
+			
+			collaborativeObjects.put(insert.getId(), insert);
+			
+		}
+		
+		for (final ForumLMS loadedItem : this.forumLms)
+		{
+			final CollaborativeObject insert = new CollaborativeObject();
+
+			if(!this.collaborativeObjectTypeMining.containsKey("Forum") && !this.oldCollaborativeObjectTypeMining.containsKey("Forum"))
+			{
+				CollaborativeObjectType type = new CollaborativeObjectType();
+				type.setType("Forum");
+				type.setId(this.collaborativeObjectTypeMax + 1 + this.collaborativeObjectTypeMining.size());
+				this.collaborativeObjectTypeMining.put(type.getType(), type);
+			}
+			
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "05" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getName());
+			insert.setType("Forum", this.collaborativeObjectTypeMining, this.oldCollaborativeObjectTypeMining);
+
+			collaborativeObjects.put(insert.getId(), insert);
+		}
+		
+		for (final WikiLMS loadedItem : this.wikiLms)
+		{
+			final CollaborativeObject insert = new CollaborativeObject();
+
+			if(!this.collaborativeObjectTypeMining.containsKey("Wiki") && !this.oldCollaborativeObjectTypeMining.containsKey("Wiki"))
+			{
+				CollaborativeObjectType type = new CollaborativeObjectType();
+				type.setType("Wiki");
+				type.setId(this.collaborativeObjectTypeMax + 1 + this.collaborativeObjectTypeMining.size());
+				this.collaborativeObjectTypeMining.put(type.getType(), type);
+			}
+			
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "06" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getName());
+			insert.setType("Wiki", this.collaborativeObjectTypeMining, this.oldCollaborativeObjectTypeMining);
+			
+			collaborativeObjects.put(insert.getId(), insert);
+		}
+		
+		return collaborativeObjects;
+	}
+
+	@Override
+	public Map<String, CollaborativeObjectType> generateCollaborativeObjectTypeMining() {
+		return this.collaborativeObjectTypeMining;
 	}
 
 }

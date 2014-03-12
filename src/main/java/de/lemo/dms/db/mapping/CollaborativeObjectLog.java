@@ -36,7 +36,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
@@ -45,23 +47,24 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_collaborative_log")
-public class CollaborativeLog implements IMapping, ILog{
+@Table(name = "lemo_collaborative_object_log")
+public class CollaborativeObjectLog implements IMapping, ILog{
 
 	private long id;
 	private Course course;
 	private User user;
-	private LearningObject learningObject;
+	private CollaborativeObject collaborativeObject;
 	private long timestamp;
 	private String text;
-	private LearningObject parent;
+	private CollaborativeObject parent;
+	private static Long PREFIX = 15L;
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof CollaborativeLog)) {
+		if (!(o instanceof CollaborativeObjectLog)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof CollaborativeLog)) {
+		if ((o.getId() == this.getId()) && (o instanceof CollaborativeObjectLog)) {
 			return true;
 		}
 		return false;
@@ -131,15 +134,15 @@ public class CollaborativeLog implements IMapping, ILog{
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="learning_object_id")
-	public LearningObject getLearningObject() {
-		return learningObject;
+	@JoinColumn(name="collaborative_object_id")
+	public CollaborativeObject getCollaborativeObject() {
+		return collaborativeObject;
 	}
 	
 	
 	
-	public void setLearningObject(LearningObject learningObject) {
-		this.learningObject = learningObject;
+	public void setCollaborativeObject(CollaborativeObject learningObject) {
+		this.collaborativeObject = learningObject;
 	}
 	
 	
@@ -171,13 +174,13 @@ public class CollaborativeLog implements IMapping, ILog{
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="parent_id")
-	public LearningObject getParent() {
+	public CollaborativeObject getParent() {
 		return parent;
 	}
 
 
 
-	public void setParent(LearningObject parent) {
+	public void setParent(CollaborativeObject parent) {
 		this.parent = parent;
 	}
 	
@@ -211,29 +214,49 @@ public class CollaborativeLog implements IMapping, ILog{
 		}
 	}
 	
-	public void setResource(final long resource, final Map<Long, LearningObject> resources,
-			final Map<Long, LearningObject> oldResources) {
+	public void setCollaborativeObject(final long collaborativeObject, final Map<Long, CollaborativeObject> resources,
+			final Map<Long, CollaborativeObject> oldResources) {
 
-		if (resources.get(resource) != null)
+		if (resources.get(collaborativeObject) != null)
 		{
-			this.learningObject = resources.get(resource);
-			resources.get(resource).addCollaborativeLog(this);
+			this.collaborativeObject = resources.get(collaborativeObject);
+			resources.get(collaborativeObject).addCollaborativeLog(this);
 		}
-		if ((this.learningObject == null) && (oldResources.get(resource) != null))
+		if ((this.collaborativeObject == null) && (oldResources.get(collaborativeObject) != null))
 		{
-			this.learningObject = oldResources.get(resource);
-			oldResources.get(resource).addCollaborativeLog(this);
+			this.collaborativeObject = oldResources.get(collaborativeObject);
+			oldResources.get(collaborativeObject).addCollaborativeLog(this);
 		}
 	}
 
 	@Override
+	@Transient
 	public String getTitle() {
 		return this.getLearningObject().getTitle();
 	}
 
 	@Override
-	public long getLearningObjectId() {
+	@Transient
+	public Long getLearningObjectId() {
 		return this.getLearningObject().getId();
+	}
+
+	@Override
+	@Transient
+	public long getPrefix() {
+		return PREFIX;
+	}
+
+	@Override
+	@Transient
+	public ILearningObject getLearningObject() {
+		return this.collaborativeObject;
+	}
+
+	@Override
+	@Transient
+	public String getType() {
+		return "COLLABORATIVEOBJECT";
 	}
 	
 }

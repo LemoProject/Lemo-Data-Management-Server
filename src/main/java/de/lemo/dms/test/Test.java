@@ -26,10 +26,14 @@
 
 package de.lemo.dms.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Session;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.processing.questions.QCourseActivity;
 
 /**
  * sollte gelöscht werden
@@ -69,11 +73,27 @@ public class Test {
 	 * TODO move to unit test
 	 * @param args
 	 */
-	/*
+	
+	public static void test()
+	{
+		QCourseActivity qca = new QCourseActivity();
+		List<Long> courses = new ArrayList<Long>();
+		courses.add(112L);
+		List<Long> users = new ArrayList<Long>();
+		Long startTime = 0L;
+		Long endTime = 1563990913L;
+		Long resolution = 28L;
+		List<String> resourceTypes = new ArrayList<String>();
+		List<Long> gender = new ArrayList<Long>();
+		
+		
+		qca.compute(courses, users, startTime, endTime, resolution, resourceTypes, gender);
+	}
+
 	public static void main(final String[] args)
 	{
-		
-		Test.gen();
+		ServerConfiguration.getInstance().loadConfig("/lemo");
+		Test.test();
 	}
-	*/
+
 }

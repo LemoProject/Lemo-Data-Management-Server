@@ -42,4 +42,5 @@ public interface ICourseRatedObjectAssociation {
 	
 	Long getPrefix();
 
+
 }

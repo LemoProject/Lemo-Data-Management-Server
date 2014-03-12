@@ -55,7 +55,6 @@ import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.abstractions.ILog;
-import de.lemo.dms.db.mapping.abstractions.ILogMining;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -73,10 +72,8 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
 @Path("frequentPathsViger")
 public class QFrequentPathsViger extends Question {
 
-	private Map<String, ILog> idToLogM = new HashMap<String, ILog>();
+	private Map<Long, ILog> idToLogM = new HashMap<Long, ILog>();
 	private Map<String, List<Long>> requests = new HashMap<String, List<Long>>();
-	private Map<String, Integer> idToInternalId = new HashMap<String, Integer>();
-	private Map<Integer, String> internalIdToId = new HashMap<Integer, String>();
 
 	@POST
 	public ResultListUserPathGraph compute(
@@ -167,8 +164,8 @@ public class QFrequentPathsViger extends Question {
 					for (int k = 0; k < res.getLevel(i).get(j).size(); k++)
 					{
 
-						final String obId = this.internalIdToId.get(res.getLevel(i).get(j).get(k)
-								.getItems().get(0).getId());
+						final Long obId = res.getLevel(i).get(j).get(k)
+								.getItems().get(0).getId();
 
 						final ILog ilo = this.idToLogM.get(obId);
 
@@ -194,7 +191,7 @@ public class QFrequentPathsViger extends Question {
 							pathObjects.put(
 									posId,
 									new UserPathObject(posId, ilo.getTitle(), absSup,
-											type, Double.valueOf(ilo.getDuration()), ilo.getPrefix(), pathId, Long
+											type, 0d, ilo.getPrefix(), pathId, Long
 													.valueOf(this.requests.get(obId).size()), Long
 													.valueOf(new HashSet<Long>(this.requests.get(obId))
 															.size())));
@@ -232,8 +229,6 @@ public class QFrequentPathsViger extends Question {
 		{
 			this.requests.clear();
 			this.idToLogM.clear();
-			this.internalIdToId.clear();
-			this.idToInternalId.clear();
 		}
 		session.close();
 		return new ResultListUserPathGraph(nodes, links);
