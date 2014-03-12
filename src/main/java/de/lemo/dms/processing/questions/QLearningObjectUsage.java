@@ -127,11 +127,12 @@ public class QLearningObjectUsage extends Question {
 		for (final ILog ilo : logs)
 		{
 			// TODO use Class.getSimpleName() instead?
-			final String obType = ilo
+			final String obType = ilo.getType();
+			/*
 					.getClass()
 					.toString()
 					.substring(ilo.getClass().toString().lastIndexOf(".") + 1,
-							ilo.getClass().toString().lastIndexOf("Log"));
+							ilo.getClass().toString().lastIndexOf("Log"));*/
 
 			if ((types == null) || (types.isEmpty()) || types.contains(obType.toUpperCase()))
 			{
@@ -184,7 +185,7 @@ public class QLearningObjectUsage extends Question {
 				if(types.isEmpty() || types.contains(ilo.getClass().getSimpleName()))
 				{			
 					final ResourceRequestInfo rri = new ResourceRequestInfo(id,
-							ELearningObjectType.valueOf(ilo.getClass().getSimpleName()), 0L, 0L,
+							ELearningObjectType.valueOf(aso.getType()), 0L, 0L,
 							aso.getLearningObj().getTitle(), 0L);
 					result.add(rri);
 					id++;

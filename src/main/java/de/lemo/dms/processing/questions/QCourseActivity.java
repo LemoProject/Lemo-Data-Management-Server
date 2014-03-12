@@ -206,12 +206,6 @@ public class QCourseActivity extends Question {
 			this.logger.info("Returning empty resultset.");
 		}
 		session.close();
-		for(ResultListLongObject o : resultObject.getEntries())
-		{
-			for(Long f : o.getElements())
-				System.out.print(f);
-			System.out.println();
-		}
 		return resultObject;
 	}
 }
