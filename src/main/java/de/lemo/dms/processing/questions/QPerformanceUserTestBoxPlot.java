@@ -151,7 +151,7 @@ public class QPerformanceUserTestBoxPlot {
 		{
 			for (int i = 0; i < quizzes.size(); i++)
 			{
-				obj.put(quizzes.get(i), i);
+				obj.put(Long.valueOf(quizzes.get(i).toString().substring(2, quizzes.get(i).toString().length())), i);
 			}
 		}
 		else
@@ -205,11 +205,11 @@ public class QPerformanceUserTestBoxPlot {
 							l.add(-1d);
 						}
 						fin.put(association.getUser().getId(), l);
-						fin.get(association.getUser().getId()).set(quizzes.indexOf(association.getLearnObjId()), pos.doubleValue());
+						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(11 + "" + association.getLearnObjId())), pos.doubleValue());
 					}
 					else
 					{
-						fin.get(association.getUser().getId()).set(quizzes.indexOf(association.getLearnObjId()), pos.doubleValue());
+						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(11 + "" + association.getLearnObjId())), pos.doubleValue());
 					}
 				}
 			}

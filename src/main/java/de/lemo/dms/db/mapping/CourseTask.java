@@ -36,13 +36,15 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
+import de.lemo.dms.db.mapping.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
+import de.lemo.dms.db.mapping.abstractions.IRatedObject;
 
 /** This class represents the relationship between courses and resources. */
 @Entity
 @Table(name = "lemo_course_task")
-public class CourseTask implements IMapping, ICourseLORelation {
+public class CourseTask implements IMapping, ICourseLORelation, ICourseRatedObjectAssociation {
 	
 	private long id;
 	private Course course;
@@ -155,4 +157,11 @@ public class CourseTask implements IMapping, ICourseLORelation {
 	public String getType() {
 		return "TASK";
 	}
+
+	@Override
+	@Transient
+	public IRatedObject getRatedObject() {
+		return this.getTask();
+	}
+
 }

@@ -39,8 +39,5 @@ public interface ICourseRatedObjectAssociation {
 	IRatedObject getRatedObject();
 
 	Course getCourse();
-	
-	Long getPrefix();
-
 
 }

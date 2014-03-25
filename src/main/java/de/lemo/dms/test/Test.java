@@ -34,6 +34,9 @@ import org.hibernate.Session;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.questions.QCourseActivity;
+import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
+import de.lemo.dms.processing.questions.QPerformanceHistogram;
+import de.lemo.dms.processing.questions.QPerformanceUserTestBoxPlot;
 
 /**
  * sollte gelöscht werden
@@ -42,16 +45,16 @@ import de.lemo.dms.processing.questions.QCourseActivity;
  */
 public class Test {
 
-/*
+
 	public static void gen()
 	{
 		final ContentGenerator conGen = new ContentGenerator();
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
-		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 2, 2, 251, 1325372400L, 500, 1));
+		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 250, 1325372400L, 5000));
 	}
-	
+/*	
 	public static void write()
 	{
 		final TestDataCreatorChemgapedia ch = new TestDataCreatorChemgapedia();
@@ -76,18 +79,27 @@ public class Test {
 	
 	public static void test()
 	{
+		QPerformanceHistogram qph = new QPerformanceHistogram();
+		QPerformanceUserTestBoxPlot qpubp = new QPerformanceUserTestBoxPlot();
 		QCourseActivity qca = new QCourseActivity();
+		QPerformanceBoxPlot qpbp = new QPerformanceBoxPlot();
 		List<Long> courses = new ArrayList<Long>();
-		courses.add(112L);
+		courses.add(221L);
 		List<Long> users = new ArrayList<Long>();
-		Long startTime = 0L;
-		Long endTime = 1563990913L;
-		Long resolution = 28L;
+		Long startTime = 1325375975L;
+		Long endTime = 1356906989L;
+		Long resolution = 100L;
 		List<String> resourceTypes = new ArrayList<String>();
 		List<Long> gender = new ArrayList<Long>();
+		List<Long> quizzes = new ArrayList<Long>();
+		quizzes.add(11224L);
+		quizzes.add(11225L);
+		quizzes.add(11221L);
+		quizzes.add(11222L);
+		quizzes.add(11223L);
 		
+		qpbp.compute(courses, users, quizzes, resolution, startTime, endTime, gender);
 		
-		qca.compute(courses, users, startTime, endTime, resolution, resourceTypes, gender);
 	}
 
 	public static void main(final String[] args)

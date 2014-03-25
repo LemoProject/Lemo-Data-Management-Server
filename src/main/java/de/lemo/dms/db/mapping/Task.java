@@ -44,6 +44,7 @@ import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
+import de.lemo.dms.db.mapping.abstractions.IRatedObject;
 
 /** 
  * This class represents the table task. 
@@ -51,7 +52,7 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  */
 @Entity
 @Table(name = "lemo_task")
-public class Task implements IMapping, ILearningObject{
+public class Task implements IMapping, ILearningObject, IRatedObject{
 
 	private long id;
 	private String title;
@@ -186,7 +187,7 @@ public class Task implements IMapping, ILearningObject{
 	 * @return the maxGrade
 	 */
 	@Column(name="maxgrade")
-	public double getMaxGrade() {
+	public Double getMaxGrade() {
 		return maxGrade;
 	}
 

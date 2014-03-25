@@ -34,7 +34,7 @@
     </database>
     <connectors>
       <connector platform-id="4" name="moodle23" platform-type="Moodle_2_3">
-        <course-id-filter>2</course-id-filter>
+        <course-id-filter>695</course-id-filter>
 	<course-login-filter></course-login-filter>        
 	<property name="hibernate.connection.url">jdbc:mysql://localhost/source_moodle23?rewriteBatchedStatements=true</property>
         <property name="hibernate.connection.username">lemo</property>

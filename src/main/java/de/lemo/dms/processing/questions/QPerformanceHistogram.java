@@ -119,7 +119,7 @@ public class QPerformanceHistogram extends Question {
 		{
 			for (int i = 0; i < quizzes.size(); i++)
 			{
-				obj.put(quizzes.get(i), i);
+				obj.put(Long.valueOf(quizzes.get(i).toString().substring(2, quizzes.get(i).toString().length())), i);
 			}
 		}
 		else
@@ -198,10 +198,12 @@ public class QPerformanceHistogram extends Question {
 					if (pos > (resolution - 1)) {
 						pos = resolution.intValue() - 1;
 					}
+					obj.get(association.getLearnObjId());
 					// Increase count of specified interval
-					results[(resolution.intValue() * association.getLearnObjId().intValue())
+					results[(resolution.intValue() * obj
+							.get(association.getLearnObjId()))
 							+ pos] = results           [(resolution.intValue() * obj
-							.get(association.getLearnObjId().intValue()))
+							.get(association.getLearnObjId()))
 							+ pos] + 1;
 				}
 			}
