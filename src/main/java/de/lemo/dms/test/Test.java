@@ -26,6 +26,8 @@
 
 package de.lemo.dms.test;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import org.hibernate.Session;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.questions.QCourseActivity;
+import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsViger;
 import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
@@ -85,6 +88,7 @@ public class Test {
 		QCourseActivity qca = new QCourseActivity();
 		QPerformanceBoxPlot qpbp = new QPerformanceBoxPlot();
 		QFrequentPathsViger qfpv = new QFrequentPathsViger();
+		QFrequentPathsBIDE qfpb = new QFrequentPathsBIDE();
 		List<Long> courses = new ArrayList<Long>();
 		courses.add(221L);
 		List<Long> users = new ArrayList<Long>();
@@ -99,8 +103,10 @@ public class Test {
 		quizzes.add(11221L);
 		quizzes.add(11222L);
 		quizzes.add(11223L);
-		
-		qfpv.compute(courses, users, types, 0L, 500L, 0.1d, false, startTime, endTime, gender);
+		Long u = 1L;
+
+		qfpv.compute(courses, users, types, 0L, 1000L, 0.9d, false, startTime, endTime, gender);
+			
 		
 	}
 

@@ -54,6 +54,7 @@ import com.google.common.collect.Maps;
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -72,8 +73,11 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
 @Path("frequentPathsViger")
 public class QFrequentPathsViger extends Question {
 
-	private Map<Long, ILog> idToLogM = new HashMap<Long, ILog>();
-	private Map<String, List<Long>> requests = new HashMap<String, List<Long>>();
+	private Map<Long, ILearningObject> objects = new HashMap<Long, ILearningObject>();
+	//private Map<Long, ILog> idToLogM = new HashMap<Long, ILog>();
+	private Map<Long, List<Long>> requests = new HashMap<Long, List<Long>>();
+	//private Map<Long, Integer> idToInternalId = new HashMap<Long, Integer>();
+	//private Map<Integer, Long> internalIdToId = new HashMap<Integer, Long>();
 
 	@POST
 	public ResultListUserPathGraph compute(
@@ -167,7 +171,7 @@ public class QFrequentPathsViger extends Question {
 						final Long obId = res.getLevel(i).get(j).get(k)
 								.getItems().get(0).getId();
 
-						final ILog ilo = this.idToLogM.get(obId);
+						final ILearningObject ilo = this.objects.get(obId);
 
 						final String type = ilo.getClass().getSimpleName();
 
@@ -178,7 +182,7 @@ public class QFrequentPathsViger extends Question {
 							pathObjects.put(
 									posId,
 									new UserPathObject(posId, ilo.getTitle(), absSup, type,
-											0d, ilo.getPrefix(), pathId,
+											0d, 11L, pathId,
 											Long.valueOf(this.requests.get(obId).size()), Long
 													.valueOf(new HashSet<Long>(this.requests.get(obId))
 															.size())));
@@ -191,7 +195,7 @@ public class QFrequentPathsViger extends Question {
 							pathObjects.put(
 									posId,
 									new UserPathObject(posId, ilo.getTitle(), absSup,
-											type, 0d, ilo.getPrefix(), pathId, Long
+											type, 0d, 11L, pathId, Long
 													.valueOf(this.requests.get(obId).size()), Long
 													.valueOf(new HashSet<Long>(this.requests.get(obId))
 															.size())));
@@ -221,14 +225,14 @@ public class QFrequentPathsViger extends Question {
 				}
 			}
 
-		//} catch (final Exception e)
-		//{
-		//	logger.error(e.getMessage());
+//		} catch (final Exception e)
+//		{
+//			logger.error(e.getMessage());
 			
 		} finally
 		{
 			this.requests.clear();
-			this.idToLogM.clear();
+			this.objects.clear();
 		}
 		session.close();
 		return new ResultListUserPathGraph(nodes, links);
@@ -315,8 +319,7 @@ public class QFrequentPathsViger extends Question {
 		}
 
 		// Just changing the container for the user histories
-		final ArrayList<ArrayList<ILog>> uhis = new ArrayList<ArrayList<ILog>>();
-		int id = 1;
+		final ArrayList<ArrayList<ILog>> userHistories = new ArrayList<ArrayList<ILog>>();
 		for (final ArrayList<ILog> uLog : logMap.values())
 		{
 
@@ -324,13 +327,10 @@ public class QFrequentPathsViger extends Question {
 			boolean containsType = false;
 			for (final ILog iLog : uLog)
 			{
-				/*
-				if (this.idToInternalId.get(iLog.getPrefix() + " " + iLog.getLearningObjectId()) == null)
+				if (this.objects.get(iLog.getLearningObjectId()) == null)
 				{
-					this.internalIdToId.put(id, iLog.getPrefix() + " " + iLog.getLearningObjectId());
-					this.idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearningObjectId(), id);
-					id++;
-				}*/
+					this.objects.put(iLog.getLearningObjectId(), iLog.getLearningObject());
+				}
 				if (hasTypes) {
 					for (final String type : types)
 					{
@@ -350,7 +350,7 @@ public class QFrequentPathsViger extends Question {
 			if ((!hasBorders || ((tmp.size() >= minLength) && (tmp.size() <= maxLength)))
 					&& (!hasTypes || containsType))
 			{
-				uhis.add(tmp);
+				userHistories.add(tmp);
 				if (tmp.size() > max) {
 					max = tmp.size();
 				}
@@ -364,8 +364,8 @@ public class QFrequentPathsViger extends Question {
 			lengths[i] = 0;
 		}
 
-		for (int i = 0; i < uhis.size(); i++) {
-			lengths[uhis.get(i).size() / 10]++;
+		for (int i = 0; i < userHistories.size(); i++) {
+			lengths[userHistories.get(i).size() / 10]++;
 		}
 
 		for (int i = 0; i < lengths.length; i++) {
@@ -375,35 +375,29 @@ public class QFrequentPathsViger extends Question {
 			}
 		}
 
-		logger.debug("Generated " + uhis.size() + " user histories. Max length @ " + max);
+		logger.debug("Generated " + userHistories.size() + " user histories. Max length @ " + max);
 
 		int z = 0;
 
 		// Convert all user histories or "paths" into the format, that is requested by the BIDE-algorithm-class
-		for (final ArrayList<ILog> l : uhis)
+		for (final ArrayList<ILog> userPath : userHistories)
 		{
 			String line = "";
-			for (int i = 0; i < l.size(); i++)
+			for (int i = 0; i < userPath.size(); i++)
 			{
-				
-				if (this.idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId()) == null) {
-					this.idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId(),
-							l.get(i));
-				}
-
 				// Update request numbers
-				if (this.requests.get(l.get(i).getLearningObjectId()) == null)
+				if (this.requests.get(userPath.get(i).getLearningObjectId()) == null)
 				{
 					final ArrayList<Long> us = new ArrayList<Long>();
-					us.add(l.get(i).getUser().getId());
-					this.requests.put("" +l.get(i).getLearningObjectId(), us);
+					us.add(userPath.get(i).getUser().getId());
+					this.requests.put(userPath.get(i).getLearningObjectId(), us);
 				} else {
-					this.requests.get(l.get(i).getLearningObjectId()).add(
-							l.get(i).getUser().getId());
+					this.requests.get(userPath.get(i).getLearningObjectId()).add(
+							userPath.get(i).getUser().getId());
 				}
 				// The id of the object gets the prefix, indicating it's class. This is important for distinction
 				// between objects of different ILogMining-classes but same ids
-				line += "<" + i + "> " + l.get(i).getLearningObjectId() + " -1 ";
+				line += "<" + i + "> " + userPath.get(i).getLearningObjectId() + " -1 ";
 			}
 			line += "-2";
 			result.add(line);
