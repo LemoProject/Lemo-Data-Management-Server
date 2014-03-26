@@ -221,9 +221,9 @@ public class QFrequentPathsViger extends Question {
 				}
 			}
 
-		} catch (final Exception e)
-		{
-			logger.error(e.getMessage());
+		//} catch (final Exception e)
+		//{
+		//	logger.error(e.getMessage());
 			
 		} finally
 		{
@@ -385,11 +385,11 @@ public class QFrequentPathsViger extends Question {
 			String line = "";
 			for (int i = 0; i < l.size(); i++)
 			{
-				/*
+				
 				if (this.idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId()) == null) {
 					this.idToLogM.put(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId(),
 							l.get(i));
-				}*/
+				}
 
 				// Update request numbers
 				if (this.requests.get(l.get(i).getLearningObjectId()) == null)

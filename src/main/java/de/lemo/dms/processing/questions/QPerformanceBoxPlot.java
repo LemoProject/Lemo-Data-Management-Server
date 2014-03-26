@@ -44,12 +44,15 @@ import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.abstractions.IRatedLogObject;
 import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.BoxPlot;
 import de.lemo.dms.processing.resulttype.ResultListBoxPlot;
+import de.lemo.dms.processing.resulttype.ResultListStringObject;
+import de.lemo.dms.service.ServiceRatedObjects;
 
 /**
  * Accumulates the performance (result of tests) of the users over a period
@@ -110,7 +113,38 @@ public class QPerformanceBoxPlot extends Question {
 			logger.debug("Parameter list: Start time: : " + startTime);
 			logger.debug("Parameter list: End time: : " + endTime);
 		}
+		
+		final Map<Long, Integer> obj = new HashMap<Long, Integer>();
 
+		if(quizzes.size() > 0)
+		{
+			for (int i = 0; i < quizzes.size(); i++)
+			{
+				obj.put(Long.valueOf(quizzes.get(i).toString().substring(2, quizzes.get(i).toString().length())), i);
+			}
+		}
+		else
+		{
+			ServiceRatedObjects sro = new ServiceRatedObjects();
+			ResultListStringObject rso = sro.getRatedObjects(courses);
+			String s = new String();
+			int count = 0;
+			for(int i = 0; i < rso.getElements().size(); i++)
+			{
+				if((i + 1) % 3 != 0)
+				{
+					s += rso.getElements().get(i);
+				}
+				else
+				{
+					obj.put(Long.valueOf(s), count);
+					quizzes.add(Long.valueOf(s));
+					s= "";
+					count++;
+				}
+			}
+			
+		}
 	
 
 		final HashMap<Long, ArrayList<Double>> values = new HashMap<Long, ArrayList<Double>>();
@@ -145,17 +179,16 @@ public class QPerformanceBoxPlot extends Question {
 
 		final ArrayList<IRatedUserAssociation> list = (ArrayList<IRatedUserAssociation>) criteria.list();
 
-
-		for (final IRatedUserAssociation association : list)
+		for (final IRatedUserAssociation aso : list)
 		{
-			final Long name = association.getLearnObjId();
+			final Long name = Long.valueOf(aso.getLearnObjId());
 			if (values.get(name) == null)
 			{
 				final ArrayList<Double> v = new ArrayList<Double>();
 				values.put(name, v);
 			}
 
-			values.get(name).add(association.getFinalGrade() / ((association.getMaxGrade() / resolution)));
+			values.get(name).add(aso.getFinalGrade() / ((aso.getMaxGrade() / resolution)));
 		}
 
 		BoxPlot[] results = new BoxPlot[values.keySet().size()];
@@ -164,7 +197,7 @@ public class QPerformanceBoxPlot extends Question {
 		for (final Entry<Long, ArrayList<Double>> e : values.entrySet())
 		{
 
-			final BoxPlot plotty = this.calcBox(e.getValue(), e.getKey());
+			final BoxPlot plotty = this.calcBox(e.getValue(), Long.valueOf(11 + "" + e.getKey()));
 			results[i] = plotty;
 			i++;
 		}

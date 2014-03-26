@@ -34,6 +34,7 @@ import org.hibernate.Session;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.questions.QCourseActivity;
+import de.lemo.dms.processing.questions.QFrequentPathsViger;
 import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.questions.QPerformanceUserTestBoxPlot;
@@ -83,13 +84,14 @@ public class Test {
 		QPerformanceUserTestBoxPlot qpubp = new QPerformanceUserTestBoxPlot();
 		QCourseActivity qca = new QCourseActivity();
 		QPerformanceBoxPlot qpbp = new QPerformanceBoxPlot();
+		QFrequentPathsViger qfpv = new QFrequentPathsViger();
 		List<Long> courses = new ArrayList<Long>();
 		courses.add(221L);
 		List<Long> users = new ArrayList<Long>();
 		Long startTime = 1325375975L;
 		Long endTime = 1356906989L;
 		Long resolution = 100L;
-		List<String> resourceTypes = new ArrayList<String>();
+		List<String> types = new ArrayList<String>();
 		List<Long> gender = new ArrayList<Long>();
 		List<Long> quizzes = new ArrayList<Long>();
 		quizzes.add(11224L);
@@ -98,7 +100,7 @@ public class Test {
 		quizzes.add(11222L);
 		quizzes.add(11223L);
 		
-		qpbp.compute(courses, users, quizzes, resolution, startTime, endTime, gender);
+		qfpv.compute(courses, users, types, 0L, 500L, 0.1d, false, startTime, endTime, gender);
 		
 	}
 
