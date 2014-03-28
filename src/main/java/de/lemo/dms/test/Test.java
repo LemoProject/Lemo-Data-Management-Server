@@ -105,7 +105,15 @@ public class Test {
 		quizzes.add(11223L);
 		Long u = 1L;
 
-		qfpv.compute(courses, users, types, 0L, 1000L, 0.9d, false, startTime, endTime, gender);
+		try {
+			qfpb.compute(1L, courses, users, types, 0L, 1000L, 0.9, false, startTime, endTime, gender);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			
 		
 	}

@@ -177,7 +177,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 					for (int k = 0; k < res.getLevel(i).get(j).size(); k++)
 					{
 
-						final Long obId = res.getLevel(i).get(j).get(k).getItems().get(0).getId();
+						final Integer obId = res.getLevel(i).get(j).get(k).getItems().get(0).getId().intValue();
 
 						final ILog ilo = idToLogM.get(obId);
 
@@ -232,9 +232,9 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 				}
 			}
 
-		} catch (final Exception e)
+	/*	} catch (final Exception e)
 		{
-			logger.error(e.getMessage());
+			logger.error(e.getMessage());*/
 		} finally
 		{
 			requests.clear();
