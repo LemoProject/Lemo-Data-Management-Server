@@ -116,5 +116,12 @@ public class ResourceRequestInfo {
 		this.resolutionSlot = resolutionSlot;
 		this.users = users;
 	}
+	
+	@Override
+	public String toString()
+	{
+		String s = this.getResourcetype() + " " + this.getTitle() + " " + this.getUsers() + " " + this.getRequests();
+		return s;
+	}
 
 }

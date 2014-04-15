@@ -54,7 +54,7 @@ import de.lemo.dms.db.mapping.CourseLearningObject;
 import de.lemo.dms.db.mapping.CourseTask;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.LearningObject;
-import de.lemo.dms.db.mapping.LearningObjectLog;
+import de.lemo.dms.db.mapping.ViewLog;
 import de.lemo.dms.db.mapping.Platform;
 import de.lemo.dms.db.mapping.CollaborativeObject;
 import de.lemo.dms.db.mapping.Config;
@@ -394,7 +394,7 @@ public abstract class ExtractAndMap {
 		
 		
 
-		Criteria criteria = session.createCriteria(LearningObjectLog.class);
+		Criteria criteria = session.createCriteria(ViewLog.class);
 		ProjectionList pl = Projections.projectionList();
 		pl.add(Projections.max("id"));
 		criteria.setProjection(pl);
@@ -755,7 +755,7 @@ public abstract class ExtractAndMap {
 	 * 
 	 * @return A list of instances of the course_log table representing class.
 	 **/
-	abstract Map<Long, LearningObjectLog> generateViewLogMining();
+	abstract Map<Long, ViewLog> generateViewLogMining();
 
 
 	/**

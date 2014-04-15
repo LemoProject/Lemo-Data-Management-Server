@@ -92,7 +92,7 @@ public final class MiningHibernateUtil {
 		config.addAnnotatedClass(CourseUser.class);
 		
 		//Logs
-		config.addAnnotatedClass(LearningObjectLog.class);
+		config.addAnnotatedClass(ViewLog.class);
 		config.addAnnotatedClass(CollaborativeObjectLog.class);
 		config.addAnnotatedClass(Assessment.class);
 		config.addAnnotatedClass(TaskLog.class);

@@ -56,7 +56,7 @@ public class LearningObject implements IMapping, ILearningObject{
 	private LearningObjectType type;
 	
 	private Set<CourseLearningObject> courseLearningObjects = new HashSet<CourseLearningObject>();	
-	private Set<LearningObjectLog> viewLogs = new HashSet<LearningObjectLog>();
+	private Set<ViewLog> viewLogs = new HashSet<ViewLog>();
 	
 	public boolean equals(final IMapping o) {
 		if (!(o instanceof CollaborativeObject)) {
@@ -101,17 +101,17 @@ public class LearningObject implements IMapping, ILearningObject{
 		this.type = type;
 	}
 	
-	public void setViewLogs(final Set<LearningObjectLog> viewLogs) {
+	public void setViewLogs(final Set<ViewLog> viewLogs) {
 		this.viewLogs = viewLogs;
 	}
 
 
 	@OneToMany(mappedBy="learningObject")
-	public Set<LearningObjectLog> getViewLogs() {
+	public Set<ViewLog> getViewLogs() {
 		return this.viewLogs;
 	}
 
-	public void addViewLog(final LearningObjectLog viewLog) {
+	public void addViewLog(final ViewLog viewLog) {
 		this.viewLogs.add(viewLog);
 	}
 	

@@ -47,7 +47,7 @@ import de.lemo.dms.db.mapping.CourseLearningObject;
 import de.lemo.dms.db.mapping.CourseTask;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.LearningObject;
-import de.lemo.dms.db.mapping.LearningObjectLog;
+import de.lemo.dms.db.mapping.ViewLog;
 import de.lemo.dms.db.mapping.LearningObjectType;
 import de.lemo.dms.db.mapping.Platform;
 import de.lemo.dms.db.mapping.Role;
@@ -158,7 +158,7 @@ public class ContentGenerator {
 		final ArrayList<CourseUser> courseUserList = new ArrayList<CourseUser>();
 
 		// Log-containers
-		final ArrayList<LearningObjectLog> learnLog = new ArrayList<LearningObjectLog>();
+		final ArrayList<ViewLog> learnLog = new ArrayList<ViewLog>();
 		final ArrayList<ILog> resourceLogList = new ArrayList<ILog>();
 		final ArrayList<CollaborativeObjectLog> collLog = new ArrayList<CollaborativeObjectLog>();
 		final ArrayList<TaskLog> taskLogs = new ArrayList<TaskLog>();
@@ -356,7 +356,7 @@ public class ContentGenerator {
 				
 				// _________________LearningObjectLogs___________________________________________________
 				int time = (int) (startdate + log * (year / logSwitch));
-				final LearningObjectLog rLog = new LearningObjectLog();
+				final ViewLog rLog = new ViewLog();
 				rLog.setCourse(cou);
 				rLog.setLearningObject(learningObjects.get((learningObjects.size() - 1) - randy.nextInt(MAGIC_TEN)));
 				rLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
@@ -487,7 +487,7 @@ public class ContentGenerator {
 		return all;
 	}
 	
-	private void createIdsLL(List<LearningObjectLog> logs)
+	private void createIdsLL(List<ViewLog> logs)
 	{
 		int i = 1;
 		for(ILog il : logs)

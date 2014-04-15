@@ -41,7 +41,7 @@ import com.google.common.collect.Lists;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.LearningObjectLog;
+import de.lemo.dms.db.mapping.ViewLog;
 
 class TestUserThread extends Thread {
 
@@ -52,7 +52,7 @@ class TestUserThread extends Thread {
     public void run() {
         Session session = dbHandler.getMiningSession();
         try {
-            List<?> result = session.createCriteria(LearningObjectLog.class).setMaxResults(5000).list();
+            List<?> result = session.createCriteria(ViewLog.class).setMaxResults(5000).list();
             assertNotNull(result);
             assertFalse(result.isEmpty());
         } catch (Exception e) {

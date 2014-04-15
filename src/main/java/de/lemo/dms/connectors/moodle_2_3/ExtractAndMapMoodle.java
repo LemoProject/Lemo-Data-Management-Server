@@ -93,7 +93,7 @@ import de.lemo.dms.db.mapping.LearningObjectType;
 import de.lemo.dms.db.mapping.Task;
 import de.lemo.dms.db.mapping.TaskType;
 import de.lemo.dms.db.mapping.TaskUser;
-import de.lemo.dms.db.mapping.LearningObjectLog;
+import de.lemo.dms.db.mapping.ViewLog;
 import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.db.mapping.TaskLog;
 import de.lemo.dms.db.mapping.User;
@@ -2077,14 +2077,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, LearningObjectLog> generateViewLogMining() {
-		final HashMap<Long, LearningObjectLog> viewLogMining = new HashMap<Long, LearningObjectLog>();
+	public Map<Long, ViewLog> generateViewLogMining() {
+		final HashMap<Long, ViewLog> viewLogMining = new HashMap<Long, ViewLog>();
 		// A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her
 		// requests times.
 
 		for (final LogLMS loadedItem : this.logLms)
 		{
-			final LearningObjectLog insert = new LearningObjectLog();
+			final ViewLog insert = new ViewLog();
 
 			insert.setId(viewLogMining.size() + 1 + this.viewLogMax);
 

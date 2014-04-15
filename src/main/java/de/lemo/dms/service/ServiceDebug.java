@@ -39,7 +39,7 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.CollaborativeObjectLog;
 import de.lemo.dms.db.mapping.TaskLog;
-import de.lemo.dms.db.mapping.LearningObjectLog;
+import de.lemo.dms.db.mapping.ViewLog;
 
 /**
  * Service for debugging messages
@@ -108,7 +108,7 @@ public class ServiceDebug {
 				List<?> result = null;
 				int resultCount = 0;
 				try {
-					result = miningSession.createCriteria(LearningObjectLog.class, "log").setMaxResults(1).list();
+					result = miningSession.createCriteria(ViewLog.class, "log").setMaxResults(1).list();
 					resultCount += result.size();
 					result = miningSession.createCriteria(TaskLog.class, "log").setMaxResults(1).list();
 					resultCount += result.size();

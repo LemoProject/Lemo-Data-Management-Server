@@ -93,7 +93,7 @@ public class Test {
 		courses.add(221L);
 		List<Long> users = new ArrayList<Long>();
 		Long startTime = 1325375975L;
-		Long endTime = 1356906989L;
+		Long endTime = 1335375975L;
 		Long resolution = 100L;
 		List<String> types = new ArrayList<String>();
 		List<Long> gender = new ArrayList<Long>();
@@ -108,10 +108,10 @@ public class Test {
 		try {
 			qfpb.compute(1L, courses, users, types, 0L, 1000L, 0.9, false, startTime, endTime, gender);
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 			

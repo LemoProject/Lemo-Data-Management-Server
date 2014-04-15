@@ -122,7 +122,7 @@ public class QLearningObjectUsage extends Question {
 		this.logger.debug("Total matched entries: " + logs.size());
 
 		final HashMap<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
-		HashSet<Long> requestedObjects = new HashSet<Long>();
+		HashSet<String> requestedObjects = new HashSet<String>();
 		
 		for (final ILog ilo : logs)
 		{
@@ -136,7 +136,7 @@ public class QLearningObjectUsage extends Question {
 
 			if ((types == null) || (types.isEmpty()) || types.contains(obType.toUpperCase()))
 			{
-				requestedObjects.add(ilo.getLearningObjectId());
+				requestedObjects.add(ilo.getType() + " " + ilo.getLearningObjectId());
 				
 				final String id;
 				/*
@@ -176,7 +176,7 @@ public class QLearningObjectUsage extends Question {
 		
 		for(ICourseLORelation aso : asoList)
 		{
-			Long obId = aso.getLearningObj().getId();
+			String obId = aso.getType() + " " + aso.getLearningObj().getId();
 			if(!requestedObjects.contains(obId))
 			{
 				ILearningObject ilo = aso.getLearningObj();

@@ -45,8 +45,8 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_learning_object_log")
-public class LearningObjectLog implements IMapping, ILog {
+@Table(name = "lemo_view_log")
+public class ViewLog implements IMapping, ILog {
 
 	private long id;
 	private Course course;
@@ -58,10 +58,10 @@ public class LearningObjectLog implements IMapping, ILog {
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof LearningObjectLog)) {
+		if (!(o instanceof ViewLog)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof LearningObjectLog)) {
+		if ((o.getId() == this.getId()) && (o instanceof ViewLog)) {
 			return true;
 		}
 		return false;
