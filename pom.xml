@@ -358,8 +358,6 @@
 		<slf4j-version>1.6.6</slf4j-version>
 		<servlet-api-release-version>2.5</servlet-api-release-version>
 
-		<lemo2-tomcat-url>http://lemo2.f4.htw-berlin.de:8080</lemo2-tomcat-url>
-		<lemo3-tomcat-url>http://141.45.146.174:8080</lemo3-tomcat-url>
 	</properties>
 
 </project>
