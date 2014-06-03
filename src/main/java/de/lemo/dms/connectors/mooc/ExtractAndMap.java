@@ -24,7 +24,7 @@
  * Project Lemo Learning Analytics
  */
 
-package de.lemo.dms.connectors.iversity;
+package de.lemo.dms.connectors.mooc;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

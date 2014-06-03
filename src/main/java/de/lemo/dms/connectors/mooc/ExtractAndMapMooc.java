@@ -24,7 +24,7 @@
  * Project Lemo Learning Analytics
  */
 
-package de.lemo.dms.connectors.iversity;
+package de.lemo.dms.connectors.mooc;
 
 
 import java.math.BigInteger;
@@ -102,7 +102,7 @@ import de.lemo.dms.db.mapping.User;
  * The main class of the extraction process.
  * Implementation of the abstract extract class for the LMS Moodle.
  */
-public class ExtractAndMapIversity extends ExtractAndMap {
+public class ExtractAndMapMooc extends ExtractAndMap {
 	// Versionsnummer in Namen einfügen
 
 	// LMS tables instances lists
@@ -148,7 +148,7 @@ public class ExtractAndMapIversity extends ExtractAndMap {
 
 	private final IConnector connector;
 
-	public ExtractAndMapIversity(final IConnector connector) {
+	public ExtractAndMapMooc(final IConnector connector) {
 		super(connector);
 		this.connector = connector;
 	}

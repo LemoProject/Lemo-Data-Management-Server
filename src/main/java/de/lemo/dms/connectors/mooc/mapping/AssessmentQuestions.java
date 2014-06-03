@@ -1,4 +1,4 @@
-package de.lemo.dms.connectors.iversity.mapping;
+package de.lemo.dms.connectors.mooc.mapping;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,15 +7,43 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "assessments")
-public class Assessments {
+@Table(name = "assessment_questions")
+public class AssessmentQuestions {
 	
 	private long id;
+	private long assessmentId;
 	private String type;
-	private String title;
+	private long score;
 	private long timecreated;
 	private long timemodified;
-
+	
+	/**
+	 * @return the id
+	 */
+	@Id
+	public long getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+	/**
+	 * @return the assessment_id
+	 */
+	
+	@Column(name="assessment_id")
+	public long getAssessmentId() {
+		return assessmentId;
+	}
+	/**
+	 * @param assessment_id the assessment_id to set
+	 */
+	public void setAssessmentId(long assessmentId) {
+		this.assessmentId = assessmentId;
+	}
 	/**
 	 * @return the type
 	 */
@@ -23,29 +51,25 @@ public class Assessments {
 	public String getType() {
 		return type;
 	}
-
 	/**
 	 * @param type the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
 	}
-
 	/**
-	 * @return the title
+	 * @return the score
 	 */
-	@Column(name="title")
-	public String getTitle() {
-		return title;
+	@Column(name="score")
+	public long getScore() {
+		return score;
 	}
-
 	/**
-	 * @param title the title to set
+	 * @param score the score to set
 	 */
-	public void setTitle(String title) {
-		this.title = title;
+	public void setScore(long score) {
+		this.score = score;
 	}
-
 	/**
 	 * @return the timecreated
 	 */
@@ -53,14 +77,12 @@ public class Assessments {
 	public long getTimecreated() {
 		return timecreated;
 	}
-
 	/**
 	 * @param timecreated the timecreated to set
 	 */
 	public void setTimecreated(long timecreated) {
 		this.timecreated = timecreated;
 	}
-
 	/**
 	 * @return the timemodified
 	 */
@@ -68,21 +90,11 @@ public class Assessments {
 	public long getTimemodified() {
 		return timemodified;
 	}
-
 	/**
 	 * @param timemodified the timemodified to set
 	 */
 	public void setTimemodified(long timemodified) {
 		this.timemodified = timemodified;
-	}
-
-	@Id
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(final long id) {
-		this.id = id;
 	}
 
 }

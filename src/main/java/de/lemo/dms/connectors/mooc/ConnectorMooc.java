@@ -24,7 +24,7 @@
  * Project Lemo Learning Analytics
  */
 
-package de.lemo.dms.connectors.iversity;
+package de.lemo.dms.connectors.mooc;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -38,11 +38,11 @@ import de.lemo.dms.db.IDBHandler;
  * 
  * @author s.schwarzrock
  */
-public class ConnectorIversity extends AbstractConnector {
+public class ConnectorMooc extends AbstractConnector {
 
 	private DBConfigObject config;
 
-	public ConnectorIversity(final DBConfigObject config) {
+	public ConnectorMooc(final DBConfigObject config) {
 		this.config = config;
 	}
 
@@ -63,7 +63,7 @@ public class ConnectorIversity extends AbstractConnector {
 
 	@Override
 	public void getData() {
-		final ExtractAndMapIversity extract = new ExtractAndMapIversity(this);
+		final ExtractAndMapMooc extract = new ExtractAndMapMooc(this);
 		final String[] s = new String[1];
 		s[0] = "ExtractAndMapIversity";
 
@@ -72,7 +72,7 @@ public class ConnectorIversity extends AbstractConnector {
 
 	@Override
 	public void updateData(final long fromTimestamp) {
-		final ExtractAndMapIversity extract = new ExtractAndMapIversity(this);
+		final ExtractAndMapMooc extract = new ExtractAndMapMooc(this);
 		final String[] s = new String[2];
 		s[0] = "ExtractAndMapIversity";
 		s[1] = fromTimestamp + "";

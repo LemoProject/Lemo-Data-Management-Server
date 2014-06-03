@@ -1,19 +1,18 @@
-package de.lemo.dms.connectors.iversity.mapping;
+package de.lemo.dms.connectors.mooc.mapping;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name = "assessment_questions")
-public class AssessmentQuestions {
+@Table(name = "assessment_answers")
+public class AssessmentAnswers {
 	
 	private long id;
-	private long assessmentId;
-	private String type;
-	private long score;
+	private long assessmentQuestionId;
+	private boolean correct;
+	private String content;	
 	private long timecreated;
 	private long timemodified;
 	
@@ -24,52 +23,59 @@ public class AssessmentQuestions {
 	public long getId() {
 		return id;
 	}
+	
 	/**
 	 * @param id the id to set
 	 */
 	public void setId(long id) {
 		this.id = id;
 	}
-	/**
-	 * @return the assessment_id
-	 */
 	
-	@Column(name="assessment_id")
-	public long getAssessmentId() {
-		return assessmentId;
-	}
 	/**
-	 * @param assessment_id the assessment_id to set
+	 * @return the assessmentQuestionId
 	 */
-	public void setAssessmentId(long assessmentId) {
-		this.assessmentId = assessmentId;
+	@Column(name="assessment_question_id")
+	public long getAssessmentQuestionId() {
+		return assessmentQuestionId;
 	}
+	
 	/**
-	 * @return the type
+	 * @param assessmentQuestionId the assessmentQuestionId to set
 	 */
-	@Column(name="type")
-	public String getType() {
-		return type;
+	public void setAssessmentQuestionId(long assessmentQuestionId) {
+		this.assessmentQuestionId = assessmentQuestionId;
 	}
+	
 	/**
-	 * @param type the type to set
+	 * @return the correct
 	 */
-	public void setType(String type) {
-		this.type = type;
+	@Column(name="correct")
+	public boolean isCorrect() {
+		return correct;
 	}
+	
 	/**
-	 * @return the score
+	 * @param correct the correct to set
 	 */
-	@Column(name="score")
-	public long getScore() {
-		return score;
+	public void setCorrect(boolean correct) {
+		this.correct = correct;
 	}
+	
 	/**
-	 * @param score the score to set
+	 * @return the content
 	 */
-	public void setScore(long score) {
-		this.score = score;
+	@Column(name="content")
+	public String getContent() {
+		return content;
 	}
+	
+	/**
+	 * @param content the content to set
+	 */
+	public void setContent(String content) {
+		this.content = content;
+	}
+	
 	/**
 	 * @return the timecreated
 	 */
@@ -77,12 +83,14 @@ public class AssessmentQuestions {
 	public long getTimecreated() {
 		return timecreated;
 	}
+	
 	/**
 	 * @param timecreated the timecreated to set
 	 */
 	public void setTimecreated(long timecreated) {
 		this.timecreated = timecreated;
 	}
+	
 	/**
 	 * @return the timemodified
 	 */
@@ -90,11 +98,14 @@ public class AssessmentQuestions {
 	public long getTimemodified() {
 		return timemodified;
 	}
+	
 	/**
 	 * @param timemodified the timemodified to set
 	 */
 	public void setTimemodified(long timemodified) {
 		this.timemodified = timemodified;
 	}
+
+	
 
 }

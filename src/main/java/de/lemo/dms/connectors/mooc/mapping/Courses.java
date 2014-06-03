@@ -24,7 +24,7 @@
  * Project Lemo Learning Analytics
  */
 
-package de.lemo.dms.connectors.iversity.mapping;
+package de.lemo.dms.connectors.mooc.mapping;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
