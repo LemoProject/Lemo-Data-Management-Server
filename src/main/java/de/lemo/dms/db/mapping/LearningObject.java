@@ -53,6 +53,7 @@ public class LearningObject implements IMapping, ILearningObject{
 
 	private long id;
 	private String title;
+	private String url;
 	private LearningObjectType type;
 	
 	private Set<CourseLearningObject> courseLearningObjects = new HashSet<CourseLearningObject>();	
@@ -165,5 +166,21 @@ public class LearningObject implements IMapping, ILearningObject{
 	@Transient
 	public String getLOType() {
 		return this.getType().getType();
+	}
+	
+	/**
+	 * @return the url
+	 */
+	@Lob
+	@Column(name="url")
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

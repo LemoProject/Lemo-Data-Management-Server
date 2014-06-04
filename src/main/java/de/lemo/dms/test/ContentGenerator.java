@@ -304,6 +304,7 @@ public class ContentGenerator {
 				r.setId(Long.valueOf(platform.getPrefix() + "" + (learningObjects.size() + 1)));
 				r.setTitle("LearningObj " + k + "." + l);
 				r.setType(loTypes.get(l % 3));
+				r.setUrl("http://lemo-generated.de/" + cou.getTitle().replace(" ", "-").replace(".", "_") + "/" + r.getTitle().replace(" ", "-").replace(".", "_") + ".html");
 				
 				final CourseLearningObject couRes = new CourseLearningObject();
 				couRes.setId(Long.valueOf(platform.getPrefix() + "" + (courseLearningObjects.size() + 1)));
@@ -320,7 +321,7 @@ public class ContentGenerator {
 				w.setId(Long.valueOf(platform.getPrefix() + "" + (collaborativeObjects.size() + 1)));
 				w.setType(collTypes.get(l % 3));
 				w.setTitle("Collaborative " + k + "." + l);
-
+				w.setUrl("http://lemo-generated.de/" + cou.getTitle().replace(" ", "-").replace(".", "_") + "/" + w.getTitle().replace(" ", "-").replace(".", "_") + ".html");
 				final CourseCollaborativeObject couWik = new CourseCollaborativeObject();
 				couWik.setId(Long.valueOf(platform.getPrefix() + "" + (courseCollaborativeObjects.size() + 1)));
 				couWik.setCourse(cou);
@@ -337,6 +338,7 @@ public class ContentGenerator {
 				a.setTitle("Task "  + k + "." + l);
 				a.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * MAGIC_FIVE);
 				a.setType(taskTypes.get(l % 3));
+				a.setUrl("http://lemo-generated.de/" + cou.getTitle().replace(" ", "-").replace(".", "_") + "/" + a.getTitle().replace(" ", "-").replace(".", "_") + ".html");
 
 				final CourseTask couAss = new CourseTask();
 				couAss.setId(Long.valueOf(platform.getPrefix() + "" + (courseTasks.size() + 1)));

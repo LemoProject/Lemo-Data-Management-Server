@@ -58,6 +58,7 @@ public class Task implements IMapping, ILearningObject, IRatedObject{
 	private String title;
 	private TaskType type;
 	private Task parent;
+	private String url;
 	private double maxGrade;
 	
 	private Set<CourseTask> courseTasks = new HashSet<CourseTask>();
@@ -217,6 +218,22 @@ public class Task implements IMapping, ILearningObject, IRatedObject{
 	@Transient
 	public String getLOType() {
 		return this.getType().getType();
+	}
+	
+	/**
+	 * @return the url
+	 */
+	@Lob
+	@Column(name="url")
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 }

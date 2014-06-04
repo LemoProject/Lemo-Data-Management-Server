@@ -53,6 +53,7 @@ public class CollaborativeObject implements IMapping, ILearningObject{
 
 	private long id;
 	private String title;
+	private String url;
 	private CollaborativeObjectType type;
 	
 	private Set<CourseCollaborativeObject> courseCollaborativeObjects = new HashSet<CourseCollaborativeObject>();	
@@ -171,5 +172,21 @@ public class CollaborativeObject implements IMapping, ILearningObject{
 	@Transient
 	public String getLOType() {
 		return this.getType().getType();
+	}
+
+	/**
+	 * @return the url
+	 */
+	@Lob
+	@Column(name="url")
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }
