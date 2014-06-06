@@ -26,21 +26,10 @@
 
 package de.lemo.dms.test;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hibernate.Session;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.processing.questions.QCourseActivity;
-import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
-import de.lemo.dms.processing.questions.QFrequentPathsViger;
-import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
-import de.lemo.dms.processing.questions.QPerformanceHistogram;
-import de.lemo.dms.processing.questions.QPerformanceUserTestBoxPlot;
 
 /**
  * sollte gelöscht werden
@@ -80,7 +69,7 @@ public class Test {
 	 * TODO move to unit test
 	 * @param args
 	 */
-	
+	/*
 	public static void test()
 	{
 		QPerformanceHistogram qph = new QPerformanceHistogram();
@@ -117,6 +106,7 @@ public class Test {
 			
 		
 	}
+	*/
 
 	public static void main(final String[] args)
 	{
