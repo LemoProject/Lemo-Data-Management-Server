@@ -121,29 +121,63 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		//Read Context
 		Criteria criteria = session.createCriteria(Courses.class, "obj");
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.coursesMooc = criteria.list();
 		
 		criteria = session.createCriteria(AssessmentAnswers.class, "obj");
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentAnswersMooc = criteria.list();
 		
 		criteria = session.createCriteria(AssessmentQuestions.class, "obj");
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentQuestionsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Assessments.class, "obj");
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentMooc = criteria.list();
 		
 		criteria = session.createCriteria(Events.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.eventsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Memberships.class, "obj");
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.membershipsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Progress.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.progressMooc = criteria.list();
 		
 		criteria = session.createCriteria(Questions.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.questionsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Segments.class, "obj");
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.segmentsMooc = criteria.list();
 		
 		criteria = session.createCriteria(UnitResources.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.unitResourcesMooc = criteria.list();
 		
 		criteria = session.createCriteria(Users.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.usersMooc = criteria.list();
 		
 		criteria = session.createCriteria(Videos.class, "obj");
-
+		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.videosMooc = criteria.list();
 	}
 
 	@Override
@@ -156,28 +190,52 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		//Read Context
 		Criteria criteria = session.createCriteria(Courses.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.coursesMooc = criteria.list();
 		
 		criteria = session.createCriteria(AssessmentAnswers.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentAnswersMooc = criteria.list();
 		
 		criteria = session.createCriteria(AssessmentQuestions.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentQuestionsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Assessments.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentMooc = criteria.list();
 		
 		criteria = session.createCriteria(Events.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.eventsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Memberships.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.membershipsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Progress.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.progressMooc = criteria.list();
 		
 		criteria = session.createCriteria(Questions.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.questionsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Segments.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.segmentsMooc = criteria.list();
 		
 		criteria = session.createCriteria(UnitResources.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.unitResourcesMooc = criteria.list();
 		
 		criteria = session.createCriteria(Users.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.usersMooc = criteria.list();
 		
 		criteria = session.createCriteria(Videos.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.videosMooc = criteria.list();
 		
 	}
 
@@ -200,109 +258,118 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	Map<Long, CourseUser> generateCourseUserMining() {
+	public Map<Long, CourseUser> generateCourseUserMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, CourseTask> generateCourseTaskMining() {
+	public Map<Long, CourseTask> generateCourseTaskMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, CourseCollaborativeObject> generateCourseCollaborativeObjectMining() {
+	public Map<Long, CourseCollaborativeObject> generateCourseCollaborativeObjectMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, Course> generateCourseMining() {
+	public Map<Long, Course> generateCourseMining() {
+		final HashMap<Long, Course> courses = new HashMap<Long, Course>();
+		
+		for(Courses loadedItem : this.coursesMooc)
+		{
+			Course insert = new Course();
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setPlatform(this.connector.getPlatformId(), this.platformMining, this.oldPlatformMining);
+			insert.setTitle(loadedItem.getTitle());
+			insert.setTimeModified(loadedItem.getTimemodified());
+		}
+		return courses;
+	}
+
+	@Override
+	public Map<Long, CourseLearningObject> generateCourseLearningObjectMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, CourseLearningObject> generateCourseLearningObjectMining() {
+	public Map<Long, TaskUser> generateTaskUserMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, TaskUser> generateTaskUserMining() {
+	public Map<Long, ViewLog> generateViewLogMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, ViewLog> generateViewLogMining() {
+	public Map<Long, CollaborativeObjectLog> generateCollaborativeLogMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, CollaborativeObjectLog> generateCollaborativeLogMining() {
+	public Map<Long, LearningObject> generateLearningObjectMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, LearningObject> generateLearningObjectMining() {
+	public Map<Long, CollaborativeObject> generateCollaborativeObjectMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, CollaborativeObject> generateCollaborativeObjectMining() {
+	public Map<Long, User> generateUserMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, User> generateUserMining() {
+	public Map<Long, Task> generateTaskMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, Task> generateTaskMining() {
+	public Map<Long, Role> generateRoleMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, Role> generateRoleMining() {
+	public Map<Long, TaskLog> generateTaskLogMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, TaskLog> generateTaskLogMining() {
+	public Map<Long, Assessment> generateAssessmentMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<Long, Assessment> generateAssessmentMining() {
+	public Map<String, LearningObjectType> generateLearningObjectTypeMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<String, LearningObjectType> generateLearningObjectTypeMining() {
+	public Map<String, CollaborativeObjectType> generateCollaborativeObjectTypeMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	Map<String, CollaborativeObjectType> generateCollaborativeObjectTypeMining() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	Map<String, TaskType> generateTaskTypeMining() {
+	public Map<String, TaskType> generateTaskTypeMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
