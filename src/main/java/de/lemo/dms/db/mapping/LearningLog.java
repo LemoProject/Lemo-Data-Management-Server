@@ -132,7 +132,7 @@ public class LearningLog implements IMapping, ILog {
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="learning_object_id")
+	@JoinColumn(name="learning_id")
 	public LearningObj getLearningObject() {
 		return learningObject;
 	}

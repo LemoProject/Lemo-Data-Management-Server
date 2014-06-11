@@ -57,7 +57,7 @@ public class CollaborationLog implements IMapping, ILog{
 	private long timestamp;
 	private String text;
 	private String action;
-	private CollaborationObj parent;
+	private CollaborationLog parent;
 	private static Long PREFIX = 15L;
 	
 	@Override
@@ -135,7 +135,7 @@ public class CollaborationLog implements IMapping, ILog{
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="collaborative_object_id")
+	@JoinColumn(name="collaboration_id")
 	public CollaborationObj getCollaborativeObject() {
 		return collaborativeObject;
 	}
@@ -175,13 +175,13 @@ public class CollaborationLog implements IMapping, ILog{
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="parent_id")
-	public CollaborationObj getParent() {
+	public CollaborationLog getParent() {
 		return parent;
 	}
 
 
 
-	public void setParent(CollaborationObj parent) {
+	public void setParent(CollaborationLog parent) {
 		this.parent = parent;
 	}
 	

@@ -55,7 +55,7 @@ public class LearningObj implements IMapping, ILearningObject{
 	private String title;
 	private String url;
 	private LearningType type;
-	
+	private LearningObj parent;
 	private Set<CourseLearning> courseLearningObjects = new HashSet<CourseLearning>();	
 	private Set<LearningLog> viewLogs = new HashSet<LearningLog>();
 	
@@ -182,5 +182,21 @@ public class LearningObj implements IMapping, ILearningObject{
 	 */
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	/**
+	 * @return the parent
+	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="parent_id")
+	public LearningObj getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent the parent to set
+	 */
+	public void setParent(LearningObj parent) {
+		this.parent = parent;
 	}
 }

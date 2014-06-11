@@ -114,7 +114,7 @@ public class CourseLearning implements IMapping, ICourseLORelation {
 	 * @return the resource
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="learning_object_id")
+	@JoinColumn(name="learning_id")
 	public LearningObj getLearningObject() {
 		return this.learningObject;
 	}

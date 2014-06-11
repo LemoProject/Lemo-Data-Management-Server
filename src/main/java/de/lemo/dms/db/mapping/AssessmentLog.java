@@ -146,7 +146,7 @@ public class AssessmentLog implements IMapping, ILog{
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="task_id")
+	@JoinColumn(name="assessment_id")
 	public Assessment getTask() {
 		return task;
 	}

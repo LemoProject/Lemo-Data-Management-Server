@@ -122,7 +122,7 @@ public class AssessmentUser implements IMapping, IRatedUserAssociation{
 	 * @return the task
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="task_id")
+	@JoinColumn(name="assessment_id")
 	public Assessment getTask() {
 		return task;
 	}

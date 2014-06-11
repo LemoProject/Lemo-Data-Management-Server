@@ -114,7 +114,7 @@ public class CourseCollaboration implements IMapping, ICourseLORelation {
 	 * @return the resource
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="collaborative_object_id")
+	@JoinColumn(name="collaboration_id")
 	public CollaborationObj getCollaborativeObject() {
 		return collaborativeObject;
 	}

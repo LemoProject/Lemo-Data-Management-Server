@@ -55,6 +55,7 @@ public class CollaborationObj implements IMapping, ILearningObject{
 	private String title;
 	private String url;
 	private CollaborationType type;
+	private CollaborationObj parent;
 	
 	private Set<CourseCollaboration> courseCollaborativeObjects = new HashSet<CourseCollaboration>();	
 	private Set<CollaborationLog> collaborativeLogs = new HashSet<CollaborationLog>();
@@ -188,5 +189,21 @@ public class CollaborationObj implements IMapping, ILearningObject{
 	 */
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	/**
+	 * @return the parent
+	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="parent_id")
+	public CollaborationObj getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent the parent to set
+	 */
+	public void setParent(CollaborationObj parent) {
+		this.parent = parent;
 	}
 }
