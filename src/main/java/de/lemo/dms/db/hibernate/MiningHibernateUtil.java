@@ -73,29 +73,28 @@ public final class MiningHibernateUtil {
 		
 		//Objects
 		config.addAnnotatedClass(User.class);
-		config.addAnnotatedClass(CollaborativeObject.class);
-		config.addAnnotatedClass(LearningObject.class);
+		config.addAnnotatedClass(CollaborationObj.class);
+		config.addAnnotatedClass(LearningObj.class);
 		config.addAnnotatedClass(Course.class);
-		config.addAnnotatedClass(Task.class);
+		config.addAnnotatedClass(Assessment.class);
 		config.addAnnotatedClass(Role.class);
 		
 		//Types
-		config.addAnnotatedClass(LearningObjectType.class);
-		config.addAnnotatedClass(TaskType.class);
-		config.addAnnotatedClass(CollaborativeObjectType.class);
+		config.addAnnotatedClass(LearningType.class);
+		config.addAnnotatedClass(AssessmentType.class);
+		config.addAnnotatedClass(CollaborationType.class);
 		
 		//Relations
-		config.addAnnotatedClass(TaskUser.class);
-		config.addAnnotatedClass(CourseTask.class);
-		config.addAnnotatedClass(CourseCollaborativeObject.class);
-		config.addAnnotatedClass(CourseLearningObject.class);
+		config.addAnnotatedClass(AssessmentUser.class);
+		config.addAnnotatedClass(CourseAssessment.class);
+		config.addAnnotatedClass(CourseCollaboration.class);
+		config.addAnnotatedClass(CourseLearning.class);
 		config.addAnnotatedClass(CourseUser.class);
 		
 		//Logs
-		config.addAnnotatedClass(ViewLog.class);
-		config.addAnnotatedClass(CollaborativeObjectLog.class);
-		config.addAnnotatedClass(Assessment.class);
-		config.addAnnotatedClass(TaskLog.class);
+		config.addAnnotatedClass(LearningLog.class);
+		config.addAnnotatedClass(CollaborationLog.class);
+		config.addAnnotatedClass(AssessmentLog.class);
 
 		return config.buildSessionFactory();
 	}

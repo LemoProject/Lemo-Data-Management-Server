@@ -37,9 +37,9 @@ import org.hibernate.Session;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.CollaborativeObjectLog;
-import de.lemo.dms.db.mapping.TaskLog;
-import de.lemo.dms.db.mapping.ViewLog;
+import de.lemo.dms.db.mapping.CollaborationLog;
+import de.lemo.dms.db.mapping.AssessmentLog;
+import de.lemo.dms.db.mapping.LearningLog;
 
 /**
  * Service for debugging messages
@@ -108,11 +108,11 @@ public class ServiceDebug {
 				List<?> result = null;
 				int resultCount = 0;
 				try {
-					result = miningSession.createCriteria(ViewLog.class, "log").setMaxResults(1).list();
+					result = miningSession.createCriteria(LearningLog.class, "log").setMaxResults(1).list();
 					resultCount += result.size();
-					result = miningSession.createCriteria(TaskLog.class, "log").setMaxResults(1).list();
+					result = miningSession.createCriteria(AssessmentLog.class, "log").setMaxResults(1).list();
 					resultCount += result.size();
-					result = miningSession.createCriteria(CollaborativeObjectLog.class, "log").setMaxResults(1).list();
+					result = miningSession.createCriteria(CollaborationLog.class, "log").setMaxResults(1).list();
 					resultCount += result.size();
 				} catch (final Exception exeption) {
 

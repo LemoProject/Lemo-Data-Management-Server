@@ -37,24 +37,24 @@ import java.util.Map;
 import java.util.Random;
 
 import de.lemo.dms.connectors.Encoder;
-import de.lemo.dms.db.mapping.CollaborativeObject;
-import de.lemo.dms.db.mapping.CollaborativeObjectLog;
-import de.lemo.dms.db.mapping.CollaborativeObjectType;
+import de.lemo.dms.db.mapping.CollaborationObj;
+import de.lemo.dms.db.mapping.CollaborationLog;
+import de.lemo.dms.db.mapping.CollaborationType;
 import de.lemo.dms.db.mapping.Config;
 import de.lemo.dms.db.mapping.Course;
-import de.lemo.dms.db.mapping.CourseCollaborativeObject;
-import de.lemo.dms.db.mapping.CourseLearningObject;
-import de.lemo.dms.db.mapping.CourseTask;
+import de.lemo.dms.db.mapping.CourseCollaboration;
+import de.lemo.dms.db.mapping.CourseLearning;
+import de.lemo.dms.db.mapping.CourseAssessment;
 import de.lemo.dms.db.mapping.CourseUser;
-import de.lemo.dms.db.mapping.LearningObject;
-import de.lemo.dms.db.mapping.ViewLog;
-import de.lemo.dms.db.mapping.LearningObjectType;
+import de.lemo.dms.db.mapping.LearningObj;
+import de.lemo.dms.db.mapping.LearningLog;
+import de.lemo.dms.db.mapping.LearningType;
 import de.lemo.dms.db.mapping.Platform;
 import de.lemo.dms.db.mapping.Role;
-import de.lemo.dms.db.mapping.Task;
-import de.lemo.dms.db.mapping.TaskLog;
-import de.lemo.dms.db.mapping.TaskType;
-import de.lemo.dms.db.mapping.TaskUser;
+import de.lemo.dms.db.mapping.Assessment;
+import de.lemo.dms.db.mapping.AssessmentLog;
+import de.lemo.dms.db.mapping.AssessmentType;
+import de.lemo.dms.db.mapping.AssessmentUser;
 import de.lemo.dms.db.mapping.User;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 
@@ -140,30 +140,30 @@ public class ContentGenerator {
 
 		// Object-containers
 		final ArrayList<Course> courseList = new ArrayList<Course>();
-		final ArrayList<LearningObject> learningObjects = new ArrayList<LearningObject>();
-		final ArrayList<CollaborativeObject> collaborativeObjects = new ArrayList<CollaborativeObject>();
-		final ArrayList<Task> tasks = new ArrayList<Task>();
+		final ArrayList<LearningObj> learningObjects = new ArrayList<LearningObj>();
+		final ArrayList<CollaborationObj> collaborativeObjects = new ArrayList<CollaborationObj>();
+		final ArrayList<Assessment> tasks = new ArrayList<Assessment>();
 		final ArrayList<User> userList = new ArrayList<User>();
 		final ArrayList<Role> roleList = new ArrayList<Role>();
 		final ArrayList<Platform> platformList = new ArrayList<Platform>();
-		final ArrayList<LearningObjectType> loTypes = new ArrayList<LearningObjectType>();
-		final ArrayList<CollaborativeObjectType> collTypes = new ArrayList<CollaborativeObjectType>();
-		final ArrayList<TaskType> taskTypes = new ArrayList<TaskType>();
+		final ArrayList<LearningType> loTypes = new ArrayList<LearningType>();
+		final ArrayList<CollaborationType> collTypes = new ArrayList<CollaborationType>();
+		final ArrayList<AssessmentType> taskTypes = new ArrayList<AssessmentType>();
 
 		// Association-containers
-		final ArrayList<CourseLearningObject> courseLearningObjects = new ArrayList<CourseLearningObject>();
-		final ArrayList<CourseCollaborativeObject> courseCollaborativeObjects = new ArrayList<CourseCollaborativeObject>();
-		final ArrayList<CourseTask> courseTasks = new ArrayList<CourseTask>();
+		final ArrayList<CourseLearning> courseLearningObjects = new ArrayList<CourseLearning>();
+		final ArrayList<CourseCollaboration> courseCollaborativeObjects = new ArrayList<CourseCollaboration>();
+		final ArrayList<CourseAssessment> courseTasks = new ArrayList<CourseAssessment>();
 
 		final ArrayList<CourseUser> courseUserList = new ArrayList<CourseUser>();
 
 		// Log-containers
-		final ArrayList<ViewLog> learnLog = new ArrayList<ViewLog>();
+		final ArrayList<LearningLog> learnLog = new ArrayList<LearningLog>();
 		final ArrayList<ILog> resourceLogList = new ArrayList<ILog>();
-		final ArrayList<CollaborativeObjectLog> collLog = new ArrayList<CollaborativeObjectLog>();
-		final ArrayList<TaskLog> taskLogs = new ArrayList<TaskLog>();
+		final ArrayList<CollaborationLog> collLog = new ArrayList<CollaborationLog>();
+		final ArrayList<AssessmentLog> taskLogs = new ArrayList<AssessmentLog>();
 		
-		final Map<String, TaskUser> taskUserMap = new HashMap<String, TaskUser>();
+		final Map<String, AssessmentUser> taskUserMap = new HashMap<String, AssessmentUser>();
 
 		final String[] forumAction = new String[4];
 		forumAction[0] = "view forum";
@@ -236,17 +236,17 @@ public class ContentGenerator {
 		
 		for(int i = 0; i < 3 ; i++)
 		{
-			LearningObjectType t = new LearningObjectType();
+			LearningType t = new LearningType();
 			t.setId(i);
 			t.setType(EResourceType.values()[i].toString());
 			loTypes.add(t);
 			
-			CollaborativeObjectType c = new CollaborativeObjectType();
+			CollaborationType c = new CollaborationType();
 			c.setId(i);
 			c.setType(ECollType.values()[i].toString());
 			collTypes.add(c);
 			
-			TaskType tt = new TaskType();
+			AssessmentType tt = new AssessmentType();
 			tt.setId(i);
 			tt.setType(ECollType.values()[i].toString());
 			taskTypes.add(tt);
@@ -300,13 +300,13 @@ public class ContentGenerator {
 			// Create resources
 			for (int l = 1; l <= MAGIC_TEN; l++)
 			{
-				final LearningObject r = new LearningObject();
+				final LearningObj r = new LearningObj();
 				r.setId(Long.valueOf(platform.getPrefix() + "" + (learningObjects.size() + 1)));
 				r.setTitle("LearningObj " + k + "." + l);
 				r.setType(loTypes.get(l % 3));
 				r.setUrl("http://lemo-generated.de/" + cou.getTitle().replace(" ", "-").replace(".", "_") + "/" + r.getTitle().replace(" ", "-").replace(".", "_") + ".html");
 				
-				final CourseLearningObject couRes = new CourseLearningObject();
+				final CourseLearning couRes = new CourseLearning();
 				couRes.setId(Long.valueOf(platform.getPrefix() + "" + (courseLearningObjects.size() + 1)));
 				couRes.setCourse(cou);
 				couRes.setLearningObject(r);
@@ -317,12 +317,12 @@ public class ContentGenerator {
 			// Create collaboratives
 			for (int l = 1; l <=  MAGIC_FIVE; l++)
 			{
-				final CollaborativeObject w = new CollaborativeObject();
+				final CollaborationObj w = new CollaborationObj();
 				w.setId(Long.valueOf(platform.getPrefix() + "" + (collaborativeObjects.size() + 1)));
 				w.setType(collTypes.get(l % 3));
 				w.setTitle("Collaborative " + k + "." + l);
 				w.setUrl("http://lemo-generated.de/" + cou.getTitle().replace(" ", "-").replace(".", "_") + "/" + w.getTitle().replace(" ", "-").replace(".", "_") + ".html");
-				final CourseCollaborativeObject couWik = new CourseCollaborativeObject();
+				final CourseCollaboration couWik = new CourseCollaboration();
 				couWik.setId(Long.valueOf(platform.getPrefix() + "" + (courseCollaborativeObjects.size() + 1)));
 				couWik.setCourse(cou);
 				couWik.setCollaborativeObject(w);
@@ -333,14 +333,14 @@ public class ContentGenerator {
 			// Create tasks
 			for (int l = 1; l <= MAGIC_FIVE; l++)
 			{
-				final Task a = new Task();
+				final Assessment a = new Assessment();
 				a.setId(Long.valueOf(platform.getPrefix() + "" + (tasks.size() + 1)));
 				a.setTitle("Task "  + k + "." + l);
 				a.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * MAGIC_FIVE);
 				a.setType(taskTypes.get(l % 3));
 				a.setUrl("http://lemo-generated.de/" + cou.getTitle().replace(" ", "-").replace(".", "_") + "/" + a.getTitle().replace(" ", "-").replace(".", "_") + ".html");
 
-				final CourseTask couAss = new CourseTask();
+				final CourseAssessment couAss = new CourseAssessment();
 				couAss.setId(Long.valueOf(platform.getPrefix() + "" + (courseTasks.size() + 1)));
 				couAss.setCourse(cou);
 				couAss.setTask(a);
@@ -358,7 +358,7 @@ public class ContentGenerator {
 				
 				// _________________LearningObjectLogs___________________________________________________
 				int time = (int) (startdate + log * (year / logSwitch));
-				final ViewLog rLog = new ViewLog();
+				final LearningLog rLog = new LearningLog();
 				rLog.setCourse(cou);
 				rLog.setLearningObject(learningObjects.get((learningObjects.size() - 1) - randy.nextInt(MAGIC_TEN)));
 				rLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
@@ -379,11 +379,11 @@ public class ContentGenerator {
 
 
 					
-				final TaskLog aLog = new TaskLog();
+				final AssessmentLog aLog = new AssessmentLog();
 				aLog.setCourse(cou);
 				aLog.setTask(tasks.get((tasks.size() - 1) - randy.nextInt(MAGIC_FIVE)));
 				aLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
-				final Task a = aLog.getTask();
+				final Assessment a = aLog.getTask();
 
 				time = (int) (startdate
 						+ (randy.nextInt(year) ));
@@ -391,7 +391,7 @@ public class ContentGenerator {
 				
 				if(!taskUserMap.containsKey(aLog.getUser().getId() + "#" + aLog.getTask().getId()))
 				{
-					TaskUser tu = new TaskUser();
+					AssessmentUser tu = new AssessmentUser();
 					tu.setId(taskUserMap.size() + 1);
 					tu.setTask(a);
 					tu.setUser(aLog.getUser());
@@ -411,7 +411,7 @@ public class ContentGenerator {
 
 				// _________________CollaborativeLogs___________________________________________________
 				
-				final CollaborativeObjectLog cLog = new CollaborativeObjectLog();
+				final CollaborationLog cLog = new CollaborationLog();
 				cLog.setCourse(cou);
 				cLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 				cLog.setCollaborativeObject(collaborativeObjects.get((collaborativeObjects.size() - 1) - randy.nextInt(MAGIC_FIVE)));
@@ -489,7 +489,7 @@ public class ContentGenerator {
 		return all;
 	}
 	
-	private void createIdsLL(List<ViewLog> logs)
+	private void createIdsLL(List<LearningLog> logs)
 	{
 		int i = 1;
 		for(ILog il : logs)
@@ -499,7 +499,7 @@ public class ContentGenerator {
 		}
 	}
 	
-	private void createIdsCL(List<CollaborativeObjectLog> logs)
+	private void createIdsCL(List<CollaborationLog> logs)
 	{
 		int i = 1;
 		for(ILog il : logs)
@@ -509,7 +509,7 @@ public class ContentGenerator {
 		}
 	}
 	
-	private void createIdsTL(List<TaskLog> logs)
+	private void createIdsTL(List<AssessmentLog> logs)
 	{
 		int i = 1;
 		for(ILog il : logs)

@@ -48,22 +48,22 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_learning_object")
-public class LearningObject implements IMapping, ILearningObject{
+@Table(name = "lemo_learning_obj")
+public class LearningObj implements IMapping, ILearningObject{
 
 	private long id;
 	private String title;
 	private String url;
-	private LearningObjectType type;
+	private LearningType type;
 	
-	private Set<CourseLearningObject> courseLearningObjects = new HashSet<CourseLearningObject>();	
-	private Set<ViewLog> viewLogs = new HashSet<ViewLog>();
+	private Set<CourseLearning> courseLearningObjects = new HashSet<CourseLearning>();	
+	private Set<LearningLog> viewLogs = new HashSet<LearningLog>();
 	
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof CollaborativeObject)) {
+		if (!(o instanceof CollaborationObj)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof CollaborativeObject)) {
+		if ((o.getId() == this.getId()) && (o instanceof CollaborationObj)) {
 			return true;
 		}
 		return false;
@@ -95,24 +95,24 @@ public class LearningObject implements IMapping, ILearningObject{
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="type_id")
-	public LearningObjectType getType() {
+	public LearningType getType() {
 		return type;
 	}
-	public void setType(LearningObjectType type) {
+	public void setType(LearningType type) {
 		this.type = type;
 	}
 	
-	public void setViewLogs(final Set<ViewLog> viewLogs) {
+	public void setViewLogs(final Set<LearningLog> viewLogs) {
 		this.viewLogs = viewLogs;
 	}
 
 
 	@OneToMany(mappedBy="learningObject")
-	public Set<ViewLog> getViewLogs() {
+	public Set<LearningLog> getViewLogs() {
 		return this.viewLogs;
 	}
 
-	public void addViewLog(final ViewLog viewLog) {
+	public void addViewLog(final LearningLog viewLog) {
 		this.viewLogs.add(viewLog);
 	}
 	
@@ -122,7 +122,7 @@ public class LearningObject implements IMapping, ILearningObject{
 	 * @param courseLearningObjects
 	 *            a set of entries in the course_resource table which relate the resource to the courses
 	 */
-	public void setCourseLearningObjects(final Set<CourseLearningObject> courseLearningObjects) {
+	public void setCourseLearningObjects(final Set<CourseLearning> courseLearningObjects) {
 		this.courseLearningObjects = courseLearningObjects;
 	}
 
@@ -132,7 +132,7 @@ public class LearningObject implements IMapping, ILearningObject{
 	 * @return a set of entries in the course_resource table which relate the resource to the courses
 	 */
 	@OneToMany(mappedBy="learningObject")
-	public Set<CourseLearningObject> getCourseLearningObjects() {
+	public Set<CourseLearning> getCourseLearningObjects() {
 		return this.courseLearningObjects;
 	}
 
@@ -142,13 +142,13 @@ public class LearningObject implements IMapping, ILearningObject{
 	 * @param courseLearningObject
 	 *            this entry will be added to the list of course_resource in this resource
 	 */
-	public void addCourseLearningObject(final CourseLearningObject courseLearningObject) {
+	public void addCourseLearningObject(final CourseLearning courseLearningObject) {
 		this.courseLearningObjects.add(courseLearningObject);
 	}
 
 
-	public void setType(final String title, final Map<String, LearningObjectType> learningObjectTypes,
-			final Map<String, LearningObjectType> oldLearningObjectTypes) {
+	public void setType(final String title, final Map<String, LearningType> learningObjectTypes,
+			final Map<String, LearningType> oldLearningObjectTypes) {
 
 		if (learningObjectTypes.get(title) != null)
 		{

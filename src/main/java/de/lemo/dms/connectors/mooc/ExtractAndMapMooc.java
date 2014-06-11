@@ -58,23 +58,22 @@ import de.lemo.dms.connectors.mooc.mapping.UnitResources;
 import de.lemo.dms.connectors.mooc.mapping.Users;
 import de.lemo.dms.connectors.mooc.mapping.Videos;
 import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.mapping.Assessment;
-import de.lemo.dms.db.mapping.CollaborativeObjectLog;
-import de.lemo.dms.db.mapping.CollaborativeObject;
-import de.lemo.dms.db.mapping.CollaborativeObjectType;
+import de.lemo.dms.db.mapping.CollaborationLog;
+import de.lemo.dms.db.mapping.CollaborationObj;
+import de.lemo.dms.db.mapping.CollaborationType;
 import de.lemo.dms.db.mapping.Course;
-import de.lemo.dms.db.mapping.CourseCollaborativeObject;
-import de.lemo.dms.db.mapping.CourseLearningObject;
-import de.lemo.dms.db.mapping.CourseTask;
+import de.lemo.dms.db.mapping.CourseCollaboration;
+import de.lemo.dms.db.mapping.CourseLearning;
+import de.lemo.dms.db.mapping.CourseAssessment;
 import de.lemo.dms.db.mapping.CourseUser;
-import de.lemo.dms.db.mapping.LearningObject;
-import de.lemo.dms.db.mapping.LearningObjectType;
-import de.lemo.dms.db.mapping.Task;
-import de.lemo.dms.db.mapping.TaskType;
-import de.lemo.dms.db.mapping.TaskUser;
-import de.lemo.dms.db.mapping.ViewLog;
+import de.lemo.dms.db.mapping.LearningObj;
+import de.lemo.dms.db.mapping.LearningType;
+import de.lemo.dms.db.mapping.Assessment;
+import de.lemo.dms.db.mapping.AssessmentType;
+import de.lemo.dms.db.mapping.AssessmentUser;
+import de.lemo.dms.db.mapping.LearningLog;
 import de.lemo.dms.db.mapping.Role;
-import de.lemo.dms.db.mapping.TaskLog;
+import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.User;
 
 /**
@@ -87,7 +86,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	/** The log_lms. */
 	private List<AssessmentAnswers> assessmentAnswersMooc;
 	private List<AssessmentQuestions> assessmentQuestionsMooc;
-	private List<Assessment> assessmentMooc;
+	private List<Assessments> assessmentMooc;
 	private List<Courses> coursesMooc;
 	private List<Events> eventsMooc;
 	private List<Memberships> membershipsMooc;
@@ -100,7 +99,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	
 
 	private Map<Long, Long> chatCourse = new HashMap<Long, Long>();
-	protected Map<Long, Assessment> assessmentLog = new HashMap<Long, Assessment>();
 	
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -281,13 +279,13 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseTask> generateCourseTaskMining() {
+	public Map<Long, CourseAssessment> generateCourseTaskMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Long, CourseCollaborativeObject> generateCourseCollaborativeObjectMining() {
+	public Map<Long, CourseCollaboration> generateCourseCollaborativeObjectMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -310,37 +308,37 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseLearningObject> generateCourseLearningObjectMining() {
+	public Map<Long, CourseLearning> generateCourseLearningObjectMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Long, TaskUser> generateTaskUserMining() {
+	public Map<Long, AssessmentUser> generateTaskUserMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Long, ViewLog> generateViewLogMining() {
+	public Map<Long, LearningLog> generateViewLogMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Long, CollaborativeObjectLog> generateCollaborativeLogMining() {
+	public Map<Long, CollaborationLog> generateCollaborativeLogMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Long, LearningObject> generateLearningObjectMining() {
+	public Map<Long, LearningObj> generateLearningObjectMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Long, CollaborativeObject> generateCollaborativeObjectMining() {
+	public Map<Long, CollaborationObj> generateCollaborativeObjectMining() {
 		return null;
 	}
 
@@ -362,7 +360,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, Task> generateTaskMining() {
+	public Map<Long, Assessment> generateTaskMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -398,31 +396,25 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, TaskLog> generateTaskLogMining() {
+	public Map<Long, AssessmentLog> generateTaskLogMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Long, Assessment> generateAssessmentMining() {
+	public Map<String, LearningType> generateLearningObjectTypeMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, LearningObjectType> generateLearningObjectTypeMining() {
+	public Map<String, CollaborationType> generateCollaborativeObjectTypeMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, CollaborativeObjectType> generateCollaborativeObjectTypeMining() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, TaskType> generateTaskTypeMining() {
+	public Map<String, AssessmentType> generateTaskTypeMining() {
 		// TODO Auto-generated method stub
 		return null;
 	}

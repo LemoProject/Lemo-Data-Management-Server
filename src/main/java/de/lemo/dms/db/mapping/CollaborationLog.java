@@ -47,24 +47,24 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_collaborative_object_log")
-public class CollaborativeObjectLog implements IMapping, ILog{
+@Table(name = "lemo_collaboration_log")
+public class CollaborationLog implements IMapping, ILog{
 
 	private long id;
 	private Course course;
 	private User user;
-	private CollaborativeObject collaborativeObject;
+	private CollaborationObj collaborativeObject;
 	private long timestamp;
 	private String text;
-	private CollaborativeObject parent;
+	private CollaborationObj parent;
 	private static Long PREFIX = 15L;
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof CollaborativeObjectLog)) {
+		if (!(o instanceof CollaborationLog)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof CollaborativeObjectLog)) {
+		if ((o.getId() == this.getId()) && (o instanceof CollaborationLog)) {
 			return true;
 		}
 		return false;
@@ -135,13 +135,13 @@ public class CollaborativeObjectLog implements IMapping, ILog{
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="collaborative_object_id")
-	public CollaborativeObject getCollaborativeObject() {
+	public CollaborationObj getCollaborativeObject() {
 		return collaborativeObject;
 	}
 	
 	
 	
-	public void setCollaborativeObject(CollaborativeObject learningObject) {
+	public void setCollaborativeObject(CollaborationObj learningObject) {
 		this.collaborativeObject = learningObject;
 	}
 	
@@ -174,13 +174,13 @@ public class CollaborativeObjectLog implements IMapping, ILog{
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="parent_id")
-	public CollaborativeObject getParent() {
+	public CollaborationObj getParent() {
 		return parent;
 	}
 
 
 
-	public void setParent(CollaborativeObject parent) {
+	public void setParent(CollaborationObj parent) {
 		this.parent = parent;
 	}
 	
@@ -214,8 +214,8 @@ public class CollaborativeObjectLog implements IMapping, ILog{
 		}
 	}
 	
-	public void setCollaborativeObject(final long collaborativeObject, final Map<Long, CollaborativeObject> resources,
-			final Map<Long, CollaborativeObject> oldResources) {
+	public void setCollaborativeObject(final long collaborativeObject, final Map<Long, CollaborationObj> resources,
+			final Map<Long, CollaborationObj> oldResources) {
 
 		if (resources.get(collaborativeObject) != null)
 		{

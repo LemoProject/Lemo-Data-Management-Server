@@ -19,23 +19,23 @@ import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_task_user")
-public class TaskUser implements IMapping, IRatedUserAssociation{
+@Table(name = "lemo_assessment_user")
+public class AssessmentUser implements IMapping, IRatedUserAssociation{
 	
 	private long id;
 	private Course course;
 	private User user;
-	private Task task;
+	private Assessment task;
 	private double grade;
 	private long timemodified;
 	
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof Task)) {
+		if (!(o instanceof Assessment)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof Task)) {
+		if ((o.getId() == this.getId()) && (o instanceof Assessment)) {
 			return true;
 		}
 		return false;
@@ -123,18 +123,18 @@ public class TaskUser implements IMapping, IRatedUserAssociation{
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="task_id")
-	public Task getTask() {
+	public Assessment getTask() {
 		return task;
 	}
 	/**
 	 * @param task the task to set
 	 */
-	public void setTask(Task task) {
+	public void setTask(Assessment task) {
 		this.task = task;
 	}
 	
-	public void setTask(final long task, final Map<Long, Task> tasks,
-			final Map<Long, Task> oldTasks) {
+	public void setTask(final long task, final Map<Long, Assessment> tasks,
+			final Map<Long, Assessment> oldTasks) {
 
 		if (tasks.get(task) != null)
 		{

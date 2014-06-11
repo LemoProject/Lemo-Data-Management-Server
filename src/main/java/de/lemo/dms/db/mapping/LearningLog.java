@@ -45,23 +45,23 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_view_log")
-public class ViewLog implements IMapping, ILog {
+@Table(name = "lemo_learning_log")
+public class LearningLog implements IMapping, ILog {
 
 	private long id;
 	private Course course;
 	private User user;
-	private LearningObject learningObject;
+	private LearningObj learningObject;
 	private long timestamp;
 	private Long duration;
 	private static Long PREFIX = 16L;
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof ViewLog)) {
+		if (!(o instanceof LearningLog)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof ViewLog)) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningLog)) {
 			return true;
 		}
 		return false;
@@ -132,13 +132,13 @@ public class ViewLog implements IMapping, ILog {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="learning_object_id")
-	public LearningObject getLearningObject() {
+	public LearningObj getLearningObject() {
 		return learningObject;
 	}
 	
 	
 	
-	public void setLearningObject(LearningObject learningObject) {
+	public void setLearningObject(LearningObj learningObject) {
 		this.learningObject = learningObject;
 	}
 	
@@ -198,8 +198,8 @@ public class ViewLog implements IMapping, ILog {
 		}
 	}
 	
-	public void setLearningObject(final long learningObject, final Map<Long, LearningObject> learningObjects,
-			final Map<Long, LearningObject> oldLearningObjects) {
+	public void setLearningObject(final long learningObject, final Map<Long, LearningObj> learningObjects,
+			final Map<Long, LearningObj> oldLearningObjects) {
 
 		if (learningObjects.get(learningObject) != null)
 		{

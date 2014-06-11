@@ -49,31 +49,29 @@ public class User implements IMapping{
 	private String authentication;
 	private long gender;
 	
-	private Set<TaskUser> taskUsers = new HashSet<TaskUser>();
-	private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
-	private Set<ViewLog> eventLogs= new HashSet<ViewLog>();
-	private Set<CollaborativeObjectLog> collaborativeLogs = new HashSet<CollaborativeObjectLog>();
-	private Set<Assessment> assessments = new HashSet<Assessment>();
+	private Set<AssessmentUser> taskUsers = new HashSet<AssessmentUser>();
+	private Set<AssessmentLog> taskLogs = new HashSet<AssessmentLog>();
+	private Set<LearningLog> eventLogs= new HashSet<LearningLog>();
+	private Set<CollaborationLog> collaborativeLogs = new HashSet<CollaborationLog>();
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
-	private Set<Assessment> graders = new HashSet<Assessment>();
 	
 	
 	/**
 	 * @return the taskLogs
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<TaskLog> getTaskLogs() {
+	public Set<AssessmentLog> getTaskLogs() {
 		return taskLogs;
 	}
 
 	/**
 	 * @param taskLogs the taskLogs to set
 	 */
-	public void setTaskLogs(Set<TaskLog> taskLogs) {
+	public void setTaskLogs(Set<AssessmentLog> taskLogs) {
 		this.taskLogs = taskLogs;
 	}
 	
-	public void addTaskLog(TaskLog taskLog)
+	public void addTaskLog(AssessmentLog taskLog)
 	{
 		this.taskLogs.add(taskLog);
 	}
@@ -82,18 +80,18 @@ public class User implements IMapping{
 	 * @return the eventLogs
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<ViewLog> getEventLogs() {
+	public Set<LearningLog> getEventLogs() {
 		return eventLogs;
 	}
 
 	/**
 	 * @param eventLogs the eventLogs to set
 	 */
-	public void setEventLogs(Set<ViewLog> eventLogs) {
+	public void setEventLogs(Set<LearningLog> eventLogs) {
 		this.eventLogs = eventLogs;
 	}
 	
-	public void addEventLog(ViewLog eventLog)
+	public void addEventLog(LearningLog eventLog)
 	{
 		this.eventLogs.add(eventLog);
 	}
@@ -102,40 +100,20 @@ public class User implements IMapping{
 	 * @return the collaborativeLogs
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<CollaborativeObjectLog> getCollaborativeLogs() {
+	public Set<CollaborationLog> getCollaborativeLogs() {
 		return collaborativeLogs;
 	}
 
 	/**
 	 * @param collaborativeLogs the collaborativeLogs to set
 	 */
-	public void setCollaborativeLogs(Set<CollaborativeObjectLog> collaborativeLogs) {
+	public void setCollaborativeLogs(Set<CollaborationLog> collaborativeLogs) {
 		this.collaborativeLogs = collaborativeLogs;
 	}
 	
-	public void addCollaborativeLog(CollaborativeObjectLog collaborativeLog)
+	public void addCollaborativeLog(CollaborationLog collaborativeLog)
 	{
 		this.collaborativeLogs.add(collaborativeLog);
-	}
-
-	/**
-	 * @return the assessments
-	 */
-	@OneToMany(mappedBy="grader")
-	public Set<Assessment> getAssessments() {
-		return assessments;
-	}
-
-	/**
-	 * @param assessments the assessments to set
-	 */
-	public void setAssessments(Set<Assessment> assessments) {
-		this.assessments = assessments;
-	}
-	
-	public void addAssessment(Assessment assessment)
-	{
-		this.assessments.add(assessment);
 	}
 
 	/**
@@ -203,18 +181,18 @@ public class User implements IMapping{
 	 * @return the taskUsers
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<TaskUser> getTaskUsers() {
+	public Set<AssessmentUser> getTaskUsers() {
 		return taskUsers;
 	}
 
 	/**
 	 * @param taskUsers the taskUsers to set
 	 */
-	public void setTaskUsers(Set<TaskUser> taskUsers) {
+	public void setTaskUsers(Set<AssessmentUser> taskUsers) {
 		this.taskUsers = taskUsers;
 	}
 	
-	public void addTaskUser(TaskUser taskUser)
+	public void addTaskUser(AssessmentUser taskUser)
 	{
 		this.taskUsers.add(taskUser);
 	}
@@ -239,24 +217,4 @@ public class User implements IMapping{
 		this.courseUsers.add(courseUser);
 	}
 
-	/**
-	 * @return the graders
-	 */
-	@OneToMany(mappedBy="grader")
-	public Set<Assessment> getGraders() {
-		return graders;
-	}
-
-	/**
-	 * @param graders the graders to set
-	 */
-	public void setGraders(Set<Assessment> graders) {
-		this.graders = graders;
-	}
-	
-	public void addGrader(Assessment grader)
-	{
-		this.graders.add(grader);
-	}
-	
 }

@@ -41,19 +41,19 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
 
 /** This class represents the relationship between courses and resources. */
 @Entity
-@Table(name = "lemo_course_collaborative_object")
-public class CourseCollaborativeObject implements IMapping, ICourseLORelation {
+@Table(name = "lemo_course_collaboration")
+public class CourseCollaboration implements IMapping, ICourseLORelation {
 	
 	private long id;
 	private Course course;
-	private CollaborativeObject collaborativeObject;
+	private CollaborationObj collaborativeObject;
 	
 	
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof CourseCollaborativeObject)) {
+		if (!(o instanceof CourseCollaboration)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof CourseCollaborativeObject)) {
+		if ((o.getId() == this.getId()) && (o instanceof CourseCollaboration)) {
 			return true;
 		}
 		return false;
@@ -95,8 +95,8 @@ public class CourseCollaborativeObject implements IMapping, ICourseLORelation {
 		}
 	}
 	
-	public void setCollaborativeObject(final long collaborativeObject, final Map<Long, CollaborativeObject> collaborativeObjects,
-			final Map<Long, CollaborativeObject> oldCollaborativeObjects) {
+	public void setCollaborativeObject(final long collaborativeObject, final Map<Long, CollaborationObj> collaborativeObjects,
+			final Map<Long, CollaborationObj> oldCollaborativeObjects) {
 		if (collaborativeObjects.get(collaborativeObject) != null)
 		{
 			this.collaborativeObject = collaborativeObjects.get(collaborativeObject);
@@ -115,7 +115,7 @@ public class CourseCollaborativeObject implements IMapping, ICourseLORelation {
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="collaborative_object_id")
-	public CollaborativeObject getCollaborativeObject() {
+	public CollaborationObj getCollaborativeObject() {
 		return collaborativeObject;
 	}
 
@@ -123,7 +123,7 @@ public class CourseCollaborativeObject implements IMapping, ICourseLORelation {
 	/**
 	 * @param learningObject the resource to set
 	 */
-	public void setCollaborativeObject(CollaborativeObject collaborativeObject) {
+	public void setCollaborativeObject(CollaborationObj collaborativeObject) {
 		this.collaborativeObject = collaborativeObject;
 	}
 

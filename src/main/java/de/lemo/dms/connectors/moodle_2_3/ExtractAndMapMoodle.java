@@ -79,23 +79,22 @@ import de.lemo.dms.connectors.moodle_2_3.mapping.UserEnrolmentsLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.UserLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.WikiLMS;
 import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.mapping.Assessment;
-import de.lemo.dms.db.mapping.CollaborativeObjectLog;
-import de.lemo.dms.db.mapping.CollaborativeObject;
-import de.lemo.dms.db.mapping.CollaborativeObjectType;
+import de.lemo.dms.db.mapping.CollaborationLog;
+import de.lemo.dms.db.mapping.CollaborationObj;
+import de.lemo.dms.db.mapping.CollaborationType;
 import de.lemo.dms.db.mapping.Course;
-import de.lemo.dms.db.mapping.CourseCollaborativeObject;
-import de.lemo.dms.db.mapping.CourseLearningObject;
-import de.lemo.dms.db.mapping.CourseTask;
+import de.lemo.dms.db.mapping.CourseCollaboration;
+import de.lemo.dms.db.mapping.CourseLearning;
+import de.lemo.dms.db.mapping.CourseAssessment;
 import de.lemo.dms.db.mapping.CourseUser;
-import de.lemo.dms.db.mapping.LearningObject;
-import de.lemo.dms.db.mapping.LearningObjectType;
-import de.lemo.dms.db.mapping.Task;
-import de.lemo.dms.db.mapping.TaskType;
-import de.lemo.dms.db.mapping.TaskUser;
-import de.lemo.dms.db.mapping.ViewLog;
+import de.lemo.dms.db.mapping.LearningObj;
+import de.lemo.dms.db.mapping.LearningType;
+import de.lemo.dms.db.mapping.Assessment;
+import de.lemo.dms.db.mapping.AssessmentType;
+import de.lemo.dms.db.mapping.AssessmentUser;
+import de.lemo.dms.db.mapping.LearningLog;
 import de.lemo.dms.db.mapping.Role;
-import de.lemo.dms.db.mapping.TaskLog;
+import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.User;
 
 /**
@@ -142,7 +141,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	private List<QuizAttemptsLMS> quizAttemptsLms;
 
 	private Map<Long, Long> chatCourse = new HashMap<Long, Long>();
-	protected Map<Long, Assessment> assessmentLog = new HashMap<Long, Assessment>();
 	
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -1369,14 +1367,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseTask> generateCourseTaskMining() {
+	public Map<Long, CourseAssessment> generateCourseTaskMining() {
 
-		final HashMap<Long, CourseTask> courseTaskMining = new HashMap<Long, CourseTask>();
+		final HashMap<Long, CourseAssessment> courseTaskMining = new HashMap<Long, CourseAssessment>();
 		
 		
 		for (final AssignLMS loadedItem : this.assignLms)
 		{
-			final CourseTask insert = new CourseTask();
+			final CourseAssessment insert = new CourseAssessment();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -1394,7 +1392,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final ScormLMS loadedItem : this.scormLms)
 		{
-			final CourseTask insert = new CourseTask();
+			final CourseAssessment insert = new CourseAssessment();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -1409,7 +1407,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final QuizLMS loadedItem : this.quizLms)
 		{
-			final CourseTask insert = new CourseTask();
+			final CourseAssessment insert = new CourseAssessment();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -1426,13 +1424,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseLearningObject> generateCourseLearningObjectMining() {
+	public Map<Long, CourseLearning> generateCourseLearningObjectMining() {
 
-		final HashMap<Long, CourseLearningObject> courseLearningObjectMining = new HashMap<Long, CourseLearningObject>();
+		final HashMap<Long, CourseLearning> courseLearningObjectMining = new HashMap<Long, CourseLearning>();
 
 		for (final ResourceLMS loadedItem : this.resourceLms)
 		{
-			final CourseLearningObject insert = new CourseLearningObject();
+			final CourseLearning insert = new CourseLearning();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "01" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -1446,7 +1444,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final UrlLMS loadedItem : this.urlLms)
 		{
-			final CourseLearningObject insert = new CourseLearningObject();
+			final CourseLearning insert = new CourseLearning();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "02" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -1460,7 +1458,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final PageLMS loadedItem : this.pageLms)
 		{
-			final CourseLearningObject insert = new CourseLearningObject();
+			final CourseLearning insert = new CourseLearning();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "03" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -1653,9 +1651,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 	
 	@Override
-	public Map<Long, TaskLog> generateTaskLogMining() {
+	public Map<Long, AssessmentLog> generateTaskLogMining() {
 
-		final HashMap<Long, TaskLog> taskLogs = new HashMap<Long, TaskLog>();
+		final HashMap<Long, AssessmentLog> taskLogs = new HashMap<Long, AssessmentLog>();
 		final HashMap<Long, ArrayList<AssignGradesLMS>> assignGrades = new HashMap<Long, ArrayList<AssignGradesLMS>>();
 		final HashMap<Long, CourseModulesLMS> courseModules = new HashMap<Long, CourseModulesLMS>();
 		
@@ -1692,7 +1690,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			if (loadedItem.getModule().equals("assign"))
 			{
-				TaskLog insert = new TaskLog();
+				AssessmentLog insert = new AssessmentLog();
 				insert.setId(taskLogs.size() + 1 + this.taskLogMax);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
@@ -1700,34 +1698,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						this.oldUserMining);
 				insert.setTimestamp(loadedItem.getTime());
 				
-				if(courseModules.containsKey(loadedItem.getCmid()))
+				if(courseModules.containsKey(loadedItem.getCmid())	)
 				{
 					insert.setTask(Long.valueOf(this.connector.getPrefix() + "07" + courseModules.get(loadedItem.getCmid()).getInstance()), taskMining, oldTaskMining);
-					if(assignGrades.containsKey(courseModules.get(loadedItem.getCmid()).getInstance()))
-					{
-						for(AssignGradesLMS ag : assignGrades.get(courseModules.get(loadedItem.getCmid()).getInstance()))
-						{
-							if((ag.getUser() == loadedItem.getUserid() || ag.getGrader() == loadedItem.getUserid()) && loadedItem.getTime() >= ag.getTimemodified())
-							{ 
-								Assessment ast = new Assessment();
-								ast.setId(this.assessmentLogMax + 1 + assessmentLog.size());
-								ast.setTaskLog(insert);
-								ast.setGrade(ag.getGrade());
-								ast.setGrader(Long.valueOf(this.connector.getPrefix() + "" + ag.getGrader()), this.userMining, this.oldUserMining);
-								
-								assessmentLog.put(ast.getId(), ast);
-								break;
-							}
-						}
-					}
-				}
-				if ((insert.getUser() != null) && (insert.getTask() != null) && (insert.getCourse() != null)) {
-					taskLogs.put(insert.getId(), insert);
 				}				
 			}
 			
 			if (loadedItem.getModule().equals("scorm")) {
-				final TaskLog insert = new TaskLog();
+				final AssessmentLog insert = new AssessmentLog();
 
 				insert.setId(taskLogs.size() + 1 + this.taskLogMax);
 
@@ -1752,7 +1730,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			
 			if (loadedItem.getModule().equals("quiz"))
 			{
-				final TaskLog insert = new TaskLog();
+				final AssessmentLog insert = new AssessmentLog();
 
 				insert.setId(taskLogs.size() + 1 + this.taskLogMax);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
@@ -1772,30 +1750,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					maxLog = insert.getTimestamp();
 				}
 				
-				if ((insert.getTask() != null) && (insert.getUser() != null) 
-						&& (!loadedItem.getAction().equals("review")))
-				{
-					for (final QuizAttemptsLMS loadedItem2 : this.quizAttemptsLms)
-					{
-						final long id = Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getUserid());
-
-						if ((Long.valueOf(this.connector.getPrefix() + "08" + loadedItem2.getQuiz()) == insert.getTask()
-								.getId())
-								&& (id == insert.getUser().getId())
-								&& (loadedItem2.getTimemodified() == insert.getTimestamp()))
-						{
-							Assessment ast = new Assessment();
-							ast.setId(this.assessmentLogMax + 1 + assessmentLog.size());
-							ast.setTaskLog(insert);
-							if(loadedItem2.getSumgrades() != null)
-								ast.setGrade(loadedItem2.getSumgrades());
-							ast.setGrader(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getUserid()), this.userMining, this.oldUserMining);
-							
-							assessmentLog.put(ast.getId(), ast);
-							break;
-						}
-					}
-				}
 				if ((insert.getCourse() != null) && (insert.getTask() != null) && (insert.getUser() != null)) {
 					taskLogs.put(insert.getId(), insert);
 				}
@@ -1807,20 +1761,20 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 
 	@Override
-	public Map<Long, Task> generateTaskMining() {
+	public Map<Long, Assessment> generateTaskMining() {
 
-		final HashMap<Long, Task> taskMining = new HashMap<Long, Task>();
+		final HashMap<Long, Assessment> taskMining = new HashMap<Long, Assessment>();
 
 		
-		final HashMap<Long, Task> amTmp = new HashMap<Long, Task>();
+		final HashMap<Long, Assessment> amTmp = new HashMap<Long, Assessment>();
 
 		for (final AssignLMS loadedItem : this.assignLms)
 		{
-			final Task insert = new Task();
+			final Assessment insert = new Assessment();
 
 			if(!this.taskTypeMining.containsKey("Assign") && !this.oldTaskMining.containsKey("Assign"))
 			{
-				TaskType type = new TaskType();
+				AssessmentType type = new AssessmentType();
 				type.setType("Assign");
 				type.setId(this.taskTypeMax + 1 + this.taskTypeMining.size());
 				this.taskTypeMining.put(type.getType(), type);
@@ -1857,11 +1811,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		for (final QuizLMS loadedItem : this.quizLms)
 		{
 
-			final Task insert = new Task();
+			final Assessment insert = new Assessment();
 			
 			if(!this.taskTypeMining.containsKey("Quiz") && !this.oldTaskMining.containsKey("Quiz"))
 			{
-				TaskType type = new TaskType();
+				AssessmentType type = new AssessmentType();
 				type.setType("Quiz");
 				type.setId(this.taskTypeMax + 1 + this.taskTypeMining.size());
 				this.taskTypeMining.put(type.getType(), type);
@@ -1877,11 +1831,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final ScormLMS loadedItem : this.scormLms)
 		{
-			final Task insert = new Task();
+			final Assessment insert = new Assessment();
 			
 			if(!this.taskTypeMining.containsKey("Scorm") && !this.oldTaskMining.containsKey("Scorm"))
 			{
-				TaskType type = new TaskType();
+				AssessmentType type = new AssessmentType();
 				type.setType("Scorm");
 				type.setId(this.taskTypeMax + 1 + this.taskTypeMining.size());
 				this.taskTypeMining.put(type.getType(), type);
@@ -1950,13 +1904,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	*/
 
 	@Override
-	public Map<Long, TaskUser> generateTaskUserMining() {
+	public Map<Long, AssessmentUser> generateTaskUserMining() {
 
-		final HashMap<Long, TaskUser> taskUserMining = new HashMap<Long, TaskUser>();
+		final HashMap<Long, AssessmentUser> taskUserMining = new HashMap<Long, AssessmentUser>();
 		
 		for(AssignGradesLMS loadedItem : this.assignGradesLms)
 		{
-			TaskUser insert = new TaskUser();
+			AssessmentUser insert = new AssessmentUser();
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setTask(Long.valueOf(this.connector.getPrefix() + "07" + loadedItem.getAssignment()), taskMining, oldTaskMining);
 			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), userMining, oldUserMining);
@@ -1981,7 +1935,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final GradeGradesLMS loadedItem : this.gradeGradesLms)
 		{
-			final TaskUser insert = new TaskUser();
+			final AssessmentUser insert = new AssessmentUser();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			if (loadedItem.getFinalgrade() != null) {
@@ -2010,17 +1964,17 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, LearningObject> generateLearningObjectMining() {
+	public Map<Long, LearningObj> generateLearningObjectMining() {
 
-		final HashMap<Long, LearningObject> learningObjects = new HashMap<Long, LearningObject>();
+		final HashMap<Long, LearningObj> learningObjects = new HashMap<Long, LearningObj>();
 
 		for (final ResourceLMS loadedItem : this.resourceLms)
 		{
-			final LearningObject insert = new LearningObject();
+			final LearningObj insert = new LearningObj();
 
 			if(!this.learningObjectTypeMining.containsKey("Resource") && !this.oldLearningObjectTypeMining.containsKey("Resource"))
 			{
-				LearningObjectType type = new LearningObjectType();
+				LearningType type = new LearningType();
 				type.setType("Resource");
 				type.setId(this.learningObjectTypeMax + 1 + this.learningObjectTypeMining.size());
 				this.learningObjectTypeMining.put(type.getType(), type);
@@ -2037,11 +1991,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final UrlLMS loadedItem : this.urlLms)
 		{
-			final LearningObject insert = new LearningObject();
+			final LearningObj insert = new LearningObj();
 
 			if(!this.learningObjectTypeMining.containsKey("URL") && !this.oldLearningObjectTypeMining.containsKey("URL"))
 			{
-				LearningObjectType type = new LearningObjectType();
+				LearningType type = new LearningType();
 				type.setType("URL");
 				type.setId(this.learningObjectTypeMax + 1 + this.learningObjectTypeMining.size());
 				this.learningObjectTypeMining.put(type.getType(), type);
@@ -2056,11 +2010,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final PageLMS loadedItem : this.pageLms)
 		{
-			final LearningObject insert = new LearningObject();
+			final LearningObj insert = new LearningObj();
 
 			if(!this.learningObjectTypeMining.containsKey("Page") && !this.oldLearningObjectTypeMining.containsKey("Page"))
 			{
-				LearningObjectType type = new LearningObjectType();
+				LearningType type = new LearningType();
 				type.setType("Page");
 				type.setId(this.learningObjectTypeMax + 1 + this.learningObjectTypeMining.size());
 				this.learningObjectTypeMining.put(type.getType(), type);
@@ -2077,14 +2031,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, ViewLog> generateViewLogMining() {
-		final HashMap<Long, ViewLog> viewLogMining = new HashMap<Long, ViewLog>();
+	public Map<Long, LearningLog> generateViewLogMining() {
+		final HashMap<Long, LearningLog> viewLogMining = new HashMap<Long, LearningLog>();
 		// A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her
 		// requests times.
 
 		for (final LogLMS loadedItem : this.logLms)
 		{
-			final ViewLog insert = new ViewLog();
+			final LearningLog insert = new LearningLog();
 
 			insert.setId(viewLogMining.size() + 1 + this.viewLogMax);
 
@@ -2216,13 +2170,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 
 	@Override
-	public Map<Long, CollaborativeObjectLog> generateCollaborativeLogMining() {
-		final HashMap<Long, CollaborativeObjectLog> collaborativeLogs = new HashMap<Long, CollaborativeObjectLog>();
+	public Map<Long, CollaborationLog> generateCollaborativeLogMining() {
+		final HashMap<Long, CollaborationLog> collaborativeLogs = new HashMap<Long, CollaborationLog>();
 		final HashMap<Long, CourseModulesLMS> couMod = new HashMap<Long, CourseModulesLMS>();
 
 		for (final ChatLogLMS loadedItem : this.chatLogLms)
 		{
-			final CollaborativeObjectLog insert = new CollaborativeObjectLog();
+			final CollaborationLog insert = new CollaborationLog();
 			
 			insert.setId(collaborativeLogs.size() + 1 + this.collaborativeLogMax);
 			insert.setCollaborativeObject(Long.valueOf(this.connector.getPrefix() + "04" + loadedItem.getChat()), this.collaborativeObjectMining,
@@ -2268,7 +2222,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			if (loadedItem.getModule().equals("forum")) {
 
-				final CollaborativeObjectLog insert = new CollaborativeObjectLog();
+				final CollaborationLog insert = new CollaborationLog();
 
 				insert.setId(collaborativeLogs.size() + 1 + this.collaborativeLogMax);
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
@@ -2326,7 +2280,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			
 			if (loadedItem.getModule().equals("wiki"))
 			{
-				final CollaborativeObjectLog insert = new CollaborativeObjectLog();
+				final CollaborationLog insert = new CollaborationLog();
 
 				insert.setId(collaborativeLogs.size() + 1 + this.collaborativeLogMax);
 				if (couMod.get(loadedItem.getCmid()) != null) {
@@ -2355,28 +2309,23 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		return collaborativeLogs;
 	}
 
-	@Override
-	public Map<Long, Assessment> generateAssessmentMining() {
-		return this.assessmentLog;
-	}
-	
-	public Map<String, LearningObjectType> generateLearningObjectTypeMining(){
+	public Map<String, LearningType> generateLearningObjectTypeMining(){
 		return this.learningObjectTypeMining;
 	}
 	
-	public Map<String, TaskType> generateTaskTypeMining(){
+	public Map<String, AssessmentType> generateTaskTypeMining(){
 		return this.taskTypeMining;
 	}
 
 	@Override
-	public Map<Long, CourseCollaborativeObject> generateCourseCollaborativeObjectMining() {
+	public Map<Long, CourseCollaboration> generateCourseCollaborativeObjectMining() {
 		
-		final HashMap<Long, CourseCollaborativeObject> courseCollaboratives = new HashMap<Long, CourseCollaborativeObject>();
+		final HashMap<Long, CourseCollaboration> courseCollaboratives = new HashMap<Long, CourseCollaboration>();
 
 		
 		for (final Entry<Long, Long> loadedItem : this.chatCourse.entrySet())
 		{
-			final CourseCollaborativeObject insert = new CourseCollaborativeObject();
+			final CourseCollaboration insert = new CourseCollaboration();
 
 			insert.setId(loadedItem.getKey());
 			insert.setCourse(loadedItem.getValue(), this.courseMining, this.oldCourseMining);	
@@ -2389,7 +2338,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final ForumLMS loadedItem : this.forumLms)
 		{
-			final CourseCollaborativeObject insert = new CourseCollaborativeObject();
+			final CourseCollaboration insert = new CourseCollaboration();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -2403,7 +2352,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final WikiLMS loadedItem : this.wikiLms)
 		{
-			final CourseCollaborativeObject insert = new CourseCollaborativeObject();
+			final CourseCollaboration insert = new CourseCollaboration();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
@@ -2419,16 +2368,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CollaborativeObject> generateCollaborativeObjectMining() {
-		final HashMap<Long, CollaborativeObject> collaborativeObjects = new HashMap<Long, CollaborativeObject>();
+	public Map<Long, CollaborationObj> generateCollaborativeObjectMining() {
+		final HashMap<Long, CollaborationObj> collaborativeObjects = new HashMap<Long, CollaborationObj>();
 		
 		for (final ChatLMS loadedItem : this.chatLms)
 		{
-			final CollaborativeObject insert = new CollaborativeObject();
+			final CollaborationObj insert = new CollaborationObj();
 
 			if(!this.collaborativeObjectTypeMining.containsKey("Chat") && !this.oldCollaborativeObjectTypeMining.containsKey("Chat"))
 			{
-				CollaborativeObjectType type = new CollaborativeObjectType();
+				CollaborationType type = new CollaborationType();
 				type.setType("Chat");
 				type.setId(this.collaborativeObjectTypeMax + 1 + this.collaborativeObjectTypeMining.size());
 				this.collaborativeObjectTypeMining.put(type.getType(), type);
@@ -2445,11 +2394,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final ForumLMS loadedItem : this.forumLms)
 		{
-			final CollaborativeObject insert = new CollaborativeObject();
+			final CollaborationObj insert = new CollaborationObj();
 
 			if(!this.collaborativeObjectTypeMining.containsKey("Forum") && !this.oldCollaborativeObjectTypeMining.containsKey("Forum"))
 			{
-				CollaborativeObjectType type = new CollaborativeObjectType();
+				CollaborationType type = new CollaborationType();
 				type.setType("Forum");
 				type.setId(this.collaborativeObjectTypeMax + 1 + this.collaborativeObjectTypeMining.size());
 				this.collaborativeObjectTypeMining.put(type.getType(), type);
@@ -2464,11 +2413,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final WikiLMS loadedItem : this.wikiLms)
 		{
-			final CollaborativeObject insert = new CollaborativeObject();
+			final CollaborationObj insert = new CollaborationObj();
 
 			if(!this.collaborativeObjectTypeMining.containsKey("Wiki") && !this.oldCollaborativeObjectTypeMining.containsKey("Wiki"))
 			{
-				CollaborativeObjectType type = new CollaborativeObjectType();
+				CollaborationType type = new CollaborationType();
 				type.setType("Wiki");
 				type.setId(this.collaborativeObjectTypeMax + 1 + this.collaborativeObjectTypeMining.size());
 				this.collaborativeObjectTypeMining.put(type.getType(), type);
@@ -2485,7 +2434,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<String, CollaborativeObjectType> generateCollaborativeObjectTypeMining() {
+	public Map<String, CollaborationType> generateCollaborativeObjectTypeMining() {
 		return this.collaborativeObjectTypeMining;
 	}
 

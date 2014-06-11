@@ -36,24 +36,25 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
+import de.lemo.dms.db.mapping.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
+import de.lemo.dms.db.mapping.abstractions.IRatedObject;
 
 /** This class represents the relationship between courses and resources. */
 @Entity
-@Table(name = "lemo_course_learning_object")
-public class CourseLearningObject implements IMapping, ICourseLORelation {
+@Table(name = "lemo_course_assessment")
+public class CourseAssessment implements IMapping, ICourseLORelation, ICourseRatedObjectAssociation {
 	
 	private long id;
 	private Course course;
-	private LearningObject learningObject;
-	
+	private Assessment task;
 	
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof CourseLearningObject)) {
+		if (!(o instanceof CourseAssessment)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof CourseLearningObject)) {
+		if ((o.getId() == this.getId()) && (o instanceof CourseAssessment)) {
 			return true;
 		}
 		return false;
@@ -86,45 +87,45 @@ public class CourseLearningObject implements IMapping, ICourseLORelation {
 		if (courses.get(course) != null)
 		{
 			this.course = courses.get(course);
-			courses.get(course).addCourseResource(this);
+			courses.get(course).addCourseTask(this);
 		}
 		if ((this.course == null) && (oldCourses.get(course) != null))
 		{
 			this.course = oldCourses.get(course);
-			oldCourses.get(course).addCourseResource(this);
-		}
-	}
-	
-	public void setLearningObject(final long learningObject, final Map<Long, LearningObject> learningObjects,
-			final Map<Long, LearningObject> oldLearningObjects) {
-		if (learningObjects.get(learningObject) != null)
-		{
-			this.learningObject = learningObjects.get(learningObject);
-			learningObjects.get(learningObject).addCourseLearningObject(this);
-		}
-		if ((this.learningObject == null) && (oldLearningObjects.get(learningObject) != null))
-		{
-			this.learningObject = oldLearningObjects.get(learningObject);
-			oldLearningObjects.get(learningObject).addCourseLearningObject(this);
+			oldCourses.get(course).addCourseTask(this);
 		}
 	}
 
 
 	/**
-	 * @return the resource
+	 * @return the task
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="learning_object_id")
-	public LearningObject getLearningObject() {
-		return this.learningObject;
+	@JoinColumn(name="task_id")
+	public Assessment getTask() {
+		return task;
 	}
 
 
 	/**
-	 * @param learningObject the resource to set
+	 * @param Assessment the task to set
 	 */
-	public void setLearningObject(LearningObject learningObject) {
-		this.learningObject = learningObject;
+	public void setTask(Assessment task) {
+		this.task = task;
+	}
+	
+	public void setTask(final long task, final Map<Long, Assessment> tasks,
+			final Map<Long, Assessment> oldTasks) {
+		if (tasks.get(task) != null)
+		{
+			this.task = tasks.get(task);
+			tasks.get(task).addCourseTask(this);
+		}
+		if ((this.task == null) && (oldTasks.get(task) != null))
+		{
+			this.task = oldTasks.get(task);
+			oldTasks.get(task).addCourseTask(this);
+		}
 	}
 
 
@@ -144,16 +145,23 @@ public class CourseLearningObject implements IMapping, ICourseLORelation {
 		this.id = id;
 	}
 
-	
 	@Override
 	@Transient
 	public ILearningObject getLearningObj() {
-		return this.learningObject;
+		
+		return this.task;
 	}
 	
 	@Override
 	@Transient
 	public String getType() {
-		return "LEARNINGOBJECT";
+		return "TASK";
 	}
+
+	@Override
+	@Transient
+	public IRatedObject getRatedObject() {
+		return this.getTask();
+	}
+
 }

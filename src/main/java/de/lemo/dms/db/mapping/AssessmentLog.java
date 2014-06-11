@@ -49,25 +49,24 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_task_log")
-public class TaskLog implements IMapping, ILog{
+@Table(name = "lemo_assessment_log")
+public class AssessmentLog implements IMapping, ILog{
 
 	private long id;
 	private Course course;
 	private User user;
-	private Task task;
+	private Assessment task;
 	private long timestamp;
 	private String answer;
 	private static Long PREFIX = 11L;
 	
-	private Set<Assessment> assessments = new HashSet<Assessment>();
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof TaskLog)) {
+		if (!(o instanceof AssessmentLog)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof TaskLog)) {
+		if ((o.getId() == this.getId()) && (o instanceof AssessmentLog)) {
 			return true;
 		}
 		return false;
@@ -96,21 +95,6 @@ public class TaskLog implements IMapping, ILog{
 			}
 		}
 		return 0;
-	}
-	
-	
-	public void setAssessments(final Set<Assessment> assessments) {
-		this.assessments = assessments;
-	}
-
-	@OneToMany(mappedBy="taskLog")
-	public Set<Assessment> getAssessments() {
-		return this.assessments;
-	}
-
-
-	public void addAssessment(final Assessment assessment) {
-		this.assessments.add(assessment);
 	}
 	
 	@Id
@@ -150,12 +134,12 @@ public class TaskLog implements IMapping, ILog{
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="task_id")
-	public Task getTask() {
+	public Assessment getTask() {
 		return task;
 	}
 	
 	
-	public void setTask(Task task) {
+	public void setTask(Assessment task) {
 		this.task = task;
 	}
 	
@@ -212,8 +196,8 @@ public class TaskLog implements IMapping, ILog{
 		}
 	}
 	
-	public void setTask(final long task, final Map<Long, Task> tasks,
-			final Map<Long, Task> oldTasks) {
+	public void setTask(final long task, final Map<Long, Assessment> tasks,
+			final Map<Long, Assessment> oldTasks) {
 
 		if (tasks.get(task) != null)
 		{

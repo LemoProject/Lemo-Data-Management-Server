@@ -12,19 +12,19 @@ import javax.persistence.Table;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
 @Entity
-@Table(name = "lemo_task_type")
-public class TaskType implements IMapping {
-	
+@Table(name = "lemo_learning_type")
+public class LearningType implements IMapping {
+
 	private long id;
 	private String type;
 	
-	private Set<Task> tasks = new HashSet<Task>();
+	private Set<LearningObj> learningObjects = new HashSet<LearningObj>();
 	
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof TaskType)) {
+		if (!(o instanceof LearningType)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof TaskType)) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningType)) {
 			return true;
 		}
 		return false;
@@ -66,17 +66,18 @@ public class TaskType implements IMapping {
 		this.type = type;
 	}
 	
-	public void setTasks(final Set<Task> tasks) {
-		this.tasks = tasks;
+	public void setLearningObjects(final Set<LearningObj> learningObjects) {
+		this.learningObjects = learningObjects;
 	}
 
 	@OneToMany(mappedBy="type")
-	public Set<Task> getTasks() {
-		return this.tasks;
+	public Set<LearningObj> getLearningObjects() {
+		return this.learningObjects;
 	}
 
-	public void addTask(final Task task) {
-		this.tasks.add(task);
+	public void addLearningObject(final LearningObj learningObject) {
+		this.learningObjects.add(learningObject);
 	}
+
 
 }

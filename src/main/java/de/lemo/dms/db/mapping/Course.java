@@ -52,13 +52,13 @@ public class Course implements IMapping{
 	private String title;
 	private long timeModified;
 	
-	private Set<CourseLearningObject> courseResources = new HashSet<CourseLearningObject>();
-	private Set<CourseCollaborativeObject> courseCollaborativeObjects = new HashSet<CourseCollaborativeObject>();
-	private Set<CourseTask> courseTasks = new HashSet<CourseTask>();
-	private Set<ViewLog> eventLogs = new HashSet<ViewLog>();
-	private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
-	private Set<CollaborativeObjectLog> collaborativeLogs = new HashSet<CollaborativeObjectLog>();
-	private Set<TaskUser> taskUsers = new HashSet<TaskUser>();
+	private Set<CourseLearning> courseResources = new HashSet<CourseLearning>();
+	private Set<CourseCollaboration> courseCollaborativeObjects = new HashSet<CourseCollaboration>();
+	private Set<CourseAssessment> courseTasks = new HashSet<CourseAssessment>();
+	private Set<LearningLog> eventLogs = new HashSet<LearningLog>();
+	private Set<AssessmentLog> taskLogs = new HashSet<AssessmentLog>();
+	private Set<CollaborationLog> collaborativeLogs = new HashSet<CollaborationLog>();
+	private Set<AssessmentUser> taskUsers = new HashSet<AssessmentUser>();
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
 	
 	@Override
@@ -132,7 +132,7 @@ public class Course implements IMapping{
 	 * @param courseResource
 	 *            a set of entries in the course_resource table which shows the resources in this course
 	 */
-	public void setCourseResources(final Set<CourseLearningObject> courseResource) {
+	public void setCourseResources(final Set<CourseLearning> courseResource) {
 		this.courseResources = courseResource;
 	}
 
@@ -142,7 +142,7 @@ public class Course implements IMapping{
 	 * @return a set of entries in the course_resource table which shows the resources in this course
 	 */
 	@OneToMany(mappedBy="course")
-	public Set<CourseLearningObject> getCourseResources() {
+	public Set<CourseLearning> getCourseResources() {
 		return this.courseResources;
 	}
 
@@ -152,7 +152,7 @@ public class Course implements IMapping{
 	 * @param courseResource
 	 *            this entry of the course_resource table will be added to this course
 	 */
-	public void addCourseResource(final CourseLearningObject courseResource) {
+	public void addCourseResource(final CourseLearning courseResource) {
 		this.courseResources.add(courseResource);
 	}
 	
@@ -162,7 +162,7 @@ public class Course implements IMapping{
 	 * @param courseTasks
 	 *            a set of entries in the course_resource table which shows the resources in this course
 	 */
-	public void setCourseTasks(final Set<CourseTask> courseTasks) {
+	public void setCourseTasks(final Set<CourseAssessment> courseTasks) {
 		this.courseTasks = courseTasks;
 	}
 
@@ -172,7 +172,7 @@ public class Course implements IMapping{
 	 * @return a set of entries in the course_task table which shows the tasks in this course
 	 */
 	@OneToMany(mappedBy="course")
-	public Set<CourseTask> getCourseTasks() {
+	public Set<CourseAssessment> getCourseTasks() {
 		return this.courseTasks;
 	}
 
@@ -182,46 +182,46 @@ public class Course implements IMapping{
 	 * @param courseResource
 	 *            this entry of the course_resource table will be added to this course
 	 */
-	public void addCourseTask(final CourseTask courseTask) {
+	public void addCourseTask(final CourseAssessment courseTask) {
 		this.courseTasks.add(courseTask);
 	}
 	
-	public void setEventLogs(final Set<ViewLog> eventLog) {
+	public void setEventLogs(final Set<LearningLog> eventLog) {
 		this.eventLogs = eventLog;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<ViewLog> getEventLogs() {
+	public Set<LearningLog> getEventLogs() {
 		return this.eventLogs;
 	}
 
-	public void addEventLog(final ViewLog eventLog) {
+	public void addEventLog(final LearningLog eventLog) {
 		this.eventLogs.add(eventLog);
 	}
 	
-	public void setTaskLogs(final Set<TaskLog> taskLog) {
+	public void setTaskLogs(final Set<AssessmentLog> taskLog) {
 		this.taskLogs = taskLog;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<TaskLog> getTaskLogs() {
+	public Set<AssessmentLog> getTaskLogs() {
 		return this.taskLogs;
 	}
 
-	public void addTaskLog(final TaskLog taskLog) {
+	public void addTaskLog(final AssessmentLog taskLog) {
 		this.taskLogs.add(taskLog);
 	}
 	
-	public void setCollaborativeLogs(final Set<CollaborativeObjectLog> collaborativeLog) {
+	public void setCollaborativeLogs(final Set<CollaborationLog> collaborativeLog) {
 		this.collaborativeLogs = collaborativeLog;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<CollaborativeObjectLog> getCollaborativeLogs() {
+	public Set<CollaborationLog> getCollaborativeLogs() {
 		return this.collaborativeLogs;
 	}
 
-	public void addCollaborativeLog(final CollaborativeObjectLog collaborativeLog) {
+	public void addCollaborativeLog(final CollaborationLog collaborativeLog) {
 		this.collaborativeLogs.add(collaborativeLog);
 	}
 
@@ -229,18 +229,18 @@ public class Course implements IMapping{
 	 * @return the taskUsers
 	 */
 	@OneToMany(mappedBy="course")
-	public Set<TaskUser> getTaskUsers() {
+	public Set<AssessmentUser> getTaskUsers() {
 		return taskUsers;
 	}
 
 	/**
 	 * @param taskUsers the taskUsers to set
 	 */
-	public void setTaskUsers(Set<TaskUser> taskUsers) {
+	public void setTaskUsers(Set<AssessmentUser> taskUsers) {
 		this.taskUsers = taskUsers;
 	}
 	
-	public void addTaskUser(TaskUser taskUser)
+	public void addTaskUser(AssessmentUser taskUser)
 	{
 		this.taskUsers.add(taskUser);
 	}
@@ -296,16 +296,16 @@ public class Course implements IMapping{
 		}
 	}
 	
-	public void setCourseCollaborativeObjects(final Set<CourseCollaborativeObject> courseCollaborativeObjects) {
+	public void setCourseCollaborativeObjects(final Set<CourseCollaboration> courseCollaborativeObjects) {
 		this.courseCollaborativeObjects = courseCollaborativeObjects;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<CourseCollaborativeObject> getCourseCollaborativeObjects() {
+	public Set<CourseCollaboration> getCourseCollaborativeObjects() {
 		return this.courseCollaborativeObjects;
 	}
 
-	public void addCourseCollaborativeObject(final CourseCollaborativeObject courseCollaborativeObject) {
+	public void addCourseCollaborativeObject(final CourseCollaboration courseCollaborativeObject) {
 		this.courseCollaborativeObjects.add(courseCollaborativeObject);
 	}
 
