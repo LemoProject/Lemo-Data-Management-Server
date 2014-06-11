@@ -53,6 +53,7 @@ public class LearningLog implements IMapping, ILog {
 	private User user;
 	private LearningObj learningObject;
 	private long timestamp;
+	private String action;
 	private Long duration;
 	private static Long PREFIX = 16L;
 	
@@ -236,6 +237,21 @@ public class LearningLog implements IMapping, ILog {
 	@Transient
 	public String getType() {
 		return "LEARNINGOBJECT";
+	}
+
+	/**
+	 * @return the action
+	 */
+	@Column(name="action")
+	public String getAction() {
+		return action;
+	}
+
+	/**
+	 * @param action the action to set
+	 */
+	public void setAction(String action) {
+		this.action = action;
 	}
 
 	

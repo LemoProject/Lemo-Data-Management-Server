@@ -58,6 +58,8 @@ public class AssessmentLog implements IMapping, ILog{
 	private Assessment task;
 	private long timestamp;
 	private String answer;
+	private String action;
+	private long duration;
 	private static Long PREFIX = 11L;
 	
 	
@@ -95,6 +97,17 @@ public class AssessmentLog implements IMapping, ILog{
 			}
 		}
 		return 0;
+	}
+	
+	@Column(name="duration")
+	public Long getDuration() {
+		return duration;
+	}
+	
+	
+	
+	public void setDuration(Long duration) {
+		this.duration = duration;
 	}
 	
 	@Id
@@ -240,6 +253,21 @@ public class AssessmentLog implements IMapping, ILog{
 	@Transient
 	public String getType() {
 		return "TASK";
+	}
+
+	/**
+	 * @return the action
+	 */
+	@Column(name="action")
+	public String getAction() {
+		return action;
+	}
+
+	/**
+	 * @param action the action to set
+	 */
+	public void setAction(String action) {
+		this.action = action;
 	}
 	
 }

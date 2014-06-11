@@ -56,6 +56,7 @@ public class CollaborationLog implements IMapping, ILog{
 	private CollaborationObj collaborativeObject;
 	private long timestamp;
 	private String text;
+	private String action;
 	private CollaborationObj parent;
 	private static Long PREFIX = 15L;
 	
@@ -257,6 +258,21 @@ public class CollaborationLog implements IMapping, ILog{
 	@Transient
 	public String getType() {
 		return "COLLABORATIVEOBJECT";
+	}
+
+	/**
+	 * @return the action
+	 */
+	@Column(name="action")
+	public String getAction() {
+		return action;
+	}
+
+	/**
+	 * @param action the action to set
+	 */
+	public void setAction(String action) {
+		this.action = action;
 	}
 	
 }
