@@ -259,8 +259,25 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 	@Override
 	public Map<Long, CourseUser> generateCourseUserMining() {
-		// TODO Auto-generated method stub
-		return null;
+		final HashMap<Long, CourseUser> courseUsers = new HashMap<Long, CourseUser>();
+		
+		for(Memberships loadedItem : this.membershipsMooc)
+		{
+			CourseUser insert = new CourseUser();
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourseId()), this.courseMining, this.oldCourseMining);
+			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserId()), this.userMining, this.oldUserMining);
+			Long role = 2L;
+			if(loadedItem.getRole().equals("instructor") || loadedItem.getRole().equals("instructor_assistant"))
+				role = 1L;
+			else if(loadedItem.getRole().equals("administrator"))
+				role = 0L;
+			insert.setRole(role, this.roleMining, this.oldRoleMining);
+			
+			courseUsers.put(insert.getId(), insert);
+		}
+			
+		return courseUsers;
 	}
 
 	@Override
@@ -286,6 +303,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			insert.setPlatform(this.connector.getPlatformId(), this.platformMining, this.oldPlatformMining);
 			insert.setTitle(loadedItem.getTitle());
 			insert.setTimeModified(loadedItem.getTimemodified());
+			
+			courses.put(insert.getId(), insert);
 		}
 		return courses;
 	}
@@ -322,14 +341,24 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 	@Override
 	public Map<Long, CollaborativeObject> generateCollaborativeObjectMining() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map<Long, User> generateUserMining() {
-		// TODO Auto-generated method stub
-		return null;
+		final HashMap<Long, User> users = new HashMap<Long, User>();
+		
+		for(Users loadedItem : this.usersMooc)
+		{
+			User insert = new User();
+			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setGender(0);
+			insert.setLogin(loadedItem.getId() + "mooc");
+			
+			users.put(insert.getId(), insert);
+		}
+		
+		return users;
 	}
 
 	@Override
@@ -340,8 +369,32 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 	@Override
 	public Map<Long, Role> generateRoleMining() {
-		// TODO Auto-generated method stub
-		return null;
+		final HashMap<Long, Role> roles = new HashMap<Long, Role>();
+		
+		Role admin = new Role();
+		admin.setId(Long.valueOf(this.connector.getPrefix() + "" + 0));
+		admin.setSortOrder(0);
+		admin.setTitle("Administrator");
+		admin.setType(0);
+		
+		Role teacher = new Role();
+		teacher.setId(Long.valueOf(this.connector.getPrefix() + "" + 1));
+		teacher.setSortOrder(1);
+		teacher.setTitle("Instructor");
+		teacher.setType(1);
+		
+		Role student = new Role();
+		student.setId(Long.valueOf(this.connector.getPrefix() + "" + 2));
+		student.setSortOrder(2);
+		student.setTitle("Student");
+		student.setType(2);
+		
+		roles.put(admin.getId(), admin);
+		roles.put(teacher.getId(), teacher);
+		roles.put(student.getId(), student);
+	
+		
+		return roles;
 	}
 
 	@Override
