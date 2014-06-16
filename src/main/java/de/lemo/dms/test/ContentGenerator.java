@@ -381,15 +381,15 @@ public class ContentGenerator {
 					
 				final AssessmentLog aLog = new AssessmentLog();
 				aLog.setCourse(cou);
-				aLog.setTask(tasks.get((tasks.size() - 1) - randy.nextInt(MAGIC_FIVE)));
+				aLog.setAssessment(tasks.get((tasks.size() - 1) - randy.nextInt(MAGIC_FIVE)));
 				aLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
-				final Assessment a = aLog.getTask();
+				final Assessment a = aLog.getAssessment();
 
 				time = (int) (startdate
 						+ (randy.nextInt(year) ));
 				aLog.setTimestamp(time);
 				
-				if(!taskUserMap.containsKey(aLog.getUser().getId() + "#" + aLog.getTask().getId()))
+				if(!taskUserMap.containsKey(aLog.getUser().getId() + "#" + aLog.getAssessment().getId()))
 				{
 					AssessmentUser tu = new AssessmentUser();
 					tu.setId(taskUserMap.size() + 1);
@@ -399,7 +399,7 @@ public class ContentGenerator {
 					tu.setTimemodified(time);
 					tu.setGrade(randy.nextInt(((Double)a.getMaxGrade()).intValue()));
 					
-					taskUserMap.put(aLog.getUser().getId() + "#" + aLog.getTask().getId(), tu);
+					taskUserMap.put(aLog.getUser().getId() + "#" + aLog.getAssessment().getId(), tu);
 				}
 				
 				if(aLog.getTimestamp() > maxLog)

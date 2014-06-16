@@ -34,6 +34,18 @@ import org.hibernate.cfg.Configuration;
 
 import com.google.common.collect.Maps;
 
+import de.lemo.dms.connectors.mooc.mapping.AssessmentAnswers;
+import de.lemo.dms.connectors.mooc.mapping.AssessmentQuestions;
+import de.lemo.dms.connectors.mooc.mapping.Assessments;
+import de.lemo.dms.connectors.mooc.mapping.Courses;
+import de.lemo.dms.connectors.mooc.mapping.Events;
+import de.lemo.dms.connectors.mooc.mapping.Memberships;
+import de.lemo.dms.connectors.mooc.mapping.Progress;
+import de.lemo.dms.connectors.mooc.mapping.Questions;
+import de.lemo.dms.connectors.mooc.mapping.Segments;
+import de.lemo.dms.connectors.mooc.mapping.UnitResources;
+import de.lemo.dms.connectors.mooc.mapping.Users;
+import de.lemo.dms.connectors.mooc.mapping.Videos;
 import de.lemo.dms.connectors.moodle_2_3.mapping.AssignGradesLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.ChatLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.ChatLogLMS;
@@ -105,41 +117,19 @@ public final class HibernateUtil {
 
 		// Add mapping classes
 
-		cfg.addAnnotatedClass(AssignLMS.class);
+		cfg.addAnnotatedClass(AssessmentAnswers.class);
 
-		cfg.addAnnotatedClass(EnrolLMS.class);
-		cfg.addAnnotatedClass(UserEnrolmentsLMS.class);
-		cfg.addAnnotatedClass(ModulesLMS.class);
-		cfg.addAnnotatedClass(CourseModulesLMS.class);
-
-		cfg.addAnnotatedClass(CourseLMS.class);
-		cfg.addAnnotatedClass(ForumDiscussionsLMS.class);
-		cfg.addAnnotatedClass(ForumPostsLMS.class);
-		cfg.addAnnotatedClass(ForumLMS.class);
-		cfg.addAnnotatedClass(GradeGradesLMS.class);
-		cfg.addAnnotatedClass(GroupsMembersLMS.class);
-		cfg.addAnnotatedClass(GroupsLMS.class);
-		cfg.addAnnotatedClass(LogLMS.class);
-		cfg.addAnnotatedClass(QuestionStatesLMS.class);
-		cfg.addAnnotatedClass(QuestionLMS.class);
-		cfg.addAnnotatedClass(QuizGradesLMS.class);
-		cfg.addAnnotatedClass(QuizLMS.class);
-		cfg.addAnnotatedClass(QuizAttemptsLMS.class);
-		cfg.addAnnotatedClass(QuizQuestionInstancesLMS.class);
-		cfg.addAnnotatedClass(WikiLMS.class);
-		cfg.addAnnotatedClass(ResourceLMS.class);
-		cfg.addAnnotatedClass(PageLMS.class);
-		cfg.addAnnotatedClass(UrlLMS.class);
-		cfg.addAnnotatedClass(UserLMS.class);
-		cfg.addAnnotatedClass(RoleLMS.class);
-		cfg.addAnnotatedClass(ContextLMS.class);
-		cfg.addAnnotatedClass(RoleAssignmentsLMS.class);
-		cfg.addAnnotatedClass(AssignGradesLMS.class);
-		cfg.addAnnotatedClass(ScormLMS.class);
-		cfg.addAnnotatedClass(GradeItemsLMS.class);
-		cfg.addAnnotatedClass(ChatLMS.class);
-		cfg.addAnnotatedClass(ChatLogLMS.class);
-		cfg.addAnnotatedClass(CourseCategoriesLMS.class);
+		cfg.addAnnotatedClass(AssessmentQuestions.class);
+		cfg.addAnnotatedClass(Assessments.class);
+		cfg.addAnnotatedClass(Courses.class);
+		cfg.addAnnotatedClass(Events.class);
+		cfg.addAnnotatedClass(Memberships.class);
+		cfg.addAnnotatedClass(Progress.class);
+		cfg.addAnnotatedClass(Questions.class);
+		cfg.addAnnotatedClass(Segments.class);
+		cfg.addAnnotatedClass(UnitResources.class);
+		cfg.addAnnotatedClass(Users.class);
+		cfg.addAnnotatedClass(Videos.class);
 
 		return cfg.buildSessionFactory();
 	}

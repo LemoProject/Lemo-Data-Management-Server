@@ -65,7 +65,7 @@ public class ConnectorMooc extends AbstractConnector {
 	public void getData() {
 		final ExtractAndMapMooc extract = new ExtractAndMapMooc(this);
 		final String[] s = new String[1];
-		s[0] = "ExtractAndMapIversity";
+		s[0] = "ExtractAndMapMooc";
 
 		extract.start(s, this.config, this.getCourseIdFilter(), this.getCourseLoginFilter());
 	}
@@ -74,7 +74,7 @@ public class ConnectorMooc extends AbstractConnector {
 	public void updateData(final long fromTimestamp) {
 		final ExtractAndMapMooc extract = new ExtractAndMapMooc(this);
 		final String[] s = new String[2];
-		s[0] = "ExtractAndMapIversity";
+		s[0] = "ExtractAndMapMooc";
 		s[1] = fromTimestamp + "";
 		extract.start(s, this.config, this.getCourseIdFilter(), this.getCourseLoginFilter());
 

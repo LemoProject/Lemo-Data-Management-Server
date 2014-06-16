@@ -161,6 +161,19 @@ public class LearningObj implements IMapping, ILearningObject{
 			oldLearningObjectTypes.get(title).addLearningObject(this);
 		}
 	}
+	
+	public void setParent(final long id, final Map<Long, LearningObj> learningObjs,
+			final Map<Long, LearningObj> oldLearningObjs) {
+
+		if (learningObjs.get(id) != null)
+		{
+			this.parent = learningObjs.get(id);
+		}
+		if ((this.parent == null) && (oldLearningObjs.get(id) != null))
+		{
+			this.parent = oldLearningObjs.get(id);
+		}
+	}
 
 	@Override
 	@Transient

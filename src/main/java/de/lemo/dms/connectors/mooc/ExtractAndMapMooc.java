@@ -27,26 +27,20 @@
 package de.lemo.dms.connectors.mooc;
 
 
-import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
-import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
-import de.lemo.dms.connectors.TextHelper;
 import de.lemo.dms.connectors.mooc.mapping.AssessmentAnswers;
 import de.lemo.dms.connectors.mooc.mapping.AssessmentQuestions;
+import de.lemo.dms.connectors.mooc.mapping.AssessmentSessions;
 import de.lemo.dms.connectors.mooc.mapping.Assessments;
 import de.lemo.dms.connectors.mooc.mapping.Courses;
 import de.lemo.dms.connectors.mooc.mapping.Events;
@@ -86,6 +80,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	/** The log_lms. */
 	private List<AssessmentAnswers> assessmentAnswersMooc;
 	private List<AssessmentQuestions> assessmentQuestionsMooc;
+	private List<AssessmentSessions> assessmentSessionsMooc;
 	private List<Assessments> assessmentMooc;
 	private List<Courses> coursesMooc;
 	private List<Events> eventsMooc;
@@ -97,8 +92,11 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private List<Users> usersMooc;
 	private List<Videos> videosMooc;
 	
-
-	private Map<Long, Long> chatCourse = new HashMap<Long, Long>();
+	private HashMap<String, CollaborationType> collTypes = new HashMap<String, CollaborationType>();
+	private HashMap<String, LearningType> learnTypes = new HashMap<String, LearningType>();
+	private HashMap<String, AssessmentType> assessTypes = new HashMap<String, AssessmentType>();
+	
+	private HashMap<String, CourseLearning> courseLearn = new HashMap<String, CourseLearning>();
 	
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -126,6 +124,11 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		criteria = session.createCriteria(AssessmentAnswers.class, "obj");
 		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentAnswersMooc = criteria.list();
+		
+		criteria = session.createCriteria(AssessmentSessions.class, "obj");
+		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.timemodified").asc());
 		this.assessmentAnswersMooc = criteria.list();
 		
 		criteria = session.createCriteria(AssessmentQuestions.class, "obj");
@@ -178,6 +181,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		this.videosMooc = criteria.list();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void getLMStables(DBConfigObject dbConf, long readingfromtimestamp,
 			long readingtotimestamp, List<Long> courses, List<String> logins) {
@@ -198,6 +202,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		criteria = session.createCriteria(AssessmentQuestions.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.assessmentQuestionsMooc = criteria.list();
+		
+		criteria = session.createCriteria(AssessmentSessions.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentSessionsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Assessments.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -262,9 +270,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Memberships loadedItem : this.membershipsMooc)
 		{
 			CourseUser insert = new CourseUser();
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourseId()), this.courseMining, this.oldCourseMining);
-			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserId()), this.userMining, this.oldUserMining);
+			insert.setId( loadedItem.getId());
+			insert.setCourse(  loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
+			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
 			Long role = 2L;
 			if(loadedItem.getRole().equals("instructor") || loadedItem.getRole().equals("instructor_assistant"))
 				role = 1L;
@@ -276,18 +284,18 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		}
 			
 		return courseUsers;
-	}
+	}  
 
 	@Override
-	public Map<Long, CourseAssessment> generateCourseTaskMining() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Long, CourseAssessment> generateCourseAssessmentMining() {
+		final HashMap<Long, CourseAssessment> courseAssessments = new HashMap<Long, CourseAssessment>();
+		return courseAssessments;
 	}
 
 	@Override
 	public Map<Long, CourseCollaboration> generateCourseCollaborativeObjectMining() {
-		// TODO Auto-generated method stub
-		return null;
+		final HashMap<Long, CourseCollaboration> courseCollaborations = new HashMap<Long, CourseCollaboration>();
+		return courseCollaborations;
 	}
 
 	@Override
@@ -297,7 +305,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Courses loadedItem : this.coursesMooc)
 		{
 			Course insert = new Course();
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setId(  loadedItem.getId());
 			insert.setPlatform(this.connector.getPlatformId(), this.platformMining, this.oldPlatformMining);
 			insert.setTitle(loadedItem.getTitle());
 			insert.setTimeModified(loadedItem.getTimemodified());
@@ -309,37 +317,145 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 	@Override
 	public Map<Long, CourseLearning> generateCourseLearningObjectMining() {
-		// TODO Auto-generated method stub
-		return null;
+		final HashMap<Long, CourseLearning> courseLearnings = new HashMap<Long, CourseLearning>();
+		
+		for(Segments loadedItem : this.segmentsMooc)
+		{
+			CourseLearning insert = new CourseLearning();
+			insert.setId(Long.valueOf("1" + loadedItem.getId()));
+			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
+			insert.setLearningObject(Long.valueOf("1" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
+			
+			if(insert.getLearningObject() != null && insert.getCourse() != null)
+				courseLearnings.put(insert.getId(), insert);
+		}
+		
+		
+		return courseLearnings;
 	}
 
 	@Override
-	public Map<Long, AssessmentUser> generateTaskUserMining() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Long, AssessmentUser> generateAssessmentUserMining() {
+		final HashMap<Long, AssessmentUser> assessmentUsers = new HashMap<Long, AssessmentUser>();
+		
+		
+		for(AssessmentSessions loadedItem : this.assessmentSessionsMooc)
+		{
+			AssessmentUser insert = new AssessmentUser();
+			
+			CourseUser cu = this.courseUserMining.get(loadedItem.getMembershipId());
+			if(cu == null)
+			{
+				cu = this.oldCourseUserMining.get(loadedItem.getMembershipId());
+			}
+			if(cu != null)
+			{
+				insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
+				insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
+				insert.setTask(loadedItem.getAssessmentId(), this.assessmentMining, this.oldAssessmentMining);
+				insert.setGrade(loadedItem.getScore());
+				insert.setTimemodified(loadedItem.getTimeModified());
+				
+				assessmentUsers.put(insert.getId(), insert);
+			}
+		}
+		
+		return assessmentUsers;
 	}
 
 	@Override
-	public Map<Long, LearningLog> generateViewLogMining() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Long, LearningLog> generateLearningLogMining() {
+		final HashMap<Long, LearningLog> learningLogs = new HashMap<Long, LearningLog>();
+		
+		for(Events loadedItem : this.eventsMooc)
+		{
+			LearningLog insert = new LearningLog();
+			insert.setId(loadedItem.getId());
+			insert.setCourse(loadedItem.getId(), this.courseMining, this.oldCourseMining);
+			
+		}
+		return learningLogs;
 	}
 
 	@Override
 	public Map<Long, CollaborationLog> generateCollaborativeLogMining() {
-		// TODO Auto-generated method stub
-		return null;
+		final HashMap<Long, CollaborationLog> collaborationLogs = new HashMap<Long, CollaborationLog>();
+		return collaborationLogs;
 	}
 
 	@Override
 	public Map<Long, LearningObj> generateLearningObjectMining() {
-		// TODO Auto-generated method stub
-		return null;
+		final HashMap<Long, LearningObj> learningObjs = new HashMap<Long, LearningObj>();
+		
+		for(Segments loadedItem : this.segmentsMooc)
+		{
+			LearningObj insert = new LearningObj();
+			insert.setId(Long.valueOf("1" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getTitle());
+
+			if(loadedItem.getType().equals("LessonUnit") || loadedItem.getType().equals("Chapter"))
+			{
+				LearningType type = new LearningType();
+				if(this.learnTypes.get(loadedItem.getType()) == null)
+				{
+					type.setId(this.learningObjectTypeMax + 1);
+					type.setType(loadedItem.getType());
+					this.learnTypes.put(type.getType(), type);
+				}
+				else
+				{
+					type = this.learnTypes.get(loadedItem.getType());
+				}
+				
+				insert.setType(type);
+			}
+			
+			if(loadedItem.getParent() != null)
+			{
+				insert.setParent(insert.getId(), learningObjectMining, oldLearningObjectMining);
+			}
+			
+			if(insert.getType() != null)
+			{
+				learningObjs.put(insert.getId(), insert);
+			}
+		}
+		
+		for(Videos loadedItem : this.videosMooc)
+		{
+			LearningObj insert = new LearningObj();
+			insert.setId(Long.valueOf("2" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getTitle());
+			insert.setUrl(loadedItem.getUrl());
+
+			LearningType type = new LearningType();
+			if(this.learnTypes.get("Video") == null)
+			{
+				type.setId(this.learningObjectTypeMax + 1);
+				type.setType("Video");
+				this.learnTypes.put(type.getType(), type);
+			}
+			else
+			{
+				type = this.learnTypes.get("Video");
+			}
+				
+				insert.setType(type);
+				
+			if(insert.getType() != null)
+			{
+				learningObjs.put(insert.getId(), insert);
+			}
+		}
+		
+		
+		return learningObjs;
 	}
 
 	@Override
 	public Map<Long, CollaborationObj> generateCollaborativeObjectMining() {
-		return null;
+		final HashMap<Long, CollaborationObj> collaborationObjs = new HashMap<Long, CollaborationObj>();
+		return collaborationObjs;
 	}
 
 	@Override
@@ -349,7 +465,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Users loadedItem : this.usersMooc)
 		{
 			User insert = new User();
-			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+			insert.setId(  loadedItem.getId());
 			insert.setGender(0);
 			insert.setLogin(loadedItem.getId() + "mooc");
 			
@@ -360,9 +476,32 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, Assessment> generateTaskMining() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Long, Assessment> generateAssessmentMining() {
+		final HashMap<Long, Assessment> assessments = new HashMap<Long, Assessment>();
+		for(Assessments loadedItem : this.assessmentMooc)
+		{
+			Assessment insert = new Assessment();
+			insert.setId(loadedItem.getId());
+			insert.setTitle(loadedItem.getTitle());
+			
+			AssessmentType type = new AssessmentType();
+			if(this.assessTypes.get(loadedItem.getType()) == null)
+			{
+				type.setId(this.assessmentTypeMax + 1);
+				type.setType(loadedItem.getType());
+				this.assessTypes.put(type.getType(), type);
+			}
+			else
+			{
+				type = this.assessTypes.get(loadedItem.getType());
+			}
+			insert.setType(type);
+			
+			assessments.put(insert.getId(), insert);
+		}
+		
+		
+		return assessments;
 	}
 
 	@Override
@@ -370,19 +509,19 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		final HashMap<Long, Role> roles = new HashMap<Long, Role>();
 		
 		Role admin = new Role();
-		admin.setId(Long.valueOf(this.connector.getPrefix() + "" + 0));
+		admin.setId(0);
 		admin.setSortOrder(0);
 		admin.setTitle("Administrator");
 		admin.setType(0);
 		
 		Role teacher = new Role();
-		teacher.setId(Long.valueOf(this.connector.getPrefix() + "" + 1));
+		teacher.setId(1);
 		teacher.setSortOrder(1);
 		teacher.setTitle("Instructor");
 		teacher.setType(1);
 		
 		Role student = new Role();
-		student.setId(Long.valueOf(this.connector.getPrefix() + "" + 2));
+		student.setId(2);
 		student.setSortOrder(2);
 		student.setTitle("Student");
 		student.setType(2);
@@ -396,27 +535,45 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, AssessmentLog> generateTaskLogMining() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Long, AssessmentLog> generateAssessmentLogMining() {
+		final HashMap<Long, AssessmentLog> assessmentLogs = new HashMap<Long, AssessmentLog>();
+		
+		for(AssessmentSessions loadedItem : this.assessmentSessionsMooc)
+		{
+			AssessmentLog insert = new AssessmentLog();
+			insert.setId(loadedItem.getId());
+			insert.setDuration(loadedItem.getDuration());
+			insert.setAction(loadedItem.getState());
+			
+			CourseUser cu = this.courseUserMining.get(loadedItem.getMembershipId());
+			if(cu == null)
+			{
+				cu = this.oldCourseUserMining.get(loadedItem.getMembershipId());
+			}
+			if(cu != null)
+			{
+				insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
+				insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
+				
+				assessmentLogs.put(insert.getId(), insert);
+			}
+		}
+		return assessmentLogs;
 	}
 
 	@Override
 	public Map<String, LearningType> generateLearningObjectTypeMining() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.learnTypes;
 	}
 
 	@Override
 	public Map<String, CollaborationType> generateCollaborativeObjectTypeMining() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.collTypes;
 	}
 
 	@Override
-	public Map<String, AssessmentType> generateTaskTypeMining() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, AssessmentType> generateAssessmentTypeMining() {
+		return this.assessTypes;
 	}
 
 }

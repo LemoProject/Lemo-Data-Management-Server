@@ -55,7 +55,7 @@ public class AssessmentLog implements IMapping, ILog{
 	private long id;
 	private Course course;
 	private User user;
-	private Assessment task;
+	private Assessment assessment;
 	private long timestamp;
 	private String answer;
 	private String action;
@@ -147,13 +147,13 @@ public class AssessmentLog implements IMapping, ILog{
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="assessment_id")
-	public Assessment getTask() {
-		return task;
+	public Assessment getAssessment() {
+		return assessment;
 	}
 	
 	
-	public void setTask(Assessment task) {
-		this.task = task;
+	public void setAssessment(Assessment task) {
+		this.assessment = task;
 	}
 	
 	
@@ -214,12 +214,12 @@ public class AssessmentLog implements IMapping, ILog{
 
 		if (tasks.get(task) != null)
 		{
-			this.task = tasks.get(task);
+			this.assessment = tasks.get(task);
 			tasks.get(task).addTaskLog(this);
 		}
-		if ((this.task == null) && (oldTasks.get(task) != null))
+		if ((this.assessment == null) && (oldTasks.get(task) != null))
 		{
-			this.task = oldTasks.get(task);
+			this.assessment = oldTasks.get(task);
 			oldTasks.get(task).addTaskLog(this);
 		}
 	}
@@ -227,20 +227,20 @@ public class AssessmentLog implements IMapping, ILog{
 	@Override
 	@Transient
 	public Long getLearningObjectId() {
-		return this.getTask().getId();
+		return this.getAssessment().getId();
 	}
 
 	@Override
 	@Transient
 	public ILearningObject getLearningObject() {
-		return this.getTask();
+		return this.getAssessment();
 	}
 
 	@Override
 	@Transient
 	public String getTitle() {
 		
-		return this.getTask().getTitle();
+		return this.getAssessment().getTitle();
 	}
 
 	@Override

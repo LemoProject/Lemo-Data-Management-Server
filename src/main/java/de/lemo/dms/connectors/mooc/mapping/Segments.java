@@ -13,10 +13,12 @@ public class Segments {
 	private long courseId;
 	private long userId;
 	private String title;
+	private String type;
 	private String description;
 	private long timecreated;
 	private long timemodified;
 	private long position;
+	private Long parent;
 	/**
 	 * @return the id
 	 */
@@ -135,6 +137,36 @@ public class Segments {
 	 */
 	public void setPosition(long position) {
 		this.position = position;
+	}
+
+	/**
+	 * @return the type
+	 */
+	@Column(name="type")
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the parent
+	 */
+	@Column(name="parent")
+	public Long getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent the parent to set
+	 */
+	public void setParent(Long parent) {
+		this.parent = parent;
 	}
 	
 	

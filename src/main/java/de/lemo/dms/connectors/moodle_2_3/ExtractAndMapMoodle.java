@@ -1750,7 +1750,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					maxLog = insert.getTimestamp();
 				}
 				
-				if ((insert.getCourse() != null) && (insert.getTask() != null) && (insert.getUser() != null)) {
+				if ((insert.getCourse() != null) && (insert.getAssessment() != null) && (insert.getUser() != null)) {
 					taskLogs.put(insert.getId(), insert);
 				}
 
