@@ -46,6 +46,7 @@ import de.lemo.dms.connectors.mooc.mapping.Courses;
 import de.lemo.dms.connectors.mooc.mapping.Events;
 import de.lemo.dms.connectors.mooc.mapping.Memberships;
 import de.lemo.dms.connectors.mooc.mapping.Progress;
+import de.lemo.dms.connectors.mooc.mapping.Answers;
 import de.lemo.dms.connectors.mooc.mapping.Questions;
 import de.lemo.dms.connectors.mooc.mapping.Segments;
 import de.lemo.dms.connectors.mooc.mapping.UnitResources;
@@ -86,6 +87,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private List<Events> eventsMooc;
 	private List<Memberships> membershipsMooc;
 	private List<Progress> progressMooc;
+	private List<Answers> answersMooc;
 	private List<Questions> questionsMooc;
 	private List<Segments> segmentsMooc;
 	private List<UnitResources> unitResourcesMooc;
@@ -160,6 +162,11 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.questionsMooc = criteria.list();
 		
+		criteria = session.createCriteria(Answers.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.answersMooc = criteria.list();
+		
 		criteria = session.createCriteria(Segments.class, "obj");
 		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -226,6 +233,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		criteria = session.createCriteria(Questions.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.questionsMooc = criteria.list();
+		
+		criteria = session.createCriteria(Answers.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.answersMooc = criteria.list();
 		
 		criteria = session.createCriteria(Segments.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -352,7 +363,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			{
 				insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
 				insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
-				insert.setTask(loadedItem.getAssessmentId(), this.assessmentMining, this.oldAssessmentMining);
+				insert.setAssessment(loadedItem.getAssessmentId(), this.assessmentMining, this.oldAssessmentMining);
 				insert.setGrade(loadedItem.getScore());
 				insert.setTimemodified(loadedItem.getTimeModified());
 				
@@ -380,6 +391,28 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	@Override
 	public Map<Long, CollaborationLog> generateCollaborativeLogMining() {
 		final HashMap<Long, CollaborationLog> collaborationLogs = new HashMap<Long, CollaborationLog>();
+		
+		for(Questions loadedItem : this.questionsMooc)
+		{
+			CollaborationLog insert = new CollaborationLog();
+			insert.setId(loadedItem.getId());
+			insert.setCollaborativeObject(loadedItem.getSegmentId(), this.collaborativeObjectMining, this.oldCollaborativeObjectMining);
+			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
+			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
+			insert.setAction("Question");
+			insert.setText(loadedItem.getContent());
+			insert.setTimestamp(loadedItem.getTimeCreated());
+			
+			collaborationLogs.put(insert.getId(), insert);
+			
+		}
+		
+		for(Answers loadedItemAnswers : this.answersMooc)
+		{
+			CollaborationLog insert = new CollaborationLog();
+			
+		}
+		
 		return collaborationLogs;
 	}
 
@@ -455,6 +488,30 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	@Override
 	public Map<Long, CollaborationObj> generateCollaborativeObjectMining() {
 		final HashMap<Long, CollaborationObj> collaborationObjs = new HashMap<Long, CollaborationObj>();
+		
+		CollaborationType type;
+		if(this.collaborativeObjectTypeMining.get("Unit Forum") == null)
+		{
+			type = new CollaborationType();
+			type.setId(1);
+			type.setType("Unit Forum");
+		}
+		else
+		{
+			type = this.collaborativeObjectTypeMining.get("unit Forum");
+		}
+		
+		for(Segments loadedItem : this.segmentsMooc)
+		{
+			if(loadedItem.getType().equals("LessonUnit"))
+			{
+				CollaborationObj insert = new CollaborationObj();
+				insert.setId(loadedItem.getId());
+				insert.setTitle("Forum "  + loadedItem.getTitle());
+				insert.setType(type);
+			}
+		}
+		
 		return collaborationObjs;
 	}
 

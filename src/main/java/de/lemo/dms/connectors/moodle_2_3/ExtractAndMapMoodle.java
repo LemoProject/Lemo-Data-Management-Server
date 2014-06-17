@@ -1383,9 +1383,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.logger.debug("course not found for course-assignment: " + loadedItem.getId() + " and course: "
 						+ loadedItem.getCourse());
 			}
-			insert.setTask(Long.valueOf(this.connector.getPrefix() + "07" + loadedItem.getId()),
+			insert.setAssessment(Long.valueOf(this.connector.getPrefix() + "07" + loadedItem.getId()),
 					this.taskMining, this.oldTaskMining);
-			if ((insert.getCourse() != null) && (insert.getTask() != null)) {
+			if ((insert.getCourse() != null) && (insert.getAssessment() != null)) {
 				courseTaskMining.put(insert.getId(), insert);
 			}
 		}
@@ -1397,9 +1397,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
 					this.oldCourseMining);
-			insert.setTask(Long.valueOf(this.connector.getPrefix() + "09" + loadedItem.getId()), this.taskMining,
+			insert.setAssessment(Long.valueOf(this.connector.getPrefix() + "09" + loadedItem.getId()), this.taskMining,
 					this.oldTaskMining);
-			if ((insert.getCourse() != null) && (insert.getTask() != null)) {
+			if ((insert.getCourse() != null) && (insert.getAssessment() != null)) {
 				courseTaskMining.put(insert.getId(), insert);
 			}
 
@@ -1412,9 +1412,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
 					this.oldCourseMining);
-			insert.setTask(Long.valueOf(this.connector.getPrefix() + "08" + loadedItem.getId()), this.taskMining,
+			insert.setAssessment(Long.valueOf(this.connector.getPrefix() + "08" + loadedItem.getId()), this.taskMining,
 					this.oldTaskMining);
-			if ((insert.getCourse() != null) && (insert.getTask() != null)) {
+			if ((insert.getCourse() != null) && (insert.getAssessment() != null)) {
 				courseTaskMining.put(insert.getId(), insert);
 			}
 		}
@@ -1912,7 +1912,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			AssessmentUser insert = new AssessmentUser();
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
-			insert.setTask(Long.valueOf(this.connector.getPrefix() + "07" + loadedItem.getAssignment()), taskMining, oldTaskMining);
+			insert.setAssessment(Long.valueOf(this.connector.getPrefix() + "07" + loadedItem.getAssignment()), taskMining, oldTaskMining);
 			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), userMining, oldUserMining);
 			if(loadedItem.getGrade() != null)
 			{
@@ -1929,7 +1929,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				}
 			}
 			
-			if(insert.getUser() != null && insert.getCourse() != null && insert.getTask() != null)
+			if(insert.getUser() != null && insert.getCourse() != null && insert.getAssessment() != null)
 				taskUserMining.put(insert.getId(), insert);
 		}
 		
@@ -1952,9 +1952,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				if ((loadedItem2.getId() == loadedItem.getItemid()) && (loadedItem2.getIteminstance() != null)) {
 					insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem2.getCourseid()),
 							this.courseMining, this.oldCourseMining);
-					insert.setTask(Long.valueOf(this.connector.getPrefix() + "08" + loadedItem2.getIteminstance()),
+					insert.setAssessment(Long.valueOf(this.connector.getPrefix() + "08" + loadedItem2.getIteminstance()),
 							this.taskMining, this.oldTaskMining);
-					if ((insert.getTask() != null) && (insert.getUser() != null)) {
+					if ((insert.getAssessment() != null) && (insert.getUser() != null)) {
 						taskUserMining.put(insert.getId(), insert);
 					}
 				}

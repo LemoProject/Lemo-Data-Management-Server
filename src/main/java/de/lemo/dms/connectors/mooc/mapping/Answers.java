@@ -8,17 +8,15 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "questions")
-public class Questions {
+@Table(name = "answers")
+public class Answers {
 	
 	private long id;
-	private long courseId;
-	private long segmentId;
-	private String content;
+	private long questionId;
 	private long userId;
 	private long timeCreated;
 	private long timeModified;
-	private String title;
+	private String content;
 	/**
 	 * @return the id
 	 */
@@ -35,28 +33,15 @@ public class Questions {
 	/**
 	 * @return the courseId
 	 */
-	@Column(name="course_id")
-	public long getCourseId() {
-		return courseId;
+	@Column(name="question_id")
+	public long getQuestionId() {
+		return questionId;
 	}
 	/**
-	 * @param courseId the courseId to set
+	 * @param questionId the courseId to set
 	 */
-	public void setCourseId(long courseId) {
-		this.courseId = courseId;
-	}
-	/**
-	 * @return the segmentId
-	 */
-	@Column(name="segment_id")
-	public long getSegmentId() {
-		return segmentId;
-	}
-	/**
-	 * @param segmentId the segmentId to set
-	 */
-	public void setSegmentId(long segmentId) {
-		this.segmentId = segmentId;
+	public void setQuestionId(long questionId) {
+		this.questionId = questionId;
 	}
 	/**
 	 * @return the userId
@@ -101,26 +86,12 @@ public class Questions {
 	 * @return the title
 	 */
 	@Lob
-	@Column(name="title")
-	public String getTitle() {
-		return title;
-	}
-	/**
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	/**
-	 * @return the content
-	 */
-	@Lob
 	@Column(name="content")
 	public String getContent() {
 		return content;
 	}
 	/**
-	 * @param content the content to set
+	 * @param content the title to set
 	 */
 	public void setContent(String content) {
 		this.content = content;

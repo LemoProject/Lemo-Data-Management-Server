@@ -25,7 +25,7 @@ public class AssessmentUser implements IMapping, IRatedUserAssociation{
 	private long id;
 	private Course course;
 	private User user;
-	private Assessment task;
+	private Assessment assessment;
 	private double grade;
 	private long timemodified;
 	
@@ -123,27 +123,27 @@ public class AssessmentUser implements IMapping, IRatedUserAssociation{
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="assessment_id")
-	public Assessment getTask() {
-		return task;
+	public Assessment getAssessment() {
+		return assessment;
 	}
 	/**
 	 * @param task the task to set
 	 */
-	public void setTask(Assessment task) {
-		this.task = task;
+	public void setAssessment(Assessment task) {
+		this.assessment = task;
 	}
 	
-	public void setTask(final long task, final Map<Long, Assessment> tasks,
+	public void setAssessment(final long task, final Map<Long, Assessment> tasks,
 			final Map<Long, Assessment> oldTasks) {
 
 		if (tasks.get(task) != null)
 		{
-			this.task = tasks.get(task);
+			this.assessment = tasks.get(task);
 			tasks.get(task).addTaskUser(this);
 		}
-		if ((this.task == null) && (oldTasks.get(task) != null))
+		if ((this.assessment == null) && (oldTasks.get(task) != null))
 		{
-			this.task = oldTasks.get(task);
+			this.assessment = oldTasks.get(task);
 			oldTasks.get(task).addTaskUser(this);
 		}
 	}
@@ -183,13 +183,13 @@ public class AssessmentUser implements IMapping, IRatedUserAssociation{
 	@Override
 	@Transient
 	public Long getLearnObjId() {
-		return this.task.getId();
+		return this.assessment.getId();
 	}
 
 	@Override
 	@Transient
 	public Double getMaxGrade() {
-		return this.task.getMaxGrade();
+		return this.assessment.getMaxGrade();
 	}
 
 }

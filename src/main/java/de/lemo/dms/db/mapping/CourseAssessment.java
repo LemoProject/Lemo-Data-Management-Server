@@ -48,7 +48,7 @@ public class CourseAssessment implements IMapping, ICourseLORelation, ICourseRat
 	
 	private long id;
 	private Course course;
-	private Assessment task;
+	private Assessment assessment;
 	
 	public boolean equals(final IMapping o) {
 		if (!(o instanceof CourseAssessment)) {
@@ -102,28 +102,28 @@ public class CourseAssessment implements IMapping, ICourseLORelation, ICourseRat
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="assessment_id")
-	public Assessment getTask() {
-		return task;
+	public Assessment getAssessment() {
+		return assessment;
 	}
 
 
 	/**
 	 * @param Assessment the task to set
 	 */
-	public void setTask(Assessment task) {
-		this.task = task;
+	public void setAssessment(Assessment task) {
+		this.assessment = task;
 	}
 	
-	public void setTask(final long task, final Map<Long, Assessment> tasks,
+	public void setAssessment(final long task, final Map<Long, Assessment> tasks,
 			final Map<Long, Assessment> oldTasks) {
 		if (tasks.get(task) != null)
 		{
-			this.task = tasks.get(task);
+			this.assessment = tasks.get(task);
 			tasks.get(task).addCourseTask(this);
 		}
-		if ((this.task == null) && (oldTasks.get(task) != null))
+		if ((this.assessment == null) && (oldTasks.get(task) != null))
 		{
-			this.task = oldTasks.get(task);
+			this.assessment = oldTasks.get(task);
 			oldTasks.get(task).addCourseTask(this);
 		}
 	}
@@ -149,7 +149,7 @@ public class CourseAssessment implements IMapping, ICourseLORelation, ICourseRat
 	@Transient
 	public ILearningObject getLearningObj() {
 		
-		return this.task;
+		return this.assessment;
 	}
 	
 	@Override
@@ -161,7 +161,7 @@ public class CourseAssessment implements IMapping, ICourseLORelation, ICourseRat
 	@Override
 	@Transient
 	public IRatedObject getRatedObject() {
-		return this.getTask();
+		return this.getAssessment();
 	}
 
 }

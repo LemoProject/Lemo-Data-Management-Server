@@ -310,6 +310,9 @@ public class ContentGenerator {
 				couRes.setId(Long.valueOf(platform.getPrefix() + "" + (courseLearningObjects.size() + 1)));
 				couRes.setCourse(cou);
 				couRes.setLearningObject(r);
+				
+				if(l % 3 == 0)
+					r.setParent(learningObjects.get(learningObjects.size() - 1));
 
 				learningObjects.add(r);
 				courseLearningObjects.add(couRes);
@@ -327,6 +330,9 @@ public class ContentGenerator {
 				couWik.setCourse(cou);
 				couWik.setCollaborativeObject(w);
 
+				if(l % 3 == 0)
+					w.setParent(collaborativeObjects.get(collaborativeObjects.size() - 1));
+				
 				collaborativeObjects.add(w);
 				courseCollaborativeObjects.add(couWik);
 			}
@@ -343,7 +349,9 @@ public class ContentGenerator {
 				final CourseAssessment couAss = new CourseAssessment();
 				couAss.setId(Long.valueOf(platform.getPrefix() + "" + (courseTasks.size() + 1)));
 				couAss.setCourse(cou);
-				couAss.setTask(a);
+				couAss.setAssessment(a);
+				if(l % 3 == 0)
+					a.setParent(tasks.get(tasks.size() - 1));
 
 				tasks.add(a);
 				courseTasks.add(couAss);
@@ -393,7 +401,7 @@ public class ContentGenerator {
 				{
 					AssessmentUser tu = new AssessmentUser();
 					tu.setId(taskUserMap.size() + 1);
-					tu.setTask(a);
+					tu.setAssessment(a);
 					tu.setUser(aLog.getUser());
 					tu.setCourse(cou);
 					tu.setTimemodified(time);
@@ -416,6 +424,7 @@ public class ContentGenerator {
 				cLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
 				cLog.setCollaborativeObject(collaborativeObjects.get((collaborativeObjects.size() - 1) - randy.nextInt(MAGIC_FIVE)));
 
+			
 				time = (int) (startdate
 						+ (randy.nextInt(year) ));
 				cLog.setTimestamp(time);
@@ -506,6 +515,13 @@ public class ContentGenerator {
 		{
 			il.setId(i);
 			i++;
+		}
+		
+		Collections.sort(logs);
+		for(int j = 0; j < logs.size(); j++)
+		{
+			if(j % 3 == 1)
+				logs.get(j).setParent(logs.get(j-1));
 		}
 	}
 	

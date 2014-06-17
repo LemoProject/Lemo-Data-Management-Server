@@ -41,7 +41,7 @@ import de.lemo.dms.connectors.mooc.mapping.Courses;
 import de.lemo.dms.connectors.mooc.mapping.Events;
 import de.lemo.dms.connectors.mooc.mapping.Memberships;
 import de.lemo.dms.connectors.mooc.mapping.Progress;
-import de.lemo.dms.connectors.mooc.mapping.Questions;
+import de.lemo.dms.connectors.mooc.mapping.Answers;
 import de.lemo.dms.connectors.mooc.mapping.Segments;
 import de.lemo.dms.connectors.mooc.mapping.UnitResources;
 import de.lemo.dms.connectors.mooc.mapping.Users;
@@ -125,7 +125,7 @@ public final class HibernateUtil {
 		cfg.addAnnotatedClass(Events.class);
 		cfg.addAnnotatedClass(Memberships.class);
 		cfg.addAnnotatedClass(Progress.class);
-		cfg.addAnnotatedClass(Questions.class);
+		cfg.addAnnotatedClass(Answers.class);
 		cfg.addAnnotatedClass(Segments.class);
 		cfg.addAnnotatedClass(UnitResources.class);
 		cfg.addAnnotatedClass(Users.class);

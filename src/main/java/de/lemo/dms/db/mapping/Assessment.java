@@ -135,7 +135,7 @@ public class Assessment implements IMapping, ILearningObject, IRatedObject{
 	 * 
 	 * @return a set of entries in the course_resource table which relate the resource to the courses
 	 */
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="assessment")
 	public Set<CourseAssessment> getCourseTasks() {
 		return this.courseTasks;
 	}
@@ -155,7 +155,7 @@ public class Assessment implements IMapping, ILearningObject, IRatedObject{
 	}
 
 
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="assessment")
 	public Set<AssessmentUser> getTaskUsers() {
 		return this.taskUsers;
 	}
@@ -167,7 +167,7 @@ public class Assessment implements IMapping, ILearningObject, IRatedObject{
 	/**
 	 * @return the taskLogs
 	 */
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="assessment")
 	public Set<AssessmentLog> getTaskLogs() {
 		return taskLogs;
 	}
