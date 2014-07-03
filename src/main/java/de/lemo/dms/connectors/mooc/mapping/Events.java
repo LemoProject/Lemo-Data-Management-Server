@@ -11,10 +11,11 @@ public class Events {
 
 	private long id;
 	private long userId;
-	private long event;
+	private int event;
 	private long timestamp;
 	private long segmentId;
 	private long courseId;
+	private long unitResourceId;
 	
 	
 	/**
@@ -47,13 +48,13 @@ public class Events {
 	 * @return the event
 	 */
 	@Column(name="event")
-	public long getEvent() {
+	public int getEvent() {
 		return event;
 	}
 	/**
 	 * @param event the event to set
 	 */
-	public void setEvent(long event) {
+	public void setEvent(int event) {
 		this.event = event;
 	}
 
@@ -95,6 +96,19 @@ public class Events {
 	 */
 	public void setCourseId(long courseId) {
 		this.courseId = courseId;
+	}
+	/**
+	 * @return the unitResourceId
+	 */
+	@Column(name="unit_resource_id")
+	public long getUnitResourceId() {
+		return unitResourceId;
+	}
+	/**
+	 * @param unitResourceId the unitResourceId to set
+	 */
+	public void setUnitResourceId(long unitResourceId) {
+		this.unitResourceId = unitResourceId;
 	}
 	
 	

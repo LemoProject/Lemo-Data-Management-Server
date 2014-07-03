@@ -16,6 +16,7 @@ public class UnitResources {
 	private long timeModified;
 	private String attachableType;
 	private long position;
+	private long attachableId;
 	
 	
 	/**
@@ -108,5 +109,18 @@ public class UnitResources {
 	 */
 	public void setTimeModified(long timeModified) {
 		this.timeModified = timeModified;
+	}
+	/**
+	 * @return the attachableId
+	 */
+	@Column(name="attachable_id")
+	public long getAttachableId() {
+		return attachableId;
+	}
+	/**
+	 * @param attachableId the attachableId to set
+	 */
+	public void setAttachableId(long attachableId) {
+		this.attachableId = attachableId;
 	}
 }

@@ -69,30 +69,27 @@ public final class MiningHibernateUtil {
 		
 		// Meta
 		config.addAnnotatedClass(Config.class);
-		config.addAnnotatedClass(Platform.class);
 		
 		//Objects
 		config.addAnnotatedClass(User.class);
-		config.addAnnotatedClass(CollaborationObj.class);
 		config.addAnnotatedClass(LearningObj.class);
 		config.addAnnotatedClass(Course.class);
-		config.addAnnotatedClass(Assessment.class);
 		config.addAnnotatedClass(Role.class);
 		
 		//Types
 		config.addAnnotatedClass(LearningType.class);
-		config.addAnnotatedClass(AssessmentType.class);
-		config.addAnnotatedClass(CollaborationType.class);
 		
 		//Relations
-		config.addAnnotatedClass(AssessmentUser.class);
-		config.addAnnotatedClass(CourseAssessment.class);
-		config.addAnnotatedClass(CourseCollaboration.class);
+		config.addAnnotatedClass(UserAssessment.class);
 		config.addAnnotatedClass(CourseLearning.class);
 		config.addAnnotatedClass(CourseUser.class);
+		config.addAnnotatedClass(Attribute.class);
+		config.addAnnotatedClass(LearningAttribute.class);
+		config.addAnnotatedClass(CourseAttribute.class);
+		config.addAnnotatedClass(UserAttribute.class);
 		
 		//Logs
-		config.addAnnotatedClass(LearningLog.class);
+		config.addAnnotatedClass(AccessLog.class);
 		config.addAnnotatedClass(CollaborationLog.class);
 		config.addAnnotatedClass(AssessmentLog.class);
 

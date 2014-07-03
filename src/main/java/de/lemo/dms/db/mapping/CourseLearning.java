@@ -46,7 +46,7 @@ public class CourseLearning implements IMapping, ICourseLORelation {
 	
 	private long id;
 	private Course course;
-	private LearningObj learningObject;
+	private LearningObj learning;
 	
 	
 	public boolean equals(final IMapping o) {
@@ -86,25 +86,25 @@ public class CourseLearning implements IMapping, ICourseLORelation {
 		if (courses.get(course) != null)
 		{
 			this.course = courses.get(course);
-			courses.get(course).addCourseResource(this);
+			courses.get(course).addCourseLearning(this);
 		}
 		if ((this.course == null) && (oldCourses.get(course) != null))
 		{
 			this.course = oldCourses.get(course);
-			oldCourses.get(course).addCourseResource(this);
+			oldCourses.get(course).addCourseLearning(this);
 		}
 	}
 	
-	public void setLearningObject(final long learningObject, final Map<Long, LearningObj> learningObjects,
+	public void setLearning(final long learningObject, final Map<Long, LearningObj> learningObjects,
 			final Map<Long, LearningObj> oldLearningObjects) {
 		if (learningObjects.get(learningObject) != null)
 		{
-			this.learningObject = learningObjects.get(learningObject);
+			this.learning = learningObjects.get(learningObject);
 			learningObjects.get(learningObject).addCourseLearningObject(this);
 		}
-		if ((this.learningObject == null) && (oldLearningObjects.get(learningObject) != null))
+		if ((this.learning == null) && (oldLearningObjects.get(learningObject) != null))
 		{
-			this.learningObject = oldLearningObjects.get(learningObject);
+			this.learning = oldLearningObjects.get(learningObject);
 			oldLearningObjects.get(learningObject).addCourseLearningObject(this);
 		}
 	}
@@ -115,16 +115,16 @@ public class CourseLearning implements IMapping, ICourseLORelation {
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="learning_id")
-	public LearningObj getLearningObject() {
-		return this.learningObject;
+	public LearningObj getLearning() {
+		return this.learning;
 	}
 
 
 	/**
 	 * @param learningObject the resource to set
 	 */
-	public void setLearningObject(LearningObj learningObject) {
-		this.learningObject = learningObject;
+	public void setLearning(LearningObj learning) {
+		this.learning = learning;
 	}
 
 
@@ -148,12 +148,12 @@ public class CourseLearning implements IMapping, ICourseLORelation {
 	@Override
 	@Transient
 	public ILearningObject getLearningObj() {
-		return this.learningObject;
+		return this.learning;
 	}
 	
 	@Override
 	@Transient
 	public String getType() {
-		return "LEARNINGOBJECT";
+		return this.getLearning().getType().getType();
 	}
 }

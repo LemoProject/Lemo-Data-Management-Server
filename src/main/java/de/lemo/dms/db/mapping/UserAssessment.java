@@ -19,23 +19,24 @@ import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_assessment_user")
-public class AssessmentUser implements IMapping, IRatedUserAssociation{
+@Table(name = "lemo_user_assessment")
+public class UserAssessment implements IMapping, IRatedUserAssociation{
 	
 	private long id;
 	private Course course;
 	private User user;
-	private Assessment assessment;
+	private LearningObj learning;
 	private double grade;
+	private String feedback;
 	private long timemodified;
 	
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof Assessment)) {
+		if (!(o instanceof UserAssessment)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof Assessment)) {
+		if ((o.getId() == this.getId()) && (o instanceof UserAssessment)) {
 			return true;
 		}
 		return false;
@@ -80,12 +81,12 @@ public class AssessmentUser implements IMapping, IRatedUserAssociation{
 		if (courses.get(course) != null)
 		{
 			this.course = courses.get(course);
-			courses.get(course).addTaskUser(this);
+			courses.get(course).addUserAssessment(this);
 		}
 		if ((this.course == null) && (oldCourses.get(course) != null))
 		{
 			this.course = oldCourses.get(course);
-			oldCourses.get(course).addTaskUser(this);
+			oldCourses.get(course).addUserAssessment(this);
 		}
 	}
 	
@@ -118,35 +119,23 @@ public class AssessmentUser implements IMapping, IRatedUserAssociation{
 			oldUsers.get(user).addTaskUser(this);
 		}
 	}
-	/**
-	 * @return the task
-	 */
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="assessment_id")
-	public Assessment getAssessment() {
-		return assessment;
-	}
-	/**
-	 * @param task the task to set
-	 */
-	public void setAssessment(Assessment task) {
-		this.assessment = task;
+
+	public void setLearning(final long learningId, final Map<Long, LearningObj> learningObjects,
+			final Map<Long, LearningObj> oldLearningObjects) {
+
+		if (learningObjects.get(learningId) != null)
+		{
+			this.learning = learningObjects.get(learningId);
+			learningObjects.get(learningId).addUserAssessment(this);
+		}
+		if ((this.learning == null) && (oldLearningObjects.get(learningId) != null))
+		{
+			this.learning = oldLearningObjects.get(learningId);
+			oldLearningObjects.get(learningId).addUserAssessment(this);
+		}
 	}
 	
-	public void setAssessment(final long task, final Map<Long, Assessment> tasks,
-			final Map<Long, Assessment> oldTasks) {
 
-		if (tasks.get(task) != null)
-		{
-			this.assessment = tasks.get(task);
-			tasks.get(task).addTaskUser(this);
-		}
-		if ((this.assessment == null) && (oldTasks.get(task) != null))
-		{
-			this.assessment = oldTasks.get(task);
-			oldTasks.get(task).addTaskUser(this);
-		}
-	}
 	/**
 	 * @return the grade
 	 */
@@ -180,16 +169,45 @@ public class AssessmentUser implements IMapping, IRatedUserAssociation{
 		return this.getGrade();
 	}
 
-	@Override
-	@Transient
-	public Long getLearnObjId() {
-		return this.assessment.getId();
+	/**
+	 * @return the learningObj
+	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="learning_id")
+	public LearningObj getLearning() {
+		return learning;
+	}
+
+	/**
+	 * @param learningObj the learningObj to set
+	 */
+	public void setLearning(LearningObj learningObj) {
+		this.learning = learningObj;
 	}
 
 	@Override
-	@Transient
+	public Long getLearnObjId() {
+		return this.getLearning().getId();
+	}
+
+	@Override
 	public Double getMaxGrade() {
-		return this.assessment.getMaxGrade();
+		return null;
+	}
+
+	/**
+	 * @return the feedback
+	 */
+	@Column(name="feedback")
+	public String getFeedback() {
+		return feedback;
+	}
+
+	/**
+	 * @param feedback the feedback to set
+	 */
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
 	}
 
 }

@@ -37,6 +37,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
@@ -45,13 +46,13 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_learning_log")
-public class LearningLog implements IMapping, ILog {
+@Table(name = "lemo_access_log")
+public class AccessLog implements IMapping, ILog {
 
 	private long id;
 	private Course course;
 	private User user;
-	private LearningObj learningObject;
+	private LearningObj learning;
 	private long timestamp;
 	private String action;
 	private Long duration;
@@ -59,10 +60,10 @@ public class LearningLog implements IMapping, ILog {
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof LearningLog)) {
+		if (!(o instanceof AccessLog)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof LearningLog)) {
+		if ((o.getId() == this.getId()) && (o instanceof AccessLog)) {
 			return true;
 		}
 		return false;
@@ -133,14 +134,14 @@ public class LearningLog implements IMapping, ILog {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="learning_id")
-	public LearningObj getLearningObject() {
-		return learningObject;
+	public LearningObj getLearning() {
+		return learning;
 	}
 	
 	
 	
-	public void setLearningObject(LearningObj learningObject) {
-		this.learningObject = learningObject;
+	public void setLearning(LearningObj learningObject) {
+		this.learning = learningObject;
 	}
 	
 	
@@ -199,18 +200,18 @@ public class LearningLog implements IMapping, ILog {
 		}
 	}
 	
-	public void setLearningObject(final long learningObject, final Map<Long, LearningObj> learningObjects,
+	public void setLearning(final long learningObject, final Map<Long, LearningObj> learningObjects,
 			final Map<Long, LearningObj> oldLearningObjects) {
 
 		if (learningObjects.get(learningObject) != null)
 		{
-			this.learningObject = learningObjects.get(learningObject);
-			learningObjects.get(learningObject).addViewLog(this);
+			this.learning = learningObjects.get(learningObject);
+			learningObjects.get(learningObject).addAccessLog(this);
 		}
-		if ((this.learningObject == null) && (oldLearningObjects.get(learningObject) != null))
+		if ((this.learning == null) && (oldLearningObjects.get(learningObject) != null))
 		{
-			this.learningObject = oldLearningObjects.get(learningObject);
-			oldLearningObjects.get(learningObject).addViewLog(this);
+			this.learning = oldLearningObjects.get(learningObject);
+			oldLearningObjects.get(learningObject).addAccessLog(this);
 		}
 	}
 
@@ -236,7 +237,7 @@ public class LearningLog implements IMapping, ILog {
 	@Override
 	@Transient
 	public String getType() {
-		return "LEARNINGOBJECT";
+		return "ACCESS";
 	}
 
 	/**
@@ -252,6 +253,11 @@ public class LearningLog implements IMapping, ILog {
 	 */
 	public void setAction(String action) {
 		this.action = action;
+	}
+
+	@Override
+	public ILearningObject getLearningObject() {
+		return this.learning;
 	}
 
 	

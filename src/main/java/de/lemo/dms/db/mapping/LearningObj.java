@@ -53,17 +53,22 @@ public class LearningObj implements IMapping, ILearningObject{
 
 	private long id;
 	private String title;
-	private String url;
+	private String interactionType;
 	private LearningType type;
 	private LearningObj parent;
-	private Set<CourseLearning> courseLearningObjects = new HashSet<CourseLearning>();	
-	private Set<LearningLog> viewLogs = new HashSet<LearningLog>();
+	
+	private Set<CourseLearning> courseLearnings = new HashSet<CourseLearning>();	
+	private Set<UserAssessment> userAssessments = new HashSet<UserAssessment>();	
+	private Set<AccessLog> accessLogs = new HashSet<AccessLog>();
+	private Set<AssessmentLog> assessmentLogs = new HashSet<AssessmentLog>();
+	private Set<CollaborationLog> collaborationLogs = new HashSet<CollaborationLog>();
+	private Set<LearningAttribute> learningAttributes = new HashSet<LearningAttribute>();
 	
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof CollaborationObj)) {
+		if (!(o instanceof LearningObj)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof CollaborationObj)) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningObj)) {
 			return true;
 		}
 		return false;
@@ -102,18 +107,26 @@ public class LearningObj implements IMapping, ILearningObject{
 		this.type = type;
 	}
 	
-	public void setViewLogs(final Set<LearningLog> viewLogs) {
-		this.viewLogs = viewLogs;
+	public void setAccessLogs(final Set<AccessLog> accessLogs) {
+		this.accessLogs = accessLogs;
 	}
 
 
-	@OneToMany(mappedBy="learningObject")
-	public Set<LearningLog> getViewLogs() {
-		return this.viewLogs;
+	@OneToMany(mappedBy="learning")
+	public Set<AccessLog> getAccessLogs() {
+		return this.accessLogs;
 	}
 
-	public void addViewLog(final LearningLog viewLog) {
-		this.viewLogs.add(viewLog);
+	public void addAccessLog(final AccessLog accessLog) {
+		this.accessLogs.add(accessLog);
+	}
+	
+	public void addAssessmentLog(final AssessmentLog assessmentLog) {
+		this.assessmentLogs.add(assessmentLog);
+	}
+	
+	public void addCollaborationLog(final CollaborationLog collaborationLog) {
+		this.collaborationLogs.add(collaborationLog);
 	}
 	
 	/**
@@ -123,7 +136,7 @@ public class LearningObj implements IMapping, ILearningObject{
 	 *            a set of entries in the course_resource table which relate the resource to the courses
 	 */
 	public void setCourseLearningObjects(final Set<CourseLearning> courseLearningObjects) {
-		this.courseLearningObjects = courseLearningObjects;
+		this.courseLearnings = courseLearningObjects;
 	}
 
 	/**
@@ -131,9 +144,9 @@ public class LearningObj implements IMapping, ILearningObject{
 	 * 
 	 * @return a set of entries in the course_resource table which relate the resource to the courses
 	 */
-	@OneToMany(mappedBy="learningObject")
+	@OneToMany(mappedBy="learning")
 	public Set<CourseLearning> getCourseLearningObjects() {
-		return this.courseLearningObjects;
+		return this.courseLearnings;
 	}
 
 	/**
@@ -143,7 +156,12 @@ public class LearningObj implements IMapping, ILearningObject{
 	 *            this entry will be added to the list of course_resource in this resource
 	 */
 	public void addCourseLearningObject(final CourseLearning courseLearningObject) {
-		this.courseLearningObjects.add(courseLearningObject);
+		this.courseLearnings.add(courseLearningObject);
+	}
+	
+	public void addUserAssessment(UserAssessment userAssessment)
+	{
+		this.userAssessments.add(userAssessment);
 	}
 
 
@@ -182,22 +200,6 @@ public class LearningObj implements IMapping, ILearningObject{
 	}
 	
 	/**
-	 * @return the url
-	 */
-	@Lob
-	@Column(name="url")
-	public String getUrl() {
-		return url;
-	}
-
-	/**
-	 * @param url the url to set
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	/**
 	 * @return the parent
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -211,5 +213,35 @@ public class LearningObj implements IMapping, ILearningObject{
 	 */
 	public void setParent(LearningObj parent) {
 		this.parent = parent;
+	}
+
+	/**
+	 * @return the interactionType
+	 */
+	@Column(name="interaction_type")
+	public String getInteractionType() {
+		return interactionType;
+	}
+
+	/**
+	 * @param interactionType the interactionType to set
+	 */
+	public void setInteractionType(String interactionType) {
+		this.interactionType = interactionType;
+	}
+
+	/**
+	 * @return the learningAttributes
+	 */
+	@OneToMany(mappedBy="learning")
+	public Set<LearningAttribute> getLearningAttributes() {
+		return learningAttributes;
+	}
+
+	/**
+	 * @param learningAttributes the learningAttributes to set
+	 */
+	public void setLearningAttributes(Set<LearningAttribute> learningAttributes) {
+		this.learningAttributes = learningAttributes;
 	}
 }

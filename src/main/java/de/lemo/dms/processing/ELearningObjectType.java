@@ -32,7 +32,7 @@ import java.util.Set;
 
 import de.lemo.dms.db.mapping.CollaborationLog;
 import de.lemo.dms.db.mapping.AssessmentLog;
-import de.lemo.dms.db.mapping.LearningLog;
+import de.lemo.dms.db.mapping.AccessLog;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 
 /**
@@ -42,7 +42,7 @@ import de.lemo.dms.db.mapping.abstractions.ILog;
  */
 public enum ELearningObjectType {
 
-	LEARNINGOBJECT(LearningLog.class),
+	LEARNINGOBJECT(AccessLog.class),
 	TASK(AssessmentLog.class),
 	COLLABORATIVEOBJECT(CollaborationLog.class)
 	/*,

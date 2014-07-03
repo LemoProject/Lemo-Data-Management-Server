@@ -46,13 +46,12 @@ public class User implements IMapping{
 
 
 	private long id;
-	private String authentication;
-	private long gender;
+	private String login;
 	
-	private Set<AssessmentUser> taskUsers = new HashSet<AssessmentUser>();
-	private Set<AssessmentLog> taskLogs = new HashSet<AssessmentLog>();
-	private Set<LearningLog> eventLogs= new HashSet<LearningLog>();
-	private Set<CollaborationLog> collaborativeLogs = new HashSet<CollaborationLog>();
+	private Set<UserAssessment> userAssessments = new HashSet<UserAssessment>();
+	private Set<AssessmentLog> assessmentLogs = new HashSet<AssessmentLog>();
+	private Set<AccessLog> accessLogs= new HashSet<AccessLog>();
+	private Set<CollaborationLog> collaborationLogs = new HashSet<CollaborationLog>();
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
 	
 	
@@ -61,39 +60,39 @@ public class User implements IMapping{
 	 */
 	@OneToMany(mappedBy="user")
 	public Set<AssessmentLog> getTaskLogs() {
-		return taskLogs;
+		return assessmentLogs;
 	}
 
 	/**
 	 * @param taskLogs the taskLogs to set
 	 */
 	public void setTaskLogs(Set<AssessmentLog> taskLogs) {
-		this.taskLogs = taskLogs;
+		this.assessmentLogs = taskLogs;
 	}
 	
 	public void addTaskLog(AssessmentLog taskLog)
 	{
-		this.taskLogs.add(taskLog);
+		this.assessmentLogs.add(taskLog);
 	}
 
 	/**
 	 * @return the eventLogs
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<LearningLog> getEventLogs() {
-		return eventLogs;
+	public Set<AccessLog> getEventLogs() {
+		return accessLogs;
 	}
 
 	/**
 	 * @param eventLogs the eventLogs to set
 	 */
-	public void setEventLogs(Set<LearningLog> eventLogs) {
-		this.eventLogs = eventLogs;
+	public void setEventLogs(Set<AccessLog> eventLogs) {
+		this.accessLogs = eventLogs;
 	}
 	
-	public void addEventLog(LearningLog eventLog)
+	public void addEventLog(AccessLog eventLog)
 	{
-		this.eventLogs.add(eventLog);
+		this.accessLogs.add(eventLog);
 	}
 
 	/**
@@ -101,51 +100,35 @@ public class User implements IMapping{
 	 */
 	@OneToMany(mappedBy="user")
 	public Set<CollaborationLog> getCollaborativeLogs() {
-		return collaborativeLogs;
+		return collaborationLogs;
 	}
 
 	/**
 	 * @param collaborativeLogs the collaborativeLogs to set
 	 */
 	public void setCollaborativeLogs(Set<CollaborationLog> collaborativeLogs) {
-		this.collaborativeLogs = collaborativeLogs;
+		this.collaborationLogs = collaborativeLogs;
 	}
 	
 	public void addCollaborativeLog(CollaborationLog collaborativeLog)
 	{
-		this.collaborativeLogs.add(collaborativeLog);
+		this.collaborationLogs.add(collaborativeLog);
 	}
 
 	/**
 	 * @return the login
 	 */
-	@Column(name="authentication")
+	@Column(name="login")
 	public String getLogin() {
-		return authentication;
+		return login;
 	}
 
 	/**
 	 * @param login the login to set
 	 */
 	public void setLogin(String login) {
-		this.authentication = login;
+		this.login = login;
 	}
-
-	/**
-	 * @return the gender
-	 */
-	@Column(name="gender")
-	public long getGender() {
-		return gender;
-	}
-
-	/**
-	 * @param gender the gender to set
-	 */
-	public void setGender(long gender) {
-		this.gender = gender;
-	}
-
 
 	public boolean equals(final IMapping o) {
 		if (!(o instanceof User)) {
@@ -181,20 +164,20 @@ public class User implements IMapping{
 	 * @return the taskUsers
 	 */
 	@OneToMany(mappedBy="user")
-	public Set<AssessmentUser> getTaskUsers() {
-		return taskUsers;
+	public Set<UserAssessment> getTaskUsers() {
+		return userAssessments;
 	}
 
 	/**
 	 * @param taskUsers the taskUsers to set
 	 */
-	public void setTaskUsers(Set<AssessmentUser> taskUsers) {
-		this.taskUsers = taskUsers;
+	public void setTaskUsers(Set<UserAssessment> taskUsers) {
+		this.userAssessments = taskUsers;
 	}
 	
-	public void addTaskUser(AssessmentUser taskUser)
+	public void addTaskUser(UserAssessment taskUser)
 	{
-		this.taskUsers.add(taskUser);
+		this.userAssessments.add(taskUser);
 	}
 
 	/**

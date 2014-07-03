@@ -53,7 +53,7 @@ import de.lemo.dms.db.mapping.CourseLearning;
 import de.lemo.dms.db.mapping.CourseAssessment;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.LearningObj;
-import de.lemo.dms.db.mapping.LearningLog;
+import de.lemo.dms.db.mapping.AccessLog;
 import de.lemo.dms.db.mapping.Platform;
 import de.lemo.dms.db.mapping.CollaborationObj;
 import de.lemo.dms.db.mapping.Config;
@@ -62,7 +62,7 @@ import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.db.mapping.Assessment;
 import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.AssessmentType;
-import de.lemo.dms.db.mapping.AssessmentUser;
+import de.lemo.dms.db.mapping.UserAssessment;
 import de.lemo.dms.db.mapping.User;
 
 /**
@@ -85,7 +85,7 @@ public abstract class ExtractAndMap {
 	protected Map<Long, Role> roleMining;
 	
 	
-	protected Map<Long, AssessmentUser> assessmentUserMining;
+	protected Map<Long, UserAssessment> assessmentUserMining;
 	protected Map<Long, CourseLearning> courseLearningObjectMining;
 	protected Map<Long, CourseCollaboration> courseCollaborativeObjectMining;
 	protected Map<Long, CourseAssessment> courseAssessmentMining;
@@ -106,7 +106,7 @@ public abstract class ExtractAndMap {
 
 	
 	
-	protected Map<Long, AssessmentUser> oldAssessmentUserMining;
+	protected Map<Long, UserAssessment> oldAssessmentUserMining;
 	protected Map<Long, CourseLearning> oldCourseLearningObjectMining;
 	protected Map<Long, CourseCollaboration> oldCourseCollaborativeObjectMining;
 	protected Map<Long, CourseAssessment> oldCourseAssessmentMining;
@@ -383,15 +383,15 @@ public abstract class ExtractAndMap {
 		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from TaskUser x"
 				//+ " where x.platform=" + this.connector.getPlatformId() 
 				+ " order by x.id asc");
-		this.oldAssessmentUserMining = new HashMap<Long, AssessmentUser>();
+		this.oldAssessmentUserMining = new HashMap<Long, UserAssessment>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldAssessmentUserMining.put(((AssessmentUser) (t.get(i))).getId(), (AssessmentUser) t.get(i));
+			this.oldAssessmentUserMining.put(((UserAssessment) (t.get(i))).getId(), (UserAssessment) t.get(i));
 		}
 		logger.info("Loaded " + this.oldAssessmentUserMining.size() + " TaskUser objects from the mining database.");
 		
 		
 
-		Criteria criteria = session.createCriteria(LearningLog.class);
+		Criteria criteria = session.createCriteria(AccessLog.class);
 		ProjectionList pl = Projections.projectionList();
 		pl.add(Projections.max("id"));
 		criteria.setProjection(pl);
@@ -722,7 +722,7 @@ public abstract class ExtractAndMap {
 	 * 
 	 * @return A list of instances of the course_scorm table representing class.
 	 **/
-	abstract Map<Long, AssessmentUser> generateAssessmentUserMining();
+	abstract Map<Long, UserAssessment> generateAssessmentUserMining();
 	
 	
 	/**
@@ -733,7 +733,7 @@ public abstract class ExtractAndMap {
 	 * 
 	 * @return A list of instances of the course_log table representing class.
 	 **/
-	abstract Map<Long, LearningLog> generateLearningLogMining();
+	abstract Map<Long, AccessLog> generateLearningLogMining();
 
 
 	/**

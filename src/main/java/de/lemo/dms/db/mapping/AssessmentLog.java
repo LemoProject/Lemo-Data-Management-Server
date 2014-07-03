@@ -26,9 +26,7 @@
 
 package de.lemo.dms.db.mapping;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +35,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -55,9 +52,9 @@ public class AssessmentLog implements IMapping, ILog{
 	private long id;
 	private Course course;
 	private User user;
-	private Assessment assessment;
+	private LearningObj learning;
 	private long timestamp;
-	private String answer;
+	private String text;
 	private String action;
 	private long duration;
 	private static Long PREFIX = 11L;
@@ -145,18 +142,6 @@ public class AssessmentLog implements IMapping, ILog{
 	}
 	
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="assessment_id")
-	public Assessment getAssessment() {
-		return assessment;
-	}
-	
-	
-	public void setAssessment(Assessment task) {
-		this.assessment = task;
-	}
-	
-	
 	@Column(name="timestamp")
 	public long getTimestamp() {
 		return timestamp;
@@ -169,14 +154,14 @@ public class AssessmentLog implements IMapping, ILog{
 	
 	
 	@Lob
-	@Column(name="answer")
-	public String getAnswer() {
-		return answer;
+	@Column(name="text")
+	public String getText() {
+		return text;
 	}
 	
 	
-	public void setAnswer(String answer) {
-		this.answer = answer;
+	public void setText(String text) {
+		this.text = text;
 	}
 	
 	public void setCourse(final long course, final Map<Long, Course> courses,
@@ -209,38 +194,38 @@ public class AssessmentLog implements IMapping, ILog{
 		}
 	}
 	
-	public void setTask(final long task, final Map<Long, Assessment> tasks,
-			final Map<Long, Assessment> oldTasks) {
+	public void setTask(final long learningId, final Map<Long, LearningObj> assessments,
+			final Map<Long, LearningObj> oldAssessments) {
 
-		if (tasks.get(task) != null)
+		if (assessments.get(learningId) != null)
 		{
-			this.assessment = tasks.get(task);
-			tasks.get(task).addTaskLog(this);
+			this.learning = assessments.get(learningId);
+			assessments.get(learningId).addAssessmentLog(this);
 		}
-		if ((this.assessment == null) && (oldTasks.get(task) != null))
+		if ((this.learning == null) && (oldAssessments.get(learningId) != null))
 		{
-			this.assessment = oldTasks.get(task);
-			oldTasks.get(task).addTaskLog(this);
+			this.learning = oldAssessments.get(learningId);
+			oldAssessments.get(learningId).addAssessmentLog(this);
 		}
 	}
 
 	@Override
 	@Transient
 	public Long getLearningObjectId() {
-		return this.getAssessment().getId();
+		return this.getLearning().getId();
 	}
 
 	@Override
 	@Transient
 	public ILearningObject getLearningObject() {
-		return this.getAssessment();
+		return this.getLearningObject();
 	}
 
 	@Override
 	@Transient
 	public String getTitle() {
 		
-		return this.getAssessment().getTitle();
+		return this.getLearning().getTitle();
 	}
 
 	@Override
@@ -252,7 +237,7 @@ public class AssessmentLog implements IMapping, ILog{
 	@Override
 	@Transient
 	public String getType() {
-		return "TASK";
+		return "ASSESSMENT";
 	}
 
 	/**
@@ -268,6 +253,22 @@ public class AssessmentLog implements IMapping, ILog{
 	 */
 	public void setAction(String action) {
 		this.action = action;
+	}
+
+	/**
+	 * @return the learning
+	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="learning_id")
+	public LearningObj getLearning() {
+		return learning;
+	}
+
+	/**
+	 * @param learning the learning to set
+	 */
+	public void setLearning(LearningObj learning) {
+		this.learning = learning;
 	}
 	
 }

@@ -91,8 +91,8 @@ import de.lemo.dms.db.mapping.LearningObj;
 import de.lemo.dms.db.mapping.LearningType;
 import de.lemo.dms.db.mapping.Assessment;
 import de.lemo.dms.db.mapping.AssessmentType;
-import de.lemo.dms.db.mapping.AssessmentUser;
-import de.lemo.dms.db.mapping.LearningLog;
+import de.lemo.dms.db.mapping.UserAssessment;
+import de.lemo.dms.db.mapping.AccessLog;
 import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.User;
@@ -1904,13 +1904,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	*/
 
 	@Override
-	public Map<Long, AssessmentUser> generateTaskUserMining() {
+	public Map<Long, UserAssessment> generateTaskUserMining() {
 
-		final HashMap<Long, AssessmentUser> taskUserMining = new HashMap<Long, AssessmentUser>();
+		final HashMap<Long, UserAssessment> taskUserMining = new HashMap<Long, UserAssessment>();
 		
 		for(AssignGradesLMS loadedItem : this.assignGradesLms)
 		{
-			AssessmentUser insert = new AssessmentUser();
+			UserAssessment insert = new UserAssessment();
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			insert.setAssessment(Long.valueOf(this.connector.getPrefix() + "07" + loadedItem.getAssignment()), taskMining, oldTaskMining);
 			insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), userMining, oldUserMining);
@@ -1935,7 +1935,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for (final GradeGradesLMS loadedItem : this.gradeGradesLms)
 		{
-			final AssessmentUser insert = new AssessmentUser();
+			final UserAssessment insert = new UserAssessment();
 
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
 			if (loadedItem.getFinalgrade() != null) {
@@ -2031,14 +2031,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, LearningLog> generateViewLogMining() {
-		final HashMap<Long, LearningLog> viewLogMining = new HashMap<Long, LearningLog>();
+	public Map<Long, AccessLog> generateViewLogMining() {
+		final HashMap<Long, AccessLog> viewLogMining = new HashMap<Long, AccessLog>();
 		// A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her
 		// requests times.
 
 		for (final LogLMS loadedItem : this.logLms)
 		{
-			final LearningLog insert = new LearningLog();
+			final AccessLog insert = new AccessLog();
 
 			insert.setId(viewLogMining.size() + 1 + this.viewLogMax);
 

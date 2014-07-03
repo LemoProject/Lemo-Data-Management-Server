@@ -36,12 +36,15 @@ import com.google.common.collect.Maps;
 
 import de.lemo.dms.connectors.mooc.mapping.AssessmentAnswers;
 import de.lemo.dms.connectors.mooc.mapping.AssessmentQuestions;
+import de.lemo.dms.connectors.mooc.mapping.AssessmentSessions;
 import de.lemo.dms.connectors.mooc.mapping.Assessments;
+import de.lemo.dms.connectors.mooc.mapping.Comments;
 import de.lemo.dms.connectors.mooc.mapping.Courses;
 import de.lemo.dms.connectors.mooc.mapping.Events;
 import de.lemo.dms.connectors.mooc.mapping.Memberships;
 import de.lemo.dms.connectors.mooc.mapping.Progress;
 import de.lemo.dms.connectors.mooc.mapping.Answers;
+import de.lemo.dms.connectors.mooc.mapping.Questions;
 import de.lemo.dms.connectors.mooc.mapping.Segments;
 import de.lemo.dms.connectors.mooc.mapping.UnitResources;
 import de.lemo.dms.connectors.mooc.mapping.Users;
@@ -117,15 +120,17 @@ public final class HibernateUtil {
 
 		// Add mapping classes
 
+		cfg.addAnnotatedClass(Answers.class);
 		cfg.addAnnotatedClass(AssessmentAnswers.class);
-
 		cfg.addAnnotatedClass(AssessmentQuestions.class);
 		cfg.addAnnotatedClass(Assessments.class);
+		cfg.addAnnotatedClass(AssessmentSessions.class);
+		cfg.addAnnotatedClass(Comments.class);
 		cfg.addAnnotatedClass(Courses.class);
 		cfg.addAnnotatedClass(Events.class);
 		cfg.addAnnotatedClass(Memberships.class);
 		cfg.addAnnotatedClass(Progress.class);
-		cfg.addAnnotatedClass(Answers.class);
+		cfg.addAnnotatedClass(Questions.class);
 		cfg.addAnnotatedClass(Segments.class);
 		cfg.addAnnotatedClass(UnitResources.class);
 		cfg.addAnnotatedClass(Users.class);

@@ -53,7 +53,7 @@ public class CollaborationLog implements IMapping, ILog{
 	private long id;
 	private Course course;
 	private User user;
-	private CollaborationObj collaborativeObject;
+	private LearningObj learning;
 	private long timestamp;
 	private String text;
 	private String action;
@@ -135,15 +135,15 @@ public class CollaborationLog implements IMapping, ILog{
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="collaboration_id")
-	public CollaborationObj getCollaborativeObject() {
-		return collaborativeObject;
+	@JoinColumn(name="learning_id")
+	public LearningObj getLearning() {
+		return learning;
 	}
 	
 	
 	
-	public void setCollaborativeObject(CollaborationObj learningObject) {
-		this.collaborativeObject = learningObject;
+	public void setLearning(LearningObj learningObject) {
+		this.learning = learningObject;
 	}
 	
 	
@@ -215,18 +215,18 @@ public class CollaborationLog implements IMapping, ILog{
 		}
 	}
 	
-	public void setCollaborativeObject(final long collaborativeObject, final Map<Long, CollaborationObj> resources,
-			final Map<Long, CollaborationObj> oldResources) {
+	public void setLearning(final long learningId, final Map<Long, LearningObj> learningobjects,
+			final Map<Long, LearningObj> oldLearningObjects) {
 
-		if (resources.get(collaborativeObject) != null)
+		if (learningobjects.get(learningId) != null)
 		{
-			this.collaborativeObject = resources.get(collaborativeObject);
-			resources.get(collaborativeObject).addCollaborativeLog(this);
+			this.learning = learningobjects.get(learningId);
+			learningobjects.get(learningId).addCollaborationLog(this);
 		}
-		if ((this.collaborativeObject == null) && (oldResources.get(collaborativeObject) != null))
+		if ((this.learning == null) && (oldLearningObjects.get(learningId) != null))
 		{
-			this.collaborativeObject = oldResources.get(collaborativeObject);
-			oldResources.get(collaborativeObject).addCollaborativeLog(this);
+			this.learning = oldLearningObjects.get(learningId);
+			oldLearningObjects.get(learningId).addCollaborationLog(this);
 		}
 	}
 
@@ -250,14 +250,8 @@ public class CollaborationLog implements IMapping, ILog{
 
 	@Override
 	@Transient
-	public ILearningObject getLearningObject() {
-		return this.collaborativeObject;
-	}
-
-	@Override
-	@Transient
 	public String getType() {
-		return "COLLABORATIVEOBJECT";
+		return "COLLABORATIONOBJECT";
 	}
 
 	/**
@@ -273,6 +267,11 @@ public class CollaborationLog implements IMapping, ILog{
 	 */
 	public void setAction(String action) {
 		this.action = action;
+	}
+
+	@Override
+	public ILearningObject getLearningObject() {
+		return this.learning;
 	}
 	
 }

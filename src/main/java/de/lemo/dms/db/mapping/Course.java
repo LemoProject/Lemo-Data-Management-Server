@@ -27,16 +27,12 @@
 package de.lemo.dms.db.mapping;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -48,17 +44,13 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
 public class Course implements IMapping{
 	
 	private long id;
-	private Platform platform;
 	private String title;
-	private long timeModified;
 	
-	private Set<CourseLearning> courseResources = new HashSet<CourseLearning>();
-	private Set<CourseCollaboration> courseCollaborativeObjects = new HashSet<CourseCollaboration>();
-	private Set<CourseAssessment> courseTasks = new HashSet<CourseAssessment>();
-	private Set<LearningLog> eventLogs = new HashSet<LearningLog>();
-	private Set<AssessmentLog> taskLogs = new HashSet<AssessmentLog>();
+	private Set<CourseLearning> courseLearnings = new HashSet<CourseLearning>();
+	private Set<AccessLog> accessLogs = new HashSet<AccessLog>();
+	private Set<AssessmentLog> assessmentLogs = new HashSet<AssessmentLog>();
 	private Set<CollaborationLog> collaborativeLogs = new HashSet<CollaborationLog>();
-	private Set<AssessmentUser> taskUsers = new HashSet<AssessmentUser>();
+	private Set<UserAssessment> assessmentUsers = new HashSet<UserAssessment>();
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
 	
 	@Override
@@ -109,22 +101,6 @@ public class Course implements IMapping{
 	}
 
 
-	/**
-	 * @return the timeModified
-	 */
-	@Column(name="timemodified")
-	public long getTimeModified() {
-		return timeModified;
-	}
-
-	/**
-	 * @param timeModified the timeModified to set
-	 */
-	public void setTimeModified(long timeModified) {
-		this.timeModified = timeModified;
-	}
-
-
 	
 	/**
 	 * standard setter for the attribute course_resource
@@ -132,8 +108,8 @@ public class Course implements IMapping{
 	 * @param courseResource
 	 *            a set of entries in the course_resource table which shows the resources in this course
 	 */
-	public void setCourseResources(final Set<CourseLearning> courseResource) {
-		this.courseResources = courseResource;
+	public void setCourseLearnings(final Set<CourseLearning> courseLearnings) {
+		this.courseLearnings = courseLearnings;
 	}
 
 	/**
@@ -142,8 +118,8 @@ public class Course implements IMapping{
 	 * @return a set of entries in the course_resource table which shows the resources in this course
 	 */
 	@OneToMany(mappedBy="course")
-	public Set<CourseLearning> getCourseResources() {
-		return this.courseResources;
+	public Set<CourseLearning> getCourseLearnings() {
+		return this.courseLearnings;
 	}
 
 	/**
@@ -152,64 +128,35 @@ public class Course implements IMapping{
 	 * @param courseResource
 	 *            this entry of the course_resource table will be added to this course
 	 */
-	public void addCourseResource(final CourseLearning courseResource) {
-		this.courseResources.add(courseResource);
+	public void addCourseLearning(final CourseLearning courseLearning) {
+		this.courseLearnings.add(courseLearning);
 	}
 	
-	/**
-	 * standard setter for the attribute course_tasks
-	 * 
-	 * @param courseTasks
-	 *            a set of entries in the course_resource table which shows the resources in this course
-	 */
-	public void setCourseTasks(final Set<CourseAssessment> courseTasks) {
-		this.courseTasks = courseTasks;
-	}
-
-	/**
-	 * standard getter for the attribute course_tasks
-	 * 
-	 * @return a set of entries in the course_task table which shows the tasks in this course
-	 */
-	@OneToMany(mappedBy="course")
-	public Set<CourseAssessment> getCourseTasks() {
-		return this.courseTasks;
-	}
-
-	/**
-	 * standard add method for the attribute course_tasks
-	 * 
-	 * @param courseResource
-	 *            this entry of the course_resource table will be added to this course
-	 */
-	public void addCourseTask(final CourseAssessment courseTask) {
-		this.courseTasks.add(courseTask);
-	}
-	
-	public void setEventLogs(final Set<LearningLog> eventLog) {
-		this.eventLogs = eventLog;
+		
+	public void setEventLogs(final Set<AccessLog> eventLog) {
+		this.accessLogs = eventLog;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<LearningLog> getEventLogs() {
-		return this.eventLogs;
+	public Set<AccessLog> getEventLogs() {
+		return this.accessLogs;
 	}
 
-	public void addEventLog(final LearningLog eventLog) {
-		this.eventLogs.add(eventLog);
+	public void addEventLog(final AccessLog eventLog) {
+		this.accessLogs.add(eventLog);
 	}
 	
-	public void setTaskLogs(final Set<AssessmentLog> taskLog) {
-		this.taskLogs = taskLog;
+	public void setAssessmentLogs(final Set<AssessmentLog> assessmentLog) {
+		this.assessmentLogs = assessmentLog;
 	}
 
 	@OneToMany(mappedBy="course")
-	public Set<AssessmentLog> getTaskLogs() {
-		return this.taskLogs;
+	public Set<AssessmentLog> getAssessmentLogs() {
+		return this.assessmentLogs;
 	}
 
-	public void addTaskLog(final AssessmentLog taskLog) {
-		this.taskLogs.add(taskLog);
+	public void addTaskLog(final AssessmentLog assessmentLog) {
+		this.assessmentLogs.add(assessmentLog);
 	}
 	
 	public void setCollaborativeLogs(final Set<CollaborationLog> collaborativeLog) {
@@ -229,20 +176,20 @@ public class Course implements IMapping{
 	 * @return the taskUsers
 	 */
 	@OneToMany(mappedBy="course")
-	public Set<AssessmentUser> getTaskUsers() {
-		return taskUsers;
+	public Set<UserAssessment> getAssessmentUsers() {
+		return assessmentUsers;
 	}
 
 	/**
 	 * @param taskUsers the taskUsers to set
 	 */
-	public void setTaskUsers(Set<AssessmentUser> taskUsers) {
-		this.taskUsers = taskUsers;
+	public void setAssessmentsUsers(Set<UserAssessment> assessmentUsers) {
+		this.assessmentUsers = assessmentUsers;
 	}
 	
-	public void addTaskUser(AssessmentUser taskUser)
+	public void addUserAssessment(UserAssessment userAssessment)
 	{
-		this.taskUsers.add(taskUser);
+		this.assessmentUsers.add(userAssessment);
 	}
 
 	/**
@@ -264,51 +211,4 @@ public class Course implements IMapping{
 	{
 		this.courseUsers.add(courseUser);
 	}
-
-	/**
-	 * @return the platform
-	 */
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="platform_id")
-	public Platform getPlatform() {
-		return platform;
-	}
-
-	/**
-	 * @param platform the platform to set
-	 */
-	public void setPlatform(Platform platform) {
-		this.platform = platform;
-	}
-	
-	public void setPlatform(final long platform, final Map<Long, Platform> platforms,
-			final Map<Long, Platform> oldPlatforms) {
-
-		if (platforms.get(platform) != null)
-		{
-			this.platform = platforms.get(platform);
-			platforms.get(platform).addCourse(this);
-		}
-		if ((this.platform == null) && (oldPlatforms.get(platform) != null))
-		{
-			this.platform = oldPlatforms.get(platform);
-			oldPlatforms.get(platform).addCourse(this);
-		}
-	}
-	
-	public void setCourseCollaborativeObjects(final Set<CourseCollaboration> courseCollaborativeObjects) {
-		this.courseCollaborativeObjects = courseCollaborativeObjects;
-	}
-
-	@OneToMany(mappedBy="course")
-	public Set<CourseCollaboration> getCourseCollaborativeObjects() {
-		return this.courseCollaborativeObjects;
-	}
-
-	public void addCourseCollaborativeObject(final CourseCollaboration courseCollaborativeObject) {
-		this.courseCollaborativeObjects.add(courseCollaborativeObject);
-	}
-
-
-	
 }

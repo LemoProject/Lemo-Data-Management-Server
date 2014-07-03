@@ -27,6 +27,8 @@
 package de.lemo.dms.connectors.mooc;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,7 @@ import de.lemo.dms.connectors.mooc.mapping.AssessmentAnswers;
 import de.lemo.dms.connectors.mooc.mapping.AssessmentQuestions;
 import de.lemo.dms.connectors.mooc.mapping.AssessmentSessions;
 import de.lemo.dms.connectors.mooc.mapping.Assessments;
+import de.lemo.dms.connectors.mooc.mapping.Comments;
 import de.lemo.dms.connectors.mooc.mapping.Courses;
 import de.lemo.dms.connectors.mooc.mapping.Events;
 import de.lemo.dms.connectors.mooc.mapping.Memberships;
@@ -65,8 +68,8 @@ import de.lemo.dms.db.mapping.LearningObj;
 import de.lemo.dms.db.mapping.LearningType;
 import de.lemo.dms.db.mapping.Assessment;
 import de.lemo.dms.db.mapping.AssessmentType;
-import de.lemo.dms.db.mapping.AssessmentUser;
-import de.lemo.dms.db.mapping.LearningLog;
+import de.lemo.dms.db.mapping.UserAssessment;
+import de.lemo.dms.db.mapping.AccessLog;
 import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.User;
@@ -84,6 +87,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private List<AssessmentSessions> assessmentSessionsMooc;
 	private List<Assessments> assessmentMooc;
 	private List<Courses> coursesMooc;
+	private List<Comments> commentsMooc;
 	private List<Events> eventsMooc;
 	private List<Memberships> membershipsMooc;
 	private List<Progress> progressMooc;
@@ -146,6 +150,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		criteria = session.createCriteria(Events.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.eventsMooc = criteria.list();
+		
+		criteria = session.createCriteria(Comments.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.commentsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Memberships.class, "obj");
 		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
@@ -217,6 +225,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		criteria = session.createCriteria(Assessments.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.assessmentMooc = criteria.list();
+		
+		criteria = session.createCriteria(Comments.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.commentsMooc = criteria.list();
 		
 		criteria = session.createCriteria(Events.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -346,13 +358,13 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, AssessmentUser> generateAssessmentUserMining() {
-		final HashMap<Long, AssessmentUser> assessmentUsers = new HashMap<Long, AssessmentUser>();
+	public Map<Long, UserAssessment> generateAssessmentUserMining() {
+		final HashMap<Long, UserAssessment> assessmentUsers = new HashMap<Long, UserAssessment>();
 		
 		
 		for(AssessmentSessions loadedItem : this.assessmentSessionsMooc)
 		{
-			AssessmentUser insert = new AssessmentUser();
+			UserAssessment insert = new UserAssessment();
 			
 			CourseUser cu = this.courseUserMining.get(loadedItem.getMembershipId());
 			if(cu == null)
@@ -375,14 +387,49 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, LearningLog> generateLearningLogMining() {
-		final HashMap<Long, LearningLog> learningLogs = new HashMap<Long, LearningLog>();
+	public Map<Long, AccessLog> generateLearningLogMining() {
+		
+		final HashMap<Long, AccessLog> learningLogs = new HashMap<Long, AccessLog>();
+		final Map<Long, UnitResources> unitResources = new HashMap<Long, UnitResources>();
+		for(UnitResources u : this.unitResourcesMooc)
+		{
+			unitResources.put(u.getId(), u);
+		}
+		
 		
 		for(Events loadedItem : this.eventsMooc)
 		{
-			LearningLog insert = new LearningLog();
+			AccessLog insert = new AccessLog();
 			insert.setId(loadedItem.getId());
-			insert.setCourse(loadedItem.getId(), this.courseMining, this.oldCourseMining);
+			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
+			if(loadedItem.getCourseId() != 0)
+			{
+				insert.setCourse(loadedItem.getId(), this.courseMining, this.oldCourseMining);
+			}
+			else
+			{
+				insert.setCourse(this.courseLearningObjectMining.get(Long.valueOf("1" + loadedItem.getSegmentId())).getCourse().getId(), this.courseMining, this.oldCourseMining);
+			}
+			
+			if(unitResources.get(loadedItem.getUnitResourceId()) != null && unitResources.get(loadedItem.getUnitResourceId()).getAttachableType().equals("Video"))
+			{
+				UnitResources uR = unitResources.get(loadedItem.getUnitResourceId());
+				insert.setLearningObject(uR.getAttachableId(), this.learningObjectMining, this.oldLearningObjectMining);			
+			}
+			insert.setTimestamp(loadedItem.getTimestamp());
+			
+			switch(loadedItem.getEvent())
+			{
+				case 1 : insert.setAction("View");
+					break;
+				case 2 : insert.setAction("Play");
+					break;
+				case 3 : insert.setAction("Stop");
+					break;
+				case 4 : insert.setAction("Pause");
+					break;
+				default : break;
+			}
 			
 		}
 		return learningLogs;
@@ -390,12 +437,16 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 	@Override
 	public Map<Long, CollaborationLog> generateCollaborativeLogMining() {
+		final List<CollaborationLog> loglist = new ArrayList<CollaborationLog>();
 		final HashMap<Long, CollaborationLog> collaborationLogs = new HashMap<Long, CollaborationLog>();
+		
+		final Map<Long, CollaborationLog> questionLog = new HashMap<Long, CollaborationLog>();
+		final Map<Long, CollaborationLog> answersLog = new HashMap<Long, CollaborationLog>();
+		
 		
 		for(Questions loadedItem : this.questionsMooc)
 		{
 			CollaborationLog insert = new CollaborationLog();
-			insert.setId(loadedItem.getId());
 			insert.setCollaborativeObject(loadedItem.getSegmentId(), this.collaborativeObjectMining, this.oldCollaborativeObjectMining);
 			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
 			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
@@ -403,14 +454,78 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			insert.setText(loadedItem.getContent());
 			insert.setTimestamp(loadedItem.getTimeCreated());
 			
-			collaborationLogs.put(insert.getId(), insert);
-			
+			if(insert.getCollaborativeObject() != null && insert.getUser() != null && insert.getCourse() != null)
+			{
+				questionLog.put(loadedItem.getId(),insert);
+				loglist.add(insert);
+			}
 		}
 		
-		for(Answers loadedItemAnswers : this.answersMooc)
+		for(Answers loadedItem : this.answersMooc)
 		{
 			CollaborationLog insert = new CollaborationLog();
+			insert.setParent(questionLog.get(loadedItem.getQuestionId()));
 			
+			if(insert.getParent() != null)
+			{
+				insert.setId(loadedItem.getId());
+				insert.setCollaborativeObject(questionLog.get(loadedItem.getQuestionId()).getCollaborativeObject().getId(), this.collaborativeObjectMining, this.collaborativeObjectMining);
+				insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
+				insert.setCourse(insert.getParent().getCourse().getId(), this.courseMining, this.oldCourseMining);
+				insert.setAction("Answer");
+				insert.setText(loadedItem.getContent());
+				insert.setTimestamp(loadedItem.getTimeCreated());
+				
+				if(insert.getCollaborativeObject() != null && insert.getUser() != null && insert.getCourse() != null)
+				{
+					answersLog.put(loadedItem.getId(),insert);
+					loglist.add(insert);
+				}
+			}
+		}
+		for(Comments loadedItem : this.commentsMooc)
+		{
+			CollaborationLog insert = new CollaborationLog();
+			if(loadedItem.getCommentableType().equals("Answer"))
+			{
+				insert.setParent(answersLog.get(loadedItem.getCommentableId()));
+				if(insert.getParent() != null)
+				{
+					insert.setCollaborativeObject(answersLog.get(loadedItem.getCommentableId()).getCollaborativeObject().getId(), this.collaborativeObjectMining, this.collaborativeObjectMining);
+				}
+			}
+			else if(loadedItem.getCommentableType().equals("Question"))
+			{
+				insert.setParent(questionLog.get(loadedItem.getCommentableId()));
+				if(insert.getParent() != null)
+				{
+					insert.setCollaborativeObject(questionLog.get(loadedItem.getCommentableId()).getCollaborativeObject().getId(), this.collaborativeObjectMining, this.collaborativeObjectMining);
+				}
+			}
+			
+			if(insert.getParent() != null)
+			{
+				insert.setId(loadedItem.getId());
+				
+				insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
+				insert.setCourse(insert.getParent().getCourse().getId(), this.courseMining, this.oldCourseMining);
+				insert.setAction("Comment");
+				insert.setText(loadedItem.getContent());
+				insert.setTimestamp(loadedItem.getTimeCreated());
+				
+				if(insert.getCollaborativeObject() != null && insert.getUser() != null && insert.getCourse() != null)
+				{
+					loglist.add(insert);
+				}
+			}
+		}
+		
+		Collections.sort(loglist);
+		for(int i = 0; i < loglist.size(); i++)
+		{
+			loglist.get(i).setId(this.collaborationLogMax + i + 1);
+			this.collaborationLogMax++;
+			collaborationLogs.put(loglist.get(i).getId(), loglist.get(i));			
 		}
 		
 		return collaborationLogs;
@@ -445,7 +560,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			
 			if(loadedItem.getParent() != null)
 			{
-				insert.setParent(insert.getId(), learningObjectMining, oldLearningObjectMining);
+				insert.setParent(insert.getParent().getId(), learningObjectMining, oldLearningObjectMining);
 			}
 			
 			if(insert.getType() != null)

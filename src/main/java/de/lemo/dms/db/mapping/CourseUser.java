@@ -22,10 +22,10 @@ public class CourseUser implements IMapping {
 	
 	@Override
 	public boolean equals(final IMapping o) {
-		if (!(o instanceof CollaborationObj)) {
+		if (!(o instanceof CourseUser)) {
 			return false;
 		}
-		if ((o.getId() == this.getId()) && (o instanceof CollaborationObj)) {
+		if ((o.getId() == this.getId()) && (o instanceof CourseUser)) {
 			return true;
 		}
 		return false;

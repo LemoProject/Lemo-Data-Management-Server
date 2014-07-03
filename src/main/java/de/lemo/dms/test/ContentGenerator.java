@@ -47,14 +47,14 @@ import de.lemo.dms.db.mapping.CourseLearning;
 import de.lemo.dms.db.mapping.CourseAssessment;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.LearningObj;
-import de.lemo.dms.db.mapping.LearningLog;
+import de.lemo.dms.db.mapping.AccessLog;
 import de.lemo.dms.db.mapping.LearningType;
 import de.lemo.dms.db.mapping.Platform;
 import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.db.mapping.Assessment;
 import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.AssessmentType;
-import de.lemo.dms.db.mapping.AssessmentUser;
+import de.lemo.dms.db.mapping.UserAssessment;
 import de.lemo.dms.db.mapping.User;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 
@@ -158,12 +158,12 @@ public class ContentGenerator {
 		final ArrayList<CourseUser> courseUserList = new ArrayList<CourseUser>();
 
 		// Log-containers
-		final ArrayList<LearningLog> learnLog = new ArrayList<LearningLog>();
+		final ArrayList<AccessLog> learnLog = new ArrayList<AccessLog>();
 		final ArrayList<ILog> resourceLogList = new ArrayList<ILog>();
 		final ArrayList<CollaborationLog> collLog = new ArrayList<CollaborationLog>();
 		final ArrayList<AssessmentLog> taskLogs = new ArrayList<AssessmentLog>();
 		
-		final Map<String, AssessmentUser> taskUserMap = new HashMap<String, AssessmentUser>();
+		final Map<String, UserAssessment> taskUserMap = new HashMap<String, UserAssessment>();
 
 		final String[] forumAction = new String[4];
 		forumAction[0] = "view forum";
@@ -366,7 +366,7 @@ public class ContentGenerator {
 				
 				// _________________LearningObjectLogs___________________________________________________
 				int time = (int) (startdate + log * (year / logSwitch));
-				final LearningLog rLog = new LearningLog();
+				final AccessLog rLog = new AccessLog();
 				rLog.setCourse(cou);
 				rLog.setLearningObject(learningObjects.get((learningObjects.size() - 1) - randy.nextInt(MAGIC_TEN)));
 				rLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
@@ -399,7 +399,7 @@ public class ContentGenerator {
 				
 				if(!taskUserMap.containsKey(aLog.getUser().getId() + "#" + aLog.getAssessment().getId()))
 				{
-					AssessmentUser tu = new AssessmentUser();
+					UserAssessment tu = new UserAssessment();
 					tu.setId(taskUserMap.size() + 1);
 					tu.setAssessment(a);
 					tu.setUser(aLog.getUser());
@@ -498,7 +498,7 @@ public class ContentGenerator {
 		return all;
 	}
 	
-	private void createIdsLL(List<LearningLog> logs)
+	private void createIdsLL(List<AccessLog> logs)
 	{
 		int i = 1;
 		for(ILog il : logs)
