@@ -30,18 +30,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
 
 import com.google.common.collect.Lists;
 
 import de.lemo.dms.core.ConnectorGetDataWorkerThread;
-import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.Platform;
-
 /**
  * Handles all connector instances.
  * 
@@ -154,6 +147,7 @@ public enum ConnectorManager {
 	}
 
 	private void saveOrUpdateConnectorInfo(final IConnector connector) {
+		/*
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
@@ -181,6 +175,7 @@ public enum ConnectorManager {
 
 		dbHandler.saveToDB(session, platform);
 		dbHandler.closeSession(session);
+		*/
 	}
 
 }

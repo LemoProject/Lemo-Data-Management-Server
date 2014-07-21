@@ -135,14 +135,14 @@ public class QActivityResourceTypeResolution extends Question {
 
 		final HashMap<String, ResourceRequestInfo> rri = new HashMap<String, ResourceRequestInfo>();
 		for (ILog log : logs) {
-			Long id = log.getLearningObjectId();
+			Long id = log.getLearningId();
 			if (id != null) {
 				Long pos = new Double((log.getTimestamp() - startTime) / intervall).longValue();
 				if (pos > (resolution - 1)) {
 					pos = resolution - 1;
 				}
 
-				if (log.getTitle().isEmpty()) {
+				if (log.getLearning().getTitle().isEmpty()) {
 					String key = pos + "-1";
 					if (rri.get(key) == null) {
 						rri.put(key, new ResourceRequestInfo(id, type, 1L, 1L, "Unknown", pos));
@@ -152,7 +152,7 @@ public class QActivityResourceTypeResolution extends Question {
 				} else {
 					String key = pos.toString() + id;
 					if (rri.get(key) == null) {
-						rri.put(key, new ResourceRequestInfo(id, type, 1L, 1L, log.getTitle(), pos));
+						rri.put(key, new ResourceRequestInfo(id, type, 1L, 1L, log.getLearning().getTitle(), pos));
 					} else {
 						rri.get(key).incRequests();
 					}

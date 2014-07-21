@@ -19,7 +19,7 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/connectors/moodle_2_3/ExtractAndMap.java
+ * File ./main/java/de/lemo/dms/connectors/iversity/ExtractAndMap.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  */
@@ -38,32 +38,29 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.EQueryType;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.CollaborationLog;
-import de.lemo.dms.db.mapping.CollaborationType;
 import de.lemo.dms.db.mapping.Course;
-import de.lemo.dms.db.mapping.CourseCollaboration;
+import de.lemo.dms.db.mapping.CourseAttribute;
 import de.lemo.dms.db.mapping.CourseLearning;
-import de.lemo.dms.db.mapping.CourseAssessment;
 import de.lemo.dms.db.mapping.CourseUser;
+import de.lemo.dms.db.mapping.LearningAttribute;
 import de.lemo.dms.db.mapping.LearningObj;
 import de.lemo.dms.db.mapping.AccessLog;
-import de.lemo.dms.db.mapping.Platform;
-import de.lemo.dms.db.mapping.CollaborationObj;
 import de.lemo.dms.db.mapping.Config;
 import de.lemo.dms.db.mapping.LearningType;
 import de.lemo.dms.db.mapping.Role;
-import de.lemo.dms.db.mapping.Assessment;
 import de.lemo.dms.db.mapping.AssessmentLog;
-import de.lemo.dms.db.mapping.AssessmentType;
 import de.lemo.dms.db.mapping.UserAssessment;
 import de.lemo.dms.db.mapping.User;
+import de.lemo.dms.db.mapping.UserAttribute;
 
 /**
  * The main class of the extraction process.
@@ -77,44 +74,36 @@ public abstract class ExtractAndMap {
 	/** A List of new entries in the course table found in this run of the process. */
 
 	protected Map<Long, Course> courseMining;
-	protected Map<Long, Platform> platformMining;
+	protected Map<Long, Attribute> attributeMining;
 	protected Map<Long, LearningObj> learningObjectMining;
-	protected Map<Long, Assessment> taskMining;
-	protected Map<Long, CollaborationObj> collaborativeObjectMining;
 	protected Map<Long, User> userMining;
-	protected Map<Long, Role> roleMining;
+	protected Map<Long, Role> roleMining;	
+	protected Map<Long, UserAssessment> userAssessmentMining;
+	protected Map<Long, CourseLearning> courseLearningMining;
+	protected Map<Long, CourseUser> courseUserMining;	
 	
+	protected Map<Long, CourseAttribute> courseAttributeMining;	
+	protected Map<Long, UserAttribute> userAttributeMining;	
+	protected Map<Long, LearningAttribute> learningAttributeMining;	
 	
-	protected Map<Long, UserAssessment> taskUserMining;
-	protected Map<Long, CourseLearning> courseLearningObjectMining;
-	protected Map<Long, CourseCollaboration> courseCollaborativeObjectMining;
-	protected Map<Long, CourseAssessment> courseTaskMining;
-	protected Map<Long, CourseUser> courseUserMining;
-	
-	protected Map<String, AssessmentType> taskTypeMining;
-	protected Map<String, CollaborationType> collaborativeObjectTypeMining;
-	protected Map<String, LearningType> learningObjectTypeMining;
+	protected Map<String, LearningType> learningTypeMining;	
 	
 	protected Map<Long, Course> oldCourseMining;
-	protected Map<Long, Platform> oldPlatformMining;
+	protected Map<Long, Attribute> oldAttributeMining;
 	protected Map<Long, LearningObj> oldLearningObjectMining;
-	protected Map<Long, CollaborationObj> oldCollaborativeObjectMining;
-	protected Map<Long, Assessment> oldTaskMining;
 	protected Map<Long, User> oldUserMining;
-	protected Map<Long, Role> oldRoleMining;
-
-
-	
-	
-	protected Map<Long, UserAssessment> oldTaskUserMining;
+	protected Map<Long, Role> oldRoleMining;	
+	protected Map<Long, UserAssessment> oldUserAssessmentMining;
 	protected Map<Long, CourseLearning> oldCourseLearningObjectMining;
-	protected Map<Long, CourseCollaboration> oldCourseCollaborativeObjectMining;
-	protected Map<Long, CourseAssessment> oldCourseTaskMining;
-	protected Map<Long, CourseUser> oldCourseUserMining;
+	protected Map<Long, CourseUser> oldCourseUserMining;	
 	
-	protected Map<String, AssessmentType> oldTaskTypeMining;
-	protected Map<String, LearningType> oldLearningObjectTypeMining;
-	protected Map<String, CollaborationType> oldCollaborativeObjectTypeMining;
+	protected Map<Long, CourseAttribute> oldCourseAttributeMining;	
+	protected Map<Long, UserAttribute> oldUserAttributeMining;	
+	protected Map<Long, LearningAttribute> oldLearningAttributeMining;	
+	
+	protected Map<String, LearningType> oldLearningTypeMining;
+	
+
 
 
 	/** A list of objects used for submitting them to the DB. */
@@ -135,19 +124,13 @@ public abstract class ExtractAndMap {
 		this.connector = connector;
 	}
 
-	protected Long viewLogMax;
+	protected Long accessLogMax;
 
-	protected Long collaborativeLogMax;
-
-	protected Long taskLogMax;
+	protected Long collaborationLogMax;
 
 	protected Long assessmentLogMax;
 	
 	protected Long learningObjectTypeMax;
-	
-	protected Long collaborativeObjectTypeMax;
-	
-	protected Long taskTypeMax;
 
 	protected Long maxLog = 0L;
 	
@@ -173,11 +156,6 @@ public abstract class ExtractAndMap {
 		// get the status of the mining DB; load timestamp of last update and objects needed for associations
 		long readingtimestamp = this.getMiningInitial();
 
-		this.dbHandler.saveToDB(session, new Platform(this.connector.getPlatformId(), this.connector.getName(),
-				this.connector.getPlattformType().toString(), this.connector.getPrefix()));
-		this.platformMining = new HashMap<Long, Platform>();
-		this.platformMining.put(this.connector.getPlatformId(), new Platform(this.connector.getPlatformId(), this.connector.getName(),
-				this.connector.getPlattformType().toString(), this.connector.getPrefix()));
 		logger.info("Initialized database in " + this.c.getAndReset());
 		// default call without parameter
 		if (args.length == 1)
@@ -265,177 +243,145 @@ public abstract class ExtractAndMap {
 
 		// load objects which are already in Mining DB for associations
 
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from Course x where x.platform="
-				+ this.connector.getPlatformId() + " order by x.id asc");
+		Criteria criteria = session.createCriteria(Course.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
 		this.oldCourseMining = new HashMap<Long, Course>();
 		for (int i = 0; i < t.size(); i++) {
 			this.oldCourseMining.put(((Course) (t.get(i))).getId(), (Course) t.get(i));
 		}
 		logger.info("Loaded " + this.oldCourseMining.size() + " Course objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from User x "
-				//+ "where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
+		criteria = session.createCriteria(User.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
 		this.oldUserMining = new HashMap<Long, User>();
 		for (int i = 0; i < t.size(); i++) {
 			this.oldUserMining.put(((User) (t.get(i))).getId(), (User) t.get(i));
 		}
 		logger.info("Loaded " + this.oldUserMining.size() + " User objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from LearningObject x "
-				//+ "where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
+		criteria = session.createCriteria(LearningObj.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
 		this.oldLearningObjectMining = new HashMap<Long, LearningObj>();
 		for (int i = 0; i < t.size(); i++) {
 			this.oldLearningObjectMining.put(((LearningObj) (t.get(i))).getId(), (LearningObj) t.get(i));
 		}
-		logger.info("Loaded " + this.oldLearningObjectMining.size() + " Resource objects from the mining database.");
+		logger.info("Loaded " + this.oldLearningObjectMining.size() + " LearningObj objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from CollaborativeObject x "
-				//+ "where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
-		this.oldCollaborativeObjectMining = new HashMap<Long, CollaborationObj>();
+		criteria = session.createCriteria(Attribute.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
+		this.oldAttributeMining = new HashMap<Long, Attribute>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldCollaborativeObjectMining.put(((CollaborationObj) (t.get(i))).getId(), (CollaborationObj) t.get(i));
+			this.oldAttributeMining.put(((Attribute) (t.get(i))).getId(), (Attribute) t.get(i));
 		}
-		logger.info("Loaded " + this.oldCollaborativeObjectMining.size() + " Collaborative objects from the mining database.");
+		logger.info("Loaded " + this.oldAttributeMining.size() + " Attribute objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from Task x "
-				//+ "where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
-		this.oldTaskMining = new HashMap<Long, Assessment>();
-		for (int i = 0; i < t.size(); i++) {
-			this.oldTaskMining.put(((Assessment) (t.get(i))).getId(), (Assessment) t.get(i));
-		}
-		logger.info("Loaded " + this.oldTaskMining.size() + " Task objects from the mining database.");
-		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from Role x "
-				//+ "where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
+		criteria = session.createCriteria(Role.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
 		this.oldRoleMining = new HashMap<Long, Role>();
 		for (int i = 0; i < t.size(); i++) {
 			this.oldRoleMining.put(((Role) (t.get(i))).getId(), (Role) t.get(i));
 		}
 		logger.info("Loaded " + this.oldRoleMining.size() + " Role objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from Platform x "
-				//+ "where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
-		this.oldPlatformMining = new HashMap<Long, Platform>();
+		criteria = session.createCriteria(LearningType.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
+		this.oldLearningTypeMining = new HashMap<String, LearningType>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldPlatformMining.put(((Platform) (t.get(i))).getId(), (Platform) t.get(i));
+			this.oldLearningTypeMining.put(((LearningType) (t.get(i))).getType(), (LearningType) t.get(i));
 		}
-		logger.info("Loaded " + this.oldPlatformMining.size() + " Platform objects from the mining database.");
+		logger.info("Loaded " + this.oldLearningTypeMining.size() + " LearningType objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from LearningObjectType x "
-				//+ "where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
-		this.oldLearningObjectTypeMining = new HashMap<String, LearningType>();
+		criteria = session.createCriteria(CourseAttribute.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
+		this.oldCourseAttributeMining = new HashMap<Long, CourseAttribute>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldLearningObjectTypeMining.put(((LearningType) (t.get(i))).getType(), (LearningType) t.get(i));
+			this.oldCourseAttributeMining.put(((CourseAttribute) (t.get(i))).getId(), (CourseAttribute) t.get(i));
 		}
-		logger.info("Loaded " + this.oldLearningObjectTypeMining.size() + " ResourceType objects from the mining database.");
+		logger.info("Loaded " + this.oldCourseLearningObjectMining.size() + " CourseAttribute objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from CollaborativeObjectType x "
-				//+ "where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
-		this.oldCollaborativeObjectTypeMining = new HashMap<String, CollaborationType>();
+		criteria = session.createCriteria(UserAttribute.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
+		this.oldUserAttributeMining = new HashMap<Long, UserAttribute>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldCollaborativeObjectTypeMining.put(((CollaborationType) (t.get(i))).getType(), (CollaborationType) t.get(i));
+			this.oldUserAttributeMining.put(((UserAttribute) (t.get(i))).getId(), (UserAttribute) t.get(i));
 		}
-		logger.info("Loaded " + this.oldCollaborativeObjectTypeMining.size() + " CollaborativeType objects from the mining database.");
+		logger.info("Loaded " + this.oldUserAttributeMining.size() + " UserAttribute objects from the mining database.");
 		
-		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from TaskType x"
-				//+ "where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
-		this.oldTaskTypeMining = new HashMap<String, AssessmentType>();
+		criteria = session.createCriteria(LearningAttribute.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
+		this.oldLearningAttributeMining = new HashMap<Long, LearningAttribute>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldTaskTypeMining.put(((AssessmentType) (t.get(i))).getType(), (AssessmentType) t.get(i));
+			this.oldLearningAttributeMining.put(((LearningAttribute) (t.get(i))).getId(), (LearningAttribute) t.get(i));
 		}
-		logger.info("Loaded " + this.oldTaskTypeMining.size() + " TaskType objects from the mining database.");
+		logger.info("Loaded " + this.oldUserAttributeMining.size() + " LearningAttribute objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from CourseLearningObject x"
-				//+ " where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
+		
+		criteria = session.createCriteria(CourseLearning.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
 		this.oldCourseLearningObjectMining = new HashMap<Long, CourseLearning>();
 		for (int i = 0; i < t.size(); i++) {
 			this.oldCourseLearningObjectMining.put(((CourseLearning) (t.get(i))).getId(), (CourseLearning) t.get(i));
 		}
 		logger.info("Loaded " + this.oldCourseLearningObjectMining.size() + " CourseResource objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from CourseTask x"
-				//+ " where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
-		this.oldCourseTaskMining = new HashMap<Long, CourseAssessment>();
+		criteria = session.createCriteria(UserAssessment.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
+		this.oldUserAssessmentMining = new HashMap<Long, UserAssessment>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldCourseTaskMining.put(((CourseAssessment) (t.get(i))).getId(), (CourseAssessment) t.get(i));
+			this.oldUserAssessmentMining.put(((UserAssessment) (t.get(i))).getId(), (UserAssessment) t.get(i));
 		}
-		logger.info("Loaded " + this.oldCourseTaskMining.size() + " CourseTask objects from the mining database.");
+		logger.info("Loaded " + this.oldUserAssessmentMining.size() + " UserAssessment objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from CourseUser x"
-				//+ " where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
+		criteria = session.createCriteria(CourseUser.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
 		this.oldCourseUserMining = new HashMap<Long, CourseUser>();
 		for (int i = 0; i < t.size(); i++) {
 			this.oldCourseUserMining.put(((CourseUser) (t.get(i))).getId(), (CourseUser) t.get(i));
 		}
 		logger.info("Loaded " + this.oldCourseUserMining.size() + " CourseUser objects from the mining database.");
 		
-		t = this.dbHandler.performQuery(session, EQueryType.HQL, "from TaskUser x"
-				//+ " where x.platform=" + this.connector.getPlatformId() 
-				+ " order by x.id asc");
-		this.oldTaskUserMining = new HashMap<Long, UserAssessment>();
-		for (int i = 0; i < t.size(); i++) {
-			this.oldTaskUserMining.put(((UserAssessment) (t.get(i))).getId(), (UserAssessment) t.get(i));
-		}
-		logger.info("Loaded " + this.oldTaskUserMining.size() + " TaskUser objects from the mining database.");
-		
 		
 
-		Criteria criteria = session.createCriteria(AccessLog.class);
+		criteria = session.createCriteria(AccessLog.class);
 		ProjectionList pl = Projections.projectionList();
 		pl.add(Projections.max("id"));
 		criteria.setProjection(pl);
-		this.viewLogMax = (Long) criteria.list().get(0);
-		if (this.viewLogMax == null) {
-			this.viewLogMax = 0L;
+		this.accessLogMax = (Long) criteria.list().get(0);
+		if (this.accessLogMax == null) {
+			this.accessLogMax = 0L;
 		}
 		
 		criteria = session.createCriteria(CollaborationLog.class);
 		criteria.setProjection(pl);
-		this.collaborativeLogMax = (Long) criteria.list().get(0);
-		if (this.collaborativeLogMax == null) {
-			this.collaborativeLogMax = 0L;
+		this.collaborationLogMax = (Long) criteria.list().get(0);
+		if (this.collaborationLogMax == null) {
+			this.collaborationLogMax = 0L;
 		}
 		
 		criteria = session.createCriteria(AssessmentLog.class);
 		criteria.setProjection(pl);
-		this.taskLogMax = (Long) criteria.list().get(0);
-		if (this.taskLogMax == null) {
-			this.taskLogMax = 0L;
+		this.assessmentLogMax = (Long) criteria.list().get(0);
+		if (this.assessmentLogMax == null) {
+			this.assessmentLogMax = 0L;
 		}
-		
 	
 		criteria = session.createCriteria(LearningType.class);
 		criteria.setProjection(pl);
 		this.learningObjectTypeMax = (Long) criteria.list().get(0);
 		if (this.learningObjectTypeMax == null) {
 			this.learningObjectTypeMax = 0L;
-		}
-		
-		criteria = session.createCriteria(CollaborationType.class);
-		criteria.setProjection(pl);
-		this.collaborativeObjectTypeMax = (Long) criteria.list().get(0);
-		if (this.collaborativeObjectTypeMax == null) {
-			this.collaborativeObjectTypeMax = 0L;
-		}
-		
-		criteria = session.createCriteria(AssessmentType.class);
-		criteria.setProjection(pl);
-		this.taskTypeMax = (Long) criteria.list().get(0);
-		if (this.taskTypeMax == null) {
-			this.taskTypeMax = 0L;
 		}
 		
 		//this.dbHandler.closeSession(session);
@@ -492,17 +438,17 @@ public abstract class ExtractAndMap {
 
 		this.courseMining.clear();
 		this.learningObjectMining.clear();
-		this.collaborativeObjectMining.clear();
 		this.userMining.clear();
 		this.roleMining.clear();
-		this.taskMining.clear();
-		this.platformMining.clear();
-		this.learningObjectTypeMining.clear();
-		this.taskTypeMining.clear();
-		this.courseLearningObjectMining.clear();
-		this.courseCollaborativeObjectMining.clear();
-		this.courseTaskMining.clear();
-		this.taskUserMining.clear();
+		this.attributeMining.clear();		
+		this.learningTypeMining.clear();
+		this.courseAttributeMining.clear();
+		this.userAttributeMining.clear();
+		this.learningAttributeMining.clear();
+		
+		this.courseLearningMining.clear();
+		this.courseUserMining.clear();
+		this.userAssessmentMining.clear();
 	}
 
 	/**
@@ -513,18 +459,17 @@ public abstract class ExtractAndMap {
 	{
 		this.oldCourseMining.putAll(this.courseMining);
 		this.oldLearningObjectMining.putAll(this.learningObjectMining);
-		this.oldCollaborativeObjectMining.putAll(this.collaborativeObjectMining);
 		this.oldUserMining.putAll(this.userMining);
 		this.oldRoleMining.putAll(this.roleMining);
-		this.oldCourseCollaborativeObjectMining.putAll(this.courseCollaborativeObjectMining);
-		this.oldCourseLearningObjectMining.putAll(this.courseLearningObjectMining);
-		this.oldCourseTaskMining.putAll(this.courseTaskMining);
+		this.oldAttributeMining.putAll(this.attributeMining);
+		this.oldLearningTypeMining.putAll(this.learningTypeMining);
+		this.oldCourseAttributeMining.putAll(this.courseAttributeMining);
+		this.oldUserAttributeMining.putAll(this.userAttributeMining);
+		this.oldLearningAttributeMining.putAll(this.learningAttributeMining);
+		this.oldUserAssessmentMining.putAll(this.userAssessmentMining);
+		this.oldCourseLearningObjectMining.putAll(this.courseLearningMining);
 		this.oldCourseUserMining.putAll(this.courseUserMining);
-		this.oldLearningObjectTypeMining.putAll(this.learningObjectTypeMining);
-		this.oldCollaborativeObjectTypeMining.putAll(this.collaborativeObjectTypeMining);
-		this.oldTaskMining.putAll(this.taskMining);
-		this.oldTaskTypeMining.putAll(this.taskTypeMining);
-		this.oldTaskUserMining.putAll(this.taskUserMining);
+		
 	}
 
 	/**
@@ -545,47 +490,28 @@ public abstract class ExtractAndMap {
 			this.c.reset();
 			logger.info("\nObject tables:\n");
 
-			this.courseMining = this.generateCourseMining();
+			this.courseMining = this.generateCourses();
 			objects += this.courseMining.size();
 			logger.info("Generated " + this.courseMining.size() + " Course entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.courseMining.values());
+			
+			this.learningTypeMining = new HashMap<String, LearningType>();
 
-			this.taskTypeMining = new HashMap<String, AssessmentType>();
+			this.learningObjectMining = this.generateLearningObjs();
 			
-			this.learningObjectTypeMining = new HashMap<String, LearningType>();
-			
-			this.collaborativeObjectTypeMining = new HashMap<String, CollaborationType>();
-
-			this.taskMining = this.generateTaskMining();
-			
-			this.collaborativeObjectMining = this.generateCollaborativeObjectMining();
-
-			this.learningObjectMining = this.generateLearningObjectMining();
-			
-			this.updates.add(this.generateTaskTypeMining().values());
-			objects += this.updates.get(this.updates.size() - 1).size();
-			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-					+ " TaskType entries in " + this.c.getAndReset() + " s. ");
-			
-			this.updates.add(this.generateLearningObjectTypeMining().values());
+			this.updates.add(this.generateLearningTypes().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " LearningObjectType entries in " + this.c.getAndReset() + " s. ");
-			
-			this.updates.add(this.generateCollaborativeObjectTypeMining().values());
-			objects += this.updates.get(this.updates.size() - 1).size();
-			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-					+ " CollaborativeObjectType entries in " + this.c.getAndReset() + " s. ");
-			
 
-			this.roleMining = this.generateRoleMining();
+			this.roleMining = this.generateRoles();
 			objects += this.roleMining.size();
 			logger.info("Generated " + this.roleMining.size() + " Role entries in " + this.c.getAndReset()
 					+ " s. ");
 			this.updates.add(this.roleMining.values());
 
-			this.userMining = this.generateUserMining();
+			this.userMining = this.generateUsers();
 			objects += this.userMining.size();
 			logger.info("Generated " + this.userMining.size() + " User entries in " + this.c.getAndReset()
 					+ " s. ");
@@ -599,60 +525,37 @@ public abstract class ExtractAndMap {
 			logger.info("Generated " + this.learningObjectMining.size() + " LearningObject entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.learningObjectMining.values());
-			
-			objects += this.taskMining.size();
-			this.updates.add(this.taskMining.values());
-			logger.info("Generated " + this.taskMining.size() + " Task entries in " + this.c.getAndReset()
-					+ " s. ");
-			
-			objects += this.collaborativeObjectMining.size();
-			this.updates.add(this.collaborativeObjectMining.values());
-			logger.info("Generated " + this.collaborativeObjectMining.size() + " Collaborative entries in " + this.c.getAndReset()
-					+ " s. ");
 
-			this.updates.add(this.generateCourseLearningObjectMining().values());
+			this.updates.add(this.generateCourseLearnings().values());
 			objects += this.updates.get(this.updates.size() - 1).size();
 			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 					+ " CourseLearningObject entries in " + this.c.getAndReset() + " s. ");
-			
-			this.updates.add(this.generateCourseTaskMining().values());
-			objects += this.updates.get(this.updates.size() - 1).size();
-			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-					+ " CourseTask entries in " + this.c.getAndReset() + " s. ");
-			
-			this.updates.add(this.generateCourseCollaborativeObjectMining().values());
-			objects += this.updates.get(this.updates.size() - 1).size();
-			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-					+ " CourseCollaborativeObject entries in " + this.c.getAndReset() + " s. ");
-			
-
-
 
 		}
 
-		this.updates.add(this.generateCourseUserMining().values());
+		this.updates.add(this.generateCourseUsers().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " CourseUser entries in " + this.c.getAndReset() + " s. ");
 
-		this.updates.add(this.generateTaskUserMining().values());
+		this.updates.add(this.generateUserAssessments().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " TaskUser entries in " + this.c.getAndReset() + " s. ");
 		
 		logger.info("\nLog tables:\n");
 
-		this.updates.add(this.generateViewLogMining().values());
+		this.updates.add(this.generateAccessLogs().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " ViewLog entries in " + this.c.getAndReset() + " s. ");
 		
-		this.updates.add(this.generateCollaborativeLogMining().values());
+		this.updates.add(this.generateCollaborativeLogs().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " CollaborativeLog entries in " + this.c.getAndReset() + " s. ");
 		
-		this.updates.add(this.generateTaskLogMining().values());
+		this.updates.add(this.generateAssessmentLogs().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " TaskLog entries in " + this.c.getAndReset() + " s. ");
@@ -670,151 +573,35 @@ public abstract class ExtractAndMap {
 	}
 
 	// methods for create and fill the mining-table instances
-	/**
-	 * Has to create and fill the course_user table.
-	 * This table describes which user is enrolled in which course in which timesspan.
-	 * The attributes are described in the documentation of the course_user_mining class.
-	 * Please use the getter and setter predefined in the course_user_mining class to fill the tables within this
-	 * method.
-	 * 
-	 * @return A list of instances of the course_user table representing class.
-	 **/
-	abstract Map<Long, CourseUser> generateCourseUserMining();
-
-	/**
-	 * Has to create and fill the course_forum table.
-	 * This table describes which forum is used in which course.
-	 * The attributes are described in the documentation of the course_forum_mining class.
-	 * Please use the getter and setter predefined in the course_forum_mining class to fill the tables within this
-	 * method.
-	 * 
-	 * @return A list of instances of the course_forum table representing class.
-	 **/
-	abstract Map<Long, CourseAssessment> generateCourseTaskMining();
+	abstract Map<Long, Course> generateCourses();
 	
-	abstract Map<Long, CourseCollaboration> generateCourseCollaborativeObjectMining();
+	abstract Map<Long, LearningObj> generateLearningObjs();
 
-	/**
-	 * Has to create and fill the course table.
-	 * This table describes the courses in the LMS.
-	 * The attributes are described in the documentation of the course_mining class.
-	 * Please use the getter and setter predefined in the course_mining class to fill the tables within this method.
-	 * 
-	 * @return A list of instances of the course table representing class.
-	 **/
-	abstract Map<Long, Course> generateCourseMining();
+	abstract Map<Long, User> generateUsers();
 
-	/**
-	 * Has to create and fill the course_group table.
-	 * This table describes which groups are used in which courses.
-	 * The attributes are described in the documentation of the course_group_mining class.
-	 * Please use the getter and setter predefined in the course_group_mining class to fill the tables within this
-	 * method.
-	 * 
-	 * @return A list of instances of the course_group table representing class.
-	 **/
-	abstract Map<Long, CourseLearning> generateCourseLearningObjectMining();
-
-
-	/**
-	 * Has to create and fill the course_scorm table.
-	 * This table describes which scorm packages are used in which courses.
-	 * The attributes are described in the documentation of the course_scorm_mining class.
-	 * Please use the getter and setter predefined in the course_scorm_mining class to fill the tables within this
-	 * method.
-	 * 
-	 * @return A list of instances of the course_scorm table representing class.
-	 **/
-	abstract Map<Long, UserAssessment> generateTaskUserMining();
+	abstract Map<Long, Role> generateRoles();
 	
+	abstract Map<String, LearningType> generateLearningTypes();
 	
-	/**
-	 * Has to create and fill the course_log table.
-	 * This table contains the actions which are done on courses.
-	 * The attributes are described in the documentation of the course_log_mining class.
-	 * Please use the getter and setter predefined in the course_log_mining class to fill the tables within this method.
-	 * 
-	 * @return A list of instances of the course_log table representing class.
-	 **/
-	abstract Map<Long, AccessLog> generateViewLogMining();
-
-
-	/**
-	 * Has to create and fill the forum_log table.
-	 * This table contains the actions which are done on forums.
-	 * The attributes are described in the documentation of the forum_log_mining class.
-	 * Please use the getter and setter predefined in the forum_log_mining class to fill the tables within this method.
-	 * 
-	 * @return A list of instances of the forum_log table representing class.
-	 **/
-	abstract Map<Long, CollaborationLog> generateCollaborativeLogMining();
-
-	/**
-	 * Has to create and fill the forum table.
-	 * This table describes the forums in the LMS.
-	 * The attributes are described in the documentation of the forum_mining class.
-	 * Please use the getter and setter predefined in the forum_mining class to fill the tables within this method.
-	 * 
-	 * @return A list of instances of the forum table representing class.
-	 **/
-	abstract Map<Long, LearningObj> generateLearningObjectMining();
+	abstract Map<Long, CourseAttribute> generateCourseAttributes();
 	
-	abstract Map<Long, CollaborationObj> generateCollaborativeObjectMining();
-
-	/**
-	 * Has to create and fill the group table.
-	 * This table describes the groups in the LMS.
-	 * The attributes are described in the documentation of the group_mining class.
-	 * Please use the getter and setter predefined in the group_mining class to fill the tables within this method.
-	 * 
-	 * @return A list of instances of the group table representing class.
-	 **/
-	abstract Map<Long, User> generateUserMining();
-
-	/**
-	 * Has to create and fill the quiz_log table.
-	 * This table contains the actions which are done on quiz.
-	 * The attributes are described in the documentation of the quiz_log_mining class.
-	 * Please use the getter and setter predefined in the quiz_log_mining class to fill the tables within this method.
-	 * 
-	 * @return A list of instances of the quiz_log table representing class.
-	 **/
-	abstract Map<Long, Assessment> generateTaskMining();
-
-	/**
-	 * Has to create and fill the assignment_log table.
-	 * This table contains the actions which are done on assignment.
-	 * The attributes are described in the documentation of the assignment_log_mining class.
-	 * Please use the getter and setter predefined in the assignment_log_mining class to fill the tables within this
-	 * method.
-	 * 
-	 * @return A list of instances of the assignment_log table representing class.
-	 **/
-	abstract Map<Long, Role> generateRoleMining();
-
-	/**
-	 * Has to create and fill the scorm_log table.
-	 * This table contains the actions which are done on scorm.
-	 * The attributes are described in the documentation of the scorm_log_mining class.
-	 * Please use the getter and setter predefined in the scorm_log_mining class to fill the tables within this method.
-	 * 
-	 * @return A list of instances of the scorm_log table representing class.
-	 **/
-	abstract Map<Long, AssessmentLog> generateTaskLogMining();
-
-	/**
-	 * Has to create and fill the quiz_user table.
-	 * This table describes which user gets which grade in which quiz.
-	 * The attributes are described in the documentation of the quiz_user_mining class.
-	 * Please use the getter and setter predefined in the quiz_user_mining class to fill the tables within this method.
-	 * 
-	 * @return A list of instances of the quiz_user table representing class.
-	 **/
+	abstract Map<Long, UserAttribute> generateUserAttributes();
 	
-	abstract Map<String, LearningType> generateLearningObjectTypeMining();
+	abstract Map<Long, LearningAttribute> generateLearningAttributes();
 	
-	abstract Map<String, CollaborationType> generateCollaborativeObjectTypeMining();
+	abstract Map<Long, CourseUser> generateCourseUsers();
+
+	abstract Map<Long, CourseLearning> generateCourseLearnings();
+
+	abstract Map<Long, UserAssessment> generateUserAssessments();
 	
-	abstract Map<String, AssessmentType> generateTaskTypeMining();
+	abstract Map<Long, AccessLog> generateAccessLogs();
+
+	abstract Map<Long, CollaborationLog> generateCollaborativeLogs();
+
+	abstract Map<Long, AssessmentLog> generateAssessmentLogs();
+	
+
+
 
 }

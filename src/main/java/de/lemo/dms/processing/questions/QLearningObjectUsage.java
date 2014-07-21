@@ -136,7 +136,7 @@ public class QLearningObjectUsage extends Question {
 
 			if ((types == null) || (types.isEmpty()) || types.contains(obType.toUpperCase()))
 			{
-				requestedObjects.add(ilo.getType() + " " + ilo.getLearningObjectId());
+				requestedObjects.add(ilo.getType() + " " + ilo.getLearningId());
 				
 				final String id;
 				/*
@@ -150,7 +150,7 @@ public class QLearningObjectUsage extends Question {
 				}
 				else
 				{*/
-				id = ilo.getLearningObjectId() + "?" + obType + "$" + ilo.getTitle();
+				id = ilo.getLearningId() + "?" + obType + "$" + ilo.getLearning().getTitle();
 				//}
 				if (requests.get(id) == null)
 				{
@@ -176,17 +176,17 @@ public class QLearningObjectUsage extends Question {
 		
 		for(ICourseLORelation aso : asoList)
 		{
-			String obId = aso.getType() + " " + aso.getLearningObj().getId();
+			String obId = aso.getType() + " " + aso.getLearning().getId();
 			if(!requestedObjects.contains(obId))
 			{
-				ILearningObject ilo = aso.getLearningObj();
+				ILearningObject ilo = aso.getLearning();
 				ilo.getId();
 
 				if(types.isEmpty() || types.contains(ilo.getClass().getSimpleName()))
 				{			
 					final ResourceRequestInfo rri = new ResourceRequestInfo(id,
 							ELearningObjectType.valueOf(aso.getType()), 0L, 0L,
-							aso.getLearningObj().getTitle(), 0L);
+							aso.getLearning().getTitle(), 0L);
 					result.add(rri);
 					id++;
 				}

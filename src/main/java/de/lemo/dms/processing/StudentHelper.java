@@ -69,7 +69,8 @@ public class StudentHelper {
 				// Only use students (type = 2) 
 				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{
-					if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
+					
+					//if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
 					{
 						users.put(i, cu.getUser().getId());
 						i++;
@@ -105,7 +106,7 @@ public class StudentHelper {
 				// Only use students (type = 2) 
 				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{
-					if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
+					//if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
 					{
 						users.put(cu.getUser().getId(), i);
 						i++;
@@ -123,14 +124,14 @@ public class StudentHelper {
 	 * @param courses List of course identifiers
 	 * @return	Map<Long, Long> of identifiers (key-set) of students within the specified courses
 	 */
-	public static boolean getGenderSupport(Long id)
+	public static boolean getGenderSupport(Long courseId)
 	{		
-		if(id != null)
+		if(courseId != null)
 		{
 			final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 	
 			Criteria criteria = session.createCriteria(CourseUser.class, "cu");
-			criteria.add(Restrictions.eq("cu.course.id", id));
+			criteria.add(Restrictions.eq("cu.course.id", courseId));
 			@SuppressWarnings("unchecked")
 			List<CourseUser> courseUsers = (List<CourseUser>) criteria.list();
 			int fem = 0;
@@ -140,9 +141,9 @@ public class StudentHelper {
 				// Only use students (type = 2) 
 				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{
-					if(cu.getUser().getGender() == 1)
+					//if(cu.getUser().getGender() == 1)
 						fem++;
-					else if(cu.getUser().getGender() == 2)
+					//else if(cu.getUser().getGender() == 2)
 						mal++;
 					if(mal > 4 && fem > 4)
 					{

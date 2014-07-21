@@ -193,7 +193,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 						{
 							pathObjects.put(
 									posId,
-									new UserPathObject(posId, ilo.getTitle(), absSup, type,
+									new UserPathObject(posId, ilo.getLearning().getTitle(), absSup, type,
 											0d, ilo.getPrefix(), pathId,
 											Long.valueOf(requests.get(obId).size()), Long
 													.valueOf(new HashSet<Long>(
@@ -206,7 +206,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 						{
 							pathObjects.put(
 									posId,
-									new UserPathObject(posId, ilo.getTitle(), absSup,
+									new UserPathObject(posId, ilo.getLearning().getTitle(), absSup,
 											type, 0d, ilo.getPrefix(), pathId, Long
 													.valueOf(requests.get(obId).size()), Long
 													.valueOf(new HashSet<Long>(
@@ -309,7 +309,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 
 		for (int i = 0; i < list.size(); i++)
 		{
-			if ((list.get(i).getUser() != null) && (list.get(i).getLearningObjectId() != null)) {
+			if ((list.get(i).getUser() != null) && (list.get(i).getLearningId() != null)) {
 				// If there isn't a user history for this user-id create a new one
 				if (logMap.get(list.get(i).getUser().getId()) == null)
 				{
@@ -340,10 +340,10 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 			boolean containsType = false;
 			for (final ILog iLog : uLog)
 			{
-				if (idToInternalId.get(iLog.getPrefix() + " " + iLog.getLearningObjectId()) == null)
+				if (idToInternalId.get(iLog.getPrefix() + " " + iLog.getLearningId()) == null)
 				{
-					internalIdToId.put(id, iLog.getPrefix() + " " + iLog.getLearningObjectId());
-					idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearningObjectId(), id);
+					internalIdToId.put(id, iLog.getPrefix() + " " + iLog.getLearningId());
+					idToInternalId.put(iLog.getPrefix() + " " + iLog.getLearningId(), id);
 					id++;
 				}
 				if (hasTypes) {
@@ -400,25 +400,25 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 			String line = "";
 			for (int i = 0; i < l.size(); i++)
 			{
-				if (idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId()) == null) {
+				if (idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearningId()) == null) {
 					idToLogM
-							.put(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId(), l.get(i));
+							.put(l.get(i).getPrefix() + " " + l.get(i).getLearningId(), l.get(i));
 				}
 
 				// Update request numbers
-				if (requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId()) == null)
+				if (requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearningId()) == null)
 				{
 					final ArrayList<Long> us = new ArrayList<Long>();
 					us.add(l.get(i).getUser().getId());
-					requests.put(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId(), us);
+					requests.put(l.get(i).getPrefix() + " " + l.get(i).getLearningId(), us);
 				} else {
-					requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId()).add(
+					requests.get(l.get(i).getPrefix() + " " + l.get(i).getLearningId()).add(
 							l.get(i).getUser().getId());
 				}
 				// The id of the object gets the prefix, indicating it's class. This is important for distinction
 				// between objects of different ILog-classes but same ids
 				line += idToInternalId
-						.get(l.get(i).getPrefix() + " " + l.get(i).getLearningObjectId()) + " -1 ";
+						.get(l.get(i).getPrefix() + " " + l.get(i).getLearningId()) + " -1 ";
 			}
 			line += "-2";
 			logger.debug(line);

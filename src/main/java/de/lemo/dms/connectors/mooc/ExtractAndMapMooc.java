@@ -57,22 +57,19 @@ import de.lemo.dms.connectors.mooc.mapping.Users;
 import de.lemo.dms.connectors.mooc.mapping.Videos;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.mapping.CollaborationLog;
-import de.lemo.dms.db.mapping.CollaborationObj;
-import de.lemo.dms.db.mapping.CollaborationType;
 import de.lemo.dms.db.mapping.Course;
-import de.lemo.dms.db.mapping.CourseCollaboration;
+import de.lemo.dms.db.mapping.CourseAttribute;
 import de.lemo.dms.db.mapping.CourseLearning;
-import de.lemo.dms.db.mapping.CourseAssessment;
 import de.lemo.dms.db.mapping.CourseUser;
+import de.lemo.dms.db.mapping.LearningAttribute;
 import de.lemo.dms.db.mapping.LearningObj;
 import de.lemo.dms.db.mapping.LearningType;
-import de.lemo.dms.db.mapping.Assessment;
-import de.lemo.dms.db.mapping.AssessmentType;
 import de.lemo.dms.db.mapping.UserAssessment;
 import de.lemo.dms.db.mapping.AccessLog;
 import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.User;
+import de.lemo.dms.db.mapping.UserAttribute;
 
 /**
  * The main class of the extraction process.
@@ -98,12 +95,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private List<Users> usersMooc;
 	private List<Videos> videosMooc;
 	
-	private HashMap<String, CollaborationType> collTypes = new HashMap<String, CollaborationType>();
 	private HashMap<String, LearningType> learnTypes = new HashMap<String, LearningType>();
-	private HashMap<String, AssessmentType> assessTypes = new HashMap<String, AssessmentType>();
-	
-	private HashMap<String, CourseLearning> courseLearn = new HashMap<String, CourseLearning>();
-	
+		
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private final IConnector connector;
@@ -287,7 +280,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseUser> generateCourseUserMining() {
+	public Map<Long, CourseUser> generateCourseUsers() {
 		final HashMap<Long, CourseUser> courseUsers = new HashMap<Long, CourseUser>();
 		
 		for(Memberships loadedItem : this.membershipsMooc)
@@ -310,28 +303,14 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}  
 
 	@Override
-	public Map<Long, CourseAssessment> generateCourseAssessmentMining() {
-		final HashMap<Long, CourseAssessment> courseAssessments = new HashMap<Long, CourseAssessment>();
-		return courseAssessments;
-	}
-
-	@Override
-	public Map<Long, CourseCollaboration> generateCourseCollaborativeObjectMining() {
-		final HashMap<Long, CourseCollaboration> courseCollaborations = new HashMap<Long, CourseCollaboration>();
-		return courseCollaborations;
-	}
-
-	@Override
-	public Map<Long, Course> generateCourseMining() {
+	public Map<Long, Course> generateCourses() {
 		final HashMap<Long, Course> courses = new HashMap<Long, Course>();
 		
 		for(Courses loadedItem : this.coursesMooc)
 		{
 			Course insert = new Course();
 			insert.setId(  loadedItem.getId());
-			insert.setPlatform(this.connector.getPlatformId(), this.platformMining, this.oldPlatformMining);
 			insert.setTitle(loadedItem.getTitle());
-			insert.setTimeModified(loadedItem.getTimemodified());
 			
 			courses.put(insert.getId(), insert);
 		}
@@ -339,7 +318,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseLearning> generateCourseLearningObjectMining() {
+	public Map<Long, CourseLearning> generateCourseLearnings() {
 		final HashMap<Long, CourseLearning> courseLearnings = new HashMap<Long, CourseLearning>();
 		
 		for(Segments loadedItem : this.segmentsMooc)
@@ -347,9 +326,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			CourseLearning insert = new CourseLearning();
 			insert.setId(Long.valueOf("1" + loadedItem.getId()));
 			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
-			insert.setLearningObject(Long.valueOf("1" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setLearning(Long.valueOf("1" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
 			
-			if(insert.getLearningObject() != null && insert.getCourse() != null)
+			if(insert.getLearning() != null && insert.getCourse() != null)
 				courseLearnings.put(insert.getId(), insert);
 		}
 		
@@ -358,7 +337,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, UserAssessment> generateAssessmentUserMining() {
+	public Map<Long, UserAssessment> generateUserAssessments() {
 		final HashMap<Long, UserAssessment> assessmentUsers = new HashMap<Long, UserAssessment>();
 		
 		
@@ -375,7 +354,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			{
 				insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
 				insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
-				insert.setAssessment(loadedItem.getAssessmentId(), this.assessmentMining, this.oldAssessmentMining);
+				insert.setLearning(loadedItem.getAssessmentId(), this.learningObjectMining, this.learningObjectMining);
 				insert.setGrade(loadedItem.getScore());
 				insert.setTimemodified(loadedItem.getTimeModified());
 				
@@ -387,7 +366,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, AccessLog> generateLearningLogMining() {
+	public Map<Long, AccessLog> generateAccessLogs() {
 		
 		final HashMap<Long, AccessLog> learningLogs = new HashMap<Long, AccessLog>();
 		final Map<Long, UnitResources> unitResources = new HashMap<Long, UnitResources>();
@@ -408,13 +387,13 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			}
 			else
 			{
-				insert.setCourse(this.courseLearningObjectMining.get(Long.valueOf("1" + loadedItem.getSegmentId())).getCourse().getId(), this.courseMining, this.oldCourseMining);
+				insert.setCourse(this.courseLearningMining.get(Long.valueOf("1" + loadedItem.getSegmentId())).getCourse().getId(), this.courseMining, this.oldCourseMining);
 			}
 			
 			if(unitResources.get(loadedItem.getUnitResourceId()) != null && unitResources.get(loadedItem.getUnitResourceId()).getAttachableType().equals("Video"))
 			{
 				UnitResources uR = unitResources.get(loadedItem.getUnitResourceId());
-				insert.setLearningObject(uR.getAttachableId(), this.learningObjectMining, this.oldLearningObjectMining);			
+				insert.setLearning(uR.getAttachableId(), this.learningObjectMining, this.oldLearningObjectMining);			
 			}
 			insert.setTimestamp(loadedItem.getTimestamp());
 			
@@ -436,7 +415,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CollaborationLog> generateCollaborativeLogMining() {
+	public Map<Long, CollaborationLog> generateCollaborativeLogs() {
 		final List<CollaborationLog> loglist = new ArrayList<CollaborationLog>();
 		final HashMap<Long, CollaborationLog> collaborationLogs = new HashMap<Long, CollaborationLog>();
 		
@@ -447,14 +426,14 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Questions loadedItem : this.questionsMooc)
 		{
 			CollaborationLog insert = new CollaborationLog();
-			insert.setCollaborativeObject(loadedItem.getSegmentId(), this.collaborativeObjectMining, this.oldCollaborativeObjectMining);
+			insert.setLearning(loadedItem.getSegmentId(), this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
 			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
 			insert.setAction("Question");
 			insert.setText(loadedItem.getContent());
 			insert.setTimestamp(loadedItem.getTimeCreated());
 			
-			if(insert.getCollaborativeObject() != null && insert.getUser() != null && insert.getCourse() != null)
+			if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 			{
 				questionLog.put(loadedItem.getId(),insert);
 				loglist.add(insert);
@@ -469,14 +448,14 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			if(insert.getParent() != null)
 			{
 				insert.setId(loadedItem.getId());
-				insert.setCollaborativeObject(questionLog.get(loadedItem.getQuestionId()).getCollaborativeObject().getId(), this.collaborativeObjectMining, this.collaborativeObjectMining);
+				insert.setLearning(questionLog.get(loadedItem.getQuestionId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
 				insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
 				insert.setCourse(insert.getParent().getCourse().getId(), this.courseMining, this.oldCourseMining);
 				insert.setAction("Answer");
 				insert.setText(loadedItem.getContent());
 				insert.setTimestamp(loadedItem.getTimeCreated());
 				
-				if(insert.getCollaborativeObject() != null && insert.getUser() != null && insert.getCourse() != null)
+				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 				{
 					answersLog.put(loadedItem.getId(),insert);
 					loglist.add(insert);
@@ -491,7 +470,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setParent(answersLog.get(loadedItem.getCommentableId()));
 				if(insert.getParent() != null)
 				{
-					insert.setCollaborativeObject(answersLog.get(loadedItem.getCommentableId()).getCollaborativeObject().getId(), this.collaborativeObjectMining, this.collaborativeObjectMining);
+					insert.setLearning(answersLog.get(loadedItem.getCommentableId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
 				}
 			}
 			else if(loadedItem.getCommentableType().equals("Question"))
@@ -499,7 +478,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setParent(questionLog.get(loadedItem.getCommentableId()));
 				if(insert.getParent() != null)
 				{
-					insert.setCollaborativeObject(questionLog.get(loadedItem.getCommentableId()).getCollaborativeObject().getId(), this.collaborativeObjectMining, this.collaborativeObjectMining);
+					insert.setLearning(questionLog.get(loadedItem.getCommentableId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
 				}
 			}
 			
@@ -513,7 +492,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setText(loadedItem.getContent());
 				insert.setTimestamp(loadedItem.getTimeCreated());
 				
-				if(insert.getCollaborativeObject() != null && insert.getUser() != null && insert.getCourse() != null)
+				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 				{
 					loglist.add(insert);
 				}
@@ -532,18 +511,63 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, LearningObj> generateLearningObjectMining() {
+	public Map<Long, LearningObj> generateLearningObjs() {
 		final HashMap<Long, LearningObj> learningObjs = new HashMap<Long, LearningObj>();
+		
+		LearningType type;
+		if(this.learnTypes.get("Unit Forum") == null)
+		{
+			type = new LearningType();
+			type.setId(1);
+			type.setType("Unit Forum");
+		}
+		else
+		{
+			type = this.learnTypes.get("unit Forum");
+		}
+		
+		for(Segments loadedItem : this.segmentsMooc)
+		{
+			if(loadedItem.getType().equals("LessonUnit"))
+			{
+				LearningObj insert = new LearningObj();
+				insert.setId(Long.valueOf("13" + loadedItem.getId()));
+				insert.setTitle("Forum "  + loadedItem.getTitle());
+				insert.setType(type);
+			}
+		}
+		
+		for(Assessments loadedItem : this.assessmentMooc)
+		{
+			LearningObj insert = new LearningObj();
+			insert.setId(Long.valueOf("11" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getTitle());
+			
+			type = new LearningType();
+			if(this.learnTypes.get(loadedItem.getType()) == null)
+			{
+				type.setId(this.learningObjectTypeMax + 1);
+				type.setType(loadedItem.getType());
+				this.learnTypes.put(type.getType(), type);
+			}
+			else
+			{
+				type = this.learnTypes.get(loadedItem.getType());
+			}
+			insert.setType(type);
+			
+			learningObjs.put(insert.getId(), insert);
+		}
 		
 		for(Segments loadedItem : this.segmentsMooc)
 		{
 			LearningObj insert = new LearningObj();
-			insert.setId(Long.valueOf("1" + loadedItem.getId()));
+			insert.setId(Long.valueOf("10" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getTitle());
 
 			if(loadedItem.getType().equals("LessonUnit") || loadedItem.getType().equals("Chapter"))
 			{
-				LearningType type = new LearningType();
+				type = new LearningType();
 				if(this.learnTypes.get(loadedItem.getType()) == null)
 				{
 					type.setId(this.learningObjectTypeMax + 1);
@@ -572,11 +596,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Videos loadedItem : this.videosMooc)
 		{
 			LearningObj insert = new LearningObj();
-			insert.setId(Long.valueOf("2" + loadedItem.getId()));
+			insert.setId(Long.valueOf("12" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getTitle());
-			insert.setUrl(loadedItem.getUrl());
 
-			LearningType type = new LearningType();
+			type = new LearningType();
 			if(this.learnTypes.get("Video") == null)
 			{
 				type.setId(this.learningObjectTypeMax + 1);
@@ -600,45 +623,15 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		return learningObjs;
 	}
 
+	
 	@Override
-	public Map<Long, CollaborationObj> generateCollaborativeObjectMining() {
-		final HashMap<Long, CollaborationObj> collaborationObjs = new HashMap<Long, CollaborationObj>();
-		
-		CollaborationType type;
-		if(this.collaborativeObjectTypeMining.get("Unit Forum") == null)
-		{
-			type = new CollaborationType();
-			type.setId(1);
-			type.setType("Unit Forum");
-		}
-		else
-		{
-			type = this.collaborativeObjectTypeMining.get("unit Forum");
-		}
-		
-		for(Segments loadedItem : this.segmentsMooc)
-		{
-			if(loadedItem.getType().equals("LessonUnit"))
-			{
-				CollaborationObj insert = new CollaborationObj();
-				insert.setId(loadedItem.getId());
-				insert.setTitle("Forum "  + loadedItem.getTitle());
-				insert.setType(type);
-			}
-		}
-		
-		return collaborationObjs;
-	}
-
-	@Override
-	public Map<Long, User> generateUserMining() {
+	public Map<Long, User> generateUsers() {
 		final HashMap<Long, User> users = new HashMap<Long, User>();
 		
 		for(Users loadedItem : this.usersMooc)
 		{
 			User insert = new User();
 			insert.setId(  loadedItem.getId());
-			insert.setGender(0);
 			insert.setLogin(loadedItem.getId() + "mooc");
 			
 			users.put(insert.getId(), insert);
@@ -647,37 +640,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		return users;
 	}
 
-	@Override
-	public Map<Long, Assessment> generateAssessmentMining() {
-		final HashMap<Long, Assessment> assessments = new HashMap<Long, Assessment>();
-		for(Assessments loadedItem : this.assessmentMooc)
-		{
-			Assessment insert = new Assessment();
-			insert.setId(loadedItem.getId());
-			insert.setTitle(loadedItem.getTitle());
-			
-			AssessmentType type = new AssessmentType();
-			if(this.assessTypes.get(loadedItem.getType()) == null)
-			{
-				type.setId(this.assessmentTypeMax + 1);
-				type.setType(loadedItem.getType());
-				this.assessTypes.put(type.getType(), type);
-			}
-			else
-			{
-				type = this.assessTypes.get(loadedItem.getType());
-			}
-			insert.setType(type);
-			
-			assessments.put(insert.getId(), insert);
-		}
-		
-		
-		return assessments;
-	}
 
 	@Override
-	public Map<Long, Role> generateRoleMining() {
+	public Map<Long, Role> generateRoles() {
 		final HashMap<Long, Role> roles = new HashMap<Long, Role>();
 		
 		Role admin = new Role();
@@ -707,7 +672,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, AssessmentLog> generateAssessmentLogMining() {
+	public Map<Long, AssessmentLog> generateAssessmentLogs() {
 		final HashMap<Long, AssessmentLog> assessmentLogs = new HashMap<Long, AssessmentLog>();
 		
 		for(AssessmentSessions loadedItem : this.assessmentSessionsMooc)
@@ -734,18 +699,26 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<String, LearningType> generateLearningObjectTypeMining() {
+	public Map<String, LearningType> generateLearningTypes() {
 		return this.learnTypes;
 	}
 
 	@Override
-	public Map<String, CollaborationType> generateCollaborativeObjectTypeMining() {
-		return this.collTypes;
+	Map<Long, CourseAttribute> generateCourseAttributes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public Map<String, AssessmentType> generateAssessmentTypeMining() {
-		return this.assessTypes;
+	Map<Long, UserAttribute> generateUserAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	Map<Long, LearningAttribute> generateLearningAttributes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

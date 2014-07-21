@@ -189,7 +189,7 @@ public class QUserPathAnalysis extends Question {
 				{
 					final ILog current = l.get(i);
 
-					final Long learnObjId = current.getLearningObjectId();
+					final Long learnObjId = current.getLearningId();
 					if (learnObjId == null) {
 						skippedLogs++;
 						continue;
@@ -212,7 +212,7 @@ public class QUserPathAnalysis extends Question {
 						{
 							// If the node is new create entry in hash map
 							cIdPos = String.valueOf(pathObjects.size());
-							pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L, type,
+							pathObjects.put(cId, new UserPathObject(cIdPos, current.getLearning().getTitle(), 1L, type,
 									0d, 1L, 0L, 0L, 0L));
 						}
 						else
@@ -228,7 +228,7 @@ public class QUserPathAnalysis extends Question {
 					else if (pathObjects.get(cId) == null)
 					{
 						final String cIdPos = String.valueOf(pathObjects.size());
-						pathObjects.put(cId, new UserPathObject(cIdPos, current.getTitle(), 1L,
+						pathObjects.put(cId, new UserPathObject(cIdPos, current.getLearning().getTitle(), 1L,
 								type, 0d, 1L, 0L, 0L, 0L));
 					} else {
 						pathObjects.get(cId).increaseWeight(0d);

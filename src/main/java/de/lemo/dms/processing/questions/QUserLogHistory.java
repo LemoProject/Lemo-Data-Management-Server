@@ -116,8 +116,8 @@ public class QUserLogHistory extends Question {
 
 
 			ILog ilm = logs.get(i);
-			String type = ilm.getLearningObject().getLOType();
-			String title = ilm.getTitle();
+			String type = ilm.getLearning().getLOType();
+			String title = ilm.getLearning().getTitle();
 			
 			if (ilm != null) {
 				if (userPaths.get(logs.get(i).getUser().getId()) == null)

@@ -6,8 +6,6 @@ import de.lemo.dms.db.mapping.User;
 public interface ILog extends Comparable<ILog>  {
 
 	long getId();
-	
-	String getTitle();
 
 	long getTimestamp();
 
@@ -15,14 +13,14 @@ public interface ILog extends Comparable<ILog>  {
 
 	Course getCourse();
 	
-	ILearningObject getLearningObject();
-	
-	Long getLearningObjectId();
+	ILearningObject getLearning();
 
 	void setId(long id);
 	
 	long getPrefix();
 	
 	String getType();
+	
+	Long getLearningId();
 	
 }

@@ -232,18 +232,6 @@ public class CollaborationLog implements IMapping, ILog{
 
 	@Override
 	@Transient
-	public String getTitle() {
-		return this.getLearningObject().getTitle();
-	}
-
-	@Override
-	@Transient
-	public Long getLearningObjectId() {
-		return this.getLearningObject().getId();
-	}
-
-	@Override
-	@Transient
 	public long getPrefix() {
 		return PREFIX;
 	}
@@ -251,7 +239,7 @@ public class CollaborationLog implements IMapping, ILog{
 	@Override
 	@Transient
 	public String getType() {
-		return "COLLABORATIONOBJECT";
+		return "COLLABORATION";
 	}
 
 	/**
@@ -268,10 +256,10 @@ public class CollaborationLog implements IMapping, ILog{
 	public void setAction(String action) {
 		this.action = action;
 	}
-
-	@Override
-	public ILearningObject getLearningObject() {
-		return this.learning;
-	}
 	
+	@Transient
+	@Override
+	public Long getLearningId() {
+		return this.learning.getId();
+	}
 }

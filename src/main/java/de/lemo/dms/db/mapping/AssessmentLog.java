@@ -60,7 +60,6 @@ public class AssessmentLog implements IMapping, ILog{
 	private static Long PREFIX = 11L;
 	
 	
-	@Override
 	public boolean equals(final IMapping o) {
 		if (!(o instanceof AssessmentLog)) {
 			return false;
@@ -76,7 +75,6 @@ public class AssessmentLog implements IMapping, ILog{
 		return (int) id;
 	}
 	
-	@Override
 	public int compareTo(final ILog arg0) {
 		ILog s;
 		try {
@@ -209,35 +207,9 @@ public class AssessmentLog implements IMapping, ILog{
 		}
 	}
 
-	@Override
-	@Transient
-	public Long getLearningObjectId() {
-		return this.getLearning().getId();
-	}
-
-	@Override
-	@Transient
-	public ILearningObject getLearningObject() {
-		return this.getLearningObject();
-	}
-
-	@Override
-	@Transient
-	public String getTitle() {
-		
-		return this.getLearning().getTitle();
-	}
-
-	@Override
 	@Transient
 	public long getPrefix() {
 		return PREFIX;
-	}
-
-	@Override
-	@Transient
-	public String getType() {
-		return "ASSESSMENT";
 	}
 
 	/**
@@ -269,6 +241,17 @@ public class AssessmentLog implements IMapping, ILog{
 	 */
 	public void setLearning(LearningObj learning) {
 		this.learning = learning;
+	}
+
+	@Override
+	public String getType() {
+		return "ASSESSMENT";
+	}
+	
+	@Transient
+	@Override
+	public Long getLearningId() {
+		return this.learning.getId();
 	}
 	
 }

@@ -36,7 +36,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
-import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
 /** This class represents the relationship between courses and resources. */
@@ -142,13 +141,6 @@ public class CourseLearning implements IMapping, ICourseLORelation {
 	 */
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	
-	@Override
-	@Transient
-	public ILearningObject getLearningObj() {
-		return this.learning;
 	}
 	
 	@Override

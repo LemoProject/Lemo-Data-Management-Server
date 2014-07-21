@@ -109,12 +109,12 @@ public class QActivityResourceType extends Question {
 			}
 			if (log.getUser() != null && (resourceTypes.contains(type) || allTypes))
 			{
-				Long id = Long.valueOf(log.getLearningObjectId());
+				Long id = Long.valueOf(log.getLearningId());
 				if (rriMap.get(id) == null) {
 					Set<Long> userSet = new HashSet<Long>();
 					userSet.add(log.getUser().getId());
 					userMap.put(id, userSet);
-					rriMap.put(id, new ResourceRequestInfo(id, ELearningObjectType.valueOf(type), 1L, 1L, log.getTitle(), 0L));
+					rriMap.put(id, new ResourceRequestInfo(id, ELearningObjectType.valueOf(type), 1L, 1L, log.getLearning().getTitle(), 0L));
 				} else
 				{
 					userMap.get(id).add(log.getUser().getId());
@@ -131,10 +131,10 @@ public class QActivityResourceType extends Question {
 		
 		for(ICourseLORelation aso : asoList)
 		{
-			Long id = Long.valueOf(aso.getLearningObj().getId());
+			Long id = Long.valueOf(aso.getLearning().getId());
 			if(!rriMap.containsKey(id))
 			{
-				String type = aso.getLearningObj().getClass().getSimpleName().toUpperCase();
+				String type = aso.getLearning().getClass().getSimpleName().toUpperCase();
 				if(type.contains("MINING"))
 				{
 					type = type.substring(0, type.indexOf("MINING"));
@@ -143,7 +143,7 @@ public class QActivityResourceType extends Question {
 				{			
 					final ResourceRequestInfo rri = new ResourceRequestInfo(id,
 							ELearningObjectType.valueOf(aso.getType()), 0L, 0L,
-							aso.getLearningObj().getTitle(), 0L);
+							aso.getLearning().getTitle(), 0L);
 					result.add(rri);
 					id++;
 				}

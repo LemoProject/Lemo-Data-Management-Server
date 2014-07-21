@@ -9,10 +9,12 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import de.lemo.dms.db.mapping.abstractions.IMapping;
+
 
 @Entity
 @Table(name = "lemo_course_attribute")
-public class CourseAttribute {
+public class CourseAttribute implements IMapping{
 
 	private long id;
 	private Course course;
@@ -76,6 +78,17 @@ public class CourseAttribute {
 	 */
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	@Override
+	public boolean equals(IMapping o) {
+		if (!(o instanceof CourseAttribute)) {
+			return false;
+		}
+		if ((o.getId() == this.getId()) && (o instanceof CourseAttribute)) {
+			return true;
+		}
+		return false;
 	}
 	
 	

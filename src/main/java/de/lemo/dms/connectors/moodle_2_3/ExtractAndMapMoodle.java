@@ -80,17 +80,11 @@ import de.lemo.dms.connectors.moodle_2_3.mapping.UserLMS;
 import de.lemo.dms.connectors.moodle_2_3.mapping.WikiLMS;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.mapping.CollaborationLog;
-import de.lemo.dms.db.mapping.CollaborationObj;
-import de.lemo.dms.db.mapping.CollaborationType;
 import de.lemo.dms.db.mapping.Course;
-import de.lemo.dms.db.mapping.CourseCollaboration;
 import de.lemo.dms.db.mapping.CourseLearning;
-import de.lemo.dms.db.mapping.CourseAssessment;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.LearningObj;
 import de.lemo.dms.db.mapping.LearningType;
-import de.lemo.dms.db.mapping.Assessment;
-import de.lemo.dms.db.mapping.AssessmentType;
 import de.lemo.dms.db.mapping.UserAssessment;
 import de.lemo.dms.db.mapping.AccessLog;
 import de.lemo.dms.db.mapping.Role;
@@ -1319,7 +1313,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	// methods for create and fill the mining-table instances
 
 	@Override
-	public Map<Long, CourseUser> generateCourseUserMining() {
+	public Map<Long, CourseUser> generateCourseUsers() {
 
 		final HashMap<Long, CourseUser> courseUserMining = new HashMap<Long, CourseUser>();
 
@@ -1349,7 +1343,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, Course> generateCourseMining() {
+	public Map<Long, Course> generateCourses() {
 
 		final HashMap<Long, Course> courseMining = new HashMap<Long, Course>();
 		for (final CourseLMS loadedItem : this.courseLms)
@@ -1367,7 +1361,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseAssessment> generateCourseTaskMining() {
+	public Map<Long, CourseAssessment> generateCourseTasks() {
 
 		final HashMap<Long, CourseAssessment> courseTaskMining = new HashMap<Long, CourseAssessment>();
 		
@@ -1424,7 +1418,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseLearning> generateCourseLearningObjectMining() {
+	public Map<Long, CourseLearning> generateCourseLearningObjects() {
 
 		final HashMap<Long, CourseLearning> courseLearningObjectMining = new HashMap<Long, CourseLearning>();
 
@@ -1651,7 +1645,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 	
 	@Override
-	public Map<Long, AssessmentLog> generateTaskLogMining() {
+	public Map<Long, AssessmentLog> generateAssessmentLogs() {
 
 		final HashMap<Long, AssessmentLog> taskLogs = new HashMap<Long, AssessmentLog>();
 		final HashMap<Long, ArrayList<AssignGradesLMS>> assignGrades = new HashMap<Long, ArrayList<AssignGradesLMS>>();
@@ -1904,7 +1898,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	*/
 
 	@Override
-	public Map<Long, UserAssessment> generateTaskUserMining() {
+	public Map<Long, UserAssessment> generateUserAssessments() {
 
 		final HashMap<Long, UserAssessment> taskUserMining = new HashMap<Long, UserAssessment>();
 		
@@ -1964,7 +1958,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, LearningObj> generateLearningObjectMining() {
+	public Map<Long, LearningObj> generateLearningObjects() {
 
 		final HashMap<Long, LearningObj> learningObjects = new HashMap<Long, LearningObj>();
 
@@ -2143,7 +2137,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	
 
 	@Override
-	public Map<Long, Role> generateRoleMining() {
+	public Map<Long, Role> generateRoles() {
 		// generate role tables
 		final HashMap<Long, Role> roleMining = new HashMap<Long, Role>();
 
@@ -2170,7 +2164,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 
 	@Override
-	public Map<Long, CollaborationLog> generateCollaborativeLogMining() {
+	public Map<Long, CollaborationLog> generateCollaborativeLogs() {
 		final HashMap<Long, CollaborationLog> collaborativeLogs = new HashMap<Long, CollaborationLog>();
 		final HashMap<Long, CourseModulesLMS> couMod = new HashMap<Long, CourseModulesLMS>();
 
@@ -2309,7 +2303,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		return collaborativeLogs;
 	}
 
-	public Map<String, LearningType> generateLearningObjectTypeMining(){
+	public Map<String, LearningType> generateLearningObjectTypes(){
 		return this.learningObjectTypeMining;
 	}
 	
@@ -2318,7 +2312,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CourseCollaboration> generateCourseCollaborativeObjectMining() {
+	public Map<Long, CourseCollaboration> generateCourseCollaborativeObjects() {
 		
 		final HashMap<Long, CourseCollaboration> courseCollaboratives = new HashMap<Long, CourseCollaboration>();
 
@@ -2368,7 +2362,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, CollaborationObj> generateCollaborativeObjectMining() {
+	public Map<Long, CollaborationObj> generateCollaborativeObjects() {
 		final HashMap<Long, CollaborationObj> collaborativeObjects = new HashMap<Long, CollaborationObj>();
 		
 		for (final ChatLMS loadedItem : this.chatLms)
@@ -2434,7 +2428,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<String, CollaborationType> generateCollaborativeObjectTypeMining() {
+	public Map<String, CollaborationType> generateCollaborativeObjectTypes() {
 		return this.collaborativeObjectTypeMining;
 	}
 

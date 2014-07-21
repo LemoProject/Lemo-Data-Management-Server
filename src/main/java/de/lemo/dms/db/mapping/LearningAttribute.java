@@ -9,10 +9,12 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import de.lemo.dms.db.mapping.abstractions.IMapping;
+
 
 @Entity
 @Table(name = "lemo_learning_attribute")
-public class LearningAttribute {
+public class LearningAttribute implements IMapping{
 
 	private long id;
 	private LearningObj learning;
@@ -76,6 +78,16 @@ public class LearningAttribute {
 	 */
 	public void setId(long id) {
 		this.id = id;
+	}
+	@Override
+	public boolean equals(IMapping o) {
+		if (!(o instanceof LearningAttribute)) {
+			return false;
+		}
+		if ((o.getId() == this.getId()) && (o instanceof LearningAttribute)) {
+			return true;
+		}
+		return false;
 	}
 	
 	

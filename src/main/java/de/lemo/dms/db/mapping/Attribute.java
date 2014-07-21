@@ -13,7 +13,7 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
 
 @Entity
 @Table(name = "lemo_attribute")
-public class Attribute  implements IMapping{
+public class Attribute implements IMapping{
 	
 	private long id;
 	private String name;

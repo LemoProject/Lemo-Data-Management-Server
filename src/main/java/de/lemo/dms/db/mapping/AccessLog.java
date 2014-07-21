@@ -37,7 +37,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
@@ -47,7 +46,7 @@ import de.lemo.dms.db.mapping.abstractions.IMapping;
  */
 @Entity
 @Table(name = "lemo_access_log")
-public class AccessLog implements IMapping, ILog {
+public class AccessLog implements IMapping, ILog{
 
 	private long id;
 	private Course course;
@@ -58,7 +57,6 @@ public class AccessLog implements IMapping, ILog {
 	private Long duration;
 	private static Long PREFIX = 16L;
 	
-	@Override
 	public boolean equals(final IMapping o) {
 		if (!(o instanceof AccessLog)) {
 			return false;
@@ -74,7 +72,6 @@ public class AccessLog implements IMapping, ILog {
 		return (int) id;
 	}
 	
-	@Override
 	public int compareTo(final ILog arg0) {
 		ILog s;
 		try {
@@ -215,29 +212,9 @@ public class AccessLog implements IMapping, ILog {
 		}
 	}
 
-	@Override
-	@Transient
-	public Long getLearningObjectId() {
-		return this.getLearningObject().getId();
-	}
-
-	@Override
-	@Transient
-	public String getTitle() {
-		
-		return this.getLearningObject().getTitle();
-	}
-
-	@Override
 	@Transient
 	public long getPrefix() {
 		return PREFIX;
-	}
-
-	@Override
-	@Transient
-	public String getType() {
-		return "ACCESS";
 	}
 
 	/**
@@ -256,10 +233,15 @@ public class AccessLog implements IMapping, ILog {
 	}
 
 	@Override
-	public ILearningObject getLearningObject() {
-		return this.learning;
+	public String getType() {
+		
+		return "ACCESS";
 	}
 
-	
+	@Transient
+	@Override
+	public Long getLearningId() {
+		return this.learning.getId();
+	}
 
 }
