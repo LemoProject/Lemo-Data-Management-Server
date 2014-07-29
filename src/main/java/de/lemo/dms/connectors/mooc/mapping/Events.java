@@ -1,47 +1,51 @@
 package de.lemo.dms.connectors.mooc.mapping;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "events")
 public class Events {
 
-	private long id;
-	private long userId;
+	private Long id;
+	private Long userId;
 	private int event;
-	private long timestamp;
-	private long segmentId;
-	private long courseId;
-	private long unitResourceId;
+	private Date timestamp;
+	private Long segmentId;
+	private Long courseId;
+	private Long unitResourceId;
 	
 	
 	/**
 	 * @return the id
 	 */
 	@Id
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	/**
 	 * @return the userId
 	 */
 	@Column(name="user_id")
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 	/**
 	 * @param userId the userId to set
 	 */
-	public void setUserId(long userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 	/**
@@ -61,53 +65,54 @@ public class Events {
 	/**
 	 * @return the timestamp
 	 */
-	@Column(name="created_at")
-	public long getTimestamp() {
+	@Column(name = "created_at", columnDefinition="DATETIME")
+	@Temporal(TemporalType.DATE)
+	public Date getTimestamp() {
 		return timestamp;
 	}
 	/**
 	 * @param timestamp the timestamp to set
 	 */
-	public void setTimestamp(long timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 	/**
 	 * @return the segmentId
 	 */
-	@Column(name="segement")
-	public long getSegmentId() {
+	@Column(name="segment_id")
+	public Long getSegmentId() {
 		return segmentId;
 	}
 	/**
 	 * @param segmentId the segmentId to set
 	 */
-	public void setSegmentId(long segmentId) {
+	public void setSegmentId(Long segmentId) {
 		this.segmentId = segmentId;
 	}
 	/**
 	 * @return the courseId
 	 */
 	@Column(name="course_id")
-	public long getCourseId() {
+	public Long getCourseId() {
 		return courseId;
 	}
 	/**
 	 * @param courseId the courseId to set
 	 */
-	public void setCourseId(long courseId) {
+	public void setCourseId(Long courseId) {
 		this.courseId = courseId;
 	}
 	/**
 	 * @return the unitResourceId
 	 */
 	@Column(name="unit_resource_id")
-	public long getUnitResourceId() {
+	public Long getUnitResourceId() {
 		return unitResourceId;
 	}
 	/**
 	 * @param unitResourceId the unitResourceId to set
 	 */
-	public void setUnitResourceId(long unitResourceId) {
+	public void setUnitResourceId(Long unitResourceId) {
 		this.unitResourceId = unitResourceId;
 	}
 	

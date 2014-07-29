@@ -38,7 +38,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 /**
@@ -53,10 +52,10 @@ public class AssessmentLog implements IMapping, ILog{
 	private Course course;
 	private User user;
 	private LearningObj learning;
-	private long timestamp;
+	private Long timestamp;
 	private String text;
 	private String action;
-	private long duration;
+	private Long duration;
 	private static Long PREFIX = 11L;
 	
 	
@@ -141,12 +140,12 @@ public class AssessmentLog implements IMapping, ILog{
 	
 	
 	@Column(name="timestamp")
-	public long getTimestamp() {
+	public Long getTimestamp() {
 		return timestamp;
 	}
 	
 	
-	public void setTimestamp(long timestamp) {
+	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
 	
@@ -192,7 +191,7 @@ public class AssessmentLog implements IMapping, ILog{
 		}
 	}
 	
-	public void setTask(final long learningId, final Map<Long, LearningObj> assessments,
+	public void setLearning(final long learningId, final Map<Long, LearningObj> assessments,
 			final Map<Long, LearningObj> oldAssessments) {
 
 		if (assessments.get(learningId) != null)
@@ -243,6 +242,7 @@ public class AssessmentLog implements IMapping, ILog{
 		this.learning = learning;
 	}
 
+	@Transient
 	@Override
 	public String getType() {
 		return "ASSESSMENT";

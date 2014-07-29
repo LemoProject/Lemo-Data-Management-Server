@@ -56,6 +56,7 @@ public class ConnectorMooc extends AbstractConnector {
 			dbHandler.closeSession(dbHandler.getMiningSession());
 		} catch (final HibernateException he)
 		{
+			System.out.println(he.getMessage());
 			return false;
 		}
 		return true;

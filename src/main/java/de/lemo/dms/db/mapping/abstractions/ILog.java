@@ -7,7 +7,7 @@ public interface ILog extends Comparable<ILog>  {
 
 	long getId();
 
-	long getTimestamp();
+	Long getTimestamp();
 
 	User getUser();
 

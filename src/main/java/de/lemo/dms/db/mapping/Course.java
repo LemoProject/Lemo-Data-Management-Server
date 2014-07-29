@@ -50,7 +50,7 @@ public class Course implements IMapping{
 	private Set<AccessLog> accessLogs = new HashSet<AccessLog>();
 	private Set<AssessmentLog> assessmentLogs = new HashSet<AssessmentLog>();
 	private Set<CollaborationLog> collaborativeLogs = new HashSet<CollaborationLog>();
-	private Set<UserAssessment> assessmentUsers = new HashSet<UserAssessment>();
+	private Set<UserAssessment> userAssessments = new HashSet<UserAssessment>();
 	private Set<CourseUser> courseUsers = new HashSet<CourseUser>();
 	
 	@Override
@@ -172,25 +172,7 @@ public class Course implements IMapping{
 		this.collaborativeLogs.add(collaborativeLog);
 	}
 
-	/**
-	 * @return the taskUsers
-	 */
-	@OneToMany(mappedBy="course")
-	public Set<UserAssessment> getAssessmentUsers() {
-		return assessmentUsers;
-	}
 
-	/**
-	 * @param taskUsers the taskUsers to set
-	 */
-	public void setAssessmentsUsers(Set<UserAssessment> assessmentUsers) {
-		this.assessmentUsers = assessmentUsers;
-	}
-	
-	public void addUserAssessment(UserAssessment userAssessment)
-	{
-		this.assessmentUsers.add(userAssessment);
-	}
 
 	/**
 	 * @return the courseUsers
@@ -210,5 +192,25 @@ public class Course implements IMapping{
 	public void addCourseUser(CourseUser courseUser)
 	{
 		this.courseUsers.add(courseUser);
+	}
+
+	/**
+	 * @return the userAssessments
+	 */
+	@OneToMany(mappedBy="course")
+	public Set<UserAssessment> getUserAssessments() {
+		return userAssessments;
+	}
+
+	/**
+	 * @param userAssessments the userAssessments to set
+	 */
+	public void setUserAssessments(Set<UserAssessment> userAssessments) {
+		this.userAssessments = userAssessments;
+	}
+	
+	public void addUserAssessment(UserAssessment userAssessment)
+	{
+		this.userAssessments.add(userAssessment);
 	}
 }

@@ -186,11 +186,13 @@ public class UserAssessment implements IMapping, IRatedUserAssociation{
 	}
 
 	@Override
+	@Transient
 	public Long getLearnObjId() {
 		return this.getLearning().getId();
 	}
 
 	@Override
+	@Transient
 	public Double getMaxGrade() {
 		return null;
 	}

@@ -84,6 +84,7 @@ public final class MiningHibernateUtil {
 		config.addAnnotatedClass(CourseLearning.class);
 		config.addAnnotatedClass(CourseUser.class);
 		config.addAnnotatedClass(Attribute.class);
+		
 		config.addAnnotatedClass(LearningAttribute.class);
 		config.addAnnotatedClass(CourseAttribute.class);
 		config.addAnnotatedClass(UserAttribute.class);

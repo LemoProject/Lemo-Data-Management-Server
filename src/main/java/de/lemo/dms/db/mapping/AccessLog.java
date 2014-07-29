@@ -52,7 +52,7 @@ public class AccessLog implements IMapping, ILog{
 	private Course course;
 	private User user;
 	private LearningObj learning;
-	private long timestamp;
+	private Long timestamp;
 	private String action;
 	private Long duration;
 	private static Long PREFIX = 16L;
@@ -143,13 +143,13 @@ public class AccessLog implements IMapping, ILog{
 	
 	
 	@Column(name="timestamp")
-	public long getTimestamp() {
+	public Long getTimestamp() {
 		return timestamp;
 	}
 	
 	
 	
-	public void setTimestamp(long timestamp) {
+	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
 	
@@ -232,6 +232,7 @@ public class AccessLog implements IMapping, ILog{
 		this.action = action;
 	}
 
+	@Transient
 	@Override
 	public String getType() {
 		

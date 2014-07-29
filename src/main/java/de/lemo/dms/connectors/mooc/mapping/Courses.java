@@ -26,10 +26,17 @@
 
 package de.lemo.dms.connectors.mooc.mapping;
 
+
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Mapping class for table Course.
@@ -42,12 +49,12 @@ import javax.persistence.Table;
 public class Courses {
 
 	private long id;
-	private String fullname;
 	private String subtitle;
 	private String title;
-	private long startdate;
-	private long timecreated;
-	private long timemodified;
+	private Date startDate;
+	private Date timeCreated;
+	private Date timeModified;
+	private String description;
 
 	@Id
 	public long getId() {
@@ -58,15 +65,7 @@ public class Courses {
 		this.id = id;
 	}
 
-	@Column(name="title")
-	public String getFullname() {
-		return this.fullname;
-	}
-
-	public void setFullname(final String fullname) {
-		this.fullname = fullname;
-	}
-
+	@Lob
 	@Column(name="subtitle")
 	public String getSubtitle() {
 		return this.subtitle;
@@ -76,32 +75,36 @@ public class Courses {
 		this.subtitle = subtitle;
 	}
 
-	@Column(name="created_at")
-	public long getTimecreated() {
-		return this.timecreated;
+	@Column(name = "created_at", columnDefinition="DATETIME")
+	@Temporal(TemporalType.DATE)
+	public Date getTimeCreated() {
+		return this.timeCreated;
 	}
 
-	public void setTimecreated(final long timecreated) {
-		this.timecreated = timecreated;
+	public void setTimeCreated(final Date timecreated) {
+		this.timeCreated = timecreated;
 	}
 
-	@Column(name="updated_at")
-	public long getTimemodified() {
-		return this.timemodified;
+	@Column(name = "updated_at", columnDefinition="DATETIME")
+	@Temporal(TemporalType.DATE)
+	public Date getTimeModified() {
+		return this.timeModified;
 	}
 
-	public void setTimemodified(final long timemodified) {
-		this.timemodified = timemodified;
+	public void setTimeModified(final Date timemodified) {
+		this.timeModified = timemodified;
 	}
 
 	
-	@Column(name="start_date")
-	public long getStartdate() {
-		return this.startdate;
+
+	@Column(name = "start_date", columnDefinition="DATETIME")
+	@Temporal(TemporalType.DATE)
+	public Date getStartDate() {
+		return this.startDate;
 	}
 
-	public void setStartdate(final long startdate) {
-		this.startdate = startdate;
+	public void setStartDate(final Date startdate) {
+		this.startDate = startdate;
 	}
 
 	public void setTitle(final String title) {
@@ -111,5 +114,21 @@ public class Courses {
 	@Column(name="title")
 	public String getTitle() {
 		return this.title;
+	}
+
+	/**
+	 * @return the description
+	 */
+	@Lob
+	@Column(name="description")
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.lemo.dms.db.mapping.abstractions.IMapping;
@@ -64,6 +65,7 @@ public class Attribute implements IMapping{
 	/**
 	 * @return the courseAttributes
 	 */
+	@OneToMany(mappedBy="attribute")
 	public Set<CourseAttribute> getCourseAttributes() {
 		return courseAttributes;
 	}
@@ -93,6 +95,7 @@ public class Attribute implements IMapping{
 	/**
 	 * @return the userAttributes
 	 */
+	@OneToMany(mappedBy="attribute")
 	public Set<UserAttribute> getUserAttributes() {
 		return userAttributes;
 	}
@@ -107,6 +110,7 @@ public class Attribute implements IMapping{
 	/**
 	 * @return the learningAttributes
 	 */
+	@OneToMany(mappedBy="attribute")
 	public Set<LearningAttribute> getLearningAttributes() {
 		return learningAttributes;
 	}

@@ -1,9 +1,13 @@
 package de.lemo.dms.connectors.mooc.mapping;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
@@ -13,8 +17,8 @@ public class Assessments {
 	private long id;
 	private String type;
 	private String title;
-	private long timecreated;
-	private long timemodified;
+	private Date timeCreated;
+	private Date timeModified;
 
 	/**
 	 * @return the type
@@ -49,31 +53,33 @@ public class Assessments {
 	/**
 	 * @return the timecreated
 	 */
-	@Column(name="created_at")
-	public long getTimecreated() {
-		return timecreated;
+	@Column(name = "created_at", columnDefinition="DATETIME")
+	@Temporal(TemporalType.DATE)
+	public Date getTimeCreated() {
+		return timeCreated;
 	}
 
 	/**
 	 * @param timecreated the timecreated to set
 	 */
-	public void setTimecreated(long timecreated) {
-		this.timecreated = timecreated;
+	public void setTimeCreated(Date timecreated) {
+		this.timeCreated = timecreated;
 	}
 
 	/**
 	 * @return the timemodified
 	 */
-	@Column(name="updated_at")
-	public long getTimemodified() {
-		return timemodified;
+	@Column(name = "updated_at", columnDefinition="DATETIME")
+	@Temporal(TemporalType.DATE)
+	public Date getTimeModified() {
+		return timeModified;
 	}
 
 	/**
 	 * @param timemodified the timemodified to set
 	 */
-	public void setTimemodified(long timemodified) {
-		this.timemodified = timemodified;
+	public void setTimeModified(Date timemodified) {
+		this.timeModified = timemodified;
 	}
 
 	@Id

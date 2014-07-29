@@ -29,6 +29,7 @@ package de.lemo.dms.connectors.mooc;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ import de.lemo.dms.connectors.mooc.mapping.AssessmentAnswers;
 import de.lemo.dms.connectors.mooc.mapping.AssessmentQuestions;
 import de.lemo.dms.connectors.mooc.mapping.AssessmentSessions;
 import de.lemo.dms.connectors.mooc.mapping.Assessments;
+import de.lemo.dms.connectors.mooc.mapping.Assets;
 import de.lemo.dms.connectors.mooc.mapping.Comments;
 import de.lemo.dms.connectors.mooc.mapping.Courses;
 import de.lemo.dms.connectors.mooc.mapping.Events;
@@ -56,6 +58,7 @@ import de.lemo.dms.connectors.mooc.mapping.UnitResources;
 import de.lemo.dms.connectors.mooc.mapping.Users;
 import de.lemo.dms.connectors.mooc.mapping.Videos;
 import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.CollaborationLog;
 import de.lemo.dms.db.mapping.Course;
 import de.lemo.dms.db.mapping.CourseAttribute;
@@ -83,6 +86,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private List<AssessmentQuestions> assessmentQuestionsMooc;
 	private List<AssessmentSessions> assessmentSessionsMooc;
 	private List<Assessments> assessmentMooc;
+	private List<Assets> assetsMooc;
 	private List<Courses> coursesMooc;
 	private List<Comments> commentsMooc;
 	private List<Events> eventsMooc;
@@ -94,6 +98,12 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private List<UnitResources> unitResourcesMooc;
 	private List<Users> usersMooc;
 	private List<Videos> videosMooc;
+	
+	private Map<Long, CourseAttribute> courseAttributes = new HashMap<Long, CourseAttribute>();
+	private Map<Long, UserAttribute> userAttributes = new HashMap<Long, UserAttribute>();
+	private Map<Long, LearningAttribute> learningAttributes = new HashMap<Long, LearningAttribute>();
+	
+	private Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 	
 	private HashMap<String, LearningType> learnTypes = new HashMap<String, LearningType>();
 		
@@ -114,79 +124,266 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		final Session session = HibernateUtil.getSessionFactory(dbConfig).openSession();
 		session.clear();
 		
+		Date date = new Date ();
+		date.setTime((long)readingfromtimestamp*1000);
+		
 		//Read Context
 		Criteria criteria = session.createCriteria(Courses.class, "obj");
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			criteria.add(Restrictions.in("obj.id", courses));
+		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.coursesMooc = criteria.list();
+		logger.info("Loaded " + this.coursesMooc.size() + " Courses entries.");
 		
-		criteria = session.createCriteria(AssessmentAnswers.class, "obj");
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria = session.createCriteria(Segments.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			criteria.add(Restrictions.in("obj.courseId", courses));
+		}
 		criteria.addOrder(Property.forName("obj.id").asc());
-		this.assessmentAnswersMooc = criteria.list();
-		
-		criteria = session.createCriteria(AssessmentSessions.class, "obj");
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.timemodified").asc());
-		this.assessmentAnswersMooc = criteria.list();
-		
-		criteria = session.createCriteria(AssessmentQuestions.class, "obj");
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.assessmentQuestionsMooc = criteria.list();
-		
-		criteria = session.createCriteria(Assessments.class, "obj");
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.assessmentMooc = criteria.list();
+		this.segmentsMooc = criteria.list();
+		logger.info("Loaded " + this.segmentsMooc.size() + " Segments entries.");
 		
 		criteria = session.createCriteria(Events.class, "obj");
+		criteria.add(Restrictions.gt("obj.timestamp", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> segments = new ArrayList<Long>();
+			for(Segments s : this.segmentsMooc)
+			{
+				segments.add(s.getId());
+			}
+			if(!segments.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.segmentId", segments));
+			}
+		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.eventsMooc = criteria.list();
+		logger.info("Loaded " + this.eventsMooc.size() + " Events entries.");
+		
+		criteria = session.createCriteria(UnitResources.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> segments = new ArrayList<Long>();
+			for(Segments s : this.segmentsMooc)
+			{
+				segments.add(s.getId());
+			}
+			if(!segments.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.unitId", segments));
+			}
+		}
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.unitResourcesMooc = criteria.list();
+		logger.info("Loaded " + this.unitResourcesMooc.size() + " UnitResources entries.");
+		
+		criteria = session.createCriteria(Assessments.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> assessments = new ArrayList<Long>();
+			for(UnitResources s : this.unitResourcesMooc)
+			{
+				if(s.getAttachableType().equals("Assessment"))
+				assessments.add(s.getAttachableId());
+			}
+			if(!assessments.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.id", assessments));
+			}
+		}
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentMooc = criteria.list();
+		logger.info("Loaded " + this.assessmentMooc.size() + " Assessments entries.");
+		
+		criteria = session.createCriteria(AssessmentQuestions.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> assessments = new ArrayList<Long>();
+			for(Assessments s : this.assessmentMooc)
+			{
+				assessments.add(s.getId());
+			}
+			if(!assessments.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.assessmentId", assessments));
+			}
+		}
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentQuestionsMooc = criteria.list();
+		logger.info("Loaded " + this.assessmentQuestionsMooc.size() + " AssessmentQuestions entries.");
+		
+		
+		criteria = session.createCriteria(AssessmentAnswers.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> assessmentQuestions = new ArrayList<Long>();
+			for(AssessmentQuestions s : this.assessmentQuestionsMooc)
+			{
+				assessmentQuestions.add(s.getId());
+			}
+			if(!assessmentQuestions.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.assessmentQuestionId", assessmentQuestions));
+			}
+		}
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assessmentAnswersMooc = criteria.list();
+		logger.info("Loaded " + this.assessmentAnswersMooc.size() + " AssessmentAnswers entries.");
+		
+		criteria = session.createCriteria(AssessmentSessions.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> assessments = new ArrayList<Long>();
+			for(Assessments s : this.assessmentMooc)
+			{
+				assessments.add(s.getId());
+			}
+			if(!assessments.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.assessmentId", assessments));
+			}
+		}
+		criteria.addOrder(Property.forName("obj.timeModified").asc());
+		this.assessmentSessionsMooc = criteria.list();
+		logger.info("Loaded " + this.assessmentAnswersMooc.size() + " AssessmentSessions entries.");
+		
+		criteria = session.createCriteria(Assets.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> assets = new ArrayList<Long>();
+			for(UnitResources s : this.unitResourcesMooc)
+			{
+				if(s.getAttachableType().equals("Asset"))
+				assets.add(s.getAttachableId());
+			}
+			if(!assets.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.id", assets));
+			}
+		}
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.assetsMooc = criteria.list();
+		logger.info("Loaded " + this.assetsMooc.size() + " Assets entries.");
 		
 		criteria = session.createCriteria(Comments.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.commentsMooc = criteria.list();
+		logger.info("Loaded " + this.commentsMooc.size() + " Comments entries.");
 		
 		criteria = session.createCriteria(Memberships.class, "obj");
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			criteria.add(Restrictions.in("obj.courseId", courses));
+		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.membershipsMooc = criteria.list();
-		
-		criteria = session.createCriteria(Progress.class, "obj");
-		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.progressMooc = criteria.list();
-		
-		criteria = session.createCriteria(Questions.class, "obj");
-		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.questionsMooc = criteria.list();
-		
-		criteria = session.createCriteria(Answers.class, "obj");
-		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.answersMooc = criteria.list();
-		
-		criteria = session.createCriteria(Segments.class, "obj");
-		criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.segmentsMooc = criteria.list();
-		
-		criteria = session.createCriteria(UnitResources.class, "obj");
-		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.unitResourcesMooc = criteria.list();
+		logger.info("Loaded " + this.membershipsMooc.size() + " Memberships entries.");
 		
 		criteria = session.createCriteria(Users.class, "obj");
-		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> users = new ArrayList<Long>();
+			for(Memberships s : this.membershipsMooc)
+			{
+				users.add(s.getUserId());
+			}
+			if(!users.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.id", users));
+			}
+		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.usersMooc = criteria.list();
+		logger.info("Loaded " + this.usersMooc.size() + " Users entries.");
+		
+		/*
+		criteria = session.createCriteria(Progress.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> segments = new ArrayList<Long>();
+			for(Segments s : this.segmentsMooc)
+			{
+				segments.add(s.getId());
+			}
+			if(!segments.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.segmentId", segments));
+			}
+		}
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.progressMooc = criteria.list();
+		logger.info("Loaded " + this.progressMooc.size() + " Progress entries.");
+		*/
+		
+		criteria = session.createCriteria(Questions.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> segments = new ArrayList<Long>();
+			for(Segments s : this.segmentsMooc)
+			{
+				segments.add(s.getId());
+			}
+			if(!segments.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.segmentId", segments));
+			}
+		}
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.questionsMooc = criteria.list();
+		logger.info("Loaded " + this.questionsMooc.size() + " Questions entries.");
+		
+		criteria = session.createCriteria(Answers.class, "obj");
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> questions = new ArrayList<Long>();
+			for(Questions s : this.questionsMooc)
+			{
+				questions.add(s.getId());
+			}
+			if(!questions.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.questionId", questions));
+			}
+		}
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.answersMooc = criteria.list();
+		logger.info("Loaded " + this.answersMooc.size() + " Answers entries.");
 		
 		criteria = session.createCriteria(Videos.class, "obj");
-		criteria.add(Restrictions.gt("obj.timeModified", readingfromtimestamp));
+		criteria.add(Restrictions.gt("obj.timeModified", date));
+		if(!courses.isEmpty())
+		{
+			List<Long> videos = new ArrayList<Long>();
+			for(UnitResources s : this.unitResourcesMooc)
+			{
+				if(s.getAttachableType().equals("Video"))
+				videos.add(s.getAttachableId());
+			}
+			if(!videos.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.id", videos));
+			}
+		}
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.videosMooc = criteria.list();
+		logger.info("Loaded " + this.videosMooc.size() + " Videos entries.");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -270,7 +467,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		coursesMooc.clear();
 		eventsMooc.clear();
 		membershipsMooc.clear();
-		progressMooc.clear();
+		//progressMooc.clear();
 		questionsMooc.clear();
 		segmentsMooc.clear();
 		unitResourcesMooc.clear();
@@ -298,7 +495,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			
 			courseUsers.put(insert.getId(), insert);
 		}
-			
 		return courseUsers;
 	}  
 
@@ -311,6 +507,22 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			Course insert = new Course();
 			insert.setId(  loadedItem.getId());
 			insert.setTitle(loadedItem.getTitle());
+			if(!this.attributes.containsKey("Course Description"))
+			{
+				Attribute description = new Attribute();
+				description.setId(this.attributeIdMax + 1);
+				this.attributeIdMax++;
+				description.setName("Course Description");
+				this.attributes.put(description.getName(), description);
+			}
+			CourseAttribute description = new CourseAttribute();
+			description.setId(this.courseAttributeIdMax + 1);
+			this.courseAttributeIdMax++;
+			description.setCourse(insert);
+			description.setAttribute(this.attributes.get("Course Description"));
+			description.setValue(loadedItem.getDescription());
+			
+			this.courseAttributes.put(description.getId(), description);
 			
 			courses.put(insert.getId(), insert);
 		}
@@ -321,18 +533,69 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	public Map<Long, CourseLearning> generateCourseLearnings() {
 		final HashMap<Long, CourseLearning> courseLearnings = new HashMap<Long, CourseLearning>();
 		
+		Map<Long, Long> unitCourses = new HashMap<Long, Long>();
+		
 		for(Segments loadedItem : this.segmentsMooc)
 		{
 			CourseLearning insert = new CourseLearning();
-			insert.setId(Long.valueOf("1" + loadedItem.getId()));
+			insert.setId(Long.valueOf("10" + loadedItem.getId()));
 			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
-			insert.setLearning(Long.valueOf("1" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setLearning(Long.valueOf("10" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
+			
+			unitCourses.put(loadedItem.getId(), loadedItem.getCourseId());
 			
 			if(insert.getLearning() != null && insert.getCourse() != null)
 				courseLearnings.put(insert.getId(), insert);
+		}		
+		
+		for(UnitResources loadedItem : this.unitResourcesMooc)
+		{
+			if(loadedItem.getAttachableType().equals("Video"))
+			{
+				CourseLearning insert = new CourseLearning();
+				insert.setId(Long.valueOf("12" + loadedItem.getId()));
+				if(unitCourses.get(loadedItem.getUnitId()) != null)
+				{
+					insert.setCourse(unitCourses.get(loadedItem.getUnitId()), this.courseMining, this.oldCourseMining);
+				}
+				insert.setLearning(Long.valueOf("12" + loadedItem.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);
+				
+				if(insert.getCourse() != null && insert.getLearning() != null)
+				{
+					courseLearnings.put(insert.getId(), insert);
+				}
+			}
+			if(loadedItem.getAttachableType().equals("Assessment"))
+			{
+				CourseLearning insert = new CourseLearning();
+				insert.setId(Long.valueOf("11" + loadedItem.getId()));
+				if(unitCourses.get(loadedItem.getUnitId()) != null)
+				{
+					insert.setCourse(unitCourses.get(loadedItem.getUnitId()), this.courseMining, this.oldCourseMining);
+				}
+				insert.setLearning(Long.valueOf("11" + loadedItem.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);
+				
+				if(insert.getCourse() != null && insert.getLearning() != null)
+				{
+					courseLearnings.put(insert.getId(), insert);
+				}
+			}
+			if(loadedItem.getAttachableType().equals("Question"))
+			{
+				CourseLearning insert = new CourseLearning();
+				insert.setId(Long.valueOf("14" + loadedItem.getId()));
+				if(unitCourses.get(loadedItem.getUnitId()) != null)
+				{
+					insert.setCourse(unitCourses.get(loadedItem.getUnitId()), this.courseMining, this.oldCourseMining);
+				}
+				insert.setLearning(Long.valueOf("14" + loadedItem.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);
+				
+				if(insert.getCourse() != null && insert.getLearning() != null)
+				{
+					courseLearnings.put(insert.getId(), insert);
+				}
+			}			
 		}
-		
-		
 		return courseLearnings;
 	}
 
@@ -356,12 +619,11 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
 				insert.setLearning(loadedItem.getAssessmentId(), this.learningObjectMining, this.learningObjectMining);
 				insert.setGrade(loadedItem.getScore());
-				insert.setTimemodified(loadedItem.getTimeModified());
+				insert.setTimemodified(loadedItem.getTimeModified().getTime()/1000);
 				
 				assessmentUsers.put(insert.getId(), insert);
 			}
-		}
-		
+		}		
 		return assessmentUsers;
 	}
 
@@ -373,29 +635,28 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(UnitResources u : this.unitResourcesMooc)
 		{
 			unitResources.put(u.getId(), u);
-		}
-		
+		}		
 		
 		for(Events loadedItem : this.eventsMooc)
 		{
 			AccessLog insert = new AccessLog();
 			insert.setId(loadedItem.getId());
 			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-			if(loadedItem.getCourseId() != 0)
+			if(loadedItem.getCourseId() != null)
 			{
 				insert.setCourse(loadedItem.getId(), this.courseMining, this.oldCourseMining);
 			}
 			else
 			{
-				insert.setCourse(this.courseLearningMining.get(Long.valueOf("1" + loadedItem.getSegmentId())).getCourse().getId(), this.courseMining, this.oldCourseMining);
+				insert.setCourse(this.courseLearningMining.get(Long.valueOf("10" + loadedItem.getSegmentId())).getCourse().getId(), this.courseMining, this.oldCourseMining);
 			}
 			
 			if(unitResources.get(loadedItem.getUnitResourceId()) != null && unitResources.get(loadedItem.getUnitResourceId()).getAttachableType().equals("Video"))
 			{
 				UnitResources uR = unitResources.get(loadedItem.getUnitResourceId());
-				insert.setLearning(uR.getAttachableId(), this.learningObjectMining, this.oldLearningObjectMining);			
+				insert.setLearning(Long.valueOf("12" + uR.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);			
 			}
-			insert.setTimestamp(loadedItem.getTimestamp());
+			insert.setTimestamp(loadedItem.getTimestamp().getTime()/1000);
 			
 			switch(loadedItem.getEvent())
 			{
@@ -410,12 +671,18 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				default : break;
 			}
 			
+			if(insert.getUser() != null && insert.getCourse() != null && insert.getLearning() != null)
+			{
+				learningLogs.put(insert.getId(), insert);
+			}
+			
 		}
 		return learningLogs;
 	}
 
 	@Override
 	public Map<Long, CollaborationLog> generateCollaborativeLogs() {
+		
 		final List<CollaborationLog> loglist = new ArrayList<CollaborationLog>();
 		final HashMap<Long, CollaborationLog> collaborationLogs = new HashMap<Long, CollaborationLog>();
 		
@@ -431,7 +698,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
 			insert.setAction("Question");
 			insert.setText(loadedItem.getContent());
-			insert.setTimestamp(loadedItem.getTimeCreated());
+			insert.setTimestamp(loadedItem.getTimeCreated().getTime()/1000);
 			
 			if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 			{
@@ -453,7 +720,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setCourse(insert.getParent().getCourse().getId(), this.courseMining, this.oldCourseMining);
 				insert.setAction("Answer");
 				insert.setText(loadedItem.getContent());
-				insert.setTimestamp(loadedItem.getTimeCreated());
+				insert.setTimestamp(loadedItem.getTimeCreated().getTime()/1000);
 				
 				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 				{
@@ -490,7 +757,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setCourse(insert.getParent().getCourse().getId(), this.courseMining, this.oldCourseMining);
 				insert.setAction("Comment");
 				insert.setText(loadedItem.getContent());
-				insert.setTimestamp(loadedItem.getTimeCreated());
+				insert.setTimestamp(loadedItem.getTimeCreated().getTime()/1000);
 				
 				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 				{
@@ -515,15 +782,15 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		final HashMap<Long, LearningObj> learningObjs = new HashMap<Long, LearningObj>();
 		
 		LearningType type;
-		if(this.learnTypes.get("Unit Forum") == null)
+		if(this.learnTypes.get("UnitForum") == null)
 		{
 			type = new LearningType();
-			type.setId(1);
-			type.setType("Unit Forum");
+			type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
+			type.setType("UnitForum");
 		}
 		else
 		{
-			type = this.learnTypes.get("unit Forum");
+			type = this.learnTypes.get("UnitForum");
 		}
 		
 		for(Segments loadedItem : this.segmentsMooc)
@@ -533,7 +800,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				LearningObj insert = new LearningObj();
 				insert.setId(Long.valueOf("13" + loadedItem.getId()));
 				insert.setTitle("Forum "  + loadedItem.getTitle());
+				insert.setInteractionType("Collaboration");
 				insert.setType(type);
+				
+				learningObjs.put(insert.getId(), insert);
 			}
 		}
 		
@@ -542,11 +812,12 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			LearningObj insert = new LearningObj();
 			insert.setId(Long.valueOf("11" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getTitle());
+			insert.setInteractionType("Assessment");
 			
 			type = new LearningType();
 			if(this.learnTypes.get(loadedItem.getType()) == null)
 			{
-				type.setId(this.learningObjectTypeMax + 1);
+				type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
 				type.setType(loadedItem.getType());
 				this.learnTypes.put(type.getType(), type);
 			}
@@ -570,7 +841,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				type = new LearningType();
 				if(this.learnTypes.get(loadedItem.getType()) == null)
 				{
-					type.setId(this.learningObjectTypeMax + 1);
+					type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
 					type.setType(loadedItem.getType());
 					this.learnTypes.put(type.getType(), type);
 				}
@@ -584,7 +855,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			
 			if(loadedItem.getParent() != null)
 			{
-				insert.setParent(insert.getParent().getId(), learningObjectMining, oldLearningObjectMining);
+				insert.setParent(loadedItem.getParent(), learningObjs, oldLearningObjectMining);
 			}
 			
 			if(insert.getType() != null)
@@ -598,11 +869,12 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			LearningObj insert = new LearningObj();
 			insert.setId(Long.valueOf("12" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getTitle());
+			insert.setInteractionType("Access");
 
 			type = new LearningType();
 			if(this.learnTypes.get("Video") == null)
 			{
-				type.setId(this.learningObjectTypeMax + 1);
+				type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
 				type.setType("Video");
 				this.learnTypes.put(type.getType(), type);
 			}
@@ -617,9 +889,46 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			{
 				learningObjs.put(insert.getId(), insert);
 			}
+		}	
+		
+		for(Questions loadedItem : this.questionsMooc)
+		{
+			LearningObj insert = new LearningObj();
+			insert.setId(Long.valueOf("14" + loadedItem.getId()));
+			insert.setInteractionType("Assessment");
+			type = new LearningType();
+			if(this.learnTypes.get("Question") == null)
+			{
+				type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
+				type.setType("Question");
+				this.learnTypes.put(type.getType(), type);
+			}
+			else
+			{
+				type = this.learnTypes.get("Question");
+			}
+			insert.setType(type);
+			insert.setTitle(loadedItem.getTitle());
+			if(!this.attributes.containsKey("Question Content"))
+			{
+				Attribute description = new Attribute();
+				description.setId(this.attributeIdMax + 1);
+				this.attributeIdMax++;
+				description.setName("Question Content");
+				this.attributes.put(description.getName(), description);
+			}
+			LearningAttribute description = new LearningAttribute();
+			description.setId(this.learningAttributeIdMax + 1);
+			this.learningAttributeIdMax++;
+			description.setLearning(insert);
+			description.setAttribute(this.attributes.get("Question Content"));
+			description.setValue(loadedItem.getContent());
+			
+			if(insert.getType() != null)
+			{
+				learningObjs.put(insert.getId(), insert);
+			}
 		}
-		
-		
 		return learningObjs;
 	}
 
@@ -633,6 +942,38 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			User insert = new User();
 			insert.setId(  loadedItem.getId());
 			insert.setLogin(loadedItem.getId() + "mooc");
+			
+			if(!this.attributes.containsKey("User Gender"))
+			{
+				Attribute gender = new Attribute();
+				gender.setId(this.attributeIdMax + 1);
+				this.attributeIdMax++;
+				gender.setName("User Gender");
+				this.attributes.put(gender.getName(), gender);
+			}
+			UserAttribute gender = new UserAttribute();
+			gender.setId(this.userAttributeIdMax + 1);
+			this.userAttributeIdMax++;
+			gender.setUser(insert);
+			gender.setAttribute(this.attributes.get("User Gender"));
+			gender.setValue(loadedItem.getGender());
+			this.userAttributes.put(gender.getId(), gender);
+			
+			if(!this.attributes.containsKey("User Timezone"))
+			{
+				Attribute timezone = new Attribute();
+				timezone.setId(this.attributeIdMax + 1);
+				this.attributeIdMax++;
+				timezone.setName("User Timezone");
+				this.attributes.put(timezone.getName(), timezone);
+			}
+			UserAttribute timezone = new UserAttribute();
+			timezone.setId(this.userAttributeIdMax + 1);
+			this.userAttributeIdMax++;
+			timezone.setUser(insert);
+			timezone.setAttribute(this.attributes.get("User Timezone"));
+			timezone.setValue(loadedItem.getTimezone());
+			this.userAttributes.put(timezone.getId(), timezone);
 			
 			users.put(insert.getId(), insert);
 		}
@@ -678,22 +1019,43 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(AssessmentSessions loadedItem : this.assessmentSessionsMooc)
 		{
 			AssessmentLog insert = new AssessmentLog();
-			insert.setId(loadedItem.getId());
+			insert.setId(this.assessmentLogMax + 1 + assessmentLogs.size());
 			insert.setDuration(loadedItem.getDuration());
 			insert.setAction(loadedItem.getState());
+			if(loadedItem.getSubmittetdAt() != null)
+			{
+				insert.setTimestamp(loadedItem.getSubmittetdAt().getTime() / 1000);
+			}
 			
 			CourseUser cu = this.courseUserMining.get(loadedItem.getMembershipId());
 			if(cu == null)
 			{
 				cu = this.oldCourseUserMining.get(loadedItem.getMembershipId());
 			}
-			if(cu != null)
+			if(cu != null && insert.getTimestamp() != null)
 			{
 				insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
 				insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
 				
 				assessmentLogs.put(insert.getId(), insert);
 			}
+		}
+		
+		for(Answers loadedItem : this.answersMooc)
+		{
+			AssessmentLog insert = new AssessmentLog();
+			insert.setId(this.assessmentLogMax + 1 + assessmentLogs.size());
+			insert.setAction("Answer");
+			insert.setLearning(Long.valueOf("14" + loadedItem.getQuestionId()), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setText(loadedItem.getContent());
+			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
+			if(loadedItem.getTimeModified() != null)
+			{
+				insert.setTimestamp(loadedItem.getTimeModified().getTime() / 1000);
+			}
+			
+			assessmentLogs.put(insert.getId(), insert);
+			
 		}
 		return assessmentLogs;
 	}
@@ -704,21 +1066,23 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	Map<Long, CourseAttribute> generateCourseAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Long, CourseAttribute> generateCourseAttributes() {
+		return this.courseAttributes;
 	}
 
 	@Override
-	Map<Long, UserAttribute> generateUserAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Long, UserAttribute> generateUserAttributes() {
+		return this.userAttributes;
 	}
 
 	@Override
-	Map<Long, LearningAttribute> generateLearningAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Long, LearningAttribute> generateLearningAttributes() {
+		return this.learningAttributes;
+	}
+
+	@Override
+	public Map<String, Attribute> generateAttributes() {
+		return this.attributes;
 	}
 
 }

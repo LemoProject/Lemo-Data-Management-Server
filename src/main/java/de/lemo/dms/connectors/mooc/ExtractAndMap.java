@@ -74,7 +74,7 @@ public abstract class ExtractAndMap {
 	/** A List of new entries in the course table found in this run of the process. */
 
 	protected Map<Long, Course> courseMining;
-	protected Map<Long, Attribute> attributeMining;
+	protected Map<String, Attribute> attributeMining;
 	protected Map<Long, LearningObj> learningObjectMining;
 	protected Map<Long, User> userMining;
 	protected Map<Long, Role> roleMining;	
@@ -89,7 +89,7 @@ public abstract class ExtractAndMap {
 	protected Map<String, LearningType> learningTypeMining;	
 	
 	protected Map<Long, Course> oldCourseMining;
-	protected Map<Long, Attribute> oldAttributeMining;
+	protected Map<String, Attribute> oldAttributeMining;
 	protected Map<Long, LearningObj> oldLearningObjectMining;
 	protected Map<Long, User> oldUserMining;
 	protected Map<Long, Role> oldRoleMining;	
@@ -131,6 +131,14 @@ public abstract class ExtractAndMap {
 	protected Long assessmentLogMax;
 	
 	protected Long learningObjectTypeMax;
+	
+	protected Long courseAttributeIdMax;
+	
+	protected Long userAttributeIdMax;
+	
+	protected Long learningAttributeIdMax;
+	
+	protected Long attributeIdMax;
 
 	protected Long maxLog = 0L;
 	
@@ -273,9 +281,9 @@ public abstract class ExtractAndMap {
 		criteria = session.createCriteria(Attribute.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		t = criteria.list();
-		this.oldAttributeMining = new HashMap<Long, Attribute>();
+		this.oldAttributeMining = new HashMap<String, Attribute>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldAttributeMining.put(((Attribute) (t.get(i))).getId(), (Attribute) t.get(i));
+			this.oldAttributeMining.put(((Attribute) (t.get(i))).getName(), (Attribute) t.get(i));
 		}
 		logger.info("Loaded " + this.oldAttributeMining.size() + " Attribute objects from the mining database.");
 		
@@ -304,7 +312,7 @@ public abstract class ExtractAndMap {
 		for (int i = 0; i < t.size(); i++) {
 			this.oldCourseAttributeMining.put(((CourseAttribute) (t.get(i))).getId(), (CourseAttribute) t.get(i));
 		}
-		logger.info("Loaded " + this.oldCourseLearningObjectMining.size() + " CourseAttribute objects from the mining database.");
+		logger.info("Loaded " + this.oldCourseAttributeMining.size() + " CourseAttribute objects from the mining database.");
 		
 		criteria = session.createCriteria(UserAttribute.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -382,6 +390,34 @@ public abstract class ExtractAndMap {
 		this.learningObjectTypeMax = (Long) criteria.list().get(0);
 		if (this.learningObjectTypeMax == null) {
 			this.learningObjectTypeMax = 0L;
+		}
+		
+		criteria = session.createCriteria(Attribute.class);
+		criteria.setProjection(pl);
+		this.attributeIdMax = (Long) criteria.list().get(0);
+		if (this.attributeIdMax == null) {
+			this.attributeIdMax = 0L;
+		}
+		
+		criteria = session.createCriteria(CourseAttribute.class);
+		criteria.setProjection(pl);
+		this.courseAttributeIdMax = (Long) criteria.list().get(0);
+		if (this.courseAttributeIdMax == null) {
+			this.courseAttributeIdMax = 0L;
+		}
+		
+		criteria = session.createCriteria(UserAttribute.class);
+		criteria.setProjection(pl);
+		this.userAttributeIdMax = (Long) criteria.list().get(0);
+		if (this.userAttributeIdMax == null) {
+			this.userAttributeIdMax = 0L;
+		}
+		
+		criteria = session.createCriteria(LearningAttribute.class);
+		criteria.setProjection(pl);
+		this.learningAttributeIdMax = (Long) criteria.list().get(0);
+		if (this.learningAttributeIdMax == null) {
+			this.learningAttributeIdMax = 0L;
 		}
 		
 		//this.dbHandler.closeSession(session);
@@ -496,14 +532,18 @@ public abstract class ExtractAndMap {
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.courseMining.values());
 			
-			this.learningTypeMining = new HashMap<String, LearningType>();
-
 			this.learningObjectMining = this.generateLearningObjs();
 			
-			this.updates.add(this.generateLearningTypes().values());
-			objects += this.updates.get(this.updates.size() - 1).size();
-			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+			this.learningTypeMining = this.generateLearningTypes();
+			objects += this.learningTypeMining.size();
+			logger.info("Generated " + this.learningTypeMining.size()
 					+ " LearningObjectType entries in " + this.c.getAndReset() + " s. ");
+			this.updates.add(this.learningTypeMining.values());
+			
+			objects += this.learningObjectMining.size();
+			logger.info("Generated " + this.learningObjectMining.size() + " LearningObject entries in "
+					+ this.c.getAndReset() + " s. ");
+			this.updates.add(this.learningObjectMining.values());
 
 			this.roleMining = this.generateRoles();
 			objects += this.roleMining.size();
@@ -516,25 +556,37 @@ public abstract class ExtractAndMap {
 			logger.info("Generated " + this.userMining.size() + " User entries in " + this.c.getAndReset()
 					+ " s. ");
 			this.updates.add(this.userMining.values());
+			
+			this.attributeMining = this.generateAttributes();
+			objects += this.attributeMining.size();
+			logger.info("Generated " + this.attributeMining.size() + " Attribute entries in " + this.c.getAndReset()
+					+ " s. ");
+			this.updates.add(this.attributeMining.values());
 
 
 			logger.info("\nAssociation tables:\n");
 			
 			
-			objects += this.learningObjectMining.size();
-			logger.info("Generated " + this.learningObjectMining.size() + " LearningObject entries in "
-					+ this.c.getAndReset() + " s. ");
-			this.updates.add(this.learningObjectMining.values());
 
-			this.updates.add(this.generateCourseLearnings().values());
-			objects += this.updates.get(this.updates.size() - 1).size();
-			logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+
+			this.courseLearningMining = generateCourseLearnings();
+			objects += this.courseLearningMining.size();
+			logger.info("Generated " + this.courseLearningMining.size()
 					+ " CourseLearningObject entries in " + this.c.getAndReset() + " s. ");
+			this.updates.add(this.courseLearningMining.values());
+			
+			this.courseAttributeMining = generateCourseAttributes();
+			objects += this.courseAttributeMining.size();
+			logger.info("Generated " + this.courseAttributeMining.size()
+					+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
+			this.updates.add(this.courseAttributeMining.values());
 
 		}
 
-		this.updates.add(this.generateCourseUsers().values());
+		
+		this.courseUserMining = generateCourseUsers();
 		objects += this.updates.get(this.updates.size() - 1).size();
+		this.updates.add(this.courseUserMining.values());
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " CourseUser entries in " + this.c.getAndReset() + " s. ");
 
@@ -548,17 +600,17 @@ public abstract class ExtractAndMap {
 		this.updates.add(this.generateAccessLogs().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-				+ " ViewLog entries in " + this.c.getAndReset() + " s. ");
+				+ " AccessLog entries in " + this.c.getAndReset() + " s. ");
 		
 		this.updates.add(this.generateCollaborativeLogs().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-				+ " CollaborativeLog entries in " + this.c.getAndReset() + " s. ");
+				+ " CollaborationLog entries in " + this.c.getAndReset() + " s. ");
 		
 		this.updates.add(this.generateAssessmentLogs().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-				+ " TaskLog entries in " + this.c.getAndReset() + " s. ");
+				+ " AssessmentLog entries in " + this.c.getAndReset() + " s. ");
 		
 		if (objects > 0)
 		{
@@ -596,6 +648,8 @@ public abstract class ExtractAndMap {
 	abstract Map<Long, UserAssessment> generateUserAssessments();
 	
 	abstract Map<Long, AccessLog> generateAccessLogs();
+	
+	abstract Map<String, Attribute> generateAttributes();
 
 	abstract Map<Long, CollaborationLog> generateCollaborativeLogs();
 

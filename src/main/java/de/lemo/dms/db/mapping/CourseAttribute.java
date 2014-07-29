@@ -42,14 +42,14 @@ public class CourseAttribute implements IMapping{
 	 * @return the learningId
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="learning_id")
+	@JoinColumn(name="course_id")
 	public Course getCourse() {
 		return course;
 	}
 	/**
 	 * @param learningId the learningId to set
 	 */
-	public void setLearningId(Course course) {
+	public void setCourse(Course course) {
 		this.course = course;
 	}
 	/**

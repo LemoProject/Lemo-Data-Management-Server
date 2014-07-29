@@ -1,9 +1,13 @@
 package de.lemo.dms.connectors.mooc.mapping;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "assessment_sessions")
@@ -12,14 +16,15 @@ public class AssessmentSessions {
 	private long id;
 	private long membershipId;
 	private long assessmentId;
-	private long timeCreated;
-	private long timeModified;
+	private Date timeCreated;
+	private Date timeModified;
 	private String type;
-	private long duration;
+	private Long duration;
 	private String state;
-	private long score;
-	private long maxScore;
+	private Long score;
+	private Long maxScore;
 	private String grade;
+	private Date submittetdAt;
 	/**
 	 * @return the id
 	 */
@@ -62,27 +67,29 @@ public class AssessmentSessions {
 	/**
 	 * @return the timeCreated
 	 */
-	@Column(name="created_at")
-	public long getTimeCreated() {
+	@Column(name = "created_at", columnDefinition="DATETIME")
+	@Temporal(TemporalType.DATE)
+	public Date getTimeCreated() {
 		return timeCreated;
 	}
 	/**
 	 * @param timeCreated the timeCreated to set
 	 */
-	public void setTimeCreated(long timeCreated) {
+	public void setTimeCreated(Date timeCreated) {
 		this.timeCreated = timeCreated;
 	}
 	/**
 	 * @return the timeModified
 	 */
-	@Column(name="modified_at")
-	public long getTimeModified() {
+	@Column(name = "updated_at", columnDefinition="DATETIME")
+	@Temporal(TemporalType.DATE)
+	public Date getTimeModified() {
 		return timeModified;
 	}
 	/**
 	 * @param timeModified the timeModified to set
 	 */
-	public void setTimeModified(long timeModified) {
+	public void setTimeModified(Date timeModified) {
 		this.timeModified = timeModified;
 	}
 	/**
@@ -102,13 +109,13 @@ public class AssessmentSessions {
 	 * @return the duration
 	 */
 	@Column(name="duration")
-	public long getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 	/**
 	 * @param duration the duration to set
 	 */
-	public void setDuration(long duration) {
+	public void setDuration(Long duration) {
 		this.duration = duration;
 	}
 	/**
@@ -128,26 +135,26 @@ public class AssessmentSessions {
 	 * @return the score
 	 */
 	@Column(name="score")
-	public long getScore() {
+	public Long getScore() {
 		return score;
 	}
 	/**
 	 * @param score the score to set
 	 */
-	public void setScore(long score) {
+	public void setScore(Long score) {
 		this.score = score;
 	}
 	/**
 	 * @return the maxScore
 	 */
 	@Column(name="max_score")
-	public long getMaxScore() {
+	public Long getMaxScore() {
 		return maxScore;
 	}
 	/**
 	 * @param maxScore the maxScore to set
 	 */
-	public void setMaxScore(long maxScore) {
+	public void setMaxScore(Long maxScore) {
 		this.maxScore = maxScore;
 	}
 	/**
@@ -162,6 +169,20 @@ public class AssessmentSessions {
 	 */
 	public void setGrade(String grade) {
 		this.grade = grade;
+	}
+	/**
+	 * @return the submittetdAt
+	 */
+	@Column(name = "submitted_at", columnDefinition="DATETIME")
+	@Temporal(TemporalType.DATE)
+	public Date getSubmittetdAt() {
+		return submittetdAt;
+	}
+	/**
+	 * @param submittetdAt the submittetdAt to set
+	 */
+	public void setSubmittetdAt(Date submittetdAt) {
+		this.submittetdAt = submittetdAt;
 	}
 	
 	
