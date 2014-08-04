@@ -699,6 +699,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			insert.setAction("Question");
 			insert.setText(loadedItem.getContent());
 			insert.setTimestamp(loadedItem.getTimeCreated().getTime()/1000);
+			if(loadedItem.getSegmentId() != null)
+			{
+				insert.setLearning(Long.valueOf("13" + loadedItem.getSegmentId()), learningObjectMining, oldLearningObjectMining);
+			}
 			
 			if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 			{
@@ -710,17 +714,18 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Answers loadedItem : this.answersMooc)
 		{
 			CollaborationLog insert = new CollaborationLog();
-			insert.setParent(questionLog.get(loadedItem.getQuestionId()));
+			insert.setReferrer(questionLog.get(loadedItem.getQuestionId()));
 			
-			if(insert.getParent() != null)
+			if(insert.getReferrer() != null)
 			{
 				insert.setId(loadedItem.getId());
 				insert.setLearning(questionLog.get(loadedItem.getQuestionId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
 				insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-				insert.setCourse(insert.getParent().getCourse().getId(), this.courseMining, this.oldCourseMining);
+				insert.setCourse(insert.getReferrer().getCourse().getId(), this.courseMining, this.oldCourseMining);
 				insert.setAction("Answer");
 				insert.setText(loadedItem.getContent());
 				insert.setTimestamp(loadedItem.getTimeCreated().getTime()/1000);
+				insert.setReferrer(questionLog.get(loadedItem.getQuestionId()));
 				
 				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 				{
@@ -734,27 +739,27 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			CollaborationLog insert = new CollaborationLog();
 			if(loadedItem.getCommentableType().equals("Answer"))
 			{
-				insert.setParent(answersLog.get(loadedItem.getCommentableId()));
-				if(insert.getParent() != null)
+				insert.setReferrer(answersLog.get(loadedItem.getCommentableId()));
+				if(insert.getReferrer() != null)
 				{
 					insert.setLearning(answersLog.get(loadedItem.getCommentableId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
 				}
 			}
 			else if(loadedItem.getCommentableType().equals("Question"))
 			{
-				insert.setParent(questionLog.get(loadedItem.getCommentableId()));
-				if(insert.getParent() != null)
+				insert.setReferrer(questionLog.get(loadedItem.getCommentableId()));
+				if(insert.getReferrer() != null)
 				{
 					insert.setLearning(questionLog.get(loadedItem.getCommentableId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
 				}
 			}
 			
-			if(insert.getParent() != null)
+			if(insert.getReferrer() != null)
 			{
 				insert.setId(loadedItem.getId());
 				
 				insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-				insert.setCourse(insert.getParent().getCourse().getId(), this.courseMining, this.oldCourseMining);
+				insert.setCourse(insert.getReferrer().getCourse().getId(), this.courseMining, this.oldCourseMining);
 				insert.setAction("Comment");
 				insert.setText(loadedItem.getContent());
 				insert.setTimestamp(loadedItem.getTimeCreated().getTime()/1000);
@@ -769,9 +774,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		Collections.sort(loglist);
 		for(int i = 0; i < loglist.size(); i++)
 		{
-			loglist.get(i).setId(this.collaborationLogMax + i + 1);
+			CollaborationLog l = loglist.get(i);
+			l.setId(this.collaborationLogMax + i + 1);
 			this.collaborationLogMax++;
-			collaborationLogs.put(loglist.get(i).getId(), loglist.get(i));			
+			collaborationLogs.put(l.getId(), l);			
 		}
 		
 		return collaborationLogs;
@@ -1041,22 +1047,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			}
 		}
 		
-		for(Answers loadedItem : this.answersMooc)
-		{
-			AssessmentLog insert = new AssessmentLog();
-			insert.setId(this.assessmentLogMax + 1 + assessmentLogs.size());
-			insert.setAction("Answer");
-			insert.setLearning(Long.valueOf("14" + loadedItem.getQuestionId()), this.learningObjectMining, this.oldLearningObjectMining);
-			insert.setText(loadedItem.getContent());
-			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-			if(loadedItem.getTimeModified() != null)
-			{
-				insert.setTimestamp(loadedItem.getTimeModified().getTime() / 1000);
-			}
-			
-			assessmentLogs.put(insert.getId(), insert);
-			
-		}
+
 		return assessmentLogs;
 	}
 

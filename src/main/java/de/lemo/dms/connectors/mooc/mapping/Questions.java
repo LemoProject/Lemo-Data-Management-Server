@@ -17,7 +17,7 @@ public class Questions {
 	
 	private long id;
 	private long courseId;
-	private long segmentId;
+	private Long segmentId;
 	private String content;
 	private long userId;
 	private Date timeCreated;
@@ -53,13 +53,13 @@ public class Questions {
 	 * @return the segmentId
 	 */
 	@Column(name="segment_id")
-	public long getSegmentId() {
+	public Long getSegmentId() {
 		return segmentId;
 	}
 	/**
 	 * @param segmentId the segmentId to set
 	 */
-	public void setSegmentId(long segmentId) {
+	public void setSegmentId(Long segmentId) {
 		this.segmentId = segmentId;
 	}
 	/**

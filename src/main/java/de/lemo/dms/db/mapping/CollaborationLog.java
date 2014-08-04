@@ -37,8 +37,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
@@ -57,7 +55,7 @@ public class CollaborationLog implements IMapping, ILog{
 	private Long timestamp;
 	private String text;
 	private String action;
-	private CollaborationLog parent;
+	private CollaborationLog referrer;
 	private static Long PREFIX = 15L;
 	
 	@Override
@@ -175,14 +173,14 @@ public class CollaborationLog implements IMapping, ILog{
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="parent_id")
-	public CollaborationLog getParent() {
-		return parent;
+	public CollaborationLog getReferrer() {
+		return referrer;
 	}
 
 
 
-	public void setParent(CollaborationLog parent) {
-		this.parent = parent;
+	public void setReferrer(CollaborationLog referrer) {
+		this.referrer = referrer;
 	}
 	
 	public void setCourse(final long course, final Map<Long, Course> courses,
