@@ -77,16 +77,23 @@ public class ContentGenerator {
 	}
 	
 	enum EUserName {
+		Sabine,
 		Albrecht,
-		Marcus,
-		Sebastian,
-		Leonard,
-		Andreas,
 		Liane,
-		Boris,
+		Marcus,
 		Agathe,
+		Sebastian,
 		Margarita,
+		Leonard,
+		Mareike,
+		Andreas,
+		Petra,
+		Boris,
+		
+
+
 	}
+
 	
 	enum EAccessActionType {
 		Play,
@@ -203,6 +210,12 @@ public class ContentGenerator {
 		
 		attributes.add(attUserName);
 		
+		Attribute attUserGender = new Attribute();
+		attUserGender.setId(3);
+		attUserGender.setName("User Gender");
+		
+		attributes.add(attUserGender);
+		
 		Attribute attCourseDescription = new Attribute();
 		attCourseDescription.setId(2);
 		attCourseDescription.setName("Course Description");
@@ -217,12 +230,20 @@ public class ContentGenerator {
 			user.setLogin(Encoder.createMD5(i + " " + df.format(dt)));
 
 			UserAttribute ua = new UserAttribute();
-			ua.setId(user.getId());
+			ua.setId(userAttributes.size());
 			ua.setAttribute(attUserName);
-			ua.setValue(EUserName.values()[i % 9].toString());
+			ua.setValue(EUserName.values()[i % EUserName.values().length].toString());
 			ua.setUser(user);
 			
 			userAttributes.add(ua);
+			
+			UserAttribute ug = new UserAttribute();
+			ug.setId(userAttributes.size());
+			ug.setAttribute(attUserGender);
+			ug.setValue((i % 2) + 1 +"");
+			ug.setUser(user);
+			
+			userAttributes.add(ug);
 			
 			userList.add(user);
 		}

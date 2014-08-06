@@ -25,6 +25,7 @@
  */
 package de.lemo.dms.processing;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
+import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.CourseUser;
+import de.lemo.dms.db.mapping.UserAttribute;
 
 /**
  * Helper class for course-student relations
@@ -51,6 +54,7 @@ public class StudentHelper {
 	 * @param courses List of course identifiers
 	 * @return	Map<Long, Long> of identifiers (key-set) of students within the specified courses
 	 */
+	@SuppressWarnings("unchecked")
 	public static Map<Long, Long> getCourseStudentsAliasKeys(List<Long> courses, List<Long> genders)
 	{
 		
@@ -64,13 +68,39 @@ public class StudentHelper {
 			criteria.addOrder(Order.asc("cu.user.id"));
 			@SuppressWarnings("unchecked")
 			List<CourseUser> courseUsers = (List<CourseUser>) criteria.list();
+			
+			List<Long> usersIds = new ArrayList<Long>();
+			for(CourseUser cu : courseUsers)
+			{
+				usersIds.add(cu.getUser().getId());
+			}
+			
+			Long genderId;
+			Map<Long, Long> userGenders = new HashMap<Long, Long>();
+			if(!genders.isEmpty())
+			{
+				criteria = session.createCriteria(Attribute.class, "attribute");
+				criteria.add(Restrictions.like("attribute.name", "User Gender"));
+				if(!criteria.list().isEmpty() && !usersIds.isEmpty())
+				{
+					genderId = ((List<Attribute>)criteria.list()).get(0).getId();
+					criteria =session.createCriteria(UserAttribute.class, "userAttribute");
+					criteria.add(Restrictions.in("userAttribute.user.id", usersIds));
+					criteria.add(Restrictions.eq("userAttribute.attribute.id", genderId));
+					for(UserAttribute ua : (List<UserAttribute>)criteria.list())
+					{
+						userGenders.put(ua.getUser().getId(), Long.valueOf(ua.getValue()));
+					}
+				}
+			}
+			
 			Long i = 1L;
 			for (final CourseUser cu : courseUsers) {
 				// Only use students (type = 2) 
 				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{
 					
-					//if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
+					if(genders.isEmpty() || userGenders.get(cu.getUser().getId()) != null && genders.contains(userGenders.get(cu.getUser().getId())))
 					{
 						users.put(i, cu.getUser().getId());
 						i++;
@@ -101,12 +131,35 @@ public class StudentHelper {
 			criteria.addOrder(Order.asc("cu.user.id"));
 			@SuppressWarnings("unchecked")
 			List<CourseUser> courseUsers = (List<CourseUser>) criteria.list();
+			List<Long> usersIds = new ArrayList<Long>();
+			for(CourseUser cu : courseUsers)
+			{
+				usersIds.add(cu.getUser().getId());
+			}
 			Long i = 1L;
+			Long genderId;
+			Map<Long, Long> userGenders = new HashMap<Long, Long>();
+			if(!genders.isEmpty())
+			{
+				criteria = session.createCriteria(Attribute.class, "attribute");
+				criteria.add(Restrictions.like("attribute.name", "User Gender"));
+				if(!criteria.list().isEmpty() && !usersIds.isEmpty())
+				{
+					genderId = ((List<Attribute>)criteria.list()).get(0).getId();
+					criteria =session.createCriteria(UserAttribute.class, "userAttribute");
+					criteria.add(Restrictions.in("userAttribute.user.id", usersIds));
+					criteria.add(Restrictions.eq("userAttribute.attribute.id", genderId));
+					for(UserAttribute ua : (List<UserAttribute>)criteria.list())
+					{
+						userGenders.put(ua.getUser().getId(), Long.valueOf(ua.getValue()));
+					}
+				}
+			}
 			for (final CourseUser cu : courseUsers) {
 				// Only use students (type = 2) 
 				if (cu.getUser() != null && cu.getRole().getType() == 2)
 				{
-					//if(genders.isEmpty() || genders.contains(cu.getUser().getGender()))
+					if(genders.isEmpty() || userGenders.get(cu.getUser().getId()) != null && genders.contains(userGenders.get(cu.getUser().getId())))
 					{
 						users.put(cu.getUser().getId(), i);
 						i++;
@@ -134,21 +187,46 @@ public class StudentHelper {
 			criteria.add(Restrictions.eq("cu.course.id", courseId));
 			@SuppressWarnings("unchecked")
 			List<CourseUser> courseUsers = (List<CourseUser>) criteria.list();
+			
+			List<Long> usersIds = new ArrayList<Long>();
+			for(CourseUser cu : courseUsers)
+			{
+				usersIds.add(cu.getUser().getId());
+			}
+			Long i = 1L;
+			Long genderId;
+			Map<Long, Long> userGenders = new HashMap<Long, Long>();
+			criteria = session.createCriteria(Attribute.class, "attribute");
+			criteria.add(Restrictions.like("attribute.name", "User Gender"));
+			if(!criteria.list().isEmpty() && !usersIds.isEmpty())
+			{
+				genderId = ((List<Attribute>)criteria.list()).get(0).getId();
+				criteria =session.createCriteria(UserAttribute.class, "userAttribute");
+				criteria.add(Restrictions.in("userAttribute.user.id", usersIds));
+				criteria.add(Restrictions.eq("userAttribute.attribute.id", genderId));
+				for(UserAttribute ua : (List<UserAttribute>)criteria.list())
+				{
+					userGenders.put(ua.getUser().getId(), Long.valueOf(ua.getValue()));
+				}
+			}
 			int fem = 0;
 			int mal = 0;
 			
-			for (final CourseUser cu : courseUsers) {
-				// Only use students (type = 2) 
-				if (cu.getUser() != null && cu.getRole().getType() == 2)
-				{
-					//if(cu.getUser().getGender() == 1)
-						fem++;
-					//else if(cu.getUser().getGender() == 2)
-						mal++;
-					if(mal > 4 && fem > 4)
+			if(!userGenders.isEmpty())
+			{
+				for (final CourseUser cu : courseUsers) {
+					// Only use students (type = 2) 
+					if (cu.getUser() != null && cu.getRole().getType() == 2)
 					{
-						session.close();
-						return true;
+						if(userGenders.get(cu.getUser().getId()) == 1)
+							fem++;
+						else if(userGenders.get(cu.getUser().getId()) == 2)
+							mal++;
+						if(mal > 4 && fem > 4)
+						{
+							session.close();
+							return true;
+						}
 					}
 				}
 			}
