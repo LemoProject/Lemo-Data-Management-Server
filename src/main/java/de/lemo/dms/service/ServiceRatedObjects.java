@@ -84,8 +84,6 @@ public class ServiceRatedObjects {
 			{
 				if(obj.getLearning().getInteractionType().equals("ASSESSMENT"))
 				{
-					// Simple name is not needed so far - will break App-server implementation !!!
-					res.add("11");
 					res.add(obj.getLearning().getId() + "");
 					res.add(obj.getLearning().getTitle());
 				}

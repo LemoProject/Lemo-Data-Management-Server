@@ -121,7 +121,7 @@ public class QPerformanceBoxPlot extends Question {
 		{
 			for (int i = 0; i < quizzes.size(); i++)
 			{
-				obj.put(Long.valueOf(quizzes.get(i).toString().substring(2, quizzes.get(i).toString().length())), i);
+				obj.put(quizzes.get(i), i);
 			}
 		}
 		else
@@ -215,7 +215,7 @@ public class QPerformanceBoxPlot extends Question {
 		for (final Entry<Long, ArrayList<Double>> e : values.entrySet())
 		{
 
-			final BoxPlot plotty = this.calcBox(e.getValue(), Long.valueOf(11 + "" + e.getKey()));
+			final BoxPlot plotty = this.calcBox(e.getValue(),  e.getKey());
 			results[i] = plotty;
 			i++;
 		}

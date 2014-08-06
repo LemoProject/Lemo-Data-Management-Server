@@ -121,7 +121,7 @@ public class QPerformanceHistogram extends Question {
 		{
 			for (int i = 0; i < quizzes.size(); i++)
 			{
-				obj.put(Long.valueOf(quizzes.get(i).toString().substring(2, quizzes.get(i).toString().length())), i);
+				obj.put(quizzes.get(i), i);
 			}
 		}
 		else
