@@ -40,6 +40,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.apache.log4j.Logger;
 
@@ -79,7 +81,7 @@ public class ServiceCourseDetails {
 	@GET
 	@Path("{cid}")
 	public CourseObject getCourseDetails(@PathParam("cid") final Long id) {
-
+		logger.info("Starting GetCourseDetails");
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
@@ -88,7 +90,7 @@ public class ServiceCourseDetails {
 			throw new ResourceNotFoundException("Course " + id);
 		}
 
-		final Criteria criteria = session.createCriteria(ILog.class, "log");
+		Criteria criteria = session.createCriteria(ILog.class, "log");
 		List<Long> cid = new ArrayList<Long>();
 		cid.add(id);
 		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(cid, new ArrayList<Long>()).values());
@@ -98,23 +100,45 @@ public class ServiceCourseDetails {
 		{
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
-		ArrayList<ILog> logs = (ArrayList<ILog>) criteria.list();
-		Collections.sort(logs);
-
+		ProjectionList pl = Projections.projectionList();
+		pl.add(Projections.max("timestamp"));
+		criteria.setProjection(pl);
+		
 		Long lastTime = 0L;
 		Long firstTime = 0L;
 
-		if (logs.size() > 0)
+		if (criteria.list().size() > 0)
 		{
-			lastTime = logs.get(logs.size() - 1).getTimestamp();
-			firstTime = logs.get(0).getTimestamp();
+			lastTime = (Long) criteria.list().get(0);
+			
+		}
+		
+		criteria = session.createCriteria(ILog.class, "log");
+		cid = new ArrayList<Long>();
+		cid.add(id);
+		users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(cid, new ArrayList<Long>()).values());
+		
+		criteria.add(Restrictions.eq("log.course.id", id));
+		if(users.size() > 0)
+		{
+			criteria.add(Restrictions.in("log.user.id", users));
+		}
+		pl = Projections.projectionList();
+		pl.add(Projections.min("timestamp"));
+		criteria.setProjection(pl);
+		
+		if (criteria.list().size() > 0)
+		{
+			firstTime = (Long) criteria.list().get(0);
+			
 		}
 
 		CourseObject result =
-				new CourseObject(course.getId(), course.getTitle(), course.getTitle(), users.size(), lastTime, firstTime, getCourseHash(id), StudentHelper.getGenderSupport(id));
+				new CourseObject(course.getId(), course.getTitle(), course.getTitle(), users.size(), lastTime, firstTime, getCourseHash(id, firstTime, lastTime), StudentHelper.getGenderSupport(id));
 
 		//dbHandler.closeSession(session);
 		session.close();
+		logger.info("Finished GetCourseDetails");
 		return result;
 	}
 
@@ -131,6 +155,7 @@ public class ServiceCourseDetails {
 	@Path("/multi")
 	public ResultListCourseObject getCoursesDetails(@QueryParam(MetaParam.COURSE_IDS) final List<Long> courses) {
 
+		logger.info("Starting GetCourseDetails");
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final ArrayList<CourseObject> results = new ArrayList<CourseObject>();
 
@@ -157,26 +182,36 @@ public class ServiceCourseDetails {
 			{
 				criteria.add(Restrictions.in("log.user.id", userMap.values()));
 			}
-			//TODO Redefine projection for max id as detachable criteria (Subselect)
-			//DetachedCriteria sub = DetachedCriteria.forClass(ILogMining.class);
-			//	sub.setProjection(Projections.max("id"));
-			//
-			//criteria.add(Restrictions.eq("id",sub));
-				
-			ArrayList<ILog> logs = (ArrayList<ILog>) criteria.list();
-			Collections.sort(logs);
-
+			ProjectionList pl = Projections.projectionList();
+			pl.add(Projections.max("timestamp"));
+			criteria.setProjection(pl);
+			
 			Long lastTime = 0L;
 			Long firstTime = 0L;
-			
 
-			if (logs.size() > 0)
+			if (criteria.list().size() > 0)
 			{
-				lastTime = logs.get(0).getTimestamp();
-				firstTime = logs.get(logs.size() - 1).getTimestamp();
+				lastTime = (Long) criteria.list().get(0);
+				
+			}
+			
+			criteria = session.createCriteria(ILog.class, "log");
+			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
+			if(userMap.size() > 0)
+			{
+				criteria.add(Restrictions.in("log.user.id", userMap.values()));
+			}
+			pl = Projections.projectionList();
+			pl.add(Projections.min("timestamp"));
+			criteria.setProjection(pl);
+			
+			if (criteria.list().size() > 0)
+			{
+				firstTime = (Long) criteria.list().get(0);
+				
 			}
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
-					courseMining.getTitle(), userMap.size(), lastTime, firstTime, getCourseHash(courseMining.getId()), StudentHelper.getGenderSupport(courseMining.getId()));
+					courseMining.getTitle(), userMap.size(), lastTime, firstTime, getCourseHash(courseMining.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(courseMining.getId()));
 			results.add(co);
 		}
 		
@@ -184,6 +219,7 @@ public class ServiceCourseDetails {
 			logger.debug("Result List is empty");
 		} else for(CourseObject co : results) logger.debug("Result Course: "+ co.getDescription());
 		session.close();
+		logger.info("Finished GetCourseDetails");
 		return new ResultListCourseObject(results);
 	}
 	
@@ -198,7 +234,7 @@ public class ServiceCourseDetails {
 	@SuppressWarnings("unchecked")
 	@GET
 	@Path("{cid}/hash")
-	public Long getCourseHash(@PathParam("cid") final Long id) {
+	public Long getCourseHash(@PathParam("cid") final Long id, final Long first, final Long last) {
 		
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
@@ -208,33 +244,17 @@ public class ServiceCourseDetails {
 			throw new ResourceNotFoundException("Course " + id);
 		}
 
-		Criteria criteria = session.createCriteria(ILog.class, "log");
 		List<Long> cid = new ArrayList<Long>();
 		cid.add(id);
-		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsRealKeys(cid, new ArrayList<Long>()).values());
+		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(cid, new ArrayList<Long>()).values());
 		
-		criteria.add(Restrictions.eq("log.course.id", id));
-		if(users.size() > 0)
-		{
-			criteria.add(Restrictions.in("log.user.id", users));
-		}
-		ArrayList<ILog> logs = (ArrayList<ILog>) criteria.list();
-		Collections.sort(logs);
-
-		Long lastTime = 0L;
-		Long firstTime = 0L;
-
-		if (logs.size() > 0)
-		{
-			lastTime = logs.get(logs.size() - 1).getTimestamp();
-			firstTime = logs.get(0).getTimestamp();
-		}
 		
-		criteria = session.createCriteria(ICourseLORelation.class, "lor");
+		
+		Criteria criteria = session.createCriteria(ICourseLORelation.class, "lor");
 		criteria.add(Restrictions.eq("lor.course.id", id));
 		ArrayList<ICourseLORelation> lor = (ArrayList<ICourseLORelation>) criteria.list();
 		
-		Long hash = lastTime * 13 + firstTime * 17 + 19 * users.hashCode() + 23 * lor.hashCode();
+		Long hash = last * 13 + first * 17 + 19 * users.hashCode() + 23 * lor.hashCode();
 		//dbHandler.closeSession(session);
 		session.close();
 		

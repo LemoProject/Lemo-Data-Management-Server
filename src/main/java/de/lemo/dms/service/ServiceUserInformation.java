@@ -119,7 +119,7 @@ public class ServiceUserInformation {
 			ServiceCourseDetails scd = new ServiceCourseDetails();
 			final CourseObject courseObject = new CourseObject(course.getId(), course.getTitle(), course
 					.getTitle(),
-					participants.size(), lastTime, firstTime, scd.getCourseHash(course.getId()), StudentHelper.getGenderSupport(course.getId()));
+					participants.size(), lastTime, firstTime, scd.getCourseHash(course.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(course.getId()));
 			courses.add(courseObject);
 		}
 		dbHandler.closeSession(session);

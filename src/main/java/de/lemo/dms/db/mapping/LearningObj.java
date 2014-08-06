@@ -41,6 +41,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.ILearningObject;
+import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.db.mapping.abstractions.IMapping;
 
 /** 
@@ -243,5 +244,25 @@ public class LearningObj implements IMapping, ILearningObject{
 	 */
 	public void setLearningAttributes(Set<LearningAttribute> learningAttributes) {
 		this.learningAttributes = learningAttributes;
+	}
+
+	@Override
+	public int compareTo(ILearningObject arg0) {
+		ILearningObject s;
+		try {
+			s = arg0;
+		} catch (final Exception e)
+		{
+			return 0;
+		}
+		if (s != null) {
+			if (this.getId() > s.getId()) {
+				return 1;
+			}
+			if (this.getId() < s.getId()) {
+				return -1;
+			}
+		}
+		return 0;
 	}
 }

@@ -26,7 +26,7 @@
 
 package de.lemo.dms.test;
 
-/*
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,11 +38,14 @@ import java.util.Map;
 import java.util.Random;
 
 import de.lemo.dms.connectors.Encoder;
+import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.CollaborationLog;
 import de.lemo.dms.db.mapping.Config;
 import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.CourseAttribute;
 import de.lemo.dms.db.mapping.CourseLearning;
 import de.lemo.dms.db.mapping.CourseUser;
+import de.lemo.dms.db.mapping.LearningAttribute;
 import de.lemo.dms.db.mapping.LearningObj;
 import de.lemo.dms.db.mapping.AccessLog;
 import de.lemo.dms.db.mapping.LearningType;
@@ -50,6 +53,7 @@ import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.UserAssessment;
 import de.lemo.dms.db.mapping.User;
+import de.lemo.dms.db.mapping.UserAttribute;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 
 /**
@@ -58,7 +62,7 @@ import de.lemo.dms.db.mapping.abstractions.ILog;
  *
  */
 public class ContentGenerator {
-/*
+
 	private static final int MAGIC_THREE = 3;
 	private static final int MAGIC_FIVE = 5;
 	private static final int MAGIC_TEN = 10;
@@ -72,17 +76,48 @@ public class ContentGenerator {
 		Url,
 	}
 	
-	enum ETaskType {
-		Assignment,
-		Test,
-		Feedback,
+	enum EUserName {
+		Albrecht,
+		Marcus,
+		Sebastian,
+		Leonard,
+		Andreas,
+		Liane,
+		Boris,
+		Agathe,
+		Margarita,
 	}
 	
-	enum ECollType {
+	enum EAccessActionType {
+		Play,
+		Stop,
+		Pause,
+	}
+	
+	enum ECollaborationActionType {
+		Post,
+		Answer,
+		View,
+	}
+	
+	enum EAssessmentActionType {
+		Submit,
+		Try,
+		View,
+	}
+	
+	enum ECollaborationType {
 		Wiki,
 		Forum,
 		Chat,
 	}
+	
+	enum EAssessmentType {
+		Assignment,
+		Test,
+		Feedback,
+	}
+
 	
 	enum EQuestionType {
 		Pathetic,
@@ -106,10 +141,18 @@ public class ContentGenerator {
 		// Object-containers
 		final ArrayList<Course> courseList = new ArrayList<Course>();
 		final ArrayList<LearningObj> learningObjects = new ArrayList<LearningObj>();
+		final ArrayList<LearningObj> collaborativeObjects = new ArrayList<LearningObj>();
+		final ArrayList<LearningObj> assessmentObjects = new ArrayList<LearningObj>();
 		final ArrayList<User> userList = new ArrayList<User>();
 		final ArrayList<Role> roleList = new ArrayList<Role>();
 		final ArrayList<LearningType> loTypes = new ArrayList<LearningType>();
-
+		final ArrayList<LearningType> collTypes = new ArrayList<LearningType>();
+		final ArrayList<LearningType> asseTypes = new ArrayList<LearningType>();
+		final ArrayList<Attribute> attributes = new ArrayList<Attribute>(); 
+		final ArrayList<LearningAttribute> learnAttributes = new ArrayList<LearningAttribute>(); 
+		final ArrayList<CourseAttribute> courseAttributes = new ArrayList<CourseAttribute>(); 
+		final ArrayList<UserAttribute> userAttributes = new ArrayList<UserAttribute>(); 
+		
 		// Association-containers
 		final ArrayList<CourseLearning> courseLearningObjects = new ArrayList<CourseLearning>();
 
@@ -122,7 +165,7 @@ public class ContentGenerator {
 		final ArrayList<AssessmentLog> taskLogs = new ArrayList<AssessmentLog>();
 		
 		final Map<String, UserAssessment> taskUserMap = new HashMap<String, UserAssessment>();
-
+		final Map<Long, Long> assMG = new HashMap<Long, Long>();
 		final String[] forumAction = new String[4];
 		forumAction[0] = "view forum";
 		forumAction[1] = "subscribe";
@@ -138,6 +181,7 @@ public class ContentGenerator {
 		final String[] assignmentActionStudent = new String[2];
 		assignmentActionStudent[0] = "upload";
 		assignmentActionStudent[1] = "view";
+		Long id = 0L;
 
 		final Random randy = new Random(15768000);
 
@@ -146,14 +190,40 @@ public class ContentGenerator {
 
 		final Date dt = new Date();
 		final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		Attribute attMaxGrade = new Attribute();
+		attMaxGrade.setId(0);
+		attMaxGrade.setName("MaxGrade");
+		
+		attributes.add(attMaxGrade);
+		
+		Attribute attUserName = new Attribute();
+		attUserName.setId(1);
+		attUserName.setName("User Name");
+		
+		attributes.add(attUserName);
+		
+		Attribute attCourseDescription = new Attribute();
+		attCourseDescription.setId(2);
+		attCourseDescription.setName("Course Description");
+		
+		attributes.add(attCourseDescription);
 
 		// Create users
 		for (int i = 0; i < users; i++)
 		{
 			final User user = new User();
-			user.setId(userList.size() + 1)));
+			user.setId(userList.size() + 1);
 			user.setLogin(Encoder.createMD5(i + " " + df.format(dt)));
 
+			UserAttribute ua = new UserAttribute();
+			ua.setId(user.getId());
+			ua.setAttribute(attUserName);
+			ua.setValue(EUserName.values()[i % 9].toString());
+			ua.setUser(user);
+			
+			userAttributes.add(ua);
+			
 			userList.add(user);
 		}
 
@@ -183,24 +253,28 @@ public class ContentGenerator {
 		
 		roleList.add(r2);
 		
+
+		
 		for(int i = 0; i < 3 ; i++)
 		{
 			LearningType t = new LearningType();
 			t.setId(i);
 			t.setType(EResourceType.values()[i].toString());
 			loTypes.add(t);
-			
-			CollaborationType c = new CollaborationType();
-			c.setId(i);
-			c.setType(ECollType.values()[i].toString());
-			collTypes.add(c);
-			
-			AssessmentType tt = new AssessmentType();
-			tt.setId(i);
-			tt.setType(ECollType.values()[i].toString());
-			taskTypes.add(tt);
-			
-
+		}
+		for(int i = 0; i < 3 ; i++)
+		{
+			LearningType t = new LearningType();
+			t.setId(i + 3);
+			t.setType(ECollaborationType.values()[i].toString());
+			collTypes.add(t);
+		}
+		for(int i = 0; i < 3 ; i++)
+		{
+			LearningType t = new LearningType();
+			t.setId(i + 6);
+			t.setType(EAssessmentType.values()[i].toString());
+			asseTypes.add(t);
 		}
 		
 		for (int k = 1; k <= coursesPerLevel; k++)
@@ -219,6 +293,14 @@ public class ContentGenerator {
 
 			cou.setTitle("Course " + k);
 			cou.setId(courseList.size() + 1);
+			
+			CourseAttribute ca = new CourseAttribute();
+			ca.setId(cou.getId());
+			ca.setAttribute(attCourseDescription);
+			ca.setValue("This course is about the number " + k + ".");
+			ca.setCourse(cou);
+			
+			courseAttributes.add(ca);
 
 			courseList.add(cou);
 			
@@ -245,18 +327,20 @@ public class ContentGenerator {
 			
 			// Now create LearningObjects
 			// Create resources
+
 			for (int l = 1; l <= MAGIC_TEN; l++)
 			{
 				final LearningObj r = new LearningObj();
-				r.setId(learningObjects.size() + 1);
-				r.setTitle("LearningObj " + k + "." + l);
+				r.setId(id);
+				id++;
+				r.setTitle("LearningObj " + loTypes.get(l % 3).getType() +" "+ k + "." + l);
 				r.setType(loTypes.get(l % 3));
-				r.setUrl("http://lemo-generated.de/" + cou.getTitle().replace(" ", "-").replace(".", "_") + "/" + r.getTitle().replace(" ", "-").replace(".", "_") + ".html");
+				r.setInteractionType("ACCESS");
 				
 				final CourseLearning couRes = new CourseLearning();
 				couRes.setId(courseLearningObjects.size() + 1);
 				couRes.setCourse(cou);
-				couRes.setLearningObject(r);
+				couRes.setLearning(r);
 				
 				if(l % 3 == 0)
 					r.setParent(learningObjects.get(learningObjects.size() - 1));
@@ -267,41 +351,49 @@ public class ContentGenerator {
 			// Create collaboratives
 			for (int l = 1; l <=  MAGIC_FIVE; l++)
 			{
-				final CollaborationObj w = new CollaborationObj();
-				w.setId(collaborativeObjects.size() + 1);
+				final LearningObj w = new LearningObj();
+				w.setId(id);
+				id++;
 				w.setType(collTypes.get(l % 3));
-				w.setTitle("Collaborative " + k + "." + l);
-				w.setUrl("http://lemo-generated.de/" + cou.getTitle().replace(" ", "-").replace(".", "_") + "/" + w.getTitle().replace(" ", "-").replace(".", "_") + ".html");
-				final CourseCollaboration couWik = new CourseCollaboration();
-				couWik.setId(courseCollaborativeObjects.size() + 1);
+				w.setInteractionType("COLLABORATION");
+				w.setTitle("Collaborative " + collTypes.get(l % 3).getType() +" " + k + "." + l);
+				final CourseLearning couWik = new CourseLearning();
+				couWik.setId(courseLearningObjects.size() + 1);
 				couWik.setCourse(cou);
-				couWik.setCollaborativeObject(w);
+				couWik.setLearning(w);
 
 				if(l % 3 == 0)
-					w.setParent(collaborativeObjects.get(collaborativeObjects.size() - 1));
+					w.setParent(learningObjects.get(learningObjects.size() - 1));
 				
 				collaborativeObjects.add(w);
-				courseCollaborativeObjects.add(couWik);
+				courseLearningObjects.add(couWik);
 			}
 			// Create tasks
 			for (int l = 1; l <= MAGIC_FIVE; l++)
 			{
-				final Assessment a = new Assessment();
-				a.setId(tasks.size() + 1);
-				a.setTitle("Task "  + k + "." + l);
-				a.setMaxGrade(Double.parseDouble("" + (randy.nextInt(19) + 1)) * MAGIC_FIVE);
-				a.setType(taskTypes.get(l % 3));
-				a.setUrl("http://lemo-generated.de/" + cou.getTitle().replace(" ", "-").replace(".", "_") + "/" + a.getTitle().replace(" ", "-").replace(".", "_") + ".html");
-
-				final CourseAssessment couAss = new CourseAssessment();
-				couAss.setId(courseTasks.size() + 1);
+				final LearningObj a = new LearningObj();
+				a.setId(id);
+				id++;
+				a.setTitle("Assessment " + asseTypes.get(l % 3).getType() + " " + k + "." + l);
+				a.setType(asseTypes.get(l % 3));
+				a.setInteractionType("ASSESSMENT");
+				final CourseLearning couAss = new CourseLearning();
+				couAss.setId(courseLearningObjects.size() + 1);
 				couAss.setCourse(cou);
-				couAss.setAssessment(a);
+				couAss.setLearning(a);
 				if(l % 3 == 0)
-					a.setParent(tasks.get(tasks.size() - 1));
+					a.setParent(learningObjects.get(learningObjects.size() - 1));
+				LearningAttribute la = new LearningAttribute();
+				la.setId(learnAttributes.size() + 1);
+				la.setAttribute(attMaxGrade);
+				la.setLearning(a);
+				la.setValue((randy.nextInt(3) + 10 ) * 10L +"");
+				
+				learnAttributes.add(la);
+				assMG.put(a.getId(), Long.valueOf(la.getValue()));
 
-				tasks.add(a);
-				courseTasks.add(couAss);
+				assessmentObjects.add(a);
+				courseLearningObjects.add(couAss);
 			}
 			
 			// Create log-entries
@@ -315,14 +407,15 @@ public class ContentGenerator {
 				int time = (int) (startdate + log * (year / logSwitch));
 				final AccessLog rLog = new AccessLog();
 				rLog.setCourse(cou);
-				rLog.setLearningObject(learningObjects.get((learningObjects.size() - 1) - randy.nextInt(MAGIC_TEN)));
+				rLog.setLearning(learningObjects.get((learningObjects.size() - 1) - randy.nextInt(MAGIC_TEN)));
 				rLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
 						% userList.size()));
-
+				rLog.setDuration(Long.valueOf(randy.nextInt(350) + 2));
+				rLog.setAction(EAccessActionType.values()[time % 3].toString());
 				time = (int) (startdate
 					+ (randy.nextInt(year) ));
 				
-				rLog.setTimestamp(time);
+				rLog.setTimestamp(Long.valueOf(time));
 				if(rLog.getTimestamp() > maxLog)
 				{
 					maxLog = rLog.getTimestamp();
@@ -336,25 +429,29 @@ public class ContentGenerator {
 					
 				final AssessmentLog aLog = new AssessmentLog();
 				aLog.setCourse(cou);
-				aLog.setAssessment(tasks.get((tasks.size() - 1) - randy.nextInt(MAGIC_FIVE)));
+				aLog.setLearning(assessmentObjects.get((assessmentObjects.size() - 1) - randy.nextInt(MAGIC_FIVE)));
 				aLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
-				final Assessment a = aLog.getAssessment();
-
+				aLog.setAction(EAssessmentActionType.values()[time % 3].toString());
+				final LearningObj a = aLog.getLearning();
+				aLog.setDuration(Long.valueOf(randy.nextInt(350) + 2));
 				time = (int) (startdate
 						+ (randy.nextInt(year) ));
-				aLog.setTimestamp(time);
+				aLog.setTimestamp(Long.valueOf(time));
+				if(aLog.getAction().equals("Try"))
+					aLog.setText("Generated assessment message");
 				
-				if(!taskUserMap.containsKey(aLog.getUser().getId() + "#" + aLog.getAssessment().getId()))
+				if(!taskUserMap.containsKey(aLog.getUser().getId() + "#" + aLog.getLearning().getId()) && aLog.getAction().equals("Submit"))
 				{
 					UserAssessment tu = new UserAssessment();
 					tu.setId(taskUserMap.size() + 1);
-					tu.setAssessment(a);
+					tu.setLearning(a);
 					tu.setUser(aLog.getUser());
 					tu.setCourse(cou);
 					tu.setTimemodified(time);
-					tu.setGrade(randy.nextInt(((Double)a.getMaxGrade()).intValue()));
+					tu.setFeedback("Generated feedback message");
+					tu.setGrade(randy.nextInt(assMG.get(a.getId()).intValue()));
 					
-					taskUserMap.put(aLog.getUser().getId() + "#" + aLog.getAssessment().getId(), tu);
+					taskUserMap.put(aLog.getUser().getId() + "#" + aLog.getLearning().getId(), tu);
 				}
 				
 				if(aLog.getTimestamp() > maxLog)
@@ -369,12 +466,15 @@ public class ContentGenerator {
 				final CollaborationLog cLog = new CollaborationLog();
 				cLog.setCourse(cou);
 				cLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
-				cLog.setCollaborativeObject(collaborativeObjects.get((collaborativeObjects.size() - 1) - randy.nextInt(MAGIC_FIVE)));
-
+				cLog.setLearning(collaborativeObjects.get((collaborativeObjects.size() - 1) - randy.nextInt(MAGIC_FIVE)));
+				cLog.setAction(ECollaborationActionType.values()[time % 3].toString());
 			
 				time = (int) (startdate
 						+ (randy.nextInt(year) ));
-				cLog.setTimestamp(time);
+				cLog.setTimestamp(Long.valueOf(time));
+				
+
+				
 				if(cLog.getTimestamp() > maxLog)
 				{
 					maxLog = cLog.getTimestamp();
@@ -385,11 +485,17 @@ public class ContentGenerator {
 				collLog.add(cLog);
 			}
 		}
+		
+		learningObjects.addAll(collaborativeObjects);
+		learningObjects.addAll(assessmentObjects);
+		loTypes.addAll(collTypes);
+		loTypes.addAll(asseTypes);
 
 		all.add(userList);
 
 		all.add(roleList);
 		all.add(loTypes);
+		all.add(attributes);
 		
 		all.add(courseList);
 		all.add(learningObjects);
@@ -417,6 +523,9 @@ public class ContentGenerator {
 		all.add(resourceLogList);
 		all.add(collLog);
 		all.add(taskLogs);
+		all.add(learnAttributes);
+		all.add(courseAttributes);
+		all.add(userAttributes);
 
 
 		// Create and save config-object
@@ -438,6 +547,7 @@ public class ContentGenerator {
 	private void createIdsLL(List<AccessLog> logs)
 	{
 		int i = 1;
+		Collections.sort(logs);
 		for(ILog il : logs)
 		{
 			il.setId(i);
@@ -448,30 +558,31 @@ public class ContentGenerator {
 	private void createIdsCL(List<CollaborationLog> logs)
 	{
 		int i = 1;
+		Collections.sort(logs);
 		for(ILog il : logs)
 		{
 			il.setId(i);
 			i++;
 		}
 		
-		Collections.sort(logs);
+		
 		for(int j = 0; j < logs.size(); j++)
 		{
-			if(j % 3 == 1)
-				logs.get(j).setParent(logs.get(j-1));
+		//	if(logs.get(j).getAction().equals("Answer") && logs.size() > 0)
+			//	logs.get(j).setReferrer(logs.get(logs.size() - 1));
 		}
 	}
 	
 	private void createIdsTL(List<AssessmentLog> logs)
 	{
 		int i = 1;
+		Collections.sort(logs);
 		for(ILog il : logs)
 		{
 			il.setId(i);
 			i++;
 		}
 	}
-	*/
 	
 
 }

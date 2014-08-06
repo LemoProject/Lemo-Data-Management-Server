@@ -26,10 +26,14 @@
 
 package de.lemo.dms.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Session;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.processing.questions.QPerformanceHistogram;
 
 /**
  * sollte gelöscht werden
@@ -40,13 +44,12 @@ public class Test {
 
 
 	public static void gen()
-	{/*
+	{
 		final ContentGenerator conGen = new ContentGenerator();
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
-		//dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 250, 1325372400L, 5000));
-		 * */
+		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 100, 1325372400L, 5000));
 	}
 /*	
 	public static void write()
@@ -70,49 +73,34 @@ public class Test {
 	 * TODO move to unit test
 	 * @param args
 	 */
-	/*
+	
 	public static void test()
 	{
 		QPerformanceHistogram qph = new QPerformanceHistogram();
-		QPerformanceUserTestBoxPlot qpubp = new QPerformanceUserTestBoxPlot();
-		QCourseActivity qca = new QCourseActivity();
-		QPerformanceBoxPlot qpbp = new QPerformanceBoxPlot();
-		QFrequentPathsViger qfpv = new QFrequentPathsViger();
-		QFrequentPathsBIDE qfpb = new QFrequentPathsBIDE();
+		
 		List<Long> courses = new ArrayList<Long>();
-		courses.add(221L);
+		courses.add(1L);
 		List<Long> users = new ArrayList<Long>();
-		Long startTime = 1325375975L;
-		Long endTime = 1335375975L;
+		Long startTime = 0L;
+		Long endTime = 1500000000L;
 		Long resolution = 100L;
 		List<String> types = new ArrayList<String>();
 		List<Long> gender = new ArrayList<Long>();
 		List<Long> quizzes = new ArrayList<Long>();
-		quizzes.add(11224L);
-		quizzes.add(11225L);
-		quizzes.add(11221L);
-		quizzes.add(11222L);
-		quizzes.add(11223L);
-		Long u = 1L;
+		quizzes.add(1115L);
+		quizzes.add(1116L);
+		
+		qph.compute(courses, users, quizzes, resolution, startTime, endTime, gender);
 
-		try {
-			qfpb.compute(1L, courses, users, types, 0L, 1000L, 0.9, false, startTime, endTime, gender);
-		} catch (UnsupportedEncodingException e) {
-	
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-
-			e.printStackTrace();
-		}
 			
 		
 	}
-	*/
+	
 
 	public static void main(final String[] args)
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.gen();
+		Test.test();
 	}
 
 }

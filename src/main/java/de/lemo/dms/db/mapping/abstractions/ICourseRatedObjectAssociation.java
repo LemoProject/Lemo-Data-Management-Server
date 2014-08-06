@@ -36,7 +36,7 @@ import de.lemo.dms.db.mapping.Course;
  */
 public interface ICourseRatedObjectAssociation {
 
-	IRatedObject getRatedObject();
+	ILearningObject getRatedObject();
 
 	Course getCourse();
 

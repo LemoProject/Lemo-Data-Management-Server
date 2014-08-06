@@ -714,18 +714,18 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Answers loadedItem : this.answersMooc)
 		{
 			CollaborationLog insert = new CollaborationLog();
-			insert.setReferrer(questionLog.get(loadedItem.getQuestionId()));
+			//insert.setReferrer(questionLog.get(loadedItem.getQuestionId()));
 			
-			if(insert.getReferrer() != null)
+			//if(insert.getReferrer() != null)
 			{
 				insert.setId(loadedItem.getId());
 				insert.setLearning(questionLog.get(loadedItem.getQuestionId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
 				insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-				insert.setCourse(insert.getReferrer().getCourse().getId(), this.courseMining, this.oldCourseMining);
+				//insert.setCourse(insert.getReferrer().getCourse().getId(), this.courseMining, this.oldCourseMining);
 				insert.setAction("Answer");
 				insert.setText(loadedItem.getContent());
 				insert.setTimestamp(loadedItem.getTimeCreated().getTime()/1000);
-				insert.setReferrer(questionLog.get(loadedItem.getQuestionId()));
+				//insert.setReferrer(questionLog.get(loadedItem.getQuestionId()));
 				
 				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 				{
@@ -776,6 +776,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		{
 			CollaborationLog l = loglist.get(i);
 			l.setId(this.collaborationLogMax + i + 1);
+			l.setReferrer(null); 
 			this.collaborationLogMax++;
 			collaborationLogs.put(l.getId(), l);			
 		}

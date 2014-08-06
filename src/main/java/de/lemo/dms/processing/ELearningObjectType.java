@@ -42,9 +42,9 @@ import de.lemo.dms.db.mapping.abstractions.ILog;
  */
 public enum ELearningObjectType {
 
-	LEARNINGOBJECT(AccessLog.class),
-	TASK(AssessmentLog.class),
-	COLLABORATIVEOBJECT(CollaborationLog.class)
+	ACCESS(AccessLog.class),
+	ASSESSMENT(AssessmentLog.class),
+	COLLABORATION(CollaborationLog.class)
 	/*,
 	QUESTION(QuestionLogMining.class),
 	QUIZ(QuizLogMining.class),

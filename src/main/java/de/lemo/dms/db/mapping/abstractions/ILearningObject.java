@@ -32,12 +32,14 @@ package de.lemo.dms.db.mapping.abstractions;
  * @author Leonard Kappe
  * @author Sebastian Schwarzrock
  */
-public interface ILearningObject {
+public interface ILearningObject extends Comparable<ILearningObject> {
 
 	long getId();
 
 	String getTitle();
 	
 	String getLOType();
+	
+	String getInteractionType();
 
 }

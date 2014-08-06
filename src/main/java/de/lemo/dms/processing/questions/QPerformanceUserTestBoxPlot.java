@@ -44,7 +44,9 @@ import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
+import de.lemo.dms.db.mapping.Attribute;
+import de.lemo.dms.db.mapping.LearningAttribute;
+import de.lemo.dms.db.mapping.abstractions.ILearningUserAssociation;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.resulttype.BoxPlot;
@@ -133,7 +135,7 @@ public class QPerformanceUserTestBoxPlot {
 			users = tmp;
 		}
 		
-		criteria = session.createCriteria(IRatedUserAssociation.class, "log");
+		criteria = session.createCriteria(ILearningUserAssociation.class, "log");
 		criteria.add(Restrictions.between("log.timemodified", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
@@ -142,7 +144,7 @@ public class QPerformanceUserTestBoxPlot {
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
 
-		final ArrayList<IRatedUserAssociation> list = (ArrayList<IRatedUserAssociation>) criteria.list();
+		final ArrayList<ILearningUserAssociation> list = (ArrayList<ILearningUserAssociation>) criteria.list();
 
 
 		final Map<Long, Integer> obj = new HashMap<Long, Integer>();
@@ -178,17 +180,32 @@ public class QPerformanceUserTestBoxPlot {
 		}
 		
 		Map<Long, ArrayList<Double>> fin = new HashMap<Long, ArrayList<Double>>();
-		
-		for (final IRatedUserAssociation association : list)
+		criteria = session.createCriteria(Attribute.class, "attribute");
+		criteria.add(Restrictions.like("attribute.name", "MaxGrade"));
+		Long maxGradeId;
+		final Map<Long, Double> maxGrades = new HashMap<Long, Double>();
+		if(!criteria.list().isEmpty())
 		{
-			if ((obj.get(association.getLearnObjId()) != null)
-					&& (association.getMaxGrade() != null) && (association.getMaxGrade() > 0))
+			maxGradeId = ((Attribute)criteria.list().get(0)).getId();
+			criteria = session.createCriteria(LearningAttribute.class, "learningAttribute");
+			criteria.add(Restrictions.in("learningAttribute.learning.id", obj.keySet()));
+			criteria.add(Restrictions.eq("learningAttribute.attribute.id", maxGradeId));
+			for(LearningAttribute la : (List<LearningAttribute>)criteria.list())
+			{
+				maxGrades.put(la.getLearning().getId(), Double.valueOf(la.getValue()));
+			}
+		}
+		
+		for (final ILearningUserAssociation association : list)
+		{
+			if ((obj.get(association.getLearning().getId()) != null)
+					&& (maxGrades.get(association.getLearning().getId()) != null) && (maxGrades.get(association.getLearning().getId()) > 0))
 			{
 				Double step;
 				// Determine size of each interval
 				if(resolution == null || resolution == 0)
 					resolution = 100L;
-				step = association.getMaxGrade() / resolution;
+				step = maxGrades.get(association.getLearning().getId()) / resolution;
 				if (step > 0d)
 				{
 					// Determine interval for specific grade
@@ -205,11 +222,11 @@ public class QPerformanceUserTestBoxPlot {
 							l.add(-1d);
 						}
 						fin.put(association.getUser().getId(), l);
-						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(11 + "" + association.getLearnObjId())), pos.doubleValue());
+						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(11 + "" + association.getLearning().getId())), pos.doubleValue());
 					}
 					else
 					{
-						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(11 + "" + association.getLearnObjId())), pos.doubleValue());
+						fin.get(association.getUser().getId()).set(quizzes.indexOf(Long.valueOf(11 + "" + association.getLearning().getId())), pos.doubleValue());
 					}
 				}
 			}

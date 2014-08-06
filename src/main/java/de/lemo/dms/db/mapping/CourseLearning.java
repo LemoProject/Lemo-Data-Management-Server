@@ -146,6 +146,6 @@ public class CourseLearning implements IMapping, ICourseLORelation {
 	@Override
 	@Transient
 	public String getType() {
-		return this.getLearning().getType().getType();
+		return this.getLearning().getInteractionType();
 	}
 }

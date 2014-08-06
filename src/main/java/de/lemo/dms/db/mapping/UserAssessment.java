@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import de.lemo.dms.db.mapping.abstractions.IMapping;
-import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
+import de.lemo.dms.db.mapping.abstractions.ILearningUserAssociation;
 
 /** 
  * This class represents the table task. 
@@ -20,7 +20,7 @@ import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
  */
 @Entity
 @Table(name = "lemo_user_assessment")
-public class UserAssessment implements IMapping, IRatedUserAssociation{
+public class UserAssessment implements IMapping, ILearningUserAssociation{
 	
 	private long id;
 	private Course course;
@@ -183,18 +183,6 @@ public class UserAssessment implements IMapping, IRatedUserAssociation{
 	 */
 	public void setLearning(LearningObj learningObj) {
 		this.learning = learningObj;
-	}
-
-	@Override
-	@Transient
-	public Long getLearnObjId() {
-		return this.getLearning().getId();
-	}
-
-	@Override
-	@Transient
-	public Double getMaxGrade() {
-		return null;
 	}
 
 	/**

@@ -44,7 +44,9 @@ import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.abstractions.IRatedUserAssociation;
+import de.lemo.dms.db.mapping.Attribute;
+import de.lemo.dms.db.mapping.LearningAttribute;
+import de.lemo.dms.db.mapping.abstractions.ILearningUserAssociation;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -167,7 +169,7 @@ public class QPerformanceBoxPlot extends Question {
 			users = tmp;
 		}
 
-		criteria = session.createCriteria(IRatedUserAssociation.class, "log");
+		criteria = session.createCriteria(ILearningUserAssociation.class, "log");
 		criteria.add(Restrictions.between("log.timemodified", startTime, endTime));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
@@ -176,18 +178,35 @@ public class QPerformanceBoxPlot extends Question {
 			criteria.add(Restrictions.in("log.user.id", users));
 		}
 
-		final ArrayList<IRatedUserAssociation> list = (ArrayList<IRatedUserAssociation>) criteria.list();
+		final ArrayList<ILearningUserAssociation> list = (ArrayList<ILearningUserAssociation>) criteria.list();
 
-		for (final IRatedUserAssociation aso : list)
+		criteria = session.createCriteria(Attribute.class, "attribute");
+		criteria.add(Restrictions.like("attribute.name", "MaxGrade"));
+		Long maxGradeId;
+		final Map<Long, Double> maxGrades = new HashMap<Long, Double>();
+		if(!criteria.list().isEmpty())
 		{
-			final Long name = Long.valueOf(aso.getLearnObjId());
+			maxGradeId = ((Attribute)criteria.list().get(0)).getId();
+			criteria = session.createCriteria(LearningAttribute.class, "learningAttribute");
+			criteria.add(Restrictions.in("learningAttribute.learning.id", obj.keySet()));
+			criteria.add(Restrictions.eq("learningAttribute.attribute.id", maxGradeId));
+			for(LearningAttribute la : (List<LearningAttribute>)criteria.list())
+			{
+				maxGrades.put(la.getLearning().getId(), Double.valueOf(la.getValue()));
+			}
+		}
+		
+		
+		for (final ILearningUserAssociation aso : list)
+		{
+			final Long name = Long.valueOf(aso.getLearning().getId());
 			if (values.get(name) == null)
 			{
 				final ArrayList<Double> v = new ArrayList<Double>();
 				values.put(name, v);
 			}
 
-			values.get(name).add(aso.getFinalGrade() / ((aso.getMaxGrade() / resolution)));
+			values.get(name).add(aso.getFinalGrade() / ((maxGrades.get(aso.getLearning().getId()) / resolution)));
 		}
 
 		BoxPlot[] results = new BoxPlot[values.keySet().size()];

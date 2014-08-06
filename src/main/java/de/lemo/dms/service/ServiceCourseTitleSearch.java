@@ -37,9 +37,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
@@ -59,6 +62,8 @@ import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 @Path("coursesbytext")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceCourseTitleSearch {
+	
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	/**
 	 * Gets the details of all courses whose title matches search text. Informations include id, title, description, 
@@ -72,6 +77,7 @@ public class ServiceCourseTitleSearch {
 	public ResultListCourseObject getCoursesByText(@QueryParam(MetaParam.SEARCH_TEXT) final String text,
 			@QueryParam(MetaParam.RESULT_AMOUNT) final Long count,
 			@QueryParam(MetaParam.OFFSET) final Long offset ) {
+
 
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		List<CourseObject> result = new ArrayList<CourseObject>();
@@ -108,23 +114,38 @@ public class ServiceCourseTitleSearch {
 			{
 				criteria.add(Restrictions.in("log.user.id", userMap.values()));
 			}
-
-			@SuppressWarnings("unchecked")
-			ArrayList<ILog> logs = (ArrayList<ILog>) criteria.list();
-			Collections.sort(logs);
-
+			ProjectionList pl = Projections.projectionList();
+			pl.add(Projections.max("timestamp"));
+			criteria.setProjection(pl);
+			
 			Long lastTime = 0L;
 			Long firstTime = 0L;
 
-			if (logs.size() > 0)
+			if (criteria.list().size() > 0)
 			{
-				lastTime = logs.get(logs.size() - 1).getTimestamp();
-				firstTime = logs.get(0).getTimestamp();
+				lastTime = (Long) criteria.list().get(0);
+				
+			}	
+			criteria = session.createCriteria(ILog.class, "log");
+			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
+			if(userMap.size() > 0)
+			{
+				criteria.add(Restrictions.in("log.user.id", userMap.values()));
+			}
+			pl = Projections.projectionList();
+			pl.add(Projections.min("timestamp"));
+			criteria.setProjection(pl);
+			
+			if (criteria.list().size() > 0)
+			{
+				firstTime = (Long) criteria.list().get(0);
+				
 			}
 			ServiceCourseDetails scd = new ServiceCourseDetails();
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
-					courseMining.getTitle(), userMap.size(), lastTime, firstTime, scd.getCourseHash(courseMining.getId()), StudentHelper.getGenderSupport(courseMining.getId()));
+					courseMining.getTitle(), userMap.size(), lastTime, firstTime, scd.getCourseHash(courseMining.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(courseMining.getId()));
 			result.add(co);
+
 		}
 		
 		if(count != null && count > 0)

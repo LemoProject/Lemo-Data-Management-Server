@@ -94,13 +94,13 @@ public class QActivityResourceTypeResolution extends Question {
 				ArrayList<ResourceRequestInfo> rriList = new ArrayList<ResourceRequestInfo>(rri.values());
 
 				switch (loType) {
-					case COLLABORATIVEOBJECT:
+					case COLLABORATION:
 						result.setCollaborativeRRI(rriList);
 						break;
-					case TASK:
+					case ASSESSMENT:
 						result.setSubmissionRRI(rriList);
 						break;
-					case LEARNINGOBJECT:
+					case ACCESS:
 						result.setViewRRI(rriList);
 						break;
 						/*

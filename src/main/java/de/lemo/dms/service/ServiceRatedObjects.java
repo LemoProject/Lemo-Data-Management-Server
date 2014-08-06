@@ -28,17 +28,21 @@ package de.lemo.dms.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
 import de.lemo.dms.db.mapping.abstractions.ICourseRatedObjectAssociation;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.resulttype.ResultListStringObject;
@@ -69,19 +73,22 @@ public class ServiceRatedObjects {
 			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 			final Session session = dbHandler.getMiningSession();
 
-			final Criteria criteria = session.createCriteria(ICourseRatedObjectAssociation.class, "aso");
+			final Criteria criteria = session.createCriteria(ICourseLORelation.class, "aso");
 			criteria.add(Restrictions.in("aso.course.id", courses));
 
 			@SuppressWarnings("unchecked")
-			final ArrayList<ICourseRatedObjectAssociation> list = (ArrayList<ICourseRatedObjectAssociation>) criteria
+			final ArrayList<ICourseLORelation> list = (ArrayList<ICourseLORelation>) criteria
 					.list();
 
-			for (final ICourseRatedObjectAssociation obj : list)
+			for (final ICourseLORelation obj : list)
 			{
-				// Simple name is not needed so far - will break App-server implementation !!!
-				res.add("11");
-				res.add(obj.getRatedObject().getId() + "");
-				res.add(obj.getRatedObject().getTitle());
+				if(obj.getLearning().getInteractionType().equals("ASSESSMENT"))
+				{
+					// Simple name is not needed so far - will break App-server implementation !!!
+					res.add("11");
+					res.add(obj.getLearning().getId() + "");
+					res.add(obj.getLearning().getTitle());
+				}
 			}
 			session.close();
 
