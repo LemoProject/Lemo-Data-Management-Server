@@ -44,7 +44,7 @@
 	        <connector platform-id="5" name="mooc" platform-type="Mooc">
         <course-id-filter></course-id-filter>
 	<course-login-filter></course-login-filter>        
-	<property name="hibernate.connection.url">jdbc:mysql://localhost/lemo_iversity_an?rewriteBatchedStatements=true</property>
+	<property name="hibernate.connection.url">jdbc:mysql://localhost/lemo_mooc</property>
         <property name="hibernate.connection.username">lemo</property>
         <property name="hibernate.connection.password">lemolemo</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>

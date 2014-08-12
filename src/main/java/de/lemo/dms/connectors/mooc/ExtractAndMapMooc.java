@@ -31,8 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -603,7 +605,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	public Map<Long, UserAssessment> generateUserAssessments() {
 		final HashMap<Long, UserAssessment> assessmentUsers = new HashMap<Long, UserAssessment>();
 		
-		
 		for(AssessmentSessions loadedItem : this.assessmentSessionsMooc)
 		{
 			UserAssessment insert = new UserAssessment();
@@ -615,6 +616,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			}
 			if(cu != null)
 			{
+				insert.setId(loadedItem.getId());
+				insert.setLearning(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.oldLearningObjectMining);
 				insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
 				insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
 				insert.setLearning(loadedItem.getAssessmentId(), this.learningObjectMining, this.learningObjectMining);
@@ -1029,10 +1032,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			insert.setId(this.assessmentLogMax + 1 + assessmentLogs.size());
 			insert.setDuration(loadedItem.getDuration());
 			insert.setAction(loadedItem.getState());
-			if(loadedItem.getSubmittetdAt() != null)
-			{
-				insert.setTimestamp(loadedItem.getSubmittetdAt().getTime() / 1000);
-			}
+			insert.setTimestamp(loadedItem.getTimeModified().getTime() / 1000);
+			insert.setLearning(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.oldLearningObjectMining);
 			
 			CourseUser cu = this.courseUserMining.get(loadedItem.getMembershipId());
 			if(cu == null)

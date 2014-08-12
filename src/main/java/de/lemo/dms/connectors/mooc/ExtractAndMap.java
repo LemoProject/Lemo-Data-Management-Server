@@ -594,7 +594,7 @@ public abstract class ExtractAndMap {
 		this.updates.add(this.generateUserAssessments().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-				+ " TaskUser entries in " + this.c.getAndReset() + " s. ");
+				+ " UserAssessment entries in " + this.c.getAndReset() + " s. ");
 		
 		logger.info("\nLog tables:\n");
 
