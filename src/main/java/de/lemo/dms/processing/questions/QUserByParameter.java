@@ -81,7 +81,8 @@ public class QUserByParameter extends Question {
 			@FormParam(MetaParam.LOG_OBJECT_IDS) final List<String> objects,
 			@FormParam(MetaParam.ROLE_IDS) final List<Long> roles,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) final Long endTime) {
+			@FormParam(MetaParam.END_TIME) final Long endTime,
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) final List<Long> learningObjects) {
 
 		validateTimestamps(startTime, endTime);
 
@@ -104,6 +105,10 @@ public class QUserByParameter extends Question {
 					criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 					if (!courses.isEmpty()) {
 						criteria.add(Restrictions.in("log.course.id", courses));
+					}
+					if(!learningObjects.isEmpty())
+					{
+						criteria.add(Restrictions.in("log.learning.id", learningObjects));
 					}
 					List<ILog> loadLogMining = loadLogMining(criteria, objects, typeName);
 					if (loadLogMining != null) {

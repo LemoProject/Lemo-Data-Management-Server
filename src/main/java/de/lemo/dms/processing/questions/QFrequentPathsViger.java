@@ -84,7 +84,8 @@ public class QFrequentPathsViger extends Question {
 			@FormParam(MetaParam.SESSION_WISE) final boolean sessionWise,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
-			@FormParam(MetaParam.GENDER) final List<Long> gender) {
+			@FormParam(MetaParam.GENDER) final List<Long> gender,
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) final List<Long> learningObjects) {
 
 		validateTimestamps(startTime, endTime);
 		
@@ -139,7 +140,7 @@ public class QFrequentPathsViger extends Question {
 			final SequenceDatabase sequenceDatabase = new SequenceDatabase();
 
 			sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength,
-					maxLength, startTime, endTime, session, gender));
+					maxLength, startTime, endTime, session, gender, learningObjects));
 
 			final AlgoFournierViger08 algo = new AlgoFournierViger08(minSup, 0L, 1L, 0L, 1000L, null, true, false);
 
@@ -251,7 +252,7 @@ public class QFrequentPathsViger extends Question {
 	@SuppressWarnings("unchecked")
 	private LinkedList<String> generateLinkedList(final List<Long> courses, List<Long> users,
 			final List<String> types, final Long minLength, final Long maxLength, final Long starttime,
-			final Long endtime, Session session, List<Long> gender)
+			final Long endtime, Session session, List<Long> gender, List<Long> learningObjects)
 	{
 		final LinkedList<String> result = new LinkedList<String>();
 		final boolean hasBorders = (minLength != null) && (maxLength != null) && (maxLength > 0)
@@ -282,6 +283,10 @@ public class QFrequentPathsViger extends Question {
 		}
 		if (users.size() > 0) {
 			criteria.add(Restrictions.in("log.user.id", users));
+		}
+		if(!learningObjects.isEmpty())
+		{
+			criteria.add(Restrictions.in("log.learning.id", learningObjects));
 		}
 		criteria.add(Restrictions.between("log.timestamp", starttime, endtime));
 		final ArrayList<ILog> list = (ArrayList<ILog>) criteria.list();

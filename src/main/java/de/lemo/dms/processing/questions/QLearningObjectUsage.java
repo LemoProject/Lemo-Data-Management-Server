@@ -85,7 +85,8 @@ public class QLearningObjectUsage extends Question {
 			@FormParam(MetaParam.TYPES) final List<String> types,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
-			@FormParam(MetaParam.GENDER) final List<Long> gender) {
+			@FormParam(MetaParam.GENDER) final List<Long> gender,
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) final List<Long> learningObjects) {
 
 		validateTimestamps(startTime, endTime);
 		if (users.isEmpty()) {
@@ -115,6 +116,9 @@ public class QLearningObjectUsage extends Question {
 		}
 		if (!users.isEmpty()) {
 			criteria.add(Restrictions.in("log.user.id", users));
+		}
+		if (!learningObjects.isEmpty()) {
+			criteria.add(Restrictions.in("log.learning.id", learningObjects));
 		}
 
 		final List<ILog> logs = criteria.list();

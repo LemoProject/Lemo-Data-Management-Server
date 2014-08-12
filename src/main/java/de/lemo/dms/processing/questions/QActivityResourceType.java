@@ -67,7 +67,8 @@ public class QActivityResourceType extends Question {
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
 			@FormParam(MetaParam.TYPES) List<String> resourceTypes,
-			@FormParam(MetaParam.GENDER) List<Long> gender){
+			@FormParam(MetaParam.GENDER) List<Long> gender,
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects){
 
 		validateTimestamps(startTime, endTime);
 
@@ -93,8 +94,13 @@ public class QActivityResourceType extends Question {
 		
 		Criteria criteria = session.createCriteria(ILog.class, "log");
 		criteria.add(Restrictions.in("log.course.id", courses))
-				.add(Restrictions.between("log.timestamp", startTime, endTime));
-				criteria.add(Restrictions.in("log.user.id", users));
+				.add(Restrictions.between("log.timestamp", startTime, endTime))
+				.add(Restrictions.in("log.user.id", users));
+		
+		if(!learningObjects.isEmpty())
+		{
+			criteria.add(Restrictions.in("log.learning.id", learningObjects));
+		}
 
 		final List<ILog> logs = criteria.list();		
 		

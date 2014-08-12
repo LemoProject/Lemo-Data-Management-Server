@@ -79,6 +79,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 	private Long startTime;
 	private Long endTime;
 	private List<Long> gender;
+	private List<Long> learningObjects;
 
 	public AFrequentPathsBIDE(
 			final String taskId,
@@ -91,7 +92,8 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 			final boolean sessionWise,
 			final Long startTime,
 			final Long endTime,
-			final List<Long> gender) {
+			final List<Long> gender,
+			final List<Long> learningObjects) {
 		super(taskId);
 		this.courses = courses;
 		this.users = users;
@@ -103,6 +105,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.gender = gender;
+		this.learningObjects = learningObjects;
 	}
 
 	public/* ResultListUserPathGraph */Object compute() {
@@ -140,6 +143,15 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 				}
 				logger.debug(buffer.toString());
 			}
+			if (!learningObjects.isEmpty())
+			{
+				buffer = new StringBuffer();
+				buffer.append("Parameter list: LearningObjects: : ").append(learningObjects.get(0));
+				for (int i = 1; i < learningObjects.size(); i++) {
+					buffer.append(", ").append(learningObjects.get(i));
+				}
+				logger.debug(buffer.toString());
+			}
 			if ((minLength != null) && (maxLength != null) && (minLength < maxLength))
 			{
 				logger.debug("Parameter list: Minimum path length: : " + minLength);
@@ -156,7 +168,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 			final SequenceDatabase sequenceDatabase = new SequenceDatabase();
 
 			sequenceDatabase.loadLinkedList(generateLinkedList(courses, users, types, minLength,
-				maxLength, startTime, endTime, session, gender));
+				maxLength, startTime, endTime, session, gender, learningObjects));
 
 
 			final AlgoBIDEPlus algo = new AlgoBIDEPlus(minSup);
@@ -268,7 +280,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 	@SuppressWarnings("unchecked")
 	private LinkedList<String> generateLinkedList(final List<Long> courses, List<Long> users,
 			final List<String> types,
-			final Long minLength, final Long maxLength, final Long starttime, final Long endtime, Session session, List<Long> gender2)
+			final Long minLength, final Long maxLength, final Long starttime, final Long endtime, Session session, List<Long> gender2, List<Long> learningObjects)
 	{
 		final LinkedList<String> result = new LinkedList<String>();
 		final boolean hasBorders = (minLength != null) && (maxLength != null) && (maxLength > 0)
@@ -297,6 +309,10 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 		}
 		if (users.size() > 0) {
 			criteria.add(Restrictions.in("log.user.id", users));
+		}
+		if(!learningObjects.isEmpty())
+		{
+			criteria.add(Restrictions.in("log.learning.id", learningObjects));
 		}
 		criteria.add(Restrictions.between("log.timestamp", starttime, endtime));
 		final ArrayList<ILog> list = (ArrayList<ILog>) criteria.list();

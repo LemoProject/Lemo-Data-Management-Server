@@ -66,7 +66,8 @@ public class QActivityResourceTypeResolution extends Question {
 			@FormParam(MetaParam.END_TIME) final Long endTime,
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
 			@FormParam(MetaParam.TYPES) final List<String> resourceTypes,
-			@FormParam(MetaParam.GENDER) List<Long> gender){
+			@FormParam(MetaParam.GENDER) List<Long> gender,
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects){
 
 		validateTimestamps(startTime, endTime, resolution);
 
@@ -83,9 +84,13 @@ public class QActivityResourceTypeResolution extends Question {
 				criteria = session.createCriteria(loType.getLogMiningType(), "log")
 						.add(Restrictions.between("log.timestamp", startTime, endTime));
 				criteria.add(Restrictions.in("log.course.id", courses));
-				if(users.size() > 0)
+				if(!users.isEmpty())
 				{
 					criteria.add(Restrictions.in("log.user.id", users));
+				}
+				if(!learningObjects.isEmpty())
+				{
+					criteria.add(Restrictions.in("log.learning.id", learningObjects));
 				}
 				
 				final List<ILog> logs = criteria.list();

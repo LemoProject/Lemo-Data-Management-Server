@@ -75,7 +75,8 @@ public class QCourseUserPaths extends Question {
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) Long endTime,
-			@FormParam(MetaParam.GENDER) List<Long> gender
+			@FormParam(MetaParam.GENDER) List<Long> gender,
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects
 			) throws JSONException {
 
 		validateTimestamps(startTime, endTime);
@@ -99,6 +100,10 @@ public class QCourseUserPaths extends Question {
 		{
 			this.logger.debug("No users found for courses. Returning empty JSONObject.");
 			return new JSONObject();
+		}
+		if(!learningObjects.isEmpty())
+		{
+			criteria.add(Restrictions.in("log.learning.id", learningObjects));
 		}
 
 		final List<ILog> logs = criteria.list();

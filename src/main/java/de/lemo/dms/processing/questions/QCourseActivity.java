@@ -83,7 +83,8 @@ public class QCourseActivity extends Question {
 			@FormParam(MetaParam.END_TIME) final Long endTime,
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
 			@FormParam(MetaParam.TYPES) final List<String> resourceTypes,
-			@FormParam(MetaParam.GENDER) List<Long> gender){
+			@FormParam(MetaParam.GENDER) List<Long> gender,
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects){
 
 		validateTimestamps(startTime, endTime, resolution);
 		final Map<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();
@@ -144,6 +145,11 @@ public class QCourseActivity extends Question {
 				.add(Restrictions.in("log.course.id", courses))
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
 				.add(Restrictions.in("log.user.id", users));
+		
+		if(!learningObjects.isEmpty())
+		{
+			criteria.add(Restrictions.in("log.learning.id", learningObjects));
+		}
 
 		@SuppressWarnings("unchecked")
 		List<ILog> logs = criteria.list();

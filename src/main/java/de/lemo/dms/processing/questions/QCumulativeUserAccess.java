@@ -74,7 +74,8 @@ public class QCumulativeUserAccess extends Question {
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> course,
 			@FormParam(MetaParam.TYPES) List<String> types,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
-			@FormParam(MetaParam.END_TIME) final Long endTime) {
+			@FormParam(MetaParam.END_TIME) final Long endTime,
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) final List<Long> learningObjects) {
 
 		validateTimestamps(startTime, endTime);
 
@@ -106,6 +107,10 @@ public class QCumulativeUserAccess extends Question {
 			Criteria criteria = session.createCriteria(ILog.class, "log");
 			criteria.add(Restrictions.between("log.timestamp", startTime, endTime));
 			criteria.add(Restrictions.in("log.course.id", course));
+			if(!learningObjects.isEmpty())
+			{
+				criteria.add(Restrictions.in("log.learning.id", learningObjects));
+			}
 			List<ILog> logs = criteria.list();
 			
 			for(ILog log : logs)

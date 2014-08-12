@@ -57,4 +57,5 @@ public interface MetaParam {
 	String OFFSET = "offset";
 	String GENDER = "gender";
 	String LEMO_USER_ID = "lemo_uid";
+	String LEARNING_OBJ_IDS = "learning_obj_ids";
 }

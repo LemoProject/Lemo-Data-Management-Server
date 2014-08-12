@@ -90,7 +90,8 @@ public class QUserPathAnalysis extends Question {
 			@FormParam(MetaParam.LOGOUT_FLAG) final Boolean considerLogouts,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
-			@FormParam(MetaParam.GENDER) final List<Long> gender) {
+			@FormParam(MetaParam.GENDER) final List<Long> gender,
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) final List<Long> learningObjects) {
 
 		validateTimestamps(startTime, endTime);
 
@@ -126,6 +127,9 @@ public class QUserPathAnalysis extends Question {
 
 		if (!users.isEmpty()) {
 			criteria.add(Restrictions.in("log.user.id", users));
+		}
+		if (!learningObjects.isEmpty()) {
+			criteria.add(Restrictions.in("log.learning.id", learningObjects));
 		}
 
 		@SuppressWarnings("unchecked")

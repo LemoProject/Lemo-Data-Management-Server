@@ -75,7 +75,8 @@ public class QUserLogHistory extends Question {
 			@FormParam(MetaParam.USER_IDS) List<Long> users,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
-			@FormParam(MetaParam.GENDER) final List<Long> gender) {
+			@FormParam(MetaParam.GENDER) final List<Long> gender,
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) final List<Long> learningObjects) {
 
 		validateTimestamps(startTime, endTime);
 
@@ -103,6 +104,9 @@ public class QUserLogHistory extends Question {
 			criteria.add(Restrictions.in("log.user.id", users));
 		if ((courses != null) && (courses.size() > 0)) {
 			criteria.add(Restrictions.in("log.course.id", courses));
+		}
+		if (!learningObjects.isEmpty()) {
+			criteria.add(Restrictions.in("log.learning.id", learningObjects));
 		}
 
 		final List<ILog> logs = criteria.list();
