@@ -179,8 +179,17 @@ public class CollaborationLog implements IMapping, ILog{
 
 
 
+
 	public void setReferrer(CollaborationLog referrer) {
 		this.referrer = referrer;
+	}
+	
+	public void setReferrer(Long id, final Map<Long, CollaborationLog> collaborationLogs)
+	{
+		if (collaborationLogs.get(id) != null)
+		{
+			this.referrer = collaborationLogs.get(id);
+		}
 	}
 	
 	public void setCourse(final long course, final Map<Long, Course> courses,

@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/service/ServiceRatedObjects.java
+ * File ./src/main/java/de/lemo/dms/service/ServiceLearningObjects.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,7 +19,7 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/service/ServiceRatedObjects.java
+ * File ./main/java/de/lemo/dms/service/ServiceLearningObjects.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  */
@@ -49,21 +49,20 @@ import de.lemo.dms.processing.resulttype.ResultListStringObject;
 /**
  * Service to get a list of all learning objects within the specified courses that have a grade attribute
  */
-@Path("ratedobjects")
+@Path("learningobjects")
 @Produces(MediaType.APPLICATION_JSON)
-public class ServiceRatedObjects {
+public class ServiceLearningObjects {
 
 	private Logger logger = Logger.getLogger(this.getClass());
 	/**
-	 * Returns a list of all learning objects within the specified courses that have a grade attribute (assignments,
-	 * quizzes, scorms)
+	 * Returns a list of all learning objects within the specified courses
 	 * 
 	 * @param courses
 	 *            Course-ids
-	 * @return ResultList with 2 String elements per object(cid, title)
+	 * @return ResultList with 2 String elements per object(id, title)
 	 */
 	@GET
-	public ResultListStringObject getRatedObjects(@QueryParam(MetaParam.COURSE_IDS) final List<Long> courses) {
+	public ResultListStringObject getLearningObjects(@QueryParam(MetaParam.COURSE_IDS) final List<Long> courses) {
 
 		final ArrayList<String> res = new ArrayList<String>();
 
@@ -81,11 +80,8 @@ public class ServiceRatedObjects {
 
 			for (final ICourseLORelation obj : list)
 			{
-				if(obj.getLearning().getInteractionType().equals("ASSESSMENT"))
-				{
-					res.add(obj.getLearning().getId() + "");
-					res.add(obj.getLearning().getTitle());
-				}
+				res.add(obj.getLearning().getId() + "");
+				res.add(obj.getLearning().getTitle());
 			}
 			session.close();
 

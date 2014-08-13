@@ -691,12 +691,13 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		final Map<Long, CollaborationLog> questionLog = new HashMap<Long, CollaborationLog>();
 		final Map<Long, CollaborationLog> answersLog = new HashMap<Long, CollaborationLog>();
+		final Map<Long, Long> questionToLog = new HashMap<Long, Long>();
 		
 		
 		for(Questions loadedItem : this.questionsMooc)
 		{
 			CollaborationLog insert = new CollaborationLog();
-			insert.setLearning(loadedItem.getSegmentId(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setLearning(Long.valueOf("14" + loadedItem.getSegmentId()), this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
 			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
 			insert.setAction("Question");
@@ -709,7 +710,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			
 			if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 			{
-				questionLog.put(loadedItem.getId(),insert);
+				
+				CollaborationLog c = questionLog.put(loadedItem.getId(), insert);
 				loglist.add(insert);
 			}
 		}
@@ -717,22 +719,22 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Answers loadedItem : this.answersMooc)
 		{
 			CollaborationLog insert = new CollaborationLog();
-			//insert.setReferrer(questionLog.get(loadedItem.getQuestionId()));
+			insert.setReferrer(loadedItem.getQuestionId(), questionLog);
 			
-			//if(insert.getReferrer() != null)
+			if(insert.getReferrer() != null)
 			{
 				insert.setId(loadedItem.getId());
 				insert.setLearning(questionLog.get(loadedItem.getQuestionId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
 				insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-				//insert.setCourse(insert.getReferrer().getCourse().getId(), this.courseMining, this.oldCourseMining);
+				insert.setCourse(insert.getReferrer().getCourse().getId(), this.courseMining, this.oldCourseMining);
 				insert.setAction("Answer");
 				insert.setText(loadedItem.getContent());
-				insert.setTimestamp(loadedItem.getTimeCreated().getTime()/1000);
-				//insert.setReferrer(questionLog.get(loadedItem.getQuestionId()));
+				insert.setTimestamp(loadedItem.getTimeCreated().getTime() / 1000);
+				insert.setReferrer(questionLog.get(loadedItem.getQuestionId()));
 				
 				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 				{
-					answersLog.put(loadedItem.getId(),insert);
+					answersLog.put(loadedItem.getId() , insert);
 					loglist.add(insert);
 				}
 			}
@@ -742,7 +744,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			CollaborationLog insert = new CollaborationLog();
 			if(loadedItem.getCommentableType().equals("Answer"))
 			{
-				insert.setReferrer(answersLog.get(loadedItem.getCommentableId()));
+				insert.setReferrer(loadedItem.getCommentableId(), answersLog);
 				if(insert.getReferrer() != null)
 				{
 					insert.setLearning(answersLog.get(loadedItem.getCommentableId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
@@ -750,7 +752,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			}
 			else if(loadedItem.getCommentableType().equals("Question"))
 			{
-				insert.setReferrer(questionLog.get(loadedItem.getCommentableId()));
+				insert.setReferrer(loadedItem.getCommentableId(), questionLog);
 				if(insert.getReferrer() != null)
 				{
 					insert.setLearning(questionLog.get(loadedItem.getCommentableId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
