@@ -27,7 +27,6 @@
 package de.lemo.dms.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -107,10 +106,13 @@ public class ServiceCourseDetails {
 		Long lastTime = 0L;
 		Long firstTime = 0L;
 
+		List<ILog> l = criteria.list();
+		
 		if (criteria.list().size() > 0)
 		{
-			lastTime = (Long) criteria.list().get(0);
-			
+			lastTime = (Long) criteria.list().get(criteria.list().size() - 1);
+			if(lastTime == null)
+				lastTime = 0L;
 		}
 		
 		criteria = session.createCriteria(ILog.class, "log");
@@ -129,8 +131,9 @@ public class ServiceCourseDetails {
 		
 		if (criteria.list().size() > 0)
 		{
-			firstTime = (Long) criteria.list().get(0);
-			
+			firstTime = (Long) criteria.list().get(criteria.list().size() - 1);
+			if(firstTime == null)
+				firstTime = 0L;
 		}
 
 		CourseObject result =
@@ -191,7 +194,9 @@ public class ServiceCourseDetails {
 
 			if (criteria.list().size() > 0)
 			{
-				lastTime = (Long) criteria.list().get(0);
+				lastTime = (Long) criteria.list().get(criteria.list().size() - 1);
+				if(lastTime == null)
+					lastTime = 0L;
 				
 			}
 			
@@ -207,7 +212,10 @@ public class ServiceCourseDetails {
 			
 			if (criteria.list().size() > 0)
 			{
-				firstTime = (Long) criteria.list().get(0);
+				
+				firstTime = (Long) criteria.list().get(criteria.list().size() - 1);
+				if(firstTime == null)
+					firstTime = 0L;
 				
 			}
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
@@ -253,7 +261,6 @@ public class ServiceCourseDetails {
 		Criteria criteria = session.createCriteria(ICourseLORelation.class, "lor");
 		criteria.add(Restrictions.eq("lor.course.id", id));
 		ArrayList<ICourseLORelation> lor = (ArrayList<ICourseLORelation>) criteria.list();
-		
 		Long hash = last * 13 + first * 17 + 19 * users.hashCode() + 23 * lor.hashCode();
 		//dbHandler.closeSession(session);
 		session.close();
