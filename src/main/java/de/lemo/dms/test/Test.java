@@ -33,6 +33,7 @@ import org.hibernate.Session;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.service.ServiceCourseDetails;
@@ -80,8 +81,8 @@ public class Test {
 	public static void test()
 	{
 
-		ServiceCourseTitleSearch scd = new ServiceCourseTitleSearch();
-		scd.getCoursesByText("e", 4L, 0L);
+		StudentHelper scd = new StudentHelper();
+		scd.getGenderSupport(1L);
 
 			
 		

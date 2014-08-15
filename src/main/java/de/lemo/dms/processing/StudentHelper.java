@@ -218,9 +218,9 @@ public class StudentHelper {
 					// Only use students (type = 2) 
 					if (cu.getUser() != null && cu.getRole().getType() == 2)
 					{
-						if(userGenders.get(cu.getUser().getId()) == 1)
+						if(userGenders.get(cu.getUser().getId()) != null && userGenders.get(cu.getUser().getId()) == 1)
 							fem++;
-						else if(userGenders.get(cu.getUser().getId()) == 2)
+						else if(userGenders.get(cu.getUser().getId()) != null && userGenders.get(cu.getUser().getId()) == 2)
 							mal++;
 						if(mal > 4 && fem > 4)
 						{

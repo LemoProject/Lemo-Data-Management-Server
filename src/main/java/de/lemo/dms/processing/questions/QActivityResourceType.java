@@ -68,7 +68,8 @@ public class QActivityResourceType extends Question {
 			@FormParam(MetaParam.END_TIME) final Long endTime,
 			@FormParam(MetaParam.TYPES) List<String> resourceTypes,
 			@FormParam(MetaParam.GENDER) List<Long> gender,
-			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects){
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects,
+			@FormParam(MetaParam.USER_IDS) List<Long> usersIds){
 
 		validateTimestamps(startTime, endTime);
 
