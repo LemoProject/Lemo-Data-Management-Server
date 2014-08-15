@@ -84,7 +84,8 @@ public class QCourseActivity extends Question {
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
 			@FormParam(MetaParam.TYPES) final List<String> resourceTypes,
 			@FormParam(MetaParam.GENDER) List<Long> gender,
-			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects){
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects,
+			@FormParam(MetaParam.USER_IDS) List<Long> userIds){
 
 		validateTimestamps(startTime, endTime, resolution);
 		final Map<Long, ResultListLongObject> result = new HashMap<Long, ResultListLongObject>();

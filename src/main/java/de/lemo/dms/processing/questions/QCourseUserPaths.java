@@ -76,7 +76,8 @@ public class QCourseUserPaths extends Question {
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) Long endTime,
 			@FormParam(MetaParam.GENDER) List<Long> gender,
-			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects,
+			@FormParam(MetaParam.USER_IDS) List<Long> userIds
 			) throws JSONException {
 
 		validateTimestamps(startTime, endTime);

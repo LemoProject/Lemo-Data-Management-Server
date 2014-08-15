@@ -31,12 +31,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.BoxPlotGeneratorForDates;
@@ -75,7 +78,8 @@ public class QCumulativeUserAccess extends Question {
 			@FormParam(MetaParam.TYPES) List<String> types,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
-			@FormParam(MetaParam.LEARNING_OBJ_IDS) final List<Long> learningObjects) {
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) final List<Long> learningObjects,
+			@FormParam(MetaParam.USER_IDS) List<Long> userIds) {
 
 		validateTimestamps(startTime, endTime);
 
