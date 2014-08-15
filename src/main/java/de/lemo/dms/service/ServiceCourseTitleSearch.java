@@ -123,7 +123,9 @@ public class ServiceCourseTitleSearch {
 
 			if (criteria.list().size() > 0)
 			{
-				lastTime = (Long) criteria.list().get(0);
+				lastTime = (Long) criteria.list().get(criteria.list().size() - 1);
+				if(lastTime == null)
+					lastTime = 0L;
 				
 			}	
 			criteria = session.createCriteria(ILog.class, "log");
@@ -138,7 +140,9 @@ public class ServiceCourseTitleSearch {
 			
 			if (criteria.list().size() > 0)
 			{
-				firstTime = (Long) criteria.list().get(0);
+				firstTime = (Long) criteria.list().get(criteria.list().size() - 1);
+				if(firstTime == null)
+					firstTime = 0L;
 				
 			}
 			ServiceCourseDetails scd = new ServiceCourseDetails();

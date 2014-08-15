@@ -34,6 +34,9 @@ import org.hibernate.Session;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
+import de.lemo.dms.processing.resulttype.CourseObject;
+import de.lemo.dms.service.ServiceCourseDetails;
+import de.lemo.dms.service.ServiceCourseTitleSearch;
 
 /**
  * sollte gelöscht werden
@@ -76,21 +79,9 @@ public class Test {
 	
 	public static void test()
 	{
-		QPerformanceHistogram qph = new QPerformanceHistogram();
-		
-		List<Long> courses = new ArrayList<Long>();
-		courses.add(1L);
-		List<Long> users = new ArrayList<Long>();
-		Long startTime = 0L;
-		Long endTime = 1500000000L;
-		Long resolution = 100L;
-		List<String> types = new ArrayList<String>();
-		List<Long> gender = new ArrayList<Long>();
-		List<Long> quizzes = new ArrayList<Long>();
-		quizzes.add(1115L);
-		quizzes.add(1116L);
-		
-		qph.compute(courses, users, quizzes, resolution, startTime, endTime, gender);
+
+		ServiceCourseTitleSearch scd = new ServiceCourseTitleSearch();
+		scd.getCoursesByText("e", 4L, 0L);
 
 			
 		
@@ -100,7 +91,7 @@ public class Test {
 	public static void main(final String[] args)
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.gen();
+		Test.test();
 	}
 
 }
