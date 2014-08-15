@@ -67,8 +67,7 @@ public class QActivityResourceTypeResolution extends Question {
 			@FormParam(MetaParam.RESOLUTION) final Long resolution,
 			@FormParam(MetaParam.TYPES) final List<String> resourceTypes,
 			@FormParam(MetaParam.GENDER) List<Long> gender,
-			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects,
-			@FormParam(MetaParam.USER_IDS) List<Long> userIds){
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) List<Long> learningObjects){
 
 		validateTimestamps(startTime, endTime, resolution);
 

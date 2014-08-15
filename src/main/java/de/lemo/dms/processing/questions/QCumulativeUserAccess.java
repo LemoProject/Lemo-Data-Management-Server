@@ -78,8 +78,7 @@ public class QCumulativeUserAccess extends Question {
 			@FormParam(MetaParam.TYPES) List<String> types,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
-			@FormParam(MetaParam.LEARNING_OBJ_IDS) final List<Long> learningObjects,
-			@FormParam(MetaParam.USER_IDS) List<Long> userIds) {
+			@FormParam(MetaParam.LEARNING_OBJ_IDS) final List<Long> learningObjects) {
 
 		validateTimestamps(startTime, endTime);
 
