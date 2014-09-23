@@ -146,7 +146,7 @@ public class UserAssessment implements IMapping, ILearningUserAssociation{
 	/**
 	 * @param grade the grade to set
 	 */
-	public void setGrade(double grade) {
+	public void setGrade(Double grade) {
 		this.grade = grade;
 	}
 	/**

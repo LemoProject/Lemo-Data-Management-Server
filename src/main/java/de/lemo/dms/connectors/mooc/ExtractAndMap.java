@@ -143,6 +143,8 @@ public abstract class ExtractAndMap {
 
 	protected Long maxLog = 0L;
 	
+	protected Long userAssessmentMax = 0L;
+	
 	private Clock c;
 
 	/**
@@ -391,6 +393,13 @@ public abstract class ExtractAndMap {
 		this.learningObjectTypeMax = (Long) criteria.list().get(0);
 		if (this.learningObjectTypeMax == null) {
 			this.learningObjectTypeMax = 0L;
+		}
+		
+		criteria = session.createCriteria(UserAssessment.class);
+		criteria.setProjection(pl);
+		this.userAssessmentMax = (Long) criteria.list().get(0);
+		if (this.userAssessmentMax == null) {
+			this.userAssessmentMax = 0L;
 		}
 		
 		criteria = session.createCriteria(Attribute.class);

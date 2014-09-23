@@ -64,8 +64,6 @@ import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsMembersLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.LogLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ModulesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.PageLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuestionLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuestionStatesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.QuizLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.QuizAttemptsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.QuizGradesLMS;

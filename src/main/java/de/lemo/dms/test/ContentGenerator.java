@@ -470,7 +470,7 @@ public class ContentGenerator {
 					tu.setCourse(cou);
 					tu.setTimemodified(time);
 					tu.setFeedback("Generated feedback message");
-					tu.setGrade(randy.nextInt(assMG.get(a.getId()).intValue()));
+					tu.setGrade(Double.valueOf(randy.nextInt(assMG.get(a.getId()).intValue())));
 					
 					taskUserMap.put(aLog.getUser().getId() + "#" + aLog.getLearning().getId(), tu);
 				}

@@ -495,7 +495,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				role = 0L;
 			insert.setRole(role, this.roleMining, this.oldRoleMining);
 			
-			courseUsers.put(insert.getId(), insert);
+			if(insert.getCourse() != null && insert.getUser() != null)
+				courseUsers.put(insert.getId(), insert);
 		}
 		return courseUsers;
 	}  
@@ -509,26 +510,70 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			Course insert = new Course();
 			insert.setId(  loadedItem.getId());
 			insert.setTitle(loadedItem.getTitle());
-			if(!this.attributes.containsKey("Course Description"))
-			{
-				Attribute description = new Attribute();
-				description.setId(this.attributeIdMax + 1);
-				this.attributeIdMax++;
-				description.setName("Course Description");
-				this.attributes.put(description.getName(), description);
-			}
-			CourseAttribute description = new CourseAttribute();
-			description.setId(this.courseAttributeIdMax + 1);
-			this.courseAttributeIdMax++;
-			description.setCourse(insert);
-			description.setAttribute(this.attributes.get("Course Description"));
-			description.setValue(loadedItem.getDescription());
-			
-			this.courseAttributes.put(description.getId(), description);
-			
+			addCourseAttribute(insert, "Course Description", loadedItem.getDescription());
 			courses.put(insert.getId(), insert);
 		}
 		return courses;
+	}
+	
+	private void addCourseAttribute(Course course, String attribute, String value)
+	{
+		if(!this.attributes.containsKey(attribute))
+		{
+			Attribute description = new Attribute();
+			description.setId(this.attributeIdMax + 1);
+			this.attributeIdMax++;
+			description.setName(attribute);
+			this.attributes.put(description.getName(), description);
+		}
+		CourseAttribute description = new CourseAttribute();
+		description.setId(this.courseAttributeIdMax + 1);
+		this.courseAttributeIdMax++;
+		description.setCourse(course);
+		description.setAttribute(this.attributes.get(attribute));
+		description.setValue(value);
+		
+		this.courseAttributes.put(description.getId(), description);
+	}
+	
+	private void addUserAttribute(User user, String attribute, String value)
+	{
+		if(!this.attributes.containsKey(attribute))
+		{
+			Attribute description = new Attribute();
+			description.setId(this.attributeIdMax + 1);
+			this.attributeIdMax++;
+			description.setName(attribute);
+			this.attributes.put(description.getName(), description);
+		}
+		UserAttribute description = new UserAttribute();
+		description.setId(this.userAttributeIdMax + 1);
+		this.userAttributeIdMax++;
+		description.setUser(user);
+		description.setAttribute(this.attributes.get(attribute));
+		description.setValue(value);
+		
+		this.userAttributes.put(description.getId(), description);
+	}
+	
+	private void addLearningAttribute(LearningObj learning, String attribute, String value)
+	{
+		if(!this.attributes.containsKey(attribute))
+		{
+			Attribute description = new Attribute();
+			description.setId(this.attributeIdMax + 1);
+			this.attributeIdMax++;
+			description.setName(attribute);
+			this.attributes.put(description.getName(), description);
+		}
+		LearningAttribute description = new LearningAttribute();
+		description.setId(this.learningAttributeIdMax + 1);
+		this.learningAttributeIdMax++;
+		description.setLearning(learning);
+		description.setAttribute(this.attributes.get(attribute));
+		description.setValue(value);
+		
+		this.learningAttributes.put(description.getId(), description);
 	}
 
 	@Override
@@ -607,26 +652,43 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		for(AssessmentSessions loadedItem : this.assessmentSessionsMooc)
 		{
-			UserAssessment insert = new UserAssessment();
-			
+			UserAssessment insert = new UserAssessment();			
 			CourseUser cu = this.courseUserMining.get(loadedItem.getMembershipId());
 			if(cu == null)
 			{
 				cu = this.oldCourseUserMining.get(loadedItem.getMembershipId());
 			}
-			if(cu != null)
+			if(cu != null && cu.getUser() != null)
 			{
-				insert.setId(loadedItem.getId());
-				insert.setLearning(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.oldLearningObjectMining);
-				insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
-				insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
-				insert.setLearning(loadedItem.getAssessmentId(), this.learningObjectMining, this.learningObjectMining);
-				insert.setGrade(loadedItem.getScore());
-				insert.setTimemodified(loadedItem.getTimeModified().getTime()/1000);
-				
-				assessmentUsers.put(insert.getId(), insert);
+				if(loadedItem.getScore() != null)
+				{
+					insert.setId(this.userAssessmentMax + 1);
+					this.userAssessmentMax ++;
+					insert.setLearning(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.oldLearningObjectMining);
+					insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
+					insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
+					insert.setLearning(loadedItem.getAssessmentId(), this.learningObjectMining, this.learningObjectMining);
+					insert.setGrade(Double.valueOf(loadedItem.getScore()));
+					insert.setTimemodified(loadedItem.getTimeModified().getTime()/1000);
+					
+					assessmentUsers.put(insert.getId(), insert);
+				}
 			}
-		}		
+		}	
+		
+		for(Memberships loadedItem : this.membershipsMooc)
+		{
+			UserAssessment insert = new UserAssessment();
+			insert.setId(this.userAssessmentMax + 1);
+			this.userAssessmentMax++;
+			insert.setLearning(Long.valueOf("15" + loadedItem.getCourseId()), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
+			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
+			insert.setGrade(loadedItem.getNumericGrade());
+			insert.setTimemodified(loadedItem.getTimeModified().getTime() / 1000);
+			
+			assessmentUsers.put(insert.getId(), insert);
+		}
 		return assessmentUsers;
 	}
 
@@ -793,16 +855,15 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	public Map<Long, LearningObj> generateLearningObjs() {
 		final HashMap<Long, LearningObj> learningObjs = new HashMap<Long, LearningObj>();
 		
-		LearningType type;
-		if(this.learnTypes.get("UnitForum") == null)
+		for(Course loadedItem : this.courseMining.values())
 		{
-			type = new LearningType();
-			type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
-			type.setType("UnitForum");
-		}
-		else
-		{
-			type = this.learnTypes.get("UnitForum");
+			LearningObj insert = new LearningObj();
+			insert.setId(Long.valueOf("15" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getTitle());
+			insert.setInteractionType("Assessment");
+			insert.setType(getLearningType("Course Exam"));
+			
+			learningObjs.put(insert.getId(), insert);
 		}
 		
 		for(Segments loadedItem : this.segmentsMooc)
@@ -813,7 +874,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setId(Long.valueOf("13" + loadedItem.getId()));
 				insert.setTitle("Forum "  + loadedItem.getTitle());
 				insert.setInteractionType("Collaboration");
-				insert.setType(type);
+				insert.setType(getLearningType("UnitForum"));
 				
 				learningObjs.put(insert.getId(), insert);
 			}
@@ -825,19 +886,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			insert.setId(Long.valueOf("11" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getTitle());
 			insert.setInteractionType("Assessment");
-			
-			type = new LearningType();
-			if(this.learnTypes.get(loadedItem.getType()) == null)
-			{
-				type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
-				type.setType(loadedItem.getType());
-				this.learnTypes.put(type.getType(), type);
-			}
-			else
-			{
-				type = this.learnTypes.get(loadedItem.getType());
-			}
-			insert.setType(type);
+			insert.setType(getLearningType(loadedItem.getType()));
 			
 			learningObjs.put(insert.getId(), insert);
 		}
@@ -850,19 +899,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 			if(loadedItem.getType().equals("LessonUnit") || loadedItem.getType().equals("Chapter"))
 			{
-				type = new LearningType();
-				if(this.learnTypes.get(loadedItem.getType()) == null)
-				{
-					type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
-					type.setType(loadedItem.getType());
-					this.learnTypes.put(type.getType(), type);
-				}
-				else
-				{
-					type = this.learnTypes.get(loadedItem.getType());
-				}
-				
-				insert.setType(type);
+				insert.setType(getLearningType(loadedItem.getType()));
 			}
 			
 			if(loadedItem.getParent() != null)
@@ -882,20 +919,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			insert.setId(Long.valueOf("12" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getTitle());
 			insert.setInteractionType("Access");
-
-			type = new LearningType();
-			if(this.learnTypes.get("Video") == null)
-			{
-				type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
-				type.setType("Video");
-				this.learnTypes.put(type.getType(), type);
-			}
-			else
-			{
-				type = this.learnTypes.get("Video");
-			}
-				
-				insert.setType(type);
+			insert.setType(getLearningType("Video"));
 				
 			if(insert.getType() != null)
 			{
@@ -908,33 +932,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			LearningObj insert = new LearningObj();
 			insert.setId(Long.valueOf("14" + loadedItem.getId()));
 			insert.setInteractionType("Assessment");
-			type = new LearningType();
-			if(this.learnTypes.get("Question") == null)
-			{
-				type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
-				type.setType("Question");
-				this.learnTypes.put(type.getType(), type);
-			}
-			else
-			{
-				type = this.learnTypes.get("Question");
-			}
-			insert.setType(type);
+			insert.setType(getLearningType("Question"));
 			insert.setTitle(loadedItem.getTitle());
-			if(!this.attributes.containsKey("Question Content"))
-			{
-				Attribute description = new Attribute();
-				description.setId(this.attributeIdMax + 1);
-				this.attributeIdMax++;
-				description.setName("Question Content");
-				this.attributes.put(description.getName(), description);
-			}
-			LearningAttribute description = new LearningAttribute();
-			description.setId(this.learningAttributeIdMax + 1);
-			this.learningAttributeIdMax++;
-			description.setLearning(insert);
-			description.setAttribute(this.attributes.get("Question Content"));
-			description.setValue(loadedItem.getContent());
+			addLearningAttribute(insert, "Question Content", loadedItem.getContent());
 			
 			if(insert.getType() != null)
 			{
@@ -942,6 +942,22 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			}
 		}
 		return learningObjs;
+	}
+	
+	private LearningType getLearningType(String typeName)
+	{
+		LearningType type = new LearningType();
+		if(this.learnTypes.get(typeName) == null)
+		{
+			type.setId(this.learningObjectTypeMax + 1 + this.learnTypes.size());
+			type.setType(typeName);
+			this.learnTypes.put(type.getType(), type);
+		}
+		else
+		{
+			type = this.learnTypes.get(typeName);
+		}
+		return type;
 	}
 
 	
@@ -954,39 +970,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			User insert = new User();
 			insert.setId(  loadedItem.getId());
 			insert.setLogin(loadedItem.getId() + "mooc");
-			
-			if(!this.attributes.containsKey("User Gender"))
-			{
-				Attribute gender = new Attribute();
-				gender.setId(this.attributeIdMax + 1);
-				this.attributeIdMax++;
-				gender.setName("User Gender");
-				this.attributes.put(gender.getName(), gender);
-			}
-			UserAttribute gender = new UserAttribute();
-			gender.setId(this.userAttributeIdMax + 1);
-			this.userAttributeIdMax++;
-			gender.setUser(insert);
-			gender.setAttribute(this.attributes.get("User Gender"));
-			gender.setValue(loadedItem.getGender());
-			this.userAttributes.put(gender.getId(), gender);
-			
-			if(!this.attributes.containsKey("User Timezone"))
-			{
-				Attribute timezone = new Attribute();
-				timezone.setId(this.attributeIdMax + 1);
-				this.attributeIdMax++;
-				timezone.setName("User Timezone");
-				this.attributes.put(timezone.getName(), timezone);
-			}
-			UserAttribute timezone = new UserAttribute();
-			timezone.setId(this.userAttributeIdMax + 1);
-			this.userAttributeIdMax++;
-			timezone.setUser(insert);
-			timezone.setAttribute(this.attributes.get("User Timezone"));
-			timezone.setValue(loadedItem.getTimezone());
-			this.userAttributes.put(timezone.getId(), timezone);
-			
+			addUserAttribute(insert, "User Gender", loadedItem.getGender());
+			addUserAttribute(insert, "User Timezone", loadedItem.getTimezone());
 			users.put(insert.getId(), insert);
 		}
 		

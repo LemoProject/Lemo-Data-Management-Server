@@ -9,6 +9,7 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -21,6 +22,7 @@ public class Memberships {
 	private String role;
 	private Date timeCreated;
 	private Date timeModified;
+	private String grade;
 	
 	/**
 	 * @return the id
@@ -102,6 +104,39 @@ public class Memberships {
 	 */
 	public void setTimeModified(Date timemodified) {
 		this.timeModified = timemodified;
+	}
+	/**
+	 * @return the grade
+	 */
+	@Column(name="grade")
+	public String getGrade() {
+		return grade;
+	}
+	/**
+	 * @param grade the grade to set
+	 */
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+	
+	@Transient
+	public Double getNumericGrade()
+	{
+		if(this.grade == null)
+			return 0d;
+		if(this.grade.equals("A"))
+			return 1d;
+		if(this.grade.equals("B"))
+			return 2d;
+		if(this.grade.equals("C"))
+			return 3d;
+		if(this.grade.equals("D"))
+			return 4d;
+		if(this.grade.equals("E"))
+			return 5d;
+		if(this.grade.equals("F"))
+			return 6d;
+		return null;
 	}
 	
 
