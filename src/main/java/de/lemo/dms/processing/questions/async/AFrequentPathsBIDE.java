@@ -26,6 +26,9 @@
 
 package de.lemo.dms.processing.questions.async;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,15 +39,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import ca.pfv.spmf.sequentialpatterns.AlgoBIDEPlus;
 import ca.pfv.spmf.sequentialpatterns.SequenceDatabase;
 import ca.pfv.spmf.sequentialpatterns.Sequences;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
@@ -104,6 +111,19 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.gender = gender;
+		System.out.println(taskId);
+		System.out.println(minLength);
+		System.out.println(maxLength);
+		System.out.println(minSup);
+		System.out.println(startTime);
+		System.out.println(endTime);
+		for(Long l : courses)
+			System.out.println(l);
+		for(Long l : users)
+			System.out.println(l);
+		for(String s : types)
+			System.out.println(s);
+		
 	}
 
 	public/* ResultListUserPathGraph */Object compute() {
@@ -169,7 +189,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 			// execute the algorithm
 			final Clock c = new Clock();
 			final Sequences res = algo.runAlgorithm(sequenceDatabase);
-			logger.debug("Time for BIDE-calculation: " + c.get());
+			logger.info("Time for BIDE-calculation: " + c.get());
 
 			final LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 			Long pathId = 0L;
@@ -543,10 +563,13 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 		logger.debug("Generated " + uhis.size() + " user histories. Max length @ " + max);
 
 		int z = 0;
+		LinkedList<String> listy = new LinkedList<String>();
+		int maxId=0;
 		// Convert all user histories or "paths" into the format, that is requested by the BIDE-algorithm-class
 		for (final ArrayList<ILogMining> l : uhis)
 		{
 			String line = "";
+			String line2 ="";
 			for (int i = 0; i < l.size(); i++)
 			{
 				if (idToLogM.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) == null) {
@@ -568,14 +591,42 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 				// between objects of different ILogMining-classes but same ids
 				line += idToInternalId
 						.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + " -1 ";
+				if(idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) > maxId)
+					maxId =idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId());
+				if(i < l.size()-1)
+					line2+= idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId()) + ",";
+				else
+					line2+= idToInternalId.get(l.get(i).getPrefix() + " " + l.get(i).getLearnObjId());
 			}
 			line += "-2";
 			logger.debug(line);
+			listy.add(line2);
 			result.add(line);
 			z++;
 		}
 		logger.debug("Wrote " + z + " logs.");
+		//saveList(listy, maxId);
 		return result;
+	}
+	
+	private void saveList(LinkedList<String> list, int maxId)
+	{
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter("listBide.txt", "UTF-8");
+			writer.println("MAXID " + maxId);
+			writer.println("SUPPORT " + list.size() * 0.9);
+			writer.println("SUPPORT " + list.size() * 0.8);
+			for(String s : list)
+				writer.println(s);
+			writer.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

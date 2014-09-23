@@ -29,11 +29,15 @@ package de.lemo.dms.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.abstractions.ILogMining;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
+import de.lemo.dms.processing.questions.async.AFrequentPathsBIDE;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
 
 /**
@@ -62,7 +66,7 @@ public class Test {
 		List<Long> users = new ArrayList<Long>();
 		List<Long> quizzes = new ArrayList<Long>();
 		List<Long> gender = new ArrayList<Long>();
-		courses.add(11961L);
+		courses.add(1126084544L);
 		Long resolution = 100L;
 		Long startTime = 0L;
 		Long endTime = 1478305674L;
@@ -71,6 +75,24 @@ public class Test {
 		
 		ResultListLongObject rl = qph.compute(courses, users, quizzes, resolution, startTime, endTime, gender);
 		System.out.println();
+	}
+	
+	public static void createPathList()
+	{
+		ServerConfiguration.getInstance().loadConfig("/lemo");
+		final String taskId = "2-BIDE";
+		final List<Long> courses = new ArrayList<Long>();
+		courses.add(1126084544L);
+		final List<Long> users = new ArrayList<Long>();
+		final List<String> types = new ArrayList<String>();
+		final Long minLength = null;
+		final Long maxLength = null;
+		final Double minSup = 0.9;
+		final boolean sessionWise = false;
+		final Long startTime =1381325533L;
+		final Long endTime = 1401107566L;
+		final List<Long> gender = new ArrayList<Long>();
+		AFrequentPathsBIDE af = new AFrequentPathsBIDE(taskId, courses, users, types, minLength, maxLength, minSup, false, startTime, endTime, gender);
 	}
 
 	public static void write()
