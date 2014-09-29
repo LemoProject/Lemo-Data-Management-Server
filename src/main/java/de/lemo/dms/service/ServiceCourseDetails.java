@@ -175,9 +175,11 @@ public class ServiceCourseDetails {
 
 		final ArrayList<Course> ci = (ArrayList<Course>) criteria.list();
 
-		Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(courses, new ArrayList<Long>());
-		
 		for (Course courseMining : ci) {
+			
+			ArrayList<Long> cids = new ArrayList<Long>();
+			cids.add(courseMining.getId());
+			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(cids, new ArrayList<Long>());
 			
 			criteria = session.createCriteria(ILog.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
@@ -202,10 +204,6 @@ public class ServiceCourseDetails {
 			
 			criteria = session.createCriteria(ILog.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
-			if(userMap.size() > 0)
-			{
-				criteria.add(Restrictions.in("log.user.id", userMap.values()));
-			}
 			pl = Projections.projectionList();
 			pl.add(Projections.min("timestamp"));
 			criteria.setProjection(pl);

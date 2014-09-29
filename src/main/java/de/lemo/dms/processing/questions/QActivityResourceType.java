@@ -44,7 +44,6 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
 import de.lemo.dms.db.mapping.abstractions.ILog;
-import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -82,16 +81,6 @@ public class QActivityResourceType extends Question {
 			return new ResultListResourceRequestInfo();
 		}
 		
-		if(resourceTypes != null && !allTypes)
-		{
-			List<String> tmp = new ArrayList<String>();
-			for(String s : resourceTypes)
-			{
-				tmp.add(s.toUpperCase());
-			}
-			resourceTypes = tmp;
-		}
-		
 		Criteria criteria = session.createCriteria(ILog.class, "log");
 		criteria.add(Restrictions.in("log.course.id", courses))
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
@@ -108,11 +97,7 @@ public class QActivityResourceType extends Question {
 		final Map<Long, Set<Long>> userMap = new HashMap<Long, Set<Long>>();
 		for(ILog log : logs)
 		{
-			String type = log.getClass().getSimpleName().toUpperCase();
-			if(type.contains("LOG"))
-			{
-				type = type.substring(0, type.indexOf("LOG"));
-			}
+			String type = log.getLearning().getLOType();
 			if (log.getUser() != null && (resourceTypes.contains(type) || allTypes))
 			{
 				Long id = Long.valueOf(log.getLearningId());
@@ -120,7 +105,7 @@ public class QActivityResourceType extends Question {
 					Set<Long> userSet = new HashSet<Long>();
 					userSet.add(log.getUser().getId());
 					userMap.put(id, userSet);
-					rriMap.put(id, new ResourceRequestInfo(id, ELearningObjectType.valueOf(type), 1L, 1L, log.getLearning().getTitle(), 0L));
+					rriMap.put(id, new ResourceRequestInfo(id, type, 1L, 1L, log.getLearning().getTitle(), 0L));
 				} else
 				{
 					userMap.get(id).add(log.getUser().getId());
@@ -148,7 +133,7 @@ public class QActivityResourceType extends Question {
 				if(allTypes || resourceTypes.contains(type))
 				{			
 					final ResourceRequestInfo rri = new ResourceRequestInfo(id,
-							ELearningObjectType.valueOf(aso.getType()), 0L, 0L,
+							aso.getLearning().getLOType(), 0L, 0L,
 							aso.getLearning().getTitle(), 0L);
 					result.add(rri);
 					id++;

@@ -154,33 +154,28 @@ public class QCourseActivity extends Question {
 		@SuppressWarnings("unchecked")
 		List<ILog> logs = criteria.list();
 
-		for (int i = 0; i < logs.size(); i++)
+		for (ILog log : logs)
 		{
 			boolean isInRT = false;
-			if ((resourceTypes != null) && (resourceTypes.size() > 0)) {
-				for (int j = 0; j < resourceTypes.size(); j++) {
-					if (logs.get(i).getClass().toString().toUpperCase().contains(resourceTypes.get(j)))
-					{
-						isInRT = true;
-						break;
-					}
-				}
+			if ((resourceTypes != null) && (resourceTypes.size() > 0) && resourceTypes.contains(log.getLearning().getLOType()))
+			{
+				isInRT = true;
 			}
 			if ((resourceTypes == null) || (resourceTypes.size() == 0) || isInRT)
 			{
-				Integer pos = new Double((logs.get(i).getTimestamp() - startTime) / intervall).intValue();
+				Integer pos = new Double((log.getTimestamp() - startTime) / intervall).intValue();
 				if (pos > (resolution - 1)) {
 					pos = resolution.intValue() - 1;
 				}
-				result.get(logs.get(i).getCourse().getId()).getElements()
-						.set(pos, result.get(logs.get(i).getCourse().getId()).getElements().get(pos) + 1);
-				if (userPerResStep.get(logs.get(i).getCourse().getId()).get(pos) == null)
+				result.get(log.getCourse().getId()).getElements()
+						.set(pos, result.get(log.getCourse().getId()).getElements().get(pos) + 1);
+				if (userPerResStep.get(log.getCourse().getId()).get(pos) == null)
 				{
 					final Set<Long> s = new HashSet<Long>();
-					s.add(idToAlias.get(logs.get(i).getUser().getId()));
-					userPerResStep.get(logs.get(i).getCourse().getId()).put(pos, s);
+					s.add(idToAlias.get(log.getUser().getId()));
+					userPerResStep.get(log.getCourse().getId()).put(pos, s);
 				} else {
-					userPerResStep.get(logs.get(i).getCourse().getId()).get(pos).add(idToAlias.get(logs.get(i).getUser().getId()));
+					userPerResStep.get(log.getCourse().getId()).get(pos).add(idToAlias.get(log.getUser().getId()));
 				}
 			}
 		}

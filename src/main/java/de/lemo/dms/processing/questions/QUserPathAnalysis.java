@@ -45,7 +45,6 @@ import com.google.common.collect.Maps;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.abstractions.ILog;
-import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -155,17 +154,9 @@ public class QUserPathAnalysis extends Question {
 			boolean typeOk = true;
 			if (!types.isEmpty()) {
 				typeOk = false;
-				for (final String type : types) {
-					/*
-					 * XXX why is this checked for every log object and not a
-					 * criteria restriction?
-					 */
-					// Check if ILog-object has acceptable learningObjectType
-					if (ELearningObjectType.fromLogType(log).toString().toUpperCase().equals(type))
-					{
-						typeOk = true;
-						break;
-					}
+				if (types.contains(log.getLearning().getLOType()))
+				{
+					typeOk = true;
 				}
 			}
 
@@ -198,12 +189,7 @@ public class QUserPathAnalysis extends Question {
 						skippedLogs++;
 						continue;
 					}
-					final String learnObjType = ELearningObjectType.fromLogType(current).toString();
-					final String type = current
-							.getClass()
-							.toString()
-							.substring(current.getClass().toString().lastIndexOf(".") + 1,
-									current.getClass().toString().lastIndexOf("Log"));
+					final String learnObjType = current.getLearning().getLOType();
 					final String cId = learnObjId + "-" + learnObjType;
 					// Determines whether it's a new path (no predecessor for
 					// current node) or not
@@ -216,7 +202,7 @@ public class QUserPathAnalysis extends Question {
 						{
 							// If the node is new create entry in hash map
 							cIdPos = String.valueOf(pathObjects.size());
-							pathObjects.put(cId, new UserPathObject(cIdPos, current.getLearning().getTitle(), 1L, type,
+							pathObjects.put(cId, new UserPathObject(cIdPos, current.getLearning().getTitle(), 1L, learnObjType,
 									0d, 1L, 0L, 0L, 0L));
 						}
 						else
@@ -233,7 +219,7 @@ public class QUserPathAnalysis extends Question {
 					{
 						final String cIdPos = String.valueOf(pathObjects.size());
 						pathObjects.put(cId, new UserPathObject(cIdPos, current.getLearning().getTitle(), 1L,
-								type, 0d, 1L, 0L, 0L, 0L));
+								learnObjType, 0d, 1L, 0L, 0L, 0L));
 					} else {
 						pathObjects.get(cId).increaseWeight(0d);
 					}

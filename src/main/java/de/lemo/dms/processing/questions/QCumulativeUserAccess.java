@@ -28,6 +28,7 @@ package de.lemo.dms.processing.questions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +44,6 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.BoxPlotGeneratorForDates;
-import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.BoxPlot;
@@ -82,20 +82,10 @@ public class QCumulativeUserAccess extends Question {
 
 		validateTimestamps(startTime, endTime);
 
-		final Set<ELearningObjectType> learnObjectTypes = ELearningObjectType.fromNames(types);
+		final Set<String> learnObjectTypes = new HashSet<String>(types);
 		
-		if(types != null )
-		{
-			List<String> tmp = new ArrayList<String>();
-			for(String s : types)
-			{
-				tmp.add(s.toUpperCase());
-			}
-			types = tmp;
-		}
-
 		// generiere querys
-		final Map<ELearningObjectType, String> querys = this.generateQuerys(startTime,
+		final Map<String, String> querys = this.generateQuerys(startTime,
 				endTime, learnObjectTypes, course);
 
 		super.logger.debug("Query result: " + querys.toString());
@@ -121,7 +111,7 @@ public class QCumulativeUserAccess extends Question {
 				String type = log.getClass().getSimpleName().toUpperCase();
 				if(type.indexOf("LOG") > -1)
 				{	
-					type = type.substring(0, type.indexOf("LOG"));
+					type = log.getLearning().getLOType();
 					if(types.isEmpty() || types.contains(type))
 						bpg.addAccess(log.getTimestamp());
 				}
@@ -171,11 +161,11 @@ public class QCumulativeUserAccess extends Question {
 	 *            Learning Objects die erfasst werden sollen
 	 * @return Liste mit Querys zu den LearningObjects
 	 */
-	private Map<ELearningObjectType, String> generateQuerys(
+	private Map<String, String> generateQuerys(
 			final long timestampMin, final long timestampMax,
-			final Set<ELearningObjectType> types,
+			final Set<String> types,
 			final List<Long> course) {
-		final Map<ELearningObjectType, String> result = new HashMap<ELearningObjectType, String>();
+		final Map<String, String> result = new HashMap<String, String>();
 		boolean timeframe = false;
 		final List<String> qa = new ArrayList<String>();
 
@@ -184,8 +174,8 @@ public class QCumulativeUserAccess extends Question {
 				&& (timestampMax >= timestampMin)) {
 			timeframe = true;
 		}
-		for (final ELearningObjectType loType : types) {
-			String query = this.generateBaseQuery(loType.name().toLowerCase());
+		for (final String loType : types) {
+			String query = this.generateBaseQuery(loType.toLowerCase());
 			if (timeframe || (course != null)) {
 				query += " WHERE";
 			}

@@ -36,8 +36,10 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.resulttype.CourseObject;
+import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 import de.lemo.dms.service.ServiceCourseDetails;
 import de.lemo.dms.service.ServiceCourseTitleSearch;
+import de.lemo.dms.service.ServiceLearningTypes;
 
 /**
  * sollte gelöscht werden
@@ -80,9 +82,14 @@ public class Test {
 	
 	public static void test()
 	{
-
-		StudentHelper scd = new StudentHelper();
-		scd.getGenderSupport(1L);
+		ServerConfiguration.getInstance().loadConfig("/lemo");
+		ServiceCourseDetails scd = new ServiceCourseDetails();
+		ArrayList<Long> cid = new ArrayList<Long>();
+		cid.add(1L);
+		cid.add(2L);
+		ResultListCourseObject d = scd.getCoursesDetails(cid);
+		d.equals(new CourseObject());
+		
 
 			
 		
@@ -92,7 +99,7 @@ public class Test {
 	public static void main(final String[] args)
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.gen();
+		Test.test();
 	}
 
 }

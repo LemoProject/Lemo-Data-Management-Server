@@ -363,15 +363,10 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 					id++;
 				}
 				if (hasTypes) {
-					for (final String type : types)
+					if (types.contains(iLog.getLearning().getLOType()))
 					{
-						if (iLog.getClass().getSimpleName().toLowerCase().contains(type.toLowerCase()))
-						{
-							containsType = true;
-							tmp.add(iLog);
-							break;
-						}
-
+						containsType = true;
+						tmp.add(iLog);
 					}
 				}
 				if (!hasTypes) {

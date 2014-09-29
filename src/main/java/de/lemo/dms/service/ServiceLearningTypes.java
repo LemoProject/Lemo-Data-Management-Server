@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/service/ServiceLearningObjects.java
+ * File ./src/main/java/de/lemo/dms/service/ServiceLearningTypes.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,8 +19,8 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/service/ServiceLearningObjects.java
- * Date 2013-01-24
+ * File ./main/java/de/lemo/dms/service/ServiceLearningTypes.java
+ * Date 2014-09-24
  * Project Lemo Learning Analytics
  */
 
@@ -31,66 +31,76 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.apache.log4j.Logger;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
+import de.lemo.dms.db.mapping.CourseLearning;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.resulttype.ResultListStringObject;
 
 /**
- * Service to get a list of all learning objects within the specified courses that have a grade attribute
+ * Service to get details for a single course or a list of courses.
+ * 
+ * @author Sebastian Schwarzrock
  */
-@Path("learningobjects")
+@Path("learningtypes")
 @Produces(MediaType.APPLICATION_JSON)
-public class ServiceLearningObjects {
+public class ServiceLearningTypes {
 
 	private Logger logger = Logger.getLogger(this.getClass());
+
 	/**
-	 * Returns a list of all learning objects within the specified courses
+	 * Gets the available LearningTypes of the course.
 	 * 
-	 * @param courses
-	 *            Course-ids
-	 * @return ResultList with 2 String elements per object(id, title)
+	 * @param id	Identifier of the course.
+	 * 
+	 * @return	A List of id-name-tupels of LearningTypes.
 	 */
+	@SuppressWarnings("unchecked")
 	@GET
-	public ResultListStringObject getLearningObjects(@QueryParam(MetaParam.COURSE_IDS) final List<Long> courses) {
-
-		final ArrayList<String> res = new ArrayList<String>();
-
-		try {
-			// Set up db-connection
-			final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
+	public ResultListStringObject getLearningTypes(@QueryParam(MetaParam.COURSE_IDS) final List<Long> courses) {
+		List<String> result = new ArrayList<String>();
+		if( courses != null && !courses.isEmpty())
+		{
+			IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 			final Session session = dbHandler.getMiningSession();
-
-			final Criteria criteria = session.createCriteria(ICourseLORelation.class, "aso");
-			criteria.add(Restrictions.in("aso.course.id", courses));
-
-			@SuppressWarnings("unchecked")
-			final ArrayList<ICourseLORelation> list = (ArrayList<ICourseLORelation>) criteria
-					.list();
-
-			for (final ICourseLORelation obj : list)
+	
+	
+			Criteria criteria = session.createCriteria(CourseLearning.class, "courseLearning");
+			criteria.add(Restrictions.in("courseLearning.course.id", courses));
+			List<CourseLearning> cLList = criteria.list();
+			try{
+				for(CourseLearning cl : cLList)
+				{
+					if(!result.contains(cl.getLearning().getType().getType()))
+					{
+						result.add(cl.getLearning().getType().getId() + "");
+						result.add(cl.getLearning().getType().getType());
+					}
+				}
+			}catch(Exception e)
 			{
-				res.add(obj.getLearning().getId() + "");
-				res.add(obj.getLearning().getTitle());
+				e.printStackTrace();
 			}
+			
+			
+					//dbHandler.closeSession(session);
 			session.close();
 
-		} catch (final Exception e)
-		{
-			logger.error(e.getMessage());
 		}
-
-		return new ResultListStringObject(res);
+		ResultListStringObject r = new ResultListStringObject(result);
+		return r;
 	}
+
+	
 
 }

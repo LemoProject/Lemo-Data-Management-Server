@@ -40,7 +40,6 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.abstractions.ILog;
-import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.resulttype.ResultListLongObject;
@@ -74,6 +73,7 @@ public class QUserByParameter extends Question {
 	 *            (Mandatory) Only users are returned, that performed actions before the given time.
 	 * @return
 	 */
+	/*
 	@POST
 	public ResultListLongObject compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
@@ -97,7 +97,7 @@ public class QUserByParameter extends Question {
 
 		// look up if types-restriction is set or the object-list contains at least one pair
 		if (!types.isEmpty() || objects.size() > 1) {
-			for (ELearningObjectType loType : ELearningObjectType.values()) {
+			for (String loType : ELearningObjectType.values()) {
 
 				String typeName = loType.name().toLowerCase();
 				if (types.contains(typeName) || objects.contains(typeName)) {
@@ -191,5 +191,5 @@ public class QUserByParameter extends Question {
 		List<ILog> r = criteria.list();
 		return r;
 
-	}
+	}*/
 }

@@ -27,7 +27,6 @@
 package de.lemo.dms.processing.resulttype;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import de.lemo.dms.processing.ELearningObjectType;
 
 /**
  * represents a list for RequestInfo object's which is use to transfer data from
@@ -77,10 +76,6 @@ public class ResourceRequestInfo {
 		return this.resourcetype;
 	}
 
-	public void setResourcetype(final ELearningObjectType resourcetype) {
-		this.resourcetype = resourcetype.toString();
-	}
-
 	public Long getRequests() {
 		return this.requests;
 	}
@@ -106,11 +101,11 @@ public class ResourceRequestInfo {
 		this.requests++;
 	}
 
-	public ResourceRequestInfo(final Long id, final ELearningObjectType resourceType, final Long requests,
+	public ResourceRequestInfo(final Long id, final String resourceType, final Long requests,
 			final Long users, final String title, final Long resolutionSlot)
 	{
 		this.id = id;
-		this.resourcetype = resourceType.toString();
+		this.resourcetype = resourceType;
 		this.requests = requests;
 		this.title = title;
 		this.resolutionSlot = resolutionSlot;

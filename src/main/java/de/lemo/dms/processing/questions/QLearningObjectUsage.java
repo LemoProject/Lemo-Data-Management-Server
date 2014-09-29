@@ -46,7 +46,6 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
 import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
-import de.lemo.dms.processing.ELearningObjectType;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -131,14 +130,14 @@ public class QLearningObjectUsage extends Question {
 		for (final ILog ilo : logs)
 		{
 			// TODO use Class.getSimpleName() instead?
-			final String obType = ilo.getType();
+			final String obType = ilo.getLearning().getLOType();
 			/*
 					.getClass()
 					.toString()
 					.substring(ilo.getClass().toString().lastIndexOf(".") + 1,
 							ilo.getClass().toString().lastIndexOf("Log"));*/
 
-			if ((types == null) || (types.isEmpty()) || types.contains(obType.toUpperCase()))
+			if ((types == null) || (types.isEmpty()) || types.contains(obType))
 			{
 				requestedObjects.add(ilo.getType() + " " + ilo.getLearningId());
 				
@@ -186,10 +185,10 @@ public class QLearningObjectUsage extends Question {
 				ILearningObject ilo = aso.getLearning();
 				ilo.getId();
 
-				if(types.isEmpty() || types.contains(ilo.getClass().getSimpleName()))
+				if(types.isEmpty() || types.contains(ilo.getLOType()))
 				{			
 					final ResourceRequestInfo rri = new ResourceRequestInfo(id,
-							ELearningObjectType.valueOf(aso.getType()), 0L, 0L,
+							aso.getLearning().getLOType(), 0L, 0L,
 							aso.getLearning().getTitle(), 0L);
 					result.add(rri);
 					id++;
@@ -204,7 +203,7 @@ public class QLearningObjectUsage extends Question {
 			final String title = item.getKey().substring(item.getKey().indexOf("$") + 1);
 			final String type = item.getKey().substring(item.getKey().indexOf("?") + 1, item.getKey().indexOf("$"));
 			final ResourceRequestInfo rri = new ResourceRequestInfo(id,
-					ELearningObjectType.valueOf(type.toUpperCase()), Long.valueOf(item.getValue().size()),
+					type, Long.valueOf(item.getValue().size()),
 					Long.valueOf(new HashSet<Long>(item.getValue()).size()), title, 0L);
 			id++;
 			result.add(rri);
