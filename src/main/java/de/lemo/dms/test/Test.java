@@ -85,8 +85,7 @@ public class Test {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		ServiceCourseDetails scd = new ServiceCourseDetails();
 		ArrayList<Long> cid = new ArrayList<Long>();
-		cid.add(1L);
-		cid.add(2L);
+		cid.add(6L);
 		ResultListCourseObject d = scd.getCoursesDetails(cid);
 		d.equals(new CourseObject());
 		

@@ -1927,7 +1927,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 			
-			insert.setId(Long.valueOf("01" + loadedItem.getId()));
+			insert.setId(Long.valueOf("11" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setType("Resource", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Access");
@@ -1949,7 +1949,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 			
-			insert.setId(Long.valueOf("02" + loadedItem.getId()));
+			insert.setId(Long.valueOf("12" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setType("URL", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Access");
@@ -1969,7 +1969,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 			
-			insert.setId(Long.valueOf("03" + loadedItem.getId()));
+			insert.setId(Long.valueOf("13" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setType("Page", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Access");
@@ -1993,7 +1993,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 
-			insert.setId(Long.valueOf("07" + loadedItem.getId()));
+			insert.setId(Long.valueOf("17" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setType("Assign", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
@@ -2035,7 +2035,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 
-			insert.setId(Long.valueOf("08" + loadedItem.getId()));
+			insert.setId(Long.valueOf("18" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			//insert.setMaxGrade(loadedItem.getSumgrade());
 			insert.setType("Quiz", this.learningTypeMining, this.oldLearningTypeMining);
@@ -2056,7 +2056,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 
-			insert.setId(Long.valueOf("09" + loadedItem.getId()));
+			insert.setId(Long.valueOf("19" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			//insert.setMaxGrade(loadedItem.getMaxgrade());
 			insert.setType("Scorm", this.learningTypeMining, this.oldLearningTypeMining);
@@ -2077,7 +2077,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 			
-			insert.setId(Long.valueOf("04" + loadedItem.getId()));
+			insert.setId(Long.valueOf("14" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getTitle());
 			this.chatCourse.put(insert.getId(), loadedItem.getCourse());
 			insert.setType("Chat", this.learningTypeMining, this.oldLearningTypeMining);
@@ -2099,7 +2099,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 			
-			insert.setId(Long.valueOf("05" + loadedItem.getId()));
+			insert.setId(Long.valueOf("15" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setType("Forum", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Collaboration");
@@ -2119,7 +2119,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 			
-			insert.setId(Long.valueOf("06" + loadedItem.getId()));
+			insert.setId(Long.valueOf("16" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getName());
 			insert.setType("Wiki", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Collaboration");
