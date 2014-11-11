@@ -25,120 +25,6 @@
 				<tomcat-url>none</tomcat-url>
 			</properties>
 		</profile>
-
-		<profile>
-			<id>dev</id>
-			<properties>
-				<lemo-system-name>lemo-dev</lemo-system-name>
-				<lemo-display-name>LeMo [development]</lemo-display-name>
-				<tomcat-server>lemo2-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo2-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>stable</id>
-			<properties>
-				<lemo-system-name>lemo-stable</lemo-system-name>
-				<lemo-display-name>LeMo [stable]</lemo-display-name>
-				<tomcat-server>lemo2-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo2-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-		
-
-
-		<profile>
-			<id>public</id>
-			<properties>
-				<lemo-system-name>lemo-public</lemo-system-name>
-				<lemo-display-name>LeMo [public]</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-		
-		<profile>
-			<id>htwm</id>
-			<properties>
-				<lemo-system-name>htwm</lemo-system-name>
-				<lemo-display-name>LeMo HtwMoodle</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-
-		<!-- partner profiles -->
-		<profile>
-			<id>beuth</id>
-			<properties>
-				<lemo-system-name>beuth</lemo-system-name>
-				<lemo-display-name>Moodle Beuth</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>clix</id>
-			<properties>
-				<lemo-system-name>clix</lemo-system-name>
-				<lemo-display-name>Clix HTW</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>bbw</id>
-			<properties>
-				<lemo-system-name>bbw</lemo-system-name>
-				<lemo-display-name>Moodle BBW</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-		
-		<profile>
-			<id>hwr</id>
-			<properties>
-				<lemo-system-name>hwr</lemo-system-name>
-				<lemo-display-name>HWR Berlin</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-		
-		<profile>
-			<id>vfh</id>
-			<properties>
-				<lemo-system-name>vfh</lemo-system-name>
-				<lemo-display-name>VFH</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>chem</id>
-			<properties>
-				<lemo-system-name>chemgapedia</lemo-system-name>
-				<lemo-display-name>Chemgapedia</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-		
-		<profile>
-			<id>kreutel</id>
-			<properties>
-				<lemo-system-name>lemo-kreutel</lemo-system-name>
-				<lemo-display-name>LeMo [kreutel]</lemo-display-name>
-				<tomcat-server>lemo3-tomcat-manager</tomcat-server>
-				<tomcat-url>${lemo3-tomcat-url}</tomcat-url>
-			</properties>
-		</profile>
-
 	</profiles>
 
 	<dependencies>
@@ -428,9 +314,6 @@
 		<hibernate-version>3.6.10.Final</hibernate-version>
 		<slf4j-version>1.6.6</slf4j-version>
 		<servlet-api-release-version>2.5</servlet-api-release-version>
-
-		<lemo2-tomcat-url>http://lemo2.f4.htw-berlin.de:8080</lemo2-tomcat-url>
-		<lemo3-tomcat-url>http://141.45.146.174:8080</lemo3-tomcat-url>
 	</properties>
 
 </project>
