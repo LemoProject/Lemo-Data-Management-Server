@@ -1565,10 +1565,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
 				insert.setUser(loadedItem.getUserid(), this.userMining, this.oldUserMining);
 				insert.setTimestamp(loadedItem.getTime());
-				
+				insert.setAction(loadedItem.getAction());
 				if(courseModules.containsKey(loadedItem.getCmid())	)
 				{
-					insert.setLearning(Long.valueOf("07" + courseModules.get(loadedItem.getCmid()).getInstance()), learningObjectMining, oldLearningObjectMining);
+					insert.setLearning(Long.valueOf("17" + courseModules.get(loadedItem.getCmid()).getInstance()), learningObjectMining, oldLearningObjectMining);
 				}				
 			}
 			
@@ -1582,6 +1582,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				
 				insert.setUser(loadedItem.getUserid(), this.userMining,
 						this.oldUserMining);
+				insert.setAction(loadedItem.getAction());
 
 				insert.setTimestamp(loadedItem.getTime());
 				if(insert.getTimestamp() > maxLog)
@@ -1590,7 +1591,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				}
 				
 				if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setLearning(Long.valueOf("09" + loadedItem.getInfo()),
+					insert.setLearning(Long.valueOf("19" + loadedItem.getInfo()),
 							this.learningObjectMining, this.oldLearningObjectMining);
 				}
 			}
@@ -1603,13 +1604,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
 				insert.setCourse(loadedItem.getCourse(),
 						this.courseMining, this.oldCourseMining);
-
+				insert.setAction(loadedItem.getAction());
 				insert.setUser(loadedItem.getUserid(), this.userMining,
 						this.oldUserMining);
 
 				if (loadedItem.getInfo().matches("[0-9]+"))
 				{
-					insert.setLearning(Long.valueOf("08" + loadedItem.getInfo()),
+					insert.setLearning(Long.valueOf("18" + loadedItem.getInfo()),
 							this.learningObjectMining, this.oldLearningObjectMining);
 				}
 				insert.setTimestamp(loadedItem.getTime());
@@ -1688,7 +1689,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			UserAssessment insert = new UserAssessment();
 			insert.setId(loadedItem.getId());
-			insert.setLearning(Long.valueOf("07" + loadedItem.getAssignment()), learningObjectMining, oldLearningObjectMining);
+			insert.setLearning(Long.valueOf("17" + loadedItem.getAssignment()), learningObjectMining, oldLearningObjectMining);
 			insert.setUser(loadedItem.getUser(), userMining, oldUserMining);
 			if(loadedItem.getGrade() != null)
 			{
@@ -1728,7 +1729,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				if ((loadedItem2.getId() == loadedItem.getItemid()) && (loadedItem2.getIteminstance() != null)) {
 					insert.setCourse(loadedItem2.getCourseid(),
 							this.courseMining, this.oldCourseMining);
-					insert.setLearning(Long.valueOf("08" + loadedItem2.getIteminstance()),
+					insert.setLearning(Long.valueOf("18" + loadedItem2.getIteminstance()),
 							this.learningObjectMining, this.oldLearningObjectMining);
 					if ((insert.getLearning() != null) && (insert.getUser() != null)) {
 						taskUserMining.put(insert.getId(), insert);
@@ -1776,7 +1777,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			final CollaborationLog insert = new CollaborationLog();
 			
 			insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
-			insert.setLearning(Long.valueOf("04" + loadedItem.getChat()), this.learningObjectMining,
+			insert.setLearning(Long.valueOf("14" + loadedItem.getChat()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			insert.setText(TextHelper.replaceString(loadedItem.getMessage()));
 			insert.setTimestamp(loadedItem.getTimestamp());
@@ -1815,8 +1816,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		}
 
 		for (final LogLMS loadedItem : this.logLms) {
-
-
 			if (loadedItem.getModule().equals("forum")) {
 
 				final CollaborationLog insert = new CollaborationLog();
@@ -1827,7 +1826,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 				if ((loadedItem.getAction().equals("view forum") || loadedItem.getAction().equals("subscribe"))
 						&& loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setLearning(Long.valueOf("05" + loadedItem.getInfo()),
+					insert.setAction(loadedItem.getAction());
+					insert.setLearning(Long.valueOf("15" + loadedItem.getInfo()),
 							this.learningObjectMining, this.oldLearningObjectMining);
 				}
 				else if((loadedItem.getAction().equals("add discussion") || loadedItem.getAction().equals(
@@ -1835,8 +1835,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				{
 					if (discussions.containsKey(Long.valueOf(loadedItem.getInfo())))
 					{
+						insert.setAction(loadedItem.getAction());
 						Long f = discussions.get(Long.valueOf(loadedItem.getInfo())).getForum();
-						insert.setLearning(Long.valueOf("05" + f),
+						insert.setLearning(Long.valueOf("15" + f),
 								this.learningObjectMining, this.oldLearningObjectMining);
 					}
 				}
@@ -1845,7 +1846,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					ForumPostsLMS p = posts.get(Long.valueOf(loadedItem.getInfo()));
 					if(discussions.containsKey(p.getDiscussion()))
 					{
-						insert.setLearning(Long.valueOf("05" + discussions.get(p.getDiscussion()).getForum()),
+						insert.setAction(loadedItem.getAction());
+						insert.setLearning(Long.valueOf("15" + discussions.get(p.getDiscussion()).getForum()),
 								this.learningObjectMining, this.oldLearningObjectMining );
 						insert.setText(TextHelper.replaceString(p.getMessage()));
 					}					
@@ -1882,7 +1884,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
 				if (couMod.get(loadedItem.getCmid()) != null) {
 					insert.setLearning(
-							Long.valueOf("06"
+							Long.valueOf("16"
 									+ couMod.get(loadedItem.getCmid()).getInstance()), this.learningObjectMining,
 							this.oldLearningObjectMining);
 				}
@@ -2173,14 +2175,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final CourseLearning insert = new CourseLearning();
 
-			insert.setId(loadedItem.getId());
+			insert.setId(Long.valueOf("17" + loadedItem.getId()));
 			insert.setCourse(loadedItem.getCourse(), this.courseMining,
 					this.oldCourseMining);
 			if (insert.getCourse() == null) {
 				this.logger.debug("course not found for course-assignment: " + loadedItem.getId() + " and course: "
 						+ loadedItem.getCourse());
 			}
-			insert.setLearning(Long.valueOf("07" + loadedItem.getId()),
+			insert.setLearning(Long.valueOf("17" + loadedItem.getId()),
 					this.learningObjectMining, this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearning() != null)) {
 				courseLearnings.put(insert.getId(), insert);
@@ -2191,10 +2193,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final CourseLearning insert = new CourseLearning();
 
-			insert.setId(loadedItem.getId());
+			insert.setId(Long.valueOf("19" + loadedItem.getId()));
 			insert.setCourse(loadedItem.getCourse(), this.courseMining,
 					this.oldCourseMining);
-			insert.setLearning(Long.valueOf("09" + loadedItem.getId()), this.learningObjectMining,
+			insert.setLearning(Long.valueOf("19" + loadedItem.getId()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearning() != null)) {
 				courseLearnings.put(insert.getId(), insert);
@@ -2206,10 +2208,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final CourseLearning insert = new CourseLearning();
 
-			insert.setId(loadedItem.getId());
+			insert.setId(Long.valueOf("18" + loadedItem.getId()));
 			insert.setCourse(loadedItem.getCourse(), this.courseMining,
 					this.oldCourseMining);
-			insert.setLearning(Long.valueOf("08" + loadedItem.getId()), this.learningObjectMining,
+			insert.setLearning(Long.valueOf("18" + loadedItem.getId()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearning() != null)) {
 				courseLearnings.put(insert.getId(), insert);
@@ -2233,10 +2235,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final CourseLearning insert = new CourseLearning();
 
-			insert.setId(loadedItem.getId());
+			insert.setId(Long.valueOf("15" + loadedItem.getId()));
 			insert.setCourse(loadedItem.getCourse(), this.courseMining,
 					this.oldCourseMining);
-			insert.setLearning(Long.valueOf("05" + loadedItem.getId()), this.learningObjectMining,
+			insert.setLearning(Long.valueOf("15" + loadedItem.getId()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearning() != null)) {
 				courseLearnings.put(insert.getId(), insert);
@@ -2247,10 +2249,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final CourseLearning insert = new CourseLearning();
 
-			insert.setId(loadedItem.getId());
+			insert.setId(Long.valueOf("16" + loadedItem.getId()));
 			insert.setCourse(loadedItem.getCourse(), this.courseMining,
 					this.oldCourseMining);
-			insert.setLearning(Long.valueOf("06" + loadedItem.getId()), this.learningObjectMining,
+			insert.setLearning(Long.valueOf("16" + loadedItem.getId()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearning() != null)) {
 				courseLearnings.put(insert.getId(), insert);
@@ -2261,10 +2263,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final CourseLearning insert = new CourseLearning();
 
-			insert.setId(Long.valueOf("01" + loadedItem.getId()));
+			insert.setId(Long.valueOf("11" + loadedItem.getId()));
 			insert.setCourse(loadedItem.getCourse(), this.courseMining,
 					this.oldCourseMining);
-			insert.setLearning(Long.valueOf("01" + loadedItem.getId()), this.learningObjectMining,
+			insert.setLearning(Long.valueOf("11" + loadedItem.getId()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearning() != null)) {
 				courseLearnings.put(insert.getId(), insert);
@@ -2275,10 +2277,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final CourseLearning insert = new CourseLearning();
 
-			insert.setId(Long.valueOf("02" + loadedItem.getId()));
+			insert.setId(Long.valueOf("12" + loadedItem.getId()));
 			insert.setCourse(loadedItem.getCourse(), this.courseMining,
 					this.oldCourseMining);
-			insert.setLearning(Long.valueOf("02" + loadedItem.getId()), this.learningObjectMining,
+			insert.setLearning(Long.valueOf("12" + loadedItem.getId()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearning() != null)) {
 				courseLearnings.put(insert.getId(), insert);
@@ -2289,10 +2291,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			final CourseLearning insert = new CourseLearning();
 
-			insert.setId(Long.valueOf("03" + loadedItem.getId()));
+			insert.setId(Long.valueOf("13" + loadedItem.getId()));
 			insert.setCourse(loadedItem.getCourse(), this.courseMining,
 					this.oldCourseMining);
-			insert.setLearning(Long.valueOf("03" + loadedItem.getId()), this.learningObjectMining,
+			insert.setLearning(Long.valueOf("13" + loadedItem.getId()), this.learningObjectMining,
 					this.oldLearningObjectMining);
 			if ((insert.getCourse() != null) && (insert.getLearning() != null)) {
 				courseLearnings.put(insert.getId(), insert);
@@ -2322,9 +2324,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			if (loadedItem.getModule().equals("resource")) {
 
 				if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setLearning(Long.valueOf("01" + loadedItem.getInfo()),
+					insert.setLearning(Long.valueOf("11" + loadedItem.getInfo()),
 							this.learningObjectMining, this.oldLearningObjectMining);
 				}
+				insert.setAction(loadedItem.getAction());
 				insert.setTimestamp(loadedItem.getTime());
 				if(insert.getTimestamp() > maxLog)
 				{
@@ -2347,10 +2350,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 
 				if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setLearning(Long.valueOf("02" + loadedItem.getInfo()),
+					insert.setLearning(Long.valueOf("12" + loadedItem.getInfo()),
 							this.learningObjectMining, this.oldLearningObjectMining);
 				}
 				insert.setTimestamp(loadedItem.getTime());
+				insert.setAction(loadedItem.getAction());
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
@@ -2370,10 +2374,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			if (loadedItem.getModule().equals("page")) {
 				
 				if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setLearning(Long.valueOf("03" + loadedItem.getInfo()),
+					insert.setLearning(Long.valueOf("13" + loadedItem.getInfo()),
 							this.learningObjectMining, this.oldLearningObjectMining);
 				}
 				insert.setTimestamp(loadedItem.getTime());
+				insert.setAction(loadedItem.getAction());
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
