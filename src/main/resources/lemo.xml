@@ -33,10 +33,28 @@
       <property name="hibernate.c3p0.testConnectionOnCheckout">true</property>
     </database>
     <connectors>
-	    <connector platform-id="1" name="moodle27" platform-type="Moodle_2_7">
-        <property name="hibernate.connection.url">jdbc:mysql://localhost/moodle</property>
-        <property name="hibernate.connection.username">lemo</property>
-        <property name="hibernate.connection.password">lemolemo</property>
+      <connector platform-id="4" name="moodle23" platform-type="Moodle_2_3">
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost/moodle</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">password</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.default_schema">public</property>
+      </connector>
+      <connector platform-id="7" name="moodle27" platform-type="Moodle_2_7">
+        <property name="hibernate.connection.url">jdbc:mysql://localhost/moodle_27</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">password</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.default_schema"></property>
+      </connector>
+	        <connector platform-id="5" name="mooc" platform-type="Mooc">
+        <course-id-filter></course-id-filter>
+	<course-login-filter></course-login-filter>        
+	<property name="hibernate.connection.url">jdbc:mysql://localhost/lemo_mooc</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">password</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.default_schema"></property>

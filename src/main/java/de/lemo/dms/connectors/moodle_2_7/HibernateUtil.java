@@ -51,6 +51,7 @@ import de.lemo.dms.connectors.moodle_2_7.mapping.GradeItemsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsMembersLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.LogLMS;
+import de.lemo.dms.connectors.moodle_2_7.mapping.LogstoreStandardLogLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ModulesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.PageLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.QuestionLMS;
@@ -119,7 +120,8 @@ public final class HibernateUtil {
 		cfg.addAnnotatedClass(GroupsMembersLMS.class);
 		cfg.addAnnotatedClass(GroupsLMS.class);
 		cfg.addAnnotatedClass(LogLMS.class);
-		cfg.addAnnotatedClass(QuestionStatesLMS.class);
+		cfg.addAnnotatedClass(LogstoreStandardLogLMS.class);
+//		cfg.addAnnotatedClass(QuestionStatesLMS.class);
 		cfg.addAnnotatedClass(QuestionLMS.class);
 		cfg.addAnnotatedClass(QuizGradesLMS.class);
 		cfg.addAnnotatedClass(QuizLMS.class);
