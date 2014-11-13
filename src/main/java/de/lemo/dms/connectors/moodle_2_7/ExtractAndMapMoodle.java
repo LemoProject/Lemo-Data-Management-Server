@@ -60,7 +60,7 @@ import de.lemo.dms.connectors.moodle_2_7.mapping.GradeGradesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.GradeItemsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsMembersLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.LogLMS;
+import de.lemo.dms.connectors.moodle_2_7.mapping.LogstoreStandardLogLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ModulesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.PageLMS;
 //import de.lemo.dms.connectors.moodle_2_7.mapping.QuestionLMS;
@@ -123,7 +123,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 	// LMS tables instances lists
 	/** The log_lms. */
-	private List<LogLMS> logLms;
+	private List<LogstoreStandardLogLMS> logLms;
 	private List<AssignGradesLMS> assignGradesLms;
 	private List<ResourceLMS> resourceLms;
 	private List<UrlLMS> urlLms;
@@ -320,11 +320,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		logger.info("CourseModulesLMS tables: " + this.courseModulesLms.size());
 
 		//Read Log
-		criteria = session.createCriteria(LogLMS.class, "obj");
+		criteria = session.createCriteria(LogstoreStandardLogLMS.class, "obj");
 		if(hasCR){
 			criteria.add(Restrictions.in("obj.course", courses));
 		}
-		criteria.add(Restrictions.gt("obj.time", readingfromtimestamp));
+		criteria.add(Restrictions.gt("obj.timecreated", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.logLms = criteria.list();
 		logger.info("LogLMS tables: " + this.logLms.size());
@@ -456,7 +456,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				else
 					courseClause += ")";
 			}
-			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message,posts.discussion from mdl_forum_posts as posts JOIN mdl_log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp");
+			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message,posts.discussion from mdl_forum_posts as posts JOIN mdl_logstore_standard_log as logs ON posts.userid = logs.userid Where logs.courseid in "+ courseClause +" and (posts.created = logs.timecreated or posts.modified = logs.timecreated) AND posts.modified>=:readingtimestamp");
 			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
 			List<Object[]> tmpl = forumPosts.list();
 			this.forumPostsLms = new ArrayList<ForumPostsLMS>();
@@ -941,11 +941,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			this.quizAttemptsLms = new ArrayList<QuizAttemptsLMS>();
 		logger.info("QuizAttemptsLMS tables: " + this.quizAttemptsLms.size());
 
-		criteria = session.createCriteria(LogLMS.class, "obj");
+		criteria = session.createCriteria(LogstoreStandardLogLMS.class, "obj");
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
-		criteria.add(Restrictions.lt("obj.time", readingtotimestamp));
-		criteria.add(Restrictions.gt("obj.time", readingfromtimestamp));
+		criteria.add(Restrictions.lt("obj.timecreated", readingtotimestamp));
+		criteria.add(Restrictions.gt("obj.timecreated", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.logLms = criteria.list();
 		logger.info("LogLMS tables: " + this.logLms.size());
@@ -1510,9 +1510,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		final HashMap<Long, CourseLogMining> courseLogMining = new HashMap<Long, CourseLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 
-		for (final LogLMS loadedItem : this.logLms) {
+		for (final LogstoreStandardLogLMS loadedItem : this.logLms) {
 
-			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid());
+			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser());
 
 			// Creates a list of time stamps for every user indicating requests
 			// We later use this lists to determine the time a user accessed a resource
@@ -1520,7 +1520,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			{
 				// if the user isn't already listed, create a new key
 				final ArrayList<Long> times = new ArrayList<Long>();
-				times.add(loadedItem.getTime());
+				times.add(loadedItem.getTimecreated());
 				users.put(uid, times);
 			}
 			else
@@ -1529,13 +1529,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
-				if (!times.contains(loadedItem.getTime())) {
-					times.add(loadedItem.getTime());
+				if (!times.contains(loadedItem.getTimecreated())) {
+					times.add(loadedItem.getTimecreated());
 				}
 				users.put(uid, times);
 			}
 
-			if (loadedItem.getModule().equals("course"))
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("course"))
 			{
 				final CourseLogMining insert = new CourseLogMining();
 
@@ -1543,11 +1543,11 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setPlatform(this.connector.getPlatformId());
-				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
 						this.oldUserMining);
 
 				insert.setAction(loadedItem.getAction());
-				insert.setTimestamp(loadedItem.getTime());
+				insert.setTimestamp(loadedItem.getTimecreated());
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
@@ -1623,16 +1623,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			posts.put(post.getId(), post);
 		}
 
-		for (final LogLMS loadedItem : this.logLms) {
+		for (final LogstoreStandardLogLMS loadedItem : this.logLms) {
 
-			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid());
+			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser());
 			// Creates a list of time stamps for every user indicating requests
 			// We later use this lists to determine the time a user accessed a resource
 			if (users.get(uid) == null)
 			{
 				// if the user isn't already listed, create a new key
 				final ArrayList<Long> times = new ArrayList<Long>();
-				times.add(loadedItem.getTime());
+				times.add(loadedItem.getTimecreated());
 				users.put(uid, times);
 			}
 			else
@@ -1641,69 +1641,81 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
-				if (!times.contains(loadedItem.getTime())) {
-					times.add(loadedItem.getTime());
+				if (!times.contains(loadedItem.getTimecreated())) {
+					times.add(loadedItem.getTimecreated());
 				}
 				users.put(uid, times);
 			}
 
-			if (loadedItem.getModule().equals("forum")) {
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum")) {
 
 				final ForumLogMining insert = new ForumLogMining();
 
 				insert.setId(forumLogMining.size() + 1 + this.forumLogMax);
 				insert.setPlatform(this.connector.getPlatformId());
-				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
-						this.oldUserMining);
-
-				if ((loadedItem.getAction().equals("view forum") || loadedItem.getAction().equals("subscribe"))
-						&& loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setForum(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
-							this.forumMining, this.oldForumMining);
-				}
-				else if((loadedItem.getAction().equals("add discussion") || loadedItem.getAction().equals(
-							"view discussion")) && loadedItem.getInfo().matches("[0-9]+")) 
-				{
-					if (discussions.containsKey(Long.valueOf(loadedItem.getInfo())))
-					{
-						Long f = discussions.get(Long.valueOf(loadedItem.getInfo())).getForum();
-						insert.setForum(Long.valueOf(this.connector.getPrefix() + "" + f),
-								this.forumMining, this.oldForumMining);
-						insert.setSubject(discussions.get(Long.valueOf(loadedItem.getInfo())).getName());
-					}
-				}
-				else if(loadedItem.getAction().equals("add post") && posts.containsKey(Long.valueOf(loadedItem.getInfo())))
-				{			
-					ForumPostsLMS p = posts.get(Long.valueOf(loadedItem.getInfo()));
-					if(discussions.containsKey(p.getDiscussion()))
-					{
-						insert.setForum(Long.valueOf(this.connector.getPrefix() + "" + discussions.get(p.getDiscussion()).getForum()),
-								this.forumMining, this.oldForumMining );
-						insert.setSubject(p.getSubject());
-						insert.setMessage(TextHelper.replaceString(p.getMessage()));
-					}					
-				}
-
+				insert.setAction(loadedItem.getAction() + " forum");
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
-				insert.setAction(loadedItem.getAction());
-				if(insert.getMessage() == null)
-					for (final ForumPostsLMS loadedItem2 : this.forumPostsLms)
-					{
-						if ((loadedItem2.getUserid() == loadedItem.getUserid())
-								&& ((loadedItem2.getCreated() == loadedItem.getTime()) || (loadedItem2.getModified() == loadedItem
-										.getTime()))) {
-							insert.setMessage(TextHelper.replaceString(loadedItem2.getMessage()));
-							insert.setSubject(loadedItem2.getSubject());
-							break;
-						}
-					}
-				insert.setTimestamp(loadedItem.getTime());
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
+						this.oldUserMining);
+				insert.setForum(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getObjectid()),
+							this.forumMining, this.oldForumMining);
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
 				}
-				
+				if ((insert.getCourse() != null) && (insert.getForum() != null) && (insert.getUser() != null)) {
+					forumLogMining.put(insert.getId(), insert);
+				}
+			}
+			if(loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_discussions"))
+			{
+				final ForumLogMining insert = new ForumLogMining();
+
+				insert.setId(forumLogMining.size() + 1 + this.forumLogMax);
+				insert.setPlatform(this.connector.getPlatformId());
+				insert.setAction(loadedItem.getAction() + " discussion");
+				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
+						this.courseMining, this.oldCourseMining);
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
+						this.oldUserMining);
+				if (discussions.containsKey(loadedItem.getObjectid()))
+				{
+					Long f = discussions.get(loadedItem.getObjectid()).getForum();
+					insert.setForum(Long.valueOf(this.connector.getPrefix() + "" + f),
+							this.forumMining, this.oldForumMining);
+					insert.setSubject(discussions.get(loadedItem.getObjectid()).getName());
+				}
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				if ((insert.getCourse() != null) && (insert.getForum() != null) && (insert.getUser() != null)) {
+					forumLogMining.put(insert.getId(), insert);
+				}
+			}
+			if(loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_posts") && loadedItem.getTarget().equals("post"))
+			{
+				final ForumLogMining insert = new ForumLogMining();
+				insert.setId(forumLogMining.size() + 1 + this.forumLogMax);
+				insert.setPlatform(this.connector.getPlatformId());
+				insert.setAction(loadedItem.getAction() + " post");
+				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
+						this.courseMining, this.oldCourseMining);
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
+						this.oldUserMining);
+				ForumPostsLMS p = posts.get(loadedItem.getObjectid());
+				if(discussions.containsKey(p.getDiscussion()))
+				{
+					insert.setForum(Long.valueOf(this.connector.getPrefix() + "" + discussions.get(p.getDiscussion()).getForum()),
+							this.forumMining, this.oldForumMining );
+					insert.setSubject(p.getSubject());
+					insert.setMessage(TextHelper.replaceString(p.getMessage()));
+				}	
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
 				if ((insert.getCourse() != null) && (insert.getForum() != null) && (insert.getUser() != null)) {
 					forumLogMining.put(insert.getId(), insert);
 				}
@@ -1750,16 +1762,16 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			forumMining.put(insert.getId(), insert);
 		}
 
-		for (final LogLMS loadedItem : this.logLms)
+		for (final LogstoreStandardLogLMS loadedItem : this.logLms)
 		{
-			if ((forumMining.get(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCmid())) != null)
-					&& ((forumMining.get(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCmid()))
+			if ((loadedItem.getObjectid() != null) && (forumMining.get(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getObjectid())) != null)
+					&& ((forumMining.get(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getObjectid()))
 							.getTimeCreated() == 0) || (forumMining.get(
-							Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCmid())).getTimeCreated() > loadedItem
-							.getTime())))
+							Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getObjectid())).getTimeCreated() > loadedItem
+							.getTimecreated())))
 			{
-				forumMining.get(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCmid())).setTimeCreated(
-						loadedItem.getTime());
+				forumMining.get(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getObjectid())).setTimeCreated(
+						loadedItem.getTimecreated());
 			}
 		}
 		return forumMining;
@@ -1986,9 +1998,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		final HashMap<Long, QuizLogMining> quizLogMining = new HashMap<Long, QuizLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 
-		for (final LogLMS loadedItem : this.logLms) {
+		for (final LogstoreStandardLogLMS loadedItem : this.logLms) {
 
-			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid());
+			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser());
 
 			// Creates a list of time stamps for every user indicating requests
 			// We later use this lists to determine the time a user accessed a resource
@@ -1996,7 +2008,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			{
 				// if the user isn't already listed, create a new key
 				final ArrayList<Long> times = new ArrayList<Long>();
-				times.add(loadedItem.getTime());
+				times.add(loadedItem.getTimecreated());
 				users.put(uid, times);
 			}
 			else
@@ -2005,14 +2017,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
-				if (!times.contains(loadedItem.getTime())) {
-					times.add(loadedItem.getTime());
+				if (!times.contains(loadedItem.getTimecreated())) {
+					times.add(loadedItem.getTimecreated());
 				}
 				users.put(uid, times);
 			}
 
 			// insert quiz in quiz_log
-			if (loadedItem.getModule().equals("quiz"))
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("quiz"))
 			{
 				final QuizLogMining insert = new QuizLogMining();
 
@@ -2021,16 +2033,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						this.courseMining, this.oldCourseMining);
 				insert.setPlatform(this.connector.getPlatformId());
 
-				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
 						this.oldUserMining);
 
-				if (loadedItem.getInfo().matches("[0-9]+"))
-				{
-					insert.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
+				insert.setQuiz(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getObjectid()),
 							this.quizMining, this.oldQuizMining);
-				}
 				insert.setAction(loadedItem.getAction());
-				insert.setTimestamp(loadedItem.getTime());
+				insert.setTimestamp(loadedItem.getTimecreated());
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
@@ -2052,14 +2061,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						}
 					}
 				}
-				if ((insert.getQuiz() == null) && !(loadedItem.getAction().equals("view all"))) {
-					this.logger.debug("In QuizLogMining, quiz(quiz) not found for log: " + loadedItem.getId()
-							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
-							+ " and action: " + loadedItem.getAction());
-				}
 				if (insert.getUser() == null) {
 					this.logger.debug("In QuizLogMining(quiz), user not found for log: " + loadedItem.getId()
-							+ " and user: " + loadedItem.getUserid());
+							+ " and user: " + loadedItem.getUser());
 				}
 				if (insert.getCourse() == null) {
 					this.logger.debug("In QuizLogMining(quiz), course not found for log: " + loadedItem.getId()
@@ -2132,9 +2136,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 		}
 
-		for (final LogLMS loadedItem : this.logLms) {
+		for (final LogstoreStandardLogLMS loadedItem : this.logLms) {
 
-			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid());
+			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser());
 
 			// Creates a list of time stamps for every user indicating requests
 			// We later use this lists to determine the time a user accessed a resource
@@ -2142,7 +2146,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			{
 				// if the user isn't already listed, create a new key
 				final ArrayList<Long> times = new ArrayList<Long>();
-				times.add(loadedItem.getTime());
+				times.add(loadedItem.getTimecreated());
 				users.put(uid, times);
 			}
 			else
@@ -2151,8 +2155,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
-				if (!times.contains(loadedItem.getTime())) {
-					times.add(loadedItem.getTime());
+				if (!times.contains(loadedItem.getTimecreated())) {
+					times.add(loadedItem.getTimecreated());
 				}
 				users.put(uid, times);
 			}
@@ -2213,26 +2217,26 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					//assignmentLogMining.put(insert.getId(), insert);
 				}
 			}*/
-			if (loadedItem.getModule().equals("assign"))
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("assign"))
 			{
 				AssignmentLogMining insert = new AssignmentLogMining();
 				insert.setId(assignmentLogMining.size() + 1 + this.assignmentLogMax);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
-				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
 						this.oldUserMining);
 				insert.setAction(loadedItem.getAction());
-				insert.setTimestamp(loadedItem.getTime());
+				insert.setTimestamp(loadedItem.getTimecreated());
 				insert.setPlatform(this.connector.getPlatformId());
 				
-				if(courseModules.containsKey(loadedItem.getCmid()))
+				if(courseModules.containsKey(loadedItem.getObjectid()))
 				{
-					insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + courseModules.get(loadedItem.getCmid()).getInstance()), assignmentMining, oldAssignmentMining);
-					if(asGrd.containsKey(courseModules.get(loadedItem.getCmid()).getInstance()))
+					insert.setAssignment(Long.valueOf(this.connector.getPrefix() + "" + courseModules.get(loadedItem.getObjectid()).getInstance()), assignmentMining, oldAssignmentMining);
+					if(asGrd.containsKey(courseModules.get(loadedItem.getObjectid()).getInstance()))
 					{
-						for(AssignGradesLMS ag : asGrd.get(courseModules.get(loadedItem.getCmid()).getInstance()))
+						for(AssignGradesLMS ag : asGrd.get(courseModules.get(loadedItem.getObjectid()).getInstance()))
 						{
-							if((ag.getUser() == loadedItem.getUserid() || ag.getGrader() == loadedItem.getUserid()) && loadedItem.getTime() >= ag.getTimemodified())
+							if((ag.getUser() == loadedItem.getUser() || ag.getGrader() == loadedItem.getUser()) && loadedItem.getTimecreated() >= ag.getTimemodified())
 							{ 
 								insert.setGrade(ag.getGrade());
 								break;
@@ -2274,9 +2278,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		final HashMap<Long, ScormLogMining> scormLogMining = new HashMap<Long, ScormLogMining>();
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 
-		for (final LogLMS loadedItem : this.logLms) {
+		for (final LogstoreStandardLogLMS loadedItem : this.logLms) {
 
-			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid());
+			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser());
 
 			// Creates a list of time stamps for every user indicating requests
 			// We later use this lists to determine the time a user accessed a resource
@@ -2284,7 +2288,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			{
 				// if the user isn't already listed, create a new key
 				final ArrayList<Long> times = new ArrayList<Long>();
-				times.add(loadedItem.getTime());
+				times.add(loadedItem.getTimecreated());
 				users.put(uid, times);
 			}
 			else
@@ -2293,14 +2297,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
-				if (!times.contains(loadedItem.getTime())) {
-					times.add(loadedItem.getTime());
+				if (!times.contains(loadedItem.getTimecreated())) {
+					times.add(loadedItem.getTimecreated());
 				}
 				users.put(uid, times);
 			}
 
 			// insert scorm in scorm_log
-			if (loadedItem.getModule().equals("scorm")) {
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("scorm")) {
 				final ScormLogMining insert = new ScormLogMining();
 
 				insert.setId(scormLogMining.size() + 1 + this.scormLogMax);
@@ -2309,26 +2313,21 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						this.courseMining, this.oldCourseMining);
 				insert.setPlatform(this.connector.getPlatformId());
 
-				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
 						this.oldUserMining);
 
 				insert.setAction(loadedItem.getAction());
-				insert.setTimestamp(loadedItem.getTime());
+				insert.setTimestamp(loadedItem.getTimecreated());
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
 				}
 				
-				if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setScorm(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getInfo()),
+				insert.setScorm(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getObjectid()),
 							this.scormMining, this.oldScormMining);
-				}
+				
 				if ((insert.getScorm() != null) && (insert.getCourse() != null) && (insert.getUser() != null)) {
 					scormLogMining.put(insert.getId(), insert);
-				}
-				if (insert.getScorm() == null) {
-					this.logger.debug("In ScormLogMining, scorm package not found for log: " + loadedItem.getId()
-							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo());
 				}
 				if (insert.getCourse() == null) {
 					this.logger.debug("In ScormLogMining(scorm part), course not found for log: " + loadedItem.getId()
@@ -2336,7 +2335,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				}
 				if (insert.getUser() == null) {
 					this.logger.debug("In ScormLogMining(scorm part), user not found for log: " + loadedItem.getId()
-							+ " and user: " + loadedItem.getUserid());
+							+ " and user: " + loadedItem.getUser());
 				}
 			}
 		}
@@ -2627,13 +2626,13 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			resource.put(insert.getId(), insert);
 		}
 
-		for (final LogLMS loadedItem : this.logLms)
+		for (final LogstoreStandardLogLMS loadedItem : this.logLms)
 		{
-			if ((resource.get(loadedItem.getCmid()) != null)
-					&& ((resource.get(loadedItem.getCmid()).getTimeCreated() == 0) || (resource.get(
-							loadedItem.getCmid()).getTimeCreated() > loadedItem.getTime())))
+			if ((resource.get(loadedItem.getObjectid()) != null)
+					&& ((resource.get(loadedItem.getObjectid()).getTimeCreated() == 0) || (resource.get(
+							loadedItem.getObjectid()).getTimeCreated() > loadedItem.getTimecreated())))
 			{
-				resource.get(loadedItem.getCmid()).setTimeCreated(loadedItem.getTime());
+				resource.get(loadedItem.getObjectid()).setTimeCreated(loadedItem.getTimecreated());
 			}
 		}
 		return resource;
@@ -2646,10 +2645,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		// requests times.
 		final HashMap<Long, ArrayList<Long>> users = new HashMap<Long, ArrayList<Long>>();
 
-		for (final LogLMS loadedItem : this.logLms)
+		for (final LogstoreStandardLogLMS loadedItem : this.logLms)
 		{
 
-			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid());
+			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser());
 
 			// Creates a list of time stamps for every user indicating requests
 			// We later use this lists to determine the time a user accessed a resource
@@ -2657,7 +2656,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			{
 				// if the user isn't already listed, create a new key
 				final ArrayList<Long> times = new ArrayList<Long>();
-				times.add(loadedItem.getTime());
+				times.add(loadedItem.getTimecreated());
 				users.put(uid, times);
 			}
 			else
@@ -2666,38 +2665,55 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
-				if (!times.contains(loadedItem.getTime())) {
-					times.add(loadedItem.getTime());
+				if (!times.contains(loadedItem.getTimecreated())) {
+					times.add(loadedItem.getTimecreated());
 				}
 				users.put(uid, times);
 			}
 
-			if (loadedItem.getModule().equals("resource")) {
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("resource")) {
 				final ResourceLogMining insert = new ResourceLogMining();
 				insert.setPlatform(this.connector.getPlatformId());
 
 				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
 
-				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
 						this.oldUserMining);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setAction(loadedItem.getAction());
 
-				if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setResource(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getInfo()),
+				insert.setResource(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getObjectid()),
 							this.resourceMining, this.oldResourceMining);
-				}
-				insert.setTimestamp(loadedItem.getTime());
+				insert.setTimestamp(loadedItem.getTimecreated());
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
 				}
 				
-				if ((insert.getResource() == null) && !(loadedItem.getAction().equals("view all"))) {
-					this.logger.debug("In ResourceLogMining, resource not found for log: " + loadedItem.getId()
-							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
-							+ " and action: " + loadedItem.getAction());
+				if ((insert.getCourse() != null) && (insert.getResource() != null) && (insert.getUser() != null)) {
+					resourceLogMining.put(insert.getId(), insert);
+				}
+
+			}
+			
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("url")) {
+				final ResourceLogMining insert = new ResourceLogMining();
+				insert.setPlatform(this.connector.getPlatformId());
+
+				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
+
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
+						this.oldUserMining);
+				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
+						this.courseMining, this.oldCourseMining);
+				insert.setAction(loadedItem.getAction());
+				insert.setResource(Long.valueOf(this.connector.getPrefix() + "2" + loadedItem.getObjectid()),
+							this.resourceMining, this.oldResourceMining);
+				insert.setTimestamp(loadedItem.getTimecreated());
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
 				}
 				if ((insert.getCourse() != null) && (insert.getResource() != null) && (insert.getUser() != null)) {
 					resourceLogMining.put(insert.getId(), insert);
@@ -2705,66 +2721,27 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			}
 			
-			if (loadedItem.getModule().equals("url")) {
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("page")) {
 				final ResourceLogMining insert = new ResourceLogMining();
 				insert.setPlatform(this.connector.getPlatformId());
 
 				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
 
-				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
 						this.oldUserMining);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setAction(loadedItem.getAction());
 
-				if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setResource(Long.valueOf(this.connector.getPrefix() + "2" + loadedItem.getInfo()),
+				insert.setResource(Long.valueOf(this.connector.getPrefix() + "3" + loadedItem.getObjectid()),
 							this.resourceMining, this.oldResourceMining);
-				}
-				insert.setTimestamp(loadedItem.getTime());
+				
+				insert.setTimestamp(loadedItem.getTimecreated());
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
 				}
-				
-				if ((insert.getResource() == null) && !(loadedItem.getAction().equals("view all"))) {
-					this.logger.debug("In ResourceLogMining, resource not found for log: " + loadedItem.getId()
-							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
-							+ " and action: " + loadedItem.getAction());
-				}
-				if ((insert.getCourse() != null) && (insert.getResource() != null) && (insert.getUser() != null)) {
-					resourceLogMining.put(insert.getId(), insert);
-				}
 
-			}
-			
-			if (loadedItem.getModule().equals("page")) {
-				final ResourceLogMining insert = new ResourceLogMining();
-				insert.setPlatform(this.connector.getPlatformId());
-
-				insert.setId(resourceLogMining.size() + 1 + this.resourceLogMax);
-
-				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
-						this.oldUserMining);
-				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
-						this.courseMining, this.oldCourseMining);
-				insert.setAction(loadedItem.getAction());
-
-				if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setResource(Long.valueOf(this.connector.getPrefix() + "3" + loadedItem.getInfo()),
-							this.resourceMining, this.oldResourceMining);
-				}
-				insert.setTimestamp(loadedItem.getTime());
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
-				
-				if ((insert.getResource() == null) && !(loadedItem.getAction().equals("view all"))) {
-					this.logger.debug("In ResourceLogMining, resource not found for log: " + loadedItem.getId()
-							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
-							+ " and action: " + loadedItem.getAction());
-				}
 				if ((insert.getCourse() != null) && (insert.getResource() != null) && (insert.getUser() != null)) {
 					resourceLogMining.put(insert.getId(), insert);
 				}
@@ -2836,9 +2813,9 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			couMod.put(cm.getId(), cm);
 		}
 
-		for (final LogLMS loadedItem : this.logLms) {
+		for (final LogstoreStandardLogLMS loadedItem : this.logLms) {
 
-			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid());
+			final long uid = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser());
 
 			// Creates a list of time stamps for every user indicating requests
 			// We later use this lists to determine the time a user accessed a resource
@@ -2846,7 +2823,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			{
 				// if the user isn't already listed, create a new key
 				final ArrayList<Long> times = new ArrayList<Long>();
-				times.add(loadedItem.getTime());
+				times.add(loadedItem.getTimecreated());
 				users.put(uid, times);
 			}
 			else
@@ -2855,31 +2832,27 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				if (loadedItem.getAction().equals("login")) {
 					times.add(0L);
 				}
-				if (!times.contains(loadedItem.getTime())) {
-					times.add(loadedItem.getTime());
+				if (!times.contains(loadedItem.getTimecreated())) {
+					times.add(loadedItem.getTimecreated());
 				}
 				users.put(uid, times);
 			}
 
-			if (loadedItem.getModule().equals("wiki"))
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki"))
 			{
 				final WikiLogMining insert = new WikiLogMining();
 
 				insert.setId(wikiLogMining.size() + 1 + this.wikiLogMax);
-				if (couMod.get(loadedItem.getCmid()) != null) {
-					insert.setWiki(
-							Long.valueOf(this.connector.getPrefix() + ""
-									+ couMod.get(loadedItem.getCmid()).getInstance()), this.wikiMining,
-							this.oldWikiMining);
-				}
+				insert.setWiki(Long.valueOf(this.connector.getPrefix() + ""
+					+ couMod.get(loadedItem.getObjectid()).getInstance()), this.wikiMining,	this.oldWikiMining);
 
 				insert.setPlatform(this.connector.getPlatformId());
-				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUserid()), this.userMining,
+				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
 						this.oldUserMining);
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setAction(loadedItem.getAction());
-				insert.setTimestamp(loadedItem.getTime());
+				insert.setTimestamp(loadedItem.getTimecreated());
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
@@ -2930,14 +2903,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setPlatform(this.connector.getPlatformId());
 			wikiMining.put(insert.getId(), insert);
 		}
-		for (final LogLMS loadedItem : this.logLms)
+		for (final LogstoreStandardLogLMS loadedItem : this.logLms)
 		{
-			if (loadedItem.getModule().equals("Wiki")
-					&& (wikiMining.get(loadedItem.getCmid()) != null)
-					&& ((wikiMining.get(loadedItem.getCmid()).getTimeCreated() == 0) || (wikiMining.get(
-							loadedItem.getCmid()).getTimeCreated() > loadedItem.getTime())))
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki")
+					&& (wikiMining.get(loadedItem.getObjectid()) != null)
+					&& ((wikiMining.get(loadedItem.getObjectid()).getTimeCreated() == 0) || (wikiMining.get(
+							loadedItem.getObjectid()).getTimeCreated() > loadedItem.getTimecreated())))
 			{
-				wikiMining.get(loadedItem.getCmid()).setTimeCreated(loadedItem.getTime());
+				wikiMining.get(loadedItem.getObjectid()).setTimeCreated(loadedItem.getTimecreated());
 			}
 		}
 		return wikiMining;
