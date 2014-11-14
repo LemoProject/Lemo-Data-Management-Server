@@ -138,7 +138,7 @@ public class QCourseActivity extends Question {
 			this.logger.debug("Course Activity Request - CA Selection: " + resourceType);
 		}
 		if (resourceTypes.isEmpty()) {
-			this.logger.info("Course Activity Request - CA Selection: NO Items selected ");
+			this.logger.debug("Course Activity Request - CA Selection: NO Items selected ");
 		}
 
 		final Criteria criteria = session.createCriteria(ILog.class, "log")

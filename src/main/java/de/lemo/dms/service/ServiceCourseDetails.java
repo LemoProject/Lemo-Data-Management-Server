@@ -80,7 +80,6 @@ public class ServiceCourseDetails {
 	@GET
 	@Path("{cid}")
 	public CourseObject getCourseDetails(@PathParam("cid") final Long id) {
-		logger.info("Starting GetCourseDetails");
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
@@ -153,7 +152,6 @@ public class ServiceCourseDetails {
 
 		//dbHandler.closeSession(session);
 		session.close();
-		logger.info("Finished GetCourseDetails");
 		return result;
 	}
 
@@ -170,7 +168,6 @@ public class ServiceCourseDetails {
 	@Path("/multi")
 	public ResultListCourseObject getCoursesDetails(@QueryParam(MetaParam.COURSE_IDS) final List<Long> courses) {
 
-		logger.info("Starting GetCourseDetails");
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final ArrayList<CourseObject> results = new ArrayList<CourseObject>();
 
@@ -249,7 +246,6 @@ public class ServiceCourseDetails {
 			logger.debug("Result List is empty");
 		} else for(CourseObject co : results) logger.debug("Result Course: "+ co.getDescription());
 		session.close();
-		logger.info("Finished GetCourseDetails");
 		return new ResultListCourseObject(results);
 	}
 	

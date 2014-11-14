@@ -112,9 +112,9 @@ public abstract class AnalysisTask implements Callable<Object> {
 				return future.get();
 			} catch (CancellationException e) {
 				// TODO document exceptions!
-				logger.info(this + " - cancelled", e);
+				logger.error(this + " - cancelled", e);
 			} catch (InterruptedException e) {
-				logger.info(this + " - interuppted", e);
+				logger.error(this + " - interuppted", e);
 			}
 			return null;
 		} else {

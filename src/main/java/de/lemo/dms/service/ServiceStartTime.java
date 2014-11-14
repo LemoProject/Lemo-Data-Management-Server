@@ -46,7 +46,7 @@ public class ServiceStartTime {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public SCTime startTimeJson() {
-		logger.info("call for service: startTimeJson");
+		logger.debug("call for service: startTimeJson");
 		final SCTime rs = new SCTime();
 		rs.setTime(ServerConfiguration.getInstance().getStartTime());
 		return rs;
@@ -55,7 +55,7 @@ public class ServiceStartTime {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String startTimeHtml() {
-		logger.info("call for service: startTimeHtml");
+		logger.debug("call for service: startTimeHtml");
 		final SimpleDateFormat sd = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z");
 		final String fdd = sd.format(ServerConfiguration.getInstance().getStartTime()).toString();
 		return "<html><title>Start Time</title><body><h2>The server was started on " + fdd + "</h2></body></html>";

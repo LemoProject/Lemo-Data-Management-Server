@@ -66,7 +66,7 @@ public class ServiceLoginAuthentification {
 		final Criteria criteria = session.createCriteria(User.class, "users");
 		criteria.add(Restrictions.eq("users.authentication", loginHash));
 
-		logger.info("Looking for user:" + login);
+		logger.debug("Looking for user:" + login);
 
 		@SuppressWarnings("unchecked")
 		ArrayList<User> results = (ArrayList<User>) criteria.list();
@@ -74,13 +74,13 @@ public class ServiceLoginAuthentification {
 		ResultListLongObject res;
 
 		if (!results.isEmpty()) {
-			logger.info("User found id:" + results.get(0).getId());
+			logger.debug("User found id:" + results.get(0).getId());
 			ArrayList<Long> l = new ArrayList<Long>();
 			l.add(0L);
 			l.add(results.get(0).getId());
 			res = new ResultListLongObject(l);
 		} else {
-			logger.info("User " + login + " not found!");
+			logger.debug("User " + login + " not found!");
 			res = new ResultListLongObject();
 		}
 		session.close();

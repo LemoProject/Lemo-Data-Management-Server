@@ -128,7 +128,7 @@ public class HibernateDBHandler implements IDBHandler {
 			session.close();
 		} catch (final HibernateException he)
 		{
-			this.logger.info(he.getMessage());
+			this.logger.error(he.getMessage());
 		}
 	}
 

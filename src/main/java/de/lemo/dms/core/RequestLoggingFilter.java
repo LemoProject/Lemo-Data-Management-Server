@@ -36,7 +36,7 @@ public class RequestLoggingFilter implements ContainerRequestFilter {
 		if (logger.isInfoEnabled()) {
 			String requestInfo = request.getPath() + " (" + request.getMethod() +
 					(request.getMediaType() == null ? "" : " " + request.getMediaType()) + ")";
-			logger.info(requestInfo);
+			logger.debug(requestInfo);
 
 			StringBuilder parameters = new StringBuilder("Params: ");
 			Set<Entry<String, List<String>>> entrySet = request.getFormParameters().entrySet();
@@ -45,7 +45,7 @@ public class RequestLoggingFilter implements ContainerRequestFilter {
 			}
 			if (!entrySet.isEmpty()) {
 				parameters.setLength(parameters.length() - ", ".length());
-				logger.info(parameters.toString());
+				logger.debug(parameters.toString());
 			}
 
 		}

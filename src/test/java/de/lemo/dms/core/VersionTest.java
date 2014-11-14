@@ -30,7 +30,10 @@
 package de.lemo.dms.core;
 
 import static org.junit.Assert.*;
+
+import org.apache.log4j.Logger;
 import org.junit.Test;
+
 import de.lemo.dms.core.Version;
 
 /**
@@ -40,6 +43,8 @@ import de.lemo.dms.core.Version;
  */
 public class VersionTest {
 	
+	private final Logger logger = Logger.getLogger(this.getClass());
+	
 	/**
 	 * check if the version != "unknown"
 	 */
@@ -47,7 +52,7 @@ public class VersionTest {
     public void testDMSVersion() {
     	Version version = new Version();
     	String v = version.getServerVersion();
-    	System.out.println("Version: " + v);
+    	logger.debug("Version: " + v);
     	assertFalse("wrong version read", v == "unknown");
     }
     
@@ -58,7 +63,7 @@ public class VersionTest {
     public void testDBVersion() {
     	Version version = new Version();
     	String v = version.getDBVersion();
-    	System.out.println("Version: " + v);
+    	logger.debug("Version: " + v);
     	assertFalse("wrong version read", v == "unknown");
     }
 }

@@ -75,7 +75,6 @@ public class ServiceUserInformation {
 	public ResultListCourseObject getCoursesByUser(@PathParam("uid") final long id,
 			@QueryParam("course_count") final Long count,
 			@QueryParam("course_offset") final Long offset) {
-		this.logger.info("## " + id);
 		List<CourseObject> courses = new ArrayList<CourseObject>();
 
 		// Set up db-connection
@@ -160,8 +159,6 @@ public class ServiceUserInformation {
 	@GET
 	@Path("/{uid}/coursecount")
 	public Long getCourseCountForUser(@PathParam("uid") final Long id) {
-		
-		this.logger.info("## " + id);
 
 		// Set up db-connection
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();

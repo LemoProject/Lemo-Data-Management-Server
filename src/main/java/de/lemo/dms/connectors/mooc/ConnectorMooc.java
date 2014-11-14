@@ -26,8 +26,10 @@
 
 package de.lemo.dms.connectors.mooc;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
 import de.lemo.dms.connectors.AbstractConnector;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
@@ -41,6 +43,7 @@ import de.lemo.dms.db.IDBHandler;
 public class ConnectorMooc extends AbstractConnector {
 
 	private DBConfigObject config;
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	public ConnectorMooc(final DBConfigObject config) {
 		this.config = config;
@@ -56,7 +59,7 @@ public class ConnectorMooc extends AbstractConnector {
 			dbHandler.closeSession(dbHandler.getMiningSession());
 		} catch (final HibernateException he)
 		{
-			System.out.println(he.getMessage());
+			logger.error(he.getMessage());
 			return false;
 		}
 		return true;
