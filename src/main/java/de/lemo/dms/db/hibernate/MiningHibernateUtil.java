@@ -65,6 +65,29 @@ public final class MiningHibernateUtil {
 		for (final Entry<String, String> entry : dbConfig.getProperties().entrySet()) {
 			config.setProperty(entry.getKey(), entry.getValue());
 		}
+		//Properties migrated from lemo.xml
+		config.setProperty("hibernate.show_sql", "false");
+		config.setProperty("hibernate.format_sql", "false");
+		config.setProperty("hibernate.hbm2ddl.auto", "update");
+		config.setProperty("hibernate.cache.use_second_level_cache", "false");
+		config.setProperty("hibernate.cache.use_query_level_cache", "false");
+		config.setProperty("hibernate.c3p0.acquire_increment", "3");
+		config.setProperty("hibernate.c3p0.min_size", "3");
+		config.setProperty("hibernate.c3p0.timeout", "60");
+		config.setProperty("hibernate.c3p0.max_size", "100");
+		config.setProperty("hibernate.c3p0.idleConnectionTestPeriod", "100");
+		config.setProperty("hibernate.c3p0.max_statements", "0");
+		config.setProperty("hibernate.c3p0.propertyCycle", "2");
+		config.setProperty("hibernate.c3p0.autoCommitOnClose", "false");
+		config.setProperty("hibernate.c3p0.numHelperThreads", "3");
+		config.setProperty("hibernate.c3p0.validate", "true");
+		config.setProperty("hibernate.c3p0.acquireRetryAttempts", "50");
+		config.setProperty("hibernate.c3p0.acquireRetryDelay", "1000");
+		config.setProperty("hibernate.c3p0.maxConnectionAge", "120");
+		config.setProperty("hibernate.c3p0.automaticTestTable", "connection_test_table");
+		config.setProperty("hibernate.c3p0.testConnectionOnCheckout", "true");
+		config.setProperty("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
+		
 		
 		
 		// Meta

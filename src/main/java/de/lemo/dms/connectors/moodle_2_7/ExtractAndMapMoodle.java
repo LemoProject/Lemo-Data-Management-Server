@@ -30,9 +30,11 @@ package de.lemo.dms.connectors.moodle_2_7;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -61,7 +63,6 @@ import de.lemo.dms.connectors.moodle_2_7.mapping.GradeGradesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.GradeItemsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsMembersLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.LogLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.LogstoreStandardLogLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ModulesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.PageLMS;
@@ -76,6 +77,7 @@ import de.lemo.dms.connectors.moodle_2_7.mapping.ScormLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.UserEnrolmentsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.UserLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.WikiLMS;
+import de.lemo.dms.connectors.moodle_2_7.mapping.WikiPagesLMS;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.CollaborationLog;
@@ -110,6 +112,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	private List<CourseLMS> courseLms;
 	private List<ForumLMS> forumLms;
 	private List<WikiLMS> wikiLms;
+	private List<WikiPagesLMS> wikiPagesLms;
 	private List<UserLMS> userLms;
 	private List<QuizLMS> quizLms;
 	private List<GroupsLMS> groupLms;
@@ -436,7 +439,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				else
 					courseClause += ")";
 			}
-			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message,posts.discussion from mdl_forum_posts as posts JOIN mdl_log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.modified>=:readingtimestamp");
+			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message,posts.discussion from mdl_forum_posts as posts JOIN mdl_logstore_standard_log as logs ON posts.userid = logs.userid Where logs.courseid in "+ courseClause +" and (posts.created = logs.timecreated or posts.modified = logs.timecreated) AND posts.modified>=:readingtimestamp");
 			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
 			List<Object[]> tmpl = forumPosts.list();
 			this.forumPostsLms = new ArrayList<ForumPostsLMS>();
@@ -517,6 +520,21 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.wikiLms = criteria.list();
 		logger.info("WikiLMS tables: " + this.wikiLms.size());
+		
+		criteria = session.createCriteria(WikiPagesLMS.class, "obj");
+		if(hasCR && !this.wikiLms.isEmpty())
+		{
+			Set<Long> wikiids = new HashSet<Long>();
+			for(WikiLMS wiki : this.wikiLms)
+			{
+				wikiids.add(wiki.getId());
+			}
+			criteria.add(Restrictions.in("obj.subwikiid", wikiids));
+		}
+		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.wikiPagesLms = criteria.list();
+		logger.info("WikiPagesLMS tables: " + this.wikiPagesLms.size());
 
 		
 		criteria = session.createCriteria(GroupsMembersLMS.class, "obj");
@@ -1039,7 +1057,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				else
 					courseClause += ")";
 			}
-			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message,posts.discussion from forum_posts as posts JOIN log as logs ON posts.userid = logs.userid Where logs.course in "+ courseClause +" and (posts.created = logs.time or posts.modified = logs.time) AND posts.created>=:readingtimestamp and posts.created<=:ceiling");
+			forumPosts = session.createSQLQuery("SELECT posts.id,posts.userid,posts.created,posts.modified,posts.subject,posts.message,posts.discussion from forum_posts as posts JOIN logstore_standard_log as logs ON posts.userid = logs.userid Where logs.courseid in "+ courseClause +" and (posts.created = logs.timecreated or posts.modified = logs.timecreated) AND posts.created>=:readingtimestamp and posts.created<=:ceiling");
 			forumPosts.setParameter("readingtimestamp", readingfromtimestamp);
 			forumPosts.setParameter("ceiling", readingtotimestamp);
 			List<Object[]> tmpl = forumPosts.list();			
@@ -1803,6 +1821,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		final HashMap<Long, ForumDiscussionsLMS> discussions = new HashMap<Long, ForumDiscussionsLMS>();
 		final HashMap<Long, ForumPostsLMS> posts = new HashMap<Long, ForumPostsLMS>();
+		final HashMap<Long, WikiPagesLMS> wikipages = new HashMap<Long, WikiPagesLMS>();
+		
+		for(WikiPagesLMS wp : this.wikiPagesLms)
+		{
+			wikipages.put(wp.getId(), wp);
+		}
 		
 		for(ForumDiscussionsLMS dis : this.forumDiscussionsLms)
 		{
@@ -1818,7 +1842,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		{
 			couMod.put(cm.getId(), cm);
 		}
-
+		
 		for (final LogstoreStandardLogLMS loadedItem : this.logstoreLms) {
 			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum")) {
 
@@ -1827,37 +1851,66 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
 				insert.setUser(loadedItem.getUser(), this.userMining,
 						this.oldUserMining);
-
-				if ((loadedItem.getAction().equals("viewed") || loadedItem.getAction().equals("subscribe"))) {
-					insert.setAction(loadedItem.getAction());
-					insert.setLearning(Long.valueOf("15" + loadedItem.getObjectid()),
-							this.learningObjectMining, this.oldLearningObjectMining);
-				}
-				else if((loadedItem.getAction().equals("add discussion") || loadedItem.getAction().equals(
-							"view discussion"))) 
+				insert.setAction(loadedItem.getAction() + " forum");
+				insert.setTimestamp(loadedItem.getTimecreated());
+				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+				insert.setLearning(Long.valueOf("15" + loadedItem.getObjectid()) , this.learningObjectMining, this.oldLearningObjectMining);
+				if(insert.getTimestamp() > maxLog)
 				{
-					if (discussions.containsKey(Long.valueOf(loadedItem.getObjectid())))
-					{
-						insert.setAction(loadedItem.getAction());
-						Long f = discussions.get(Long.valueOf(loadedItem.getObjectid())).getForum();
-						insert.setLearning(Long.valueOf("15" + loadedItem.getObjectid()),
-								this.learningObjectMining, this.oldLearningObjectMining);
-					}
+					maxLog = insert.getTimestamp();
 				}
-				else if(loadedItem.getAction().equals("created") && posts.containsKey(Long.valueOf(loadedItem.getObjectid())))
-				{			
-					ForumPostsLMS p = posts.get(Long.valueOf(loadedItem.getObjectid()));
-					if(discussions.containsKey(p.getDiscussion()))
-					{
-						insert.setAction(loadedItem.getAction());
-						insert.setLearning(Long.valueOf("15" + discussions.get(p.getDiscussion()).getForum()),
-								this.learningObjectMining, this.oldLearningObjectMining );
-						insert.setText(TextHelper.replaceString(p.getMessage()));
-					}					
+				
+				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
+					collaborationLogs.put(insert.getId(), insert);
 				}
+			}
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_discussions")) {
 
-				insert.setCourse(loadedItem.getCourse(),
-						this.courseMining, this.oldCourseMining);
+				final CollaborationLog insert = new CollaborationLog();
+
+				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
+				insert.setUser(loadedItem.getUser(), this.userMining,
+						this.oldUserMining);
+				insert.setAction(loadedItem.getAction() + " discussion");
+				insert.setTimestamp(loadedItem.getTimecreated());
+				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				if (discussions.containsKey(Long.valueOf(loadedItem.getObjectid())))
+				{
+					Long f = discussions.get(Long.valueOf(loadedItem.getObjectid())).getForum();
+					insert.setLearning(Long.valueOf("15" + f),
+							this.learningObjectMining, this.oldLearningObjectMining);
+					insert.setText("Subject: " + discussions.get(Long.valueOf(loadedItem.getObjectid())).getName());
+					insert.setReferrer(insert.getLearning().getId(), collaborationLogs);
+				}
+			
+				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
+					collaborationLogs.put(insert.getId(), insert);
+				}
+			}
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_posts")) {
+				final CollaborationLog insert = new CollaborationLog();
+
+				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
+				insert.setUser(loadedItem.getUser(), this.userMining,
+						this.oldUserMining);
+				insert.setAction(loadedItem.getAction() + " post");
+				insert.setTimestamp(loadedItem.getTimecreated());
+				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				ForumPostsLMS p = posts.get(Long.valueOf(loadedItem.getObjectid()));
+				if(p != null && discussions.containsKey(p.getDiscussion()))
+				{
+					insert.setLearning(Long.valueOf("15" + discussions.get(p.getDiscussion()).getForum()),
+							this.learningObjectMining, this.oldLearningObjectMining );
+					insert.setText(TextHelper.replaceString(p.getMessage()));
+				}	
 				if(insert.getText() == null)
 					for (final ForumPostsLMS loadedItem2 : this.forumPostsLms)
 					{
@@ -1868,17 +1921,31 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							break;
 						}
 					}
-				insert.setTimestamp(loadedItem.getTimecreated());
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
 				
 				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
 					collaborationLogs.put(insert.getId(), insert);
 				}
 			}
-			
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_subscriptions")) {
+				final CollaborationLog insert = new CollaborationLog();
+
+				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
+				insert.setUser(loadedItem.getUser(), this.userMining,
+						this.oldUserMining);
+				insert.setAction(loadedItem.getAction() + " subscription");
+				insert.setTimestamp(loadedItem.getTimecreated());
+				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				insert.setLearning(Long.valueOf("15" + loadedItem.getObjectid()),
+							this.learningObjectMining, this.oldLearningObjectMining );
+				
+				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
+					collaborationLogs.put(insert.getId(), insert);
+				}
+			}			
 			
 			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki"))
 			{
@@ -1886,22 +1953,43 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
 				insert.setLearning(Long.valueOf("16" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
-				/*if (couMod.get(loadedItem.getCmid()) != null) {
-					insert.setLearning(
-							Long.valueOf("16"
-									+ couMod.get(loadedItem.getCmid()).getInstance()), this.learningObjectMining,
-							this.oldLearningObjectMining);
-				}*/
 				
 				insert.setUser(loadedItem.getUser(), this.userMining,
 						this.oldUserMining);
 				insert.setCourse(loadedItem.getCourse(),
 						this.courseMining, this.oldCourseMining);
 				insert.setTimestamp(loadedItem.getTimecreated());
+				insert.setAction(loadedItem.getAction() + " wiki");
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
 				}
+
+				if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getLearning() != null)) {
+					collaborationLogs.put(insert.getId(), insert);
+				}
+			}
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki_pages"))
+			{
+				final CollaborationLog insert = new CollaborationLog();
+
+				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
+				if(wikipages.get(loadedItem.getObjectid()) != null)
+				{
+					insert.setText(wikipages.get(loadedItem.getObjectid()).getTitle());
+					insert.setLearning(Long.valueOf("16" + wikipages.get(loadedItem.getObjectid()).getSubwikiid()), this.learningObjectMining, this.oldLearningObjectMining);
+				}
+				insert.setUser(loadedItem.getUser(), this.userMining,
+						this.oldUserMining);
+				insert.setCourse(loadedItem.getCourse(),
+						this.courseMining, this.oldCourseMining);
+				insert.setTimestamp(loadedItem.getTimecreated());
+				insert.setAction(loadedItem.getAction() + " wiki page");
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
 
 				if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getLearning() != null)) {
 					collaborationLogs.put(insert.getId(), insert);
