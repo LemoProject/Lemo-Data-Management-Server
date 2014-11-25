@@ -31,10 +31,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -111,11 +109,11 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 	private final Logger logger = Logger.getLogger(this.getClass());
 
-	private final IConnector connector;
+	//private final IConnector connector;
 
 	public ExtractAndMapMooc(final IConnector connector) {
 		super(connector);
-		this.connector = connector;
+		//this.connector = connector;
 	}
 
 	@Override
@@ -753,7 +751,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		final Map<Long, CollaborationLog> questionLog = new HashMap<Long, CollaborationLog>();
 		final Map<Long, CollaborationLog> answersLog = new HashMap<Long, CollaborationLog>();
-		final Map<Long, Long> questionToLog = new HashMap<Long, Long>();
 		
 		
 		for(Questions loadedItem : this.questionsMooc)
@@ -772,8 +769,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			
 			if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 			{
-				
-				CollaborationLog c = questionLog.put(loadedItem.getId(), insert);
 				loglist.add(insert);
 			}
 		}

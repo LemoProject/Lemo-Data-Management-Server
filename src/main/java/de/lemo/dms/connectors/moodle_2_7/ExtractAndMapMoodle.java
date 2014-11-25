@@ -1629,12 +1629,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						this.oldUserMining);
 
 				insert.setLearning(Long.valueOf("18" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
-				/*
-				if (loadedItem.getInfo().matches("[0-9]+"))
-				{
-					insert.setLearning(Long.valueOf("18" + loadedItem.getInfo()),
-							this.learningObjectMining, this.oldLearningObjectMining);
-				}*/
 				insert.setTimestamp(loadedItem.getTimecreated());
 				if(insert.getTimestamp() > maxLog)
 				{

@@ -66,6 +66,7 @@ public final class MiningHibernateUtil {
 			config.setProperty(entry.getKey(), entry.getValue());
 		}
 		//Properties migrated from lemo.xml
+		
 		config.setProperty("hibernate.show_sql", "false");
 		config.setProperty("hibernate.format_sql", "false");
 		config.setProperty("hibernate.hbm2ddl.auto", "update");
