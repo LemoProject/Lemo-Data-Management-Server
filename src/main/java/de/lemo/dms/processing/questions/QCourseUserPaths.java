@@ -194,7 +194,7 @@ public class QCourseUserPaths extends Question {
 			edges.put(edgeJSON);
 		}
 
-		this.logger.debug("Nodes: " + nodes.length() + ", Links: " + edges.length() + "   / time: "
+		this.logger.info("Nodes: " + nodes.length() + ", Links: " + edges.length() + "   / time: "
 				+ stopWatch.elapsedTime(TimeUnit.SECONDS));
 
 		result.put("nodes", nodes);
