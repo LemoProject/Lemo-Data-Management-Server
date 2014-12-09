@@ -79,7 +79,7 @@ public class ResultListHashMapObject {
 				this.elements.put(this.keys[i], this.entries.get(i));
 			}
 		} else {
-			logger.warn("ResultListHashMap mpty Resultset");
+			logger.warn("ResultListHashMap empty Resultset");
 		}
 
 		return this.elements;

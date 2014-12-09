@@ -34,6 +34,7 @@ import org.hibernate.Session;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.StudentHelper;
+import de.lemo.dms.processing.questions.QFrequentPathsFortenbacher;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
@@ -83,11 +84,20 @@ public class Test {
 	public static void test()
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		ServiceCourseDetails scd = new ServiceCourseDetails();
-		ArrayList<Long> cid = new ArrayList<Long>();
-		cid.add(6L);
-		ResultListCourseObject d = scd.getCoursesDetails(cid);
-		d.equals(new CourseObject());
+		QFrequentPathsFortenbacher qfb = new QFrequentPathsFortenbacher();
+		List<Long> courses = new ArrayList<Long>();
+		courses.add(1L);
+		List<String> types = new ArrayList<String>();
+		List<Long> users = new ArrayList<Long>();
+		Double minSup = 0.5d;
+		Long startTime = 0L;
+		Long endTime = 1500000000L;
+		Long minLength = 0L;
+		Long maxLength = 100000L;
+		List<Long> gender = new ArrayList<Long>();
+		List<Long> learningObjects = new ArrayList<Long>();
+		
+		qfb.compute(courses, users, types, minLength, maxLength, minSup, startTime, endTime, gender, learningObjects);
 		
 
 			
@@ -98,7 +108,7 @@ public class Test {
 	public static void main(final String[] args)
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.gen();
+		Test.test();
 	}
 
 }
