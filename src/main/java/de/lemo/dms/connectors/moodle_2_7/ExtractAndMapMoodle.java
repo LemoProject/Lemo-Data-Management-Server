@@ -1654,6 +1654,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setId(forumLogMining.size() + 1 + this.forumLogMax);
 				insert.setPlatform(this.connector.getPlatformId());
 				insert.setAction(loadedItem.getAction() + " forum");
+				insert.setTimestamp(loadedItem.getTimecreated());
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
@@ -1675,6 +1676,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setId(forumLogMining.size() + 1 + this.forumLogMax);
 				insert.setPlatform(this.connector.getPlatformId());
 				insert.setAction(loadedItem.getAction() + " discussion");
+				insert.setTimestamp(loadedItem.getTimecreated());
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
@@ -1700,6 +1702,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setId(forumLogMining.size() + 1 + this.forumLogMax);
 				insert.setPlatform(this.connector.getPlatformId());
 				insert.setAction(loadedItem.getAction() + " post");
+				insert.setTimestamp(loadedItem.getTimecreated());
 				insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()),
 						this.courseMining, this.oldCourseMining);
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
