@@ -91,7 +91,7 @@ public class AnalysisTaskManager {
 		// check if any task by this user is already running and delete any pending results
 		AnalysisTask pendingTask = tasks.remove(taskId);
 		if (pendingTask != null) {
-			logger.debug("cancelled pending task: " + taskId);
+			logger.info("cancelled pending task: " + taskId);
 			pendingTask.cancel();
 		}
 
@@ -100,7 +100,7 @@ public class AnalysisTaskManager {
 			Future<?> future = executor.submit(task);
 			task.setFuture(future);
 			tasks.put(taskId, task);
-			logger.debug("submitted task " + taskId);
+			logger.info("submitted task " + taskId);
 		}
 	}
 

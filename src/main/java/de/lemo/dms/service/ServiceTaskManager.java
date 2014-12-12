@@ -42,7 +42,7 @@ public class ServiceTaskManager {
 	@Path("{id}")
 	public Response taskResult(@PathParam("id") String taskId) throws UnsupportedEncodingException {
 
-		logger.debug("Lookup status of Task " + taskId);
+		logger.info("Lookup status of Task " + taskId);
 		AnalysisTask task = AnalysisTaskManager.getInstance().getTask(URLDecoder.decode(taskId, "UTF-8"));
 
 		if (task == null) {
@@ -51,7 +51,7 @@ public class ServiceTaskManager {
 		}
 
 		if (!task.isRunning() && !task.isDone()) {
-			logger.debug("Task not yet started: Task " + taskId);
+			logger.info("Task not yet started: Task " + taskId);
 			// not yet started
 			return Response
 					.status(Status.ACCEPTED)
@@ -60,7 +60,7 @@ public class ServiceTaskManager {
 		}
 
 		if (task.isRunning()) {
-			logger.debug("Task not yet done: Task " + taskId);
+			logger.info("Task not yet done: Task " + taskId);
 			// not yet done
 			return Response.status(Status.ACCEPTED).entity("Analysis is running.").build();
 		}
@@ -73,12 +73,12 @@ public class ServiceTaskManager {
 		Object result = null;
 		try {
 			result = task.getResult();
-			logger.debug("Task complete: Task " + taskId);
+			logger.info("Task complete: Task " + taskId);
 		} catch (ExecutionException e) {
 			// any exceptions thrown in the analysis
 			return Response.serverError().entity(e.getMessage()).build();
 		}
-		logger.debug("Result ok: " + result);
+		logger.info("Result ok: " + result);
 		return Response.ok(result).build();
 	}
 
