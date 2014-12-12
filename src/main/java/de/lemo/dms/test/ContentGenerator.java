@@ -553,7 +553,7 @@ public class ContentGenerator {
 		final Config config = new Config();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime(1);
-		config.setDatabaseModel("2.0");
+		config.setDatabaseModel("GDMLA 1.0");
 		config.setExtractCycle(1);
 		config.setLatestTimestamp(maxLog);
 

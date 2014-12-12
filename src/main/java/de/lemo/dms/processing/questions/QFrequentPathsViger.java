@@ -65,7 +65,7 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
  * 
  * @author Sebastian Schwarzrock
  */
-@Path("frequentPathsViger")
+//@Path("frequentPathsViger")
 public class QFrequentPathsViger extends Question {
 
 	private Map<String, ILog> idToLogM = new HashMap<String, ILog>();

@@ -87,6 +87,7 @@ public class TaskTimeoutThread extends Thread {
 							// check if the result life time reached the limit
 							long resultLifeTime = new Date().getTime() - task.getEndTime();
 							if (task.isDone() && resultLifeTime > maxResultLifeTime) {
+								logger.info(resultLifeTime + " : " + maxResultLifeTime);
 								iterator.remove();
 								logger.debug(task + " - result lifetime exceeded, result removed.");
 							}

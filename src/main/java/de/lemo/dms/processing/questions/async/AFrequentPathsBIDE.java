@@ -64,8 +64,8 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 
 	private Map<String, ILog> idToLogM = new HashMap<String, ILog>();
 	private Map<String, ArrayList<Long>> requests = new HashMap<String, ArrayList<Long>>();
-	private Map<String, Integer> idToInternalId = new HashMap<String, Integer>();
-	private Map<Integer, String> internalIdToId = new HashMap<Integer, String>();
+	private Map<String, Long> idToInternalId = new HashMap<String, Long>();
+	private Map<Long, String> internalIdToId = new HashMap<Long, String>();
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -182,6 +182,8 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 			Long pathId = 0L;
 			for (int i = res.getLevelCount() - 1; i >= 0; i--)
 			{
+				if(res.getLevel(i).size() > 0)
+					logger.debug("Found " + res.getLevel(i).size() + " paths of length " + res.getLevel(i).get(0).size());
 				for (int j = 0; j < res.getLevel(i).size(); j++)
 				{
 					String predecessor = null;
@@ -192,6 +194,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 					for (int k = 0; k < res.getLevel(i).get(j).size(); k++)
 					{
 
+						Long g = res.getLevel(i).get(j).get(k).getItems().get(0).getId();
 						final String obId = internalIdToId.get(res.getLevel(i).get(j).get(k)
 								.getItems().get(0).getId());
 
@@ -248,9 +251,9 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 				}
 			}
 
-		/*} catch (final Exception e)
+		} catch (final Exception e)
 		{
-			logger.error(e.getMessage());*/
+			logger.error("Error: ", e);
 		} finally
 		{
 			requests.clear();
@@ -348,7 +351,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 
 		// Just changing the container for the user histories
 		final ArrayList<ArrayList<ILog>> uhis = new ArrayList<ArrayList<ILog>>();
-		int id = 1;
+		Long id = 1L;
 		for (final ArrayList<ILog> uLog : logMap.values())
 		{
 

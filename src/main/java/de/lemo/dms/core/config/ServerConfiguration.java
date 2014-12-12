@@ -89,7 +89,6 @@ public enum ServerConfiguration {
         if(lemoConfig.dataManagementServer.pathAnalysisTimeout > 0) {
             this.pathAnalysisTimeout = lemoConfig.dataManagementServer.pathAnalysisTimeout;
         }
-
         this.logger.info("Inititalizing mining database");
         final DBConfigObject miningDBConfig = this.createDBConfig(lemoConfig.dataManagementServer.databaseProperties);
         MiningHibernateUtil.initSessionFactory(miningDBConfig);

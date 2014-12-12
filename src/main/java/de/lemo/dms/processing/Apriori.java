@@ -11,48 +11,17 @@ public class Apriori {
 	static File TESTFILE = new File("/Users/forte/projekte/lemo/spm/30.csv");
 	static List<Long> TIMINGS = new ArrayList<Long>();
 	
-	private int[] _path;
+	private Integer[] _path;
 	private Apriori _left;
 	private Apriori _right;
 	
-	private Apriori(int[] path, Apriori left, Apriori right) {
+	private Apriori(Integer[] path, Apriori left, Apriori right) {
 		_path = path;
 		_left = left;
 		_right = right;
 	}
 
-	// test
-	public static void main(String[] args) throws Exception {
-		long t1, t2;
-		int s;
-		List<int[]> userpaths = new ArrayList<int[]>();
-		BufferedReader br = new BufferedReader(new FileReader(TESTFILE));
-		String str;
-		String[] values;
-		str = br.readLine();
-		values = str.split(" ");
-		s = Integer.parseInt(values[1]);
-		str = br.readLine();
-		while (str != null) {
-			values = str.split(",");
-			int[] p = new int[values.length];
-			for (int i=0; i<values.length; i++) {
-				p[i] = Integer.parseInt(values[i]);
-			}
-			userpaths.add(p);
-			str = br.readLine();
-		}
-		br.close();
-//		printUserPaths(userpaths);
-		int support = (int)Math.ceil((double)s / 100 * userpaths.size());
-		t1 = System.currentTimeMillis();
-		List<List<int[]>> frequentpaths = apriori(userpaths, support);
-		t2 = System.currentTimeMillis();
-		if (frequentpaths != null) {
-//			printFrequentPaths(frequentpaths);
-			printStatistics(s, support, t2-t1, userpaths, frequentpaths);
-		}
-	}
+
 	
 	private static void printStatistics(int s, int support, long t, List<int[]> userpaths, List<List<int[]>> frequentpaths) {
 		System.out.println(userpaths.size() + " user paths");
@@ -94,16 +63,16 @@ public class Apriori {
 	 * @param support number of required users
 	 * @return lists of lists of frequent paths, starting with length 1, or null
 	 */
-	public static List<List<int[]>> apriori(List<int[]> userpaths, int support) {
+	public static List<List<Integer[]>> apriori(List<Integer[]> userpaths, int support, int maxId) {
 		long t1, t2;
-		List<Apriori> as = initApriori(userpaths, support);
-		if (as == null) return null;
-		List<List<int[]>> frequentpaths = new ArrayList<List<int[]>>();
+		List<Apriori> as = initApriori(userpaths, support, maxId);
+		if (as == null) return new ArrayList<List<Integer[]>>();
+		List<List<Integer[]>> frequentpaths = new ArrayList<List<Integer[]>>();
 		int k = 1;
 		while (!as.isEmpty()) {
 //			System.out.println(as.size() + " paths of length " + k);
 			t1 = System.currentTimeMillis();
-			List<int[]> fps = new ArrayList<int[]>();
+			List<Integer[]> fps = new ArrayList<Integer[]>();
 			for (Apriori a : as) {
 				fps.add(a._path);
 			}
@@ -122,12 +91,12 @@ public class Apriori {
 	 * @param k length of paths in as
 	 * @return
 	 */
-	private static List<Apriori> newpaths(List<Apriori> as, int k, List<int[]> userpaths, int support) {
+	private static List<Apriori> newpaths(List<Apriori> as, int k, List<Integer[]> userpaths, int support) {
 		List<Apriori> newas = new ArrayList<Apriori>();
 		for (Apriori a1 : as) {
 			for (Apriori a2 : as) {
 				if (a1._right == a2._left) {
-					int[] p = new int[k+1];
+					Integer[] p = new Integer[k+1];
 					for (int i=0; i<k; i++)	{
 						p[i] = a1._path[i];
 					}
@@ -141,16 +110,16 @@ public class Apriori {
 		return newas;
 	}
 	
-	private static boolean supported(int[] path, List<int[]> userpaths, int support) {
+	private static boolean supported(Integer[] path, List<Integer[]> userpaths, Integer support) {
 		int k = 0;
-		for (int[] p : userpaths) {
+		for (Integer[] p : userpaths) {
 			if (contained(path, p)) k++;
 			if (k == support) return true;
 		}
 		return false;
 	}
 		
-	private static boolean contained(int[] p1, int[] p2) {
+	private static boolean contained(Integer[] p1, Integer[] p2) {
 		int i1 = p1.length-1;
 		int i2 = p2.length-1;
 		if (i1 > i2) return false;
@@ -195,17 +164,11 @@ public class Apriori {
 	 * @param support
 	 * @return paths of length 1, or null
 	 */
-	private static List<Apriori> initApriori(List<int[]> userpaths, int support) {
+	private static List<Apriori> initApriori(List<Integer[]> userpaths, int support, int max) {
 		long t1, t2;
-		int max = 0;
 		t1 = System.currentTimeMillis();
-		for (int[] p : userpaths) {
-			for (int k : p) {
-				if (k > max) max = k;
-			}
-		}
 		List<boolean[]> frequencies = new ArrayList<boolean[]>();	
-		for (int[] p : userpaths) {
+		for (Integer[] p : userpaths) {
 			boolean[] f = new boolean[max+1];
 			frequencies.add(f);
 			for (int k : p) {
@@ -219,7 +182,7 @@ public class Apriori {
 				if (f[k]) sum++;
 			}
 			if (sum >= support) {
-				int[] node = new int[1];
+				Integer[] node = new Integer[1];
 				node[0] = k;
 				fps.add(new Apriori(node, null, null));
 			}

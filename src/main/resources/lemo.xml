@@ -7,12 +7,14 @@
        <property name="hibernate.connection.username">${mining-hibernate-username}</property>
       <property name="hibernate.connection.password">${mining-hibernate-password}</property>
       <!-- main config -->
-      <!-- <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
+       <!-- <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
       <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>-->
-      <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
       
     </database>
+    
+    <path-analysis-timeout>300000</path-analysis-timeout>
     <connectors>
       <connector platform-id="4" name="moodle23" platform-type="Moodle_2_3">
         <property name="hibernate.connection.url">jdbc:postgresql://localhost/moodle</property>
