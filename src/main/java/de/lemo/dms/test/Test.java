@@ -37,7 +37,7 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
-import de.lemo.dms.processing.questions.QFrequentPathsFortenbacher;
+import de.lemo.dms.processing.questions.QFrequentPathsApriori;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.questions.async.AFrequentPathsBIDE;
 import de.lemo.dms.processing.resulttype.CourseObject;
@@ -88,14 +88,14 @@ public class Test {
 	public static void test()
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		QFrequentPathsFortenbacher qfb = new QFrequentPathsFortenbacher();
+		QFrequentPathsApriori qfb = new QFrequentPathsApriori();
 		QFrequentPathsBIDE abide = new QFrequentPathsBIDE();
 		
 		List<Long> courses = new ArrayList<Long>();
 		courses.add(1L);
 		List<String> types = new ArrayList<String>();
 		List<Long> users = new ArrayList<Long>();
-		Double minSup = 0.9d;
+		Double minSup = 1d;
 		Long startTime = 0L;
 		Long endTime = 1500000000L;
 		Long minLength = null;
@@ -123,7 +123,7 @@ public class Test {
 	public static void main(final String[] args)
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.test();
+		Test.gen();
 	}
 
 }

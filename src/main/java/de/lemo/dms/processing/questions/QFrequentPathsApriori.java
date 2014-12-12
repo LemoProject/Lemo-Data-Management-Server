@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/processing/questions/QFrequentPathsViger.java
+ * File ./src/main/java/de/lemo/dms/processing/questions/QFrequentPathsApriori.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,7 +19,7 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/processing/questions/QFrequentPathsViger.java
+ * File ./main/java/de/lemo/dms/processing/questions/QFrequentPathsApriori.java
  * Date 2013-01-24
  * Project Lemo Learning Analytics
  */
@@ -64,8 +64,8 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
  * 
  * @author Sebastian Schwarzrock
  */
-@Path("frequentPathsViger")
-public class QFrequentPathsFortenbacher extends Question {
+@Path("frequentPathsApriori")
+public class QFrequentPathsApriori extends Question {
 
 	private Map<Long, ILog> idToLogM = new HashMap<Long, ILog>();
 	private Map<Integer, List<Long>> requests = new HashMap<Integer, List<Long>>();

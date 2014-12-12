@@ -78,7 +78,7 @@ public class ContentGenerator {
 	
 	enum EUserName {
 		Sabine,
-		Albrecht,
+		forte,
 		Liane,
 		Marcus,
 		Agathe,

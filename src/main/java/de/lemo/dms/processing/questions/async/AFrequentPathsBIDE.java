@@ -176,7 +176,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 			// execute the algorithm
 			final Clock c = new Clock();
 			final Sequences res = algo.runAlgorithm(sequenceDatabase);
-			logger.debug("Time for BIDE-calculation: " + c.get());
+			logger.info("Time for BIDE-calculation: " + c.get());
 
 			final LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 			Long pathId = 0L;
