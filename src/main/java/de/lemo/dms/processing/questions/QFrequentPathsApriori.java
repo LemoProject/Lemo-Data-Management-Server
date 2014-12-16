@@ -50,7 +50,7 @@ import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.abstractions.ILearningObject;
 import de.lemo.dms.db.mapping.abstractions.ILog;
-import de.lemo.dms.processing.Apriori;
+import de.lemo.dms.processing.FrequentPath;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.StudentHelper;
@@ -72,7 +72,7 @@ public class QFrequentPathsApriori extends Question {
 	private Map<Integer, Integer> idToInternalId = new HashMap<Integer, Integer>();
 	private Map<Integer, Integer> internalIdToId = new HashMap<Integer, Integer>();
 	private ArrayList<Integer> objInd = new ArrayList<Integer>();
-	private int maxLearningId;
+	private int userCount = 0;
 	@POST
 	public ResultListUserPathGraph compute(
 			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
@@ -134,34 +134,33 @@ public class QFrequentPathsApriori extends Question {
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 
 		final Session session = dbHandler.getMiningSession();
-		List<Integer[]> list = generateList(courses, users, types, minLength, maxLength, startTime, endTime,
+		List<List<Integer>> list = generateList(courses, users, types, minLength, maxLength, startTime, endTime,
 				session, gender, learningObjects);
-		
-		int absoluteSupport = (int)(list.size() * minSup);
 
-		List<List<Integer[]>> patterns = Apriori.apriori(list, absoluteSupport, maxLearningId);
+		List<List<List<Integer>>> patterns = FrequentPath.apriori(list, minSup.doubleValue());
 		final LinkedHashMap<String, UserPathObject> pathObjects = Maps.newLinkedHashMap();
 		Long pathId = 0L;
 		
 		for(int i = patterns.size()-1; i >=0 ; i-- )
 		{
-			logger.info("Found " + patterns.get(i).size() + " paths of length " + patterns.get(i).get(0).length);
+			logger.info("Found " + patterns.get(i).size() + " paths of length " + patterns.get(i).get(0).size());
 			for(int j = 0; j < patterns.get(i).size(); j++)
 			{
 				
 				String predecessor = null;
+				Long absSup = (long) (minSup * userCount) + 1;
 				pathId++;
-				for(int k = 0; k < patterns.get(i).get(j).length; k++)
+				for(int k = 0; k < patterns.get(i).get(j).size(); k++)
 				{
 					final String posId = String.valueOf(pathObjects.size());
-					int obj = patterns.get(i).get(j)[k];
+					int obj = patterns.get(i).get(j).get(k);
 					final ILog ilo = this.idToLogM.get(objInd.get(obj).longValue());
 					
 					if (predecessor != null)
 					{
 						pathObjects.put(
 								posId,
-								new UserPathObject(posId, ilo.getLearning().getTitle(), 1L, ilo.getClass().getSimpleName(),
+								new UserPathObject(posId, ilo.getLearning().getTitle(), absSup, ilo.getClass().getSimpleName(),
 										0d, ilo.getPrefix(), pathId,
 										Long.valueOf(this.requests.get(obj).size()), Long
 												.valueOf(new HashSet<Long>(this.requests.get(obj))
@@ -174,7 +173,7 @@ public class QFrequentPathsApriori extends Question {
 					{
 						pathObjects.put(
 								posId,
-								new UserPathObject(posId, ilo.getLearning().getTitle(), 1L,
+								new UserPathObject(posId, ilo.getLearning().getTitle(), absSup,
 										ilo.getClass().getSimpleName(), 0d, ilo.getPrefix(), pathId, Long
 												.valueOf(this.requests.get(obj).size()), Long
 												.valueOf(new HashSet<Long>(this.requests.get(obj))
@@ -226,11 +225,11 @@ public class QFrequentPathsApriori extends Question {
 	 * @return The path to the generated file
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Integer[]> generateList(final List<Long> courses, List<Long> users,
+	public List<List<Integer>> generateList(final List<Long> courses, List<Long> users,
 			final List<String> types, final Long minLength, final Long maxLength, final Long starttime,
 			final Long endtime, Session session, List<Long> gender, List<Long> learningObjects){
 		
-		final List<Integer[]> result = new ArrayList<Integer[]>();
+		final List<List<Integer>> result = new ArrayList<List<Integer>>();
 		final boolean hasBorders = (minLength != null) && (maxLength != null) && (maxLength > 0)
 				&& (minLength < maxLength);
 		final boolean hasTypes = (types != null) && (types.size() > 0);
@@ -271,7 +270,6 @@ public class QFrequentPathsApriori extends Question {
 		
 		logger.debug("Found " + list.size() + " logs.");
 		long id = -1;
-		maxLearningId = -1;
 		List<Integer> path = new ArrayList<Integer>();
 		for(ILog log : list)
 		{
@@ -284,19 +282,19 @@ public class QFrequentPathsApriori extends Question {
 					id = log.getUser().getId();
 					if(!hasBorders || (path.size() < maxLength && path.size() > minLength))
 					{
-						Integer[] userPath = new Integer[path.size()];
+						List<Integer> userPath = new ArrayList<Integer>();
 						for(int i = 0; i < path.size(); i++)
 						{
-							userPath[i] = path.get(i).intValue();	
+							userPath.add(path.get(i).intValue());	
 						}
-						result.add(userPath);
+						if(userPath.size() > 0)
+							result.add(userPath);
 					}
 					path = new ArrayList<Integer>();
 				}
 				if(!objInd.contains(log.getLearning().getId()))
 				{
 					objInd.add((int)log.getLearning().getId());
-					maxLearningId++;
 				}
 				if(idToLogM.get(log.getLearning().getId()) == null )
 				{
@@ -314,6 +312,7 @@ public class QFrequentPathsApriori extends Question {
 				path.add(objInd.indexOf((int)log.getLearning().getId()));
 			}
 		}		
+		userCount = result.size();
 		logger.debug("Found " + result.size() + " user paths.");
 		return result;
 	}
