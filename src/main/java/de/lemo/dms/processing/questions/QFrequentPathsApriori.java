@@ -27,6 +27,7 @@
 package de.lemo.dms.processing.questions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -67,7 +68,7 @@ import de.lemo.dms.processing.resulttype.UserPathObject;
 @Path("frequentPathsApriori")
 public class QFrequentPathsApriori extends Question {
 
-	private Map<Long, ILog> idToLogM = new HashMap<Long, ILog>();
+	private Map<Integer, ILog> idToLogM = new HashMap<Integer, ILog>();
 	private Map<Integer, List<Long>> requests = new HashMap<Integer, List<Long>>();
 	private Map<Integer, Integer> idToInternalId = new HashMap<Integer, Integer>();
 	private Map<Integer, Integer> internalIdToId = new HashMap<Integer, Integer>();
@@ -154,7 +155,7 @@ public class QFrequentPathsApriori extends Question {
 				{
 					final String posId = String.valueOf(pathObjects.size());
 					int obj = patterns.get(i).get(j).get(k);
-					final ILog ilo = this.idToLogM.get(objInd.get(obj).longValue());
+					final ILog ilo = this.idToLogM.get(objInd.get(obj));
 					
 					if (predecessor != null)
 					{
@@ -263,17 +264,50 @@ public class QFrequentPathsApriori extends Question {
 			criteria.add(Restrictions.in("log.learning.id", learningObjects));
 		}
 		criteria.add(Restrictions.between("log.timestamp", starttime, endtime));
-		criteria.addOrder(Property.forName("log.user.id").asc());
 		criteria.addOrder(Property.forName("log.timestamp").asc());
 		
 		final ArrayList<ILog> list = (ArrayList<ILog>) criteria.list();
+		Map<Long, List<Integer>> userPaths = new HashMap<Long, List<Integer>>();
 		
 		logger.debug("Found " + list.size() + " logs.");
 		long id = -1;
 		List<Integer> path = new ArrayList<Integer>();
 		for(ILog log : list)
 		{
+			Integer pos = ((Long)log.getLearning().getId()).intValue();
+
 			if(!hasTypes || types.contains(log.getLearning().getLOType()))
+			{
+				if(!objInd.contains(pos))
+				{
+					objInd.add(pos);
+				}
+				if(idToLogM.get(pos) == null )
+				{
+					idToLogM.put(pos, log);
+				}
+				if (this.requests.get(objInd.indexOf(pos)) == null)
+				{
+					final ArrayList<Long> us = new ArrayList<Long>();
+					us.add(log.getUser().getId());
+					this.requests.put(objInd.indexOf(pos), us);
+				} else {
+					this.requests.get(objInd.indexOf(pos)).add(
+							log.getUser().getId());
+				}				
+				
+				if(userPaths.get(log.getUser().getId()) == null)
+				{					
+					List<Integer> l = new ArrayList<Integer>();
+					l.add(objInd.indexOf(pos));
+					userPaths.put(log.getUser().getId(), l);				
+				}
+				else
+				{
+					userPaths.get(log.getUser().getId()).add(objInd.indexOf(pos));
+				}
+			}
+			/*if(!hasTypes || types.contains(log.getLearning().getLOType()))
 			{
 				if(objects.get(log.getLearning()) == null)
 					objects.put(log.getLearning().getId(), log.getLearning());
@@ -292,26 +326,33 @@ public class QFrequentPathsApriori extends Question {
 					}
 					path = new ArrayList<Integer>();
 				}
-				if(!objInd.contains(log.getLearning().getId()))
+				if(!objInd.contains(pos))
 				{
-					objInd.add((int)log.getLearning().getId());
+					objInd.add(pos);
 				}
-				if(idToLogM.get(log.getLearning().getId()) == null )
+				if(idToLogM.get(pos) == null )
 				{
-					idToLogM.put(log.getLearning().getId(), log);
+					idToLogM.put(pos, log);
 				}
-				if (this.requests.get(objInd.indexOf((int)log.getLearning().getId())) == null)
+				if (this.requests.get(objInd.indexOf(pos)) == null)
 				{
 					final ArrayList<Long> us = new ArrayList<Long>();
 					us.add(log.getUser().getId());
-					this.requests.put(objInd.indexOf((int)log.getLearning().getId()), us);
+					this.requests.put(objInd.indexOf(pos), us);
 				} else {
-					this.requests.get(objInd.indexOf((int)log.getLearning().getId())).add(
+					this.requests.get(objInd.indexOf(pos)).add(
 							log.getUser().getId());
 				}
-				path.add(objInd.indexOf((int)log.getLearning().getId()));
+				path.add(objInd.indexOf(pos));
 			}
-		}		
+					*/
+		}	
+
+		for(List<Integer> uhis : userPaths.values())
+		{
+			result.add(uhis);
+		}
+		
 		userCount = result.size();
 		logger.debug("Found " + result.size() + " user paths.");
 		return result;

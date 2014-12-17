@@ -193,8 +193,6 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 							+ res.getLevel(i).get(j).getAbsoluteSupport());
 					for (int k = 0; k < res.getLevel(i).get(j).size(); k++)
 					{
-
-						Long g = res.getLevel(i).get(j).get(k).getItems().get(0).getId();
 						final String obId = internalIdToId.get(res.getLevel(i).get(j).get(k)
 								.getItems().get(0).getId());
 
@@ -435,7 +433,7 @@ public class AFrequentPathsBIDE extends AnalysisTask {
 						.get(l.get(i).getPrefix() + " " + l.get(i).getLearningId()) + " -1 ";
 			}
 			line += "-2";
-			logger.debug(line);
+			//logger.debug(line);
 			result.add(line);
 			z++;
 		}

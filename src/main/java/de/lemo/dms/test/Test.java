@@ -95,7 +95,7 @@ public class Test {
 		courses.add(4122L);
 		List<String> types = new ArrayList<String>();
 		List<Long> users = new ArrayList<Long>();
-		Double minSup = 0.2d;
+		Double minSup = 0.7d;
 		Long startTime = 0L;
 		Long endTime = 1500000000L;
 		Long minLength = null;
