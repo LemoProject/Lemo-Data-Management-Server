@@ -92,10 +92,10 @@ public class Test {
 		QFrequentPathsBIDE abide = new QFrequentPathsBIDE();
 		
 		List<Long> courses = new ArrayList<Long>();
-		courses.add(1L);
+		courses.add(4122L);
 		List<String> types = new ArrayList<String>();
 		List<Long> users = new ArrayList<Long>();
-		Double minSup = 1d;
+		Double minSup = 0.7d;
 		Long startTime = 0L;
 		Long endTime = 1500000000L;
 		Long minLength = null;
@@ -103,7 +103,7 @@ public class Test {
 		List<Long> gender = new ArrayList<Long>();
 		List<Long> learningObjects = new ArrayList<Long>();
 		
-		//qfb.compute(courses, users, types, minLength, maxLength, minSup, startTime, endTime, gender, learningObjects);
+		qfb.compute(courses, users, types, minLength, maxLength, minSup, startTime, endTime, gender, learningObjects);
 		
 		try {
 			abide.compute(1L, courses, users, types, minLength, maxLength, minSup, false, startTime, endTime, gender, learningObjects);

@@ -66,7 +66,9 @@ public class ContentGenerator {
 	private static final int MAGIC_THREE = 3;
 	private static final int MAGIC_FIVE = 5;
 	private static final int MAGIC_TEN = 10;
+	private static final int USER_LOG_LIMIT = 70;
 	private Long maxLog = 0L;
+	private Map<String, Integer> userLogCounter = new HashMap<String, Integer>(); 
 
 
 	
@@ -429,20 +431,35 @@ public class ContentGenerator {
 				final AccessLog rLog = new AccessLog();
 				rLog.setCourse(cou);
 				rLog.setLearning(learningObjects.get((learningObjects.size() - 1) - randy.nextInt(MAGIC_TEN)));
-				rLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
-						% userList.size()));
-				rLog.setDuration(Long.valueOf(randy.nextInt(350) + 2));
-				rLog.setAction(EAccessActionType.values()[time % 3].toString());
-				time = (int) (startdate
-					+ (randy.nextInt(year) ));
-				
-				rLog.setTimestamp(Long.valueOf(time));
-				if(rLog.getTimestamp() > maxLog)
+				User user = userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
+						% userList.size());
+				if(userLogCounter.get(user.getId() + " " + cou.getId()) == null)					
 				{
-					maxLog = rLog.getTimestamp();
+					userLogCounter.put(user.getId() + " " + cou.getId(), 1);
+					rLog.setUser(user);
 				}
-
-				learnLog.add(rLog);
+				else if(userLogCounter.get(user.getId() + " " + cou.getId()) < USER_LOG_LIMIT)
+				{
+					Integer h = userLogCounter.get(user.getId() + " " + cou.getId());
+					h++;
+					userLogCounter.put(user.getId() + " " + cou.getId(), h);
+					rLog.setUser(user);
+					;
+				}
+				if(rLog.getUser() != null)
+				{
+					rLog.setDuration(Long.valueOf(randy.nextInt(350) + 2));
+					rLog.setAction(EAccessActionType.values()[time % 3].toString());
+					time = (int) (startdate
+						+ (randy.nextInt(year) ));
+					
+					rLog.setTimestamp(Long.valueOf(time));
+					if(rLog.getTimestamp() > maxLog)
+					{
+						maxLog = rLog.getTimestamp();
+					}
+					learnLog.add(rLog);
+				}
 				
 				// _________________TaskLogs___________________________________________________
 
@@ -451,59 +468,93 @@ public class ContentGenerator {
 				final AssessmentLog aLog = new AssessmentLog();
 				aLog.setCourse(cou);
 				aLog.setLearning(assessmentObjects.get((assessmentObjects.size() - 1) - randy.nextInt(MAGIC_FIVE)));
-				aLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
-				aLog.setAction(EAssessmentActionType.values()[time % 3].toString());
-				final LearningObj a = aLog.getLearning();
-				aLog.setDuration(Long.valueOf(randy.nextInt(350) + 2));
-				time = (int) (startdate
-						+ (randy.nextInt(year) ));
-				aLog.setTimestamp(Long.valueOf(time));
-				if(aLog.getAction().equals("Try"))
-					aLog.setText("Generated assessment message");
-				
-				if(!taskUserMap.containsKey(aLog.getUser().getId() + "#" + aLog.getLearning().getId()) && aLog.getAction().equals("Submit"))
+				user = userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
+						% userList.size());
+				if(userLogCounter.get(user.getId() + " " + cou.getId()) == null)					
 				{
-					UserAssessment tu = new UserAssessment();
-					tu.setId(taskUserMap.size() + 1);
-					tu.setLearning(a);
-					tu.setUser(aLog.getUser());
-					tu.setCourse(cou);
-					tu.setTimemodified(time);
-					tu.setFeedback("Generated feedback message");
-					tu.setGrade(Double.valueOf(randy.nextInt(assMG.get(a.getId()).intValue())));
+					userLogCounter.put(user.getId() + " " + cou.getId(), 1);
+					aLog.setUser(user);
+				}
+				else if(userLogCounter.get(user.getId() + " " + cou.getId()) < USER_LOG_LIMIT)
+				{
+					Integer h = userLogCounter.get(user.getId() + " " + cou.getId());
+					h++;
+					userLogCounter.put(user.getId() + " " + cou.getId(), h);
+					aLog.setUser(user);
+					;
+				}
+				if(aLog.getUser() != null)
+				{
+					aLog.setAction(EAssessmentActionType.values()[time % 3].toString());
+					final LearningObj a = aLog.getLearning();
+					aLog.setDuration(Long.valueOf(randy.nextInt(350) + 2));
+					time = (int) (startdate
+							+ (randy.nextInt(year) ));
+					aLog.setTimestamp(Long.valueOf(time));
+					if(aLog.getAction().equals("Try"))
+						aLog.setText("Generated assessment message");
 					
-					taskUserMap.put(aLog.getUser().getId() + "#" + aLog.getLearning().getId(), tu);
+					if(!taskUserMap.containsKey(aLog.getUser().getId() + "#" + aLog.getLearning().getId()) && aLog.getAction().equals("Submit"))
+					{
+						UserAssessment tu = new UserAssessment();
+						tu.setId(taskUserMap.size() + 1);
+						tu.setLearning(a);
+						tu.setUser(aLog.getUser());
+						tu.setCourse(cou);
+						tu.setTimemodified(time);
+						tu.setFeedback("Generated feedback message");
+						tu.setGrade(Double.valueOf(randy.nextInt(assMG.get(a.getId()).intValue())));
+						
+						taskUserMap.put(aLog.getUser().getId() + "#" + aLog.getLearning().getId(), tu);
+					}
+					
+					if(aLog.getTimestamp() > maxLog)
+					{
+						maxLog = aLog.getTimestamp();
+					}
+					taskLogs.add(aLog);
 				}
-				
-				if(aLog.getTimestamp() > maxLog)
-				{
-					maxLog = aLog.getTimestamp();
-				}
-
-				taskLogs.add(aLog);
 
 				// _________________CollaborativeLogs___________________________________________________
 				
 				final CollaborationLog cLog = new CollaborationLog();
 				cLog.setCourse(cou);
-				cLog.setUser(userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(MAGIC_TEN)) % userList.size()));
-				cLog.setLearning(collaborativeObjects.get((collaborativeObjects.size() - 1) - randy.nextInt(MAGIC_FIVE)));
-				cLog.setAction(ECollaborationActionType.values()[time % 3].toString());
-			
-				time = (int) (startdate
-						+ (randy.nextInt(year) ));
-				cLog.setTimestamp(Long.valueOf(time));
-				
-
-				
-				if(cLog.getTimestamp() > maxLog)
+				user = userList.get((((courseList.size() - 1) * MAGIC_FIVE) + randy.nextInt(userSwitch))
+						% userList.size());
+				if(userLogCounter.get(user.getId() + " " + cou.getId()) == null)					
 				{
-					maxLog = cLog.getTimestamp();
+					userLogCounter.put(user.getId() + " " + cou.getId(), 1);
+					cLog.setUser(user);
 				}
-				cLog.setText("Generated collaborative message @ "
-						+ cLog.getTimestamp());
+				else if(userLogCounter.get(user.getId() + " " + cou.getId()) < USER_LOG_LIMIT)
+				{
+					Integer h = userLogCounter.get(user.getId() + " " + cou.getId());
+					h++;
+					userLogCounter.put(user.getId() + " " + cou.getId(), h);
+					cLog.setUser(user);
+					;
+				}
 
-				collLog.add(cLog);
+				if(cLog.getUser() != null)
+				{
+					cLog.setLearning(collaborativeObjects.get((collaborativeObjects.size() - 1) - randy.nextInt(MAGIC_FIVE)));
+					cLog.setAction(ECollaborationActionType.values()[time % 3].toString());
+				
+					time = (int) (startdate
+							+ (randy.nextInt(year) ));
+					cLog.setTimestamp(Long.valueOf(time));
+					
+
+					
+					if(cLog.getTimestamp() > maxLog)
+					{
+						maxLog = cLog.getTimestamp();
+					}
+					cLog.setText("Generated collaborative message @ "
+							+ cLog.getTimestamp());
+
+					collLog.add(cLog);
+				}
 			}
 		}
 		
