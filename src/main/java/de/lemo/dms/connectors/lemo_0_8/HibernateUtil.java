@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/connectors/moodle_2_7/HibernateUtil.java
+ * File ./src/main/java/de/lemo/dms/connectors/lemo_0_8/HibernateUtil.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,8 +19,8 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/connectors/moodle_2_7/HibernateUtil.java
- * Date 2013-01-24
+ * File ./main/java/de/lemo/dms/connectors/lemo_0_8/HibernateUtil.java
+ * Date 2015-01-05
  * Project Lemo Learning Analytics
  */
 
@@ -34,40 +34,46 @@ import org.hibernate.cfg.Configuration;
 
 import com.google.common.collect.Maps;
 
-import de.lemo.dms.connectors.moodle_2_7.mapping.AssignGradesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ChatLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ChatLogLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ContextLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.CourseCategoriesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.CourseLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.CourseModulesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.AssignLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.EnrolLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ForumDiscussionsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ForumLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ForumPostsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.GradeGradesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.GradeItemsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsMembersLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.LogstoreStandardLogLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ModulesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.PageLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuestionLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuestionStatesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuizAttemptsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuizGradesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuizLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ResourceLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.UrlLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.RoleAssignmentsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.RoleLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ScormLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.UserEnrolmentsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.UserLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.WikiLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.WikiPagesLMS;
 import de.lemo.dms.db.DBConfigObject;
+import de.lemo.dms.connectors.lemo_0_8.mapping.AssignmentLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.AssignmentLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ChatLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ChatLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ConfigLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseAssignmentLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseChatLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseForumLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseGroupLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseQuizLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseResourceLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseScormLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseUserLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseWikiLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ForumLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ForumLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.GroupLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.GroupUserLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.IDMappingLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.LevelAssociationLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.LevelCourseLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.LevelLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.PlatformLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuestionLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuestionLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuizLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuizLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuizQuestionLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuizUserLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ResourceLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ResourceLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.RoleLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ScormLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ScormLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.UserLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.WikiLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.WikiLMS;
 
 /**
  * Startup Hibernate and provide access to the singleton SessionFactory
@@ -103,43 +109,54 @@ public final class HibernateUtil {
 			cfg.setProperty(entry.getKey(), entry.getValue());
 		}
 
-		// Add mapping classes
+		// Meta
+		cfg.addAnnotatedClass(ConfigLMS.class);
+		cfg.addAnnotatedClass(IDMappingLMS.class);
+		cfg.addAnnotatedClass(PlatformLMS.class);
 
-		cfg.addAnnotatedClass(AssignLMS.class);
-
-		cfg.addAnnotatedClass(EnrolLMS.class);
-		cfg.addAnnotatedClass(UserEnrolmentsLMS.class);
-		cfg.addAnnotatedClass(ModulesLMS.class);
-		cfg.addAnnotatedClass(CourseModulesLMS.class);
-
-		cfg.addAnnotatedClass(CourseLMS.class);
-		cfg.addAnnotatedClass(ForumDiscussionsLMS.class);
-		cfg.addAnnotatedClass(ForumPostsLMS.class);
-		cfg.addAnnotatedClass(ForumLMS.class);
-		cfg.addAnnotatedClass(GradeGradesLMS.class);
-		cfg.addAnnotatedClass(GroupsMembersLMS.class);
-		cfg.addAnnotatedClass(GroupsLMS.class);
-		cfg.addAnnotatedClass(LogstoreStandardLogLMS.class);
-//		cfg.addAnnotatedClass(QuestionStatesLMS.class);
-		cfg.addAnnotatedClass(QuestionLMS.class);
-		cfg.addAnnotatedClass(QuizGradesLMS.class);
-		cfg.addAnnotatedClass(QuizLMS.class);
-		cfg.addAnnotatedClass(QuizAttemptsLMS.class);
-		cfg.addAnnotatedClass(WikiLMS.class);
-		cfg.addAnnotatedClass(WikiPagesLMS.class);
-		cfg.addAnnotatedClass(ResourceLMS.class);
-		cfg.addAnnotatedClass(PageLMS.class);
-		cfg.addAnnotatedClass(UrlLMS.class);
-		cfg.addAnnotatedClass(UserLMS.class);
-		cfg.addAnnotatedClass(RoleLMS.class);
-		cfg.addAnnotatedClass(ContextLMS.class);
-		cfg.addAnnotatedClass(RoleAssignmentsLMS.class);
-		cfg.addAnnotatedClass(AssignGradesLMS.class);
-		cfg.addAnnotatedClass(ScormLMS.class);
-		cfg.addAnnotatedClass(GradeItemsLMS.class);
+		// Object-classes
+		cfg.addAnnotatedClass(AssignmentLMS.class);
 		cfg.addAnnotatedClass(ChatLMS.class);
+		cfg.addAnnotatedClass(CourseLMS.class);
+		cfg.addAnnotatedClass(ForumLMS.class);
+		cfg.addAnnotatedClass(GroupLMS.class);
+		cfg.addAnnotatedClass(QuestionLMS.class);
+		cfg.addAnnotatedClass(QuizLMS.class);
+		cfg.addAnnotatedClass(ResourceLMS.class);
+		cfg.addAnnotatedClass(RoleLMS.class);
+		cfg.addAnnotatedClass(ScormLMS.class);
+		cfg.addAnnotatedClass(UserLMS.class);
+		cfg.addAnnotatedClass(WikiLMS.class);
+		cfg.addAnnotatedClass(LevelLMS.class);
+
+		// Association-classes
+		
+		cfg.addAnnotatedClass(CourseAssignmentLMS.class);
+		cfg.addAnnotatedClass(CourseChatLMS.class);
+		cfg.addAnnotatedClass(CourseForumLMS.class);
+		cfg.addAnnotatedClass(CourseGroupLMS.class);
+		cfg.addAnnotatedClass(CourseQuizLMS.class);
+		cfg.addAnnotatedClass(CourseResourceLMS.class);
+		cfg.addAnnotatedClass(CourseScormLMS.class);
+		cfg.addAnnotatedClass(CourseUserLMS.class);
+		cfg.addAnnotatedClass(CourseWikiLMS.class);
+		cfg.addAnnotatedClass(GroupUserLMS.class);
+		cfg.addAnnotatedClass(QuizQuestionLMS.class);
+		cfg.addAnnotatedClass(QuizUserLMS.class);
+		cfg.addAnnotatedClass(LevelCourseLMS.class);
+		cfg.addAnnotatedClass(LevelAssociationLMS.class);
+
+		// Log-classes
+		
+		cfg.addAnnotatedClass(AssignmentLogLMS.class);
 		cfg.addAnnotatedClass(ChatLogLMS.class);
-		cfg.addAnnotatedClass(CourseCategoriesLMS.class);
+		cfg.addAnnotatedClass(CourseLogLMS.class);
+		cfg.addAnnotatedClass(ForumLogLMS.class);
+		cfg.addAnnotatedClass(ResourceLogLMS.class);
+		cfg.addAnnotatedClass(ScormLogLMS.class);
+		cfg.addAnnotatedClass(QuestionLogLMS.class);
+		cfg.addAnnotatedClass(QuizLogLMS.class);
+		cfg.addAnnotatedClass(WikiLogLMS.class);
 
 		return cfg.buildSessionFactory();
 	}

@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/connectors/moodle_2_7/ExtractAndMapMoodle.java
+ * File ./src/main/java/de/lemo/dms/connectors/lemo_0_8/ExtractAndMapMoodle.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,8 +19,8 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/connectors/moodle_2_7/ExtractAndMapMoodle.java
- * Date 2013-01-24
+ * File ./main/java/de/lemo/dms/connectors/lemo_0_8/ExtractAndMapMoodle.java
+ * Date 2015-01-05
  * Project Lemo Learning Analytics
  */
 
@@ -47,37 +47,45 @@ import org.hibernate.criterion.Restrictions;
 import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.TextHelper;
-import de.lemo.dms.connectors.moodle_2_7.mapping.AssignGradesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.AssignLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ChatLogLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ChatLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ContextLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.CourseCategoriesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.CourseLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.CourseModulesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.EnrolLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ForumLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ForumDiscussionsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ForumPostsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.GradeGradesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.GradeItemsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsMembersLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.LogstoreStandardLogLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ModulesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.PageLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuizLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuizAttemptsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuizGradesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ResourceLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.UrlLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.RoleLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.RoleAssignmentsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ScormLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.UserEnrolmentsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.UserLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.WikiLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.WikiPagesLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.AssignmentLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.AssignmentLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ChatLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ChatLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ConfigLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseAssignmentLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseChatLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseForumLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseGroupLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseQuizLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseResourceLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseScormLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseUserLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.CourseWikiLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ForumLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ForumLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.GroupLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.GroupUserLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.IDMappingLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.LevelAssociationLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.LevelCourseLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.LevelLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.PlatformLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuestionLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuestionLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuizLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuizLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuizQuestionLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.QuizUserLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ResourceLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ResourceLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.RoleLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ScormLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.ScormLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.UserLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.WikiLogLMS;
+import de.lemo.dms.connectors.lemo_0_8.mapping.WikiLMS;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.CollaborationLog;
@@ -103,38 +111,53 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 	// Versionsnummer in Namen einfügen
 
 	// LMS tables instances lists
-	/** The log_lms. */
-	private List<LogstoreStandardLogLMS> logstoreLms;
-	private List<AssignGradesLMS> assignGradesLms;
-	private List<ResourceLMS> resourceLms;
-	private List<UrlLMS> urlLms;
-	private List<PageLMS> pageLms;
-	private List<CourseLMS> courseLms;
-	private List<ForumLMS> forumLms;
-	private List<WikiLMS> wikiLms;
-	private List<WikiPagesLMS> wikiPagesLms;
-	private List<UserLMS> userLms;
-	private List<QuizLMS> quizLms;
-	private List<GroupsLMS> groupLms;
-	private List<GroupsMembersLMS> groupMembersLms;
-	private List<ForumPostsLMS> forumPostsLms;
-	private List<RoleLMS> roleLms;
-	private List<ContextLMS> contextLms;
-	private List<RoleAssignmentsLMS> roleAssignmentsLms;
-	private List<QuizGradesLMS> quizGradesLms;
-	private List<ForumDiscussionsLMS> forumDiscussionsLms;
-	private List<ScormLMS> scormLms;
-	private List<GradeGradesLMS> gradeGradesLms;
-	private List<GradeItemsLMS> gradeItemsLms;
-	private List<ChatLMS> chatLms;
-	private List<ChatLogLMS> chatLogLms;
-	private List<CourseCategoriesLMS> courseCategoriesLms;
-	private List<AssignLMS> assignLms;
-	private List<EnrolLMS> enrolLms;
-	private List<UserEnrolmentsLMS> userEnrolmentsLms;
-	private List<ModulesLMS> modulesLms;
-	private List<CourseModulesLMS> courseModulesLms;
-	private List<QuizAttemptsLMS> quizAttemptsLms;
+	private List<ConfigLMS> configLms = new ArrayList<ConfigLMS>();
+	private List<IDMappingLMS> idMapLms = new ArrayList<IDMappingLMS>();
+	private List<PlatformLMS> platformLms = new ArrayList<PlatformLMS>();
+
+	// Object-classes
+	private List<AssignmentLMS> assignmentLms = new ArrayList<AssignmentLMS>();
+	private List<ChatLMS> chatLms = new ArrayList<ChatLMS>();
+	private List<CourseLMS> courseLms = new ArrayList<CourseLMS>();
+	private List<ForumLMS> forumLms = new ArrayList<ForumLMS>();
+	private List<GroupLMS> groupLms = new ArrayList<GroupLMS>();
+	private List<QuestionLMS> questionLms = new ArrayList<QuestionLMS>();
+	private List<QuizLMS> quizLms = new ArrayList<QuizLMS>();
+	private List<ResourceLMS> resourceLms = new ArrayList<ResourceLMS>();
+	private List<RoleLMS> roleLms = new ArrayList<RoleLMS>();
+	private List<ScormLMS> scormLms = new ArrayList<ScormLMS>();
+	private List<UserLMS> userLms = new ArrayList<UserLMS>();
+	private List<WikiLMS> wikiLms = new ArrayList<WikiLMS>();
+	private List<LevelLMS> levelLms = new ArrayList<LevelLMS>();
+
+	// Association-classes
+	
+	private List<CourseAssignmentLMS> courseAssignmentLms = new ArrayList<CourseAssignmentLMS>();
+	private List<CourseChatLMS> courseChatLms = new ArrayList<CourseChatLMS>();
+	private List<CourseForumLMS> courseForumLms = new ArrayList<CourseForumLMS>();
+	private List<CourseGroupLMS> courseGroupLms = new ArrayList<CourseGroupLMS>();
+	private List<CourseQuizLMS> courseQuizLms = new ArrayList<CourseQuizLMS>();
+	private List<CourseResourceLMS> courseResourceLms = new ArrayList<CourseResourceLMS>();
+	private List<CourseScormLMS> courseScormLms = new ArrayList<CourseScormLMS>();
+	private List<CourseUserLMS> courseUserLms = new ArrayList<CourseUserLMS>();
+	private List<CourseWikiLMS> courseWikiLms = new ArrayList<CourseWikiLMS>();
+	private List<GroupUserLMS> groupUserLms = new ArrayList<GroupUserLMS>();
+	private List<QuizQuestionLMS> quizQuestionLms = new ArrayList<QuizQuestionLMS>();
+	private List<QuizUserLMS> quizUserLms = new ArrayList<QuizUserLMS>();
+	private List<LevelCourseLMS> levelCourseLms = new ArrayList<LevelCourseLMS>();
+	private List<LevelAssociationLMS> levelAssociationLms = new ArrayList<LevelAssociationLMS>();
+
+	// Log-classes
+	
+	private List<AssignmentLogLMS> assignmentLogLms = new ArrayList<AssignmentLogLMS>();
+	private List<ChatLogLMS> chatLogLms = new ArrayList<ChatLogLMS>();
+	private List<CourseLogLMS> courseLogLms = new ArrayList<CourseLogLMS>();
+	private List<ForumLogLMS> forumLogLms = new ArrayList<ForumLogLMS>();
+	private List<ResourceLogLMS> resourceLogLms = new ArrayList<ResourceLogLMS>();
+	private List<ScormLogLMS> scormLogLms = new ArrayList<ScormLogLMS>();
+	private List<QuestionLogLMS> questionLogLms = new ArrayList<QuestionLogLMS>();
+	private List<QuizLogLMS> quizLogLms = new ArrayList<QuizLogLMS>();
+	private List<WikiLogLMS> wikiLogLms = new ArrayList<WikiLogLMS>();
 
 	private Map<Long, Long> chatCourse = new HashMap<Long, Long>();
 	
