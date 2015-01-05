@@ -222,7 +222,7 @@ public abstract class ExtractAndMap {
 		final Config config = new Config();
 		config.setLastModifiedLong(System.currentTimeMillis());
 		config.setElapsedTime((endtime) - (this.starttime));
-		config.setDatabaseModel("2.0");
+		config.setDatabaseModel("GDMLA 1.0");
 		config.setPlatform(this.connector.getPlatformId());
 		config.setLatestTimestamp(maxLog);
 		this.dbHandler.saveToDB(session, config);

@@ -261,7 +261,6 @@ public class ServiceCourseDetails {
 	@GET
 	@Path("{cid}/hash")
 	public Long getCourseHash(@PathParam("cid") final Long id, final Long first, final Long last) {
-		
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
@@ -285,6 +284,7 @@ public class ServiceCourseDetails {
 		
 		return hash;
 	}
+	
 	
 	/**
 	 * Gets the details for a a list of courses including id, title, description, 

@@ -118,6 +118,8 @@ public class ServiceCourseTitleSearch {
 			pl.add(Projections.max("timestamp"));
 			criteria.setProjection(pl);
 			
+			logger.info(criteria.list().size());
+			
 			Long lastTime = 0L;
 			Long firstTime = 0L;
 
@@ -125,7 +127,7 @@ public class ServiceCourseTitleSearch {
 			{
 				Long max = 0L;
 				for(int i=0; i < criteria.list().size(); i++){
-					if ((Long)criteria.list().get(i) > max)
+					if (criteria.list().get(i)!= null && (Long)criteria.list().get(i) > max)
 					{
 						max = (Long) criteria.list().get(i);
 						break;
@@ -148,7 +150,7 @@ public class ServiceCourseTitleSearch {
 			{
 				Long max = 0L;
 				for(int i=0; i < criteria.list().size(); i++){
-					if ((Long)criteria.list().get(i) > max)
+					if (criteria.list().get(i)!= null && (Long)criteria.list().get(i) > max)
 					{
 						max = (Long) criteria.list().get(i);
 						break;

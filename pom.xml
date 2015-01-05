@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.lemo</groupId>
 	<artifactId>dms</artifactId>
-	<version>PT2S8_Final-267-g043ee73</version><!-- FLAG 1 identifier DONT DELETE -->
+	<version>1.5.0</version><!-- FLAG 1 identifier DONT DELETE -->
 	<packaging>war</packaging>
 	<name>Lemo Data Management Server</name>
 
@@ -234,6 +234,7 @@
 					<port>8081</port>
 				</configuration>
 			</plugin>
+
 
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>

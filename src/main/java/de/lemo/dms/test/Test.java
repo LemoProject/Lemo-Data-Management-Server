@@ -26,6 +26,8 @@
 
 package de.lemo.dms.test;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,10 @@ import org.hibernate.Session;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.StudentHelper;
+import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
+import de.lemo.dms.processing.questions.QFrequentPathsApriori;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
+import de.lemo.dms.processing.questions.async.AFrequentPathsBIDE;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
 import de.lemo.dms.service.ServiceCourseDetails;
@@ -55,7 +60,7 @@ public class Test {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
-		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 100, 1325372400L, 5000));
+		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 100, 1325372400L, 500));
 	}
 /*	
 	public static void write()
@@ -83,12 +88,32 @@ public class Test {
 	public static void test()
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		ServiceCourseDetails scd = new ServiceCourseDetails();
-		ArrayList<Long> cid = new ArrayList<Long>();
-		cid.add(6L);
-		ResultListCourseObject d = scd.getCoursesDetails(cid);
-		d.equals(new CourseObject());
+		QFrequentPathsApriori qfb = new QFrequentPathsApriori();
+		QFrequentPathsBIDE abide = new QFrequentPathsBIDE();
 		
+		List<Long> courses = new ArrayList<Long>();
+		courses.add(4122L);
+		List<String> types = new ArrayList<String>();
+		List<Long> users = new ArrayList<Long>();
+		Double minSup = 0.7d;
+		Long startTime = 0L;
+		Long endTime = 1500000000L;
+		Long minLength = null;
+		Long maxLength = null;
+		List<Long> gender = new ArrayList<Long>();
+		List<Long> learningObjects = new ArrayList<Long>();
+		
+		qfb.compute(courses, users, types, minLength, maxLength, minSup, startTime, endTime, gender, learningObjects);
+		
+		try {
+			abide.compute(1L, courses, users, types, minLength, maxLength, minSup, false, startTime, endTime, gender, learningObjects);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 			
 		
