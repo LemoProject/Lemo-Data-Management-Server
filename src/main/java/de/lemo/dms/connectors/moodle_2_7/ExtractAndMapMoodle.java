@@ -2236,6 +2236,32 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		}
 		return userMining;
 	}
+	
+	private void addLearningAttribute(LearningObj learningObject, String name, String value)
+	{
+		Attribute attribute = new Attribute();
+		if(!this.attributeMining.containsKey(name))
+		{
+			
+			attribute.setName(name);
+			attribute.setId(this.attributeIdMax + 1);
+			this.learningAttributeIdMax++;
+			this.attributeMining.put(name, attribute);
+		}
+		else
+		{
+			attribute = this.attributeMining.get(name);
+		}
+		LearningAttribute la = new LearningAttribute();
+		la.setId(this.learningAttributeIdMax + 1);
+		this.learningAttributeIdMax++;
+		la.setLearning(learningObject);
+		la.setValue(value);
+		la.setAttribute(attribute);
+		
+		this.learningAttributeMining.put(la.getId(), la);
+		
+	}
 
 	@Override
 	public Map<Long, CourseAttribute> generateCourseAttributes() {
