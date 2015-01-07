@@ -580,6 +580,18 @@ public abstract class ExtractAndMap {
 			logger.info("Generated " + this.courseAttributeMining.size()
 					+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
 			this.updates.add(this.courseAttributeMining.values());
+			
+			this.learningAttributeMining = generateLearningAttributes();
+			objects += this.learningAttributeMining.size();
+			logger.info("Generated " + this.learningAttributeMining.size()
+					+ " LearningAttribute entries in " + this.c.getAndReset() + " s. ");
+			this.updates.add(this.learningAttributeMining.values());
+			
+			this.userAttributeMining = generateUserAttributes();
+			objects += this.userAttributeMining.size();
+			logger.info("Generated " + this.userAttributeMining.size()
+					+ " UserAttribute entries in " + this.c.getAndReset() + " s. ");
+			this.updates.add(this.userAttributeMining.values());
 
 		}
 

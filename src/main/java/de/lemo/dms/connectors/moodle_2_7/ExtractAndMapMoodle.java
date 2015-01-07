@@ -36,6 +36,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.persistence.Column;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -2104,7 +2106,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							+ loadedItem2.getItemmodule());
 				}
 			}
-
+			addLearningAttribute(insert, "MaxGrade", ((double)loadedItem.getGrade())+"");
 			amTmp.put(insert.getId(), insert);
 		}
 
@@ -2128,6 +2130,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			//insert.setMaxGrade(loadedItem.getSumgrade());
 			insert.setType("Quiz", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
+			addLearningAttribute(insert, "MaxGrade", ((double)loadedItem.getGrade())+"");
 
 			learningObjs.put(insert.getId(), insert);
 		}
@@ -2150,6 +2153,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setType("Scorm", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
 
+			addLearningAttribute(insert, "MaxGrade", loadedItem.getMaxgrade()+"");
 			learningObjs.put(insert.getId(), insert);
 		}
 		
@@ -2218,6 +2222,32 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		
 		return learningObjs;
+	}
+	
+	private void addLearningAttribute(LearningObj learningObject, String name, String value)
+	{
+		Attribute attribute = new Attribute();
+		if(!this.attributeMining.containsKey(name))
+		{
+			
+			attribute.setName(name);
+			attribute.setId(this.attributeIdMax + 1);
+			this.learningAttributeIdMax++;
+			this.attributeMining.put(name, attribute);
+		}
+		else
+		{
+			attribute = this.attributeMining.get(name);
+		}
+		LearningAttribute la = new LearningAttribute();
+		la.setId(this.learningAttributeIdMax + 1);
+		this.learningAttributeIdMax++;
+		la.setLearning(learningObject);
+		la.setValue(value);
+		la.setAttribute(attribute);
+		
+		this.learningAttributeMining.put(la.getId(), la);
+		
 	}
 
 	@Override

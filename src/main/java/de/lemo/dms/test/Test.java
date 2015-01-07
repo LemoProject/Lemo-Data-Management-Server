@@ -39,6 +39,7 @@ import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsApriori;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
+import de.lemo.dms.processing.questions.QPerformanceUserTest;
 import de.lemo.dms.processing.questions.async.AFrequentPathsBIDE;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
@@ -88,32 +89,21 @@ public class Test {
 	public static void test()
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		QFrequentPathsApriori qfb = new QFrequentPathsApriori();
-		QFrequentPathsBIDE abide = new QFrequentPathsBIDE();
-		
-		List<Long> courses = new ArrayList<Long>();
-		courses.add(4122L);
-		List<String> types = new ArrayList<String>();
-		List<Long> users = new ArrayList<Long>();
-		Double minSup = 0.7d;
-		Long startTime = 0L;
-		Long endTime = 1500000000L;
-		Long minLength = null;
-		Long maxLength = null;
-		List<Long> gender = new ArrayList<Long>();
-		List<Long> learningObjects = new ArrayList<Long>();
-		
-		qfb.compute(courses, users, types, minLength, maxLength, minSup, startTime, endTime, gender, learningObjects);
-		
-		try {
-			abide.compute(1L, courses, users, types, minLength, maxLength, minSup, false, startTime, endTime, gender, learningObjects);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			QPerformanceHistogram qput = new QPerformanceHistogram();
+			
+			List<Long> courses = new ArrayList<Long>();
+			courses.add(2L);
+			List<String> types = new ArrayList<String>();
+			List<Long> users = new ArrayList<Long>();
+			Double minSup = 0.7d;
+			Long startTime = 0L;
+			Long endTime = 1500000000L;
+			Long minLength = null;
+			Long maxLength = null;
+			List<Long> gender = new ArrayList<Long>();
+			List<Long> learningObjects = new ArrayList<Long>();
+			
+			qput.compute(courses, users, new ArrayList<Long>(), 100L, startTime, endTime, gender);
 
 			
 		
@@ -123,7 +113,7 @@ public class Test {
 	public static void main(final String[] args)
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.gen();
+		Test.test();
 	}
 
 }

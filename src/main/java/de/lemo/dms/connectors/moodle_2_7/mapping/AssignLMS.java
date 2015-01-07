@@ -46,6 +46,7 @@ public class AssignLMS {
 	private String name;
 	private String description;
 	private long timemodified;
+	private long grade;
 
 	@Id
 	public long getId() {
@@ -90,6 +91,21 @@ public class AssignLMS {
 
 	public void setTimemodified(final long timeModified) {
 		this.timemodified = timeModified;
+	}
+
+	/**
+	 * @return the grade
+	 */
+	@Column(name="grade")
+	public long getGrade() {
+		return grade;
+	}
+
+	/**
+	 * @param grade the grade to set
+	 */
+	public void setGrade(long grade) {
+		this.grade = grade;
 	}
 
 }
