@@ -730,6 +730,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final ResourceLMS loadedItem : this.resourceLms)
 		{
 			final LearningObj insert = new LearningObj();
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 
 			if(!this.learningTypeMining.containsKey(loadedItem.getType()) && !this.oldLearningTypeMining.containsKey(loadedItem.getType()))
 			{
@@ -739,11 +740,11 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 			if(loadedItem.getType().toUpperCase().equals("RESOURCE"))
-				insert.setId(Long.valueOf("11" + loadedItem.getId()));
+				insert.setId(Long.valueOf("11" + id));
 			else if(loadedItem.getType().toUpperCase().equals("PAGE"))
-				insert.setId(Long.valueOf("13" + loadedItem.getId()));
+				insert.setId(Long.valueOf("13" + id));
 			else if(loadedItem.getType().toUpperCase().equals("URL"))
-				insert.setId(Long.valueOf("12" + loadedItem.getId()));
+				insert.setId(Long.valueOf("12" + id));
 			insert.setTitle(loadedItem.getTitle());
 			insert.setType(loadedItem.getType(), this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Access");
@@ -758,6 +759,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final AssignmentLMS loadedItem : this.assignmentLms)
 		{
 			final LearningObj insert = new LearningObj();
+			
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
 
 			if(!this.learningTypeMining.containsKey("Assign") && !this.oldLearningTypeMining.containsKey("Assign"))
 			{
@@ -767,7 +770,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 
-			insert.setId(Long.valueOf("17" + loadedItem.getId()));
+			insert.setId(Long.valueOf("17" + id));
 			insert.setTitle(loadedItem.getTitle());
 			insert.setType("Assign", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
@@ -783,6 +786,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 
 			final LearningObj insert = new LearningObj();
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
 			
 			if(!this.learningTypeMining.containsKey(loadedItem.getType()) && !this.oldLearningTypeMining.containsKey(loadedItem.getType()))
 			{
@@ -792,7 +796,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 
-			insert.setId(Long.valueOf("18" + loadedItem.getId()));
+			insert.setId(Long.valueOf("18" + id));
 			insert.setTitle(loadedItem.getTitle());
 			//insert.setMaxGrade(loadedItem.getSumgrade());
 			insert.setType("Quiz", this.learningTypeMining, this.oldLearningTypeMining);
@@ -806,6 +810,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final ScormLMS loadedItem : this.scormLms)
 		{
 			final LearningObj insert = new LearningObj();
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
 			
 			if(!this.learningTypeMining.containsKey(loadedItem.getType()) && !this.oldLearningTypeMining.containsKey(loadedItem.getType()))
 			{
@@ -815,7 +820,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 
-			insert.setId(Long.valueOf("19" + loadedItem.getId()));
+			insert.setId(Long.valueOf("19" + id));
 			insert.setTitle(loadedItem.getTitle());
 			//insert.setMaxGrade(loadedItem.getMaxgrade());
 			insert.setType(loadedItem.getType(), this.learningTypeMining, this.oldLearningTypeMining);
@@ -829,6 +834,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final ChatLMS loadedItem : this.chatLms)
 		{
 			final LearningObj insert = new LearningObj();
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
 
 			if(!this.learningTypeMining.containsKey("Chat") && !this.oldLearningTypeMining.containsKey("Chat"))
 			{
@@ -838,7 +844,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 			
-			insert.setId(Long.valueOf("14" + loadedItem.getId()));
+			insert.setId(Long.valueOf("14" + id));
 			insert.setTitle(loadedItem.getTitle());
 			insert.setType("Chat", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Collaboration");
@@ -850,6 +856,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final ForumLMS loadedItem : this.forumLms)
 		{
 			final LearningObj insert = new LearningObj();
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
 
 			if(!this.learningTypeMining.containsKey("Forum") && !this.oldLearningTypeMining.containsKey("Forum"))
 			{
@@ -859,7 +866,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 			
-			insert.setId(Long.valueOf("15" + loadedItem.getId()));
+			insert.setId(Long.valueOf("15" + id));
 			insert.setTitle(loadedItem.getTitle());
 			insert.setType("Forum", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Collaboration");
@@ -870,6 +877,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final WikiLMS loadedItem : this.wikiLms)
 		{
 			final LearningObj insert = new LearningObj();
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
 
 			if(!this.learningTypeMining.containsKey("Wiki") && !this.oldLearningTypeMining.containsKey("Wiki"))
 			{
@@ -879,7 +887,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				this.learningTypeMining.put(type.getType(), type);
 			}
 			
-			insert.setId(Long.valueOf("16" + loadedItem.getId()));
+			insert.setId(Long.valueOf("16" + id));
 			insert.setTitle(loadedItem.getTitle());
 			insert.setType("Wiki", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Collaboration");
