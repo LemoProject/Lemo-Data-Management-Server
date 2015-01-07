@@ -37,6 +37,7 @@ public enum ESourcePlatform {
     Moodle_2_5,
     Moodle_2_7,
     Mooc,
+    Lemo_0_8,
     //Clix_2010,
     //Chemgaroo,
     Dummy, ;
@@ -60,14 +61,6 @@ public enum ESourcePlatform {
         AbstractConnector connector;
         switch(this) {
 
-        /*case Chemgaroo:
-            connector = new ConnectorChemgapedia(config);
-            break;
-
-        case Clix_2010:
-            connector = new ConnectorClix(config);
-            break;*/
-
         case Dummy:
             connector = new ConnectorDummy();
             break;
@@ -75,26 +68,17 @@ public enum ESourcePlatform {
         case Moodle_2_7:
             connector = new de.lemo.dms.connectors.moodle_2_7.ConnectorMoodle(config);
             break;
-
-       /* case Moodle_1_9:
-            connector = new de.lemo.dms.connectors.moodle_1_9.ConnectorMoodle(config);
-            break;*/
-
-        // case Moodle_2_1:
-        // case Moodle_2_2:
         case Moodle_2_3:
         case Moodle_2_4:
         case Moodle_2_5:
             connector = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle(config);
             break;
-            
+        case Lemo_0_8:
+            connector = new de.lemo.dms.connectors.lemo_0_8.ConnectorLeMo(config);
+            break;            
         case Mooc:
         	connector = new de.lemo.dms.connectors.mooc.ConnectorMooc(config);
             break;
-
-/*        case Moodle_1_9_Numeric:
-            connector = new de.lemo.dms.connectors.moodle_1_9.ConnectorMoodle(config);
-            break;*/
 
         default:
             throw new RuntimeException("No Connector implementation found for '" + this.name() + "'.");
