@@ -1874,7 +1874,7 @@ public class ClixImporter {
 						ect.getUploadDir().toLowerCase().contains("linklist")))
 						
 				{
-					item.setId(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId()));
+					item.setId(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getId()));
 					item.setTitle(loadedItem.getName());
 					item.setTimeCreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
 					item.setTimeModified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
