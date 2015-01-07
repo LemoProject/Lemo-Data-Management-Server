@@ -503,8 +503,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final CourseLMS loadedItem : this.courseLms)
 		{
 			final Course insert = new Course();
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
 
-			insert.setId(loadedItem.getId());
+			insert.setId(id);
 			insert.setTitle(loadedItem.getTitle());
 
 			courseMining.put(insert.getId(), insert);
@@ -519,36 +520,52 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(QuizLogLMS loadedItem : this.quizLogLms)
 		{
+			Long id = Long.valueOf((loadedItem.getQuiz() + "").substring(1));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			AssessmentLog insert = new AssessmentLog();
+			
 			insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
 			insert.setAction(loadedItem.getAction());
-			insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
-			insert.setLearning(loadedItem.getQuiz(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setUser(uid, this.userMining, this.oldUserMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
 			assessmentLogs.put(insert.getId(), insert);
 		}
 		
 		for(AssignmentLogLMS loadedItem : this.assignmentLogLms)
 		{
+			Long id = Long.valueOf((loadedItem.getAssignment() + "").substring(1));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			AssessmentLog insert = new AssessmentLog();
 			insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
 			insert.setAction(loadedItem.getAction());
-			insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
-			insert.setLearning(loadedItem.getAssignment(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setUser(uid, this.userMining, this.oldUserMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
 			assessmentLogs.put(insert.getId(), insert);
 		}
 		
 		for(ScormLogLMS loadedItem : this.scormLogLms)
 		{
+			Long id = Long.valueOf((loadedItem.getScorm() + "").substring(1));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			AssessmentLog insert = new AssessmentLog();
 			insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
 			insert.setAction(loadedItem.getAction());
-			insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
-			insert.setLearning(loadedItem.getScorm(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setUser(uid, this.userMining, this.oldUserMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
 			assessmentLogs.put(insert.getId(), insert);
 		}
@@ -638,8 +655,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final RoleLMS loadedItem : this.roleLms)
 		{
 			final Role insert = new Role();
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
 
-			insert.setId(loadedItem.getId());
+			insert.setId(id);
 			insert.setTitle(loadedItem.getName());
 			insert.setSortOrder(loadedItem.getSortOrder());
 			insert.setType(loadedItem.getType());
@@ -655,36 +673,48 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(ChatLogLMS loadedItem : this.chatLogLms)
 		{
+			Long id = Long.valueOf((loadedItem.getChat() + "").substring(1));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			CollaborationLog insert = new CollaborationLog();
 			insert.setId(collaborationLogs.size() + 1 + this.accessLogMax);
-			insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
-			insert.setLearning(loadedItem.getChat(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setUser(uid, this.userMining, this.oldUserMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
 			collaborationLogs.put(insert.getId(), insert);
 		}
 		
 		for(ForumLogLMS loadedItem : this.forumLogLms)
 		{
+			Long id = Long.valueOf((loadedItem.getForum() + "").substring(1));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			CollaborationLog insert = new CollaborationLog();
 			insert.setId(collaborationLogs.size() + 1 + this.accessLogMax);
-			insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
-			insert.setLearning(loadedItem.getForum(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setUser(uid, this.userMining, this.oldUserMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
 			collaborationLogs.put(insert.getId(), insert);
 		}
 		
 		for(WikiLogLMS loadedItem : this.wikiLogLms)
 		{
+			Long id = Long.valueOf((loadedItem.getWiki() + "").substring(1));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			CollaborationLog insert = new CollaborationLog();
 			insert.setId(collaborationLogs.size() + 1 + this.accessLogMax);
-			insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
-			insert.setLearning(loadedItem.getWiki(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setUser(uid, this.userMining, this.oldUserMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
 			collaborationLogs.put(insert.getId(), insert);
 		}
@@ -906,10 +936,10 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 
 		for (final UserLMS loadedItem : this.userLms)
 		{
-
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
 			final User insert = new User();
 
-			insert.setId(loadedItem.getId());
+			insert.setId(id);
 			insert.setLogin(loadedItem.getLogin());
 
 			userMining.put(insert.getId(), insert);
@@ -1007,24 +1037,22 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 	@Override
 	public Map<Long, AccessLog> generateAccessLogs() {
 		final HashMap<Long, AccessLog> accessLogMining = new HashMap<Long, AccessLog>();
-		// A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her
-		// requests times.
 		
 		for(ResourceLogLMS loadedItem : this.resourceLogLms)
 		{
+			Long id = Long.valueOf((loadedItem.getResource() + "").substring(2));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			AccessLog insert = new AccessLog();
 			insert.setId(accessLogMining.size() + 1 + this.accessLogMax);
-			insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
-			insert.setLearning(loadedItem.getResource(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setUser(uid, this.userMining, this.oldUserMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
 			accessLogMining.put(insert.getId(), insert);
 		}
-		
-
-
-		
 		return accessLogMining;
 	}
 
