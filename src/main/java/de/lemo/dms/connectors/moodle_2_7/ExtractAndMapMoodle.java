@@ -2104,6 +2104,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							+ loadedItem2.getItemmodule());
 				}
 			}
+			addLearningAttribute(insert, "MaxGrade", ((double)loadedItem.getGrade())+"");
 
 			amTmp.put(insert.getId(), insert);
 		}
@@ -2128,6 +2129,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			//insert.setMaxGrade(loadedItem.getSumgrade());
 			insert.setType("Quiz", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
+			
+			addLearningAttribute(insert, "MaxGrade", ((double)loadedItem.getGrade())+"");
 
 			learningObjs.put(insert.getId(), insert);
 		}
@@ -2149,6 +2152,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			//insert.setMaxGrade(loadedItem.getMaxgrade());
 			insert.setType("Scorm", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
+			
+			addLearningAttribute(insert, "MaxGrade", ((double)loadedItem.getMaxgrade())+"");
 
 			learningObjs.put(insert.getId(), insert);
 		}

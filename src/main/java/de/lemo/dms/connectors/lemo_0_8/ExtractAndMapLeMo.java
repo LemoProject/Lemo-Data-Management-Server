@@ -143,16 +143,11 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 	private List<ScormLogLMS> scormLogLms = new ArrayList<ScormLogLMS>();
 	private List<QuizLogLMS> quizLogLms = new ArrayList<QuizLogLMS>();
 	private List<WikiLogLMS> wikiLogLms = new ArrayList<WikiLogLMS>();
-
-	private Map<Long, Long> chatCourse = new HashMap<Long, Long>();
 	
 	private final Logger logger = Logger.getLogger(this.getClass());
 
-	private final IConnector connector;
-
 	public ExtractAndMapLeMo(final IConnector connector) {
 		super(connector);
-		this.connector = connector;
 	}
 
 	@Override
@@ -616,7 +611,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 	@Override
 	public Map<Long, UserAssessment> generateUserAssessments() {
 
-		final HashMap<Long, UserAssessment> taskUserMining = new HashMap<Long, UserAssessment>();
+		final HashMap<Long, UserAssessment> userAssessment = new HashMap<Long, UserAssessment>();
 		
 		for(QuizUserLMS loadedItem : this.quizUserLms)
 		{
@@ -629,37 +624,10 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
 			
 			if(insert.getUser() != null && insert.getCourse() != null && insert.getLearning() != null)
-				taskUserMining.put(insert.getId(), insert);
+				userAssessment.put(insert.getId(), insert);
 		}
 		
-		for (final GradeGradesLMS loadedItem : this.gradeGradesLms)
-		{
-			final UserAssessment insert = new UserAssessment();
-
-			insert.setId(loadedItem.getId());
-			if (loadedItem.getFinalgrade() != null) {
-				insert.setGrade(loadedItem.getFinalgrade());
-			}
-			if (loadedItem.getTimemodified() != null) {
-				insert.setTimemodified(loadedItem.getTimemodified());
-			}
-			insert.setUser(Long.valueOf(loadedItem.getUserid()), this.userMining,
-					this.oldUserMining);
-
-			for (final GradeItemsLMS loadedItem2 : this.gradeItemsLms)
-			{
-				if ((loadedItem2.getId() == loadedItem.getItemid()) && (loadedItem2.getIteminstance() != null)) {
-					insert.setCourse(loadedItem2.getCourseid(),
-							this.courseMining, this.oldCourseMining);
-					insert.setLearning(Long.valueOf("18" + loadedItem2.getIteminstance()),
-							this.learningObjectMining, this.oldLearningObjectMining);
-					if ((insert.getLearning() != null) && (insert.getUser() != null)) {
-						taskUserMining.put(insert.getId(), insert);
-					}
-				}
-			}
-		}
-		return taskUserMining;
+		return userAssessment;
 	}
 
 	@Override
