@@ -1,5 +1,5 @@
 /**
- * File ./src/main/java/de/lemo/dms/connectors/lemo_0_8/ExtractAndMapMoodle.java
+ * File ./src/main/java/de/lemo/dms/connectors/lemo_0_8/ExtractAndMapLeMo.java
  * Lemo-Data-Management-Server for learning analytics.
  * Copyright (C) 2013
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
@@ -19,7 +19,7 @@
 **/
 
 /**
- * File ./main/java/de/lemo/dms/connectors/lemo_0_8/ExtractAndMapMoodle.java
+ * File ./main/java/de/lemo/dms/connectors/lemo_0_8/ExtractAndMapLeMo.java
  * Date 2015-01-05
  * Project Lemo Learning Analytics
  */
@@ -27,36 +27,25 @@
 package de.lemo.dms.connectors.lemo_0_8;
 
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 
-import de.lemo.dms.connectors.Encoder;
 import de.lemo.dms.connectors.IConnector;
-import de.lemo.dms.connectors.TextHelper;
 import de.lemo.dms.connectors.lemo_0_8.mapping.AssignmentLogLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.AssignmentLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.ChatLogLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.ChatLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.ConfigLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.CourseAssignmentLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.CourseChatLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.CourseForumLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.CourseGroupLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.CourseLogLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.CourseLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.CourseQuizLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.CourseResourceLMS;
@@ -65,18 +54,8 @@ import de.lemo.dms.connectors.lemo_0_8.mapping.CourseUserLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.CourseWikiLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.ForumLogLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.ForumLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.GroupLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.GroupUserLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.IDMappingLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.LevelAssociationLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.LevelCourseLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.LevelLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.PlatformLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.QuestionLogLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.QuestionLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.QuizLogLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.QuizLMS;
-import de.lemo.dms.connectors.lemo_0_8.mapping.QuizQuestionLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.QuizUserLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.ResourceLogLMS;
 import de.lemo.dms.connectors.lemo_0_8.mapping.ResourceLMS;
@@ -108,7 +87,6 @@ import de.lemo.dms.db.mapping.UserAttribute;
  * Implementation of the abstract extract class for the LMS Moodle.
  */
 public class ExtractAndMapLeMo extends ExtractAndMap {
-	// Versionsnummer in Namen einfügen
 
 	// Object-classes
 	private List<AssignmentLMS> assignmentLms = new ArrayList<AssignmentLMS>();
@@ -159,7 +137,6 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		session.clear();
 		final Transaction tx = session.beginTransaction();
 		
-		//Read Context
 		Criteria criteria = session.createCriteria(CourseLMS.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.courseLms = criteria.list();
@@ -311,7 +288,6 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		session.clear();
 		final Transaction tx = session.beginTransaction();
 		
-		//Read Context
 		Criteria criteria = session.createCriteria(CourseLMS.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.courseLms = criteria.list();
