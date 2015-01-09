@@ -749,12 +749,12 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				type.setId(this.learningObjectTypeMax + 1 + this.learningTypeMining.size());
 				this.learningTypeMining.put(type.getType(), type);
 			}
-			if(loadedItem.getType().toUpperCase().equals("RESOURCE"))
-				insert.setId(Long.valueOf("11" + id));
-			else if(loadedItem.getType().toUpperCase().equals("PAGE"))
+			if(loadedItem.getType().toUpperCase().equals("PAGE"))
 				insert.setId(Long.valueOf("13" + id));
 			else if(loadedItem.getType().toUpperCase().equals("URL"))
 				insert.setId(Long.valueOf("12" + id));
+			else
+				insert.setId(Long.valueOf("11" + id));
 			insert.setTitle(loadedItem.getTitle());
 			insert.setType(loadedItem.getType(), this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Access");
@@ -950,11 +950,12 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			Long id = Long.valueOf("17" + ((loadedItem.getId() + "").substring(1)));
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long lid = Long.valueOf("17" + ((loadedItem.getId() + "").substring(1)));
 			
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
-			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
@@ -962,11 +963,12 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			Long id = Long.valueOf(((loadedItem.getId() + "").substring(1)));
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long lid = Long.valueOf((loadedItem.getId() + "").substring(1));
 			
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
-			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
@@ -974,11 +976,12 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			Long id = Long.valueOf("15" + ((loadedItem.getId() + "").substring(1)));
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long lid = Long.valueOf("15" + ((loadedItem.getId() + "").substring(1)));
 						
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
-			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
@@ -986,23 +989,25 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			Long id = Long.valueOf("18" + ((loadedItem.getId() + "").substring(1)));
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long lid = Long.valueOf("18" + ((loadedItem.getId() + "").substring(1)));
 			
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
-			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
 		for(final CourseResourceLMS loadedItem : this.courseResourceLms)
 		{
 			
+			Long id = Long.valueOf("1" + ((loadedItem.getId() + "").substring(1)));
 			Long lid = Long.valueOf("1" + ((loadedItem.getResource() + "").substring(1)));
 			CourseLearning insert = new CourseLearning();
 			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
-			insert.setId(lid);
+			insert.setId(id);
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 
 			courseLearnings.put(insert.getId(), insert);
@@ -1011,11 +1016,12 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			Long id = Long.valueOf("19" + ((loadedItem.getId() + "").substring(1)));
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long lid = Long.valueOf("19" + ((loadedItem.getId() + "").substring(1)));
 			
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
-			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
@@ -1023,11 +1029,12 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			Long id = Long.valueOf("16" + ((loadedItem.getId() + "").substring(1)));
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long lid = Long.valueOf("16" + ((loadedItem.getId() + "").substring(1)));
 			
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
-			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
