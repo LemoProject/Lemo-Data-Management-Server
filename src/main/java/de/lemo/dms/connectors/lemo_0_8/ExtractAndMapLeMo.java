@@ -460,16 +460,20 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(final CourseUserLMS loadedItem : this.courseUserLms)
 		{
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			CourseUser insert = new CourseUser();
-			insert.setId(loadedItem.getId());
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-			insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
+			insert.setId(id);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			insert.setUser(uid, this.userMining, this.oldUserMining);
 			insert.setRole(loadedItem.getRole(), this.roleMining, this.oldRoleMining);
 			
 			courseUserMining.put(insert.getId(), insert);
 		}
 		
-		return this.courseUserMining;
+		return courseUserMining;
 	}
 
 	@Override
@@ -631,7 +635,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final RoleLMS loadedItem : this.roleLms)
 		{
 			final Role insert = new Role();
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = loadedItem.getId();
 
 			insert.setId(id);
 			insert.setTitle(loadedItem.getName());
@@ -804,7 +808,6 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 
 			insert.setId(Long.valueOf("18" + id));
 			insert.setTitle(loadedItem.getTitle());
-			//insert.setMaxGrade(loadedItem.getSumgrade());
 			insert.setType("Quiz", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
 			
@@ -945,64 +948,86 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(final CourseAssignmentLMS loadedItem : this.courseAssignmentLms)
 		{
+			Long id = Long.valueOf("17" + ((loadedItem.getId() + "").substring(1)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			CourseLearning insert = new CourseLearning();
-			insert.setId(1);
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-			insert.setLearning(loadedItem.getAssignment(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setId(id);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
 		for(final CourseChatLMS loadedItem : this.courseChatLms)
 		{
+			Long id = Long.valueOf(((loadedItem.getId() + "").substring(1)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			CourseLearning insert = new CourseLearning();
-			insert.setId(1);
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-			insert.setLearning(loadedItem.getChat(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setId(id);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
 		for(final CourseForumLMS loadedItem : this.courseForumLms)
 		{
+			Long id = Long.valueOf("15" + ((loadedItem.getId() + "").substring(1)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+						
 			CourseLearning insert = new CourseLearning();
-			insert.setId(1);
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-			insert.setLearning(loadedItem.getForum(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setId(id);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
 		for(final CourseQuizLMS loadedItem : this.courseQuizLms)
 		{
+			Long id = Long.valueOf("18" + ((loadedItem.getId() + "").substring(1)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			CourseLearning insert = new CourseLearning();
-			insert.setId(1);
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-			insert.setLearning(loadedItem.getQuiz(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setId(id);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
 		for(final CourseResourceLMS loadedItem : this.courseResourceLms)
 		{
-			CourseLearning insert = new CourseLearning();
-			insert.setId(1);
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-			insert.setLearning(loadedItem.getResource(), this.learningObjectMining, this.oldLearningObjectMining);
 			
+			Long lid = Long.valueOf("1" + ((loadedItem.getResource() + "").substring(1)));
+			CourseLearning insert = new CourseLearning();
+			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
+			
+			insert.setId(lid);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+
 			courseLearnings.put(insert.getId(), insert);
 		}
 		for(final CourseScormLMS loadedItem : this.courseScormLms)
 		{
+			Long id = Long.valueOf("19" + ((loadedItem.getId() + "").substring(1)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			CourseLearning insert = new CourseLearning();
-			insert.setId(1);
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-			insert.setLearning(loadedItem.getScorm(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setId(id);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
 		for(final CourseWikiLMS loadedItem : this.courseWikiLms)
 		{
+			Long id = Long.valueOf("16" + ((loadedItem.getId() + "").substring(1)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			
 			CourseLearning insert = new CourseLearning();
-			insert.setId(1);
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-			insert.setLearning(loadedItem.getWiki(), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setId(id);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			
 			courseLearnings.put(insert.getId(), insert);
 		}
