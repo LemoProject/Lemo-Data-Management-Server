@@ -35,13 +35,21 @@ import org.hibernate.Session;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.LearningAttribute;
+import de.lemo.dms.processing.FeatureProcessor;
 import de.lemo.dms.processing.StudentHelper;
+import de.lemo.dms.processing.features.ContentLinkCount;
+import de.lemo.dms.processing.questions.QCourseActivity;
+import de.lemo.dms.processing.questions.QCourseUsers;
+import de.lemo.dms.processing.questions.QDatabase;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsApriori;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.questions.async.AFrequentPathsBIDE;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
+import de.lemo.dms.processing.resulttype.ResultListHashMapObject;
+import de.lemo.dms.processing.resulttype.ResultListLongObject;
 import de.lemo.dms.service.ServiceCourseDetails;
 import de.lemo.dms.service.ServiceCourseTitleSearch;
 import de.lemo.dms.service.ServiceLearningTypes;
@@ -88,42 +96,18 @@ public class Test {
 	public static void test()
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		QFrequentPathsApriori qfb = new QFrequentPathsApriori();
-		QFrequentPathsBIDE abide = new QFrequentPathsBIDE();
-		
-		List<Long> courses = new ArrayList<Long>();
-		courses.add(4122L);
-		List<String> types = new ArrayList<String>();
-		List<Long> users = new ArrayList<Long>();
-		Double minSup = 0.7d;
-		Long startTime = 0L;
-		Long endTime = 1500000000L;
-		Long minLength = null;
-		Long maxLength = null;
-		List<Long> gender = new ArrayList<Long>();
-		List<Long> learningObjects = new ArrayList<Long>();
-		
-		qfb.compute(courses, users, types, minLength, maxLength, minSup, startTime, endTime, gender, learningObjects);
-		
-		try {
-			abide.compute(1L, courses, users, types, minLength, maxLength, minSup, false, startTime, endTime, gender, learningObjects);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		QDatabase courseUsers = new QDatabase();
+				
+		//new FeatureProcessor().createUserFeature();
+		new FeatureProcessor().processAll();
 
-			
-		
 	}
 	
 
 	public static void main(final String[] args)
 	{
-		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.gen();
+		//ServerConfiguration.getInstance().loadConfig("/lemo");
+		Test.test();
 	}
 
 }

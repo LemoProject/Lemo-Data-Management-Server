@@ -138,8 +138,8 @@ public class QPerformanceBoxPlot extends Question {
 				}
 				else
 				{
-					obj.put(Long.valueOf(s), count);
-					quizzes.add(Long.valueOf(s));
+					obj.put(1L, count);
+					quizzes.add(2L);
 					s= "";
 					count++;
 				}

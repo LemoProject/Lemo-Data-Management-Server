@@ -1,0 +1,83 @@
+package de.lemo.dms.processing.questions;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
+import de.lemo.dms.core.config.ServerConfiguration;
+import de.lemo.dms.db.mapping.CollaborationLog;
+import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.CourseUser;
+import de.lemo.dms.db.mapping.LearningAttribute;
+import de.lemo.dms.db.mapping.UserAssessment;
+import de.lemo.dms.processing.MetaParam;
+import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.resulttype.ResultListUserInstance;
+import de.lemo.dms.processing.resulttype.UserInstance;
+
+@Path("queryDatabase")
+public class QDatabase extends Question {
+	
+	Session session;
+	List<UserInstance> userInstances;
+
+	@POST
+	public ResultListUserInstance compute(
+			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
+			@FormParam(MetaParam.START_TIME) final Long startTime,
+			@FormParam(MetaParam.END_TIME) final Long endTime,
+			@FormParam(MetaParam.GENDER) List<Long> gender) {
+
+	//	validateTimestamps(startTime, endTime);
+		
+		List<UserInstance> studentInstances = new ArrayList<UserInstance>();
+	
+		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
+		Criteria criteria = session.createCriteria(CourseUser.class);
+		criteria.add(Restrictions.eq("course.id", 1L));
+		List<CourseUser> courseUsers = criteria.list();
+		for(CourseUser courseUser : courseUsers){
+			studentInstances.add(new UserInstance(courseUser));			
+		}
+		session.close();	
+		return new ResultListUserInstance(studentInstances);
+	}
+
+	private void addCourseUser(Course course) {
+		Criteria criteria = session.createCriteria(CourseUser.class, "user");
+		criteria.add(Restrictions.eq("user.course", course));
+		List<CourseUser> courseUsers = criteria.list();
+		
+		for(CourseUser courseUser : courseUsers){
+			UserInstance userInstance = new UserInstance();
+			userInstance.setUserId(courseUser.getId());
+			criteria = session.createCriteria(CollaborationLog.class, "collaborationLog");
+			criteria.add(Restrictions.eq("collaborationLog.course", course));
+			criteria.add(Restrictions.eq("collaborationLog.course", courseUser));
+			List<CollaborationLog> collaborationLogs = criteria.list();
+			for(CollaborationLog collaborationLog : collaborationLogs){
+				criteria = session.createCriteria(LearningAttribute.class, "learingAttribute");
+				criteria.add(Restrictions.eq("learingAttribute.learning", collaborationLog.getLearning()));
+				List<LearningAttribute> learningAttributes = criteria.list();
+				for(LearningAttribute learningAttribute : learningAttributes){
+					
+				}
+			}
+			userInstances.add(userInstance);
+		}		
+	}
+	
+	private void printResultList(List<LearningAttribute> result){
+	    for(LearningAttribute learningAttribute : result) {
+            System.out.println(learningAttribute.getValue());
+	    }
+	}
+
+}
