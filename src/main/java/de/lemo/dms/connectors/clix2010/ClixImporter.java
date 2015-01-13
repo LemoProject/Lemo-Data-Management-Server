@@ -1874,7 +1874,8 @@ public class ClixImporter {
 						ect.getUploadDir().toLowerCase().contains("linklist")))
 						
 				{
-					item.setId(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getId()));
+					Long id = Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getId());
+					item.setId(id);
 					item.setTitle(loadedItem.getName());
 					item.setTimeCreated(TimeConverter.getTimestamp(loadedItem.getCreationDate()));
 					item.setTimeModified(TimeConverter.getTimestamp(loadedItem.getLastUpdated()));
@@ -2985,7 +2986,9 @@ public class ClixImporter {
 						this.oldForumMining);
 				item.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getLastUpdater()),
 						this.userMining, this.oldUserMining);
-				String sub = loadedItem.getTitle();
+				String sub = "";
+				if(loadedItem.getTitle() != null)
+					sub = loadedItem.getTitle();
 				while(sub.startsWith("AW: "))
 				{
 					sub = sub.substring(4);
