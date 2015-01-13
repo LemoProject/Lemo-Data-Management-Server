@@ -20,6 +20,8 @@ public class UserInstance {
 	private int linkCount;
 	private int wordCount;
 	private int classId;
+	private int upVotes;
+	private int downVotes;
 	
 	public UserInstance(CourseUser courseUser) {
 		queryUserAssessments(courseUser);
@@ -38,13 +40,19 @@ public class UserInstance {
 		classId = 1;
 		for(UserAssessment userAssessment : userAssessments){
 			if(userAssessment.getFeedback().equals("Content_Imagecount")){
-				imageCount = (int) userAssessment.getGrade();
+				setImageCount((int) userAssessment.getGrade());
 			}
 			else if(userAssessment.getFeedback().equals("Content_Linkcount")){
-				linkCount = (int) userAssessment.getGrade();
+				setLinkCount((int) userAssessment.getGrade());
 			}
 			else if(userAssessment.getFeedback().equals("Content_Wordcount")){
-				wordCount = (int) userAssessment.getGrade();
+				setWordCount((int) userAssessment.getGrade());
+			}
+			else if(userAssessment.getFeedback().equals("Post_Up_Votes")){
+				setUpVotes((int) userAssessment.getGrade());
+			}
+			else if(userAssessment.getFeedback().equals("Post_Down_Votes")){
+				setDownVotes((int) userAssessment.getGrade());
 			}
 		}
 		session.close();
@@ -83,5 +91,21 @@ public class UserInstance {
 	}
 	public void setClassId(int classId) {
 		this.classId = classId;
+	}
+
+	public int getUpVotes() {
+		return upVotes;
+	}
+
+	public void setUpVotes(int upVotes) {
+		this.upVotes = upVotes;
+	}
+
+	public int getDownVotes() {
+		return downVotes;
+	}
+
+	public void setDownVotes(int downVotes) {
+		this.downVotes = downVotes;
 	}
 }
