@@ -460,9 +460,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(final CourseUserLMS loadedItem : this.courseUserLms)
 		{
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
-			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			CourseUser insert = new CourseUser();
 			insert.setId(id);
@@ -483,7 +483,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final CourseLMS loadedItem : this.courseLms)
 		{
 			final Course insert = new Course();
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 
 			insert.setId(id);
 			insert.setTitle(loadedItem.getTitle());
@@ -500,9 +500,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(QuizLogLMS loadedItem : this.quizLogLms)
 		{
-			Long id = Long.valueOf((loadedItem.getQuiz() + "").substring(1));
-			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long id = Long.valueOf("18" + (loadedItem.getQuiz() + "").substring(2));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			AssessmentLog insert = new AssessmentLog();
 			
@@ -518,9 +518,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(AssignmentLogLMS loadedItem : this.assignmentLogLms)
 		{
-			Long id = Long.valueOf((loadedItem.getAssignment() + "").substring(1));
-			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long id = Long.valueOf("17" + (loadedItem.getAssignment() + "").substring(2));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			AssessmentLog insert = new AssessmentLog();
 			insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
@@ -535,9 +535,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(ScormLogLMS loadedItem : this.scormLogLms)
 		{
-			Long id = Long.valueOf((loadedItem.getScorm() + "").substring(1));
-			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long id = Long.valueOf("19" + (loadedItem.getScorm() + "").substring(2));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			AssessmentLog insert = new AssessmentLog();
 			insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
@@ -612,16 +612,19 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(QuizUserLMS loadedItem : this.quizUserLms)
 		{
+			Long id = Long.valueOf("18" + (loadedItem.getQuiz() + "").substring(2));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
+			
 			UserAssessment insert = new UserAssessment();
 			insert.setId(loadedItem.getId());
-			insert.setLearning(Long.valueOf("17" + loadedItem.getQuiz()), learningObjectMining, oldLearningObjectMining);
-			insert.setUser(loadedItem.getUser(), userMining, oldUserMining);
+			insert.setLearning(id, learningObjectMining, oldLearningObjectMining);
+			insert.setUser(uid, userMining, oldUserMining);
 			insert.setGrade(loadedItem.getFinalGrade());
 			insert.setTimemodified(loadedItem.getTimeModified());
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
-			if(insert.getUser() != null && insert.getCourse() != null && insert.getLearning() != null)
-				userAssessment.put(insert.getId(), insert);
+			userAssessment.put(insert.getId(), insert);
 		}
 		
 		return userAssessment;
@@ -653,9 +656,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(ChatLogLMS loadedItem : this.chatLogLms)
 		{
-			Long id = Long.valueOf((loadedItem.getChat() + "").substring(1));
-			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long id = Long.valueOf("14" + (loadedItem.getChat() + "").substring(2));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			CollaborationLog insert = new CollaborationLog();
 			insert.setId(collaborationLogs.size() + 1 + this.accessLogMax);
@@ -669,9 +672,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(ForumLogLMS loadedItem : this.forumLogLms)
 		{
-			Long id = Long.valueOf((loadedItem.getForum() + "").substring(1));
-			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long id = Long.valueOf("15" + (loadedItem.getForum() + "").substring(2));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			CollaborationLog insert = new CollaborationLog();
 			insert.setId(collaborationLogs.size() + 1 + this.accessLogMax);
@@ -685,9 +688,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(WikiLogLMS loadedItem : this.wikiLogLms)
 		{
-			Long id = Long.valueOf((loadedItem.getWiki() + "").substring(1));
-			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long id = Long.valueOf("16" + (loadedItem.getWiki() + "").substring(2));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			CollaborationLog insert = new CollaborationLog();
 			insert.setId(collaborationLogs.size() + 1 + this.accessLogMax);
@@ -741,9 +744,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			final LearningObj insert = new LearningObj();
 			// For Clix
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 			// For Moodle
-			//Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
+			//Long id = Long.valueOf((loadedItem.getId() + "").substring(3));
 			
 			if(!this.learningTypeMining.containsKey(loadedItem.getType()) && !this.oldLearningTypeMining.containsKey(loadedItem.getType()))
 			{
@@ -773,7 +776,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			final LearningObj insert = new LearningObj();
 			
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 
 			if(!this.learningTypeMining.containsKey("Assign") && !this.oldLearningTypeMining.containsKey("Assign"))
 			{
@@ -799,12 +802,12 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 
 			final LearningObj insert = new LearningObj();
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 			
-			if(!this.learningTypeMining.containsKey(loadedItem.getType()) && !this.oldLearningTypeMining.containsKey(loadedItem.getType()))
+			if(!this.learningTypeMining.containsKey("Quiz") && !this.oldLearningTypeMining.containsKey("Quiz"))
 			{
 				LearningType type = new LearningType();
-				type.setType(loadedItem.getType());
+				type.setType("Quiz");
 				type.setId(this.learningObjectTypeMax + 1 + this.learningTypeMining.size());
 				this.learningTypeMining.put(type.getType(), type);
 			}
@@ -822,9 +825,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final ScormLMS loadedItem : this.scormLms)
 		{
 			final LearningObj insert = new LearningObj();
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 			
-			if(!this.learningTypeMining.containsKey(loadedItem.getType()) && !this.oldLearningTypeMining.containsKey(loadedItem.getType()))
+			if(!this.learningTypeMining.containsKey("Scorm") && !this.oldLearningTypeMining.containsKey("Scorm"))
 			{
 				LearningType type = new LearningType();
 				type.setType(loadedItem.getType());
@@ -835,7 +838,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setId(Long.valueOf("19" + id));
 			insert.setTitle(loadedItem.getTitle());
 			//insert.setMaxGrade(loadedItem.getMaxgrade());
-			insert.setType(loadedItem.getType(), this.learningTypeMining, this.oldLearningTypeMining);
+			insert.setType("Scorm", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
 			
 			addLearningAttribute(insert, "MaxGrade", ((double)loadedItem.getMaxGrade())+"");
@@ -846,7 +849,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final ChatLMS loadedItem : this.chatLms)
 		{
 			final LearningObj insert = new LearningObj();
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 
 			if(!this.learningTypeMining.containsKey("Chat") && !this.oldLearningTypeMining.containsKey("Chat"))
 			{
@@ -868,7 +871,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final ForumLMS loadedItem : this.forumLms)
 		{
 			final LearningObj insert = new LearningObj();
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 
 			if(!this.learningTypeMining.containsKey("Forum") && !this.oldLearningTypeMining.containsKey("Forum"))
 			{
@@ -889,7 +892,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final WikiLMS loadedItem : this.wikiLms)
 		{
 			final LearningObj insert = new LearningObj();
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 
 			if(!this.learningTypeMining.containsKey("Wiki") && !this.oldLearningTypeMining.containsKey("Wiki"))
 			{
@@ -908,7 +911,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		}
 		
 		
-		
+		Object[] ou = this.learningTypeMining.values().toArray();
 		return learningObjs;
 	}
 
@@ -918,7 +921,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 
 		for (final UserLMS loadedItem : this.userLms)
 		{
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 			final User insert = new User();
 
 			insert.setId(id);
@@ -951,9 +954,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(final CourseAssignmentLMS loadedItem : this.courseAssignmentLms)
 		{
-			Long id = Long.valueOf("17" + ((loadedItem.getId() + "").substring(1)));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
-			Long lid = Long.valueOf("17" + ((loadedItem.getId() + "").substring(1)));
+			Long id = Long.valueOf("17" + ((loadedItem.getId() + "").substring(2)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
+			Long lid = Long.valueOf("17" + ((loadedItem.getAssignment() + "").substring(2)));
 			
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
@@ -964,9 +967,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		}
 		for(final CourseChatLMS loadedItem : this.courseChatLms)
 		{
-			Long id = Long.valueOf(((loadedItem.getId() + "").substring(1)));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
-			Long lid = Long.valueOf((loadedItem.getId() + "").substring(1));
+			Long id = Long.valueOf("14" + ((loadedItem.getId() + "").substring(2)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
+			Long lid = Long.valueOf("14" + (loadedItem.getChat() + "").substring(2));
 			
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
@@ -977,9 +980,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		}
 		for(final CourseForumLMS loadedItem : this.courseForumLms)
 		{
-			Long id = Long.valueOf("15" + ((loadedItem.getId() + "").substring(1)));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
-			Long lid = Long.valueOf("15" + ((loadedItem.getId() + "").substring(1)));
+			Long id = Long.valueOf("15" + ((loadedItem.getId() + "").substring(2)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
+			Long lid = Long.valueOf("15" + ((loadedItem.getForum() + "").substring(2)));
 						
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
@@ -990,9 +993,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		}
 		for(final CourseQuizLMS loadedItem : this.courseQuizLms)
 		{
-			Long id = Long.valueOf("18" + ((loadedItem.getId() + "").substring(1)));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
-			Long lid = Long.valueOf("18" + ((loadedItem.getId() + "").substring(1)));
+			Long id = Long.valueOf("18" + ((loadedItem.getId() + "").substring(2)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
+			Long lid = Long.valueOf("18" + ((loadedItem.getQuiz() + "").substring(2)));
 			
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
@@ -1004,14 +1007,12 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for(final CourseResourceLMS loadedItem : this.courseResourceLms)
 		{
 			
-			Long id = Long.valueOf("1" + ((loadedItem.getId() + "").substring(1)));
-			Long lid = Long.valueOf("1" + ((loadedItem.getResource() + "").substring(1)));
+			Long id = Long.valueOf("11" + ((loadedItem.getId() + "").substring(2)));
+			Long lid = Long.valueOf("11" + ((loadedItem.getResource() + "").substring(2)));
 			CourseLearning insert = new CourseLearning();
 			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
 			//For Moodle
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
-			//For Clix
-			//Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			insert.setId(id);
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
@@ -1020,9 +1021,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		}
 		for(final CourseScormLMS loadedItem : this.courseScormLms)
 		{
-			Long id = Long.valueOf("19" + ((loadedItem.getId() + "").substring(1)));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
-			Long lid = Long.valueOf("19" + ((loadedItem.getId() + "").substring(1)));
+			Long id = Long.valueOf("19" + ((loadedItem.getId() + "").substring(2)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
+			Long lid = Long.valueOf("19" + ((loadedItem.getScorm() + "").substring(2)));
 			
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
@@ -1033,9 +1034,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		}
 		for(final CourseWikiLMS loadedItem : this.courseWikiLms)
 		{
-			Long id = Long.valueOf("16" + ((loadedItem.getId() + "").substring(1)));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
-			Long lid = Long.valueOf("16" + ((loadedItem.getId() + "").substring(1)));
+			Long id = Long.valueOf("16" + ((loadedItem.getId() + "").substring(2)));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
+			Long lid = Long.valueOf("16" + ((loadedItem.getWiki() + "").substring(2)));
 			
 			CourseLearning insert = new CourseLearning();
 			insert.setId(id);
@@ -1057,9 +1058,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			//For Moodle
 			//Long id = Long.valueOf((loadedItem.getResource() + "").substring(2));
 			//For Clix
-			Long id = Long.valueOf((loadedItem.getResource() + "").substring(1));
-			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			Long id = Long.valueOf("11" + (loadedItem.getResource() + "").substring(2));
+			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			AccessLog insert = new AccessLog();
 			insert.setId(accessLogMining.size() + 1 + this.accessLogMax);
