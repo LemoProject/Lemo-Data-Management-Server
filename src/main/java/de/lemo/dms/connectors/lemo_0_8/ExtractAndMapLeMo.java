@@ -744,9 +744,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			final LearningObj insert = new LearningObj();
 			// For Clix
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
+			//Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 			// For Moodle
-			//Long id = Long.valueOf((loadedItem.getId() + "").substring(3));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(3));
 			
 			if(!this.learningTypeMining.containsKey(loadedItem.getType()) && !this.oldLearningTypeMining.containsKey(loadedItem.getType()))
 			{

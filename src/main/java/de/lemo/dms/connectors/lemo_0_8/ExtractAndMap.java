@@ -41,6 +41,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 
 import de.lemo.dms.connectors.IConnector;
+import de.lemo.dms.connectors.lemo_0_8.mapping.PlatformLMS;
 import de.lemo.dms.core.Clock;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.DBConfigObject;
@@ -248,10 +249,12 @@ public abstract class ExtractAndMap {
 		{
 			readingtimestamp = -1L;
 		}
+		Criteria criteria = session.createCriteria(PlatformLMS.class, "obj");
+		
 
 		// load objects which are already in Mining DB for associations
 
-		Criteria criteria = session.createCriteria(Course.class, "obj");
+		criteria = session.createCriteria(Course.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		t = criteria.list();
 		this.oldCourseMining = new HashMap<Long, Course>();
