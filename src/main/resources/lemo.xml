@@ -12,7 +12,7 @@
     </database>
     <connectors>
       <connector platform-id="8" name="lemo08" platform-type="Lemo_0_8">
-        <property name="hibernate.connection.url">jdbc:mysql://localhost/lemo_mining_clix</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost/lemo_mining_moodleold</property>
         <property name="hibernate.connection.username">lemo</property>
         <property name="hibernate.connection.password">lemolemo</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>

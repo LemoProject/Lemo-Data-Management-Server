@@ -666,6 +666,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			if(loadedItem.getMessage() != null )
+				insert.setText(loadedItem.getMessage());
 			
 			collaborationLogs.put(insert.getId(), insert);
 		}
@@ -682,6 +684,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			insert.setAction(loadedItem.getAction());
+			if(loadedItem.getMessage() != null )
+				insert.setText(loadedItem.getMessage());
 			
 			collaborationLogs.put(insert.getId(), insert);
 		}
@@ -698,6 +703,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			insert.setAction(loadedItem.getAction());
 			
 			collaborationLogs.put(insert.getId(), insert);
 		}
@@ -830,14 +836,13 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			if(!this.learningTypeMining.containsKey("Scorm") && !this.oldLearningTypeMining.containsKey("Scorm"))
 			{
 				LearningType type = new LearningType();
-				type.setType(loadedItem.getType());
+				type.setType("Scorm");
 				type.setId(this.learningObjectTypeMax + 1 + this.learningTypeMining.size());
 				this.learningTypeMining.put(type.getType(), type);
 			}
 
 			insert.setId(Long.valueOf("19" + id));
 			insert.setTitle(loadedItem.getTitle());
-			//insert.setMaxGrade(loadedItem.getMaxgrade());
 			insert.setType("Scorm", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
 			
@@ -909,9 +914,6 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			
 			learningObjs.put(insert.getId(), insert);
 		}
-		
-		
-		Object[] ou = this.learningTypeMining.values().toArray();
 		return learningObjs;
 	}
 
@@ -1008,7 +1010,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			
 			Long id = Long.valueOf("11" + ((loadedItem.getId() + "").substring(2)));
-			Long lid = Long.valueOf("11" + ((loadedItem.getResource() + "").substring(2)));
+			Long lid = Long.valueOf("1" + ((loadedItem.getResource() + "").substring(2)));
 			CourseLearning insert = new CourseLearning();
 			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
 			//For Moodle
@@ -1058,7 +1060,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			//For Moodle
 			//Long id = Long.valueOf((loadedItem.getResource() + "").substring(2));
 			//For Clix
-			Long id = Long.valueOf("11" + (loadedItem.getResource() + "").substring(2));
+			Long id = Long.valueOf("1" + (loadedItem.getResource() + "").substring(2));
 			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
@@ -1068,6 +1070,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			insert.setAction(loadedItem.getAction());
 			
 			accessLogMining.put(insert.getId(), insert);
 		}
