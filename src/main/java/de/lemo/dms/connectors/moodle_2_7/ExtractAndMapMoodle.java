@@ -1708,7 +1708,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				insert.setUser(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getUser()), this.userMining,
 						this.oldUserMining);
 				ForumPostsLMS p = posts.get(loadedItem.getObjectid());
-				if(discussions.containsKey(p.getDiscussion()))
+				if(p != null && discussions.containsKey(p.getDiscussion()))
 				{
 					insert.setForum(Long.valueOf(this.connector.getPrefix() + "" + discussions.get(p.getDiscussion()).getForum()),
 							this.forumMining, this.oldForumMining );
