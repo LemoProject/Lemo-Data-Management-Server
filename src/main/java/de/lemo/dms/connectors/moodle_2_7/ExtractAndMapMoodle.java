@@ -1495,7 +1495,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(Long.valueOf(this.connector.getPrefix() + "3" + loadedItem.getId()));
 			insert.setCourse(Long.valueOf(this.connector.getPrefix() + "" + loadedItem.getCourse()), this.courseMining,
 					this.oldCourseMining);
-			insert.setResource(Long.valueOf(this.connector.getPrefix() + "1" + loadedItem.getId()), this.resourceMining,
+			insert.setResource(Long.valueOf(this.connector.getPrefix() + "3" + loadedItem.getId()), this.resourceMining,
 					this.oldResourceMining);
 			insert.setPlatform(this.connector.getPlatformId());
 			if ((insert.getCourse() != null) && (insert.getResource() != null)) {
