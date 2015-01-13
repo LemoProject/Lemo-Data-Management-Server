@@ -740,8 +740,11 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		for (final ResourceLMS loadedItem : this.resourceLms)
 		{
 			final LearningObj insert = new LearningObj();
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
-
+			// For Clix
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(1));
+			// For Moodle
+			//Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
+			
 			if(!this.learningTypeMining.containsKey(loadedItem.getType()) && !this.oldLearningTypeMining.containsKey(loadedItem.getType()))
 			{
 				LearningType type = new LearningType();
@@ -1005,7 +1008,10 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			Long lid = Long.valueOf("1" + ((loadedItem.getResource() + "").substring(1)));
 			CourseLearning insert = new CourseLearning();
 			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
-			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
+			//For Moodle
+			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
+			//For Clix
+			//Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			insert.setId(id);
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
@@ -1048,7 +1054,10 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		
 		for(ResourceLogLMS loadedItem : this.resourceLogLms)
 		{
-			Long id = Long.valueOf((loadedItem.getResource() + "").substring(2));
+			//For Moodle
+			//Long id = Long.valueOf((loadedItem.getResource() + "").substring(2));
+			//For Clix
+			Long id = Long.valueOf((loadedItem.getResource() + "").substring(1));
 			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(1));
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(1));
 			
