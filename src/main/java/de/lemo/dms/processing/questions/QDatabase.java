@@ -43,41 +43,11 @@ public class QDatabase extends Question {
 		Criteria criteria = session.createCriteria(CourseUser.class);
 		criteria.add(Restrictions.eq("course.id", 1L));
 		List<CourseUser> courseUsers = criteria.list();
-		for(CourseUser courseUser : courseUsers){
-			studentInstances.add(new UserInstance(courseUser));			
-		}
 		session.close();	
-		return new ResultListUserInstance(studentInstances);
-	}
-
-	private void addCourseUser(Course course) {
-		Criteria criteria = session.createCriteria(CourseUser.class, "user");
-		criteria.add(Restrictions.eq("user.course", course));
-		List<CourseUser> courseUsers = criteria.list();
 		
 		for(CourseUser courseUser : courseUsers){
-			UserInstance userInstance = new UserInstance();
-			userInstance.setUserId(courseUser.getId());
-			criteria = session.createCriteria(CollaborationLog.class, "collaborationLog");
-			criteria.add(Restrictions.eq("collaborationLog.course", course));
-			criteria.add(Restrictions.eq("collaborationLog.course", courseUser));
-			List<CollaborationLog> collaborationLogs = criteria.list();
-			for(CollaborationLog collaborationLog : collaborationLogs){
-				criteria = session.createCriteria(LearningAttribute.class, "learingAttribute");
-				criteria.add(Restrictions.eq("learingAttribute.learning", collaborationLog.getLearning()));
-				List<LearningAttribute> learningAttributes = criteria.list();
-				for(LearningAttribute learningAttribute : learningAttributes){
-					
-				}
-			}
-			userInstances.add(userInstance);
+			studentInstances.add(new UserInstance(courseUser));			
 		}		
+		return new ResultListUserInstance(studentInstances);
 	}
-	
-	private void printResultList(List<LearningAttribute> result){
-	    for(LearningAttribute learningAttribute : result) {
-            System.out.println(learningAttribute.getValue());
-	    }
-	}
-
 }

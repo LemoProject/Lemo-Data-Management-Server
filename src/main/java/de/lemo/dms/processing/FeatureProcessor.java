@@ -29,33 +29,10 @@ public class FeatureProcessor{
 
 	public void processAll(){
 		List<Collection<?>> persistCollections = new ArrayList<Collection<?>>();
-		//persistCollections.add(new ContentWordCount().process());
-		//List<LearningAttribute> learningAttributes = new ContentLinkCount().getLearningAttributes();
 		List<UserAssessment> courseUser = createCourseUserFeatures();
 		persistCollections.add(courseUser);
-		//createUserFeature(learningAttributes);
 		persistFeatures(persistCollections);
 		System.out.println("End!");
-	}
-
-	@SuppressWarnings("unchecked")
-	public void createUserFeature() {
-		Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-
-		DetachedCriteria collaborationLogCriteria = DetachedCriteria.forClass(CollaborationLog.class);
-		collaborationLogCriteria.setProjection(Property.forName("learning"));
-		collaborationLogCriteria.add(Restrictions.eq("user.id", 29L));
-		
-		Criteria criteria = session.createCriteria(LearningAttribute.class, "la");
-		criteria.createAlias("learning", "le");	
-		criteria.createAlias("attribute", "att");
-		criteria.add(Restrictions.eq("att.name", "Content_Linkcount"));
-		criteria.add(Property.forName("learning").in(collaborationLogCriteria));
-		
-		//All Learning Attributes related to the user
-		List<LearningAttribute> la= criteria.list();
-		System.out.println(la.size());
-		session.close();
 	}
 
 	public List<UserAssessment> createCourseUserFeatures(){
@@ -73,6 +50,7 @@ public class FeatureProcessor{
 				List<String> contentAttributeNames = new ArrayList<String>();
 				Map<String,UserAssessment> assessments = new HashMap<String, UserAssessment>();				
 				contentAttributeNames.add("Content_Linkcount");
+				contentAttributeNames.add("Content_Imagecount");
 				contentAttributeNames.add("Post_Up_Votes");
 				contentAttributeNames.add("Post_Down_Votes");
 				contentAttributeNames.add("Content_Wordcount");
@@ -114,6 +92,11 @@ public class FeatureProcessor{
 							else if(learningAttribute.getAttribute().getName().equals("Content_Wordcount")){								
 								assessments.get("Content_Wordcount")
 									.setGrade(assessments.get("Content_Wordcount").getGrade()+
+												Integer.valueOf(learningAttribute.getValue()));
+							}
+							else if(learningAttribute.getAttribute().getName().equals("Content_Imagecount")){								
+								assessments.get("Content_Imagecount")
+									.setGrade(assessments.get("Content_Imagecount").getGrade()+
 												Integer.valueOf(learningAttribute.getValue()));
 							}
 						}
