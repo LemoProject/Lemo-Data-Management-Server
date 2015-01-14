@@ -2152,6 +2152,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			//insert.setMaxGrade(loadedItem.getMaxgrade());
 			insert.setType("Scorm", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
+			
+			addLearningAttribute(insert, "MaxGrade", ((double)loadedItem.getMaxgrade())+"");
 
 			addLearningAttribute(insert, "MaxGrade", loadedItem.getMaxgrade()+"");
 			learningObjs.put(insert.getId(), insert);
@@ -2223,6 +2225,23 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		return learningObjs;
 	}
+
+	@Override
+	public Map<Long, User> generateUsers() {
+		final HashMap<Long, User> userMining = new HashMap<Long, User>();
+
+		for (final UserLMS loadedItem : this.userLms)
+		{
+
+			final User insert = new User();
+
+			insert.setId(loadedItem.getId());
+			insert.setLogin(Encoder.createMD5(loadedItem.getUsername()));
+
+			userMining.put(insert.getId(), insert);
+		}
+		return userMining;
+	}
 	
 	private void addLearningAttribute(LearningObj learningObject, String name, String value)
 	{
@@ -2248,23 +2267,6 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		this.learningAttributeMining.put(la.getId(), la);
 		
-	}
-
-	@Override
-	public Map<Long, User> generateUsers() {
-		final HashMap<Long, User> userMining = new HashMap<Long, User>();
-
-		for (final UserLMS loadedItem : this.userLms)
-		{
-
-			final User insert = new User();
-
-			insert.setId(loadedItem.getId());
-			insert.setLogin(Encoder.createMD5(loadedItem.getUsername()));
-
-			userMining.put(insert.getId(), insert);
-		}
-		return userMining;
 	}
 
 	@Override
