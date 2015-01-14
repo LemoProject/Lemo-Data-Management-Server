@@ -161,7 +161,7 @@ public class ServiceCourseTitleSearch {
 			}
 			ServiceCourseDetails scd = new ServiceCourseDetails();
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
-					courseMining.getTitle(), userMap.size(), lastTime, firstTime, scd.getCourseHash(courseMining.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(courseMining.getId()));
+					courseMining.getTitle(), StudentHelper.getStudentCount(courseMining.getId()), lastTime, firstTime, scd.getCourseHash(courseMining.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(courseMining.getId()));
 			result.add(co);
 
 		}
