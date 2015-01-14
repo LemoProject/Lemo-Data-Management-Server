@@ -667,7 +667,11 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			if(loadedItem.getMessage() != null )
+			{
+				if(loadedItem.getMessage().length() > 255)
+					loadedItem.setMessage(loadedItem.getMessage().substring(0, 254));
 				insert.setText(loadedItem.getMessage());
+			}
 			
 			collaborationLogs.put(insert.getId(), insert);
 		}
@@ -686,7 +690,11 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			insert.setAction(loadedItem.getAction());
 			if(loadedItem.getMessage() != null )
+			{
+				if(loadedItem.getMessage().length() > 255)
+					loadedItem.setMessage(loadedItem.getMessage().substring(0, 254));
 				insert.setText(loadedItem.getMessage());
+			}
 			
 			collaborationLogs.put(insert.getId(), insert);
 		}
@@ -750,9 +758,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			final LearningObj insert = new LearningObj();
 			// For Clix
-			//Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
+			Long id = Long.valueOf((loadedItem.getId() + "").substring(2));
 			// For Moodle
-			Long id = Long.valueOf((loadedItem.getId() + "").substring(3));
+			//Long id = Long.valueOf((loadedItem.getId() + "").substring(3));
 			
 			if(!this.learningTypeMining.containsKey(loadedItem.getType()) && !this.oldLearningTypeMining.containsKey(loadedItem.getType()))
 			{
@@ -1010,10 +1018,9 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 		{
 			
 			Long id = Long.valueOf("11" + ((loadedItem.getId() + "").substring(2)));
-			Long lid = Long.valueOf("1" + ((loadedItem.getResource() + "").substring(2)));
+			Long lid = Long.valueOf("11" + ((loadedItem.getResource() + "").substring(2)));
 			CourseLearning insert = new CourseLearning();
 			insert.setLearning(lid, this.learningObjectMining, this.oldLearningObjectMining);
-			//For Moodle
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
 			insert.setId(id);
@@ -1060,7 +1067,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			//For Moodle
 			//Long id = Long.valueOf((loadedItem.getResource() + "").substring(2));
 			//For Clix
-			Long id = Long.valueOf("1" + (loadedItem.getResource() + "").substring(2));
+			Long id = Long.valueOf("11" + (loadedItem.getResource() + "").substring(2));
 			Long uid = Long.valueOf((loadedItem.getUser() + "").substring(2));
 			Long cid = Long.valueOf((loadedItem.getCourse() + "").substring(2));
 			
