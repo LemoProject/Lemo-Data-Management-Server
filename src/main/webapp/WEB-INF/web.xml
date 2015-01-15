@@ -15,6 +15,10 @@
       <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
       <param-value>de.lemo.dms.core.RequestLoggingFilter</param-value>
     </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+      <param-value>de.lemo.dms.service.responses.ResponseCorsFilter</param-value>
+	</init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet>
@@ -29,6 +33,10 @@
       <param-value>de.lemo.dms.core.RequestLoggingFilter</param-value>
     </init-param>
     <init-param>
+      <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+      <param-value>de.lemo.dms.service.responses.ResponseCorsFilter</param-value>
+	</init-param>
+    <init-param>
         <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
         <param-value>true</param-value>
     </init-param>
@@ -42,12 +50,12 @@
     <servlet-name>DMS-Questions</servlet-name>
     <url-pattern>/questions/*</url-pattern>
   </servlet-mapping>
-  	<filter>
+<!--  	<filter>
 	        <filter-name>CORS</filter-name>
 	        <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>	        
 	</filter>
 	<filter-mapping>
 	        <filter-name>CORS</filter-name>
 	        <url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> --> 
 </web-app>

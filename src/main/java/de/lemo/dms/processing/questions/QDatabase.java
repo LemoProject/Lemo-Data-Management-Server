@@ -42,6 +42,7 @@ public class QDatabase extends Question {
 		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		Criteria criteria = session.createCriteria(CourseUser.class);
 		criteria.add(Restrictions.eq("course.id", 1L));
+		logger.info("Started to query course 1 users.");
 		List<CourseUser> courseUsers = criteria.list();
 		session.close();	
 		

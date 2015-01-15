@@ -14,6 +14,7 @@ import de.lemo.dms.db.mapping.Course;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.LearningAttribute;
 import de.lemo.dms.db.mapping.UserAssessment;
+import de.lemo.dms.processing.features.ContentImageCount;
 import de.lemo.dms.processing.features.ContentLinkCount;
 import de.lemo.dms.processing.features.ContentWordCount;
 import de.lemo.dms.processing.resulttype.UserInstance;
@@ -29,13 +30,25 @@ public class FeatureProcessor{
 
 	public void processAll(){
 		List<Collection<?>> persistCollections = new ArrayList<Collection<?>>();
-		List<UserAssessment> courseUser = createCourseUserFeatures();
+		List<UserAssessment> courseUser = createAssessmentsFromLearningAttributes();
 		persistCollections.add(courseUser);
 		persistFeatures(persistCollections);
-		System.out.println("End!");
+		System.out.println("End processing!");
+	}
+	
+	public void processFeatures(){
+		List<Collection<?>> persistCollections = new ArrayList<Collection<?>>();
+		List<LearningAttribute> contentImageCount = new ContentImageCount().getLearningAttributes();
+		persistCollections.add(contentImageCount);
+//		List<LearningAttribute> contentLinkCount = new ContentLinkCount().getLearningAttributes();
+//		persistCollections.add(contentLinkCount);
+//		List<LearningAttribute> contentWordCount = new ContentWordCount().getLearningAttributes();
+//		persistCollections.add(contentWordCount);
+		persistFeatures(persistCollections);
+		System.out.println("End feature processing!");		
 	}
 
-	public List<UserAssessment> createCourseUserFeatures(){
+	public List<UserAssessment> createAssessmentsFromLearningAttributes(){
 		List<UserAssessment> userAssessments = new ArrayList<UserAssessment>();
 		Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		long nextId = getNextUnusedIdInEntity(UserAssessment.class);

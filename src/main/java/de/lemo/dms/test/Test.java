@@ -98,7 +98,7 @@ public class Test {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		QDatabase courseUsers = new QDatabase();
 				
-		//new FeatureProcessor().createUserFeature();
+		//new FeatureProcessor().processFeatures();
 		new FeatureProcessor().processAll();
 
 	}

@@ -22,6 +22,7 @@ public class UserInstance {
 	private int classId;
 	private int upVotes;
 	private int downVotes;
+	private int progressPercentage;
 	
 	public UserInstance(CourseUser courseUser) {
 		queryUserAssessments(courseUser);
@@ -35,6 +36,7 @@ public class UserInstance {
 		Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		Criteria criteria = session.createCriteria(UserAssessment.class,"userAssessment");
 		criteria.add(Restrictions.eq("userAssessment.user", courseUser.getUser()));
+		criteria.add(Restrictions.eq("userAssessment.course", courseUser.getCourse()));
 		List<UserAssessment> userAssessments = criteria.list();
 		userId = courseUser.getUser().getId();
 		classId = 1;
@@ -53,6 +55,9 @@ public class UserInstance {
 			}
 			else if(userAssessment.getFeedback().equals("Post_Down_Votes")){
 				setDownVotes((int) userAssessment.getGrade());
+			}
+			else if(userAssessment.getFeedback().equals("Progress_Percentage")){
+				setProgressPercentage((int) userAssessment.getGrade());
 			}
 		}
 		session.close();
@@ -92,7 +97,7 @@ public class UserInstance {
 	public void setClassId(int classId) {
 		this.classId = classId;
 	}
-
+	@XmlElement
 	public int getUpVotes() {
 		return upVotes;
 	}
@@ -100,12 +105,20 @@ public class UserInstance {
 	public void setUpVotes(int upVotes) {
 		this.upVotes = upVotes;
 	}
-
+	@XmlElement
 	public int getDownVotes() {
 		return downVotes;
 	}
 
 	public void setDownVotes(int downVotes) {
 		this.downVotes = downVotes;
+	}
+	@XmlElement
+	public int getProgressPercentage() {
+		return progressPercentage;
+	}
+
+	public void setProgressPercentage(int progressPercentage) {
+		this.progressPercentage = progressPercentage;
 	}
 }
