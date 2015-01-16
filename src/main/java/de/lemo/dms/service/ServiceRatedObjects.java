@@ -81,7 +81,7 @@ public class ServiceRatedObjects {
 
 			for (final ICourseLORelation obj : list)
 			{
-				if(obj.getLearning().getInteractionType().equals("ASSESSMENT"))
+				if(obj.getLearning().getInteractionType().toUpperCase().equals("ASSESSMENT"))
 				{
 					res.add(obj.getLearning().getId() + "");
 					res.add(obj.getLearning().getTitle());

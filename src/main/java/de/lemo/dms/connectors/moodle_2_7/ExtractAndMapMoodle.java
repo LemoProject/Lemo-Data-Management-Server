@@ -36,6 +36,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.persistence.Column;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -1795,7 +1797,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
 			insert.setLearning(Long.valueOf("14" + loadedItem.getChat()), this.learningObjectMining,
 					this.oldLearningObjectMining);
-			insert.setText(TextHelper.replaceString(loadedItem.getMessage()));
+			insert.setText(TextHelper.replaceString(loadedItem.getMessage(), 255));
 			insert.setTimestamp(loadedItem.getTimestamp());
 			if(insert.getTimestamp() > maxLog)
 			{
@@ -1877,7 +1879,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					Long f = discussions.get(Long.valueOf(loadedItem.getObjectid())).getForum();
 					insert.setLearning(Long.valueOf("15" + f),
 							this.learningObjectMining, this.oldLearningObjectMining);
-					insert.setText("Subject: " + discussions.get(Long.valueOf(loadedItem.getObjectid())).getName());
+					insert.setText(TextHelper.replaceString("Subject: " + discussions.get(Long.valueOf(loadedItem.getObjectid())).getName(),255));
 					insert.setReferrer(insert.getLearning().getId(), collaborationLogs);
 				}
 			
@@ -1903,7 +1905,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				{
 					insert.setLearning(Long.valueOf("15" + discussions.get(p.getDiscussion()).getForum()),
 							this.learningObjectMining, this.oldLearningObjectMining );
-					insert.setText(TextHelper.replaceString(p.getMessage()));
+					insert.setText(TextHelper.replaceString(p.getMessage(),255));
 				}	
 				if(insert.getText() == null)
 					for (final ForumPostsLMS loadedItem2 : this.forumPostsLms)
@@ -1911,7 +1913,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 						if ((loadedItem2.getUserid() == loadedItem.getUser())
 								&& ((loadedItem2.getCreated() == loadedItem.getTimecreated()) || (loadedItem2.getModified() == loadedItem
 										.getTimecreated()))) {
-							insert.setText(TextHelper.replaceString(loadedItem2.getMessage()));
+							insert.setText(TextHelper.replaceString(loadedItem2.getMessage(),255));
 							break;
 						}
 					}
@@ -2104,7 +2106,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							+ loadedItem2.getItemmodule());
 				}
 			}
-
+			addLearningAttribute(insert, "MaxGrade", ((double)loadedItem.getGrade())+"");
 			amTmp.put(insert.getId(), insert);
 		}
 
@@ -2128,6 +2130,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			//insert.setMaxGrade(loadedItem.getSumgrade());
 			insert.setType("Quiz", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
+			addLearningAttribute(insert, "MaxGrade", ((double)loadedItem.getGrade())+"");
 
 			learningObjs.put(insert.getId(), insert);
 		}
@@ -2149,7 +2152,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			//insert.setMaxGrade(loadedItem.getMaxgrade());
 			insert.setType("Scorm", this.learningTypeMining, this.oldLearningTypeMining);
 			insert.setInteractionType("Assessment");
+			
+			addLearningAttribute(insert, "MaxGrade", ((double)loadedItem.getMaxgrade())+"");
 
+			addLearningAttribute(insert, "MaxGrade", loadedItem.getMaxgrade()+"");
 			learningObjs.put(insert.getId(), insert);
 		}
 		
@@ -2235,6 +2241,32 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			userMining.put(insert.getId(), insert);
 		}
 		return userMining;
+	}
+	
+	private void addLearningAttribute(LearningObj learningObject, String name, String value)
+	{
+		Attribute attribute = new Attribute();
+		if(!this.attributeMining.containsKey(name))
+		{
+			
+			attribute.setName(name);
+			attribute.setId(this.attributeIdMax + 1);
+			this.learningAttributeIdMax++;
+			this.attributeMining.put(name, attribute);
+		}
+		else
+		{
+			attribute = this.attributeMining.get(name);
+		}
+		LearningAttribute la = new LearningAttribute();
+		la.setId(this.learningAttributeIdMax + 1);
+		this.learningAttributeIdMax++;
+		la.setLearning(learningObject);
+		la.setValue(value);
+		la.setAttribute(attribute);
+		
+		this.learningAttributeMining.put(la.getId(), la);
+		
 	}
 
 	@Override

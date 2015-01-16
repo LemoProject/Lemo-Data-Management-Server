@@ -112,6 +112,21 @@ public class StudentHelper {
 		return users;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static int getStudentCount(Long courseId)
+	{
+		int count = 0;
+		final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();			
+		Criteria criteria = session.createCriteria(CourseUser.class, "cu");
+		criteria.add(Restrictions.eq("cu.course.id", courseId));
+		for(CourseUser cu : (List<CourseUser>)criteria.list() )
+		{
+			if(cu.getRole().getType() == 2)
+				count++;
+		}
+		return count;
+	}
+	
 	/**
 	 * Returns a map containing all ids of students registered within the courses as keys and replacement-aliases as values.
 	 * 

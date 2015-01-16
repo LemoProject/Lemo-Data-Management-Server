@@ -148,7 +148,7 @@ public class ServiceCourseDetails {
 		}
 
 		CourseObject result =
-				new CourseObject(course.getId(), course.getTitle(), course.getTitle(), users.size(), lastTime, firstTime, getCourseHash(id, firstTime, lastTime), StudentHelper.getGenderSupport(id));
+				new CourseObject(course.getId(), course.getTitle(), course.getTitle(), StudentHelper.getStudentCount(id), lastTime, firstTime, getCourseHash(id, firstTime, lastTime), StudentHelper.getGenderSupport(id));
 
 		//dbHandler.closeSession(session);
 		session.close();
@@ -238,7 +238,7 @@ public class ServiceCourseDetails {
 				
 			}
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
-					courseMining.getTitle(), userMap.size(), lastTime, firstTime, getCourseHash(courseMining.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(courseMining.getId()));
+					courseMining.getTitle(), StudentHelper.getStudentCount(courseMining.getId()), lastTime, firstTime, getCourseHash(courseMining.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(courseMining.getId()));
 			results.add(co);
 		}
 		
