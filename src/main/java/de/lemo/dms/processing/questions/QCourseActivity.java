@@ -92,7 +92,6 @@ public class QCourseActivity extends Question {
 		// Set up db-connection
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
-
 		if (users.isEmpty()) {
 			users = new ArrayList<Long>(userMap.values());
 			if (users.isEmpty()) {

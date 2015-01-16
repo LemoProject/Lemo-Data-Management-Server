@@ -61,7 +61,7 @@ public class Test {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		final IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
-		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 100, 1325372400L, 500));
+		dbHandler.saveCollectionToDB(session, conGen.generateMiningDB(5, 100, 1325372400L, 200));
 	}
 /*	
 	public static void write()
@@ -113,7 +113,7 @@ public class Test {
 	public static void main(final String[] args)
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.test();
+		Test.gen();
 	}
 
 }
