@@ -39,7 +39,6 @@ public class UserInstance {
 		criteria.add(Restrictions.eq("userAssessment.course", courseUser.getCourse()));
 		List<UserAssessment> userAssessments = criteria.list();
 		userId = courseUser.getUser().getId();
-		classId = 1;
 		for(UserAssessment userAssessment : userAssessments){
 			if(userAssessment.getFeedback().equals("Content_Imagecount")){
 				setImageCount((int) userAssessment.getGrade());
@@ -57,7 +56,9 @@ public class UserInstance {
 				setDownVotes((int) userAssessment.getGrade());
 			}
 			else if(userAssessment.getFeedback().equals("Progress_Percentage")){
-				setProgressPercentage((int) userAssessment.getGrade());
+				int progress = (int) userAssessment.getGrade();
+				setProgressPercentage(progress);
+				if(progress>=80) classId=1;
 			}
 		}
 		session.close();

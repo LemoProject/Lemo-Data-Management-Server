@@ -38,6 +38,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.LearningAttribute;
 import de.lemo.dms.processing.FeatureProcessor;
 import de.lemo.dms.processing.StudentHelper;
+import de.lemo.dms.processing.classification.Classifier;
 import de.lemo.dms.processing.features.ContentLinkCount;
 import de.lemo.dms.processing.questions.QCourseActivity;
 import de.lemo.dms.processing.questions.QCourseUsers;
@@ -96,10 +97,13 @@ public class Test {
 	public static void test()
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		QDatabase courseUsers = new QDatabase();
-				
-		//new FeatureProcessor().processFeatures();
-		new FeatureProcessor().processAll();
+//		QDatabase courseUsers = new QDatabase();
+//				
+//		new FeatureProcessor().processFeatures();
+//		new FeatureProcessor().processAll();
+		
+
+		new Classifier();
 
 	}
 	

@@ -37,18 +37,23 @@ public class QDatabase extends Question {
 
 	//	validateTimestamps(startTime, endTime);
 		
-		List<UserInstance> studentInstances = new ArrayList<UserInstance>();
-	
+		List<UserInstance> studentInstances = queryAllUserInstances();	
+		return new ResultListUserInstance(studentInstances);
+	}
+
+	public List<UserInstance> queryAllUserInstances() {
+		List<UserInstance> studentInstances= new ArrayList<UserInstance>();
+		
 		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		Criteria criteria = session.createCriteria(CourseUser.class);
-		criteria.add(Restrictions.eq("course.id", 1L));
+		criteria.add(Restrictions.eq("course.id", 0L));
 		logger.info("Started to query course 1 users.");
 		List<CourseUser> courseUsers = criteria.list();
 		session.close();	
 		
 		for(CourseUser courseUser : courseUsers){
 			studentInstances.add(new UserInstance(courseUser));			
-		}		
-		return new ResultListUserInstance(studentInstances);
+		}	
+		return studentInstances;
 	}
 }

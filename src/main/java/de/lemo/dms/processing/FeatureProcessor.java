@@ -40,10 +40,10 @@ public class FeatureProcessor{
 		List<Collection<?>> persistCollections = new ArrayList<Collection<?>>();
 		List<LearningAttribute> contentImageCount = new ContentImageCount().getLearningAttributes();
 		persistCollections.add(contentImageCount);
-//		List<LearningAttribute> contentLinkCount = new ContentLinkCount().getLearningAttributes();
-//		persistCollections.add(contentLinkCount);
-//		List<LearningAttribute> contentWordCount = new ContentWordCount().getLearningAttributes();
-//		persistCollections.add(contentWordCount);
+		List<LearningAttribute> contentLinkCount = new ContentLinkCount().getLearningAttributes();
+		persistCollections.add(contentLinkCount);
+		List<LearningAttribute> contentWordCount = new ContentWordCount().getLearningAttributes();
+		persistCollections.add(contentWordCount);
 		persistFeatures(persistCollections);
 		System.out.println("End feature processing!");		
 	}
