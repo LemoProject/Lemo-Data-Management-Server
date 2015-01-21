@@ -198,7 +198,7 @@ set JAVA_OPTS=-Xmx1024m -XX:MaxPermSize=128M
 --------------------------------------------------------------------------------
 Lizenz
 --------------------------------------------------------------------------------
-Copyright (C) 2013
+Copyright (C) 2015
 Beuth Hochschule Berlin, Hochschule für Technik und Wirtschaft Berlin,
 Hochschule für Wirtschaft und Recht Berlin
 

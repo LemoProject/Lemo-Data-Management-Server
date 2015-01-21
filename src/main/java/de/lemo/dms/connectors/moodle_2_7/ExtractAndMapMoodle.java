@@ -1,7 +1,7 @@
 /**
  * File ./src/main/java/de/lemo/dms/connectors/moodle_2_7/ExtractAndMapMoodle.java
  * Lemo-Data-Management-Server for learning analytics.
- * Copyright (C) 2013
+ * Copyright (C) 2015
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -96,6 +96,7 @@ import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.User;
 import de.lemo.dms.db.mapping.UserAttribute;
+import de.lemo.dms.processing.resulttype.CourseObject;
 
 /**
  * The main class of the extraction process.
@@ -137,6 +138,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	private List<ModulesLMS> modulesLms;
 	private List<CourseModulesLMS> courseModulesLms;
 	private List<QuizAttemptsLMS> quizAttemptsLms;
+	final Map<Course, CourseObject> courseDetails = new HashMap<Course, CourseObject>();
 
 	private Map<Long, Long> chatCourse = new HashMap<Long, Long>();
 	
@@ -310,7 +312,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			criteria.add(Restrictions.in("obj.course", courses));
 		}
 		criteria.add(Restrictions.gt("obj.timecreated", readingfromtimestamp));
-		criteria.addOrder(Property.forName("obj.id").asc());
+		criteria.addOrder(Property.forName("obj.timecreated").asc());
 		this.logstoreLms = criteria.list();
 		logger.info("LogLMS tables: " + this.logstoreLms.size());
 		
@@ -1576,72 +1578,47 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 
 		}
+		
+
 
 		for (final LogstoreStandardLogLMS loadedItem : this.logstoreLms) {
+			
+			final AssessmentLog insert = new AssessmentLog();
+			insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
+			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+			insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
+			insert.setTimestamp(loadedItem.getTimecreated());
+			insert.setAction(loadedItem.getAction());
 
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("assign"))
-			{
-				AssessmentLog insert = new AssessmentLog();
-				insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
-				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-				insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
-				insert.setTimestamp(loadedItem.getTimecreated());
-				insert.setAction(loadedItem.getAction());
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("assign")){
 				insert.setLearning(Long.valueOf("17" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
-				/*if(courseModules.containsKey(loadedItem.getCmid())	)
-				{
-					insert.setLearning(Long.valueOf("17" + courseModules.get(loadedItem.getCmid()).getInstance()), learningObjectMining, oldLearningObjectMining);
-				}		*/		
 			}
 			
 			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("scorm")) {
-				final AssessmentLog insert = new AssessmentLog();
-
-				insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
-
-				insert.setCourse(loadedItem.getCourse(),
-						this.courseMining, this.oldCourseMining);
-				
-				insert.setUser(loadedItem.getUser(), this.userMining,
-						this.oldUserMining);
-				insert.setAction(loadedItem.getAction());
-
-				insert.setTimestamp(loadedItem.getTimecreated());
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
 				insert.setLearning(Long.valueOf("19" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
-			/*	if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setLearning(Long.valueOf("19" + loadedItem.getInfo()),
-							this.learningObjectMining, this.oldLearningObjectMining);
-				}*/
 			}
 			
 			
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("quiz"))
-			{
-				final AssessmentLog insert = new AssessmentLog();
-
-				insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
-				insert.setCourse(loadedItem.getCourse(),
-						this.courseMining, this.oldCourseMining);
-				insert.setAction(loadedItem.getAction());
-				insert.setUser(loadedItem.getUser(), this.userMining,
-						this.oldUserMining);
-
+			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("quiz")){
 				insert.setLearning(Long.valueOf("18" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
-				insert.setTimestamp(loadedItem.getTimecreated());
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
-				
-				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
-					assessmentLogs.put(insert.getId(), insert);
-				}
-
 			}
+
+			if(!courseDetails.containsKey(insert.getCourse())){
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
+			
+			if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
+				assessmentLogs.put(insert.getId(), insert);
+			}
+			
 		}
 		return assessmentLogs;
 	}
@@ -1808,6 +1785,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 			insert.setUser(Long.valueOf(loadedItem.getUser()), this.userMining,
 					this.oldUserMining);
+			
+			if(!courseDetails.containsKey(insert.getCourse())){
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 
 			if ((insert.getLearning() != null) && (insert.getUser() != null) && (insert.getCourse() != null)) {
 				collaborationLogs.put(insert.getId(), insert);
@@ -1840,40 +1823,22 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		}
 		
 		for (final LogstoreStandardLogLMS loadedItem : this.logstoreLms) {
+			
+			final CollaborationLog insert = new CollaborationLog();
+			insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
+			insert.setUser(loadedItem.getUser(), this.userMining,
+					this.oldUserMining);
+			insert.setCourse(loadedItem.getCourse(),
+					this.courseMining, this.oldCourseMining);
+			insert.setTimestamp(loadedItem.getTimecreated());
+			insert.setAction(loadedItem.getAction() + " wiki page");
+			
 			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum")) {
 
-				final CollaborationLog insert = new CollaborationLog();
-
-				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
-				insert.setUser(loadedItem.getUser(), this.userMining,
-						this.oldUserMining);
-				insert.setAction(loadedItem.getAction() + " forum");
-				insert.setTimestamp(loadedItem.getTimecreated());
-				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
 				insert.setLearning(Long.valueOf("15" + loadedItem.getObjectid()) , this.learningObjectMining, this.oldLearningObjectMining);
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
-				
-				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
-					collaborationLogs.put(insert.getId(), insert);
-				}
 			}
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_discussions")) {
+			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_discussions")) {
 
-				final CollaborationLog insert = new CollaborationLog();
-
-				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
-				insert.setUser(loadedItem.getUser(), this.userMining,
-						this.oldUserMining);
-				insert.setAction(loadedItem.getAction() + " discussion");
-				insert.setTimestamp(loadedItem.getTimecreated());
-				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
 				if (discussions.containsKey(Long.valueOf(loadedItem.getObjectid())))
 				{
 					Long f = discussions.get(Long.valueOf(loadedItem.getObjectid())).getForum();
@@ -1882,24 +1847,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					insert.setText(TextHelper.replaceString("Subject: " + discussions.get(Long.valueOf(loadedItem.getObjectid())).getName(),255));
 					insert.setReferrer(insert.getLearning().getId(), collaborationLogs);
 				}
-			
-				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
-					collaborationLogs.put(insert.getId(), insert);
-				}
 			}
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_posts")) {
-				final CollaborationLog insert = new CollaborationLog();
-
-				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
-				insert.setUser(loadedItem.getUser(), this.userMining,
-						this.oldUserMining);
-				insert.setAction(loadedItem.getAction() + " post");
-				insert.setTimestamp(loadedItem.getTimecreated());
-				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
+			
+			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_posts")) {
+				
 				ForumPostsLMS p = posts.get(Long.valueOf(loadedItem.getObjectid()));
 				if(p != null && discussions.containsKey(p.getDiscussion()))
 				{
@@ -1917,79 +1868,44 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							break;
 						}
 					}
-				
-				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
-					collaborationLogs.put(insert.getId(), insert);
-				}
 			}
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_subscriptions")) {
-				final CollaborationLog insert = new CollaborationLog();
-
-				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
-				insert.setUser(loadedItem.getUser(), this.userMining,
-						this.oldUserMining);
-				insert.setAction(loadedItem.getAction() + " subscription");
-				insert.setTimestamp(loadedItem.getTimecreated());
-				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
+			
+			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_subscriptions")) {
 				insert.setLearning(Long.valueOf("15" + loadedItem.getObjectid()),
 							this.learningObjectMining, this.oldLearningObjectMining );
-				
-				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
-					collaborationLogs.put(insert.getId(), insert);
-				}
+
 			}			
 			
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki"))
+			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki"))
 			{
-				final CollaborationLog insert = new CollaborationLog();
-
-				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
 				insert.setLearning(Long.valueOf("16" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
-				
-				insert.setUser(loadedItem.getUser(), this.userMining,
-						this.oldUserMining);
-				insert.setCourse(loadedItem.getCourse(),
-						this.courseMining, this.oldCourseMining);
-				insert.setTimestamp(loadedItem.getTimecreated());
-				insert.setAction(loadedItem.getAction() + " wiki");
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
-
-				if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getLearning() != null)) {
-					collaborationLogs.put(insert.getId(), insert);
-				}
 			}
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki_pages"))
+			
+			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki_pages"))
 			{
-				final CollaborationLog insert = new CollaborationLog();
-
-				insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
 				if(wikipages.get(loadedItem.getObjectid()) != null)
 				{
 					insert.setText(wikipages.get(loadedItem.getObjectid()).getTitle());
 					insert.setLearning(Long.valueOf("16" + wikipages.get(loadedItem.getObjectid()).getSubwikiid()), this.learningObjectMining, this.oldLearningObjectMining);
 				}
-				insert.setUser(loadedItem.getUser(), this.userMining,
-						this.oldUserMining);
-				insert.setCourse(loadedItem.getCourse(),
-						this.courseMining, this.oldCourseMining);
-				insert.setTimestamp(loadedItem.getTimecreated());
-				insert.setAction(loadedItem.getAction() + " wiki page");
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
-				
 
-				if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getLearning() != null)) {
-					collaborationLogs.put(insert.getId(), insert);
-				}
+				
+			}
+			
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
+			
+			if(!courseDetails.containsKey(insert.getCourse())){
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			
+
+			if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getLearning() != null)) {
+				collaborationLogs.put(insert.getId(), insert);
 			}
 		}
 		
@@ -2251,26 +2167,76 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			
 			attribute.setName(name);
 			attribute.setId(this.attributeIdMax + 1);
-			this.learningAttributeIdMax++;
+			this.attributeIdMax++;
 			this.attributeMining.put(name, attribute);
 		}
 		else
 		{
 			attribute = this.attributeMining.get(name);
 		}
-		LearningAttribute la = new LearningAttribute();
-		la.setId(this.learningAttributeIdMax + 1);
+		LearningAttribute learningAttribute = new LearningAttribute();
+		learningAttribute.setId(this.learningAttributeIdMax + 1);
 		this.learningAttributeIdMax++;
-		la.setLearning(learningObject);
-		la.setValue(value);
-		la.setAttribute(attribute);
+		learningAttribute.setLearning(learningObject);
+		learningAttribute.setValue(value);
+		learningAttribute.setAttribute(attribute);
 		
-		this.learningAttributeMining.put(la.getId(), la);
+		this.learningAttributeMining.put(learningAttribute.getId(), learningAttribute);
+		
+	}
+	
+	private void addCourseAttribute(Long course, String name, String value)
+	{
+		Attribute attribute = new Attribute();
+		if(!this.attributeMining.containsKey(name))
+		{
+			
+			attribute.setName(name);
+			attribute.setId(this.attributeIdMax + 1);
+			this.attributeIdMax++;
+			this.attributeMining.put(name, attribute);
+		}
+		else
+		{
+			attribute = this.attributeMining.get(name);
+		}
+		CourseAttribute courseAttribute = new CourseAttribute();
+		courseAttribute.setId(this.courseAttributeIdMax + 1);
+		this.courseAttributeIdMax++;
+		courseAttribute.setCourse(this.courseMining.get(course));
+		courseAttribute.setValue(value);
+		courseAttribute.setAttribute(attribute);
+		
+		this.courseAttributeMining.put(courseAttribute.getId(), courseAttribute);
 		
 	}
 
 	@Override
 	public Map<Long, CourseAttribute> generateCourseAttributes() {
+		
+		for(CourseObject co : this.courseDetails.values() )
+		{
+			if(!this.oldCourseAttributeMining.isEmpty())
+			{
+				for(CourseAttribute ca : this.oldCourseAttributeMining.values())
+				{
+					if(this.courseDetails.get(ca.getCourse().getId()) != null && ca.getAttribute().getName().equals("CourseFirstRequest") && Long.valueOf(ca.getValue()) > co.getFirstRequest())
+					{
+						ca.setValue(co.getFirstRequest().toString());
+					}
+					else if(this.courseDetails.get(ca.getCourse().getId()) != null && ca.getAttribute().getName().equals("CourseLastRequest") && Long.valueOf(ca.getValue()) < co.getLastRequest())
+					{
+						ca.setValue(co.getLastRequest().toString());
+					}
+				}
+			}
+			else
+			{
+				
+				addCourseAttribute(co.getId(), "CourseLastRequest", co.getLastRequest().toString());
+			}
+		}
+		
 		return this.courseAttributeMining;
 	}
 
@@ -2424,97 +2390,61 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 	@Override
 	public Map<Long, AccessLog> generateAccessLogs() {
-		final HashMap<Long, AccessLog> viewLogMining = new HashMap<Long, AccessLog>();
+		final HashMap<Long, AccessLog> accessLogMining = new HashMap<Long, AccessLog>();
 		// A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her
 		// requests times.
+
 
 		for (final LogstoreStandardLogLMS loadedItem : this.logstoreLms)
 		{
 			final AccessLog insert = new AccessLog();
-
-			insert.setId(viewLogMining.size() + 1 + this.accessLogMax);
-
+			insert.setId(accessLogMining.size() + 1 + this.accessLogMax);
 			insert.setUser(loadedItem.getUser(), this.userMining,
 					this.oldUserMining);
 			insert.setCourse(loadedItem.getCourse(),
-					this.courseMining, this.oldCourseMining);
+					this.courseMining, this.oldCourseMining);			
+			insert.setTimestamp(loadedItem.getTimecreated());
+			insert.setAction(loadedItem.getAction());
 			
 			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("resource")) {
 
-				/*if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setLearning(Long.valueOf("11" + loadedItem.getInfo()),
-							this.learningObjectMining, this.oldLearningObjectMining);
-				}*/
 				insert.setLearning(Long.valueOf("11" + loadedItem.getObjectid()),
 						this.learningObjectMining, this.oldLearningObjectMining);
-				insert.setAction(loadedItem.getAction());
-				insert.setTimestamp(loadedItem.getTimecreated());
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
-				
-				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
-					viewLogMining.put(insert.getId(), insert);
-				}
-
 			}
 			
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("url")) {
-				
-
-
-				/*if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setLearning(Long.valueOf("12" + loadedItem.getInfo()),
-							this.learningObjectMining, this.oldLearningObjectMining);
-				}*/
+			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("url")) {
 				insert.setLearning(Long.valueOf("12" + loadedItem.getObjectid()),
 						this.learningObjectMining, this.oldLearningObjectMining);
-				insert.setTimestamp(loadedItem.getTimecreated());
-				insert.setAction(loadedItem.getAction());
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
-				/*
-				if ((insert.getLearning() == null) && !(loadedItem.getAction().equals("view all"))) {
-					this.logger.debug("In ResourceLogMining, resource not found for log: " + loadedItem.getId()
-							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
-							+ " and action: " + loadedItem.getAction());
-				}*/
-				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
-					viewLogMining.put(insert.getId(), insert);
-				}
 
 			}
 			
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("page")) {
+			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("page")) {
 				
-				/*if (loadedItem.getInfo().matches("[0-9]+")) {
-					insert.setLearning(Long.valueOf("13" + loadedItem.getInfo()),
-							this.learningObjectMining, this.oldLearningObjectMining);
-				}*/
 				insert.setLearning(Long.valueOf("13" + loadedItem.getObjectid()),
 						this.learningObjectMining, this.oldLearningObjectMining);
-				insert.setTimestamp(loadedItem.getTimecreated());
-				insert.setAction(loadedItem.getAction());
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
-				/*
-				if ((insert.getLearning() == null) && !(loadedItem.getAction().equals("view all"))) {
-					this.logger.debug("In ResourceLogMining, resource not found for log: " + loadedItem.getId()
-							+ " and cmid: " + loadedItem.getCmid() + " and info: " + loadedItem.getInfo()
-							+ " and action: " + loadedItem.getAction());
-				}*/
-				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
-					viewLogMining.put(insert.getId(), insert);
-				}
 
 			}
+
+			
+			if(!courseDetails.containsKey(insert.getCourse()))
+			{
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
+			
+			if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) 
+			{
+				accessLogMining.put(insert.getId(), insert);
+			}
+
 		}
-		return viewLogMining;
+		return accessLogMining;
 	}
 
 	@Override
