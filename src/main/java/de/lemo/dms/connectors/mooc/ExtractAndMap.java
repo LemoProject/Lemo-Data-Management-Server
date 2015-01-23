@@ -75,7 +75,7 @@ public abstract class ExtractAndMap {
 	/** A List of new entries in the course table found in this run of the process. */
 
 	protected Map<Long, Course> courseMining;
-	protected Map<String, Attribute> attributeMining;
+	protected Map<String, Attribute> attributeMining = new HashMap<String, Attribute>();
 	protected Map<Long, LearningObj> learningObjectMining;
 	protected Map<Long, User> userMining;
 	protected Map<Long, Role> roleMining;	
@@ -83,7 +83,7 @@ public abstract class ExtractAndMap {
 	protected Map<Long, CourseLearning> courseLearningMining;
 	protected Map<Long, CourseUser> courseUserMining;	
 	
-	protected Map<Long, CourseAttribute> courseAttributeMining;	
+	protected Map<Long, CourseAttribute> courseAttributeMining= new HashMap<Long, CourseAttribute>();	
 	protected Map<Long, UserAttribute> userAttributeMining;	
 	protected Map<Long, LearningAttribute> learningAttributeMining;	
 	
@@ -593,12 +593,7 @@ public abstract class ExtractAndMap {
 			logger.info("Generated " + this.courseLearningMining.size()
 					+ " CourseLearningObject entries in " + this.c.getAndReset() + " s. ");
 			this.updates.add(this.courseLearningMining.values());
-			
-			this.courseAttributeMining = generateCourseAttributes();
-			objects += this.courseAttributeMining.size();
-			logger.info("Generated " + this.courseAttributeMining.size()
-					+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
-			this.updates.add(this.courseAttributeMining.values());
+
 
 		}
 
@@ -630,6 +625,13 @@ public abstract class ExtractAndMap {
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " AssessmentLog entries in " + this.c.getAndReset() + " s. ");
+		
+		
+		this.courseAttributeMining = generateCourseAttributes();
+		objects += this.courseAttributeMining.size();
+		logger.info("Generated " + this.courseAttributeMining.size()
+				+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
+		this.updates.add(this.courseAttributeMining.values());
 		
 		if (objects > 0)
 		{

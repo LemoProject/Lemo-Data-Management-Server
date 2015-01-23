@@ -47,7 +47,9 @@ import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.CourseAttribute;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.StudentHelper;
@@ -108,6 +110,42 @@ public class ServiceCourseTitleSearch {
 
 		for (Course courseMining : courses) {
 			
+			Long lastTime = 0L;
+			Long firstTime = 0L;
+			
+			criteria = session.createCriteria(Attribute.class, "attribute");
+			criteria.add(Restrictions.like("attribute.name", "CourseLastRequest"));
+
+			Long attId = -1l;
+			
+			if(criteria.list().size() > 0)
+			{
+				attId = ((Attribute)criteria.list().get(criteria.list().size()-1)).getId();
+			}
+			
+			criteria = session.createCriteria(CourseAttribute.class, "courseAttribute");
+			criteria.add(Restrictions.eq("courseAttribute.course.id", courseMining.getId()));
+			criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
+			
+			lastTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
+			
+			criteria = session.createCriteria(Attribute.class, "attribute");
+			criteria.add(Restrictions.like("attribute.name", "CourseFirstRequest"));
+
+			attId = -1l;
+			
+			if(criteria.list().size() > 0)
+			{
+				attId = ((Attribute)criteria.list().get(criteria.list().size()-1)).getId();
+			}
+			
+			criteria = session.createCriteria(CourseAttribute.class, "courseAttribute");
+			criteria.add(Restrictions.eq("courseAttribute.course.id", courseMining.getId()));
+			criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
+			
+			firstTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
+			
+			/*
 			criteria = session.createCriteria(ILog.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
 			if(userMap.size() > 0)
@@ -159,6 +197,7 @@ public class ServiceCourseTitleSearch {
 				firstTime = max;
 				
 			}
+			*/
 			ServiceCourseDetails scd = new ServiceCourseDetails();
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
 					courseMining.getTitle(), StudentHelper.getStudentCount(courseMining.getId()), lastTime, firstTime, scd.getCourseHash(courseMining.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(courseMining.getId()));

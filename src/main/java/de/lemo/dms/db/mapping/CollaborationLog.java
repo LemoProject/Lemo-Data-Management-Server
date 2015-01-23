@@ -157,6 +157,7 @@ public class CollaborationLog implements IMapping, ILog{
 		this.timestamp = timestamp;
 	}
 
+	//@Lob
 	@Column(name="text")
 	public String getText() {
 		return text;
@@ -165,6 +166,8 @@ public class CollaborationLog implements IMapping, ILog{
 
 
 	public void setText(String text) {
+		if( text != null && text.length() > 255)
+			text = text.substring(0, 254);
 		this.text = text;
 	}
 

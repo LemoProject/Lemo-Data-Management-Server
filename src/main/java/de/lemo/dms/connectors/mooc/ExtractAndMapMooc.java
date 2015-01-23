@@ -738,6 +738,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			if(!courseDetails.containsKey(insert.getCourse()))
 			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
@@ -783,6 +784,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			if(!courseDetails.containsKey(insert.getCourse()))
 			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
@@ -1066,6 +1068,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				if(!courseDetails.containsKey(insert.getCourse()))
 				{
 					courseDetails.put(insert.getCourse(), new CourseObject());
+					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 				}
 				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
@@ -1092,12 +1095,12 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			if(ca.getAttribute().getName().equals("CourseLastRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getLastRequest() > Long.valueOf(ca.getValue()))
 			{
 				ca.setValue(this.courseDetails.get(ca.getCourse()).getLastRequest().toString());
-				this.courseAttributeMining.put(ca.getId(), ca);
+				this.courseAttributes.put(ca.getId(), ca);
 			}
 			if(ca.getAttribute().getName().equals("CourseFirstRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getFirstRequest() < Long.valueOf(ca.getValue()))
 			{
 				ca.setValue(this.courseDetails.get(ca.getCourse()).getFirstRequest().toString());
-				this.courseAttributeMining.put(ca.getId(), ca);
+				this.courseAttributes.put(ca.getId(), ca);
 			}
 		}
 		if(this.oldCourseAttributeMining.isEmpty())
@@ -1111,7 +1114,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				ca.setAttribute(this.attributeMining.get("CourseLastRequest"));
 				ca.setCourse(this.courseMining.get(co.getId()));
 				ca.setValue(co.getLastRequest().toString());
-				this.courseAttributeMining.put(ca.getId(), ca);
+				this.courseAttributes.put(ca.getId(), ca);
 				
 				CourseAttribute first= new CourseAttribute();
 				first.setId(this.courseAttributeIdMax + 1);
@@ -1119,9 +1122,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				first.setAttribute(this.attributeMining.get("CourseFirstRequest"));
 				first.setCourse(this.courseMining.get(co.getId()));
 				first.setValue(co.getFirstRequest().toString());
-				this.courseAttributeMining.put(first.getId(), first);
+				this.courseAttributes.put(first.getId(), first);
 			}
 		}
+		
 		return this.courseAttributes;
 	}
 
