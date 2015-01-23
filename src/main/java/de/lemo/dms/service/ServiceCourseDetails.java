@@ -46,7 +46,9 @@ import org.apache.log4j.Logger;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.CourseAttribute;
 import de.lemo.dms.db.mapping.abstractions.ICourseLORelation;
 import de.lemo.dms.db.mapping.abstractions.ILog;
 import de.lemo.dms.processing.MetaParam;
@@ -88,65 +90,41 @@ public class ServiceCourseDetails {
 			throw new ResourceNotFoundException("Course " + id);
 		}
 
-		Criteria criteria = session.createCriteria(ILog.class, "log");
-		List<Long> cid = new ArrayList<Long>();
-		cid.add(id);
-		List<Long> users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(cid, new ArrayList<Long>()).values());
-		
-		criteria.add(Restrictions.eq("log.course.id", id));
-		if(users.size() > 0)
-		{
-			criteria.add(Restrictions.in("log.user.id", users));
-		}
-		ProjectionList pl = Projections.projectionList();
-		pl.add(Projections.max("timestamp"));
-		criteria.setProjection(pl);
-		
 		Long lastTime = 0L;
 		Long firstTime = 0L;
+		
+		Criteria criteria = session.createCriteria(Attribute.class, "attribute");
+		criteria.add(Restrictions.like("attribute.name", "CourseLastRequest"));
 
-		List<ILog> l = criteria.list();
+		Long attId = -1l;
 		
-		if (criteria.list().size() > 0)
+		if(criteria.list().size() > 0)
 		{
-			Long max = 0L;
-			for(int i=0; i < criteria.list().size(); i++){
-				if ((Long)criteria.list().get(i) > max)
-				{
-					max = (Long) criteria.list().get(i);
-					break;
-				}
-			}
-			lastTime = max;
+			attId = ((Attribute)criteria.list().get(criteria.list().size()-1)).getId();
 		}
 		
-		criteria = session.createCriteria(ILog.class, "log");
-		cid = new ArrayList<Long>();
-		cid.add(id);
-		users = new ArrayList<Long>(StudentHelper.getCourseStudentsAliasKeys(cid, new ArrayList<Long>()).values());
+		criteria = session.createCriteria(CourseAttribute.class, "courseAttribute");
+		criteria.add(Restrictions.eq("courseAttribute.course.id", id));
+		criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
 		
-		criteria.add(Restrictions.eq("log.course.id", id));
-		if(users.size() > 0)
-		{
-			criteria.add(Restrictions.in("log.user.id", users));
-		}
-		pl = Projections.projectionList();
-		pl.add(Projections.min("timestamp"));
-		criteria.setProjection(pl);
+		lastTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
 		
-		if (criteria.list().size() > 0)
-		{
-			Long max = 0L;
-			for(int i=0; i < criteria.list().size(); i++){
-				if ((Long)criteria.list().get(i) > max)
-				{
-					max = (Long) criteria.list().get(i);
-					break;
-				}
-			}
-			firstTime = max;
-		}
+		criteria = session.createCriteria(Attribute.class, "attribute");
+		criteria.add(Restrictions.like("attribute.name", "CourseFirstRequest"));
 
+		attId = -1l;
+		
+		if(criteria.list().size() > 0)
+		{
+			attId = ((Attribute)criteria.list().get(criteria.list().size()-1)).getId();
+		}
+		
+		criteria = session.createCriteria(CourseAttribute.class, "courseAttribute");
+		criteria.add(Restrictions.eq("courseAttribute.course.id", id));
+		criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
+		
+		firstTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
+		
 		CourseObject result =
 				new CourseObject(course.getId(), course.getTitle(), course.getTitle(), StudentHelper.getStudentCount(id), lastTime, firstTime, getCourseHash(id, firstTime, lastTime), StudentHelper.getGenderSupport(id));
 
@@ -190,6 +168,7 @@ public class ServiceCourseDetails {
 			cids.add(courseMining.getId());
 			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(cids, new ArrayList<Long>());
 			
+			/*
 			criteria = session.createCriteria(ILog.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
 			if(userMap.size() > 0)
@@ -236,7 +215,43 @@ public class ServiceCourseDetails {
 				}
 				firstTime = max;
 				
+			}*/
+			
+			Long lastTime = 0L;
+			Long firstTime = 0L;
+			
+			criteria = session.createCriteria(Attribute.class, "attribute");
+			criteria.add(Restrictions.like("attribute.name", "CourseLastRequest"));
+
+			Long attId = -1l;
+			
+			if(criteria.list().size() > 0)
+			{
+				attId = ((Attribute)criteria.list().get(criteria.list().size()-1)).getId();
 			}
+			
+			criteria = session.createCriteria(CourseAttribute.class, "courseAttribute");
+			criteria.add(Restrictions.eq("courseAttribute.course.id", courseMining.getId()));
+			criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
+			
+			lastTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
+			
+			criteria = session.createCriteria(Attribute.class, "attribute");
+			criteria.add(Restrictions.like("attribute.name", "CourseFirstRequest"));
+
+			attId = -1l;
+			
+			if(criteria.list().size() > 0)
+			{
+				attId = ((Attribute)criteria.list().get(criteria.list().size()-1)).getId();
+			}
+			
+			criteria = session.createCriteria(CourseAttribute.class, "courseAttribute");
+			criteria.add(Restrictions.eq("courseAttribute.course.id", courseMining.getId()));
+			criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
+			
+			firstTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
+			
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
 					courseMining.getTitle(), StudentHelper.getStudentCount(courseMining.getId()), lastTime, firstTime, getCourseHash(courseMining.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(courseMining.getId()));
 			results.add(co);

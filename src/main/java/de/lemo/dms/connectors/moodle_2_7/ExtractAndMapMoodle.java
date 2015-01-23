@@ -36,8 +36,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.persistence.Column;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -1899,6 +1897,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			
 			if(!courseDetails.containsKey(insert.getCourse())){
 				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
@@ -2214,26 +2213,39 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	@Override
 	public Map<Long, CourseAttribute> generateCourseAttributes() {
 		
-		for(CourseObject co : this.courseDetails.values() )
+		for(CourseAttribute ca : this.oldCourseAttributeMining.values())
 		{
-			if(!this.oldCourseAttributeMining.isEmpty())
+			if(ca.getAttribute().getName().equals("CourseLastRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getLastRequest() > Long.valueOf(ca.getValue()))
 			{
-				for(CourseAttribute ca : this.oldCourseAttributeMining.values())
-				{
-					if(this.courseDetails.get(ca.getCourse().getId()) != null && ca.getAttribute().getName().equals("CourseFirstRequest") && Long.valueOf(ca.getValue()) > co.getFirstRequest())
-					{
-						ca.setValue(co.getFirstRequest().toString());
-					}
-					else if(this.courseDetails.get(ca.getCourse().getId()) != null && ca.getAttribute().getName().equals("CourseLastRequest") && Long.valueOf(ca.getValue()) < co.getLastRequest())
-					{
-						ca.setValue(co.getLastRequest().toString());
-					}
-				}
+				ca.setValue(this.courseDetails.get(ca.getCourse()).getLastRequest().toString());
+				this.courseAttributeMining.put(ca.getId(), ca);
 			}
-			else
+			if(ca.getAttribute().getName().equals("CourseFirstRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getFirstRequest() < Long.valueOf(ca.getValue()))
 			{
+				ca.setValue(this.courseDetails.get(ca.getCourse()).getFirstRequest().toString());
+				this.courseAttributeMining.put(ca.getId(), ca);
+			}
+		}
+		if(this.oldCourseAttributeMining.isEmpty())
+		{
+
+			for(CourseObject co :this.courseDetails.values())
+			{
+				CourseAttribute ca = new CourseAttribute();
+				ca.setId(this.courseAttributeIdMax + 1);
+				this.courseAttributeIdMax++;
+				ca.setAttribute(this.attributeMining.get("CourseLastRequest"));
+				ca.setCourse(this.courseMining.get(co.getId()));
+				ca.setValue(co.getLastRequest().toString());
+				this.courseAttributeMining.put(ca.getId(), ca);
 				
-				addCourseAttribute(co.getId(), "CourseLastRequest", co.getLastRequest().toString());
+				CourseAttribute first= new CourseAttribute();
+				first.setId(this.courseAttributeIdMax + 1);
+				this.courseAttributeIdMax++;
+				first.setAttribute(this.attributeMining.get("CourseFirstRequest"));
+				first.setCourse(this.courseMining.get(co.getId()));
+				first.setValue(co.getFirstRequest().toString());
+				this.courseAttributeMining.put(first.getId(), first);
 			}
 		}
 		
@@ -2429,6 +2441,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			if(!courseDetails.containsKey(insert.getCourse()))
 			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
@@ -2449,6 +2462,22 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 	@Override
 	public Map<String, Attribute> generateAttributes() {
+		if(!this.oldAttributeMining.containsKey("CourseLastRequest") && !this.attributeMining.containsKey("CourseLastRequest"))
+		{
+			Attribute attribute = new Attribute();
+			attribute.setId(this.attributeIdMax + 1);
+			this.attributeIdMax++;
+			attribute.setName("CourseLastRequest");
+			this.attributeMining.put("CourseLastRequest", attribute);
+		}
+		if(!this.oldAttributeMining.containsKey("CourseFirstRequest") && !this.attributeMining.containsKey("CourseFirstRequest"))
+		{
+			Attribute attribute = new Attribute();
+			attribute.setId(this.attributeIdMax + 1);
+			this.attributeIdMax++;
+			attribute.setName("CourseFirstRequest");
+			this.attributeMining.put("CourseFirstRequest", attribute);
+		}
 		return this.attributeMining;
 	}
 

@@ -577,11 +577,7 @@ public abstract class ExtractAndMap {
 					+ " CourseLearningObject entries in " + this.c.getAndReset() + " s. ");
 			this.updates.add(this.courseLearningMining.values());
 			
-			this.courseAttributeMining = generateCourseAttributes();
-			objects += this.courseAttributeMining.size();
-			logger.info("Generated " + this.courseAttributeMining.size()
-					+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
-			this.updates.add(this.courseAttributeMining.values());
+
 			
 			this.userAttributeMining = this.generateUserAttributes();
 			objects += this.userAttributeMining.size();
@@ -625,6 +621,12 @@ public abstract class ExtractAndMap {
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " AssessmentLog entries in " + this.c.getAndReset() + " s. ");
+		
+		this.courseAttributeMining = generateCourseAttributes();
+		objects += this.courseAttributeMining.size();
+		logger.info("Generated " + this.courseAttributeMining.size()
+				+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
+		this.updates.add(this.courseAttributeMining.values());
 		
 		if (objects > 0)
 		{

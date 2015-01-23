@@ -335,6 +335,15 @@ public abstract class ExtractAndMap {
 		}
 		logger.info("Loaded " + this.oldUserAttributeMining.size() + " LearningAttribute objects from the mining database.");
 		
+		criteria = session.createCriteria(CourseAttribute.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
+		this.oldCourseAttributeMining = new HashMap<Long, CourseAttribute>();
+		for (int i = 0; i < t.size(); i++) {
+			this.oldCourseAttributeMining.put(((CourseAttribute) (t.get(i))).getId(), (CourseAttribute) t.get(i));
+		}
+		logger.info("Loaded " + this.oldUserAttributeMining.size() + " LearningAttribute objects from the mining database.");
+		
 		
 		criteria = session.createCriteria(CourseLearning.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());

@@ -89,9 +89,16 @@ public class Test {
 	public static void test()
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
+		ServiceCourseDetails scd = new ServiceCourseDetails();
+		List<Long> courses = new ArrayList<Long>();
+		courses.add(4122L);
+		courses.add(4390L);
+		ResultListCourseObject co = scd.getCoursesDetails(courses);
+		
+		
 			QPerformanceHistogram qput = new QPerformanceHistogram();
 			
-			List<Long> courses = new ArrayList<Long>();
+			courses = new ArrayList<Long>();
 			courses.add(2L);
 			List<String> types = new ArrayList<String>();
 			List<Long> users = new ArrayList<Long>();
