@@ -231,22 +231,20 @@
 
 			<!-- tomcat deployment -->
 			
-			<plugin>
+		<!--  	<plugin>
 		       <groupId>org.apache.tomcat.maven</groupId>
 		       <artifactId>tomcat7-maven-plugin</artifactId>
 		       <version>2.0</version>
 		       <configuration>
 					<warDirectory>target/${project.build.finalName}.war</warDirectory>
-					<!-- remote tomcat manager -->
 					<server>${tomcat-server}</server>
 					<url>${tomcat-url}/manager</url>
 					<path>/${lemo-system-name}/${project.artifactId}</path>
 					<update>true</update>
-					<!-- local server port, only used when executed with tomcat6:run -->
 					<port>8081</port>
 		       </configuration>
-      		</plugin>
-      		<!--  
+      		</plugin> -->
+      		
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat6-maven-plugin</artifactId>
@@ -259,7 +257,7 @@
 					<update>true</update>
 					<port>8081</port>
 				</configuration>
-			</plugin> -->
+			</plugin>
 
 
 			<plugin>
