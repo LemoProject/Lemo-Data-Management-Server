@@ -100,10 +100,10 @@ public class Test {
 //		QDatabase courseUsers = new QDatabase();
 //				
 //		new FeatureProcessor().processFeatures();
-//		new FeatureProcessor().processAll();
+		new FeatureProcessor().processAll();
 		
 
-		new Classifier();
+		//new Classifier();
 
 	}
 	

@@ -40,8 +40,12 @@ public class FeatureProcessor{
 		List<Collection<?>> persistCollections = new ArrayList<Collection<?>>();
 		List<LearningAttribute> contentImageCount = new ContentImageCount().getLearningAttributes();
 		persistCollections.add(contentImageCount);
+		persistFeatures(persistCollections);
+		persistCollections = new ArrayList<Collection<?>>();
 		List<LearningAttribute> contentLinkCount = new ContentLinkCount().getLearningAttributes();
 		persistCollections.add(contentLinkCount);
+		persistFeatures(persistCollections);
+		persistCollections = new ArrayList<Collection<?>>();
 		List<LearningAttribute> contentWordCount = new ContentWordCount().getLearningAttributes();
 		persistCollections.add(contentWordCount);
 		persistFeatures(persistCollections);
