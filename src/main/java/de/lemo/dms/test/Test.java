@@ -36,6 +36,7 @@ import org.hibernate.Session;
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.StudentHelper;
+import de.lemo.dms.processing.questions.QCourseActivity;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsApriori;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
@@ -43,6 +44,7 @@ import de.lemo.dms.processing.questions.QPerformanceUserTest;
 import de.lemo.dms.processing.questions.async.AFrequentPathsBIDE;
 import de.lemo.dms.processing.resulttype.CourseObject;
 import de.lemo.dms.processing.resulttype.ResultListCourseObject;
+import de.lemo.dms.processing.resulttype.ResultListHashMapObject;
 import de.lemo.dms.service.ServiceCourseDetails;
 import de.lemo.dms.service.ServiceCourseTitleSearch;
 import de.lemo.dms.service.ServiceLearningTypes;
@@ -90,23 +92,24 @@ public class Test {
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		ServiceCourseDetails scd = new ServiceCourseDetails();
+		QCourseActivity cca = new QCourseActivity();
 		List<Long> courses = new ArrayList<Long>();
-		courses.add(4122L);
-		courses.add(4390L);
+		courses.add(1L);
+		courses.add(2L);
+		List<String> types = new ArrayList<String>();
+		List<Long> users = new ArrayList<Long>();
+		Double minSup = 0.7d;
+		Long startTime = 0L;
+		Long endTime = 1500000000L;
+		Long minLength = null;
+		Long maxLength = null;
 		ResultListCourseObject co = scd.getCoursesDetails(courses);
+		ResultListHashMapObject ilo = cca.compute(courses, users, startTime, endTime, 100L, new ArrayList<String>(), new ArrayList<Long>(), new ArrayList<Long>());
 		
 		
 			QPerformanceHistogram qput = new QPerformanceHistogram();
 			
-			courses = new ArrayList<Long>();
-			courses.add(2L);
-			List<String> types = new ArrayList<String>();
-			List<Long> users = new ArrayList<Long>();
-			Double minSup = 0.7d;
-			Long startTime = 0L;
-			Long endTime = 1500000000L;
-			Long minLength = null;
-			Long maxLength = null;
+
 			List<Long> gender = new ArrayList<Long>();
 			List<Long> learningObjects = new ArrayList<Long>();
 			

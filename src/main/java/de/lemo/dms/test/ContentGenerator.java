@@ -623,7 +623,7 @@ public class ContentGenerator {
 			ca.setId(courseAttributes.size() + 1);
 			ca.setAttribute(attributes.get(4));
 			ca.setCourse(courseList.get(cid.intValue() -1 ));
-			ca.setValue(lasts.get(cid).toString());
+			ca.setValue(firsts.get(cid).toString());
 			
 			courseAttributes.add(ca);
 			
@@ -631,7 +631,7 @@ public class ContentGenerator {
 			cf.setId(courseAttributes.size() + 1);
 			cf.setAttribute(attributes.get(5));
 			cf.setCourse(courseList.get(cid.intValue() -1));
-			cf.setValue(firsts.get(cid).toString());
+			cf.setValue(lasts.get(cid).toString());
 			
 			courseAttributes.add(cf);
 		}
