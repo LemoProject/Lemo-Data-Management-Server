@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.lemo.dms.processing.questions.QDatabase;
+import de.lemo.dms.processing.resulttype.ResultListUserInstance;
 import de.lemo.dms.processing.resulttype.UserInstance;
 import weka.core.Attribute;
 import weka.core.FastVector;
@@ -24,20 +25,58 @@ public class Classifier {
 
 	private int numAttributes;
 	private Instances instances;
-	private List<UserInstance> userInstances;
+	private List<UserInstance> userInstancesTraining;
+	private NaiveBayes classifier;
+	private List<UserInstance> userInstancesTesting;
+
+	public List<UserInstance> getUserInstancesTesting() {
+		return userInstancesTesting;
+	}
+
+	public void setUserInstancesTesting(List<UserInstance> userInstancesTesting) {
+		this.userInstancesTesting = userInstancesTesting;
+	}
 
 	public Classifier() {
-		userInstances = new QDatabase().queryAllUserInstances();
-		setUserInstances(userInstances);
-		createWekaData(userInstances);
-		crossValidateClassifier();
-		//trainClassifier();
+	}
+
+	public Classifier(Long trainCourseId, Long testCourseId) {
+		userInstancesTraining = new QDatabase().queryAllUserInstances(trainCourseId);
+		userInstancesTesting = new QDatabase().queryAllUserInstances(testCourseId);
+		setUserInstances(userInstancesTraining);
+		createWekaData(userInstancesTraining);
+		//crossValidateClassifier();
+		trainClassifier();
+		applyClassifier();
 		//saveArff();
+	}
+
+	private void applyClassifier() {
+	    createWekaData(userInstancesTesting);
+	    double predictedClass;
+		for(int i=0; i < instances.numInstances(); i++){
+			try {
+				predictedClass=classifier.classifyInstance(instances.instance(i));
+				userInstancesTesting.get(i).setClassId((int)predictedClass);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			Evaluation eval = new Evaluation(instances);
+			eval.evaluateModel(classifier, instances);
+			System.out.println(eval.toSummaryString("\nResults\n======\n", false));	
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 	}
 
 	private void saveArff() {
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter("/home/vk/Desktop/UserInstances.arff"));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("/home/vk/Desktop/UserInstances_vs_2.arff"));
 			writer.write(instances.toString());
 			writer.flush();
 			writer.close();
@@ -49,11 +88,11 @@ public class Classifier {
 
 	private void crossValidateClassifier() {
 
-		NaiveBayes tree = new NaiveBayes();         // new instance of tree
+		classifier = new NaiveBayes();         // new instance of tree
 		try {
-			//tree.buildClassifier(instances);   // build classifier
+			//classifier.buildClassifier(instances);   // build classifier
 			Evaluation eval = new Evaluation(instances);
-			eval.crossValidateModel(tree, instances, 3, new Random(1));
+			eval.crossValidateModel(classifier, instances, 3, new Random(1));
 			System.out.println("Instances: " +instances.numInstances());
 			System.out.println("Correct classified: "+eval.correct());
 			System.out.println("Percentage correct classified: "+eval.pctCorrect());
@@ -68,15 +107,12 @@ public class Classifier {
 	}
 
 	private void trainClassifier(){
-		NaiveBayes tree = new NaiveBayes(); 
+		classifier = new NaiveBayes(); 
 		try {
-			tree.buildClassifier(instances);
-			for (int i = 0; i < 100; i++) {
-				double pred = tree.classifyInstance(instances.instance(i));
-				System.out.print("ID: " + i);
-				System.out.print(", actual: " + instances.classAttribute().value((int) instances.instance(i).classValue()));
-				System.out.println(", predicted: " + instances.classAttribute().value((int) pred));
-			}
+			classifier.buildClassifier(instances);
+			Evaluation eval = new Evaluation(instances);
+			eval.evaluateModel(classifier, instances);
+			System.out.println(eval.toSummaryString("\nResults\n======\n", false));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -99,6 +135,7 @@ public class Classifier {
 		// 4. output data
 		System.out.println("Class attribute: " + instances.numAttributes());		
 	}
+	
 	private Instance createWekaInstance(UserInstance userInstance) {
 		double[] vals = new double[numAttributes];
 		// - numeric
@@ -107,8 +144,13 @@ public class Classifier {
 		vals[2] = userInstance.getLinkCount();
 		vals[3] = userInstance.getUpVotes();
 		vals[4] = userInstance.getWordCount();
-		vals[5] = userInstance.getProgressPercentage();
-		vals[6] = userInstance.getClassId();
+		vals[5] = userInstance.getReceivedUpVotes();
+		vals[6] = userInstance.getReceivedDownVotes();
+		vals[7] = userInstance.isForumUsed()?0:1;
+		vals[8] = userInstance.getAnswerCount();
+		vals[9] = userInstance.getCommentCount();
+		vals[10] = userInstance.getPostCount();
+		vals[11] = userInstance.getClassId();
 
 		return new Instance(1.0, vals);
 	}
@@ -121,8 +163,18 @@ public class Classifier {
 		atts.addElement(new Attribute("LinkCount"));
 		atts.addElement(new Attribute("UpVotes"));
 		atts.addElement(new Attribute("WordCount"));
-		atts.addElement(new Attribute("Progress"));
+		atts.addElement(new Attribute("ReceivedUpVotes"));
+		atts.addElement(new Attribute("ReceivedDownVotes"));
 
+		FastVector forumActivity = new FastVector();
+		forumActivity.addElement("active");
+		forumActivity.addElement("passive");
+		atts.addElement(new Attribute("ForumParticipation", forumActivity));
+		
+		atts.addElement(new Attribute("AnswerCount"));
+		atts.addElement(new Attribute("CommentCount"));
+		atts.addElement(new Attribute("PostCount"));
+		
 		FastVector classId = new FastVector();
 		classId.addElement("failed");
 		classId.addElement("passed");
@@ -140,10 +192,23 @@ public class Classifier {
 	}
 
 	public List<UserInstance> getUserInstances() {
-		return userInstances;
+		return userInstancesTraining;
 	}
 
 	public void setUserInstances(List<UserInstance> userInstances) {
-		this.userInstances = userInstances;
+		this.userInstancesTraining = userInstances;
+	}
+
+	public ResultListUserInstance trainAndTestUserInstances(
+			List<UserInstance> trainInstances, List<UserInstance> testInstances) {
+		userInstancesTraining = trainInstances;
+		userInstancesTesting = testInstances;
+		setUserInstances(userInstancesTraining);
+		createWekaData(userInstancesTraining);
+		//crossValidateClassifier();
+		trainClassifier();
+		applyClassifier();
+		saveArff();
+		return new ResultListUserInstance(getUserInstancesTesting());
 	}
 }

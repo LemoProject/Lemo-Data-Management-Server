@@ -17,8 +17,10 @@ import de.lemo.dms.db.mapping.Course;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.LearningAttribute;
 import de.lemo.dms.db.mapping.UserAssessment;
+import de.lemo.dms.processing.FeatureProcessor;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
+import de.lemo.dms.processing.classification.Classifier;
 import de.lemo.dms.processing.resulttype.ResultListUserInstance;
 import de.lemo.dms.processing.resulttype.UserInstance;
 
@@ -30,30 +32,55 @@ public class QDatabase extends Question {
 
 	@POST
 	public ResultListUserInstance compute(
-			@FormParam(MetaParam.COURSE_IDS) final List<Long> courses,
+			@FormParam(MetaParam.COURSE_IDS) final Long testCourseId,
 			@FormParam(MetaParam.START_TIME) final Long startTime,
 			@FormParam(MetaParam.END_TIME) final Long endTime,
-			@FormParam(MetaParam.GENDER) List<Long> gender) {
+			@FormParam("targetCourseId") final Long trainCourseId) {
 
 	//	validateTimestamps(startTime, endTime);
+		System.out.println("Test Course: "+testCourseId+" Train Course: "+trainCourseId);
+		ResultListUserInstance result;
 		
-		List<UserInstance> studentInstances = queryAllUserInstances();	
-		return new ResultListUserInstance(studentInstances);
+		//result = classifyFromLearningObjects(testCourseId,trainCourseId);
+		result = classifyFromLogs(testCourseId,trainCourseId);
+		return result;
 	}
 
-	public List<UserInstance> queryAllUserInstances() {
+	private ResultListUserInstance classifyFromLogs(Long testCourseId,
+			Long trainCourseId) {
+		List<UserInstance> trainInstances = generateUserInstancesFromFeatures(trainCourseId);
+		List<UserInstance> testInstances = generateUserInstancesFromFeatures(testCourseId);
+		Classifier naiveBayes = new Classifier();
+		ResultListUserInstance result = naiveBayes.trainAndTestUserInstances(trainInstances,testInstances);
+		return result;
+	}
+
+	private ResultListUserInstance classifyFromLearningObjects(
+			Long testCourseId, Long trainCourseId) {
+		Classifier naiveBayes = new Classifier(trainCourseId,testCourseId);
+		return new ResultListUserInstance(naiveBayes.getUserInstancesTesting());
+	}
+
+	//Gets all users as instances and initializes them from learning attributes.
+	public List<UserInstance> queryAllUserInstances(Long courseId) {
 		List<UserInstance> studentInstances= new ArrayList<UserInstance>();
 		
 		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		Criteria criteria = session.createCriteria(CourseUser.class);
-		criteria.add(Restrictions.eq("course.id", 0L));
-		logger.info("Started to query course 1 users.");
+		criteria.add(Restrictions.eq("course.id", courseId));
 		List<CourseUser> courseUsers = criteria.list();
 		session.close();	
 		
 		for(CourseUser courseUser : courseUsers){
-			studentInstances.add(new UserInstance(courseUser));			
+			studentInstances.add(new UserInstance(courseUser).queryUserAssessments());			
 		}	
+		return studentInstances;
+	}
+	
+	public List<UserInstance> generateUserInstancesFromFeatures(Long courseId){
+		List<UserInstance> studentInstances= new ArrayList<UserInstance>();		
+		FeatureProcessor featureProcessor = new FeatureProcessor();
+		studentInstances = featureProcessor.generateFeaturesForCourseUsers(courseId);
 		return studentInstances;
 	}
 }
