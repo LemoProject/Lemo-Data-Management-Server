@@ -1,7 +1,7 @@
 /**
  * File ./src/main/java/de/lemo/dms/service/ServiceLoginAuthentification.java
  * Lemo-Data-Management-Server for learning analytics.
- * Copyright (C) 2013
+ * Copyright (C) 2015
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -64,7 +64,7 @@ public class ServiceLoginAuthentification {
 		final String loginHash = Encoder.createMD5(login);
 
 		final Criteria criteria = session.createCriteria(User.class, "users");
-		criteria.add(Restrictions.eq("users.authentication", loginHash));
+		criteria.add(Restrictions.eq("users.login", loginHash));
 
 		logger.debug("Looking for user:" + login);
 

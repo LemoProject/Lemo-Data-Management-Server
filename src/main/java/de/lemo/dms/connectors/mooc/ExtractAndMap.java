@@ -1,7 +1,7 @@
 /**
  * File ./src/main/java/de/lemo/dms/connectors/mooc/ExtractAndMap.java
  * Lemo-Data-Management-Server for learning analytics.
- * Copyright (C) 2013
+ * Copyright (C) 2015
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -75,7 +75,7 @@ public abstract class ExtractAndMap {
 	/** A List of new entries in the course table found in this run of the process. */
 
 	protected Map<Long, Course> courseMining;
-	protected Map<String, Attribute> attributeMining;
+	protected Map<String, Attribute> attributeMining = new HashMap<String, Attribute>();
 	protected Map<Long, LearningObj> learningObjectMining;
 	protected Map<Long, User> userMining;
 	protected Map<Long, Role> roleMining;	
@@ -83,7 +83,7 @@ public abstract class ExtractAndMap {
 	protected Map<Long, CourseLearning> courseLearningMining;
 	protected Map<Long, CourseUser> courseUserMining;	
 	
-	protected Map<Long, CourseAttribute> courseAttributeMining;	
+	protected Map<Long, CourseAttribute> courseAttributeMining= new HashMap<Long, CourseAttribute>();	
 	protected Map<Long, UserAttribute> userAttributeMining;	
 	protected Map<Long, LearningAttribute> learningAttributeMining;	
 	
@@ -332,6 +332,15 @@ public abstract class ExtractAndMap {
 		this.oldLearningAttributeMining = new HashMap<Long, LearningAttribute>();
 		for (int i = 0; i < t.size(); i++) {
 			this.oldLearningAttributeMining.put(((LearningAttribute) (t.get(i))).getId(), (LearningAttribute) t.get(i));
+		}
+		logger.info("Loaded " + this.oldUserAttributeMining.size() + " LearningAttribute objects from the mining database.");
+		
+		criteria = session.createCriteria(CourseAttribute.class, "obj");
+		criteria.addOrder(Property.forName("obj.id").asc());
+		t = criteria.list();
+		this.oldCourseAttributeMining = new HashMap<Long, CourseAttribute>();
+		for (int i = 0; i < t.size(); i++) {
+			this.oldCourseAttributeMining.put(((CourseAttribute) (t.get(i))).getId(), (CourseAttribute) t.get(i));
 		}
 		logger.info("Loaded " + this.oldUserAttributeMining.size() + " LearningAttribute objects from the mining database.");
 		
@@ -584,12 +593,7 @@ public abstract class ExtractAndMap {
 			logger.info("Generated " + this.courseLearningMining.size()
 					+ " CourseLearningObject entries in " + this.c.getAndReset() + " s. ");
 			this.updates.add(this.courseLearningMining.values());
-			
-			this.courseAttributeMining = generateCourseAttributes();
-			objects += this.courseAttributeMining.size();
-			logger.info("Generated " + this.courseAttributeMining.size()
-					+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
-			this.updates.add(this.courseAttributeMining.values());
+
 
 		}
 
@@ -621,6 +625,13 @@ public abstract class ExtractAndMap {
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " AssessmentLog entries in " + this.c.getAndReset() + " s. ");
+		
+		
+		this.courseAttributeMining = generateCourseAttributes();
+		objects += this.courseAttributeMining.size();
+		logger.info("Generated " + this.courseAttributeMining.size()
+				+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
+		this.updates.add(this.courseAttributeMining.values());
 		
 		if (objects > 0)
 		{

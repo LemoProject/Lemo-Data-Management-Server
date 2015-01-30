@@ -1,6 +1,6 @@
 /**
  * File ./src/main/java/de/lemo/dms/connectors/ESourcePlatform.java Lemo-Data-Management-Server for learning analytics.
- * Copyright (C) 2013 Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
+ * Copyright (C) 2015 Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
  * 
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or any later version.

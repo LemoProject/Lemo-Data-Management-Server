@@ -1,7 +1,7 @@
 /**
  * File ./src/main/java/de/lemo/dms/test/ContentGenerator.java
  * Lemo-Data-Management-Server for learning analytics.
- * Copyright (C) 2013
+ * Copyright (C) 2015
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -223,6 +223,18 @@ public class ContentGenerator {
 		attCourseDescription.setName("Course Description");
 		
 		attributes.add(attCourseDescription);
+		
+		Attribute attCourseFirst = new Attribute();
+		attCourseFirst.setId(4);
+		attCourseFirst.setName("CourseFirstRequest");
+		
+		attributes.add(attCourseFirst);
+		
+		Attribute attCourseLast = new Attribute();
+		attCourseLast.setId(5);
+		attCourseLast.setName("CourseLastRequest");
+		
+		attributes.add(attCourseLast);
 
 		// Create users
 		for (int i = 0; i < users; i++)
@@ -299,6 +311,8 @@ public class ContentGenerator {
 			t.setType(EAssessmentType.values()[i].toString());
 			asseTypes.add(t);
 		}
+		
+		
 		
 		for (int k = 1; k <= coursesPerLevel; k++)
 		{
@@ -584,11 +598,43 @@ public class ContentGenerator {
 
 		final ArrayList<ILog> allLogs = new ArrayList<ILog>();
 		
+		
 		createIdsLL(learnLog);
 		allLogs.addAll(collLog);
 		createIdsCL(collLog);
 		allLogs.addAll(taskLogs);
 		createIdsTL(taskLogs);
+		
+		Collections.sort(allLogs);
+		Map<Long, Long> firsts = new HashMap<Long, Long>();
+		Map<Long, Long> lasts = new HashMap<Long, Long>();
+		
+		
+		for(ILog il : allLogs)
+		{
+			if(firsts.get(il.getCourse().getId()) == null)
+				firsts.put(il.getCourse().getId(), il.getTimestamp());
+			lasts.put(il.getCourse().getId(), il.getTimestamp());
+		}
+		
+		for(Long cid : lasts.keySet())
+		{
+			CourseAttribute ca = new CourseAttribute();
+			ca.setId(courseAttributes.size() + 1);
+			ca.setAttribute(attributes.get(4));
+			ca.setCourse(courseList.get(cid.intValue() -1 ));
+			ca.setValue(firsts.get(cid).toString());
+			
+			courseAttributes.add(ca);
+			
+			CourseAttribute cf = new CourseAttribute();
+			cf.setId(courseAttributes.size() + 1);
+			cf.setAttribute(attributes.get(5));
+			cf.setCourse(courseList.get(cid.intValue() -1));
+			cf.setValue(lasts.get(cid).toString());
+			
+			courseAttributes.add(cf);
+		}
 
 
 		all.add(learnLog);

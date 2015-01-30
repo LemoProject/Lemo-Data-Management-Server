@@ -1,7 +1,7 @@
 /**
  * File ./src/main/java/de/lemo/dms/db/mapping/CollaborativeLog.java
  * Lemo-Data-Management-Server for learning analytics.
- * Copyright (C) 2013
+ * Copyright (C) 2015
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -157,6 +157,7 @@ public class CollaborationLog implements IMapping, ILog{
 		this.timestamp = timestamp;
 	}
 
+	//@Lob
 	@Column(name="text")
 	public String getText() {
 		return text;
@@ -165,6 +166,8 @@ public class CollaborationLog implements IMapping, ILog{
 
 
 	public void setText(String text) {
+		if( text != null && text.length() > 255)
+			text = text.substring(0, 254);
 		this.text = text;
 	}
 

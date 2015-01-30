@@ -1,7 +1,7 @@
 /**
  * File ./src/main/java/de/lemo/dms/connectors/moodle_2_7/mapping/ForumPostsLMS.java
  * Lemo-Data-Management-Server for learning analytics.
- * Copyright (C) 2013
+ * Copyright (C) 2015
  * Leonard Kappe, Andreas Pursian, Sebastian Schwarzrock, Boris Wenzlaff
  * 
  * This program is free software: you can redistribute it and/or modify
