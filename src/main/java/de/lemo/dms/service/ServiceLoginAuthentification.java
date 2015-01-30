@@ -64,7 +64,7 @@ public class ServiceLoginAuthentification {
 		final String loginHash = Encoder.createMD5(login);
 
 		final Criteria criteria = session.createCriteria(User.class, "users");
-		criteria.add(Restrictions.eq("users.authentication", loginHash));
+		criteria.add(Restrictions.eq("users.login", loginHash));
 
 		logger.debug("Looking for user:" + login);
 
