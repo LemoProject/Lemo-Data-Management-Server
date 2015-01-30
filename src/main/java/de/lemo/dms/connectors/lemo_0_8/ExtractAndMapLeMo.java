@@ -81,6 +81,7 @@ import de.lemo.dms.db.mapping.Role;
 import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.User;
 import de.lemo.dms.db.mapping.UserAttribute;
+import de.lemo.dms.processing.resulttype.CourseObject;
 
 /**
  * The main class of the extraction process.
@@ -123,6 +124,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 	private List<WikiLogLMS> wikiLogLms = new ArrayList<WikiLogLMS>();
 	
 	private final Logger logger = Logger.getLogger(this.getClass());
+	
+	final Map<Course, CourseObject> courseDetails = new HashMap<Course, CourseObject>();
 
 	public ExtractAndMapLeMo(final IConnector connector) {
 		super(connector);
@@ -513,6 +516,18 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
+			if(!courseDetails.containsKey(insert.getCourse())){
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
+			
 			assessmentLogs.put(insert.getId(), insert);
 		}
 		
@@ -530,6 +545,18 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
+			if(!courseDetails.containsKey(insert.getCourse())){
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
+			
 			assessmentLogs.put(insert.getId(), insert);
 		}
 		
@@ -546,6 +573,19 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setLearning(id, this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
+			
+			
+			if(!courseDetails.containsKey(insert.getCourse())){
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
 			
 			assessmentLogs.put(insert.getId(), insert);
 		}
@@ -673,6 +713,18 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				insert.setText(loadedItem.getMessage());
 			}
 			
+			if(!courseDetails.containsKey(insert.getCourse())){
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
+			
 			collaborationLogs.put(insert.getId(), insert);
 		}
 		
@@ -696,6 +748,18 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				insert.setText(loadedItem.getMessage());
 			}
 			
+			if(!courseDetails.containsKey(insert.getCourse())){
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
+			
 			collaborationLogs.put(insert.getId(), insert);
 		}
 		
@@ -712,6 +776,19 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			insert.setAction(loadedItem.getAction());
+			
+			
+			if(!courseDetails.containsKey(insert.getCourse())){
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
 			
 			collaborationLogs.put(insert.getId(), insert);
 		}
@@ -731,7 +808,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			
 			attribute.setName(name);
 			attribute.setId(this.attributeIdMax + 1);
-			this.learningAttributeIdMax++;
+			this.attributeIdMax++;
 			this.attributeMining.put(name, attribute);
 		}
 		else
@@ -944,6 +1021,42 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 
 	@Override
 	public Map<Long, CourseAttribute> generateCourseAttributes() {
+		for(CourseAttribute ca : this.oldCourseAttributeMining.values())
+		{
+			if(ca.getAttribute().getName().equals("CourseLastRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getLastRequest() > Long.valueOf(ca.getValue()))
+			{
+				ca.setValue(this.courseDetails.get(ca.getCourse()).getLastRequest().toString());
+				this.courseAttributeMining.put(ca.getId(), ca);
+			}
+			if(ca.getAttribute().getName().equals("CourseFirstRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getFirstRequest() < Long.valueOf(ca.getValue()))
+			{
+				ca.setValue(this.courseDetails.get(ca.getCourse()).getFirstRequest().toString());
+				this.courseAttributeMining.put(ca.getId(), ca);
+			}
+		}
+		if(this.oldCourseAttributeMining.isEmpty())
+		{
+
+			for(CourseObject co :this.courseDetails.values())
+			{
+				CourseAttribute ca = new CourseAttribute();
+				ca.setId(this.courseAttributeIdMax + 1);
+				this.courseAttributeIdMax++;
+				ca.setAttribute(this.attributeMining.get("CourseLastRequest"));
+				ca.setCourse(this.courseMining.get(co.getId()));
+				ca.setValue(co.getLastRequest().toString());
+				this.courseAttributeMining.put(ca.getId(), ca);
+				
+				CourseAttribute first= new CourseAttribute();
+				first.setId(this.courseAttributeIdMax + 1);
+				this.courseAttributeIdMax++;
+				first.setAttribute(this.attributeMining.get("CourseFirstRequest"));
+				first.setCourse(this.courseMining.get(co.getId()));
+				first.setValue(co.getFirstRequest().toString());
+				this.courseAttributeMining.put(first.getId(), first);
+			}
+		}
+		
 		return this.courseAttributeMining;
 	}
 
@@ -1079,6 +1192,19 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			insert.setAction(loadedItem.getAction());
 			
+			if(!courseDetails.containsKey(insert.getCourse()))
+			{
+				courseDetails.put(insert.getCourse(), new CourseObject());
+				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
+			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
+			
 			accessLogMining.put(insert.getId(), insert);
 		}
 		return accessLogMining;
@@ -1086,6 +1212,22 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 
 	@Override
 	public Map<String, Attribute> generateAttributes() {
+		if(!this.oldAttributeMining.containsKey("CourseLastRequest") && !this.attributeMining.containsKey("CourseLastRequest"))
+		{
+			Attribute attribute = new Attribute();
+			attribute.setId(this.attributeIdMax + 1);
+			this.attributeIdMax++;
+			attribute.setName("CourseLastRequest");
+			this.attributeMining.put("CourseLastRequest", attribute);
+		}
+		if(!this.oldAttributeMining.containsKey("CourseFirstRequest") && !this.attributeMining.containsKey("CourseFirstRequest"))
+		{
+			Attribute attribute = new Attribute();
+			attribute.setId(this.attributeIdMax + 1);
+			this.attributeIdMax++;
+			attribute.setName("CourseFirstRequest");
+			this.attributeMining.put("CourseFirstRequest", attribute);
+		}
 		return this.attributeMining;
 	}
 
