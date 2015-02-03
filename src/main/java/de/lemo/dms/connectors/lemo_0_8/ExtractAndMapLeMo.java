@@ -29,8 +29,10 @@ package de.lemo.dms.connectors.lemo_0_8;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -122,6 +124,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 	private List<ScormLogLMS> scormLogLms = new ArrayList<ScormLogLMS>();
 	private List<QuizLogLMS> quizLogLms = new ArrayList<QuizLogLMS>();
 	private List<WikiLogLMS> wikiLogLms = new ArrayList<WikiLogLMS>();
+	private Set<Long> usedCourses = new HashSet<Long>();
 	
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
@@ -528,6 +531,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				maxLog = insert.getTimestamp();
 			}
 			
+			usedCourses.add(insert.getCourse().getId());
 			assessmentLogs.put(insert.getId(), insert);
 		}
 		
@@ -557,6 +561,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				maxLog = insert.getTimestamp();
 			}
 			
+			usedCourses.add(insert.getCourse().getId());
 			assessmentLogs.put(insert.getId(), insert);
 		}
 		
@@ -587,6 +592,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				maxLog = insert.getTimestamp();
 			}
 			
+			usedCourses.add(insert.getCourse().getId());
 			assessmentLogs.put(insert.getId(), insert);
 		}
 		
@@ -725,6 +731,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				maxLog = insert.getTimestamp();
 			}
 			
+			usedCourses.add(insert.getCourse().getId());
 			collaborationLogs.put(insert.getId(), insert);
 		}
 		
@@ -760,6 +767,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				maxLog = insert.getTimestamp();
 			}
 			
+			usedCourses.add(insert.getCourse().getId());
 			collaborationLogs.put(insert.getId(), insert);
 		}
 		
@@ -790,6 +798,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				maxLog = insert.getTimestamp();
 			}
 			
+			usedCourses.add(insert.getCourse().getId());
 			collaborationLogs.put(insert.getId(), insert);
 		}
 		
@@ -1021,6 +1030,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 
 	@Override
 	public Map<Long, CourseAttribute> generateCourseAttributes() {
+		
+
 		for(CourseAttribute ca : this.oldCourseAttributeMining.values())
 		{
 			if(ca.getAttribute().getName().equals("CourseLastRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getLastRequest() > Long.valueOf(ca.getValue()))
@@ -1056,8 +1067,85 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				this.courseAttributeMining.put(first.getId(), first);
 			}
 		}
-		
+		deleteUnusedCourses();
 		return this.courseAttributeMining;
+	}
+	
+	private void deleteUnusedCourses()
+	{
+		Set<Long> uc = new HashSet<Long>();
+		Set<Long> ids = new HashSet<Long>();
+		for(CourseUser cu : this.courseUserMining.values())
+		{
+			if(!this.usedCourses.contains(cu.getCourse().getId()))
+			{
+				ids.add(cu.getId());
+				uc.add(cu.getCourse().getId());
+			}
+		}
+		for(Long id : ids)
+		{
+			this.courseUserMining.remove(id);
+		}
+		ids = new HashSet<Long>();
+		
+		for(CourseLearning cl : this.courseLearningMining.values())
+		{
+			if(!this.usedCourses.contains(cl.getCourse().getId()))
+			{
+				ids.add(cl.getId());
+				uc.add(cl.getCourse().getId());
+			}
+		}
+		for(Long id : ids)
+		{
+			this.courseLearningMining.remove(id);
+		}
+		ids = new HashSet<Long>();
+		
+		
+		for(CourseAttribute ca : this.courseAttributeMining.values())
+		{
+			if(!this.usedCourses.contains(ca.getCourse().getId()))
+			{
+				ids.add(ca.getId());
+				uc.add(ca.getCourse().getId());
+			}
+		}
+		for(Long id : ids)
+		{
+			this.courseAttributeMining.remove(id);
+		}
+		ids = new HashSet<Long>();
+		
+		for(UserAssessment ua : this.userAssessmentMining.values())
+		{
+			if(!this.usedCourses.contains(ua.getCourse().getId()))
+			{
+				ids.add(ua.getId());
+				uc.add(ua.getCourse().getId());
+			}
+		}
+		for(Long id : ids)
+		{
+			this.userAssessmentMining.remove(id);
+		}
+		ids = new HashSet<Long>();
+		
+		for(Course c : this.courseMining.values())
+		{
+			if(!this.usedCourses.contains(c.getId()))
+			{
+				ids.add(c.getId());
+				uc.add(c.getId());
+			}
+		}
+		for(Long id : ids)
+		{
+			this.courseMining.remove(id);
+		}
+		
+		logger.info("Deleted " + uc.size() + " unused courses.");
 	}
 
 	@Override
@@ -1205,6 +1293,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				maxLog = insert.getTimestamp();
 			}
 			
+			usedCourses.add(insert.getCourse().getId());
 			accessLogMining.put(insert.getId(), insert);
 		}
 		return accessLogMining;

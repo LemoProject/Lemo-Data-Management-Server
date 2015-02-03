@@ -82,6 +82,7 @@ public class ServiceCourseDetails {
 	@GET
 	@Path("{cid}")
 	public CourseObject getCourseDetails(@PathParam("cid") final Long id) {
+		System.out.println("bla");
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
@@ -107,7 +108,10 @@ public class ServiceCourseDetails {
 		criteria.add(Restrictions.eq("courseAttribute.course.id", id));
 		criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
 		
-		lastTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
+		
+		System.out.println("bla");
+		if(criteria.list().size() > 0)
+			lastTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
 		
 		criteria = session.createCriteria(Attribute.class, "attribute");
 		criteria.add(Restrictions.like("attribute.name", "CourseFirstRequest"));
@@ -123,7 +127,9 @@ public class ServiceCourseDetails {
 		criteria.add(Restrictions.eq("courseAttribute.course.id", id));
 		criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
 		
-		firstTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
+		System.out.println("bla");
+		if(criteria.list().size() > 0)
+			firstTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
 		
 		CourseObject result =
 				new CourseObject(course.getId(), course.getTitle(), course.getTitle(), StudentHelper.getStudentCount(id), lastTime, firstTime, getCourseHash(id, firstTime, lastTime), StudentHelper.getGenderSupport(id));

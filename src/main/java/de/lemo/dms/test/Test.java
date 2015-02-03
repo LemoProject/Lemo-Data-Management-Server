@@ -91,7 +91,7 @@ public class Test {
 	public static void test()
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		ServiceCourseDetails scd = new ServiceCourseDetails();
+		ServiceCourseTitleSearch scd = new ServiceCourseTitleSearch();
 		QCourseActivity cca = new QCourseActivity();
 		List<Long> courses = new ArrayList<Long>();
 		courses.add(1L);
@@ -103,7 +103,7 @@ public class Test {
 		Long endTime = 1500000000L;
 		Long minLength = null;
 		Long maxLength = null;
-		ResultListCourseObject co = scd.getCoursesDetails(courses);
+		//ResultListCourseObject co = scd.getCoursesByText("e");
 		ResultListHashMapObject ilo = cca.compute(courses, users, startTime, endTime, 100L, new ArrayList<String>(), new ArrayList<Long>(), new ArrayList<Long>());
 		
 		

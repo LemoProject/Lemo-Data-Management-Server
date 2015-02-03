@@ -533,7 +533,7 @@ public abstract class ExtractAndMap {
 			objects += this.courseMining.size();
 			logger.info("Generated " + this.courseMining.size() + " Course entries in "
 					+ this.c.getAndReset() + " s. ");
-			this.updates.add(this.courseMining.values());
+			
 			
 			this.learningObjectMining = this.generateLearningObjs();
 			
@@ -541,30 +541,30 @@ public abstract class ExtractAndMap {
 			objects += this.learningTypeMining.size();
 			logger.info("Generated " + this.learningTypeMining.size()
 					+ " LearningObjectType entries in " + this.c.getAndReset() + " s. ");
-			this.updates.add(this.learningTypeMining.values());
+			
 			
 			objects += this.learningObjectMining.size();
 			logger.info("Generated " + this.learningObjectMining.size() + " LearningObject entries in "
 					+ this.c.getAndReset() + " s. ");
-			this.updates.add(this.learningObjectMining.values());
+			
 
 			this.roleMining = this.generateRoles();
 			objects += this.roleMining.size();
 			logger.info("Generated " + this.roleMining.size() + " Role entries in " + this.c.getAndReset()
 					+ " s. ");
-			this.updates.add(this.roleMining.values());
+			
 
 			this.userMining = this.generateUsers();
 			objects += this.userMining.size();
 			logger.info("Generated " + this.userMining.size() + " User entries in " + this.c.getAndReset()
 					+ " s. ");
-			this.updates.add(this.userMining.values());
+			
 			
 			this.attributeMining = this.generateAttributes();
 			objects += this.attributeMining.size();
 			logger.info("Generated " + this.attributeMining.size() + " Attribute entries in " + this.c.getAndReset()
 					+ " s. ");
-			this.updates.add(this.attributeMining.values());
+			
 
 
 			logger.info("\nAssociation tables:\n");
@@ -576,50 +576,53 @@ public abstract class ExtractAndMap {
 			objects += this.courseLearningMining.size();
 			logger.info("Generated " + this.courseLearningMining.size()
 					+ " CourseLearningObject entries in " + this.c.getAndReset() + " s. ");
-			this.updates.add(this.courseLearningMining.values());
+			
 
 			
 			this.userAttributeMining = this.generateUserAttributes();
 			objects += this.userAttributeMining.size();
 			logger.info("Generated " + this.userAttributeMining.size() + " userAttribute entries in " + this.c.getAndReset()
 					+ " s. ");
-			this.updates.add(this.userAttributeMining.values());
+			
 			
 			this.learningAttributeMining = this.generateLearningAttributes();
 			objects += this.learningAttributeMining.size();
 			logger.info("Generated " + this.learningAttributeMining.size() + " LearningAttribute entries in " + this.c.getAndReset()
 					+ " s. ");
-			this.updates.add(this.learningAttributeMining.values());
+			
 
 		}
 
 		
 		this.courseUserMining = generateCourseUsers();
-		objects += this.updates.get(this.updates.size() - 1).size();
-		this.updates.add(this.courseUserMining.values());
-		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+		objects += this.courseUserMining.size();
+		
+		logger.info("Generated " + this.courseUserMining.size()
 				+ " CourseUser entries in " + this.c.getAndReset() + " s. ");
 
-		this.updates.add(this.generateUserAssessments().values());
-		objects += this.updates.get(this.updates.size() - 1).size();
-		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-				+ " TaskUser entries in " + this.c.getAndReset() + " s. ");
+		this.userAssessmentMining = generateUserAssessments();
+		objects += this.userAssessmentMining.size();
+		logger.info("Generated " + this.userAssessmentMining.size()
+				+ " UserAssessment entries in " + this.c.getAndReset() + " s. ");
 		
 		logger.info("\nLog tables:\n");
 
-		this.updates.add(this.generateAccessLogs().values());
-		objects += this.updates.get(this.updates.size() - 1).size();
-		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+		Collection<AccessLog> al = generateAccessLogs().values();
+		//this.updates.add(this.generateAccessLogs().values());
+		objects += al.size();
+		logger.info("Generated " + al.size()
 				+ " AccessLog entries in " + this.c.getAndReset() + " s. ");
 		
-		this.updates.add(this.generateCollaborativeLogs().values());
-		objects += this.updates.get(this.updates.size() - 1).size();
-		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+		Collection<CollaborationLog> cl = generateCollaborativeLogs().values();
+		//this.updates.add(this.generateCollaborativeLogs().values());
+		objects += cl.size();
+		logger.info("Generated " + cl.size()
 				+ " CollaborationLog entries in " + this.c.getAndReset() + " s. ");
 		
-		this.updates.add(this.generateAssessmentLogs().values());
-		objects += this.updates.get(this.updates.size() - 1).size();
-		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+		Collection<AssessmentLog> asl = generateAssessmentLogs().values();
+		//this.updates.add(this.generateAssessmentLogs().values());
+		objects += asl.size();
+		logger.info("Generated " + asl.size()
 				+ " AssessmentLog entries in " + this.c.getAndReset() + " s. ");
 		
 		
@@ -627,7 +630,22 @@ public abstract class ExtractAndMap {
 		objects += this.courseAttributeMining.size();
 		logger.info("Generated " + this.courseAttributeMining.size()
 				+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
+				
+		this.updates.add(this.courseMining.values());
+		this.updates.add(this.learningTypeMining.values());
+		this.updates.add(this.learningObjectMining.values());	
+		this.updates.add(this.roleMining.values());
+		this.updates.add(this.userMining.values());
+		this.updates.add(this.attributeMining.values());
+		this.updates.add(this.userAttributeMining.values());
+		this.updates.add(this.courseLearningMining.values());
+		this.updates.add(this.courseUserMining.values());
+		this.updates.add(this.userAssessmentMining.values());
 		this.updates.add(this.courseAttributeMining.values());
+		this.updates.add(this.learningAttributeMining.values());
+		this.updates.add(al);
+		this.updates.add(cl);
+		this.updates.add(asl);
 		
 		if (objects > 0)
 		{
