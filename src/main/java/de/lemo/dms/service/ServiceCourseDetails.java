@@ -82,7 +82,6 @@ public class ServiceCourseDetails {
 	@GET
 	@Path("{cid}")
 	public CourseObject getCourseDetails(@PathParam("cid") final Long id) {
-		System.out.println("bla");
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
 
@@ -284,11 +283,6 @@ public class ServiceCourseDetails {
 	public Long getCourseHash(@PathParam("cid") final Long id, final Long first, final Long last) {
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		final Session session = dbHandler.getMiningSession();
-
-		Course course = (Course) session.get(Course.class, id);
-		if (course == null) {
-			throw new ResourceNotFoundException("Course " + id);
-		}
 
 		List<Long> cid = new ArrayList<Long>();
 		cid.add(id);

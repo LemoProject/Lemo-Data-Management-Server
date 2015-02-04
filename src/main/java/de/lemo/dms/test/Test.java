@@ -92,6 +92,7 @@ public class Test {
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		ServiceCourseTitleSearch scd = new ServiceCourseTitleSearch();
+		scd.getCoursesByText("e", 1000l, 0l);
 		QCourseActivity cca = new QCourseActivity();
 		List<Long> courses = new ArrayList<Long>();
 		courses.add(1L);
@@ -123,7 +124,7 @@ public class Test {
 	public static void main(final String[] args)
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.gen();
+		Test.test();
 	}
 
 }

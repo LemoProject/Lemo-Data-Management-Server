@@ -62,11 +62,10 @@ public class StudentHelper {
 		if(courses != null && !courses.isEmpty())
 		{
 			final Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-		
+	
 			Criteria criteria = session.createCriteria(CourseUser.class, "cu");
 			criteria.add(Restrictions.in("cu.course.id", courses));
 			criteria.addOrder(Order.asc("cu.user.id"));
-			@SuppressWarnings("unchecked")
 			List<CourseUser> courseUsers = (List<CourseUser>) criteria.list();
 			
 			List<Long> usersIds = new ArrayList<Long>();
@@ -124,6 +123,7 @@ public class StudentHelper {
 			if(cu.getRole().getType() == 2)
 				count++;
 		}
+		session.close();
 		return count;
 	}
 	

@@ -79,6 +79,8 @@ public class ServiceCourseTitleSearch {
 	public ResultListCourseObject getCoursesByText(@QueryParam(MetaParam.SEARCH_TEXT) final String text,
 			@QueryParam(MetaParam.RESULT_AMOUNT) final Long count,
 			@QueryParam(MetaParam.OFFSET) final Long offset ) {
+		
+		logger.info("Started TitleSearch");
 
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		List<CourseObject> result = new ArrayList<CourseObject>();
@@ -97,12 +99,6 @@ public class ServiceCourseTitleSearch {
 
 		@SuppressWarnings("unchecked")
 		final ArrayList<Course> courses = (ArrayList<Course>) criteria.list();
-		List<Long> ids = new ArrayList<Long>();
-		
-		for(Course course : courses)
-		{
-			ids.add(course.getId());
-		}
 		
 		criteria = session.createCriteria(Attribute.class, "attribute");
 		criteria.add(Restrictions.like("attribute.name", "CourseFirstRequest"));
@@ -123,15 +119,12 @@ public class ServiceCourseTitleSearch {
 		{
 			lattId = ((Attribute)criteria.list().get(criteria.list().size()-1)).getId();
 		}
+		ServiceCourseDetails scd = new ServiceCourseDetails();
 		
-		int i = 0 ;
-		System.out.println(courses.size());
+		int counter = 0;
 		
 		for (Course courseMining : courses) {
 		
-			i++;
-			System.out.println(i);
-			
 			Long lastTime = 0L;
 			Long firstTime = 0L;
 			
@@ -149,12 +142,37 @@ public class ServiceCourseTitleSearch {
 			if(criteria.list().size() > 0)
 				lastTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
 			
+			if(lastTime == 0L)
+			{
+				criteria = session.createCriteria(ILog.class, "log");
+				criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
+			    criteria.setProjection( Projections.projectionList().add( Projections.max("log.timestamp")));			    
+			    for(int i = 0; i < criteria.list().size(); i++)
+			    {
+			    	if(criteria.list().get(i) != null)
+			    		lastTime = (Long)criteria.list().get(i);
+			    }
+			}
+			if(firstTime == 0L)
+			{			 
+				criteria = session.createCriteria(ILog.class, "log");
+				criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
+				criteria.setProjection( Projections.projectionList().add( Projections.min("log.timestamp")));				    
+			    for(int i = 0; i < criteria.list().size(); i++)
+			    {
+			    	if(criteria.list().get(i) != null)
+			    		firstTime = (Long)criteria.list().get(i);
+			    }
+			}
 			
-			ServiceCourseDetails scd = new ServiceCourseDetails();
-			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
-					courseMining.getTitle(), StudentHelper.getStudentCount(courseMining.getId()), lastTime, firstTime, scd.getCourseHash(courseMining.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(courseMining.getId()));
-			result.add(co);
+			int scount = StudentHelper.getStudentCount(courseMining.getId());
+			Long chash = scd.getCourseHash(courseMining.getId(), firstTime, lastTime);
+			boolean gsupp = StudentHelper.getGenderSupport(courseMining.getId());
 
+			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
+					courseMining.getTitle(), scount, 
+					lastTime, firstTime, chash, gsupp);
+			result.add(co);
 		}
 		/*
 		if(count != null && count > 0)
@@ -181,6 +199,8 @@ public class ServiceCourseTitleSearch {
 		}*/
 
 		session.close();
+		logger.info("Finished TitleSearch");
+
 		
 		return new ResultListCourseObject(result);
 	}
