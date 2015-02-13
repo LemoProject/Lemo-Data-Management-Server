@@ -79,8 +79,6 @@ public class ServiceCourseTitleSearch {
 	public ResultListCourseObject getCoursesByText(@QueryParam(MetaParam.SEARCH_TEXT) final String text,
 			@QueryParam(MetaParam.RESULT_AMOUNT) final Long count,
 			@QueryParam(MetaParam.OFFSET) final Long offset ) {
-		
-		logger.info("Started TitleSearch");
 
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();
 		List<CourseObject> result = new ArrayList<CourseObject>();
@@ -120,8 +118,6 @@ public class ServiceCourseTitleSearch {
 			lattId = ((Attribute)criteria.list().get(criteria.list().size()-1)).getId();
 		}
 		ServiceCourseDetails scd = new ServiceCourseDetails();
-		
-		int counter = 0;
 		
 		for (Course courseMining : courses) {
 		
@@ -174,33 +170,7 @@ public class ServiceCourseTitleSearch {
 					lastTime, firstTime, chash, gsupp);
 			result.add(co);
 		}
-		/*
-		if(count != null && count > 0)
-		{
-			if(offset != null && offset > 0 )
-			{
-				if(result.size() - offset >= count)
-				{
-					result = result.subList(offset.intValue(), offset.intValue() + count.intValue());
-				}
-				else
-				{
-					result = result.subList(offset.intValue(), courses.size()-1);
-				}
-			}
-			else
-			{
-				if(result.size() > count)
-				{
-					result = result.subList(0, count.intValue());
-				}
-			}
-			
-		}*/
-
 		session.close();
-		logger.info("Finished TitleSearch");
-
 		
 		return new ResultListCourseObject(result);
 	}

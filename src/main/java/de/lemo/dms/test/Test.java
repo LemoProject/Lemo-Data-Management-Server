@@ -124,7 +124,7 @@ public class Test {
 	public static void main(final String[] args)
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.test();
+		Test.gen();
 	}
 
 }

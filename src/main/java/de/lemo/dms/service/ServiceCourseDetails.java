@@ -107,8 +107,6 @@ public class ServiceCourseDetails {
 		criteria.add(Restrictions.eq("courseAttribute.course.id", id));
 		criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
 		
-		
-		System.out.println("bla");
 		if(criteria.list().size() > 0)
 			lastTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
 		
@@ -125,10 +123,31 @@ public class ServiceCourseDetails {
 		criteria = session.createCriteria(CourseAttribute.class, "courseAttribute");
 		criteria.add(Restrictions.eq("courseAttribute.course.id", id));
 		criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
-		
-		System.out.println("bla");
 		if(criteria.list().size() > 0)
 			firstTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
+		
+		if(lastTime == 0L)
+		{
+			criteria = session.createCriteria(ILog.class, "log");
+			criteria.add(Restrictions.eq("log.course.id", id));
+		    criteria.setProjection( Projections.projectionList().add( Projections.max("log.timestamp")));			    
+		    for(int i = 0; i < criteria.list().size(); i++)
+		    {
+		    	if(criteria.list().get(i) != null)
+		    		lastTime = (Long)criteria.list().get(i);
+		    }
+		}
+		if(firstTime == 0L)
+		{			 
+			criteria = session.createCriteria(ILog.class, "log");
+			criteria.add(Restrictions.eq("log.course.id", id));
+			criteria.setProjection( Projections.projectionList().add( Projections.min("log.timestamp")));				    
+		    for(int i = 0; i < criteria.list().size(); i++)
+		    {
+		    	if(criteria.list().get(i) != null)
+		    		firstTime = (Long)criteria.list().get(i);
+		    }
+		}
 		
 		CourseObject result =
 				new CourseObject(course.getId(), course.getTitle(), course.getTitle(), StudentHelper.getStudentCount(id), lastTime, firstTime, getCourseHash(id, firstTime, lastTime), StudentHelper.getGenderSupport(id));
@@ -171,8 +190,7 @@ public class ServiceCourseDetails {
 			
 			ArrayList<Long> cids = new ArrayList<Long>();
 			cids.add(courseMining.getId());
-			Map<Long, Long> userMap = StudentHelper.getCourseStudentsAliasKeys(cids, new ArrayList<Long>());
-			
+		
 			/*
 			criteria = session.createCriteria(ILog.class, "log");
 			criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
@@ -256,6 +274,29 @@ public class ServiceCourseDetails {
 			criteria.add(Restrictions.eq("courseAttribute.attribute.id", attId));
 			
 			firstTime = Long.valueOf(((CourseAttribute)criteria.list().get(0)).getValue());
+			
+			if(lastTime == 0L)
+			{
+				criteria = session.createCriteria(ILog.class, "log");
+				criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
+			    criteria.setProjection( Projections.projectionList().add( Projections.max("log.timestamp")));			    
+			    for(int i = 0; i < criteria.list().size(); i++)
+			    {
+			    	if(criteria.list().get(i) != null)
+			    		lastTime = (Long)criteria.list().get(i);
+			    }
+			}
+			if(firstTime == 0L)
+			{			 
+				criteria = session.createCriteria(ILog.class, "log");
+				criteria.add(Restrictions.eq("log.course.id", courseMining.getId()));
+				criteria.setProjection( Projections.projectionList().add( Projections.min("log.timestamp")));				    
+			    for(int i = 0; i < criteria.list().size(); i++)
+			    {
+			    	if(criteria.list().get(i) != null)
+			    		firstTime = (Long)criteria.list().get(i);
+			    }
+			}
 			
 			final CourseObject co = new CourseObject(courseMining.getId(), courseMining.getTitle(),
 					courseMining.getTitle(), StudentHelper.getStudentCount(courseMining.getId()), lastTime, firstTime, getCourseHash(courseMining.getId(), firstTime, lastTime), StudentHelper.getGenderSupport(courseMining.getId()));
