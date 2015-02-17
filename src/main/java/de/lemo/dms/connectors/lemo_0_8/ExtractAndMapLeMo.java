@@ -519,7 +519,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
-			if(!courseDetails.containsKey(insert.getCourse())){
+			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
@@ -549,7 +549,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
-			if(!courseDetails.containsKey(insert.getCourse())){
+			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
@@ -580,7 +580,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
 			
-			if(!courseDetails.containsKey(insert.getCourse())){
+			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
@@ -719,7 +719,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				insert.setText(loadedItem.getMessage());
 			}
 			
-			if(!courseDetails.containsKey(insert.getCourse())){
+			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
@@ -755,7 +755,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				insert.setText(loadedItem.getMessage());
 			}
 			
-			if(!courseDetails.containsKey(insert.getCourse())){
+			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
@@ -786,7 +786,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setAction(loadedItem.getAction());
 			
 			
-			if(!courseDetails.containsKey(insert.getCourse())){
+			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
@@ -1280,7 +1280,7 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			insert.setAction(loadedItem.getAction());
 			
-			if(!courseDetails.containsKey(insert.getCourse()))
+			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null)
 			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
