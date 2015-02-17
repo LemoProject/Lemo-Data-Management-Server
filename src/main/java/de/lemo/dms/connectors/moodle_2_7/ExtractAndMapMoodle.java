@@ -1607,7 +1607,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
 			if(insert.getTimestamp() > maxLog)
 			{
@@ -1791,7 +1792,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 
 			if ((insert.getLearning() != null) && (insert.getUser() != null) && (insert.getCourse() != null)) {
 				collaborationLogs.put(insert.getId(), insert);
@@ -1904,7 +1906,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
 
 			if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getLearning() != null)) {
@@ -2449,7 +2452,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
 			if(insert.getTimestamp() > maxLog)
 			{

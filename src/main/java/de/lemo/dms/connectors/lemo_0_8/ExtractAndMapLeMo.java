@@ -525,7 +525,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
 			if(insert.getTimestamp() > maxLog)
 			{
@@ -556,7 +557,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
 			if(insert.getTimestamp() > maxLog)
 			{
@@ -588,7 +590,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
 			if(insert.getTimestamp() > maxLog)
 			{
@@ -728,7 +731,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
 			if(insert.getTimestamp() > maxLog)
 			{
@@ -765,7 +769,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
 			if(insert.getTimestamp() > maxLog)
 			{
@@ -797,7 +802,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
 			if(insert.getTimestamp() > maxLog)
 			{
@@ -1293,7 +1299,8 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				co.setFirstRequest(insert.getTimestamp());
 				courseDetails.put(insert.getCourse(), co);
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
 			if(insert.getTimestamp() > maxLog)
 			{
