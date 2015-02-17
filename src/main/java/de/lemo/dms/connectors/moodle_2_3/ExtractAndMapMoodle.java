@@ -1609,9 +1609,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				}
 			}
 			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
-				courseDetails.put(insert.getCourse(), new CourseObject());
-				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
-				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				CourseObject co = new CourseObject();
+				co.setId(insert.getCourse().getId());
+				co.setFirstRequest(insert.getTimestamp());
+				courseDetails.put(insert.getCourse(), co);
 			}
 			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
@@ -1878,9 +1879,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 			
 			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
-				courseDetails.put(insert.getCourse(), new CourseObject());
-				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
-				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				CourseObject co = new CourseObject();
+				co.setId(insert.getCourse().getId());
+				co.setFirstRequest(insert.getTimestamp());
+				courseDetails.put(insert.getCourse(), co);
 			}
 			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
@@ -2386,9 +2388,10 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 			}
 			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
-				courseDetails.put(insert.getCourse(), new CourseObject());
-				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
-				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				CourseObject co = new CourseObject();
+				co.setId(insert.getCourse().getId());
+				co.setFirstRequest(insert.getTimestamp());
+				courseDetails.put(insert.getCourse(), co);
 			}
 			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			if(insert.getTimestamp() > maxLog)
