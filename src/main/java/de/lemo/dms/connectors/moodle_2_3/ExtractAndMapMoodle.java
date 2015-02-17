@@ -1608,7 +1608,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 							this.learningObjectMining, this.oldLearningObjectMining);
 				}
 			}
-			if(!courseDetails.containsKey(insert.getCourse())){
+			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
@@ -1877,7 +1877,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				maxLog = insert.getTimestamp();
 			}
 			
-			if(!courseDetails.containsKey(insert.getCourse())){
+			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
@@ -2385,7 +2385,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				}
 
 			}
-			if(!courseDetails.containsKey(insert.getCourse())){
+			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
