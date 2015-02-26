@@ -99,8 +99,8 @@ public class Test {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 //		QDatabase courseUsers = new QDatabase();
 //				
-//		new FeatureProcessor().processFeatures();
-		new FeatureProcessor().processAll();
+		new FeatureProcessor().processFeatures();
+//		new FeatureProcessor().processAll();
 		
 
 		//new Classifier();
