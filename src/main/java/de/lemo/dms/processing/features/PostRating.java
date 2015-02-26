@@ -2,6 +2,7 @@ package de.lemo.dms.processing.features;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -15,7 +16,7 @@ import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.CollaborationLog;
 import de.lemo.dms.db.mapping.LearningAttribute;
-
+import de.lemo.dms.db.mapping.LearningObj;
 public class PostRating {
 
 	private ArrayList<LearningAttribute> learningAttributes;
@@ -30,11 +31,9 @@ public class PostRating {
 	private void process(){
 		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 
-		queryAllLogs2();
-		//addLearningAttribute();
-		//addIds();
-		//processLogs();
 		
+		queryAllLogs();
+		System.out.println(getAttribute().getName());
 		session.close();
 	}
 	
@@ -84,30 +83,58 @@ public class PostRating {
 		return attributes.isEmpty()? null : attributes.get(0);
 	}
 	
-	private void queryAllLogs() {
-		Criteria criteria = session.createCriteria(CollaborationLog.class, "collaborationLog");
-		criteria.add(Restrictions.eq("collaborationLog.action", "vote"));
-		criteria.add(Restrictions.eq("collaborationLog.text", "up"));
-		criteria.setProjection(Projections.projectionList()
-                .add(Projections.groupProperty("learning"))
-                .add(Projections.rowCount()));
-		List logs = criteria.list();
-		for(Object log : logs){
-			System.out.println(log);
-		}
-	}
-	
-	private void queryAllLogs2(){
+
+	private void queryAllLogs(){
 		Criteria criteria = session.createCriteria(CollaborationLog.class)
-	            .add(Restrictions.eq("action", "vote"));
+	            .add(Restrictions.eq("action", "vote"))
+				.add(Restrictions.eq("text", "down"));
 	    ProjectionList projectionList = Projections.projectionList();
 	    projectionList.add(Projections.groupProperty("learning"));
 	    projectionList.add(Projections.rowCount());
 	    criteria.setProjection(projectionList);
-	    List<Object[]> results = criteria.list();
-	    for (Object[] obj : results) {
-	    	System.out.println(obj[1]);
+	    List<Object[]> downVotes = criteria.list();
+	    for (Object[] obj : downVotes) {
+	    	addVotesToLearningObj((LearningObj)obj[0],-(Long)obj[1]);
 	    }
+	    
+		criteria = session.createCriteria(CollaborationLog.class)
+	            .add(Restrictions.eq("action", "vote"))
+				.add(Restrictions.eq("text", "up"));
+	    projectionList = Projections.projectionList();
+	    projectionList.add(Projections.groupProperty("learning"));
+	    projectionList.add(Projections.rowCount());
+	    criteria.setProjection(projectionList);
+	    List<Object[]> upVotes = criteria.list();
+	    for (Object[] obj : upVotes) {
+	    	addVotesToLearningObj((LearningObj)obj[0],(Long)obj[1]);
+	    }
+	}
+
+	private void addVotesToLearningObj(LearningObj learning, long l) {
+		System.out.println(learning.getTitle()+": "+l);
+		Criteria criteria = session.createCriteria(LearningAttribute.class)
+				.add(Restrictions.eq("learning", learning))
+				.add(Restrictions.eq("attribute", getAttribute()));
+		List<LearningAttribute> learningAttributes = criteria.list();
+		if(learningAttributes.isEmpty()){
+			createLearningAttribute(learning,l);
+		} else{
+			Long postRating = Long.valueOf(learningAttributes.get(0).getValue());
+			learningAttributes.get(0).setValue(String.valueOf((postRating+l)));
+		}
+	}
+
+	private void createLearningAttribute(LearningObj learning, long l) {
+		LearningAttribute learningAttribute = new LearningAttribute();
+		learningAttribute.setLearning(learning);
+		learningAttribute.setAttribute(getAttribute());
+		learningAttribute.setValue(String.valueOf(l));
+		Criteria criteria = session.createCriteria(LearningAttribute.class, "attribute");
+		criteria.addOrder(Order.desc("id"));
+		criteria.setMaxResults(1);
+		LearningAttribute maxAttribute = (LearningAttribute) criteria.uniqueResult();
+		Long nextId = maxAttribute.getId()+1;
+		learningAttribute.setId(nextId);		
 	}
 
 	protected void processLogs(){
