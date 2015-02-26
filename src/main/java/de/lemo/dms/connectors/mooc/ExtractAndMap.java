@@ -603,6 +603,12 @@ public abstract class ExtractAndMap {
 		this.updates.add(this.courseUserMining.values());
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " CourseUser entries in " + this.c.getAndReset() + " s. ");
+		
+		this.userAttributeMining = generateUserAttributes();
+		objects += this.userAttributeMining.size();
+		logger.info("Generated " + this.userAttributeMining.size()
+				+ " UserAttribute entries in " + this.c.getAndReset() + " s. ");
+		this.updates.add(this.userAttributeMining.values());
 
 		this.updates.add(this.generateUserAssessments().values());
 		objects += this.updates.get(this.updates.size() - 1).size();

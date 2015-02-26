@@ -51,7 +51,7 @@ public class Videos {
 	 * @return the timeCreated
 	 */
 	@Column(name = "created_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimeCreated() {
 		return timeCreated;
 	}
@@ -65,7 +65,7 @@ public class Videos {
 	 * @return the timeModified
 	 */
 	@Column(name = "updated_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimeModified() {
 		return timeModified;
 	}

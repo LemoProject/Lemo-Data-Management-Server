@@ -76,7 +76,7 @@ public class Courses {
 	}
 
 	@Column(name = "created_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimeCreated() {
 		return this.timeCreated;
 	}
@@ -86,7 +86,7 @@ public class Courses {
 	}
 
 	@Column(name = "updated_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimeModified() {
 		return this.timeModified;
 	}
@@ -98,7 +98,7 @@ public class Courses {
 	
 
 	@Column(name = "start_date", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getStartDate() {
 		return this.startDate;
 	}

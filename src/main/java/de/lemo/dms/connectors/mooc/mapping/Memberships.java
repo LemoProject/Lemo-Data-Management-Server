@@ -23,6 +23,7 @@ public class Memberships {
 	private Date timeCreated;
 	private Date timeModified;
 	private String grade;
+	private long progress;
 	
 	/**
 	 * @return the id
@@ -81,7 +82,7 @@ public class Memberships {
 	 * @return the timeCreated
 	 */
 	@Column(name = "created_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimeCreated() {
 		return timeCreated;
 	}
@@ -95,7 +96,7 @@ public class Memberships {
 	 * @return the timemodified
 	 */
 	@Column(name = "updated_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimeModified() {
 		return timeModified;
 	}
@@ -137,6 +138,19 @@ public class Memberships {
 		if(this.grade.equals("F"))
 			return 6d;
 		return null;
+	}
+	/**
+	 * @return the progress
+	 */
+	@Column(name="progress_percentage")
+	public long getProgress() {
+		return progress;
+	}
+	/**
+	 * @param progress the progress to set
+	 */
+	public void setProgress(long progress) {
+		this.progress = progress;
 	}
 	
 

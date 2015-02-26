@@ -31,8 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -149,6 +151,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		this.segmentsMooc = criteria.list();
 		logger.info("Loaded " + this.segmentsMooc.size() + " Segments entries.");
 		
+		
 		criteria = session.createCriteria(Events.class, "obj");
 		criteria.add(Restrictions.gt("obj.timestamp", date));
 		if(!courses.isEmpty())
@@ -166,6 +169,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.eventsMooc = criteria.list();
 		logger.info("Loaded " + this.eventsMooc.size() + " Events entries.");
+		
 		
 		criteria = session.createCriteria(UnitResources.class, "obj");
 		criteria.add(Restrictions.gt("obj.timeModified", date));
@@ -530,7 +534,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		this.courseAttributeIdMax++;
 		description.setCourse(course);
 		description.setAttribute(this.attributeMining.get(attribute));
-		description.setValue(value);
+		description.setValue(value.substring(0, 254));
 		
 		this.courseAttributes.put(description.getId(), description);
 	}
@@ -994,14 +998,28 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	public Map<Long, User> generateUsers() {
 		final HashMap<Long, User> users = new HashMap<Long, User>();
 		
+		//Test
+/*		Map<Long, Long> uid = new HashMap<Long, Long>();
+		for(Memberships m : this.membershipsMooc)
+			if(m.getProgress() >= 80)
+				uid.put(m.getUserId(), m.getProgress());
+*/		
+		
 		for(Users loadedItem : this.usersMooc)
 		{
 			User insert = new User();
 			insert.setId(  loadedItem.getId());
 			insert.setLogin(loadedItem.getId() + "mooc");
-			addUserAttribute(insert, "User Gender", loadedItem.getGender());
-			addUserAttribute(insert, "User Timezone", loadedItem.getTimezone());
-			users.put(insert.getId(), insert);
+			
+			//
+//			if(uid.containsKey(loadedItem.getId()))
+//			{
+			
+				//addUserAttribute(insert, "User Gender", loadedItem.getGender());
+				addUserAttribute(insert, "User Timezone", loadedItem.getTimezone());
+//				addUserAttribute(insert, "UserProgress", uid.get(loadedItem.getId())+"");
+				users.put(insert.getId(), insert);
+//			}
 		}
 		
 		return users;

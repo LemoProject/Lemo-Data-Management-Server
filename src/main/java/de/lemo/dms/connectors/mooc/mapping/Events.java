@@ -66,7 +66,7 @@ public class Events {
 	 * @return the timestamp
 	 */
 	@Column(name = "created_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimestamp() {
 		return timestamp;
 	}

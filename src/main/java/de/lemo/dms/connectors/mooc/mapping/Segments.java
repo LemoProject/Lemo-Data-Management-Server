@@ -102,7 +102,7 @@ public class Segments {
 	 * @return the timecreated
 	 */
 	@Column(name = "created_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimecreated() {
 		return timeCreated;
 	}
@@ -118,7 +118,7 @@ public class Segments {
 	 * @return the timemodified
 	 */
 	@Column(name = "updated_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimeModified() {
 		return timeModified;
 	}

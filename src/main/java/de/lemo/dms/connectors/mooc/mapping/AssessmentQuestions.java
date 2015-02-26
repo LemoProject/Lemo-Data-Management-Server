@@ -80,7 +80,7 @@ public class AssessmentQuestions {
 	 * @return the timecreated
 	 */
 	@Column(name = "created_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimeCreated() {
 		return timeCreated;
 	}
@@ -94,7 +94,7 @@ public class AssessmentQuestions {
 	 * @return the timemodified
 	 */
 	@Column(name = "updated_at", columnDefinition="DATETIME")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimeModified() {
 		return timeModified;
 	}
