@@ -5,6 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
+
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import de.lemo.dms.processing.questions.QDatabase;
 import de.lemo.dms.processing.resulttype.ResultListUserInstance;
@@ -14,7 +19,6 @@ import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.trees.J48;
 /**
  * Generates a little ARFF file with different attribute types.
@@ -26,7 +30,7 @@ public class Classifier {
 	private int numAttributes;
 	private Instances instances;
 	private List<UserInstance> userInstancesTraining;
-	private NaiveBayes classifier;
+	private J48 classifier;
 	private List<UserInstance> userInstancesTesting;
 
 	public List<UserInstance> getUserInstancesTesting() {
@@ -52,8 +56,8 @@ public class Classifier {
 	}
 
 	private void applyClassifier() {
-	    createWekaData(userInstancesTesting);
-	    double predictedClass;
+		createWekaData(userInstancesTesting);
+		double predictedClass;
 		for(int i=0; i < instances.numInstances(); i++){
 			try {
 				predictedClass=classifier.classifyInstance(instances.instance(i));
@@ -71,7 +75,7 @@ public class Classifier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 	}
 
 	private void saveArff() {
@@ -88,7 +92,7 @@ public class Classifier {
 
 	private void crossValidateClassifier() {
 
-		classifier = new NaiveBayes();         // new instance of tree
+		classifier = new J48();         // new instance of tree
 		try {
 			//classifier.buildClassifier(instances);   // build classifier
 			Evaluation eval = new Evaluation(instances);
@@ -107,17 +111,96 @@ public class Classifier {
 	}
 
 	private void trainClassifier(){
-		classifier = new NaiveBayes(); 
+		classifier = new J48(); 
 		try {
 			classifier.buildClassifier(instances);
 			Evaluation eval = new Evaluation(instances);
 			eval.evaluateModel(classifier, instances);
 			System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+			System.out.println(classifier.graph());
+			createJsonGraph(classifier.graph());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
+	private void createJsonGraph(String graph) {
+		String graphSplit[] = graph.split("\\r?\\n");
+		JSONObject decisionTree = new JSONObject();
+		JSONArray nodes = new JSONArray();
+		JSONArray links = new JSONArray();
+		int numberOfNodes = 0;
+
+		for(int i=0; i<graphSplit.length;i++){
+			try {
+				if(!graphSplit[i].contains("->") && graphSplit[i].contains("label")){
+					String lineSplit[] = graphSplit[i].split("\"");
+					JSONObject name = new JSONObject().put("name", lineSplit[1]);
+					if(lineSplit[1].contains("(")){
+						String valueSplit[] = lineSplit[1].split(Pattern.quote("."));
+						String value[] = valueSplit[0].split(Pattern.quote("("));
+						name.put("value", value[1]);
+					}
+					nodes.put(numberOfNodes, name);
+					numberOfNodes++;
+				} 
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		for(int i=0; i<graphSplit.length;i++){
+			try {
+				if(graphSplit[i].contains("->")){
+					String labelSplit[] = graphSplit[i].split("\"");
+					String lineSplit[] = graphSplit[i].split("N");
+					String source[] = lineSplit[1].split("-");
+					String target[] = lineSplit[2].split(" ");
+					
+					JSONObject link = new JSONObject();
+					link.put("source", Integer.valueOf(source[0]));
+					link.put("target", Integer.valueOf(target[0]));
+					link.put("name", labelSplit[1]);
+					links.put(link);
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			nodes.put(numberOfNodes++,new JSONObject().put("name", "passed"));
+			nodes.put(numberOfNodes++,new JSONObject().put("name", "failed"));
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for(int i= links.length()-1;i>=0;i--){
+			try {
+				JSONObject link = links.getJSONObject(i);
+				JSONObject source = nodes.getJSONObject(link.getInt("source"));
+				JSONObject target = nodes.getJSONObject(link.getInt("target"));
+				int value = target.optInt("value");
+				link.put("value", value);
+				value += source.optInt("value");
+				source.put("value", value);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			decisionTree.put("nodes", nodes);
+			decisionTree.put("links", links);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(decisionTree.toString());
+	}
+
 
 	public void createWekaData(List<UserInstance> userInstances) {
 		FastVector      atts;
@@ -135,7 +218,7 @@ public class Classifier {
 		// 4. output data
 		System.out.println("Class attribute: " + instances.numAttributes());		
 	}
-	
+
 	private Instance createWekaInstance(UserInstance userInstance) {
 		double[] vals = new double[numAttributes];
 		// - numeric
@@ -170,11 +253,11 @@ public class Classifier {
 		forumActivity.addElement("active");
 		forumActivity.addElement("passive");
 		atts.addElement(new Attribute("ForumParticipation", forumActivity));
-		
+
 		atts.addElement(new Attribute("AnswerCount"));
 		atts.addElement(new Attribute("CommentCount"));
 		atts.addElement(new Attribute("PostCount"));
-		
+
 		FastVector classId = new FastVector();
 		classId.addElement("failed");
 		classId.addElement("passed");
