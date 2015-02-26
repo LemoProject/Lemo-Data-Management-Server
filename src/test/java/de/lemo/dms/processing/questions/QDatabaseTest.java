@@ -2,11 +2,6 @@ package de.lemo.dms.processing.questions;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.FormParam;
-
 import org.junit.Before;
 import org.junit.Test;
 import de.lemo.dms.processing.resulttype.ResultListUserInstance;

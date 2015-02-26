@@ -6,47 +6,37 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.db.mapping.Attribute;
+import de.lemo.dms.db.mapping.CollaborationLog;
 import de.lemo.dms.db.mapping.LearningAttribute;
 
+public class PostRating {
 
-/* Fetches all content fields from the database and exposes them to the processContent method.
- * To create a new ContentProcessor this method should be implemented and an attribute name should be provided.
- * If an attribute with the given name can be found it is used, else a new one is created.
- */
-public abstract class ContentProcessor {
-
+	private ArrayList<LearningAttribute> learningAttributes;
 	private Session session;
-	private List<LearningAttribute> learningAttributes;
 	private String attributeName;
-
-	public ContentProcessor(){
-		attributeName="";
-		process();
+	
+	
+	public PostRating(){
+		attributeName = "PostRating";
 	}
 	
-	public ContentProcessor(String name){
-		attributeName=name;
-		process();
-	}
-
 	private void process(){
 		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-		learningAttributes = new ArrayList<LearningAttribute>();
 
-		queryAllPosts();
-		addLearningAttribute();
-		addIds();
-		processContent(learningAttributes);
+		queryAllLogs2();
+		//addLearningAttribute();
+		//addIds();
+		//processLogs();
 		
 		session.close();
 	}
-
-	protected abstract void processContent(List<LearningAttribute> contentAttributes);
 	
 	private void addIds() {
 		Criteria criteria = session.createCriteria(LearningAttribute.class, "attribute");
@@ -68,10 +58,10 @@ public abstract class ContentProcessor {
 		for(LearningAttribute learningAttribute : learningAttributes){
 			learningAttribute.setAttribute(attribute);
 		}		
-	}
-
+	}	
 	
-
+	//Creates a new attribute entry in the database with the current attribute name.
+	// Return value is the new attribute.
 	private Attribute createAttribute() {
 		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();	
 		Attribute attribute = new Attribute();		
@@ -93,17 +83,36 @@ public abstract class ContentProcessor {
 		List<Attribute> attributes = criteria.list();
 		return attributes.isEmpty()? null : attributes.get(0);
 	}
-
-	@SuppressWarnings("unchecked")
-	private void queryAllPosts(){
-		Attribute posts = new Attribute();
-		posts.setId(6L);
-		Criteria criteria = session.createCriteria(LearningAttribute.class, "la");
-		criteria.add(Restrictions.eq("la.attribute", posts));
-		learningAttributes = criteria.list();
+	
+	private void queryAllLogs() {
+		Criteria criteria = session.createCriteria(CollaborationLog.class, "collaborationLog");
+		criteria.add(Restrictions.eq("collaborationLog.action", "vote"));
+		criteria.add(Restrictions.eq("collaborationLog.text", "up"));
+		criteria.setProjection(Projections.projectionList()
+                .add(Projections.groupProperty("learning"))
+                .add(Projections.rowCount()));
+		List logs = criteria.list();
+		for(Object log : logs){
+			System.out.println(log);
+		}
 	}
 	
-	public List<LearningAttribute> getLearningAttributes(){
-		return learningAttributes;
+	private void queryAllLogs2(){
+		Criteria criteria = session.createCriteria(CollaborationLog.class)
+	            .add(Restrictions.eq("action", "vote"));
+	    ProjectionList projectionList = Projections.projectionList();
+	    projectionList.add(Projections.groupProperty("learning"));
+	    projectionList.add(Projections.rowCount());
+	    criteria.setProjection(projectionList);
+	    List<Object[]> results = criteria.list();
+	    for (Object[] obj : results) {
+	    	System.out.println(obj[1]);
+	    }
 	}
+
+	protected void processLogs(){
+		process();
+	}
+	
+	
 }
