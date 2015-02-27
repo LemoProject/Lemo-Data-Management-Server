@@ -234,8 +234,10 @@ public class Classifier {
 		vals[8] = userInstance.getAnswerCount();
 		vals[9] = userInstance.getCommentCount();
 		vals[10] = userInstance.getPostCount();
-		vals[11] = userInstance.getPostRating();
-		vals[12] = userInstance.getClassId();
+		vals[11] = userInstance.getPostRatingAverage();
+		vals[12] = userInstance.getPostRatingMin();
+		vals[13] = userInstance.getPostRatingMax();
+		vals[14] = userInstance.getClassId();
 
 		return new Instance(1.0, vals);
 	}
@@ -259,7 +261,9 @@ public class Classifier {
 		atts.addElement(new Attribute("AnswerCount"));
 		atts.addElement(new Attribute("CommentCount"));
 		atts.addElement(new Attribute("PostCount"));
-		atts.addElement(new Attribute("PostRating"));
+		atts.addElement(new Attribute("PostRatingAverage"));
+		atts.addElement(new Attribute("PostRatingMin"));
+		atts.addElement(new Attribute("PostRatingMax"));
 		
 		FastVector classId = new FastVector();
 		classId.addElement("failed");
