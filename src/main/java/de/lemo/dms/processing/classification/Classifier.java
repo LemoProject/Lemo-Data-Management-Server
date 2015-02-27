@@ -203,7 +203,7 @@ public class Classifier {
 
 
 	public void createWekaData(List<UserInstance> userInstances) {
-		FastVector      atts;
+		FastVector atts;
 
 		// 1. set up attributes
 		atts = defineAttributes();
@@ -219,6 +219,7 @@ public class Classifier {
 		System.out.println("Class attribute: " + instances.numAttributes());		
 	}
 
+	//Transforms the user instance object into a weka instance using double array
 	private Instance createWekaInstance(UserInstance userInstance) {
 		double[] vals = new double[numAttributes];
 		// - numeric
@@ -233,7 +234,8 @@ public class Classifier {
 		vals[8] = userInstance.getAnswerCount();
 		vals[9] = userInstance.getCommentCount();
 		vals[10] = userInstance.getPostCount();
-		vals[11] = userInstance.getClassId();
+		vals[11] = userInstance.getPostRating();
+		vals[12] = userInstance.getClassId();
 
 		return new Instance(1.0, vals);
 	}
@@ -257,7 +259,8 @@ public class Classifier {
 		atts.addElement(new Attribute("AnswerCount"));
 		atts.addElement(new Attribute("CommentCount"));
 		atts.addElement(new Attribute("PostCount"));
-
+		atts.addElement(new Attribute("PostRating"));
+		
 		FastVector classId = new FastVector();
 		classId.addElement("failed");
 		classId.addElement("passed");
