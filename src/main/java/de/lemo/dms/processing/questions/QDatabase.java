@@ -55,12 +55,6 @@ public class QDatabase extends Question {
 		return result;
 	}
 
-	private ResultListUserInstance classifyFromLearningObjects(
-			Long testCourseId, Long trainCourseId) {
-		Classifier naiveBayes = new Classifier(trainCourseId,testCourseId);
-		return new ResultListUserInstance(naiveBayes.getUserInstancesTesting());
-	}
-
 	//Gets all users as instances and initializes them from learning attributes.
 	public List<UserInstance> queryAllUserInstances(Long courseId) {
 		List<UserInstance> studentInstances= new ArrayList<UserInstance>();
