@@ -2,7 +2,6 @@ package de.lemo.dms.processing.features;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -19,70 +18,32 @@ import de.lemo.dms.db.mapping.LearningAttribute;
 import de.lemo.dms.db.mapping.LearningObj;
 public class PostRating {
 
-	private ArrayList<LearningAttribute> learningAttributes;
+	private List<LearningAttribute> learningAttributes;
 	private Session session;
 	private String attributeName;
+	private long nextId;
 	
 	
 	public PostRating(){
 		attributeName = "PostRating";
+		learningAttributes = new ArrayList<LearningAttribute>();
 	}
 	
-	private void process(){
+	public void process(){
 		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-
 		
+		queryNextLearningAttributeId();
 		queryAllLogs();
-		System.out.println(getAttribute().getName());
 		session.close();
 	}
 	
-	private void addIds() {
+	private void queryNextLearningAttributeId() {
 		Criteria criteria = session.createCriteria(LearningAttribute.class, "attribute");
 		criteria.addOrder(Order.desc("id"));
 		criteria.setMaxResults(1);
 		LearningAttribute maxAttribute = (LearningAttribute) criteria.uniqueResult();
-		Long nextId = maxAttribute.getId()+1;
-		for(LearningAttribute learningAttribute : learningAttributes){
-			learningAttribute.setId(nextId);
-			nextId++;
-		}		
+		nextId = maxAttribute.getId()+1;		
 	}
-
-	private void addLearningAttribute(){
-		Attribute attribute = getAttribute();
-		if(attribute==null){
-			attribute=createAttribute();
-		}
-		for(LearningAttribute learningAttribute : learningAttributes){
-			learningAttribute.setAttribute(attribute);
-		}		
-	}	
-	
-	//Creates a new attribute entry in the database with the current attribute name.
-	// Return value is the new attribute.
-	private Attribute createAttribute() {
-		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();	
-		Attribute attribute = new Attribute();		
-		Criteria criteria = session.createCriteria(Attribute.class);
-		criteria.addOrder(Order.desc("id"));
-		criteria.setMaxResults(1);
-		Attribute maxAttribute = (Attribute) criteria.uniqueResult();
-		Long nextId = maxAttribute.getId()+1;
-		attribute.setId(nextId);
-		attribute.setName(attributeName);
-		dbHandler.saveToDB(session, attribute);
-		return attribute;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private Attribute getAttribute() {
-		Criteria criteria = session.createCriteria(Attribute.class, "attribute");
-		criteria.add(Restrictions.eq("attribute.name", attributeName));
-		List<Attribute> attributes = criteria.list();
-		return attributes.isEmpty()? null : attributes.get(0);
-	}
-	
 
 	private void queryAllLogs(){
 		Criteria criteria = session.createCriteria(CollaborationLog.class)
@@ -109,37 +70,59 @@ public class PostRating {
 	    	addVotesToLearningObj((LearningObj)obj[0],(Long)obj[1]);
 	    }
 	}
-
+	
+	//Checks if there is already a learning attribute corresponding to the learning object 
+	// or creates a new one.
 	private void addVotesToLearningObj(LearningObj learning, long l) {
-		System.out.println(learning.getTitle()+": "+l);
-		Criteria criteria = session.createCriteria(LearningAttribute.class)
-				.add(Restrictions.eq("learning", learning))
-				.add(Restrictions.eq("attribute", getAttribute()));
-		List<LearningAttribute> learningAttributes = criteria.list();
-		if(learningAttributes.isEmpty()){
-			createLearningAttribute(learning,l);
-		} else{
-			Long postRating = Long.valueOf(learningAttributes.get(0).getValue());
-			learningAttributes.get(0).setValue(String.valueOf((postRating+l)));
+		LearningAttribute learningAttribute = null;
+		for(LearningAttribute attribute : learningAttributes){
+			if(attribute.getLearning().equals(learning)){
+				learningAttribute = attribute;
+			}
+		}
+		if(learningAttribute!=null){
+			Long postRating = Long.valueOf(learningAttribute.getValue());
+			learningAttribute.setValue(String.valueOf((postRating+l)));			
+		} else {
+			learningAttributes.add(createLearningAttribute(learning,l));
 		}
 	}
 
-	private void createLearningAttribute(LearningObj learning, long l) {
+	private LearningAttribute createLearningAttribute(LearningObj learning, long l) {
 		LearningAttribute learningAttribute = new LearningAttribute();
 		learningAttribute.setLearning(learning);
-		learningAttribute.setAttribute(getAttribute());
+		learningAttribute.setAttribute(queryAttribute());
 		learningAttribute.setValue(String.valueOf(l));
-		Criteria criteria = session.createCriteria(LearningAttribute.class, "attribute");
-		criteria.addOrder(Order.desc("id"));
-		criteria.setMaxResults(1);
-		LearningAttribute maxAttribute = (LearningAttribute) criteria.uniqueResult();
-		Long nextId = maxAttribute.getId()+1;
-		learningAttribute.setId(nextId);		
-	}
-
-	protected void processLogs(){
-		process();
+		learningAttribute.setId(nextId++);
+		return learningAttribute;
 	}
 	
+	@SuppressWarnings("unchecked")
+	private Attribute queryAttribute() {
+		Criteria criteria = session.createCriteria(Attribute.class, "attribute");
+		criteria.add(Restrictions.eq("attribute.name", attributeName));
+		List<Attribute> attributes = criteria.list();
+		return attributes.isEmpty()? createAttribute() : attributes.get(0);
+	}
+	
+	//Creates a new attribute entry in the database with the current attribute name.
+	// Return value is the new attribute.
+	private Attribute createAttribute() {
+		IDBHandler dbHandler = ServerConfiguration.getInstance().getMiningDbHandler();	
+		Attribute attribute = new Attribute();		
+		Criteria criteria = session.createCriteria(Attribute.class);
+		criteria.addOrder(Order.desc("id"));
+		criteria.setMaxResults(1);
+		Attribute maxAttribute = (Attribute) criteria.uniqueResult();
+		Long nextId = maxAttribute.getId()+1;
+		attribute.setId(nextId);
+		attribute.setName(attributeName);
+		dbHandler.saveToDB(session, attribute);
+		return attribute;
+	}
+	
+	public List<LearningAttribute> getLearningAttributes(){
+		return learningAttributes;
+	}
 	
 }
