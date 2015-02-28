@@ -234,7 +234,7 @@ public class Classifier {
 		vals[8] = userInstance.getAnswerCount();
 		vals[9] = userInstance.getCommentCount();
 		vals[10] = userInstance.getPostCount();
-		vals[11] = userInstance.getPostRatingAverage();
+		vals[11] = userInstance.getPostRatingSum();
 		vals[12] = userInstance.getPostRatingMin();
 		vals[13] = userInstance.getPostRatingMax();
 		vals[14] = userInstance.getClassId();
@@ -261,7 +261,7 @@ public class Classifier {
 		atts.addElement(new Attribute("AnswerCount"));
 		atts.addElement(new Attribute("CommentCount"));
 		atts.addElement(new Attribute("PostCount"));
-		atts.addElement(new Attribute("PostRatingAverage"));
+		atts.addElement(new Attribute("PostRatingSum"));
 		atts.addElement(new Attribute("PostRatingMin"));
 		atts.addElement(new Attribute("PostRatingMax"));
 		
