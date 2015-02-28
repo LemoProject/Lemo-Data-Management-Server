@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.processing.resulttype.ResultListUserInstance;
 
 public class QDatabaseTest {
@@ -16,21 +18,19 @@ public class QDatabaseTest {
 
 	@Before
 	public void setUp() {
+		ServerConfiguration.getInstance().loadConfig("/lemo");
 		instance = new QDatabase();
 	}
 
 	@Test
 	public void courseSize() {
 
-		testCourseId = 2L;
-		trainCourseId =  2L;
+		testCourseId = 0L;
+		trainCourseId =  0L;
 		startTime = 0L;
 		endTime = Long.MAX_VALUE;
-
 		ResultListUserInstance result = instance.compute(testCourseId, startTime, endTime, trainCourseId);
-
 		assertNotNull(result);
-		//assertEquals(1247L, result.getElements().size());
 	}
 
 }

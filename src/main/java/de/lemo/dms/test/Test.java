@@ -26,34 +26,10 @@
 
 package de.lemo.dms.test;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hibernate.Session;
-
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
-import de.lemo.dms.db.mapping.LearningAttribute;
-import de.lemo.dms.processing.FeatureProcessor;
-import de.lemo.dms.processing.StudentHelper;
-import de.lemo.dms.processing.classification.Classifier;
-import de.lemo.dms.processing.features.ContentLinkCount;
-import de.lemo.dms.processing.questions.QCourseActivity;
-import de.lemo.dms.processing.questions.QCourseUsers;
-import de.lemo.dms.processing.questions.QDatabase;
-import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
-import de.lemo.dms.processing.questions.QFrequentPathsApriori;
-import de.lemo.dms.processing.questions.QPerformanceHistogram;
-import de.lemo.dms.processing.questions.async.AFrequentPathsBIDE;
-import de.lemo.dms.processing.resulttype.CourseObject;
-import de.lemo.dms.processing.resulttype.ResultListCourseObject;
-import de.lemo.dms.processing.resulttype.ResultListHashMapObject;
-import de.lemo.dms.processing.resulttype.ResultListLongObject;
-import de.lemo.dms.service.ServiceCourseDetails;
-import de.lemo.dms.service.ServiceCourseTitleSearch;
-import de.lemo.dms.service.ServiceLearningTypes;
+import de.lemo.dms.processing.FeaturePreProcessor;
 
 /**
  * sollte gelöscht werden
@@ -99,8 +75,7 @@ public class Test {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 //		QDatabase courseUsers = new QDatabase();
 //				
-		new FeatureProcessor().processFeatures();
-//		new FeatureProcessor().processAll();
+		new FeaturePreProcessor().processLogFeatures();
 		
 
 		//new Classifier();
