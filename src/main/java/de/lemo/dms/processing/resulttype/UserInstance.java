@@ -28,6 +28,9 @@ public class UserInstance {
 	private int receivedUpVotes;
 	private int receivedDownVotes;
 	private int progressPercentage;
+	private int postRatingSum;
+	private int postRatingMax;
+	private int postRatingMin;
 	private boolean forumUsed;
 	private CourseUser courseUser;
 	
@@ -210,5 +213,29 @@ public class UserInstance {
 
 	public void setPostCount(int postCount) {
 		this.postCount = postCount;
+	}
+
+	public int getPostRatingSum() {
+		return postRatingSum;
+	}
+
+	public void setPostRatingSum(int postRatingSum) {
+		this.postRatingSum = postRatingSum;
+	}
+
+	public int getPostRatingMax() {
+		return postRatingMax;
+	}
+
+	public void setPostRatingMax(int postRatingMax) {
+		this.postRatingMax = postRatingMax;
+	}
+
+	public int getPostRatingMin() {
+		return postRatingMin;
+	}
+
+	public void setPostRatingMin(int postRatingMin) {
+		this.postRatingMin = postRatingMin;
 	}
 }
