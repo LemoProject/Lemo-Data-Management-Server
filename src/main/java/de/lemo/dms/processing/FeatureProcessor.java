@@ -8,6 +8,7 @@ import java.util.Map;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.CollaborationLog;
 import de.lemo.dms.db.mapping.Course;
@@ -40,11 +41,11 @@ public class FeatureProcessor{
 	private Session session;
 	
 	public FeatureProcessor(){
-		courseId=0L;
+		setCourseId(0L);
 	}
 	
 	public FeatureProcessor(Long courseId){
-		this.courseId=courseId;
+		this.setCourseId(courseId);
 	}
 
 	//Generates all features for all users in the given course.
@@ -52,7 +53,7 @@ public class FeatureProcessor{
 		List<UserInstance> userInstances = new ArrayList<UserInstance>();
 		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		Criteria criteria = session.createCriteria(CollaborationLog.class);
-		criteria.add(Restrictions.eq("course.id", courseId));
+		criteria.add(Restrictions.eq("course.id", getCourseId()));
 		criteria.setProjection(Projections.distinct(Projections.property("user")));
 		List<User> users = criteria.list();
 		for(User user : users){
@@ -60,10 +61,11 @@ public class FeatureProcessor{
 			userInstance.setUserId(user.getId());
 			insertAllFeaturesFromLog(userInstance,user);
 			insertUserAssessment(userInstance,user);
+			insertUserAssessmentLogs(userInstance,user);
 			userInstances.add(userInstance);
 		}
 		criteria = session.createCriteria(CourseUser.class);
-		criteria.add(Restrictions.eq("course.id", courseId));
+		criteria.add(Restrictions.eq("course.id", getCourseId()));
 		criteria.add(Restrictions.not(Restrictions.in("user", users)));
 		List<CourseUser> missingUsers = criteria.list();
 		for(CourseUser missingUser : missingUsers){
@@ -82,7 +84,7 @@ public class FeatureProcessor{
 	private void insertUserAssessment(UserInstance userInstance, User user) {		
 		Criteria criteria = session.createCriteria(UserAssessment.class);
 		criteria.add(Restrictions.eq("user", user));
-		criteria.add(Restrictions.eq("course.id", courseId));
+		criteria.add(Restrictions.eq("course.id", getCourseId()));
 		criteria.add(Restrictions.eq("feedback", "Progress_Percentage"));
 		UserAssessment userAssessment = (UserAssessment) criteria.uniqueResult();
 		if(userAssessment==null){
@@ -95,11 +97,21 @@ public class FeatureProcessor{
 			//assessmentLog = success and SegmentCompletion				
 		}		
 	}
+	
+	private void insertUserAssessmentLogs(UserInstance userInstance, User user){
+		Criteria criteria = session.createCriteria(AssessmentLog.class);
+		criteria.add(Restrictions.eq("user", user));
+		criteria.add(Restrictions.eq("course.id", getCourseId()));
+		criteria.add(Restrictions.eq("action", "SegmentCompletion"));
+		criteria.setProjection(Projections.distinct(Projections.property("learning")));
+		List<AssessmentLog> AssessmentLogs = criteria.list();
+		userInstance.setUnitProgress(AssessmentLogs.size());
+	}
 
 	private void insertAllFeaturesFromLog(UserInstance userInstance,
 			User user) {
 		Criteria criteria = session.createCriteria(CollaborationLog.class);
-		criteria.add(Restrictions.eq("course.id", courseId));
+		criteria.add(Restrictions.eq("course.id", getCourseId()));
 		criteria.add(Restrictions.eq("user", user));
 		List<CollaborationLog> logsFromUser = criteria.list();
 		userInstance.setForumUsed(true);
@@ -154,5 +166,13 @@ public class FeatureProcessor{
 				}
 			}
 		}		
+	}
+
+	private Long getCourseId() {
+		return courseId;
+	}
+
+	private void setCourseId(Long courseId) {
+		this.courseId = courseId;
 	}
 }
