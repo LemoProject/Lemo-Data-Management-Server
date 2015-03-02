@@ -28,6 +28,7 @@ public class UserInstance {
 	private int receivedUpVotes;
 	private int receivedDownVotes;
 	private int progressPercentage;
+	private int unitProgress;
 	private int postRatingSum;
 	private int postRatingMax;
 	private int postRatingMin;
@@ -237,5 +238,13 @@ public class UserInstance {
 
 	public void setPostRatingMin(int postRatingMin) {
 		this.postRatingMin = postRatingMin;
+	}
+
+	public int getUnitProgress() {
+		return unitProgress;
+	}
+
+	public void setUnitProgress(int unitProgress) {
+		this.unitProgress = unitProgress;
 	}
 }
