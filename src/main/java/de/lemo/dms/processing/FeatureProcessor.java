@@ -105,7 +105,7 @@ public class FeatureProcessor{
 		criteria.add(Restrictions.eq("action", "SegmentCompletion"));
 		criteria.setProjection(Projections.distinct(Projections.property("learning")));
 		List<AssessmentLog> AssessmentLogs = criteria.list();
-		userInstance.setUnitProgress(AssessmentLogs.size());
+		userInstance.setSegmentProgress(AssessmentLogs.size());
 	}
 
 	private void insertAllFeaturesFromLog(UserInstance userInstance,

@@ -25,8 +25,8 @@ public class FeatureProcessorTest {
 		assertNotNull(userInstances);
 		int max = 0;
 		for(UserInstance userInstance : userInstances){
-			if(userInstance.getUnitProgress()>max){
-				max = userInstance.getUnitProgress();
+			if(userInstance.getSegmentProgress()>max){
+				max = userInstance.getSegmentProgress();
 			}
 		}
 		assertTrue(max>0);
