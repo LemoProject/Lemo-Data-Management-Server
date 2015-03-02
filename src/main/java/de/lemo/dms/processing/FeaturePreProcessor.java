@@ -23,6 +23,10 @@ import de.lemo.dms.processing.features.ContentLinkCount;
 import de.lemo.dms.processing.features.ContentWordCount;
 import de.lemo.dms.processing.features.PostRating;
 
+/*
+ * Preprocesses features for faster processing later.
+ */
+
 public class FeaturePreProcessor {
 	public void processAssessments(){
 		List<Collection<?>> persistCollections = new ArrayList<Collection<?>>();
