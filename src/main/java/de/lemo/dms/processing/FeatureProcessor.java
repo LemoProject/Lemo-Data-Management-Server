@@ -30,16 +30,27 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
-/* Processes and persists Features.
+/* Generates features on demand for each request.
  * 
  */
 
 public class FeatureProcessor{
+	
+	private Long courseId;
+	private Session session;
+	
+	public FeatureProcessor(){
+		courseId=0L;
+	}
+	
+	public FeatureProcessor(Long courseId){
+		this.courseId=courseId;
+	}
 
 	//Generates all features for all users in the given course.
-	public List<UserInstance> generateFeaturesForCourseUsers(Long courseId) {
+	public List<UserInstance> generateFeaturesForCourseUsers() {
 		List<UserInstance> userInstances = new ArrayList<UserInstance>();
-		Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
+		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		Criteria criteria = session.createCriteria(CollaborationLog.class);
 		criteria.add(Restrictions.eq("course.id", courseId));
 		criteria.setProjection(Projections.distinct(Projections.property("user")));
@@ -47,8 +58,8 @@ public class FeatureProcessor{
 		for(User user : users){
 			UserInstance userInstance = new UserInstance();
 			userInstance.setUserId(user.getId());
-			insertAllFeaturesFromLog(userInstance,user,courseId,session);
-			insertUserAssessment(userInstance,user,courseId,session);
+			insertAllFeaturesFromLog(userInstance,user);
+			insertUserAssessment(userInstance,user);
 			userInstances.add(userInstance);
 		}
 		criteria = session.createCriteria(CourseUser.class);
@@ -59,7 +70,7 @@ public class FeatureProcessor{
 			UserInstance userInstance = new UserInstance();
 			userInstance.setForumUsed(false);
 			userInstance.setUserId(missingUser.getUser().getId());
-			insertUserAssessment(userInstance,missingUser.getUser(),courseId,session);
+			insertUserAssessment(userInstance,missingUser.getUser());
 			userInstances.add(userInstance);
 		}
 		session.close();		
@@ -68,15 +79,14 @@ public class FeatureProcessor{
 
 
 	//Inserts the class/assessment value into the concrete user instance.
-	private void insertUserAssessment(UserInstance userInstance, User user,
-			Long courseId, Session session) {		
+	private void insertUserAssessment(UserInstance userInstance, User user) {		
 		Criteria criteria = session.createCriteria(UserAssessment.class);
 		criteria.add(Restrictions.eq("user", user));
 		criteria.add(Restrictions.eq("course.id", courseId));
 		criteria.add(Restrictions.eq("feedback", "Progress_Percentage"));
 		UserAssessment userAssessment = (UserAssessment) criteria.uniqueResult();
 		if(userAssessment==null){
-			System.out.println("Keine Assesment gefunden!");
+			System.out.println("Keine Assessment gefunden!");
 		}else{
 			userInstance.setProgressPercentage(userAssessment.getFinalGrade().intValue());
 			if(userAssessment.getFinalGrade().intValue()>80){
@@ -87,7 +97,7 @@ public class FeatureProcessor{
 	}
 
 	private void insertAllFeaturesFromLog(UserInstance userInstance,
-			User user, Long courseId,Session session) {
+			User user) {
 		Criteria criteria = session.createCriteria(CollaborationLog.class);
 		criteria.add(Restrictions.eq("course.id", courseId));
 		criteria.add(Restrictions.eq("user", user));
@@ -99,11 +109,11 @@ public class FeatureProcessor{
 			} else if(logFromUser.getAction().equals("vote") && logFromUser.getText().equals("down")){
 				userInstance.setDownVotes(userInstance.getDownVotes()+1);
 			} else if(logFromUser.getAction().equals("answered")){
-				insertAllFeaturesFromLearningAttribute(userInstance,logFromUser.getLearning(),session);
+				insertAllFeaturesFromLearningAttribute(userInstance,logFromUser.getLearning());
 				userInstance.setPostCount(userInstance.getPostCount()+1);
 				userInstance.setAnswerCount(userInstance.getAnswerCount()+1);
 			} else if(logFromUser.getAction().equals("commented")){
-				insertAllFeaturesFromLearningAttribute(userInstance,logFromUser.getLearning(),session);
+				insertAllFeaturesFromLearningAttribute(userInstance,logFromUser.getLearning());
 				userInstance.setPostCount(userInstance.getPostCount()+1);
 				userInstance.setCommentCount(userInstance.getCommentCount()+1);
 			}
@@ -111,7 +121,7 @@ public class FeatureProcessor{
 	}
 
 	private void insertAllFeaturesFromLearningAttribute(
-			UserInstance userInstance, LearningObj learning, Session session) {
+			UserInstance userInstance, LearningObj learning) {
 		Criteria criteria = session.createCriteria(LearningAttribute.class);
 		criteria.add(Restrictions.eq("learning", learning));
 		List<LearningAttribute> learningAttributes = criteria.list();

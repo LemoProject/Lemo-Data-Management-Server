@@ -71,10 +71,8 @@ public class QDatabase extends Question {
 		return studentInstances;
 	}
 	
-	public List<UserInstance> generateUserInstancesFromFeatures(Long courseId){
-		List<UserInstance> studentInstances= new ArrayList<UserInstance>();		
-		FeatureProcessor featureProcessor = new FeatureProcessor();
-		studentInstances = featureProcessor.generateFeaturesForCourseUsers(courseId);
+	public List<UserInstance> generateUserInstancesFromFeatures(Long courseId){	
+		List<UserInstance> studentInstances = new FeatureProcessor(courseId).generateFeaturesForCourseUsers();
 		return studentInstances;
 	}
 }
