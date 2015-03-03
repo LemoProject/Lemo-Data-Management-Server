@@ -31,7 +31,7 @@ public class QDatabaseTest {
 		qDatabase = new QDatabase();
 	}
 	
-	@Test
+	//@Test
 	public void generateUserInstancesFromFeatures(){
 		List<UserInstance> studentInstances = qDatabase.generateUserInstancesFromFeatures(testCourseId);
 		assertNotNull(studentInstances);
@@ -39,10 +39,16 @@ public class QDatabaseTest {
 	}
 
 	@Test
-	public void courseSize() {
-
+	public void compute() {
+		ResultListUserInstance resultLarge  = qDatabase.compute(testCourseId, startTime, endTime, trainCourseId);
+		assertNotNull(resultLarge.getElements());
+		System.out.println(resultLarge.getElements().size());
+		startTime=1376263683L;
+		endTime=1379643589L;
 		ResultListUserInstance result = qDatabase.compute(testCourseId, startTime, endTime, trainCourseId);
-		assertNotNull(result);
+		System.out.println(result.getElements().size());
+		assertTrue(resultLarge.getElements().size()>result.getElements().size());
+		
 	}
 	
 	

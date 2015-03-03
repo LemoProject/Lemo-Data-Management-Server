@@ -8,6 +8,7 @@ import java.util.Map;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
+import de.lemo.dms.db.mapping.AccessLog;
 import de.lemo.dms.db.mapping.AssessmentLog;
 import de.lemo.dms.db.mapping.Attribute;
 import de.lemo.dms.db.mapping.CollaborationLog;
@@ -38,14 +39,20 @@ import org.hibernate.criterion.Restrictions;
 public class FeatureProcessor{
 	
 	private Long courseId;
+	private Long startTime;
+	private Long endTime;
 	private Session session;
 	
 	public FeatureProcessor(){
 		setCourseId(0L);
+		this.startTime = 0L;
+		this.endTime = Long.MAX_VALUE;
 	}
 	
-	public FeatureProcessor(Long courseId){
+	public FeatureProcessor(Long courseId, Long startTime, Long endTime){
 		this.setCourseId(courseId);
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
 
 	//Generates all features for all users in the given course.
@@ -54,6 +61,8 @@ public class FeatureProcessor{
 		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 		Criteria criteria = session.createCriteria(CollaborationLog.class);
 		criteria.add(Restrictions.eq("course.id", getCourseId()));
+		criteria.add(Restrictions.ge("timestamp", startTime));
+		criteria.add(Restrictions.le("timestamp", endTime));
 		criteria.setProjection(Projections.distinct(Projections.property("user")));
 		List<User> users = criteria.list();
 		for(User user : users){
@@ -64,15 +73,18 @@ public class FeatureProcessor{
 			insertUserAssessmentLogs(userInstance,user);
 			userInstances.add(userInstance);
 		}
-		criteria = session.createCriteria(CourseUser.class);
+		criteria = session.createCriteria(AccessLog.class);
 		criteria.add(Restrictions.eq("course.id", getCourseId()));
+		criteria.add(Restrictions.ge("timestamp", startTime));
+		criteria.add(Restrictions.le("timestamp", endTime));
+		criteria.setProjection(Projections.distinct(Projections.property("user")));
 		criteria.add(Restrictions.not(Restrictions.in("user", users)));
-		List<CourseUser> missingUsers = criteria.list();
-		for(CourseUser missingUser : missingUsers){
+		List<User> missingUsers = criteria.list();
+		for(User missingUser : missingUsers){
 			UserInstance userInstance = new UserInstance();
 			userInstance.setForumUsed(false);
-			userInstance.setUserId(missingUser.getUser().getId());
-			insertUserAssessment(userInstance,missingUser.getUser());
+			userInstance.setUserId(missingUser.getId());
+			insertUserAssessment(userInstance,missingUser);
 			userInstances.add(userInstance);
 		}
 		session.close();		
@@ -91,9 +103,9 @@ public class FeatureProcessor{
 			System.out.println("Keine Assessment gefunden!");
 		}else{
 			userInstance.setProgressPercentage(userAssessment.getFinalGrade().intValue());
-			if(userAssessment.getFinalGrade().intValue()>80){
+			/*if(userAssessment.getFinalGrade().intValue()>80){
 				userInstance.setClassId(1);
-			}
+			}*/
 			//assessmentLog = success and SegmentCompletion				
 		}		
 	}

@@ -16,7 +16,7 @@ public class FeatureProcessorTest {
 	@Before
 	public void init(){
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		featureProcesor = new FeatureProcessor(0L);
+		featureProcesor = new FeatureProcessor(0L,0L,Long.MAX_VALUE);
 	}
 	
 	@Test

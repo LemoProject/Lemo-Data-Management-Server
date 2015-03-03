@@ -17,6 +17,7 @@ import de.lemo.dms.db.mapping.Course;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.LearningAttribute;
 import de.lemo.dms.db.mapping.UserAssessment;
+import de.lemo.dms.processing.FeatureFilter;
 import de.lemo.dms.processing.FeatureProcessor;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
@@ -28,8 +29,10 @@ import de.lemo.dms.processing.resulttype.UserInstance;
 public class QDatabase extends Question {
 	
 	Session session;
-	List<UserInstance> userInstances;
-
+	private Long testCourseId;
+	private Long startTime;
+	private Long endTime;
+	private Long trainCourseId;
 	@POST
 	public ResultListUserInstance compute(
 			@FormParam(MetaParam.COURSE_IDS) final Long testCourseId,
@@ -37,17 +40,21 @@ public class QDatabase extends Question {
 			@FormParam(MetaParam.END_TIME) final Long endTime,
 			@FormParam("targetCourseId") final Long trainCourseId) {
 
+		this.testCourseId = testCourseId;
+		this.trainCourseId = trainCourseId;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		
 	//	validateTimestamps(startTime, endTime);
 		System.out.println("Test Course: "+testCourseId+" Train Course: "+trainCourseId);
 		ResultListUserInstance result;
 		
 		//result = classifyFromLearningObjects(testCourseId,trainCourseId);
-		result = classifyFromLogs(testCourseId,trainCourseId);
+		result = classifyFromLogs();
 		return result;
 	}
 
-	private ResultListUserInstance classifyFromLogs(Long testCourseId,
-			Long trainCourseId) {
+	private ResultListUserInstance classifyFromLogs() {
 		List<UserInstance> trainInstances = generateUserInstancesFromFeatures(trainCourseId);
 		List<UserInstance> testInstances = generateUserInstancesFromFeatures(testCourseId);
 		Classifier naiveBayes = new Classifier();
@@ -72,7 +79,8 @@ public class QDatabase extends Question {
 	}
 	
 	public List<UserInstance> generateUserInstancesFromFeatures(Long courseId){	
-		List<UserInstance> studentInstances = new FeatureProcessor(courseId).generateFeaturesForCourseUsers();
+		List<UserInstance> studentInstances = new FeatureProcessor(courseId,startTime,endTime).generateFeaturesForCourseUsers();
+		studentInstances = new FeatureFilter().calculateClassValue(studentInstances);
 		return studentInstances;
 	}
 }
