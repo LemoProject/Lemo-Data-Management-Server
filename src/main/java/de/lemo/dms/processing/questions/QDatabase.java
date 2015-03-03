@@ -44,14 +44,31 @@ public class QDatabase extends Question {
 		this.trainCourseId = trainCourseId;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		
+
+		this.startTime = 0L;
+		this.endTime = Long.MAX_VALUE;
 	//	validateTimestamps(startTime, endTime);
 		System.out.println("Test Course: "+testCourseId+" Train Course: "+trainCourseId);
 		ResultListUserInstance result;
 		
 		//result = classifyFromLearningObjects(testCourseId,trainCourseId);
-		result = classifyFromLogs();
+		//result = classifyFromLogs();
+		result = createDummyResult();
 		return result;
+	}
+
+	private ResultListUserInstance createDummyResult() {
+		List<UserInstance> userInstances = new ArrayList<UserInstance>();
+		UserInstance userInstance = new UserInstance();
+		userInstance.setAnswerCount(4);
+		userInstance.setClassId(0);
+		userInstance.setCommentCount(9);
+		userInstance.setDownVotes(0);
+		userInstance.setWordCount(1999);
+		userInstance.setLinkCount(8);
+		userInstance.setForumUsed(true);
+		userInstances.add(userInstance);
+		return new ResultListUserInstance(userInstances);
 	}
 
 	private ResultListUserInstance classifyFromLogs() {
