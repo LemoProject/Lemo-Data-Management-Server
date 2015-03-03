@@ -200,11 +200,6 @@
 			<version>2.0.4</version>
 		</dependency>
 		<dependency>
-			<groupId>com.thetransactioncompany</groupId>
-			<artifactId>cors-filter</artifactId>
-			<version>2.2.1</version>
-		</dependency>
-		<dependency>
 			<groupId>nz.ac.waikato.cms.weka</groupId>
 			<artifactId>weka-stable</artifactId>
 			<version>3.6.12</version>
@@ -231,7 +226,7 @@
 
 			<!-- tomcat deployment -->
 			
-		<!--  	<plugin>
+		  	<plugin>
 		       <groupId>org.apache.tomcat.maven</groupId>
 		       <artifactId>tomcat7-maven-plugin</artifactId>
 		       <version>2.0</version>
@@ -243,9 +238,9 @@
 					<update>true</update>
 					<port>8081</port>
 		       </configuration>
-      		</plugin> -->
+      		</plugin>
       		
-			<plugin>
+		<!--	<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat6-maven-plugin</artifactId>
 				<version>2.0</version>
@@ -258,7 +253,7 @@
 					<port>8081</port>
 				</configuration>
 			</plugin>
-
+ -->
 
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
