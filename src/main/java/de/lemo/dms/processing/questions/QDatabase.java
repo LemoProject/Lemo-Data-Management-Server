@@ -52,8 +52,8 @@ public class QDatabase extends Question {
 		ResultListUserInstance result;
 		
 		//result = classifyFromLearningObjects(testCourseId,trainCourseId);
-		//result = classifyFromLogs();
-		result = createDummyResult();
+		result = classifyFromLogs();
+		//result = createDummyResult();
 		return result;
 	}
 
@@ -66,6 +66,17 @@ public class QDatabase extends Question {
 		userInstance.setDownVotes(0);
 		userInstance.setWordCount(1999);
 		userInstance.setLinkCount(8);
+		userInstance.setProgressPercentage(30);
+		userInstance.setForumUsed(true);
+		userInstances.add(userInstance);
+		userInstance = new UserInstance();
+		userInstance.setAnswerCount(2);
+		userInstance.setClassId(1);
+		userInstance.setCommentCount(1);
+		userInstance.setDownVotes(6);
+		userInstance.setWordCount(4353);
+		userInstance.setLinkCount(2);
+		userInstance.setProgressPercentage(90);
 		userInstance.setForumUsed(true);
 		userInstances.add(userInstance);
 		return new ResultListUserInstance(userInstances);

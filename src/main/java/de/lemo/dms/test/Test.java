@@ -26,10 +26,15 @@
 
 package de.lemo.dms.test;
 
+import java.util.List;
+
 import org.hibernate.Session;
+
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.IDBHandler;
 import de.lemo.dms.processing.FeaturePreProcessor;
+import de.lemo.dms.processing.questions.QDatabase;
+import de.lemo.dms.processing.resulttype.UserInstance;
 
 /**
  * sollte gelöscht werden
@@ -73,11 +78,13 @@ public class Test {
 	public static void test()
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-//		QDatabase courseUsers = new QDatabase();
-//				
-		new FeaturePreProcessor().processLogFeatures();
+		QDatabase courseUsers = new QDatabase();
+				
+		//new FeaturePreProcessor().processLogFeatures();
 		
-
+		List<UserInstance> unserInstances = courseUsers.generateUserInstancesFromFeatures(0L);
+		
+		System.out.println(unserInstances);
 		//new Classifier();
 
 	}
