@@ -42,8 +42,8 @@ public class QDatabase extends Question {
 			@FormParam(MetaParam.END_TIME) final Long endTime,
 			@FormParam("targetCourseId") final Long trainCourseId) {
 
-		this.testCourseId = testCourseId;
-		this.trainCourseId = trainCourseId;
+		this.testCourseId = 2L;//testCourseId;
+		this.trainCourseId = 2L;//trainCourseId;
 		this.startTime = startTime;
 		this.endTime = endTime;
 
@@ -89,7 +89,12 @@ public class QDatabase extends Question {
 
 	private ResultListUserInstance classifyFromLogs() {
 		List<UserInstance> trainInstances = generateUserInstancesFromFeatures(trainCourseId);
-		List<UserInstance> testInstances = generateUserInstancesFromFeatures(testCourseId);
+		List<UserInstance> testInstances;
+		if(trainCourseId==testCourseId){
+			testInstances=trainInstances;
+		}else{
+			testInstances = generateUserInstancesFromFeatures(testCourseId);
+		}
 		Classifier naiveBayes = new Classifier();
 		ResultListUserInstance result = naiveBayes.trainAndTestUserInstances(trainInstances,testInstances);
 		return result;
