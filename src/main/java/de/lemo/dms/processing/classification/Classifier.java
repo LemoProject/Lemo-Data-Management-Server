@@ -22,11 +22,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
-/**
- * Generates a little ARFF file with different attribute types.
- *
- * @author FracPete
- */
+
 public class Classifier {
 
 	private int numAttributes;
@@ -36,13 +32,6 @@ public class Classifier {
 	private List<UserInstance> userInstancesTesting;
 	private final Logger logger = Logger.getLogger(this.getClass());
 
-	public List<UserInstance> getUserInstancesTesting() {
-		return userInstancesTesting;
-	}
-
-	public void setUserInstancesTesting(List<UserInstance> userInstancesTesting) {
-		this.userInstancesTesting = userInstancesTesting;
-	}
 
 	public Classifier() {
 	}
@@ -78,7 +67,6 @@ public class Classifier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	private void saveArff() {
@@ -172,13 +160,6 @@ public class Classifier {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		try {
-			nodes.put(numberOfNodes++,new JSONObject().put("name", "passed"));
-			nodes.put(numberOfNodes++,new JSONObject().put("name", "failed"));
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
 		for(int i= links.length()-1;i>=0;i--){
 			try {
@@ -291,6 +272,14 @@ public class Classifier {
 
 	public void setUserInstances(List<UserInstance> userInstances) {
 		this.userInstancesTraining = userInstances;
+	}
+	
+	public List<UserInstance> getUserInstancesTesting() {
+		return userInstancesTesting;
+	}
+
+	public void setUserInstancesTesting(List<UserInstance> userInstancesTesting) {
+		this.userInstancesTesting = userInstancesTesting;
 	}
 
 	public ResultListUserInstance trainAndTestUserInstances(
