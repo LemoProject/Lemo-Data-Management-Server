@@ -11,6 +11,8 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import org.apache.log4j.Logger;
+
 import de.lemo.dms.processing.questions.QDatabase;
 import de.lemo.dms.processing.resulttype.ResultListUserInstance;
 import de.lemo.dms.processing.resulttype.UserInstance;
@@ -32,6 +34,7 @@ public class Classifier {
 	private List<UserInstance> userInstancesTraining;
 	private J48 classifier;
 	private List<UserInstance> userInstancesTesting;
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	public List<UserInstance> getUserInstancesTesting() {
 		return userInstancesTesting;
@@ -125,8 +128,8 @@ public class Classifier {
 		}
 	}
 
-	private void createJsonGraph(String graph) {
-		String graphSplit[] = graph.split("\\r?\\n");
+	private JSONObject createJsonGraph(String graph) {
+		String graphSplit[] = graph.replace("'","").split("\\r?\\n");
 		JSONObject decisionTree = new JSONObject();
 		JSONArray nodes = new JSONArray();
 		JSONArray links = new JSONArray();
@@ -199,6 +202,7 @@ public class Classifier {
 			e.printStackTrace();
 		}
 		System.out.println(decisionTree.toString());
+		return decisionTree;
 	}
 
 
@@ -299,6 +303,12 @@ public class Classifier {
 		trainClassifier();
 		applyClassifier();
 		saveArff();
-		return new ResultListUserInstance(getUserInstancesTesting());
+		ResultListUserInstance result = new ResultListUserInstance(getUserInstancesTesting());
+		try {
+			result.setClassifier(createJsonGraph(classifier.graph()).toString());
+		} catch (Exception e) {
+			logger.error("JSONObject of classifier can't be generated.", e);
+		}
+		return result;
 	}
 }

@@ -1,6 +1,8 @@
 package de.lemo.dms.processing.questions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -49,10 +51,13 @@ public class QDatabase extends Question {
 		this.endTime = Long.MAX_VALUE;
 	//	validateTimestamps(startTime, endTime);
 		System.out.println("Test Course: "+testCourseId+" Train Course: "+trainCourseId);
+		Date benchmarkStart = Calendar.getInstance().getTime();
 		ResultListUserInstance result;
 		
 		//result = classifyFromLearningObjects(testCourseId,trainCourseId);
 		result = classifyFromLogs();
+		Date benchmarkStop = Calendar.getInstance().getTime();
+		System.out.println("Time elapsed: " + (benchmarkStop.getTime() - benchmarkStart.getTime()));
 		//result = createDummyResult();
 		return result;
 	}
