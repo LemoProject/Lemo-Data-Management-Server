@@ -35,7 +35,7 @@ public class Classifier {
 
 	public Classifier() {
 	}
-
+/*
 	public Classifier(Long trainCourseId, Long testCourseId) {
 		userInstancesTraining = new QDatabase().queryAllUserInstances(trainCourseId);
 		userInstancesTesting = new QDatabase().queryAllUserInstances(testCourseId);
@@ -45,8 +45,27 @@ public class Classifier {
 		trainClassifier();
 		applyClassifier();
 		//saveArff();
-	}
+	}*/
 
+	public ResultListUserInstance trainAndTestUserInstances(
+			List<UserInstance> trainInstances, List<UserInstance> testInstances) {
+		userInstancesTraining = trainInstances;
+		userInstancesTesting = testInstances;
+		setUserInstancesTraining(userInstancesTraining);
+		createWekaData(userInstancesTraining);
+		//crossValidateClassifier();
+		trainClassifier();
+		applyClassifier();
+		saveArff();
+		ResultListUserInstance result = new ResultListUserInstance(getUserInstancesTesting());
+		try {
+			result.setClassifier(createJsonGraph(classifier.graph()).toString());
+		} catch (Exception e) {
+			logger.error("JSONObject of classifier can't be generated.", e);
+		}
+		return result;
+	}
+	
 	private void applyClassifier() {
 		createWekaData(userInstancesTesting);
 		double predictedClass;
@@ -186,22 +205,17 @@ public class Classifier {
 		return decisionTree;
 	}
 
-
-	public void createWekaData(List<UserInstance> userInstances) {
+	//Creates for each userInstance a corresponding weka instance including class label.
+	private void createWekaData(List<UserInstance> userInstances) {
 		FastVector atts;
-
-		// 1. set up attributes
 		atts = defineAttributes();
 		numAttributes = atts.size();
-		// 2. create Instances object
-		instances = new Instances("UserInstances", atts, 0);
-		// 3. fill with data		
+		instances = new Instances("UserInstances", atts, 0);		
 		for(UserInstance userInstance : userInstances){
 			instances.add(createWekaInstance(userInstance));			
 		}
 		instances.setClassIndex(instances.numAttributes() - 1);
-		// 4. output data
-		System.out.println("Class attribute: " + instances.numAttributes());		
+		logger.info("Class attribute count: " + instances.numAttributes());		
 	}
 
 	//Transforms the user instance object into a weka instance using double array
@@ -258,19 +272,11 @@ public class Classifier {
 		return atts;
 	}
 
-	public Instances getInstances() {
-		return instances;
-	}
-
-	public void setInstances(Instances instances) {
-		this.instances = instances;
-	}
-
-	public List<UserInstance> getUserInstances() {
+	public List<UserInstance> getUserInstancesTraining() {
 		return userInstancesTraining;
 	}
 
-	public void setUserInstances(List<UserInstance> userInstances) {
+	public void setUserInstancesTraining(List<UserInstance> userInstances) {
 		this.userInstancesTraining = userInstances;
 	}
 	
@@ -282,22 +288,4 @@ public class Classifier {
 		this.userInstancesTesting = userInstancesTesting;
 	}
 
-	public ResultListUserInstance trainAndTestUserInstances(
-			List<UserInstance> trainInstances, List<UserInstance> testInstances) {
-		userInstancesTraining = trainInstances;
-		userInstancesTesting = testInstances;
-		setUserInstances(userInstancesTraining);
-		createWekaData(userInstancesTraining);
-		//crossValidateClassifier();
-		trainClassifier();
-		applyClassifier();
-		saveArff();
-		ResultListUserInstance result = new ResultListUserInstance(getUserInstancesTesting());
-		try {
-			result.setClassifier(createJsonGraph(classifier.graph()).toString());
-		} catch (Exception e) {
-			logger.error("JSONObject of classifier can't be generated.", e);
-		}
-		return result;
-	}
 }
