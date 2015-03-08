@@ -66,7 +66,9 @@ public class FeaturePreProcessor {
 		logger.info("End processing of Logs!");		
 	}	
 
-	//This is the main method for extracting user features for classification from the learning attributes.
+	/*This is the main method for extracting user features for classification from the learning attributes
+	* and adds them to a list of UserAssessment objects.
+	*/
 	public List<UserAssessment> createAssessmentsFromLearningAttributes(){
 		List<UserAssessment> userAssessments = new ArrayList<UserAssessment>();
 		Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
