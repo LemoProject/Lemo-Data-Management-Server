@@ -124,7 +124,7 @@ public class FeatureProcessor{
 		HashSet detectDuplicates = new HashSet();
 		for(AssessmentLog assessmentLog : assessmentLogs){
 			if(detectDuplicates.add(assessmentLog.getLearning())){
-				userInstance.setSegmentProgress(userInstance.getSegmentProgress()+Integer.valueOf(assessmentLog.getText()));				
+				userInstance.setUnitProgress(userInstance.getUnitProgress()+Integer.valueOf(assessmentLog.getText()));				
 			}
 		}
 		

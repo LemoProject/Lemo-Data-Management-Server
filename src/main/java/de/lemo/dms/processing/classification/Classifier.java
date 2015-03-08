@@ -237,7 +237,7 @@ public class Classifier {
 		vals[12] = userInstance.getPostRatingMin();
 		vals[13] = userInstance.getPostRatingMax();
 		vals[14] = userInstance.getProgressPercentage();
-		vals[15] = userInstance.getSegmentProgress();
+		vals[15] = userInstance.getUnitProgress();
 		vals[16] = userInstance.getClassId();
 
 		return new Instance(1.0, vals);
@@ -266,7 +266,7 @@ public class Classifier {
 		atts.addElement(new Attribute("PostRatingMin"));
 		atts.addElement(new Attribute("PostRatingMax"));
 		atts.addElement(new Attribute("ProgressPercentage"));
-		atts.addElement(new Attribute("SegmentProgress"));
+		atts.addElement(new Attribute("UnitProgress"));
 		
 		FastVector classId = new FastVector();
 		classId.addElement("failed");

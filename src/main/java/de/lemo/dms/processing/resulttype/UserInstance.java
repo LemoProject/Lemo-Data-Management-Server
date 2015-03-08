@@ -241,11 +241,11 @@ public class UserInstance {
 		this.postRatingMin = postRatingMin;
 	}
 
-	public int getSegmentProgress() {
+	public int getUnitProgress() {
 		return unitProgress;
 	}
 
-	public void setSegmentProgress(int segmentProgress) {
+	public void setUnitProgress(int segmentProgress) {
 		this.unitProgress = segmentProgress;
 	}
 

@@ -11,7 +11,7 @@ public class FeatureFilter {
 	public List<UserInstance> removeEnrolledButNotActive(List<UserInstance> userInstances){
 		List<UserInstance> filteredUserInstances = new ArrayList<UserInstance>();
 		for(UserInstance userInstance : userInstances){
-			if(userInstance.getSegmentProgress()>0){
+			if(userInstance.getUnitProgress()>0){
 				filteredUserInstances.add(userInstance);
 			}
 		}
@@ -22,7 +22,7 @@ public class FeatureFilter {
 	public List<UserInstance> removeProgressWithoutSegments(List<UserInstance> userInstances){
 		List<UserInstance> filteredInstances = new ArrayList<UserInstance>();
 		for(UserInstance userInstance : userInstances){
-			if(!(userInstance.getSegmentProgress()==0 && userInstance.getProgressPercentage()>0)){
+			if(!(userInstance.getUnitProgress()==0 && userInstance.getProgressPercentage()>0)){
 				filteredInstances.add(userInstance);
 			}
 		}
@@ -34,14 +34,14 @@ public class FeatureFilter {
 	public List<UserInstance> calculateClassValue(List<UserInstance> userInstances){
 		int max = 0;
 		for(UserInstance userInstance : userInstances){
-			if(userInstance.getSegmentProgress()>max){
-				max = userInstance.getSegmentProgress();
+			if(userInstance.getUnitProgress()>max){
+				max = userInstance.getUnitProgress();
 			}
 		}
 		double passingThreshold = (double)max/100*80;
 		System.out.println("Passing Threshold: " + passingThreshold);
 		for(UserInstance userInstance : userInstances){
-			if(userInstance.getSegmentProgress()>passingThreshold){
+			if(userInstance.getUnitProgress()>passingThreshold){
 				userInstance.setClassId(1);
 				//System.out.println("Segments: "+ userInstance.getSegmentProgress());
 			} else {

@@ -53,7 +53,7 @@ public class FeatureFilterTest {
 		userInstances.add(userInstance);
 		userInstance = generateRandomUserInstance();
 		userInstance.setProgressPercentage(2);
-		userInstance.setSegmentProgress(1);
+		userInstance.setUnitProgress(1);
 		userInstances.add(userInstance);
 		List<UserInstance> userInstancesFiltered = featureFilter.removeProgressWithoutSegments(userInstances);
 		assertTrue(userInstancesFiltered.size()==1);
@@ -67,7 +67,7 @@ public class FeatureFilterTest {
 		userInstances.add(userInstance);
 		userInstance = generateRandomUserInstance();
 		userInstance.setProgressPercentage(0);
-		userInstance.setSegmentProgress(1);
+		userInstance.setUnitProgress(1);
 		userInstances.add(userInstance);
 		List<UserInstance> userInstancesFiltered = featureFilter.removeProgressWithoutSegments(userInstances);
 		assertTrue(userInstancesFiltered.size()==2);
