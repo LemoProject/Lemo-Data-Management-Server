@@ -24,8 +24,8 @@ public class QDatabaseTest {
 	@Before
 	public void setUp() {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		testCourseId = 0L;
-		trainCourseId =  0L;
+		testCourseId = 2L;
+		trainCourseId =  2L;
 		startTime = 0L;
 		endTime = Long.MAX_VALUE;
 		qDatabase = new QDatabase();
@@ -37,8 +37,14 @@ public class QDatabaseTest {
 		assertNotNull(studentInstances);
 		assertTrue(ArrayList.class.isInstance(studentInstances));
 	}
-
+	
 	@Test
+	public void computeOneCourse(){
+		ResultListUserInstance resultLarge  = qDatabase.compute(testCourseId, startTime, endTime, trainCourseId);
+		assertNotNull(resultLarge.getElements());		
+	}
+
+	//@Test
 	public void compute() {
 		ResultListUserInstance resultLarge  = qDatabase.compute(testCourseId, startTime, endTime, trainCourseId);
 		assertNotNull(resultLarge.getElements());

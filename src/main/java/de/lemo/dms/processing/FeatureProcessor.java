@@ -3,6 +3,7 @@ package de.lemo.dms.processing;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import de.lemo.dms.db.mapping.Course;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.LearningAttribute;
 import de.lemo.dms.db.mapping.LearningObj;
+import de.lemo.dms.db.mapping.LearningType;
 import de.lemo.dms.db.mapping.User;
 import de.lemo.dms.db.mapping.UserAssessment;
 import de.lemo.dms.processing.features.ContentImageCount;
@@ -26,6 +28,7 @@ import de.lemo.dms.processing.resulttype.UserInstance;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -113,11 +116,18 @@ public class FeatureProcessor{
 	private void insertUserAssessmentLogs(UserInstance userInstance, User user){
 		Criteria criteria = session.createCriteria(AssessmentLog.class);
 		criteria.add(Restrictions.eq("user", user));
+		criteria.createAlias("learning", "learning");
+		criteria.add(Restrictions.eq("learning.type.id", 1L));
 		criteria.add(Restrictions.eq("course.id", getCourseId()));
 		criteria.add(Restrictions.eq("action", "SegmentCompletion"));
-		criteria.setProjection(Projections.distinct(Projections.property("learning")));
-		List<AssessmentLog> AssessmentLogs = criteria.list();
-		userInstance.setSegmentProgress(AssessmentLogs.size());
+		List<AssessmentLog> assessmentLogs = criteria.list();
+		HashSet detectDuplicates = new HashSet();
+		for(AssessmentLog assessmentLog : assessmentLogs){
+			if(detectDuplicates.add(assessmentLog.getLearning())){
+				userInstance.setSegmentProgress(userInstance.getSegmentProgress()+Integer.valueOf(assessmentLog.getText()));				
+			}
+		}
+		
 	}
 
 	private void insertAllFeaturesFromLog(UserInstance userInstance,
