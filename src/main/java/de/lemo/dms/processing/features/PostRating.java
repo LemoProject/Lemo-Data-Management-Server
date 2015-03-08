@@ -31,7 +31,6 @@ public class PostRating {
 	
 	public void process(){
 		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-		
 		queryNextLearningAttributeId();
 		queryAllLogs();
 		session.close();

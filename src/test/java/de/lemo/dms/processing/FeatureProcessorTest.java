@@ -19,7 +19,8 @@ public class FeatureProcessorTest {
 		featureProcesor = new FeatureProcessor(0L,0L,Long.MAX_VALUE);
 	}
 	
-	@Test
+	/* Does not change the database */
+	@Test 
 	public void insertUserAssessmentLogs(){
 		List<UserInstance> userInstances = featureProcesor.generateFeaturesForCourseUsers();
 		assertNotNull(userInstances);

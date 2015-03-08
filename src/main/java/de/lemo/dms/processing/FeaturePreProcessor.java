@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -28,12 +29,14 @@ import de.lemo.dms.processing.features.PostRating;
  */
 
 public class FeaturePreProcessor {
+	private final Logger logger = Logger.getLogger(this.getClass());
+	
 	public void processAssessments(){
 		List<Collection<?>> persistCollections = new ArrayList<Collection<?>>();
 		List<UserAssessment> courseUser = createAssessmentsFromLearningAttributes();
 		persistCollections.add(courseUser);
 		persistFeatures(persistCollections);
-		System.out.println("End processing of Assessments!");
+		logger.info("End processing of Assessments!");
 	}
 	
 	//Processes features from learning objects
@@ -50,7 +53,7 @@ public class FeaturePreProcessor {
 		List<LearningAttribute> contentWordCount = new ContentWordCount().getLearningAttributes();
 		persistCollections.add(contentWordCount);
 		persistFeatures(persistCollections);
-		System.out.println("End feature processing!");		
+		logger.info("End feature processing!");		
 	}
 	
 	public void processLogFeatures(){
@@ -60,9 +63,8 @@ public class FeaturePreProcessor {
 		List<LearningAttribute> learningAttributes = postRating.getLearningAttributes();
 		persistCollections.add(learningAttributes);
 		persistFeatures(persistCollections);
-		System.out.println("End processing of Logs!");		
-	}
-	
+		logger.info("End processing of Logs!");		
+	}	
 
 	//This is the main method for extracting user features for classification from the learning attributes.
 	public List<UserAssessment> createAssessmentsFromLearningAttributes(){
@@ -136,7 +138,7 @@ public class FeaturePreProcessor {
 								double min = assessments.get("PostRatingMin").getGrade();
 								double current = Double.valueOf(learningAttribute.getValue());
 								assessments.get("PostRatingSum")
-									.setGrade(assessments.get("PostRating").getGrade()+
+									.setGrade(assessments.get("PostRatingSum").getGrade()+
 												current);
 								if(current > max){
 									assessments.get("PostRatingMax")
@@ -152,11 +154,12 @@ public class FeaturePreProcessor {
 				}
 				userAssessments.addAll(assessments.values());
 			}
-			System.out.println(course.getTitle()+" #UsersAssessments cumulative: "+userAssessments.size());
+			logger.info(course.getTitle()+" #UsersAssessments cumulative: "+userAssessments.size());
 		}
 		session.close();
 		return userAssessments;
 	}
+	
 	private long getNextUnusedIdInEntity(Class<?> entityClass) {
 		long nextId=0;
 		Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();

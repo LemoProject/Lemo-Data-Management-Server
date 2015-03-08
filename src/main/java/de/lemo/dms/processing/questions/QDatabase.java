@@ -89,12 +89,7 @@ public class QDatabase extends Question {
 
 	private ResultListUserInstance classifyFromLogs() {
 		List<UserInstance> trainInstances = generateUserInstancesFromFeatures(trainCourseId);
-		List<UserInstance> testInstances;
-		if(trainCourseId==testCourseId){
-			testInstances=trainInstances;
-		}else{
-			testInstances = generateUserInstancesFromFeatures(testCourseId);
-		}
+		List<UserInstance> testInstances = generateUserInstancesFromFeatures(testCourseId);
 		Classifier naiveBayes = new Classifier();
 		ResultListUserInstance result = naiveBayes.trainAndTestUserInstances(trainInstances,testInstances);
 		return result;

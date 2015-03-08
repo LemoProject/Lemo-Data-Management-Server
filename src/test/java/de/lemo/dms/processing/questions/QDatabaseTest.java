@@ -42,15 +42,11 @@ public class QDatabaseTest {
 	public void compute() {
 		ResultListUserInstance resultLarge  = qDatabase.compute(testCourseId, startTime, endTime, trainCourseId);
 		assertNotNull(resultLarge.getElements());
-		System.out.println(resultLarge.getElements().size());
 		startTime=1376263683L;
 		endTime=1379643589L;
 		ResultListUserInstance result = qDatabase.compute(testCourseId, startTime, endTime, trainCourseId);
-		System.out.println(result.getElements().size());
-		assertTrue(resultLarge.getElements().size()>result.getElements().size());
-		
+		System.out.println("Large: "+resultLarge.getElements().size());
+		System.out.println("Smaller: "+result.getElements().size());
+		assertTrue(resultLarge.getElements().size()>result.getElements().size());		
 	}
-	
-	
-
 }
