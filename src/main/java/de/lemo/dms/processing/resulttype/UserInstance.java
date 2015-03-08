@@ -28,7 +28,8 @@ public class UserInstance {
 	private int receivedUpVotes;
 	private int receivedDownVotes;
 	private int progressPercentage;
-	private int segmentProgress;
+	private int unitProgress;
+	private int lessonProgress;
 	private int postRatingSum;
 	private int postRatingMax;
 	private int postRatingMin;
@@ -241,10 +242,18 @@ public class UserInstance {
 	}
 
 	public int getSegmentProgress() {
-		return segmentProgress;
+		return unitProgress;
 	}
 
 	public void setSegmentProgress(int segmentProgress) {
-		this.segmentProgress = segmentProgress;
+		this.unitProgress = segmentProgress;
+	}
+
+	public int getLessonProgress() {
+		return lessonProgress;
+	}
+
+	public void setLessonProgress(int lessonProgress) {
+		this.lessonProgress = lessonProgress;
 	}
 }

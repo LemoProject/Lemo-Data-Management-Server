@@ -18,6 +18,17 @@ public class FeatureFilter {
 		return filteredUserInstances;		
 	}
 	
+	//Removes instances where progress_percentage is measured but no segment progress.
+	public List<UserInstance> removeProgressWithoutSegments(List<UserInstance> userInstances){
+		List<UserInstance> filteredInstances = new ArrayList<UserInstance>();
+		for(UserInstance userInstance : userInstances){
+			if(!(userInstance.getSegmentProgress()==0 && userInstance.getProgressPercentage()>0)){
+				filteredInstances.add(userInstance);
+			}
+		}
+		return filteredInstances;
+	}
+	
 	//Calculates the class using 80% of the maximum completed segments.
 	//A problem could be users making old assessments.
 	public List<UserInstance> calculateClassValue(List<UserInstance> userInstances){

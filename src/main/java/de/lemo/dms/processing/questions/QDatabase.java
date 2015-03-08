@@ -113,7 +113,9 @@ public class QDatabase extends Question {
 	
 	public List<UserInstance> generateUserInstancesFromFeatures(Long courseId){	
 		List<UserInstance> studentInstances = new FeatureProcessor(courseId,startTime,endTime).generateFeaturesForCourseUsers();
-		studentInstances = new FeatureFilter().calculateClassValue(studentInstances);
+		FeatureFilter featureFilter = new FeatureFilter();
+		studentInstances = featureFilter.calculateClassValue(studentInstances);
+		studentInstances = featureFilter.removeProgressWithoutSegments(studentInstances);
 		return studentInstances;
 	}
 }
