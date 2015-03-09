@@ -9,6 +9,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -35,6 +36,8 @@ public class QDatabase extends Question {
 	private Long startTime;
 	private Long endTime;
 	private Long trainCourseId;
+	private final Logger logger = Logger.getLogger(this.getClass());
+	
 	@POST
 	public ResultListUserInstance compute(
 			@FormParam(MetaParam.COURSE_IDS) final Long testCourseId,
@@ -92,28 +95,13 @@ public class QDatabase extends Question {
 		ResultListUserInstance result = naiveBayes.trainAndTestUserInstances(trainInstances,testInstances);
 		return result;
 	}
-
-	//Gets all users as instances and initializes them from learning attributes.
-	public List<UserInstance> queryAllUserInstances(Long courseId) {
-		List<UserInstance> studentInstances= new ArrayList<UserInstance>();
-		
-		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-		Criteria criteria = session.createCriteria(CourseUser.class);
-		criteria.add(Restrictions.eq("course.id", courseId));
-		List<CourseUser> courseUsers = criteria.list();
-		session.close();	
-		
-		for(CourseUser courseUser : courseUsers){
-			studentInstances.add(new UserInstance(courseUser).queryUserAssessments());			
-		}	
-		return studentInstances;
-	}
 	
 	public List<UserInstance> generateUserInstancesFromFeatures(Long courseId){	
 		List<UserInstance> studentInstances = new FeatureProcessor(courseId,startTime,endTime).generateFeaturesForCourseUsers();
 		FeatureFilter featureFilter = new FeatureFilter();
 		studentInstances = featureFilter.calculateClassValue(studentInstances);
 		studentInstances = featureFilter.removeProgressWithoutSegments(studentInstances);
+		studentInstances = featureFilter.removeInstructors(studentInstances);
 		return studentInstances;
 	}
 }

@@ -71,6 +71,7 @@ public class FeatureProcessor{
 		for(User user : users){
 			UserInstance userInstance = new UserInstance();
 			userInstance.setUserId(user.getId());
+			userInstance.setCourseId(getCourseId());
 			insertAllFeaturesFromLog(userInstance,user);
 			insertUserAssessment(userInstance,user);
 			insertUserAssessmentLogs(userInstance,user);
@@ -90,18 +91,16 @@ public class FeatureProcessor{
 		criteria.add(Restrictions.not(Restrictions.in("user", users)));
 		criteria.setProjection(Projections.distinct(Projections.property("user")));*/
 		List<User> missingUsers = criteria.list();
-		int counter = 0;
 		for(User missingUser : missingUsers){
 			session.close();
 			session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 			UserInstance userInstance = new UserInstance();
 			userInstance.setForumUsed(false);
 			userInstance.setUserId(missingUser.getId());
+			userInstance.setCourseId(getCourseId());
 			insertUserAssessment(userInstance,missingUser);
 			insertUserAssessmentLogs(userInstance,missingUser);
 			userInstances.add(userInstance);
-			counter++;
-			System.out.println("User"+counter+" added.");
 		}
 		session.close();		
 		return userInstances;

@@ -43,11 +43,7 @@ public class UserInstanceTest {
 		Criteria criteria = session.createCriteria(CourseUser.class);
 		criteria.setMaxResults(1);
 		CourseUser courseUser = (CourseUser) criteria.uniqueResult();
-		
-		userInstance = new UserInstance(courseUser);
-		UserInstance resultingUserInstance;
-		resultingUserInstance = userInstance.queryUserAssessments();
-		assertNotNull(resultingUserInstance.getUserId());
+		assertNotNull(courseUser.getRole());
 		session.close();
 	}
 }

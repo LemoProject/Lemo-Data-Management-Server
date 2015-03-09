@@ -1,17 +1,18 @@
 package de.lemo.dms.processing.resulttype;
 
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.mapping.CourseUser;
-import de.lemo.dms.db.mapping.UserAssessment;
+import de.lemo.dms.db.mapping.Role;
+
 
 @XmlRootElement
 public class UserInstance {
@@ -34,81 +35,13 @@ public class UserInstance {
 	private int postRatingMax;
 	private int postRatingMin;
 	private boolean forumUsed;
-	private CourseUser courseUser;
+	private long courseId;
 	
-	public UserInstance(CourseUser courseUser) {
-		this.courseUser=courseUser;
-	}
-	
+
 	public UserInstance() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public UserInstance queryUserAssessments() {
-		Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-		Criteria criteria = session.createCriteria(UserAssessment.class,"userAssessment");
-		criteria.add(Restrictions.eq("userAssessment.user", courseUser.getUser()));
-		criteria.add(Restrictions.eq("userAssessment.course", courseUser.getCourse()));
-		List<UserAssessment> userAssessments = criteria.list();
-		userId = courseUser.getUser().getId();
-		for(UserAssessment userAssessment : userAssessments){
-			if(userAssessment.getFeedback().equals("Content_Imagecount")){
-				setImageCount((int) userAssessment.getGrade());
-			}
-			else if(userAssessment.getFeedback().equals("Content_Linkcount")){
-				setLinkCount((int) userAssessment.getGrade());
-			}
-			else if(userAssessment.getFeedback().equals("Content_Wordcount")){
-				setWordCount((int) userAssessment.getGrade());
-			}
-			else if(userAssessment.getFeedback().equals("Post_Up_Votes")){
-				setUpVotes((int) userAssessment.getGrade());
-			}
-			else if(userAssessment.getFeedback().equals("Post_Down_Votes")){
-				setDownVotes((int) userAssessment.getGrade());
-			}
-			else if(userAssessment.getFeedback().equals("Progress_Percentage")){
-				int progress = (int) userAssessment.getGrade();
-				setProgressPercentage(progress);
-				if(progress>=80) classId=1;
-			}
-		}
-		session.close();
-		return this;
-	}
-	
-	public UserInstance queryUserLogs() {
-		Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
-		Criteria criteria = session.createCriteria(UserAssessment.class,"userAssessment");
-		criteria.add(Restrictions.eq("userAssessment.user", courseUser.getUser()));
-		criteria.add(Restrictions.eq("userAssessment.course", courseUser.getCourse()));
-		List<UserAssessment> userAssessments = criteria.list();
-		userId = courseUser.getUser().getId();
-		for(UserAssessment userAssessment : userAssessments){
-			if(userAssessment.getFeedback().equals("Content_Imagecount")){
-				setImageCount((int) userAssessment.getGrade());
-			}
-			else if(userAssessment.getFeedback().equals("Content_Linkcount")){
-				setLinkCount((int) userAssessment.getGrade());
-			}
-			else if(userAssessment.getFeedback().equals("Content_Wordcount")){
-				setWordCount((int) userAssessment.getGrade());
-			}
-			else if(userAssessment.getFeedback().equals("Post_Up_Votes")){
-				setUpVotes((int) userAssessment.getGrade());
-			}
-			else if(userAssessment.getFeedback().equals("Post_Down_Votes")){
-				setDownVotes((int) userAssessment.getGrade());
-			}
-			else if(userAssessment.getFeedback().equals("Progress_Percentage")){
-				int progress = (int) userAssessment.getGrade();
-				setProgressPercentage(progress);
-				if(progress>=80) classId=1;
-			}
-		}
-		session.close();
-		return this;
-	}
 	@XmlElement
 	public long getUserId() {
 		return userId;
@@ -255,5 +188,21 @@ public class UserInstance {
 
 	public void setLessonProgress(int lessonProgress) {
 		this.lessonProgress = lessonProgress;
+	}
+
+	public Long getRoleId() {
+		Session session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
+		Criteria criteria = session.createCriteria(CourseUser.class);
+		criteria.add(Restrictions.eq("course.id", courseId));
+		criteria.add(Restrictions.eq("user.id", userId));
+		criteria.setProjection(Projections.distinct(Projections.property("role")));
+		Role role = (Role) criteria.uniqueResult();
+		Long roleId = role==null?null:role.getId();
+		session.close();
+		return roleId;
+	}
+
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;		
 	}
 }

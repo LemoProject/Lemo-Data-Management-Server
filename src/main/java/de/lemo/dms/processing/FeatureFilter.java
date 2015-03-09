@@ -3,11 +3,15 @@ package de.lemo.dms.processing;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import de.lemo.dms.processing.resulttype.UserInstance;
 
 //Collection of filters to preselect instances for classification.
 public class FeatureFilter {
 
+	private final Logger logger = Logger.getLogger(this.getClass());
+	
 	public List<UserInstance> removeEnrolledButNotActive(List<UserInstance> userInstances){
 		List<UserInstance> filteredUserInstances = new ArrayList<UserInstance>();
 		for(UserInstance userInstance : userInstances){
@@ -49,5 +53,17 @@ public class FeatureFilter {
 			}
 		}		
 		return userInstances;	
+	}
+	
+	public List<UserInstance> removeInstructors(List<UserInstance> userInstances){
+		List<UserInstance> filteredInstances = new ArrayList<UserInstance>();
+		for(UserInstance userInstance : userInstances){
+			if(userInstance.getRoleId()!=null && userInstance.getRoleId().equals(3L)){
+				filteredInstances.add(userInstance);
+			} else{
+				logger.info("Instructor removed. UserId: "+userInstance.getUserId());
+			}
+		}
+		return filteredInstances;		
 	}
 }
