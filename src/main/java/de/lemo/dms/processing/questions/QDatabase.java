@@ -42,13 +42,11 @@ public class QDatabase extends Question {
 			@FormParam(MetaParam.END_TIME) final Long endTime,
 			@FormParam("targetCourseId") final Long trainCourseId) {
 
-		this.testCourseId = 2L;//testCourseId;
-		this.trainCourseId = 2L;//trainCourseId;
+		this.testCourseId = testCourseId;
+		this.trainCourseId = trainCourseId;
 		this.startTime = startTime;
 		this.endTime = endTime;
 
-		this.startTime = 0L;
-		this.endTime = Long.MAX_VALUE;
 	//	validateTimestamps(startTime, endTime);
 		System.out.println("Test Course: "+testCourseId+" Train Course: "+trainCourseId);
 		Date benchmarkStart = Calendar.getInstance().getTime();

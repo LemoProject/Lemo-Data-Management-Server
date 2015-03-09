@@ -76,19 +76,32 @@ public class FeatureProcessor{
 			insertUserAssessmentLogs(userInstance,user);
 			userInstances.add(userInstance);
 		}
-		criteria = session.createCriteria(AccessLog.class);
+		criteria = session.createCriteria(AssessmentLog.class);
 		criteria.add(Restrictions.eq("course.id", getCourseId()));
 		criteria.add(Restrictions.ge("timestamp", startTime));
 		criteria.add(Restrictions.le("timestamp", endTime));
 		criteria.add(Restrictions.not(Restrictions.in("user", users)));
 		criteria.setProjection(Projections.distinct(Projections.property("user")));
+		/* Removed because of performace problems with mooc2.
+		criteria = session.createCriteria(AccessLog.class);
+		criteria.add(Restrictions.eq("course.id", getCourseId()));
+		criteria.add(Restrictions.ge("timestamp", startTime));
+		criteria.add(Restrictions.le("timestamp", endTime));
+		criteria.add(Restrictions.not(Restrictions.in("user", users)));
+		criteria.setProjection(Projections.distinct(Projections.property("user")));*/
 		List<User> missingUsers = criteria.list();
+		int counter = 0;
 		for(User missingUser : missingUsers){
+			session.close();
+			session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
 			UserInstance userInstance = new UserInstance();
 			userInstance.setForumUsed(false);
 			userInstance.setUserId(missingUser.getId());
 			insertUserAssessment(userInstance,missingUser);
+			insertUserAssessmentLogs(userInstance,missingUser);
 			userInstances.add(userInstance);
+			counter++;
+			System.out.println("User"+counter+" added.");
 		}
 		session.close();		
 		return userInstances;
@@ -116,18 +129,19 @@ public class FeatureProcessor{
 	private void insertUserAssessmentLogs(UserInstance userInstance, User user){
 		Criteria criteria = session.createCriteria(AssessmentLog.class);
 		criteria.add(Restrictions.eq("user", user));
-		criteria.createAlias("learning", "learning");
-		criteria.add(Restrictions.eq("learning.type.id", 1L));
 		criteria.add(Restrictions.eq("course.id", getCourseId()));
 		criteria.add(Restrictions.eq("action", "SegmentCompletion"));
 		List<AssessmentLog> assessmentLogs = criteria.list();
 		HashSet detectDuplicates = new HashSet();
 		for(AssessmentLog assessmentLog : assessmentLogs){
 			if(detectDuplicates.add(assessmentLog.getLearning())){
-				userInstance.setUnitProgress(userInstance.getUnitProgress()+Integer.valueOf(assessmentLog.getText()));				
+				if(assessmentLog.getLearning().getType().getId()==1){
+					userInstance.setUnitProgress(userInstance.getUnitProgress()+Integer.valueOf(assessmentLog.getText()));									
+				} else {
+					userInstance.setLessonProgress(userInstance.getLessonProgress()+Integer.valueOf(assessmentLog.getText()));				
+				}
 			}
-		}
-		
+		}		
 	}
 
 	private void insertAllFeaturesFromLog(UserInstance userInstance,

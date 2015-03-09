@@ -24,8 +24,8 @@ public class QDatabaseTest {
 	@Before
 	public void setUp() {
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		testCourseId = 2L;
-		trainCourseId =  2L;
+		testCourseId = 1L;
+		trainCourseId =  1L;
 		startTime = 0L;
 		endTime = Long.MAX_VALUE;
 		qDatabase = new QDatabase();
