@@ -32,13 +32,13 @@ public class FeatureFilter {
 	//Calculates the class using 80% of the maximum completed segments.
 	//A problem could be users making old assessments.
 	public List<UserInstance> calculateClassValue(List<UserInstance> userInstances){
-		int max = 0;
+		int minimumProgressForPassing = Integer.MAX_VALUE;
 		for(UserInstance userInstance : userInstances){
-			if(userInstance.getUnitProgress()>max){
-				max = userInstance.getUnitProgress();
+			if(userInstance.getProgressPercentage()==100 && userInstance.getUnitProgress()>0 && userInstance.getUnitProgress()<minimumProgressForPassing){
+				minimumProgressForPassing = userInstance.getUnitProgress();
 			}
 		}
-		double passingThreshold = (double)max/100*80;
+		double passingThreshold = (double)minimumProgressForPassing/100*80;
 		System.out.println("Passing Threshold: " + passingThreshold);
 		for(UserInstance userInstance : userInstances){
 			if(userInstance.getUnitProgress()>passingThreshold){
