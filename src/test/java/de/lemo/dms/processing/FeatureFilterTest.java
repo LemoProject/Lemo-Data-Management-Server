@@ -72,4 +72,15 @@ public class FeatureFilterTest {
 		List<UserInstance> userInstancesFiltered = featureFilter.removeProgressWithoutSegments(userInstances);
 		assertTrue(userInstancesFiltered.size()==2);
 	}
+	
+	@Test
+	public void removeInstructors(){
+		ArrayList<UserInstance> userInstances = new ArrayList<UserInstance>();
+		for(int i=0;i<5;i++){
+			UserInstance userInstance = generateRandomUserInstance();
+			userInstances.add(userInstance);			
+		}
+		assertTrue(featureFilter.removeInstructors(userInstances).isEmpty());
+	}
+	
 }
