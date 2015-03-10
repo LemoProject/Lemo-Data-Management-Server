@@ -50,12 +50,12 @@ public class QDatabase extends Question {
 		this.startTime = startTime;
 		this.endTime = endTime;
 
-	//	validateTimestamps(startTime, endTime);
-		System.out.println("Test Course: "+testCourseId+" Train Course: "+trainCourseId);
+		validateTimestamps(startTime, endTime);
+		System.out.println("Test Course: "+testCourseId+" Train Course: "+trainCourseId+ "Start Time: " +
+							startTime + "End Time: " + endTime);
 		Date benchmarkStart = Calendar.getInstance().getTime();
 		ResultListUserInstance result;
 		
-		//result = classifyFromLearningObjects(testCourseId,trainCourseId);
 		result = classifyFromLogs();
 		Date benchmarkStop = Calendar.getInstance().getTime();
 		System.out.println("Time elapsed: " + (benchmarkStop.getTime() - benchmarkStart.getTime()));

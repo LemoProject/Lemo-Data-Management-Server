@@ -125,7 +125,7 @@ public class UserInstance {
 	public void setForumUsed(boolean forumUsed) {
 		this.forumUsed = forumUsed;
 	}
-
+	@XmlElement
 	public int getAnswerCount() {
 		return answerCount;
 	}
@@ -133,7 +133,7 @@ public class UserInstance {
 	public void setAnswerCount(int answerCount) {
 		this.answerCount = answerCount;
 	}
-
+	@XmlElement
 	public int getCommentCount() {
 		return commentCount;
 	}
@@ -145,11 +145,11 @@ public class UserInstance {
 	public int getPostCount() {
 		return postCount;
 	}
-
+	@XmlElement
 	public void setPostCount(int postCount) {
 		this.postCount = postCount;
 	}
-
+	@XmlElement
 	public int getPostRatingSum() {
 		return postRatingSum;
 	}
@@ -157,7 +157,7 @@ public class UserInstance {
 	public void setPostRatingSum(int postRatingSum) {
 		this.postRatingSum = postRatingSum;
 	}
-
+	@XmlElement
 	public int getPostRatingMax() {
 		return postRatingMax;
 	}
@@ -165,7 +165,7 @@ public class UserInstance {
 	public void setPostRatingMax(int postRatingMax) {
 		this.postRatingMax = postRatingMax;
 	}
-
+	@XmlElement
 	public int getPostRatingMin() {
 		return postRatingMin;
 	}
@@ -173,7 +173,7 @@ public class UserInstance {
 	public void setPostRatingMin(int postRatingMin) {
 		this.postRatingMin = postRatingMin;
 	}
-
+	@XmlElement
 	public int getUnitProgress() {
 		return unitProgress;
 	}
@@ -181,7 +181,7 @@ public class UserInstance {
 	public void setUnitProgress(int segmentProgress) {
 		this.unitProgress = segmentProgress;
 	}
-
+	@XmlElement
 	public int getLessonProgress() {
 		return lessonProgress;
 	}
