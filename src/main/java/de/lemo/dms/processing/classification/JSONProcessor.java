@@ -6,9 +6,10 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+/* 
+ * Processes the string results of the classifier and returns JSONObjects.
+ */
 public class JSONProcessor {
-
-
 	public JSONObject createGraph(String graph) {
 		String graphSplit[] = graph.replace("'","").split("\\r?\\n");
 		JSONObject decisionTree = new JSONObject();
