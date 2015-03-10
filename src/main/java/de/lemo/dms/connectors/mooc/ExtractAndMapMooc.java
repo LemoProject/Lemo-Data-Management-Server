@@ -111,6 +111,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private HashMap<String, LearningType> learnTypes = new HashMap<String, LearningType>();
 		
 	private final Logger logger = Logger.getLogger(this.getClass());
+	
+	private final Map<Long, Long> segmentsToCourses = new HashMap<Long, Long>();
 
 	//private final IConnector connector;
 
@@ -585,6 +587,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		Map<Long, Long> unitCourses = new HashMap<Long, Long>();
 		
+		
 		for(Segments loadedItem : this.segmentsMooc)
 		{
 			CourseLearning insert = new CourseLearning();
@@ -597,6 +600,19 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			if(insert.getLearning() != null && insert.getCourse() != null)
 				courseLearnings.put(insert.getId(), insert);
 		}		
+		
+		for(Segments loadedItem : this.segmentsMooc)
+		{
+			if(loadedItem.getType().equals("LessonUnit"))
+			{
+				CourseLearning insert = new CourseLearning();
+				insert.setId(Long.valueOf("13" + loadedItem.getId()));
+				insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
+				insert.setLearning(Long.valueOf("13" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
+				
+				courseLearnings.put(insert.getId(), insert);
+			}
+		}
 		
 		for(UnitResources loadedItem : this.unitResourcesMooc)
 		{
@@ -615,6 +631,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 					courseLearnings.put(insert.getId(), insert);
 				}
 			}
+			/*
 			if(loadedItem.getAttachableType().equals("Assessment"))
 			{
 				CourseLearning insert = new CourseLearning();
@@ -630,6 +647,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 					courseLearnings.put(insert.getId(), insert);
 				}
 			}
+			*/
 			if(loadedItem.getAttachableType().equals("Question"))
 			{
 				CourseLearning insert = new CourseLearning();
@@ -716,7 +734,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			}
 			else
 			{
-				insert.setCourse(this.courseLearningMining.get(Long.valueOf("10" + loadedItem.getSegmentId())).getCourse().getId(), this.courseMining, this.oldCourseMining);
+				insert.setCourse(this.segmentsToCourses.get(loadedItem.getSegmentId()), this.courseMining, this.oldCourseMining);
 			}
 			
 			if(unitResources.get(loadedItem.getUnitResourceId()) != null && unitResources.get(loadedItem.getUnitResourceId()).getAttachableType().equals("Video"))
@@ -752,7 +770,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				maxLog = insert.getTimestamp();
 			}
 			
-			if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) 
+			if (!insert.getAction().equals("Play") && (insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) 
 			{
 				learningLogs.put(insert.getId(), insert);
 			}
@@ -795,6 +813,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			
 			if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 			{
+				questionLog.put(loadedItem.getId(), insert);
 				loglist.add(insert);
 			}
 		}
@@ -821,7 +840,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				}
 				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 				
-				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
+				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null && insert.getReferrer() != null)
 				{
 					answersLog.put(loadedItem.getId() , insert);
 					loglist.add(insert);
@@ -864,7 +883,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				}
 				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 				
-				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
+				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null && insert.getReferrer() != null)
 				{
 					loglist.add(insert);
 				}
@@ -876,7 +895,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		{
 			CollaborationLog l = loglist.get(i);
 			l.setId(this.collaborationLogMax + i + 1);
-			l.setReferrer(null); 
 			this.collaborationLogMax++;
 			collaborationLogs.put(l.getId(), l);			
 		}
@@ -899,8 +917,13 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			learningObjs.put(insert.getId(), insert);
 		}
 		
+
+		
+		
 		for(Segments loadedItem : this.segmentsMooc)
 		{
+			this.segmentsToCourses.put(loadedItem.getId(),loadedItem.getCourseId());
+			
 			if(loadedItem.getType().equals("LessonUnit"))
 			{
 				LearningObj insert = new LearningObj();
@@ -911,6 +934,18 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				
 				learningObjs.put(insert.getId(), insert);
 			}
+		}
+		
+		for(Questions loadedItem : this.questionsMooc)
+		{
+			LearningObj insert = new LearningObj();
+			insert.setId(Long.valueOf("14" + loadedItem.getId()));
+			insert.setTitle(loadedItem.getTitle());
+			insert.setInteractionType("Collaboration");
+			insert.setType(getLearningType("Thread"));
+			insert.setParent(Long.valueOf("13" + loadedItem.getSegmentId()), learningObjs, this.oldLearningObjectMining);
+			
+			learningObjs.put(insert.getId(), insert);
 		}
 		
 		for(Assessments loadedItem : this.assessmentMooc)
@@ -929,6 +964,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			LearningObj insert = new LearningObj();
 			insert.setId(Long.valueOf("10" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getTitle());
+			insert.setInteractionType("Access");			
 
 			if(loadedItem.getType().equals("LessonUnit") || loadedItem.getType().equals("Chapter"))
 			{
@@ -937,7 +973,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			
 			if(loadedItem.getParent() != null)
 			{
-				insert.setParent(loadedItem.getParent(), learningObjs, oldLearningObjectMining);
+				insert.setParent(Long.valueOf("10" + loadedItem.getParent()), learningObjs, oldLearningObjectMining);
 			}
 			
 			if(insert.getType() != null)
@@ -960,6 +996,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			}
 		}	
 		
+		/*
 		for(Questions loadedItem : this.questionsMooc)
 		{
 			LearningObj insert = new LearningObj();
@@ -974,6 +1011,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				learningObjs.put(insert.getId(), insert);
 			}
 		}
+		*/
 		return learningObjs;
 	}
 	
@@ -1015,10 +1053,13 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 //			if(uid.containsKey(loadedItem.getId()))
 //			{
 			
-				//addUserAttribute(insert, "User Gender", loadedItem.getGender());
-				addUserAttribute(insert, "User Timezone", loadedItem.getTimezone());
+			if(loadedItem.getGender() != null && loadedItem.getGender().equals("male"))
+				addUserAttribute(insert, "User Gender", "1");
+			if(loadedItem.getGender() != null && loadedItem.getGender().equals("female"))
+				addUserAttribute(insert, "User Gender", "0");
+			addUserAttribute(insert, "User Timezone", loadedItem.getTimezone());
 //				addUserAttribute(insert, "UserProgress", uid.get(loadedItem.getId())+"");
-				users.put(insert.getId(), insert);
+			users.put(insert.getId(), insert);
 //			}
 		}
 		
