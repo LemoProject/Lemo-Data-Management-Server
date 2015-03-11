@@ -13,6 +13,7 @@ public class ResultListUserInstance {
 
 	private List<UserInstance> elements;
 	private String classifier;
+	private String validation;
 
 	public ResultListUserInstance() {
 
@@ -39,6 +40,14 @@ public class ResultListUserInstance {
 
 	public void setClassifier(String classifier) {
 		this.classifier = classifier;
+	}
+
+	public void setValidation(String createValidation) {
+		this.validation = createValidation;
+	}
+	@XmlElement
+	public String getValidation() {
+		return validation;		
 	}
 }
 

@@ -6,6 +6,8 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import weka.classifiers.Evaluation;
+
 /* 
  * Processes the string results of the classifier and returns JSONObjects.
  */
@@ -78,6 +80,18 @@ public class JSONProcessor {
 		}
 		System.out.println(decisionTree.toString());
 		return decisionTree;
+	}
+
+	public String createValidation(Evaluation evaluation) {
+		JSONObject validation = new JSONObject();
+		try {
+			validation.put("recallPositive", evaluation.recall(0));
+			validation.put("recallNegative", evaluation.recall(1));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return validation.toString();
 	}
 
 }

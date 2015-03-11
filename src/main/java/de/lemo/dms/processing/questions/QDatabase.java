@@ -36,7 +36,6 @@ public class QDatabase extends Question {
 	private Long startTime;
 	private Long endTime;
 	private Long trainCourseId;
-	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	@POST
 	public ResultListUserInstance compute(
@@ -51,14 +50,13 @@ public class QDatabase extends Question {
 		this.endTime = endTime;
 
 		validateTimestamps(startTime, endTime);
-		System.out.println("Test Course: "+testCourseId+" Train Course: "+trainCourseId+ "Start Time: " +
+		logger.info("Test Course: "+testCourseId+" Train Course: "+trainCourseId+ "Start Time: " +
 							startTime + "End Time: " + endTime);
 		Date benchmarkStart = Calendar.getInstance().getTime();
-		ResultListUserInstance result;
-		
+		ResultListUserInstance result;		
 		result = classifyFromLogs();
 		Date benchmarkStop = Calendar.getInstance().getTime();
-		System.out.println("Time elapsed: " + (benchmarkStop.getTime() - benchmarkStart.getTime()));
+		logger.info("Time for complete processing: " + (benchmarkStop.getTime() - benchmarkStart.getTime()) +"ms");
 		//result = createDummyResult();
 		return result;
 	}
@@ -89,10 +87,19 @@ public class QDatabase extends Question {
 	}
 
 	private ResultListUserInstance classifyFromLogs() {
+		Date benchmarkStop, benchmarkStart = Calendar.getInstance().getTime();		
 		List<UserInstance> trainInstances = generateUserInstancesFromFeatures(trainCourseId);
+		benchmarkStop = Calendar.getInstance().getTime();
+		logger.info("Time for processing course"+trainCourseId+": " + (benchmarkStop.getTime() - benchmarkStart.getTime()) +"ms");
+		benchmarkStart = Calendar.getInstance().getTime();	
 		List<UserInstance> testInstances = generateUserInstancesFromFeatures(testCourseId);
+		benchmarkStop = Calendar.getInstance().getTime();
+		logger.info("Time for processing course"+testCourseId+": " + (benchmarkStop.getTime() - benchmarkStart.getTime()) +"ms");
+		benchmarkStart = Calendar.getInstance().getTime();		
 		Classifier naiveBayes = new Classifier();
 		ResultListUserInstance result = naiveBayes.trainAndTestUserInstances(trainInstances,testInstances);
+		benchmarkStop = Calendar.getInstance().getTime();
+		logger.info("Time for generating classifier: " + (benchmarkStop.getTime() - benchmarkStart.getTime()) +"ms");				
 		return result;
 	}
 	

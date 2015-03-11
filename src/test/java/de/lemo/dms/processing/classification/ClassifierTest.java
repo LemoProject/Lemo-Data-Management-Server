@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,13 +39,32 @@ public class ClassifierTest {
 		return userInstance;
 	}
 	
+	
 	@Test
-	public void insertUserAssessmentLogs(){
+	public void trainAndTestUserInstances(){
 		List<UserInstance> userInstances = new ArrayList<UserInstance>();
 		for(int i=0;i<10;i++){
 			userInstances.add(generateRandomUserInstance());
 		}		
 		ResultListUserInstance result = classifier.trainAndTestUserInstances(userInstances, userInstances);
-		assertNotNull(result.getClassifier());
+		assertNotNull(result.getClassifier());		
+	}
+	
+	@Test
+	public void trainAndTestValidation(){
+		List<UserInstance> userInstances = new ArrayList<UserInstance>();
+		for(int i=0;i<10;i++){
+			userInstances.add(generateRandomUserInstance());
+		}		
+		ResultListUserInstance result = classifier.trainAndTestUserInstances(userInstances, userInstances);
+		Double resultValue = null;
+		try {
+			JSONObject jSONResult = new JSONObject(result.getValidation());
+			resultValue = Double.valueOf(jSONResult.get("recallPositive").toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertNotNull(resultValue);
 	}
 }

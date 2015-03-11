@@ -31,6 +31,7 @@ public class Classifier {
 	private J48 classifier;
 	private List<UserInstance> userInstancesTesting;
 	private final Logger logger = Logger.getLogger(this.getClass());
+	private Evaluation evaluation;
 
 
 	public Classifier() {
@@ -63,6 +64,7 @@ public class Classifier {
 		} catch (Exception e) {
 			logger.error("JSONObject of classifier can't be generated.", e);
 		}
+		result.setValidation(new JSONProcessor().createValidation(evaluation));
 		return result;
 	}
 	
@@ -79,9 +81,9 @@ public class Classifier {
 			}
 		}
 		try {
-			Evaluation eval = new Evaluation(instances);
-			eval.evaluateModel(classifier, instances);
-			System.out.println(eval.toSummaryString("\nResults\n======\n", false));	
+			evaluation = new Evaluation(instances);
+			evaluation.evaluateModel(classifier, instances);
+			System.out.println(evaluation.toSummaryString("\nResults\n======\n", false));	
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
