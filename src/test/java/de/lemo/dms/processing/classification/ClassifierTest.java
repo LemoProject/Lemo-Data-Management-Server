@@ -25,7 +25,7 @@ public class ClassifierTest {
 		classifier = new Classifier();
 	}
 	
-	private UserInstance generateRandomUserInstance(){
+	UserInstance generateRandomUserInstance(){
 		UserInstance userInstance = new UserInstance();
 		userInstance.setAnswerCount((int) (Math.random()*10));
 		userInstance.setClassId(Math.random()>0.5?1:0);

@@ -78,15 +78,19 @@ public class JSONProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(decisionTree.toString());
 		return decisionTree;
 	}
 
 	public String createValidation(Evaluation evaluation) {
 		JSONObject validation = new JSONObject();
 		try {
-			validation.put("recallPositive", evaluation.recall(0));
-			validation.put("recallNegative", evaluation.recall(1));
+			validation.put("Accuracy", evaluation.pctCorrect());
+			validation.put("Precision", (evaluation.precision(0)+evaluation.precision(1))/2);
+			validation.put("Recall", (evaluation.recall(0)+evaluation.recall(1))/2);
+			validation.put("Recall Positive", evaluation.recall(0));
+			validation.put("Recall Negative", evaluation.recall(1));
+			validation.put("Kappa", evaluation.kappa());
+			validation.put("ROC Area", evaluation.areaUnderROC(0));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

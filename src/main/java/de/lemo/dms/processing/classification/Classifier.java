@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-
 import org.apache.log4j.Logger;
 
 import de.lemo.dms.processing.questions.QDatabase;
@@ -36,17 +35,6 @@ public class Classifier {
 
 	public Classifier() {
 	}
-/*
-	public Classifier(Long trainCourseId, Long testCourseId) {
-		userInstancesTraining = new QDatabase().queryAllUserInstances(trainCourseId);
-		userInstancesTesting = new QDatabase().queryAllUserInstances(testCourseId);
-		setUserInstances(userInstancesTraining);
-		createWekaData(userInstancesTraining);
-		//crossValidateClassifier();
-		trainClassifier();
-		applyClassifier();
-		//saveArff();
-	}*/
 
 	public ResultListUserInstance trainAndTestUserInstances(
 			List<UserInstance> trainInstances, List<UserInstance> testInstances) {
@@ -54,7 +42,6 @@ public class Classifier {
 		userInstancesTesting = testInstances;
 		setUserInstancesTraining(userInstancesTraining);
 		createWekaData(userInstancesTraining);
-		//crossValidateClassifier();
 		trainClassifier();
 		applyClassifier();
 		saveArff();
@@ -76,17 +63,8 @@ public class Classifier {
 				predictedClass=classifier.classifyInstance(instances.instance(i));
 				userInstancesTesting.get(i).setClassId((int)predictedClass);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("Applying classifier to instances failed.", e);
 			}
-		}
-		try {
-			evaluation = new Evaluation(instances);
-			evaluation.evaluateModel(classifier, instances);
-			System.out.println(evaluation.toSummaryString("\nResults\n======\n", false));	
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -97,8 +75,7 @@ public class Classifier {
 			writer.flush();
 			writer.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Saving instances to arff-file failed.",e);
 		}
 	}
 
@@ -126,10 +103,13 @@ public class Classifier {
 		classifier = new J48(); 
 		try {
 			classifier.buildClassifier(instances);
-			Evaluation eval = new Evaluation(instances);
-			eval.evaluateModel(classifier, instances);
-			System.out.println(eval.toSummaryString("\nResults\n======\n", false));
-			System.out.println(classifier.graph());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			evaluation = new Evaluation(instances);
+			evaluation.evaluateModel(classifier, instances);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -146,7 +126,7 @@ public class Classifier {
 			instances.add(createWekaInstance(userInstance));			
 		}
 		instances.setClassIndex(instances.numAttributes() - 1);
-		logger.info("Class attribute count: " + instances.numAttributes());		
+		logger.info("Class "+instances.relationName()+" attribute count: " + instances.numAttributes());		
 	}
 
 	//Transforms the user instance object into a weka instance using double array
