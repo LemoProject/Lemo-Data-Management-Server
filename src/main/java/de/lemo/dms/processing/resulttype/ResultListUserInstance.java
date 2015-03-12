@@ -22,6 +22,7 @@ public class ResultListUserInstance {
 	public ResultListUserInstance(final List<UserInstance> elements) {
 		this.setElements(elements);
 		this.setClassifier("{\"nodes\":[{\"name\":\"ProgressPercentage\",\"value\":4097},{\"name\":\"failed (4010.0)\",\"value\":\"4010\"},{\"name\":\"passed (87.0)\",\"value\":\"87\"}],\"links\":[{\"source\":0,\"target\":1,\"name\":\"<= 78\",\"value\":4010},{\"source\":0,\"target\":2,\"name\":\"> 78\",\"value\":87}]}");
+		this.setValidation("{\"Accuracy\":100,\"Precision\":1,\"Recall\":1,\"Recall Positive\":1,\"Recall Negative\":1,\"Kappa\":1,\"ROC Area\":1}");
 	}
 
 	@XmlElement
