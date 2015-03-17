@@ -113,6 +113,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	private final Map<Long, Long> segmentsToCourses = new HashMap<Long, Long>();
+	
+	private long eventLimit = 0;
+	private DBConfigObject dbConfigInt = null;
+	List<Long> coursesInt = null;
 
 	//private final IConnector connector;
 
@@ -127,6 +131,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 		// accessing DB by creating a session and a transaction using HibernateUtil
 		final Session session = HibernateUtil.getSessionFactory(dbConfig).openSession();
+		
+		this.dbConfigInt = dbConfig;
+		this.coursesInt = courses;
+		
 		session.clear();
 		
 		Date date = new Date ();
@@ -168,8 +176,12 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				criteria.add(Restrictions.in("obj.segmentId", segments));
 			}
 		}
+		//criteria.setMaxResults(200000);
+		criteria.add(Restrictions.eq("obj.event", 2));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.eventsMooc = criteria.list();
+		if(this.eventsMooc.size() > 0)
+			this.eventLimit = this.eventsMooc.get(this.eventsMooc.size()-1).getId();
 		logger.info("Loaded " + this.eventsMooc.size() + " Events entries.");
 		
 		
@@ -391,6 +403,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.videosMooc = criteria.list();
 		logger.info("Loaded " + this.videosMooc.size() + " Videos entries.");
+		session.clear();
+		session.close();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -723,59 +737,88 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			unitResources.put(u.getId(), u);
 		}		
 		
-		for(Events loadedItem : this.eventsMooc)
-		{
-			AccessLog insert = new AccessLog();
-			insert.setId(loadedItem.getId());
-			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-			if(loadedItem.getCourseId() != null)
+		//while(this.eventsMooc.size() > 0)
+		//{
+			for(Events loadedItem : this.eventsMooc)
 			{
-				insert.setCourse(loadedItem.getId(), this.courseMining, this.oldCourseMining);
+				AccessLog insert = new AccessLog();
+				insert.setId(loadedItem.getId());
+				insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
+				if(loadedItem.getCourseId() != null)
+				{
+					insert.setCourse(loadedItem.getId(), this.courseMining, this.oldCourseMining);
+				}
+				else if (this.segmentsToCourses.get(loadedItem.getSegmentId()) != null)
+				{
+					insert.setCourse(this.segmentsToCourses.get(loadedItem.getSegmentId()), this.courseMining, this.oldCourseMining);
+				}
+				
+				if(unitResources.get(loadedItem.getUnitResourceId()) != null && unitResources.get(loadedItem.getUnitResourceId()).getAttachableType().equals("Video"))
+				{
+					UnitResources uR = unitResources.get(loadedItem.getUnitResourceId());
+					insert.setLearning(Long.valueOf("12" + uR.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);			
+				}
+				insert.setTimestamp(loadedItem.getTimestamp().getTime()/1000);
+				
+				switch(loadedItem.getEvent())
+				{
+					case 1 : insert.setAction("View");
+						break;
+					case 2 : insert.setAction("Play");
+						break;
+					case 3 : insert.setAction("Stop");
+						break;
+					case 4 : insert.setAction("Pause");
+						break;
+					default : break;
+				}
+				
+				if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
+				{
+					courseDetails.put(insert.getCourse(), new CourseObject());
+					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				}
+				if(insert.getCourse() != null)
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
+				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) 
+				{
+					learningLogs.put(insert.getId(), insert);
+				}
+				
 			}
-			else
+			/*this.eventsMooc.clear();
+			final Session session = HibernateUtil.getSessionFactory(dbConfigInt).openSession();
+			Criteria criteria = session.createCriteria(Events.class, "obj");
+			if(!coursesInt.isEmpty())
 			{
-				insert.setCourse(this.segmentsToCourses.get(loadedItem.getSegmentId()), this.courseMining, this.oldCourseMining);
+				List<Long> segments = new ArrayList<Long>();
+				for(Segments s : this.segmentsMooc)
+				{
+					segments.add(s.getId());
+				}
+				if(!segments.isEmpty())
+				{
+					criteria.add(Restrictions.in("obj.segmentId", segments));
+					criteria.add(Restrictions.gt("obj.id", this.eventLimit));
+				}
 			}
-			
-			if(unitResources.get(loadedItem.getUnitResourceId()) != null && unitResources.get(loadedItem.getUnitResourceId()).getAttachableType().equals("Video"))
-			{
-				UnitResources uR = unitResources.get(loadedItem.getUnitResourceId());
-				insert.setLearning(Long.valueOf("12" + uR.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);			
-			}
-			insert.setTimestamp(loadedItem.getTimestamp().getTime()/1000);
-			
-			switch(loadedItem.getEvent())
-			{
-				case 1 : insert.setAction("View");
-					break;
-				case 2 : insert.setAction("Play");
-					break;
-				case 3 : insert.setAction("Stop");
-					break;
-				case 4 : insert.setAction("Pause");
-					break;
-				default : break;
-			}
-			
-			if(!courseDetails.containsKey(insert.getCourse()))
-			{
-				courseDetails.put(insert.getCourse(), new CourseObject());
-				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
-				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			
-			if(insert.getTimestamp() > maxLog)
-			{
-				maxLog = insert.getTimestamp();
-			}
-			
-			if (!insert.getAction().equals("Play") && (insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) 
-			{
-				learningLogs.put(insert.getId(), insert);
-			}
-			
-		}
+			criteria.setMaxResults(1000000);
+			criteria.add(Restrictions.eq("obj.event", 2));
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.eventsMooc = criteria.list();
+			if(this.eventsMooc.size() > 0)
+				this.eventLimit = this.eventsMooc.get(this.eventsMooc.size()-1).getId();
+			logger.info("Loaded " + this.eventsMooc.size() + " additional events");
+			session.clear();
+			session.close();
+		}*/
 		return learningLogs;
 	}
 
