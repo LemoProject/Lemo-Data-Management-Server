@@ -2,6 +2,9 @@ package de.lemo.dms.processing.questions;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,87 @@ public class QDatabaseTest {
 		List<UserInstance> studentInstances = qDatabase.generateUserInstancesFromFeatures(testCourseId);
 		assertNotNull(studentInstances);
 		assertTrue(ArrayList.class.isInstance(studentInstances));
+	}
+	
+	@Test
+	public void changeTimeintervalForTrainingTest(){
+		setPrivateProperty(qDatabase,"testCourseId", 0L);
+		setPrivateProperty(qDatabase,"trainCourseId", 1L);
+		setPrivateProperty(qDatabase,"startTime", 0L);
+		setPrivateProperty(qDatabase,"endTime", Long.MAX_VALUE);
+		excutePrivateMethod(qDatabase,"changeTimeintervalForTraining");
+		Long result = getPrivateProperty(qDatabase,"endTime");
+		assertTrue(result > 0);
+	}
+	
+	private Long getPrivateProperty(Object targetObject, String fieldName) {
+		Field field = null;
+		Long returnValue = null;
+		try {
+			field = targetObject.getClass().getDeclaredField(fieldName);
+			field.setAccessible(true);
+			returnValue = (Long) field.get(targetObject);
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnValue;
+	}
+
+	private Object excutePrivateMethod(Object targetObject, String methodName){
+		Method method = null;
+		Object returnObj = null;
+		try {
+			method = targetObject.getClass().getDeclaredMethod(methodName);
+			method.setAccessible(true);
+			returnObj = method.invoke(targetObject);
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnObj;		
+	}
+	
+	private void setPrivateProperty(Object targetObject,String fieldName, Long value){
+		Field field = null;
+		try {
+			field = targetObject.getClass().getDeclaredField(fieldName);
+			field.setAccessible(true);
+			field.set(targetObject, value);
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Test

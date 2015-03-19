@@ -12,11 +12,14 @@ import javax.ws.rs.Path;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 import de.lemo.dms.core.config.ServerConfiguration;
 import de.lemo.dms.db.mapping.CollaborationLog;
 import de.lemo.dms.db.mapping.Course;
+import de.lemo.dms.db.mapping.CourseAttribute;
 import de.lemo.dms.db.mapping.CourseUser;
 import de.lemo.dms.db.mapping.LearningAttribute;
 import de.lemo.dms.db.mapping.UserAssessment;
@@ -87,12 +90,15 @@ public class QDatabase extends Question {
 	}
 
 	private ResultListUserInstance classifyFromLogs() {
-		Date benchmarkStop, benchmarkStart = Calendar.getInstance().getTime();		
-		List<UserInstance> trainInstances = generateUserInstancesFromFeatures(trainCourseId);
+		Date benchmarkStop, benchmarkStart = Calendar.getInstance().getTime();
+		List<UserInstance> testInstances = generateUserInstancesFromFeatures(testCourseId);
 		benchmarkStop = Calendar.getInstance().getTime();
 		logger.info("Time for processing course"+trainCourseId+": " + (benchmarkStop.getTime() - benchmarkStart.getTime()) +"ms");
 		benchmarkStart = Calendar.getInstance().getTime();	
-		List<UserInstance> testInstances = generateUserInstancesFromFeatures(testCourseId);
+		if(trainCourseId != testCourseId){
+			changeTimeintervalForTraining();
+		}
+		List<UserInstance> trainInstances = generateUserInstancesFromFeatures(trainCourseId);
 		benchmarkStop = Calendar.getInstance().getTime();
 		logger.info("Time for processing course"+testCourseId+": " + (benchmarkStop.getTime() - benchmarkStart.getTime()) +"ms");
 		benchmarkStart = Calendar.getInstance().getTime();		
@@ -103,6 +109,45 @@ public class QDatabase extends Question {
 		return result;
 	}
 	
+	private void changeTimeintervalForTraining() {
+		Long firstRequestTestCourse = getFirstRequestTimestamp(testCourseId);
+		Long lastRequestTestCourse = getLastRequestTimestamp(testCourseId);
+		Long firstRequestTrainCourse = getFirstRequestTimestamp(trainCourseId);
+		Long lastRequestTrainCourse = getLastRequestTimestamp(trainCourseId);
+		if(startTime < firstRequestTestCourse) startTime = firstRequestTestCourse;
+		if(endTime > lastRequestTestCourse) endTime = lastRequestTestCourse;
+		Long duration = endTime-startTime;
+		Long offset = startTime - firstRequestTestCourse;
+		if(offset < 0) offset = 0L;
+		startTime = firstRequestTrainCourse + offset;
+		endTime = startTime + duration;
+		logger.info("Train course startime = " + startTime + " endTime = " + endTime +" Duration = " + duration);
+	}
+	
+	private Long getFirstRequestTimestamp(Long courseId){
+		Session session = ServerConfiguration.INSTANCE.getMiningDbHandler().getMiningSession();
+		Criteria criteria = session.createCriteria(CourseAttribute.class);
+		criteria.add(Restrictions.eq("course.id", courseId));
+		criteria.add(Restrictions.eq("attribute.id", 4L));
+		criteria.setProjection(Projections.property("value"));
+		Long firstRequest = Long.valueOf((String)criteria.uniqueResult());
+		logger.info("Course " + courseId + " first access timestamp = " + firstRequest);
+		session.close();
+		return firstRequest;		
+	}
+	
+	private Long getLastRequestTimestamp(Long courseId){
+		Session session = ServerConfiguration.INSTANCE.getMiningDbHandler().getMiningSession();
+		Criteria criteria = session.createCriteria(CourseAttribute.class);
+		criteria.add(Restrictions.eq("course.id", courseId));
+		criteria.add(Restrictions.eq("attribute.id", 5L));
+		criteria.setProjection(Projections.property("value"));
+		Long lastRequest = Long.valueOf((String)criteria.uniqueResult());
+		logger.info("Course " + courseId + " first access timestamp = " + lastRequest);
+		session.close();
+		return lastRequest;		
+	}
+
 	public List<UserInstance> generateUserInstancesFromFeatures(Long courseId){	
 		List<UserInstance> studentInstances = new FeatureProcessor(courseId,startTime,endTime).generateFeaturesForCourseUsers();
 		FeatureFilter featureFilter = new FeatureFilter();
