@@ -57,6 +57,13 @@ public class Classifier {
 	
 	private void applyClassifier() {
 		createWekaData(userInstancesTesting);
+		try {
+			evaluation = new Evaluation(instances);
+			evaluation.evaluateModel(classifier, instances);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		double predictedClass;
 		for(int i=0; i < instances.numInstances(); i++){
 			try {
@@ -107,13 +114,6 @@ public class Classifier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			evaluation = new Evaluation(instances);
-			evaluation.evaluateModel(classifier, instances);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	//Creates for each userInstance a corresponding weka instance including class label.
@@ -147,10 +147,10 @@ public class Classifier {
 		vals[11] = userInstance.getPostRatingSum();
 		vals[12] = userInstance.getPostRatingMin();
 		vals[13] = userInstance.getPostRatingMax();
-		vals[14] = userInstance.getProgressPercentage();
+/*		vals[14] = userInstance.getProgressPercentage();
 		vals[15] = userInstance.getUnitProgress();
-		vals[16] = userInstance.getLessonProgress();
-		vals[17] = userInstance.getClassId();
+		vals[16] = userInstance.getLessonProgress();*/
+		vals[14] = userInstance.getClassId();
 
 		return new Instance(1.0, vals);
 	}
@@ -177,9 +177,9 @@ public class Classifier {
 		atts.addElement(new Attribute("PostRatingSum"));
 		atts.addElement(new Attribute("PostRatingMin"));
 		atts.addElement(new Attribute("PostRatingMax"));
-		atts.addElement(new Attribute("ProgressPercentage"));
+/*		atts.addElement(new Attribute("ProgressPercentage"));
 		atts.addElement(new Attribute("UnitProgress"));
-		atts.addElement(new Attribute("LessonProgress"));
+		atts.addElement(new Attribute("LessonProgress"));*/
 		
 		FastVector classId = new FastVector();
 		classId.addElement("failed");
