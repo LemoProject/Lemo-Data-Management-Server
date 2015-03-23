@@ -107,13 +107,19 @@ public class Classifier {
 	}
 
 	private void trainClassifier(){
-		classifier = new J48(); 
+		int minNumObj = 2;
+		do{
+		classifier = new J48();
+		classifier.setMinNumObj(minNumObj);
 		try {
 			classifier.buildClassifier(instances);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		minNumObj *= 2;
+		logger.info("Tree size: " + classifier.measureTreeSize());
+		} while(classifier.measureTreeSize()>19);
 	}
 
 	//Creates for each userInstance a corresponding weka instance including class label.
