@@ -35,8 +35,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
-/* Generates features on demand for each request.
- * 
+/* 
+ * Generates features on demand for each request.
  */
 
 public class FeatureProcessor{
@@ -58,7 +58,11 @@ public class FeatureProcessor{
 		this.endTime = endTime;
 	}
 
-	//Generates all features for all users in the given course.
+	/**
+	 * Generates all features for all users in the given course that have participated at least once in the course.
+	 * Students that just enrolled are excluded.
+	 * @return list of user instances with all features
+	 */
 	public List<UserInstance> generateFeaturesForCourseUsers() {
 		List<UserInstance> userInstances = new ArrayList<UserInstance>();
 		session = ServerConfiguration.getInstance().getMiningDbHandler().getMiningSession();
@@ -106,8 +110,11 @@ public class FeatureProcessor{
 		return userInstances;
 	}
 
-
-	//Inserts the class/assessment value into the concrete user instance.
+	/**
+	 * Inserts the class/assessment value into the concrete user instance.
+	 * @param userInstance
+	 * @param user
+	 */
 	private void insertUserAssessment(UserInstance userInstance, User user) {		
 		Criteria criteria = session.createCriteria(UserAssessment.class);
 		criteria.add(Restrictions.eq("user", user));
@@ -117,11 +124,7 @@ public class FeatureProcessor{
 		if(userAssessment==null){
 			System.out.println("Keine Assessment gefunden!");
 		}else{
-			userInstance.setProgressPercentage(userAssessment.getFinalGrade().intValue());
-			/*if(userAssessment.getFinalGrade().intValue()>80){
-				userInstance.setClassId(1);
-			}*/
-			//assessmentLog = success and SegmentCompletion				
+			userInstance.setProgressPercentage(userAssessment.getFinalGrade().intValue());			
 		}		
 	}
 	

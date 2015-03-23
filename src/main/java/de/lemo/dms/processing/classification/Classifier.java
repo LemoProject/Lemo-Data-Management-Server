@@ -88,9 +88,8 @@ public class Classifier {
 
 	private void crossValidateClassifier() {
 
-		classifier = new J48();         // new instance of tree
+		classifier = new J48();
 		try {
-			//classifier.buildClassifier(instances);   // build classifier
 			Evaluation eval = new Evaluation(instances);
 			eval.crossValidateModel(classifier, instances, 3, new Random(1));
 			System.out.println("Instances: " +instances.numInstances());
@@ -101,9 +100,8 @@ public class Classifier {
 			System.out.println("Recall: "+eval.recall(1));
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}     // set the options
+		}
 	}
 
 	private void trainClassifier(){
@@ -114,7 +112,6 @@ public class Classifier {
 		try {
 			classifier.buildClassifier(instances);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		minNumObj *= 2;
@@ -122,7 +119,10 @@ public class Classifier {
 		} while(classifier.measureTreeSize()>19);
 	}
 
-	//Creates for each userInstance a corresponding weka instance including class label.
+	/**
+	 * Creates for each userInstance a corresponding weka instance including class label.
+	 * @param userInstances list of user instance containing an initialized set of features.
+	 */
 	private void createWekaData(List<UserInstance> userInstances) {
 		FastVector atts;
 		atts = defineAttributes();
@@ -135,7 +135,11 @@ public class Classifier {
 		logger.info("Class "+instances.relationName()+" attribute count: " + instances.numAttributes());		
 	}
 
-	//Transforms the user instance object into a weka instance using double array
+	/**
+	 * Transforms the user instance object into a weka instance using double array
+	 * @param userInstance a instance with features
+	 * @return a weka instance with the features from the user instance
+	 */
 	private Instance createWekaInstance(UserInstance userInstance) {
 		double[] vals = new double[numAttributes];
 		// - numeric

@@ -7,7 +7,10 @@ import org.apache.log4j.Logger;
 
 import de.lemo.dms.processing.resulttype.UserInstance;
 
-//Collection of filters to preselect instances for classification.
+/**
+ * Collection of filters to preselect instances for classification.
+ *
+ */
 public class FeatureFilter {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -22,7 +25,11 @@ public class FeatureFilter {
 		return filteredUserInstances;		
 	}
 	
-	//Removes instances where progress_percentage is measured but no segment progress.
+	/**
+	 * Removes instances where progress_percentage is measured but no segment progress.
+	 * @param userInstances the list that should be filtered
+	 * @return a filtered list of user instances
+	 */
 	public List<UserInstance> removeProgressWithoutSegments(List<UserInstance> userInstances){
 		List<UserInstance> filteredInstances = new ArrayList<UserInstance>();
 		for(UserInstance userInstance : userInstances){
@@ -33,8 +40,12 @@ public class FeatureFilter {
 		return filteredInstances;
 	}
 	
-	//Calculates the class using 80% of the maximum completed segments.
-	//A problem could be users making old assessments.
+	/**
+	 * Calculates the class label using 80% of the maximum completed segments.
+	 * A problem could be users making old assessments.
+	 * @param userInstances
+	 * @return
+	 */
 	public List<UserInstance> calculateClassValue(List<UserInstance> userInstances){
 		int minimumProgressForPassing = Integer.MAX_VALUE;
 		for(UserInstance userInstance : userInstances){
@@ -47,7 +58,6 @@ public class FeatureFilter {
 		for(UserInstance userInstance : userInstances){
 			if(userInstance.getUnitProgress()>passingThreshold){
 				userInstance.setClassId(1);
-				//System.out.println("Segments: "+ userInstance.getSegmentProgress());
 			} else {
 				userInstance.setClassId(0);
 			}

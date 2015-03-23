@@ -64,31 +64,10 @@ public class QDatabase extends Question {
 		return result;
 	}
 
-	private ResultListUserInstance createDummyResult() {
-		List<UserInstance> userInstances = new ArrayList<UserInstance>();
-		UserInstance userInstance = new UserInstance();
-		userInstance.setAnswerCount(4);
-		userInstance.setClassId(0);
-		userInstance.setCommentCount(9);
-		userInstance.setDownVotes(0);
-		userInstance.setWordCount(1999);
-		userInstance.setLinkCount(8);
-		userInstance.setProgressPercentage(30);
-		userInstance.setForumUsed(true);
-		userInstances.add(userInstance);
-		userInstance = new UserInstance();
-		userInstance.setAnswerCount(2);
-		userInstance.setClassId(1);
-		userInstance.setCommentCount(1);
-		userInstance.setDownVotes(6);
-		userInstance.setWordCount(4353);
-		userInstance.setLinkCount(2);
-		userInstance.setProgressPercentage(90);
-		userInstance.setForumUsed(true);
-		userInstances.add(userInstance);
-		return new ResultListUserInstance(userInstances);
-	}
-
+	/**
+	 * Generates all features and conducts the classification.
+	 * @return JAXB annotated class containing all instances, classifier and validation
+	 */
 	private ResultListUserInstance classifyFromLogs() {
 		Date benchmarkStop, benchmarkStart = Calendar.getInstance().getTime();
 		List<UserInstance> testInstances = generateUserInstancesFromFeatures(testCourseId);
@@ -162,6 +141,13 @@ public class QDatabase extends Question {
 		return lastRequest;		
 	}
 
+	
+	/**
+	 * Uses the actual start time and end time to calculate all features for a course. After the generation of all features 
+	 * filters are applied to remove not wanted instances.
+	 * @param courseId the course in question
+	 * @return a filtered list of user instances with all features
+	 */
 	public List<UserInstance> generateUserInstancesFromFeatures(Long courseId){	
 		List<UserInstance> studentInstances = new FeatureProcessor(courseId,startTime,endTime).generateFeaturesForCourseUsers();
 		FeatureFilter featureFilter = new FeatureFilter();
@@ -169,5 +155,30 @@ public class QDatabase extends Question {
 		studentInstances = featureFilter.removeProgressWithoutSegments(studentInstances);
 		studentInstances = featureFilter.removeInstructors(studentInstances);
 		return studentInstances;
+	}
+	
+	private ResultListUserInstance createDummyResult() {
+		List<UserInstance> userInstances = new ArrayList<UserInstance>();
+		UserInstance userInstance = new UserInstance();
+		userInstance.setAnswerCount(4);
+		userInstance.setClassId(0);
+		userInstance.setCommentCount(9);
+		userInstance.setDownVotes(0);
+		userInstance.setWordCount(1999);
+		userInstance.setLinkCount(8);
+		userInstance.setProgressPercentage(30);
+		userInstance.setForumUsed(true);
+		userInstances.add(userInstance);
+		userInstance = new UserInstance();
+		userInstance.setAnswerCount(2);
+		userInstance.setClassId(1);
+		userInstance.setCommentCount(1);
+		userInstance.setDownVotes(6);
+		userInstance.setWordCount(4353);
+		userInstance.setLinkCount(2);
+		userInstance.setProgressPercentage(90);
+		userInstance.setForumUsed(true);
+		userInstances.add(userInstance);
+		return new ResultListUserInstance(userInstances);
 	}
 }
