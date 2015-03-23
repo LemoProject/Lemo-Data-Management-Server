@@ -124,6 +124,13 @@ public class QDatabase extends Question {
 		logger.info("Train course startime = " + startTime + " endTime = " + endTime +" Duration = " + duration);
 	}
 	
+	
+	/**
+	 * Extracts the timestamp of the <b>first</b> log entry from a pregenerated field in the database.
+	 * This value of the field is calculated during the ETL-process.
+	 * @param courseId the course in question
+	 * @return the timestamp in seconds unixtime
+	 */
 	private Long getFirstRequestTimestamp(Long courseId){
 		Session session = ServerConfiguration.INSTANCE.getMiningDbHandler().getMiningSession();
 		Criteria criteria = session.createCriteria(CourseAttribute.class);
@@ -136,6 +143,13 @@ public class QDatabase extends Question {
 		return firstRequest;		
 	}
 	
+
+	/**
+	 * Extracts the timestamp of the <b>last</b> log entry from a pregenerated field in the database.
+	 * This value of the field is calculated during the ETL-process.
+	 * @param courseId the course in question
+	 * @return the timestamp in seconds unixtime
+	 */
 	private Long getLastRequestTimestamp(Long courseId){
 		Session session = ServerConfiguration.INSTANCE.getMiningDbHandler().getMiningSession();
 		Criteria criteria = session.createCriteria(CourseAttribute.class);
