@@ -7,15 +7,15 @@
        <property name="hibernate.connection.username">${mining-hibernate-username}</property>
       <property name="hibernate.connection.password">${mining-hibernate-password}</property>
       <!-- main config -->
-    <!--    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-      <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>-->
-	  <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
+      <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+      <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+	 <!--   <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
       <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>-->
       
     </database>
     <connectors>
       <connector platform-id="5" name="mooc" platform-type="Mooc">
-        <course-id-filter></course-id-filter>
+        <course-id-filter>151</course-id-filter>
 	<course-login-filter></course-login-filter>        
 	<property name="hibernate.connection.url">jdbc:mysql://localhost/lemo_iversity_an?rewriteBatchedStatements=true</property>
         <property name="hibernate.connection.username">lemo</property>

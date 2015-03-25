@@ -28,6 +28,7 @@ package de.lemo.dms.connectors.mooc;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -176,12 +177,12 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				criteria.add(Restrictions.in("obj.segmentId", segments));
 			}
 		}
-		//criteria.setMaxResults(200000);
-		criteria.add(Restrictions.eq("obj.event", 2));
+		criteria.setMaxResults(1000000);
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.eventsMooc = criteria.list();
 		if(this.eventsMooc.size() > 0)
 			this.eventLimit = this.eventsMooc.get(this.eventsMooc.size()-1).getId();
+		logger.info("EventLimit: " + this.eventLimit);
 		logger.info("Loaded " + this.eventsMooc.size() + " Events entries.");
 		
 		
@@ -517,6 +518,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			if(insert.getCourse() != null && insert.getUser() != null)
 				courseUsers.put(insert.getId(), insert);
 		}
+		
 		return courseUsers;
 	}  
 
@@ -678,6 +680,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				}
 			}			
 		}
+		
 		return courseLearnings;
 	}
 
@@ -737,8 +740,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			unitResources.put(u.getId(), u);
 		}		
 		
-		//while(this.eventsMooc.size() > 0)
-		//{
+		while(this.eventsMooc.size() > 0)
+		{
 			for(Events loadedItem : this.eventsMooc)
 			{
 				AccessLog insert = new AccessLog();
@@ -793,32 +796,39 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				}
 				
 			}
-			/*this.eventsMooc.clear();
-			final Session session = HibernateUtil.getSessionFactory(dbConfigInt).openSession();
-			Criteria criteria = session.createCriteria(Events.class, "obj");
-			if(!coursesInt.isEmpty())
+			
+			this.eventsMooc.clear();
+			
+			final Session miningSession = this.dbHandler.getMiningSession();
+			List<Collection<?>> logs = new ArrayList<Collection<?>>();
+			logs.add(learningLogs.values());
+			this.dbHandler.saveCollectionToDB(miningSession, logs);
+			learningLogs.clear();
+			miningSession.clear();
+			miningSession.close();
+			
+			
+			final Session moocSession = HibernateUtil.getSessionFactory(dbConfigInt).openSession();
+			Criteria criteria = moocSession.createCriteria(Events.class, "obj");
+			List<Long> segments = new ArrayList<Long>();
+			for(Segments s : this.segmentsMooc)
 			{
-				List<Long> segments = new ArrayList<Long>();
-				for(Segments s : this.segmentsMooc)
-				{
-					segments.add(s.getId());
-				}
-				if(!segments.isEmpty())
-				{
-					criteria.add(Restrictions.in("obj.segmentId", segments));
-					criteria.add(Restrictions.gt("obj.id", this.eventLimit));
-				}
+				segments.add(s.getId());
+			}
+			if(!segments.isEmpty())
+			{
+				criteria.add(Restrictions.in("obj.segmentId", segments));
+				criteria.add(Restrictions.gt("obj.id", this.eventLimit));
 			}
 			criteria.setMaxResults(1000000);
-			criteria.add(Restrictions.eq("obj.event", 2));
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.eventsMooc = criteria.list();
 			if(this.eventsMooc.size() > 0)
 				this.eventLimit = this.eventsMooc.get(this.eventsMooc.size()-1).getId();
-			logger.info("Loaded " + this.eventsMooc.size() + " additional events");
-			session.clear();
-			session.close();
-		}*/
+			moocSession.clear();
+			moocSession.close();
+			
+		}
 		return learningLogs;
 	}
 
@@ -1105,6 +1115,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			users.put(insert.getId(), insert);
 //			}
 		}
+		
+		this.usersMooc.clear();
 		
 		return users;
 	}
