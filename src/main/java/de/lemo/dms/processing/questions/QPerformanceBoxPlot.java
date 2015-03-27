@@ -132,7 +132,7 @@ public class QPerformanceBoxPlot extends Question {
 			int count = 0;
 			for(int i = 0; i < rso.getElements().size(); i++)
 			{
-				if((i + 1) % 3 != 0)
+				if((i + 1) % 2 != 0)
 				{
 					s += rso.getElements().get(i);
 				}
@@ -182,7 +182,7 @@ public class QPerformanceBoxPlot extends Question {
 
 		criteria = session.createCriteria(Attribute.class, "attribute");
 		criteria.add(Restrictions.like("attribute.name", "MaxGrade"));
-		Long maxGradeId;
+		long maxGradeId;
 		final Map<Long, Double> maxGrades = new HashMap<Long, Double>();
 		if(!criteria.list().isEmpty())
 		{
@@ -205,7 +205,8 @@ public class QPerformanceBoxPlot extends Question {
 				final ArrayList<Double> v = new ArrayList<Double>();
 				values.put(name, v);
 			}
-
+			if(maxGrades.get(aso.getLearning().getId()) == null)
+				logger.info(aso.getLearning().getId());
 			values.get(name).add(aso.getFinalGrade() / ((maxGrades.get(aso.getLearning().getId()) / resolution)));
 		}
 

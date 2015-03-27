@@ -616,6 +616,12 @@ public abstract class ExtractAndMap {
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " UserAssessment entries in " + this.c.getAndReset() + " s. ");
 		
+		this.learningAttributeMining = this.generateLearningAttributes();
+		objects += this.learningAttributeMining.size();
+		logger.info("Generated " + this.learningAttributeMining.size() + " LearningAttribute entries in " + this.c.getAndReset()
+				+ " s. ");
+		this.updates.add(this.learningAttributeMining.values());
+		
 		logger.info("\nLog tables:\n");
 		
 		
@@ -650,7 +656,7 @@ public abstract class ExtractAndMap {
 		*/
 
 		
-		/*
+		
 		this.courseAttributeMining = generateCourseAttributes();
 		objects += this.courseAttributeMining.size();
 		logger.info("Generated " + this.courseAttributeMining.size()
@@ -662,7 +668,7 @@ public abstract class ExtractAndMap {
 			final Session session = this.dbHandler.getMiningSession();
 			logger.info("Writing everything except logs to DB");
 			this.dbHandler.saveCollectionToDB(session, this.updates);
-		}*/
+		}
 
 		this.clearLMStables();
 		this.updates.clear();
