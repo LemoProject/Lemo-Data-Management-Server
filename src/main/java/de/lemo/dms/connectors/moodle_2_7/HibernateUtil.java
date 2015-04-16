@@ -38,7 +38,6 @@ import de.lemo.dms.connectors.moodle_2_7.mapping.AssignGradesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ChatLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ChatLogLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ContextLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.CourseCategoriesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.CourseLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.CourseModulesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.AssignLMS;
@@ -48,22 +47,16 @@ import de.lemo.dms.connectors.moodle_2_7.mapping.ForumLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ForumPostsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.GradeGradesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.GradeItemsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.GroupsMembersLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.LogstoreStandardLogLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ModulesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.PageLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.QuestionLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuestionStatesLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuizAttemptsLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.QuizGradesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.QuizLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ResourceLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.UrlLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.RoleAssignmentsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.RoleLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ScormLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.UserEnrolmentsLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.UserLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.WikiLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.WikiPagesLMS;
@@ -108,7 +101,6 @@ public final class HibernateUtil {
 		cfg.addAnnotatedClass(AssignLMS.class);
 
 		cfg.addAnnotatedClass(EnrolLMS.class);
-		cfg.addAnnotatedClass(UserEnrolmentsLMS.class);
 		cfg.addAnnotatedClass(ModulesLMS.class);
 		cfg.addAnnotatedClass(CourseModulesLMS.class);
 
@@ -117,14 +109,10 @@ public final class HibernateUtil {
 		cfg.addAnnotatedClass(ForumPostsLMS.class);
 		cfg.addAnnotatedClass(ForumLMS.class);
 		cfg.addAnnotatedClass(GradeGradesLMS.class);
-		cfg.addAnnotatedClass(GroupsMembersLMS.class);
-		cfg.addAnnotatedClass(GroupsLMS.class);
 		cfg.addAnnotatedClass(LogstoreStandardLogLMS.class);
 //		cfg.addAnnotatedClass(QuestionStatesLMS.class);
 		cfg.addAnnotatedClass(QuestionLMS.class);
-		cfg.addAnnotatedClass(QuizGradesLMS.class);
 		cfg.addAnnotatedClass(QuizLMS.class);
-		cfg.addAnnotatedClass(QuizAttemptsLMS.class);
 		cfg.addAnnotatedClass(WikiLMS.class);
 		cfg.addAnnotatedClass(WikiPagesLMS.class);
 		cfg.addAnnotatedClass(ResourceLMS.class);
@@ -139,7 +127,6 @@ public final class HibernateUtil {
 		cfg.addAnnotatedClass(GradeItemsLMS.class);
 		cfg.addAnnotatedClass(ChatLMS.class);
 		cfg.addAnnotatedClass(ChatLogLMS.class);
-		cfg.addAnnotatedClass(CourseCategoriesLMS.class);
 
 		return cfg.buildSessionFactory();
 	}
