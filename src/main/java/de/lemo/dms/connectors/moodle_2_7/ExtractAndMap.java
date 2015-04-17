@@ -606,12 +606,24 @@ public abstract class ExtractAndMap {
 				+ " TaskUser entries in " + this.c.getAndReset() + " s. ");
 		
 		logger.info("\nLog tables:\n");
-
-		this.updates.add(this.generateAccessLogs().values());
-		objects += this.updates.get(this.updates.size() - 1).size();
-		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-				+ " AccessLog entries in " + this.c.getAndReset() + " s. ");
 		
+		if (objects > 0)
+		{
+			final Session session = this.dbHandler.getMiningSession();
+			logger.info("Writing to DB");
+			this.dbHandler.saveCollectionToDB(session, this.updates);
+			
+			updates.clear();
+			session.clear();
+		}
+
+		this.generateAccessLogs();
+		
+		this.generateCollaborativeLogs();
+		
+		this.generateAssessmentLogs();
+		
+		/*
 		this.updates.add(this.generateCollaborativeLogs().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
@@ -621,6 +633,7 @@ public abstract class ExtractAndMap {
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " AssessmentLog entries in " + this.c.getAndReset() + " s. ");
+		*/
 		
 		this.courseAttributeMining = generateCourseAttributes();
 		objects += this.courseAttributeMining.size();
@@ -633,6 +646,9 @@ public abstract class ExtractAndMap {
 			final Session session = this.dbHandler.getMiningSession();
 			logger.info("Writing to DB");
 			this.dbHandler.saveCollectionToDB(session, this.updates);
+			
+			updates.clear();
+			session.clear();
 		}
 
 		this.clearLMStables();

@@ -29,6 +29,7 @@ package de.lemo.dms.connectors.moodle_2_7;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -131,6 +132,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private final IConnector connector;
+	
+	List<Long> coursesInt = null;
+	private DBConfigObject dbConfigInt = null;
+	private List<String> objecttables = new ArrayList<String>();
+	
+	private int logMaxRes = 500000;
 
 	public ExtractAndMapMoodle(final IConnector connector) {
 		super(connector);
@@ -143,8 +150,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 		// accessing DB by creating a session and a transaction using HibernateUtil
 		final Session session = HibernateUtil.getSessionFactory(dbConfig).openSession();
-		session.clear();
-		final Transaction tx = session.beginTransaction();
+		
 		
 		boolean hasCR = false;
 		if(courses != null && courses.size() > 0)
@@ -153,6 +159,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			courses = new ArrayList<Long>();
 		
 		boolean empty = false;
+		
+		coursesInt = courses;
 		
 		//Read Context
 		Criteria criteria = session.createCriteria(ContextLMS.class, "obj");
@@ -276,15 +284,21 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		logger.info("CourseModulesLMS tables: " + this.courseModulesLms.size());
 
 		//Read Log
+		/*
 		criteria = session.createCriteria(LogstoreStandardLogLMS.class, "obj");
 		if(hasCR){
 			criteria.add(Restrictions.in("obj.course", courses));
 		}
+		criteria.add(Restrictions.in("obj.objecttable", this.objecttables));
+		criteria.setMaxResults(this.logMaxRes);
+		criteria.addOrder(Property.forName("obj.id").asc());
 		criteria.add(Restrictions.gt("obj.timecreated", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.timecreated").asc());
 		this.logstoreLms = criteria.list();
+		if(this.logstoreLms.size() > 0)
+			this.eventLimit = this.logstoreLms.get(this.logstoreLms.size()-1).getId();
 		logger.info("LogLMS tables: " + this.logstoreLms.size());
-		
+		*/
 		
 		//Read Resource
 		criteria = session.createCriteria(ResourceLMS.class, "obj");
@@ -591,7 +605,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		logger.info("GradeGradesLMS tables: " + this.gradeGradesLms.size());
 
 		// hibernate session finish and close
-		tx.commit();
+		this.dbConfigInt = dbConfig;
 		session.close();
 
 	}
@@ -1361,6 +1375,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		final HashMap<Long, ArrayList<AssignGradesLMS>> assignGrades = new HashMap<Long, ArrayList<AssignGradesLMS>>();
 		final HashMap<Long, CourseModulesLMS> courseModules = new HashMap<Long, CourseModulesLMS>();
 		
+		int count = 0;
+		
 		long moduleid = 0;
 		for (final ModulesLMS loadedItem : this.modulesLms)
 		{
@@ -1390,45 +1406,100 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 		}
 		
+		this.objecttables.clear();
+		this.objecttables.add("assign");
+		this.objecttables.add("scorm");
+		this.objecttables.add("quiz");
+		
+		long eventLimit = 0;
+		
+		Session moodleSession = HibernateUtil.getSessionFactory(dbConfigInt).openSession();
+		Criteria criteria = moodleSession.createCriteria(LogstoreStandardLogLMS.class, "obj");
+		if(this.coursesInt != null && !this.coursesInt.isEmpty())
+			criteria.add(Restrictions.in("obj.course", coursesInt));
+		criteria.add(Restrictions.in("obj.objecttable", this.objecttables));
+		criteria.add(Restrictions.gt("obj.id", eventLimit));
+		criteria.setMaxResults(logMaxRes);
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.logstoreLms = criteria.list();
+		if(this.logstoreLms.size() > 0)
+			eventLimit = this.logstoreLms.get(this.logstoreLms.size()-1).getId();
+		moodleSession.clear();
+		moodleSession.close();
+		
 
-
-		for (final LogstoreStandardLogLMS loadedItem : this.logstoreLms) {
-			
-			final AssessmentLog insert = new AssessmentLog();
-			insert.setId(assessmentLogs.size() + 1 + this.assessmentLogMax);
-			insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
-			insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
-			insert.setTimestamp(loadedItem.getTimecreated());
-			insert.setAction(loadedItem.getAction());
-
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("assign")){
-				insert.setLearning(Long.valueOf("17" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
-			}
-			
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("scorm")) {
-				insert.setLearning(Long.valueOf("19" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
-			}
-			
-			
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("quiz")){
-				insert.setLearning(Long.valueOf("18" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
-			}
-
-			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
-				courseDetails.put(insert.getCourse(), new CourseObject());
-				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
-				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			
-			if(insert.getTimestamp() > maxLog)
+		while(!this.logstoreLms.isEmpty())
+		{
+			for (final LogstoreStandardLogLMS loadedItem : this.logstoreLms) 
 			{
-				maxLog = insert.getTimestamp();
+				
+				final AssessmentLog insert = new AssessmentLog();
+				insert.setId(count + 1 + this.assessmentLogMax);
+				insert.setCourse(loadedItem.getCourse(), this.courseMining, this.oldCourseMining);
+				insert.setUser(loadedItem.getUser(), this.userMining, this.oldUserMining);
+				insert.setTimestamp(loadedItem.getTimecreated());
+				insert.setAction(loadedItem.getAction());
+	
+				if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("assign")){
+					insert.setLearning(Long.valueOf("17" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
+				}
+				
+				if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("scorm")) {
+					insert.setLearning(Long.valueOf("19" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
+				}
+				
+				
+				if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("quiz")){
+					insert.setLearning(Long.valueOf("18" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
+				}
+	
+				if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
+					courseDetails.put(insert.getCourse(), new CourseObject());
+					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				}
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
+				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
+					assessmentLogs.put(insert.getId(), insert);
+					count++;
+				}
+				
 			}
 			
-			if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
-				assessmentLogs.put(insert.getId(), insert);
-			}
+			this.logstoreLms.clear();
+			
+			final Session miningSession = this.dbHandler.getMiningSession();
+			List<Collection<?>> logs = new ArrayList<Collection<?>>();
+			logs.add(assessmentLogs.values());
+			this.dbHandler.saveCollectionToDB(miningSession, logs);
+			assessmentLogs.clear();
+			miningSession.clear();
+			miningSession.close();
+			
+			this.objecttables.clear();
+			this.objecttables.add("assign");
+			this.objecttables.add("scorm");
+			this.objecttables.add("quiz");
+			
+			moodleSession = HibernateUtil.getSessionFactory(dbConfigInt).openSession();
+			criteria = moodleSession.createCriteria(LogstoreStandardLogLMS.class, "obj");
+			if(this.coursesInt != null && !this.coursesInt.isEmpty())
+				criteria.add(Restrictions.in("obj.course", coursesInt));
+			criteria.add(Restrictions.in("obj.objecttable", this.objecttables));
+			criteria.add(Restrictions.gt("obj.id", eventLimit));
+			criteria.setMaxResults(logMaxRes);
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.logstoreLms = criteria.list();
+			if(this.logstoreLms.size() > 0)
+				eventLimit = this.logstoreLms.get(this.logstoreLms.size()-1).getId();
+			moodleSession.clear();
+			moodleSession.close();
 			
 		}
 		return assessmentLogs;
@@ -1578,6 +1649,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		final HashMap<Long, CollaborationLog> collaborationLogs = new HashMap<Long, CollaborationLog>();
 		final HashMap<Long, CourseModulesLMS> couMod = new HashMap<Long, CourseModulesLMS>();
 
+		long count = 0;
+		
 		for (final ChatLogLMS loadedItem : this.chatLogLms)
 		{
 			final CollaborationLog insert = new CollaborationLog();
@@ -1633,93 +1706,146 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			couMod.put(cm.getId(), cm);
 		}
 		
-		for (final LogstoreStandardLogLMS loadedItem : this.logstoreLms) {
-			
-			final CollaborationLog insert = new CollaborationLog();
-			insert.setId(collaborationLogs.size() + 1 + this.collaborationLogMax);
-			insert.setUser(loadedItem.getUser(), this.userMining,
-					this.oldUserMining);
-			insert.setCourse(loadedItem.getCourse(),
-					this.courseMining, this.oldCourseMining);
-			insert.setTimestamp(loadedItem.getTimecreated());
-			insert.setAction(loadedItem.getAction() + " wiki page");
-			
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum")) {
-
-				insert.setLearning(Long.valueOf("15" + loadedItem.getObjectid()) , this.learningObjectMining, this.oldLearningObjectMining);
-			}
-			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_discussions")) {
-
-				if (discussions.containsKey(Long.valueOf(loadedItem.getObjectid())))
-				{
-					Long f = discussions.get(Long.valueOf(loadedItem.getObjectid())).getForum();
-					insert.setLearning(Long.valueOf("15" + f),
-							this.learningObjectMining, this.oldLearningObjectMining);
-					insert.setText(TextHelper.replaceString("Subject: " + discussions.get(Long.valueOf(loadedItem.getObjectid())).getName(),255));
-					insert.setReferrer(insert.getLearning().getId(), collaborationLogs);
-				}
-			}
-			
-			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_posts")) {
+		this.objecttables.clear();
+		this.objecttables.add("forum");
+		this.objecttables.add("forum_discussions");
+		this.objecttables.add("forum_subscriptions");
+		this.objecttables.add("forum_posts");
+		this.objecttables.add("wiki");
+		this.objecttables.add("wiki_pages");
+		
+		long eventLimit = 0;
+		
+		Session moodleSession = HibernateUtil.getSessionFactory(dbConfigInt).openSession();
+		Criteria criteria = moodleSession.createCriteria(LogstoreStandardLogLMS.class, "obj");
+		if(this.coursesInt != null && !this.coursesInt.isEmpty())
+			criteria.add(Restrictions.in("obj.course", coursesInt));
+		criteria.add(Restrictions.in("obj.objecttable", this.objecttables));
+		criteria.add(Restrictions.gt("obj.id", eventLimit));
+		criteria.setMaxResults(logMaxRes);
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.logstoreLms = criteria.list();
+		if(this.logstoreLms.size() > 0)
+			eventLimit = this.logstoreLms.get(this.logstoreLms.size()-1).getId();
+		moodleSession.clear();
+		moodleSession.close();
+		
+		while(!this.logstoreLms.isEmpty())
+		{
+			for (final LogstoreStandardLogLMS loadedItem : this.logstoreLms) 
+			{
 				
-				ForumPostsLMS p = posts.get(Long.valueOf(loadedItem.getObjectid()));
-				if(p != null && discussions.containsKey(p.getDiscussion()))
-				{
-					insert.setLearning(Long.valueOf("15" + discussions.get(p.getDiscussion()).getForum()),
-							this.learningObjectMining, this.oldLearningObjectMining );
-					insert.setText(TextHelper.replaceString(p.getMessage(),255));
-				}	
-				if(insert.getText() == null)
-					for (final ForumPostsLMS loadedItem2 : this.forumPostsLms)
+				final CollaborationLog insert = new CollaborationLog();
+				insert.setId(count + 1 + this.collaborationLogMax);
+				insert.setUser(loadedItem.getUser(), this.userMining,
+						this.oldUserMining);
+				insert.setCourse(loadedItem.getCourse(),
+						this.courseMining, this.oldCourseMining);
+				insert.setTimestamp(loadedItem.getTimecreated());
+				insert.setAction(loadedItem.getAction() + " wiki page");
+				
+				if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum")) {
+	
+					insert.setLearning(Long.valueOf("15" + loadedItem.getObjectid()) , this.learningObjectMining, this.oldLearningObjectMining);
+				}
+				else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_discussions")) {
+	
+					if (discussions.containsKey(Long.valueOf(loadedItem.getObjectid())))
 					{
-						if ((loadedItem2.getUserid() == loadedItem.getUser())
-								&& ((loadedItem2.getCreated() == loadedItem.getTimecreated()) || (loadedItem2.getModified() == loadedItem
-										.getTimecreated()))) {
-							insert.setText(TextHelper.replaceString(loadedItem2.getMessage(),255));
-							break;
-						}
+						Long f = discussions.get(Long.valueOf(loadedItem.getObjectid())).getForum();
+						insert.setLearning(Long.valueOf("15" + f),
+								this.learningObjectMining, this.oldLearningObjectMining);
+						insert.setText(TextHelper.replaceString("Subject: " + discussions.get(Long.valueOf(loadedItem.getObjectid())).getName(),255));
+						insert.setReferrer(insert.getLearning().getId(), collaborationLogs);
 					}
-			}
-			
-			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_subscriptions")) {
-				insert.setLearning(Long.valueOf("15" + loadedItem.getObjectid()),
-							this.learningObjectMining, this.oldLearningObjectMining );
-
-			}			
-			
-			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki"))
-			{
-				insert.setLearning(Long.valueOf("16" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
-			}
-			
-			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki_pages"))
-			{
-				if(wikipages.get(loadedItem.getObjectid()) != null)
-				{
-					insert.setText(wikipages.get(loadedItem.getObjectid()).getTitle());
-					insert.setLearning(Long.valueOf("16" + wikipages.get(loadedItem.getObjectid()).getSubwikiid()), this.learningObjectMining, this.oldLearningObjectMining);
 				}
-
 				
+				else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_posts")) {
+					
+					ForumPostsLMS p = posts.get(Long.valueOf(loadedItem.getObjectid()));
+					if(p != null && discussions.containsKey(p.getDiscussion()))
+					{
+						insert.setLearning(Long.valueOf("15" + discussions.get(p.getDiscussion()).getForum()),
+								this.learningObjectMining, this.oldLearningObjectMining );
+						insert.setText(TextHelper.replaceString(p.getMessage(),255));
+					}	
+					if(insert.getText() == null)
+						for (final ForumPostsLMS loadedItem2 : this.forumPostsLms)
+						{
+							if ((loadedItem2.getUserid() == loadedItem.getUser())
+									&& ((loadedItem2.getCreated() == loadedItem.getTimecreated()) || (loadedItem2.getModified() == loadedItem
+											.getTimecreated()))) {
+								insert.setText(TextHelper.replaceString(loadedItem2.getMessage(),255));
+								break;
+							}
+						}
+				}
+				
+				else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("forum_subscriptions")) {
+					insert.setLearning(Long.valueOf("15" + loadedItem.getObjectid()),
+								this.learningObjectMining, this.oldLearningObjectMining );
+	
+				}			
+				
+				else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki"))
+				{
+					insert.setLearning(Long.valueOf("16" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
+				}
+				
+				else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("wiki_pages"))
+				{
+					if(wikipages.get(loadedItem.getObjectid()) != null)
+					{
+						insert.setText(wikipages.get(loadedItem.getObjectid()).getTitle());
+						insert.setLearning(Long.valueOf("16" + wikipages.get(loadedItem.getObjectid()).getSubwikiid()), this.learningObjectMining, this.oldLearningObjectMining);
+					}
+	
+					
+				}
+				
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
+				if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
+					courseDetails.put(insert.getCourse(), new CourseObject());
+					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				}
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
+	
+				if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getLearning() != null)) {
+					collaborationLogs.put(insert.getId(), insert);
+					count++;
+				}
 			}
+				
+			this.logstoreLms.clear();
 			
-			if(insert.getTimestamp() > maxLog)
-			{
-				maxLog = insert.getTimestamp();
-			}
+			final Session miningSession = this.dbHandler.getMiningSession();
+			List<Collection<?>> logs = new ArrayList<Collection<?>>();
+			logs.add(collaborationLogs.values());
+			this.dbHandler.saveCollectionToDB(miningSession, logs);
+			collaborationLogs.clear();
+			miningSession.clear();
+			miningSession.close();
 			
-			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
-				courseDetails.put(insert.getCourse(), new CourseObject());
-				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
-				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			
-
-			if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getLearning() != null)) {
-				collaborationLogs.put(insert.getId(), insert);
-			}
-		}
+			moodleSession = HibernateUtil.getSessionFactory(dbConfigInt).openSession();
+			criteria = moodleSession.createCriteria(LogstoreStandardLogLMS.class, "obj");
+			if(this.coursesInt != null && !this.coursesInt.isEmpty())
+				criteria.add(Restrictions.in("obj.course", coursesInt));
+			criteria.add(Restrictions.in("obj.objecttable", this.objecttables));
+			criteria.add(Restrictions.gt("obj.id", eventLimit));
+			criteria.setMaxResults(logMaxRes);
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.logstoreLms = criteria.list();
+			if(this.logstoreLms.size() > 0)
+				eventLimit = this.logstoreLms.get(this.logstoreLms.size()-1).getId();
+			moodleSession.clear();
+			moodleSession.close();
+		}		
 		
 		return collaborationLogs;
 	}
@@ -2220,56 +2346,113 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		// A HashMap of list of timestamps. Every key represents one user, the according value is a list of his/her
 		// requests times.
 
-
-		for (final LogstoreStandardLogLMS loadedItem : this.logstoreLms)
+		long count = 0;
+		
+		this.objecttables.clear();
+		this.objecttables.add("resource");
+		this.objecttables.add("url");
+		this.objecttables.add("page");
+		
+		long eventLimit = 0;
+		
+		Session moodleSession = HibernateUtil.getSessionFactory(dbConfigInt).openSession();
+		Criteria criteria = moodleSession.createCriteria(LogstoreStandardLogLMS.class, "obj");
+		if(this.coursesInt != null && !this.coursesInt.isEmpty())
+			criteria.add(Restrictions.in("obj.course", coursesInt));
+		criteria.add(Restrictions.in("obj.objecttable", this.objecttables));
+		criteria.add(Restrictions.gt("obj.id", eventLimit));
+		criteria.setMaxResults(logMaxRes);
+		criteria.addOrder(Property.forName("obj.id").asc());
+		this.logstoreLms = criteria.list();
+		if(this.logstoreLms.size() > 0)
+			eventLimit = this.logstoreLms.get(this.logstoreLms.size()-1).getId();
+		moodleSession.clear();
+		moodleSession.close();
+		
+		while(!this.logstoreLms.isEmpty())
 		{
-			final AccessLog insert = new AccessLog();
-			insert.setId(accessLogMining.size() + 1 + this.accessLogMax);
-			insert.setUser(loadedItem.getUser(), this.userMining,
-					this.oldUserMining);
-			insert.setCourse(loadedItem.getCourse(),
-					this.courseMining, this.oldCourseMining);			
-			insert.setTimestamp(loadedItem.getTimecreated());
-			insert.setAction(loadedItem.getAction());
-			
-			if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("resource")) {
-
-				insert.setLearning(Long.valueOf("11" + loadedItem.getObjectid()),
-						this.learningObjectMining, this.oldLearningObjectMining);
-			}
-			
-			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("url")) {
-				insert.setLearning(Long.valueOf("12" + loadedItem.getObjectid()),
-						this.learningObjectMining, this.oldLearningObjectMining);
-
-			}
-			
-			else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("page")) {
+			for (final LogstoreStandardLogLMS loadedItem : this.logstoreLms)
+			{
+				final AccessLog insert = new AccessLog();
+				insert.setId(count + 1 + this.accessLogMax);
+				insert.setUser(loadedItem.getUser(), this.userMining,
+						this.oldUserMining);
+				insert.setCourse(loadedItem.getCourse(),
+						this.courseMining, this.oldCourseMining);			
+				insert.setTimestamp(loadedItem.getTimecreated());
+				insert.setAction(loadedItem.getAction());
 				
-				insert.setLearning(Long.valueOf("13" + loadedItem.getObjectid()),
-						this.learningObjectMining, this.oldLearningObjectMining);
-
+				if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("resource")) {
+	
+					insert.setLearning(Long.valueOf("11" + loadedItem.getObjectid()),
+							this.learningObjectMining, this.oldLearningObjectMining);
+				}
+				
+				else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("url")) {
+					insert.setLearning(Long.valueOf("12" + loadedItem.getObjectid()),
+							this.learningObjectMining, this.oldLearningObjectMining);
+	
+				}
+				
+				else if (loadedItem.getObjecttable() != null && loadedItem.getObjecttable().equals("page")) {
+					
+					insert.setLearning(Long.valueOf("13" + loadedItem.getObjectid()),
+							this.learningObjectMining, this.oldLearningObjectMining);
+	
+				}
+	
+				
+				if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null)
+				{
+					courseDetails.put(insert.getCourse(), new CourseObject());
+					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				}
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				
+				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) 
+				{
+					accessLogMining.put(insert.getId(), insert);
+					count++;
+				}
+	
 			}
-
 			
-			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null)
-			{
-				courseDetails.put(insert.getCourse(), new CourseObject());
-				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
-				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 			
-			if(insert.getTimestamp() > maxLog)
-			{
-				maxLog = insert.getTimestamp();
-			}
+			this.logstoreLms.clear();
 			
-			if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) 
-			{
-				accessLogMining.put(insert.getId(), insert);
-			}
-
+			final Session miningSession = this.dbHandler.getMiningSession();
+			List<Collection<?>> logs = new ArrayList<Collection<?>>();
+			logs.add(accessLogMining.values());
+			this.dbHandler.saveCollectionToDB(miningSession, logs);
+			accessLogMining.clear();
+			miningSession.clear();
+			miningSession.close();
+			
+			this.objecttables.clear();
+			this.objecttables.add("resource");
+			this.objecttables.add("url");
+			this.objecttables.add("page");
+			
+			moodleSession = HibernateUtil.getSessionFactory(dbConfigInt).openSession();
+			criteria = moodleSession.createCriteria(LogstoreStandardLogLMS.class, "obj");
+			if(this.coursesInt != null && !this.coursesInt.isEmpty())
+				criteria.add(Restrictions.in("obj.course", coursesInt));
+			criteria.add(Restrictions.in("obj.objecttable", this.objecttables));
+			criteria.add(Restrictions.gt("obj.id", eventLimit));
+			criteria.setMaxResults(logMaxRes);
+			criteria.addOrder(Property.forName("obj.id").asc());
+			this.logstoreLms = criteria.list();
+			if(this.logstoreLms.size() > 0)
+				eventLimit = this.logstoreLms.get(this.logstoreLms.size()-1).getId();
+			moodleSession.clear();
+			moodleSession.close();
+			
 		}
 		return accessLogMining;
 	}
