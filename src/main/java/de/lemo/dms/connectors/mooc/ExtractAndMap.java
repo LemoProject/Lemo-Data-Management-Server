@@ -610,17 +610,20 @@ public abstract class ExtractAndMap {
 				+ " UserAttribute entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.userAttributeMining.values());
 
+		
 		this.updates.add(this.generateUserAssessments().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " UserAssessment entries in " + this.c.getAndReset() + " s. ");
 		
+		this.learningAttributeMining = this.generateLearningAttributes();
+		objects += this.learningAttributeMining.size();
+		logger.info("Generated " + this.learningAttributeMining.size() + " LearningAttribute entries in " + this.c.getAndReset()
+				+ " s. ");
+		this.updates.add(this.learningAttributeMining.values());
+		
 		logger.info("\nLog tables:\n");
-
-		this.updates.add(this.generateAccessLogs().values());
-		objects += this.updates.get(this.updates.size() - 1).size();
-		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-				+ " AccessLog entries in " + this.c.getAndReset() + " s. ");
+		
 		
 		this.updates.add(this.generateCollaborativeLogs().values());
 		objects += this.updates.get(this.updates.size() - 1).size();
@@ -632,6 +635,27 @@ public abstract class ExtractAndMap {
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " AssessmentLog entries in " + this.c.getAndReset() + " s. ");
 		
+		if (objects > 0)
+		{
+			final Session session = this.dbHandler.getMiningSession();
+			logger.info("Writing everything except logs to DB");
+			this.dbHandler.saveCollectionToDB(session, this.updates);
+			
+			updates.clear();
+			session.clear();
+			this.userAttributeMining.clear();
+			this.courseUserMining.clear();
+			this.courseLearningMining.clear();
+		}
+
+		//this.updates.add(
+		this.generateAccessLogs();//.values());
+		/*objects += this.updates.get(this.updates.size() - 1).size();
+		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
+				+ " AccessLog entries in " + this.c.getAndReset() + " s. ");
+		*/
+
+		
 		
 		this.courseAttributeMining = generateCourseAttributes();
 		objects += this.courseAttributeMining.size();
@@ -642,7 +666,7 @@ public abstract class ExtractAndMap {
 		if (objects > 0)
 		{
 			final Session session = this.dbHandler.getMiningSession();
-			logger.info("Writing to DB");
+			logger.info("Writing everything except logs to DB");
 			this.dbHandler.saveCollectionToDB(session, this.updates);
 		}
 

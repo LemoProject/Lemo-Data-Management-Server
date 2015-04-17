@@ -188,7 +188,7 @@ public class QPerformanceHistogram extends Question {
 
 		criteria = session.createCriteria(Attribute.class, "attribute");
 		criteria.add(Restrictions.like("attribute.name", "MaxGrade"));
-		Long maxGradeId;
+		long maxGradeId;
 		final Map<Long, Double> maxGrades = new HashMap<Long, Double>();
 		if(!criteria.list().isEmpty())
 		{

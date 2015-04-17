@@ -51,6 +51,7 @@ import de.lemo.dms.processing.StudentHelper;
 import de.lemo.dms.processing.questions.QCourseActivity;
 import de.lemo.dms.processing.questions.QFrequentPathsBIDE;
 import de.lemo.dms.processing.questions.QFrequentPathsApriori;
+import de.lemo.dms.processing.questions.QPerformanceBoxPlot;
 import de.lemo.dms.processing.questions.QPerformanceHistogram;
 import de.lemo.dms.processing.questions.QPerformanceUserTest;
 import de.lemo.dms.processing.questions.async.AFrequentPathsBIDE;
@@ -161,11 +162,11 @@ public class Test {
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
 		ServiceCourseTitleSearch scd = new ServiceCourseTitleSearch();
+		QPerformanceHistogram qph = new QPerformanceHistogram();
 		scd.getCoursesByText("e", 1000l, 0l);
 		QCourseActivity cca = new QCourseActivity();
 		List<Long> courses = new ArrayList<Long>();
-		courses.add(1L);
-		courses.add(2L);
+		courses.add(3L);
 		List<String> types = new ArrayList<String>();
 		List<Long> users = new ArrayList<Long>();
 		Double minSup = 0.7d;
@@ -174,10 +175,9 @@ public class Test {
 		Long minLength = null;
 		Long maxLength = null;
 		//ResultListCourseObject co = scd.getCoursesByText("e");
-		ResultListHashMapObject ilo = cca.compute(courses, users, startTime, endTime, 100L, new ArrayList<String>(), new ArrayList<Long>(), new ArrayList<Long>());
 		
 		
-			QPerformanceHistogram qput = new QPerformanceHistogram();
+			QPerformanceBoxPlot qput = new QPerformanceBoxPlot();
 			
 
 			List<Long> gender = new ArrayList<Long>();
@@ -193,7 +193,7 @@ public class Test {
 	public static void main(final String[] args)
 	{
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		Test.writeStats();
+		Test.test();
 	}
 
 }
