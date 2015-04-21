@@ -87,13 +87,6 @@ public class FeatureProcessor{
 		criteria.add(Restrictions.le("timestamp", endTime));
 		criteria.add(Restrictions.not(Restrictions.in("user", users)));
 		criteria.setProjection(Projections.distinct(Projections.property("user")));
-		/* Removed because of performace problems with mooc2.
-		criteria = session.createCriteria(AccessLog.class);
-		criteria.add(Restrictions.eq("course.id", getCourseId()));
-		criteria.add(Restrictions.ge("timestamp", startTime));
-		criteria.add(Restrictions.le("timestamp", endTime));
-		criteria.add(Restrictions.not(Restrictions.in("user", users)));
-		criteria.setProjection(Projections.distinct(Projections.property("user")));*/
 		List<User> missingUsers = criteria.list();
 		for(User missingUser : missingUsers){
 			session.close();

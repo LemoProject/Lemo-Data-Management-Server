@@ -22,7 +22,7 @@ import weka.core.Instances;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
 
-public class Classifier {
+public class J48Classifier {
 
 	private int numAttributes;
 	protected Instances instances;
@@ -32,9 +32,6 @@ public class Classifier {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private Evaluation evaluation;
 
-
-	public Classifier() {
-	}
 
 	public ResultListUserInstance trainAndTestUserInstances(
 			List<UserInstance> trainInstances, List<UserInstance> testInstances) {

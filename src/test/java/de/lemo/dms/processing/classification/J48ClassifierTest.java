@@ -16,7 +16,7 @@ import de.lemo.dms.processing.resulttype.ResultListUserInstance;
 import de.lemo.dms.processing.resulttype.UserInstance;
 
 
-public class ClassifierTest {
+public class J48ClassifierTest {
 	private Classifier classifier;
 
 	@Before

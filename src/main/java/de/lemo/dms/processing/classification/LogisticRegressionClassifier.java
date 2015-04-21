@@ -5,14 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Pattern;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.apache.log4j.Logger;
 
-import de.lemo.dms.processing.questions.QDatabase;
 import de.lemo.dms.processing.resulttype.ResultListUserInstance;
 import de.lemo.dms.processing.resulttype.UserInstance;
 import weka.core.Attribute;
@@ -20,20 +15,20 @@ import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.classifiers.Evaluation;
-import weka.classifiers.trees.J48;
+import weka.classifiers.functions.Logistic;
 
-public class Classifier {
+public class LogisticRegressionClassifier {
 
 	private int numAttributes;
 	protected Instances instances;
 	private List<UserInstance> userInstancesTraining;
-	private J48 classifier;
+	private Logistic classifier;
 	private List<UserInstance> userInstancesTesting;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private Evaluation evaluation;
 
 
-	public Classifier() {
+	public LogisticRegressionClassifier() {
 	}
 
 	public ResultListUserInstance trainAndTestUserInstances(
@@ -46,11 +41,6 @@ public class Classifier {
 		applyClassifier();
 		saveArff();
 		ResultListUserInstance result = new ResultListUserInstance(getUserInstancesTesting());
-		try {
-			result.setClassifier(new JSONProcessor().createGraph(classifier.graph()).toString());
-		} catch (Exception e) {
-			logger.error("JSONObject of classifier can't be generated.", e);
-		}
 		result.setValidation(new JSONProcessor().createValidation(evaluation));
 		return result;
 	}
@@ -88,7 +78,7 @@ public class Classifier {
 
 	private void crossValidateClassifier() {
 
-		classifier = new J48();
+		classifier = new Logistic();
 		try {
 			Evaluation eval = new Evaluation(instances);
 			eval.crossValidateModel(classifier, instances, 3, new Random(1));
@@ -105,18 +95,14 @@ public class Classifier {
 	}
 
 	private void trainClassifier(){
-		int minNumObj = 2;
-		do{
-		classifier = new J48();
-		classifier.setMinNumObj(minNumObj);
+		classifier = new Logistic();
 		try {
 			classifier.buildClassifier(instances);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		minNumObj *= 2;
-		logger.info("Tree size: " + classifier.measureTreeSize());
-		} while(classifier.measureTreeSize()>19);
+		double[][] coefficients = classifier.coefficients();
+		System.out.println(coefficients);
 	}
 
 	/**

@@ -16,13 +16,13 @@ import de.lemo.dms.processing.resulttype.ResultListUserInstance;
 import de.lemo.dms.processing.resulttype.UserInstance;
 
 
-public class ClassifierTest {
-	private Classifier classifier;
+public class LogisticRegressionClassifierTest {
+	private LogisticRegressionClassifier classifier;
 
 	@Before
 	public void init(){
 		ServerConfiguration.getInstance().loadConfig("/lemo");
-		classifier = new Classifier();
+		classifier = new LogisticRegressionClassifier();
 	}
 	
 	UserInstance generateRandomUserInstance(){

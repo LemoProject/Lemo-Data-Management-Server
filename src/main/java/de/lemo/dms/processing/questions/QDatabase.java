@@ -28,6 +28,8 @@ import de.lemo.dms.processing.FeatureProcessor;
 import de.lemo.dms.processing.MetaParam;
 import de.lemo.dms.processing.Question;
 import de.lemo.dms.processing.classification.Classifier;
+import de.lemo.dms.processing.classification.J48Classifier;
+import de.lemo.dms.processing.classification.LogisticRegressionClassifier;
 import de.lemo.dms.processing.resulttype.ResultListUserInstance;
 import de.lemo.dms.processing.resulttype.UserInstance;
 
@@ -81,8 +83,8 @@ public class QDatabase extends Question {
 		benchmarkStop = Calendar.getInstance().getTime();
 		logger.info("Time for processing course"+testCourseId+": " + (benchmarkStop.getTime() - benchmarkStart.getTime()) +"ms");
 		benchmarkStart = Calendar.getInstance().getTime();		
-		Classifier naiveBayes = new Classifier();
-		ResultListUserInstance result = naiveBayes.trainAndTestUserInstances(trainInstances,testInstances);
+		J48Classifier J48 = new J48Classifier();
+		ResultListUserInstance result = J48.trainAndTestUserInstances(trainInstances,testInstances);
 		benchmarkStop = Calendar.getInstance().getTime();
 		logger.info("Time for generating classifier: " + (benchmarkStop.getTime() - benchmarkStart.getTime()) +"ms");				
 		return result;

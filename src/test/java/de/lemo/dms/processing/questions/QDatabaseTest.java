@@ -124,6 +124,15 @@ public class QDatabaseTest {
 	
 	@Test
 	public void computeOneCourse(){
+		testCourseId = 0L;
+		trainCourseId =  0L;
+		ResultListUserInstance resultLarge  = qDatabase.compute(testCourseId, startTime, endTime, trainCourseId);
+		assertNotNull(resultLarge.getElements());		
+	}
+	
+	@Test
+	public void computeTwoCourse(){
+		testCourseId = 0L;
 		ResultListUserInstance resultLarge  = qDatabase.compute(testCourseId, startTime, endTime, trainCourseId);
 		assertNotNull(resultLarge.getElements());		
 	}
