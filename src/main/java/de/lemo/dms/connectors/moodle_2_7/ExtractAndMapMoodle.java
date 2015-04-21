@@ -119,15 +119,15 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 	private List<ScormLMS> scormLms;
 	private List<GradeGradesLMS> gradeGradesLms;
 	private List<GradeItemsLMS> gradeItemsLms;
-	private List<ChatLMS> chatLms;
-	private List<ChatLogLMS> chatLogLms;
+	//private List<ChatLMS> chatLms;
+	//private List<ChatLogLMS> chatLogLms;
 	private List<AssignLMS> assignLms;
 	private List<EnrolLMS> enrolLms;
 	private List<ModulesLMS> modulesLms;
 	private List<CourseModulesLMS> courseModulesLms;
 	final Map<Course, CourseObject> courseDetails = new HashMap<Course, CourseObject>();
 
-	private Map<Long, Long> chatCourse = new HashMap<Long, Long>();
+	//private Map<Long, Long> chatCourse = new HashMap<Long, Long>();
 	
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -346,6 +346,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		if(hasCR)
 			criteria.add(Restrictions.in("obj.course", courses));
 		
+		/*
 		//criteria.add(Restrictions.gt("obj.timemodified", readingfromtimestamp));
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.chatLms = criteria.list();
@@ -369,7 +370,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		else
 			this.chatLogLms = new ArrayList<ChatLogLMS>();
 		logger.info("ChatLogLMS tables: " + this.chatLogLms.size());
-
+		 */
 		
 		criteria = session.createCriteria(CourseLMS.class, "obj");
 		if(hasCR)
@@ -741,12 +742,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			this.courseLms = criteria.list();
 			logger.info("CourseLMS tables: " + this.courseLms.size());
 
+			/*
 			criteria = session.createCriteria(ChatLMS.class, "obj");
 			if(hasCR)
 				criteria.add(Restrictions.in("obj.course", courses));
 			criteria.addOrder(Property.forName("obj.id").asc());
 			this.chatLms = criteria.list();
 			logger.info("ChatLMS tables: " + this.chatLms.size());
+*/
 
 			criteria = session.createCriteria(ForumLMS.class, "obj");
 			if(hasCR)
@@ -886,6 +889,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		this.logstoreLms = criteria.list();
 		logger.info("LogLMS tables: " + this.logstoreLms.size());
 
+		/*
 		criteria = session.createCriteria(ChatLogLMS.class, "obj");
 		if(hasCR)
 		{
@@ -903,7 +907,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		else
 			this.chatLogLms = new ArrayList<ChatLogLMS>();
 		logger.info("ChatLogLMS tables: " + this.chatLogLms.size());
-
+*/
+		
 		final Query forumPosts;
 		if(!hasCR)
 		{
@@ -1458,7 +1463,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 				}
-				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				if(insert.getCourse() != null)
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 				
 				if(insert.getTimestamp() > maxLog)
 				{
@@ -1651,6 +1657,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 
 		long count = 0;
 		
+		/*
 		for (final ChatLogLMS loadedItem : this.chatLogLms)
 		{
 			final CollaborationLog insert = new CollaborationLog();
@@ -1674,13 +1681,14 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getCourse() != null)
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 
 			if ((insert.getLearning() != null) && (insert.getUser() != null) && (insert.getCourse() != null)) {
 				collaborationLogs.put(insert.getId(), insert);
 			}
 
-		}
+		}*/
 		
 		final HashMap<Long, ForumDiscussionsLMS> discussions = new HashMap<Long, ForumDiscussionsLMS>();
 		final HashMap<Long, ForumPostsLMS> posts = new HashMap<Long, ForumPostsLMS>();
@@ -1813,7 +1821,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 				}
-				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				if(insert.getCourse() != null)
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 				
 	
 				if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getLearning() != null)) {
@@ -2013,6 +2022,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			learningObjs.put(insert.getId(), insert);
 		}
 		
+		/*
 		for (final ChatLMS loadedItem : this.chatLms)
 		{
 			final LearningObj insert = new LearningObj();
@@ -2034,6 +2044,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			learningObjs.put(insert.getId(), insert);
 			
 		}
+		*/
 		
 		for (final ForumLMS loadedItem : this.forumLms)
 		{
@@ -2254,6 +2265,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			}
 		}
 		
+		/*
 		for (final Entry<Long, Long> loadedItem : this.chatCourse.entrySet())
 		{
 			final CourseLearning insert = new CourseLearning();
@@ -2265,7 +2277,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			if ((insert.getCourse() != null) && (insert.getLearning() != null)) {
 				courseLearnings.put(insert.getId(), insert);
 			}
-		}
+		}*/
 		
 		for (final ForumLMS loadedItem : this.forumLms)
 		{
@@ -2408,7 +2420,8 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 				}
-				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				if(insert.getCourse() != null)
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 				
 				if(insert.getTimestamp() > maxLog)
 				{
