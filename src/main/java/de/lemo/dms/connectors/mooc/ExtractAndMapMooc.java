@@ -53,7 +53,6 @@ import de.lemo.dms.connectors.mooc.mapping.Comments;
 import de.lemo.dms.connectors.mooc.mapping.Courses;
 import de.lemo.dms.connectors.mooc.mapping.Events;
 import de.lemo.dms.connectors.mooc.mapping.Memberships;
-import de.lemo.dms.connectors.mooc.mapping.Progress;
 import de.lemo.dms.connectors.mooc.mapping.Answers;
 import de.lemo.dms.connectors.mooc.mapping.Questions;
 import de.lemo.dms.connectors.mooc.mapping.Segments;
@@ -95,7 +94,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private List<Comments> commentsMooc;
 	private List<Events> eventsMooc;
 	private List<Memberships> membershipsMooc;
-	private List<Progress> progressMooc;
 	private List<Answers> answersMooc;
 	private List<Questions> questionsMooc;
 	private List<Segments> segmentsMooc;
@@ -450,10 +448,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.membershipsMooc = criteria.list();
 		
-		criteria = session.createCriteria(Progress.class, "obj");
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.progressMooc = criteria.list();
-		
 		criteria = session.createCriteria(Questions.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.questionsMooc = criteria.list();
@@ -714,7 +708,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 						addLearningAttribute(insert.getLearning(), "MaxGrade", loadedItem.getMaxScore()+"");
 						maxGradeKnown.add(Long.valueOf("11" + loadedItem.getAssessmentId()));
 					}
-					if(insert.getLearning() != null)
+					if(insert.getClass() != null && insert.getUser() != null && insert.getLearning() != null)
 						assessmentUsers.put(insert.getId(), insert);
 				}
 			}
@@ -1200,7 +1194,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				}
 				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
 				
-				assessmentLogs.put(insert.getId(), insert);
+				if(insert.getCourse() != null && insert.getLearning() != null && insert.getUser() != null)
+					assessmentLogs.put(insert.getId(), insert);
 			}
 
 		}
