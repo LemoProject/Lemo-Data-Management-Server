@@ -1458,17 +1458,25 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					insert.setLearning(Long.valueOf("18" + loadedItem.getObjectid()), this.learningObjectMining, this.oldLearningObjectMining);
 				}
 	
-				if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
+				if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
+				{
 					courseDetails.put(insert.getCourse(), new CourseObject());
 					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-				}
-				if(insert.getCourse() != null)
 					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-				
+					
+				}
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
+				}
+				if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+				{
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				}
+				if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+				{
+					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 				}
 				
 				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) {
@@ -1811,19 +1819,26 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 					
 				}
 				
+				if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
+				{
+					courseDetails.put(insert.getCourse(), new CourseObject());
+					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+					
+				}
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
 				}
-				
-				if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
-					courseDetails.put(insert.getCourse(), new CourseObject());
-					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
+				if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+				{
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				}
+				if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+				{
 					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 				}
-				if(insert.getCourse() != null)
-					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-				
 	
 				if ((insert.getUser() != null) && (insert.getCourse() != null) && (insert.getLearning() != null)) {
 					collaborationLogs.put(insert.getId(), insert);
@@ -2414,18 +2429,25 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				}
 	
 				
-				if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null)
+				if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
 				{
 					courseDetails.put(insert.getCourse(), new CourseObject());
 					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-				}
-				if(insert.getCourse() != null)
 					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-				
+					
+				}
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
+				}
+				if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+				{
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				}
+				if(insert.getCourse() != null &&  insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+				{
+					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 				}
 				
 				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) 
