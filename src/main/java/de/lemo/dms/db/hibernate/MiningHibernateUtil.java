@@ -95,28 +95,20 @@ public final class MiningHibernateUtil {
 		config.addAnnotatedClass(Config.class);
 		
 		//Objects
-		config.addAnnotatedClass(User.class);
-		config.addAnnotatedClass(LearningObj.class);
-		config.addAnnotatedClass(Course.class);
-		config.addAnnotatedClass(Role.class);
-		
-		//Types
-		config.addAnnotatedClass(LearningType.class);
+		config.addAnnotatedClass(Person.class);
+		config.addAnnotatedClass(LearningObject.class);
+		config.addAnnotatedClass(LearningContext.class);
 		
 		//Relations
-		config.addAnnotatedClass(UserAssessment.class);
-		config.addAnnotatedClass(CourseLearning.class);
-		config.addAnnotatedClass(CourseUser.class);
-		config.addAnnotatedClass(Attribute.class);
+		config.addAnnotatedClass(PersonContext.class);
+		config.addAnnotatedClass(ObjectContext.class);
 		
-		config.addAnnotatedClass(LearningAttribute.class);
-		config.addAnnotatedClass(CourseAttribute.class);
-		config.addAnnotatedClass(UserAttribute.class);
+		config.addAnnotatedClass(LearningActivity.class);
 		
-		//Logs
-		config.addAnnotatedClass(AccessLog.class);
-		config.addAnnotatedClass(CollaborationLog.class);
-		config.addAnnotatedClass(AssessmentLog.class);
+		config.addAnnotatedClass(PersonExt.class);
+		config.addAnnotatedClass(LearningObjectExt.class);
+		config.addAnnotatedClass(LearningContextExt.class);
+		config.addAnnotatedClass(LearningActivityExt.class);
 
 		return config.buildSessionFactory();
 	}

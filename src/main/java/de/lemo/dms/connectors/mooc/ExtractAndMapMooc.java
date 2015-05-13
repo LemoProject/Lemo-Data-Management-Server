@@ -60,21 +60,11 @@ import de.lemo.dms.connectors.mooc.mapping.UnitResources;
 import de.lemo.dms.connectors.mooc.mapping.Users;
 import de.lemo.dms.connectors.mooc.mapping.Videos;
 import de.lemo.dms.db.DBConfigObject;
-import de.lemo.dms.db.mapping.Attribute;
-import de.lemo.dms.db.mapping.CollaborationLog;
-import de.lemo.dms.db.mapping.Course;
-import de.lemo.dms.db.mapping.CourseAttribute;
-import de.lemo.dms.db.mapping.CourseLearning;
-import de.lemo.dms.db.mapping.CourseUser;
-import de.lemo.dms.db.mapping.LearningAttribute;
-import de.lemo.dms.db.mapping.LearningObj;
-import de.lemo.dms.db.mapping.LearningType;
-import de.lemo.dms.db.mapping.UserAssessment;
-import de.lemo.dms.db.mapping.AccessLog;
-import de.lemo.dms.db.mapping.Role;
-import de.lemo.dms.db.mapping.AssessmentLog;
-import de.lemo.dms.db.mapping.User;
-import de.lemo.dms.db.mapping.UserAttribute;
+import de.lemo.dms.db.mapping.LearningContext;
+import de.lemo.dms.db.mapping.LearningContextExt;
+import de.lemo.dms.db.mapping.LearningObject;
+import de.lemo.dms.db.mapping.Person;
+import de.lemo.dms.db.mapping.PersonExt;
 import de.lemo.dms.processing.resulttype.CourseObject;
 
 /**
@@ -101,13 +91,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private List<Users> usersMooc;
 	private List<Videos> videosMooc;
 
-	final Map<Course, CourseObject> courseDetails = new HashMap<Course, CourseObject>();
+	final Map<LearningContext, CourseObject> courseDetails = new HashMap<LearningContext, CourseObject>();
 	
-	private Map<Long, CourseAttribute> courseAttributes = new HashMap<Long, CourseAttribute>();
-	private Map<Long, UserAttribute> userAttributes = new HashMap<Long, UserAttribute>();
-	private Map<Long, LearningAttribute> learningAttributes = new HashMap<Long, LearningAttribute>();
-	
-	private HashMap<String, LearningType> learnTypes = new HashMap<String, LearningType>();
+	private Map<Long, LearningContextExt> courseAttributes = new HashMap<Long, LearningContextExt>();
+	private Map<Long, PersonExt> userAttributes = new HashMap<Long, PersonExt>();
 		
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
@@ -517,21 +504,21 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}  
 
 	@Override
-	public Map<Long, Course> generateCourses() {
-		final HashMap<Long, Course> courses = new HashMap<Long, Course>();
+	public Map<Long, LearningContext> generateCourses() {
+		final HashMap<Long, LearningContext> courses = new HashMap<Long, LearningContext>();
 		
 		for(Courses loadedItem : this.coursesMooc)
 		{
-			Course insert = new Course();
+			LearningContext insert = new LearningContext();
 			insert.setId(  loadedItem.getId());
-			insert.setTitle(loadedItem.getTitle());
+			insert.setName(loadedItem.getTitle());
 			addCourseAttribute(insert, "Course Description", loadedItem.getDescription());
 			courses.put(insert.getId(), insert);
 		}
 		return courses;
 	}
 	
-	private void addCourseAttribute(Course course, String attribute, String value)
+	private void addCourseAttribute(LearningContext course, String attribute, String value)
 	{
 		if(!this.attributeMining.containsKey(attribute))
 		{
@@ -551,7 +538,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		this.courseAttributes.put(description.getId(), description);
 	}
 	
-	private void addUserAttribute(User user, String attribute, String value)
+	private void addUserAttribute(Person user, String attribute, String value)
 	{
 		if(!this.attributeMining.containsKey(attribute))
 		{
@@ -979,12 +966,12 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, LearningObj> generateLearningObjs() {
-		final HashMap<Long, LearningObj> learningObjs = new HashMap<Long, LearningObj>();
+	public Map<Long, LearningObject> generateLearningObjs() {
+		final HashMap<Long, LearningObject> learningObjs = new HashMap<Long, LearningObject>();
 		
 		for(Course loadedItem : this.courseMining.values())
 		{
-			LearningObj insert = new LearningObj();
+			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("15" + loadedItem.getId()));
 			insert.setTitle(loadedItem.getTitle());
 			insert.setInteractionType("Assessment");
@@ -1003,9 +990,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			
 			if(loadedItem.getType().equals("LessonUnit"))
 			{
-				LearningObj insert = new LearningObj();
+				LearningObject insert = new LearningObject();
 				insert.setId(Long.valueOf("13" + loadedItem.getId()));
-				insert.setTitle("Forum "  + loadedItem.getTitle());
+				insert.setName("Forum "  + loadedItem.getTitle());
 				insert.setInteractionType("Collaboration");
 				insert.setType(getLearningType("UnitForum"));
 				
@@ -1016,9 +1003,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		for(Questions loadedItem : this.questionsMooc)
 		{
-			LearningObj insert = new LearningObj();
+			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("14" + loadedItem.getId()));
-			insert.setTitle(loadedItem.getTitle());
+			insert.setName(loadedItem.getTitle());
 			insert.setInteractionType("Collaboration");
 			insert.setType(getLearningType("Thread"));
 			insert.setParent(Long.valueOf("13" + loadedItem.getSegmentId()), learningObjs, this.oldLearningObjectMining);
@@ -1029,9 +1016,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		for(Assessments loadedItem : this.assessmentMooc)
 		{
-			LearningObj insert = new LearningObj();
+			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("11" + loadedItem.getId()));
-			insert.setTitle(loadedItem.getTitle());
+			insert.setName(loadedItem.getTitle());
 			insert.setInteractionType("Assessment");
 			insert.setType(getLearningType(loadedItem.getType()));
 			
@@ -1041,9 +1028,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		for(Segments loadedItem : this.segmentsMooc)
 		{
-			LearningObj insert = new LearningObj();
+			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("10" + loadedItem.getId()));
-			insert.setTitle(loadedItem.getTitle());
+			insert.setName(loadedItem.getTitle());
 			insert.setInteractionType("Access");			
 
 			if(loadedItem.getType().equals("LessonUnit") || loadedItem.getType().equals("Chapter"))
@@ -1064,9 +1051,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		for(Videos loadedItem : this.videosMooc)
 		{
-			LearningObj insert = new LearningObj();
+			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("12" + loadedItem.getId()));
-			insert.setTitle(loadedItem.getTitle());
+			insert.setName(loadedItem.getTitle());
 			insert.setInteractionType("Access");
 			insert.setType(getLearningType("Video"));
 				
@@ -1113,8 +1100,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 	
 	@Override
-	public Map<Long, User> generateUsers() {
-		final HashMap<Long, User> users = new HashMap<Long, User>();
+	public Map<Long, Person> generateUsers() {
+		final HashMap<Long, Person> users = new HashMap<Long, Person>();
 		
 		//Test
 /*		Map<Long, Long> uid = new HashMap<Long, Long>();
@@ -1125,9 +1112,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		
 		for(Users loadedItem : this.usersMooc)
 		{
-			User insert = new User();
+			Person insert = new Person();
 			insert.setId(  loadedItem.getId());
-			insert.setLogin(loadedItem.getId() + "mooc");
+			insert.setName(loadedItem.getId() + "mooc");
 			
 			//
 //			if(uid.containsKey(loadedItem.getId()))
@@ -1149,35 +1136,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 
-	@Override
-	public Map<Long, Role> generateRoles() {
-		final HashMap<Long, Role> roles = new HashMap<Long, Role>();
-		
-		Role admin = new Role();
-		admin.setId(0);
-		admin.setSortOrder(0);
-		admin.setTitle("Administrator");
-		admin.setType(0);
-		
-		Role teacher = new Role();
-		teacher.setId(1);
-		teacher.setSortOrder(1);
-		teacher.setTitle("Instructor");
-		teacher.setType(1);
-		
-		Role student = new Role();
-		student.setId(2);
-		student.setSortOrder(2);
-		student.setTitle("Student");
-		student.setType(2);
-		
-		roles.put(admin.getId(), admin);
-		roles.put(teacher.getId(), teacher);
-		roles.put(student.getId(), student);
-	
-		
-		return roles;
-	}
 
 	@Override
 	public Map<Long, AssessmentLog> generateAssessmentLogs() {
@@ -1295,7 +1253,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<String, Attribute> generateAttributes() {
+	public Map<String, Attribute> generateActivityExt() {
 		if(!this.oldAttributeMining.containsKey("CourseLastRequest") && !this.attributeMining.containsKey("CourseLastRequest"))
 		{
 			Attribute attribute = new Attribute();

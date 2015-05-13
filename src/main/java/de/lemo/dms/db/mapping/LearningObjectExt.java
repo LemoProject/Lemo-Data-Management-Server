@@ -9,17 +9,15 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import de.lemo.dms.db.mapping.abstractions.IMapping;
-
 
 @Entity
-@Table(name = "lemo_learning_attribute")
-public class LearningAttribute implements IMapping{
+@Table(name = "lemo_learning_object_ext")
+public class LearningObjectExt{
 
 	private long id;
-	private LearningObj learning;
-	private Attribute attribute;
+	private LearningObject learningObject;
 	private String value;
+	private String attr;
 	
 
 	
@@ -42,30 +40,17 @@ public class LearningAttribute implements IMapping{
 	 * @return the learningId
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="learning_id")
-	public LearningObj getLearning() {
-		return learning;
+	@JoinColumn(name="learningObject")
+	public LearningObject getLearningObject() {
+		return learningObject;
 	}
 	/**
 	 * @param learningId the learningId to set
 	 */
-	public void setLearning(LearningObj learning) {
-		this.learning = learning;
+	public void setLearningObject(LearningObject learningObject) {
+		this.learningObject = learningObject;
 	}
-	/**
-	 * @return the attributeId
-	 */
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="attribute_id")
-	public Attribute getAttribute() {
-		return attribute;
-	}
-	/**
-	 * @param attributeId the attributeId to set
-	 */
-	public void setAttribute(Attribute attribute) {
-		this.attribute = attribute;
-	}
+
 	/**
 	 * @return the id
 	 */
@@ -79,15 +64,25 @@ public class LearningAttribute implements IMapping{
 	public void setId(long id) {
 		this.id = id;
 	}
-	@Override
-	public boolean equals(IMapping o) {
-		if (!(o instanceof LearningAttribute)) {
-			return false;
-		}
-		if ((o.getId() == this.getId()) && (o instanceof LearningAttribute)) {
+	
+	public boolean equals(LearningObjectExt o) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningObjectExt)) {
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * @return the attr
+	 */
+	@Column(name="attr")
+	public String getAttr() {
+		return attr;
+	}
+	/**
+	 * @param attr the attr to set
+	 */
+	public void setAttr(String attr) {
+		this.attr = attr;
 	}
 	
 	
