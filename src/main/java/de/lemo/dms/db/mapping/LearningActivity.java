@@ -122,7 +122,7 @@ public class LearningActivity{
 	}
 	
 	
-	public void setCourse(final long learningContext, final Map<Long, LearningContext> learningContexts,
+	public void setLearningContext(final long learningContext, final Map<Long, LearningContext> learningContexts,
 			final Map<Long, LearningContext> oldLearningContexts) {
 
 		if (learningContexts.get(learningContext) != null)
