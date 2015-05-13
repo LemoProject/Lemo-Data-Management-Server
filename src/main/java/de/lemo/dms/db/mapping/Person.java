@@ -22,6 +22,7 @@ public class Person{
 	
 	private Set<LearningActivity> learningActivities= new HashSet<LearningActivity>();
 	private Set<PersonContext> personContexts = new HashSet<PersonContext>();
+	private Set<PersonExt> personExtensions = new HashSet<PersonExt>();
 	
 	
 	/**
@@ -105,6 +106,28 @@ public class Person{
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the personExtensions
+	 */
+	@OneToMany(mappedBy="person")
+	public Set<PersonExt> getPersonExtensions() {
+		return personExtensions;
+	}
+
+	/**
+	 * @param personExtensions the personExtensions to set
+	 */
+	public void setPersonExtensions(Set<PersonExt> personExtensions) {
+		this.personExtensions = personExtensions;
+	}
+	
+	/**
+	 * @param personExtensions the personExtensions to add
+	 */
+	public void addPersonExt(PersonExt personExtension) {
+		this.personExtensions.add(personExtension);
 	}
 
 }

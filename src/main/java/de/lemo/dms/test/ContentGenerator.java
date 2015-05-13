@@ -245,7 +245,7 @@ public class ContentGenerator {
 
 			UserAttribute ua = new UserAttribute();
 			ua.setId(userAttributes.size());
-			ua.setAttribute(attUserName);
+			ua.setAttr(attUserName);
 			ua.setValue(EUserName.values()[i % EUserName.values().length].toString());
 			ua.setUser(user);
 			
@@ -253,7 +253,7 @@ public class ContentGenerator {
 			
 			UserAttribute ug = new UserAttribute();
 			ug.setId(userAttributes.size());
-			ug.setAttribute(attUserGender);
+			ug.setAttr(attUserGender);
 			ug.setValue((i % 2) + 1 +"");
 			ug.setUser(user);
 			
@@ -333,7 +333,7 @@ public class ContentGenerator {
 			
 			CourseAttribute ca = new CourseAttribute();
 			ca.setId(cou.getId());
-			ca.setAttribute(attCourseDescription);
+			ca.setAttr(attCourseDescription);
 			ca.setValue("This course is about the number " + k + ".");
 			ca.setCourse(cou);
 			
@@ -422,7 +422,7 @@ public class ContentGenerator {
 					a.setParent(learningObjects.get(learningObjects.size() - 1));
 				LearningAttribute la = new LearningAttribute();
 				la.setId(learnAttributes.size() + 1);
-				la.setAttribute(attMaxGrade);
+				la.setAttr(attMaxGrade);
 				la.setLearning(a);
 				la.setValue((randy.nextInt(3) + 10 ) * 10L +"");
 				
@@ -621,7 +621,7 @@ public class ContentGenerator {
 		{
 			CourseAttribute ca = new CourseAttribute();
 			ca.setId(courseAttributes.size() + 1);
-			ca.setAttribute(attributes.get(4));
+			ca.setAttr(attributes.get(4));
 			ca.setCourse(courseList.get(cid.intValue() -1 ));
 			ca.setValue(firsts.get(cid).toString());
 			
@@ -629,7 +629,7 @@ public class ContentGenerator {
 			
 			CourseAttribute cf = new CourseAttribute();
 			cf.setId(courseAttributes.size() + 1);
-			cf.setAttribute(attributes.get(5));
+			cf.setAttr(attributes.get(5));
 			cf.setCourse(courseList.get(cid.intValue() -1));
 			cf.setValue(lasts.get(cid).toString());
 			

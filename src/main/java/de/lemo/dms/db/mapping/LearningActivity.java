@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "lemo_learning_activity")
-public class LearningActivity{
+public class LearningActivity implements Comparable<LearningActivity>{
 
 	private long id;
 	private LearningContext learningContext;

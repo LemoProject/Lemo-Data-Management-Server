@@ -2143,7 +2143,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		this.learningAttributeIdMax++;
 		learningAttribute.setLearning(learningObject);
 		learningAttribute.setValue(value);
-		learningAttribute.setAttribute(attribute);
+		learningAttribute.setAttr(attribute);
 		
 		this.learningAttributeMining.put(learningAttribute.getId(), learningAttribute);
 		
@@ -2170,7 +2170,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		this.courseAttributeIdMax++;
 		courseAttribute.setCourse(this.courseMining.get(course));
 		courseAttribute.setValue(value);
-		courseAttribute.setAttribute(attribute);
+		courseAttribute.setAttr(attribute);
 		
 		this.courseAttributeMining.put(courseAttribute.getId(), courseAttribute);
 		
@@ -2181,12 +2181,12 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		
 		for(CourseAttribute ca : this.oldCourseAttributeMining.values())
 		{
-			if(ca.getAttribute().getName().equals("CourseLastRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getLastRequest() > Long.valueOf(ca.getValue()))
+			if(ca.getAttr().getName().equals("CourseLastRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getLastRequest() > Long.valueOf(ca.getValue()))
 			{
 				ca.setValue(this.courseDetails.get(ca.getCourse()).getLastRequest().toString());
 				this.courseAttributeMining.put(ca.getId(), ca);
 			}
-			if(ca.getAttribute().getName().equals("CourseFirstRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getFirstRequest() < Long.valueOf(ca.getValue()))
+			if(ca.getAttr().getName().equals("CourseFirstRequest") && this.courseDetails.get(ca.getCourse()) != null && this.courseDetails.get(ca.getCourse()).getFirstRequest() < Long.valueOf(ca.getValue()))
 			{
 				ca.setValue(this.courseDetails.get(ca.getCourse()).getFirstRequest().toString());
 				this.courseAttributeMining.put(ca.getId(), ca);
@@ -2200,7 +2200,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				CourseAttribute ca = new CourseAttribute();
 				ca.setId(this.courseAttributeIdMax + 1);
 				this.courseAttributeIdMax++;
-				ca.setAttribute(this.attributeMining.get("CourseLastRequest"));
+				ca.setAttr(this.attributeMining.get("CourseLastRequest"));
 				ca.setCourse(this.courseMining.get(co.getId()));
 				ca.setValue(co.getLastRequest().toString());
 				this.courseAttributeMining.put(ca.getId(), ca);
@@ -2208,7 +2208,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 				CourseAttribute first= new CourseAttribute();
 				first.setId(this.courseAttributeIdMax + 1);
 				this.courseAttributeIdMax++;
-				first.setAttribute(this.attributeMining.get("CourseFirstRequest"));
+				first.setAttr(this.attributeMining.get("CourseFirstRequest"));
 				first.setCourse(this.courseMining.get(co.getId()));
 				first.setValue(co.getFirstRequest().toString());
 				this.courseAttributeMining.put(first.getId(), first);

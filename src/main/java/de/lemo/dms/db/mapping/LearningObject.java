@@ -148,6 +148,10 @@ public class LearningObject{
 	public void setLearningObjectExtensions(Set<LearningObjectExt> learningObjectExtensions) {
 		this.learningObjectExtensions = learningObjectExtensions;
 	}
+	
+	public void addLearningObjectExt(LearningObjectExt learningObjectExtension) {
+		this.learningObjectExtensions.add(learningObjectExtension);
+	}
 
 	/**
 	 * @return the name

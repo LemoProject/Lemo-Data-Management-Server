@@ -25,6 +25,7 @@ public class LearningContext{
 	private Set<ObjectContext> objectContexts = new HashSet<ObjectContext>();
 	private Set<LearningActivity> learningActivities = new HashSet<LearningActivity>();
 	private Set<PersonContext> personContexts = new HashSet<PersonContext>();
+	private Set<LearningContextExt> learningContextExtensions = new HashSet<LearningContextExt>();
 	
 	public boolean equals(final LearningContext o) {
 		if ((o.getId() == this.getId()) && (o instanceof LearningContext)) {
@@ -147,4 +148,26 @@ public class LearningContext{
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	/**
+	 * @return the learningContextExtensions
+	 */
+	@OneToMany(mappedBy="learningContext")
+	public Set<LearningContextExt> getLearningContextExtensions() {
+		return learningContextExtensions;
+	}
+
+	/**
+	 * @param learningContextExtensions the learningContextExtensions to set
+	 */
+	public void setLearningContextExtensions(
+			Set<LearningContextExt> learningContextExtensions) {
+		this.learningContextExtensions = learningContextExtensions;
+	}
+	
+	public void addLearningContextExtensions(LearningContextExt learningContextExtension) {
+		this.learningContextExtensions.add(learningContextExtension);
+	}
+	
+	
 }

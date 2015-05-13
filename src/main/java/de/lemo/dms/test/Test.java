@@ -120,7 +120,7 @@ public class Test {
 	    		Map<Long, String> progMap = new HashMap<Long, String>();
 	    		for(UserAttribute u : ua)
 	    		{
-	    			if(u.getAttribute().getId() == 5)
+	    			if(u.getAttr().getId() == 5)
 	    			{		progMap.put(u.getUser().getId(), u.getValue());
 	    			System.out.println(u.getValue());}
 	    		}

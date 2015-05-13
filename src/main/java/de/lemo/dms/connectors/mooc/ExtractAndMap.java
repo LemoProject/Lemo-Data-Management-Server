@@ -69,25 +69,25 @@ public abstract class ExtractAndMap {
 	// lists of object tables which are new found in LMS DB
 	/** A List of new entries in the course table found in this run of the process. */
 
-	protected Map<Long, LearningContext> courseMining;
+	protected Map<Long, LearningContext> learningContextMining;
 	protected Map<Long, LearningObject> learningObjectMining;
-	protected Map<Long, Person> userMining;
-	protected Map<Long, ObjectContext> courseLearningMining;
-	protected Map<Long, PersonContext> courseUserMining;	
+	protected Map<Long, Person> personMining;
+	protected Map<Long, ObjectContext> objectContextMining;
+	protected Map<Long, PersonContext> personContextMining;	
 	
-	protected Map<Long, LearningContextExt> courseAttributeMining= new HashMap<Long, LearningContextExt>();	
-	protected Map<Long, PersonExt> userAttributeMining;	
-	protected Map<Long, LearningObjectExt> learningAttributeMining;	
+	protected Map<Long, LearningContextExt> learningContextExt= new HashMap<Long, LearningContextExt>();	
+	protected Map<Long, PersonExt> personExtMining;	
+	protected Map<Long, LearningObjectExt> learningObjectExt;	
 	
-	protected Map<Long, LearningContext> oldCourseMining;
+	protected Map<Long, LearningContext> oldLearningContextMining;
 	protected Map<Long, LearningObject> oldLearningObjectMining;
-	protected Map<Long, Person> oldUserMining;
-	protected Map<Long, ObjectContext> oldCourseLearningObjectMining;
-	protected Map<Long, PersonContext> oldCourseUserMining;	
+	protected Map<Long, Person> oldPersonMining;
+	protected Map<Long, ObjectContext> oldObjectContextMining;
+	protected Map<Long, PersonContext> oldPersonContextMining;	
 	
-	protected Map<Long, LearningContextExt> oldCourseAttributeMining;	
-	protected Map<Long, PersonExt> oldUserAttributeMining;	
-	protected Map<Long, LearningObjectExt> oldLearningAttributeMining;	
+	protected Map<Long, LearningContextExt> oldLearningContextExtMining;	
+	protected Map<Long, PersonExt> oldPersonExtMining;	
+	protected Map<Long, LearningObjectExt> oldLearningObjectExtMining;	
 	
 
 
@@ -111,12 +111,6 @@ public abstract class ExtractAndMap {
 	}
 
 	protected Long accessLogMax;
-
-	protected Long collaborationLogMax;
-
-	protected Long assessmentLogMax;
-	
-	protected Long learningObjectTypeMax;
 	
 	protected Long courseAttributeIdMax;
 	
@@ -242,20 +236,20 @@ public abstract class ExtractAndMap {
 		Criteria criteria = session.createCriteria(LearningContext.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		t = criteria.list();
-		this.oldCourseMining = new HashMap<Long, LearningContext>();
+		this.oldLearningContextMining = new HashMap<Long, LearningContext>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldCourseMining.put(((LearningContext) (t.get(i))).getId(), (LearningContext) t.get(i));
+			this.oldLearningContextMining.put(((LearningContext) (t.get(i))).getId(), (LearningContext) t.get(i));
 		}
-		logger.info("Loaded " + this.oldCourseMining.size() + " Course objects from the mining database.");
+		logger.info("Loaded " + this.oldLearningContextMining.size() + " Course objects from the mining database.");
 		
 		criteria = session.createCriteria(Person.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		t = criteria.list();
-		this.oldUserMining = new HashMap<Long, Person>();
+		this.oldPersonMining = new HashMap<Long, Person>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldUserMining.put(((Person) (t.get(i))).getId(), (Person) t.get(i));
+			this.oldPersonMining.put(((Person) (t.get(i))).getId(), (Person) t.get(i));
 		}
-		logger.info("Loaded " + this.oldUserMining.size() + " User objects from the mining database.");
+		logger.info("Loaded " + this.oldPersonMining.size() + " User objects from the mining database.");
 		
 		criteria = session.createCriteria(LearningObject.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
@@ -269,47 +263,47 @@ public abstract class ExtractAndMap {
 		criteria = session.createCriteria(LearningContextExt.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		t = criteria.list();
-		this.oldCourseAttributeMining = new HashMap<Long, LearningContextExt>();
+		this.oldLearningContextExtMining = new HashMap<Long, LearningContextExt>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldCourseAttributeMining.put(((LearningContextExt) (t.get(i))).getId(), (LearningContextExt) t.get(i));
+			this.oldLearningContextExtMining.put(((LearningContextExt) (t.get(i))).getId(), (LearningContextExt) t.get(i));
 		}
-		logger.info("Loaded " + this.oldCourseAttributeMining.size() + " CourseAttribute objects from the mining database.");
+		logger.info("Loaded " + this.oldLearningContextExtMining.size() + " CourseAttribute objects from the mining database.");
 		
 		criteria = session.createCriteria(PersonExt.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		t = criteria.list();
-		this.oldUserAttributeMining = new HashMap<Long, PersonExt>();
+		this.oldPersonExtMining = new HashMap<Long, PersonExt>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldUserAttributeMining.put(((PersonExt) (t.get(i))).getId(), (PersonExt) t.get(i));
+			this.oldPersonExtMining.put(((PersonExt) (t.get(i))).getId(), (PersonExt) t.get(i));
 		}
-		logger.info("Loaded " + this.oldUserAttributeMining.size() + " UserAttribute objects from the mining database.");
+		logger.info("Loaded " + this.oldPersonExtMining.size() + " UserAttribute objects from the mining database.");
 		
 		criteria = session.createCriteria(LearningObjectExt.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		t = criteria.list();
-		this.oldLearningAttributeMining = new HashMap<Long, LearningObjectExt>();
+		this.oldLearningObjectExtMining = new HashMap<Long, LearningObjectExt>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldLearningAttributeMining.put(((LearningObjectExt) (t.get(i))).getId(), (LearningObjectExt) t.get(i));
+			this.oldLearningObjectExtMining.put(((LearningObjectExt) (t.get(i))).getId(), (LearningObjectExt) t.get(i));
 		}
-		logger.info("Loaded " + this.oldUserAttributeMining.size() + " LearningAttribute objects from the mining database.");
+		logger.info("Loaded " + this.oldPersonExtMining.size() + " LearningAttribute objects from the mining database.");
 		
 		criteria = session.createCriteria(ObjectContext.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		t = criteria.list();
-		this.oldCourseLearningObjectMining = new HashMap<Long, ObjectContext>();
+		this.oldObjectContextMining = new HashMap<Long, ObjectContext>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldCourseLearningObjectMining.put(((ObjectContext) (t.get(i))).getId(), (ObjectContext) t.get(i));
+			this.oldObjectContextMining.put(((ObjectContext) (t.get(i))).getId(), (ObjectContext) t.get(i));
 		}
-		logger.info("Loaded " + this.oldCourseLearningObjectMining.size() + " CourseResource objects from the mining database.");
+		logger.info("Loaded " + this.oldObjectContextMining.size() + " CourseResource objects from the mining database.");
 
 		criteria = session.createCriteria(PersonContext.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		t = criteria.list();
-		this.oldCourseUserMining = new HashMap<Long, PersonContext>();
+		this.oldPersonContextMining = new HashMap<Long, PersonContext>();
 		for (int i = 0; i < t.size(); i++) {
-			this.oldCourseUserMining.put(((PersonContext) (t.get(i))).getId(), (PersonContext) t.get(i));
+			this.oldPersonContextMining.put(((PersonContext) (t.get(i))).getId(), (PersonContext) t.get(i));
 		}
-		logger.info("Loaded " + this.oldCourseUserMining.size() + " CourseUser objects from the mining database.");
+		logger.info("Loaded " + this.oldPersonContextMining.size() + " CourseUser objects from the mining database.");
 		
 		
 
@@ -395,15 +389,15 @@ public abstract class ExtractAndMap {
 	 **/
 	public void clearMiningTables() {
 
-		this.courseMining.clear();
+		this.learningContextMining.clear();
 		this.learningObjectMining.clear();
-		this.userMining.clear();
-		this.courseAttributeMining.clear();
-		this.userAttributeMining.clear();
-		this.learningAttributeMining.clear();
+		this.personMining.clear();
+		this.learningContextExt.clear();
+		this.personExtMining.clear();
+		this.learningObjectExt.clear();
 		
-		this.courseLearningMining.clear();
-		this.courseUserMining.clear();
+		this.objectContextMining.clear();
+		this.personContextMining.clear();
 	}
 
 	/**
@@ -412,14 +406,14 @@ public abstract class ExtractAndMap {
 	 */
 	public void prepareMiningData()
 	{
-		this.oldCourseMining.putAll(this.courseMining);
+		this.oldLearningContextMining.putAll(this.learningContextMining);
 		this.oldLearningObjectMining.putAll(this.learningObjectMining);
-		this.oldUserMining.putAll(this.userMining);
-		this.oldCourseAttributeMining.putAll(this.courseAttributeMining);
-		this.oldUserAttributeMining.putAll(this.userAttributeMining);
-		this.oldLearningAttributeMining.putAll(this.learningAttributeMining);
-		this.oldCourseLearningObjectMining.putAll(this.courseLearningMining);
-		this.oldCourseUserMining.putAll(this.courseUserMining);
+		this.oldPersonMining.putAll(this.personMining);
+		this.oldLearningContextExtMining.putAll(this.learningContextExt);
+		this.oldPersonExtMining.putAll(this.personExtMining);
+		this.oldLearningObjectExtMining.putAll(this.learningObjectExt);
+		this.oldObjectContextMining.putAll(this.objectContextMining);
+		this.oldPersonContextMining.putAll(this.personContextMining);
 		
 	}
 
@@ -436,65 +430,60 @@ public abstract class ExtractAndMap {
 		Long objects = 0L;
 
 		// generate mining tables
-		if (this.userMining == null) {
+		if (this.personMining == null) {
 
 			this.c.reset();
 			logger.info("\nObject tables:\n");
 
-			this.courseMining = this.generateCourses();
-			objects += this.courseMining.size();
-			logger.info("Generated " + this.courseMining.size() + " Course entries in "
+			this.learningContextMining = this.generateLearningContexts();
+			objects += this.learningContextMining.size();
+			logger.info("Generated " + this.learningContextMining.size() + " Course entries in "
 					+ this.c.getAndReset() + " s. ");
-			this.updates.add(this.courseMining.values());
+			this.updates.add(this.learningContextMining.values());
 			
-			this.learningObjectMining = this.generateLearningObjs();
-			
+			this.learningObjectMining = this.generateLearningObjects();			
 			objects += this.learningObjectMining.size();
 			logger.info("Generated " + this.learningObjectMining.size() + " LearningObject entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.learningObjectMining.values());
 
-			this.userMining = this.generateUsers();
-			objects += this.userMining.size();
-			logger.info("Generated " + this.userMining.size() + " User entries in " + this.c.getAndReset()
+			this.personMining = this.generatePersons();
+			objects += this.personMining.size();
+			logger.info("Generated " + this.personMining.size() + " User entries in " + this.c.getAndReset()
 					+ " s. ");
-			this.updates.add(this.userMining.values());
+			this.updates.add(this.personMining.values());
 			
 			logger.info("\nAssociation tables:\n");
 			
 			
 
 
-			this.courseLearningMining = generateCourseLearnings();
-			objects += this.courseLearningMining.size();
-			logger.info("Generated " + this.courseLearningMining.size()
+			this.objectContextMining = generateObjectContexts();
+			objects += this.objectContextMining.size();
+			logger.info("Generated " + this.objectContextMining.size()
 					+ " CourseLearningObject entries in " + this.c.getAndReset() + " s. ");
-			this.updates.add(this.courseLearningMining.values());
+			this.updates.add(this.objectContextMining.values());
 
 
 		}
 
 		
-		this.courseUserMining = generateCourseUsers();
+		this.personContextMining = generatePersonContexts();
 		objects += this.updates.get(this.updates.size() - 1).size();
-		this.updates.add(this.courseUserMining.values());
+		this.updates.add(this.personContextMining.values());
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " CourseUser entries in " + this.c.getAndReset() + " s. ");
 		
-		this.userAttributeMining = generateUserAttributes();
-		objects += this.userAttributeMining.size();
-		logger.info("Generated " + this.userAttributeMining.size()
+		this.personExtMining = generatePersonExts();
+		objects += this.personExtMining.size();
+		logger.info("Generated " + this.personExtMining.size()
 				+ " UserAttribute entries in " + this.c.getAndReset() + " s. ");
-		this.updates.add(this.userAttributeMining.values());
+		this.updates.add(this.personExtMining.values());
 
 		
-		this.learningAttributeMining = this.generateLearningAttributes();
-		objects += this.learningAttributeMining.size();
-		logger.info("Generated " + this.learningAttributeMining.size() + " LearningAttribute entries in " + this.c.getAndReset()
-				+ " s. ");
-		this.updates.add(this.learningAttributeMining.values());
+
 		
-		logger.info("\nLog tables:\n");
+		
 		
 		if (objects > 0)
 		{
@@ -504,25 +493,31 @@ public abstract class ExtractAndMap {
 			
 			updates.clear();
 			session.clear();
-			this.userAttributeMining.clear();
-			this.courseUserMining.clear();
-			this.courseLearningMining.clear();
+			this.personExtMining.clear();
+			this.personContextMining.clear();
+			this.objectContextMining.clear();
 		}
+		
+		logger.info("\nLog tables:\n");
 
 		//this.updates.add(
-		this.generateAccessLogs();//.values());
+		this.generateLearningActivities();//.values());
 		/*objects += this.updates.get(this.updates.size() - 1).size();
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
 				+ " AccessLog entries in " + this.c.getAndReset() + " s. ");
 		*/
 
+		this.learningObjectExt = this.generateLearningObjectExts();
+		objects += this.learningObjectExt.size();
+		logger.info("Generated " + this.learningObjectExt.size() + " LearningAttribute entries in " + this.c.getAndReset()
+				+ " s. ");
+		this.updates.add(this.learningObjectExt.values());
 		
-		
-		this.courseAttributeMining = generateCourseAttributes();
-		objects += this.courseAttributeMining.size();
-		logger.info("Generated " + this.courseAttributeMining.size()
+		this.learningContextExt = generateLearningContextExts();
+		objects += this.learningContextExt.size();
+		logger.info("Generated " + this.learningContextExt.size()
 				+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
-		this.updates.add(this.courseAttributeMining.values());
+		this.updates.add(this.learningContextExt.values());
 		
 		if (objects > 0)
 		{
@@ -537,23 +532,23 @@ public abstract class ExtractAndMap {
 	}
 
 	// methods for create and fill the mining-table instances
-	abstract Map<Long, LearningContext> generateCourses();
+	abstract Map<Long, LearningContext> generateLearningContexts();
 	
-	abstract Map<Long, LearningObject> generateLearningObjs();
+	abstract Map<Long, LearningObject> generateLearningObjects();
 
-	abstract Map<Long, Person> generateUsers();
+	abstract Map<Long, Person> generatePersons();
 	
-	abstract Map<Long, LearningContextExt> generateCourseAttributes();
+	abstract Map<Long, LearningContextExt> generateLearningContextExts();
 	
-	abstract Map<Long, PersonExt> generateUserAttributes();
+	abstract Map<Long, PersonExt> generatePersonExts();
 	
-	abstract Map<Long, LearningObjectExt> generateLearningAttributes();
+	abstract Map<Long, LearningObjectExt> generateLearningObjectExts();
 	
-	abstract Map<Long, PersonContext> generateCourseUsers();
+	abstract Map<Long, PersonContext> generatePersonContexts();
 
-	abstract Map<Long, ObjectContext> generateCourseLearnings();
+	abstract Map<Long, ObjectContext> generateObjectContexts();
 	
-	abstract Map<Long, LearningActivity> generateAccessLogs();
+	abstract Map<Long, LearningActivity> generateLearningActivities();
 
 
 

@@ -97,11 +97,12 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	
 	private Map<Long, LearningObjectExt> learningAttributes = new HashMap<Long, LearningObjectExt>();
 	private Map<Long, LearningContextExt> courseAttributes = new HashMap<Long, LearningContextExt>();
+	private Map<Long, PersonExt> userAttributes = new HashMap<Long, PersonExt>();
 
 	final Map<LearningContext, CourseObject> courseDetails = new HashMap<LearningContext, CourseObject>();
 	
 	
-	private Map<Long, PersonExt> userAttributes = new HashMap<Long, PersonExt>();
+	
 		
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
@@ -487,15 +488,15 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, PersonContext> generateCourseUsers() {
+	public Map<Long, PersonContext> generatePersonContexts() {
 		final HashMap<Long, PersonContext> courseUsers = new HashMap<Long, PersonContext>();
 		
 		for(Memberships loadedItem : this.membershipsMooc)
 		{
 			PersonContext insert = new PersonContext();
 			insert.setId( loadedItem.getId());
-			insert.setLearningContext(  loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
-			insert.setPerson(loadedItem.getUserId(), this.userMining, this.oldUserMining);
+			insert.setLearningContext(  loadedItem.getCourseId(), this.learningContextMining, this.oldLearningContextMining);
+			insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
 			String role = "student";
 			if(loadedItem.getRole().equals("instructor") || loadedItem.getRole().equals("instructor_assistant"))
 				role = "teacher";
@@ -511,7 +512,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}  
 
 	@Override
-	public Map<Long, LearningContext> generateCourses() {
+	public Map<Long, LearningContext> generateLearningContexts() {
 		final HashMap<Long, LearningContext> courses = new HashMap<Long, LearningContext>();
 		
 		for(Courses loadedItem : this.coursesMooc)
@@ -542,7 +543,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		loe.setId(this.learningAttributeIdMax + 1);
 		this.learningAttributeIdMax++;
 		loe.setPerson(user);
-		loe.setAttribute(attribute);
+		loe.setAttr(attribute);
 		loe.setValue(value);
 		this.userAttributes.put(loe.getId(), loe);
 	}
@@ -559,7 +560,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, ObjectContext> generateCourseLearnings() {
+	public Map<Long, ObjectContext> generateObjectContexts() {
 		final HashMap<Long, ObjectContext> courseLearnings = new HashMap<Long, ObjectContext>();
 		
 		Map<Long, Long> unitCourses = new HashMap<Long, Long>();
@@ -569,7 +570,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		{
 			ObjectContext insert = new ObjectContext();
 			insert.setId(Long.valueOf("10" + loadedItem.getId()));
-			insert.setLearningContext(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
+			insert.setLearningContext(loadedItem.getCourseId(), this.learningContextMining, this.oldLearningContextMining);
 			insert.setLearningObject(Long.valueOf("10" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
 			
 			unitCourses.put(loadedItem.getId(), loadedItem.getCourseId());
@@ -584,7 +585,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			{
 				ObjectContext insert = new ObjectContext();
 				insert.setId(Long.valueOf("13" + loadedItem.getId()));
-				insert.setLearningContext(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
+				insert.setLearningContext(loadedItem.getCourseId(), this.learningContextMining, this.oldLearningContextMining);
 				insert.setLearningObject(Long.valueOf("13" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
 				
 				courseLearnings.put(insert.getId(), insert);
@@ -599,7 +600,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setId(Long.valueOf("12" + loadedItem.getId()));
 				if(unitCourses.get(loadedItem.getUnitId()) != null)
 				{
-					insert.setLearningContext(unitCourses.get(loadedItem.getUnitId()), this.courseMining, this.oldCourseMining);
+					insert.setLearningContext(unitCourses.get(loadedItem.getUnitId()), this.learningContextMining, this.oldLearningContextMining);
 				}
 				insert.setLearningObject(Long.valueOf("12" + loadedItem.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);
 				
@@ -615,7 +616,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setId(Long.valueOf("11" + loadedItem.getId()));
 				if(unitCourses.get(loadedItem.getUnitId()) != null)
 				{
-					insert.setLearningContext(unitCourses.get(loadedItem.getUnitId()), this.courseMining, this.oldCourseMining);
+					insert.setLearningContext(unitCourses.get(loadedItem.getUnitId()), this.learningContextMining, this.oldLearningContextMining);
 				}
 				insert.setLearningObject(Long.valueOf("11" + loadedItem.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);
 				
@@ -630,7 +631,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setId(Long.valueOf("14" + loadedItem.getId()));
 				if(unitCourses.get(loadedItem.getUnitId()) != null)
 				{
-					insert.setLearningContext(unitCourses.get(loadedItem.getUnitId()), this.courseMining, this.oldCourseMining);
+					insert.setLearningContext(unitCourses.get(loadedItem.getUnitId()), this.learningContextMining, this.oldLearningContextMining);
 				}
 				insert.setLearningObject(Long.valueOf("14" + loadedItem.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);
 				
@@ -645,63 +646,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, UserAssessment> generateUserAssessments() {
-		final HashMap<Long, UserAssessment> assessmentUsers = new HashMap<Long, UserAssessment>();
-		
-		final Set<Long> maxGradeKnown = new HashSet<Long>();		
-		for(AssessmentSessions loadedItem : this.assessmentSessionsMooc)
-		{
-			UserAssessment insert = new UserAssessment();			
-			CourseUser cu = this.courseUserMining.get(loadedItem.getMembershipId());
-			if(cu == null)
-			{
-				cu = this.oldCourseUserMining.get(loadedItem.getMembershipId());
-			}
-			if(cu != null && cu.getUser() != null)
-			{
-				if(loadedItem.getScore() != null)
-				{
-					insert.setId(this.userAssessmentMax + 1);
-					this.userAssessmentMax ++;
-					insert.setLearning(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.oldLearningObjectMining);
-					insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
-					insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
-					insert.setLearning(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.learningObjectMining);
-					insert.setGrade(Double.valueOf(loadedItem.getScore()));
-					insert.setTimemodified(loadedItem.getTimeModified().getTime()/1000);
-					
-					if(!maxGradeKnown.contains(Long.valueOf("11" + loadedItem.getAssessmentId())) && insert.getLearning() != null)
-					{
-						addLearningAttribute(insert.getLearning(), "MaxGrade", loadedItem.getMaxScore()+"");
-						maxGradeKnown.add(Long.valueOf("11" + loadedItem.getAssessmentId()));
-					}
-					if(insert.getClass() != null && insert.getUser() != null && insert.getLearning() != null)
-						assessmentUsers.put(insert.getId(), insert);
-				}
-			}
-		}	
-		
-		/*
-		for(Memberships loadedItem : this.membershipsMooc)
-		{
-			UserAssessment insert = new UserAssessment();
-			insert.setId(this.userAssessmentMax + 1);
-			this.userAssessmentMax++;
-			insert.setLearning(Long.valueOf("15" + loadedItem.getCourseId()), this.learningObjectMining, this.oldLearningObjectMining);
-			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
-			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-			if(loadedItem.getNumericGrade() != null)
-				insert.setGrade(loadedItem.getNumericGrade());
-			insert.setTimemodified(loadedItem.getTimeModified().getTime() / 1000);
-			
-			assessmentUsers.put(insert.getId(), insert);
-		}
-		*/
-		return assessmentUsers;
-	}
-
-	@Override
-	public Map<Long, LearningActivity> generateAccessLogs() {
+	public Map<Long, LearningActivity> generateLearningActivities() {
 		
 		final HashMap<Long, LearningActivity> learningLogs = new HashMap<Long, LearningActivity>();
 		final Map<Long, UnitResources> unitResources = new HashMap<Long, UnitResources>();
@@ -715,15 +660,16 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			for(Events loadedItem : this.eventsMooc)
 			{
 				LearningActivity insert = new LearningActivity();
-				insert.setId(loadedItem.getId());
-				insert.setPerson(loadedItem.getUserId(), this.userMining, this.oldUserMining);
+				insert.setId(this.accessLogMax + 1);
+				this.accessLogMax++;
+				insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
 				if(loadedItem.getCourseId() != null)
 				{
-					insert.setCourse(loadedItem.getId(), this.courseMining, this.oldCourseMining);
+					insert.setLearningContext(loadedItem.getId(), this.learningContextMining, this.oldLearningContextMining);
 				}
 				else if (this.segmentsToCourses.get(loadedItem.getSegmentId()) != null)
 				{
-					insert.setCourse(this.segmentsToCourses.get(loadedItem.getSegmentId()), this.courseMining, this.oldCourseMining);
+					insert.setLearningContext(this.segmentsToCourses.get(loadedItem.getSegmentId()), this.learningContextMining, this.oldLearningContextMining);
 				}
 				
 				if(unitResources.get(loadedItem.getUnitResourceId()) != null && unitResources.get(loadedItem.getUnitResourceId()).getAttachableType().equals("Video"))
@@ -770,6 +716,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				if ((insert.getLearningContext() != null) && (insert.getLearningObject() != null) && (insert.getPerson() != null)) 
 				{
 					learningLogs.put(insert.getId(), insert);
+					if(insert.getTime()== null)
+						System.out.println("Time-out Events");
 				}
 				
 			}
@@ -779,6 +727,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			final Session miningSession = this.dbHandler.getMiningSession();
 			List<Collection<?>> logs = new ArrayList<Collection<?>>();
 			logs.add(learningLogs.values());
+
 			this.dbHandler.saveCollectionToDB(miningSession, logs);
 			learningLogs.clear();
 			miningSession.clear();
@@ -809,6 +758,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		///
 		///
 		///Collabs//////////////////////////
+		learningLogs.clear();
 		
 		final List<LearningActivity> loglist = new ArrayList<LearningActivity>();
 		final HashMap<Long, LearningActivity> collaborationLogs = new HashMap<Long, LearningActivity>();
@@ -821,11 +771,15 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		{
 			LearningActivity insert = new LearningActivity();
 			insert.setLearningObject(Long.valueOf("14" + loadedItem.getSegmentId()), this.learningObjectMining, this.oldLearningObjectMining);
-			insert.setPerson(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-			insert.setLearningContext(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
-			insert.setAction("Question");
-			insert.setInfo(loadedItem.getContent());
 			insert.setTime(loadedItem.getTimeCreated().getTime()/1000);
+			insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
+			insert.setLearningContext(loadedItem.getCourseId(), this.learningContextMining, this.oldLearningContextMining);
+			insert.setAction("Question");				
+			String com = loadedItem.getContent();
+			if(com != null && com.length() > 255)
+				com = com.substring(0, 254);
+			insert.setInfo(com);
+			
 			if(loadedItem.getSegmentId() != null)
 			{
 				insert.setLearningObject(Long.valueOf("13" + loadedItem.getSegmentId()), learningObjectMining, oldLearningObjectMining);
@@ -868,10 +822,12 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			{
 				insert.setId(loadedItem.getId());
 				insert.setLearningObject(questionLog.get(loadedItem.getQuestionId()).getLearningObject().getId(), this.learningObjectMining, this.learningObjectMining);
-				insert.setPerson(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-				insert.setLearningContext(insert.getReference().getLearningContext().getId(), this.courseMining, this.oldCourseMining);
-				insert.setAction("Answer");
-				insert.setInfo(loadedItem.getContent());
+				insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
+				insert.setLearningContext(insert.getReference().getLearningContext().getId(), this.learningContextMining, this.oldLearningContextMining);
+				insert.setAction("Answer");				String com = loadedItem.getContent();
+				if(com != null && com.length() > 255)
+					com = com.substring(0, 254);
+				insert.setInfo(com);
 				insert.setTime(loadedItem.getTimeCreated().getTime() / 1000);
 				insert.setReference(questionLog.get(loadedItem.getQuestionId()));
 				if(!courseDetails.containsKey(insert.getLearningContext()))
@@ -891,6 +847,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Comments loadedItem : this.commentsMooc)
 		{
 			LearningActivity insert = new LearningActivity();
+			insert.setTime(loadedItem.getTimeCreated().getTime()/1000);
 			if(loadedItem.getCommentableType().equals("Answer"))
 			{
 				insert.setReference(answersLog.get(loadedItem.getCommentableId()));
@@ -912,11 +869,13 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			{
 				insert.setId(loadedItem.getId());
 				
-				insert.setPerson(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-				insert.setLearningContext(insert.getReference().getLearningContext().getId(), this.courseMining, this.oldCourseMining);
+				insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
+				insert.setLearningContext(insert.getReference().getLearningContext().getId(), this.learningContextMining, this.oldLearningContextMining);
 				insert.setAction("Comment");
-				insert.setInfo(loadedItem.getContent());
-				insert.setTime(loadedItem.getTimeCreated().getTime()/1000);
+				String com = loadedItem.getContent();
+				if(com != null && com.length() > 255)
+					com = com.substring(0, 254);
+				insert.setInfo(com);				
 				if(!courseDetails.containsKey(insert.getLearningContext()))
 				{
 					courseDetails.put(insert.getLearningContext(), new CourseObject());
@@ -935,168 +894,82 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(int i = 0; i < loglist.size(); i++)
 		{
 			LearningActivity l = loglist.get(i);
-			l.setId(this.collaborationLogMax + i + 1);
-			this.collaborationLogMax++;
-			LearningActivity.put(l.getId(), l);			
+			l.setId(this.accessLogMax + 1);
+			this.accessLogMax++;
+			learningLogs.put(l.getId(), l);			
 		}
 		
+		Session miningSession = this.dbHandler.getMiningSession();
+		List<Collection<?>> logs = new ArrayList<Collection<?>>();
+		logs.add(learningLogs.values());
+		this.dbHandler.saveCollectionToDB(miningSession, logs);
+		learningLogs.clear();
+		miningSession.clear();
+		miningSession.close();
 		
 		
+		final Set<Long> maxGradeKnown = new HashSet<Long>();		
+		for(AssessmentSessions loadedItem : this.assessmentSessionsMooc)
+		{
+			LearningActivity insert = new LearningActivity();			
+			PersonContext cu = this.personContextMining.get(loadedItem.getMembershipId());
+			if(cu == null)
+			{
+				cu = this.oldPersonContextMining.get(loadedItem.getMembershipId());
+			}
+			if(cu != null && cu.getPerson() != null)
+			{
+				if(loadedItem.getScore() != null)
+				{
+					insert.setId(this.accessLogMax + 1);
+					this.accessLogMax ++;
+					insert.setLearningObject(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.oldLearningObjectMining);
+					insert.setLearningContext(cu.getLearningContext().getId(), this.learningContextMining, this.oldLearningContextMining);				
+					insert.setPerson(cu.getPerson().getId(), this.personMining, this.oldPersonMining);
+					insert.setLearningObject(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.learningObjectMining);
+					insert.setInfo(loadedItem.getScore() + "");
+					insert.setTime(loadedItem.getTimeModified().getTime()/1000);
+					insert.setAction("Submit");
+					
+					if(!maxGradeKnown.contains(Long.valueOf("11" + loadedItem.getAssessmentId())) && insert.getLearningObject() != null)
+					{
+						addLearningAttribute(insert.getLearningObject(), "MaxGrade", loadedItem.getMaxScore()+"");
+						maxGradeKnown.add(Long.valueOf("11" + loadedItem.getAssessmentId()));
+					}
+					if(insert.getClass() != null && insert.getPerson() != null && insert.getLearningObject() != null && insert.getLearningContext() != null)
+						learningLogs.put(insert.getId(), insert);
+				}
+			}
+		}	
 		
-		
+		miningSession = this.dbHandler.getMiningSession();
+		logs = new ArrayList<Collection<?>>();
+		logs.add(learningLogs.values());
+
+		this.dbHandler.saveCollectionToDB(miningSession, logs);
+		learningLogs.clear();
+		miningSession.clear();
+		miningSession.close();
 		
 		return learningLogs;
 	}
 
+	
 	@Override
-	public Map<Long, CollaborationLog> generateCollaborativeLogs() {
-		
-		final List<CollaborationLog> loglist = new ArrayList<CollaborationLog>();
-		final HashMap<Long, CollaborationLog> collaborationLogs = new HashMap<Long, CollaborationLog>();
-		
-		final Map<Long, CollaborationLog> questionLog = new HashMap<Long, CollaborationLog>();
-		final Map<Long, CollaborationLog> answersLog = new HashMap<Long, CollaborationLog>();
-		
-		
-		for(Questions loadedItem : this.questionsMooc)
-		{
-			CollaborationLog insert = new CollaborationLog();
-			insert.setLearning(Long.valueOf("14" + loadedItem.getSegmentId()), this.learningObjectMining, this.oldLearningObjectMining);
-			insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-			insert.setCourse(loadedItem.getCourseId(), this.courseMining, this.oldCourseMining);
-			insert.setAction("Question");
-			insert.setText(loadedItem.getContent());
-			insert.setTimestamp(loadedItem.getTimeCreated().getTime()/1000);
-			if(loadedItem.getSegmentId() != null)
-			{
-				insert.setLearning(Long.valueOf("13" + loadedItem.getSegmentId()), learningObjectMining, oldLearningObjectMining);
-			}
-			
-			if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
-			{
-				courseDetails.put(insert.getCourse(), new CourseObject());
-				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
-				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-				
-			}
-			if(insert.getTimestamp() > maxLog)
-			{
-				maxLog = insert.getTimestamp();
-			}
-			if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
-			{
-				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			}
-			if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
-			{
-				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-			}
-			
-			if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
-			{
-				questionLog.put(loadedItem.getId(), insert);
-				loglist.add(insert);
-			}
-		}
-		
-		for(Answers loadedItem : this.answersMooc)
-		{
-			CollaborationLog insert = new CollaborationLog();
-			insert.setReferrer(loadedItem.getQuestionId(), questionLog);
-			
-			if(insert.getReferrer() != null)
-			{
-				insert.setId(loadedItem.getId());
-				insert.setLearning(questionLog.get(loadedItem.getQuestionId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
-				insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-				insert.setCourse(insert.getReferrer().getCourse().getId(), this.courseMining, this.oldCourseMining);
-				insert.setAction("Answer");
-				insert.setText(loadedItem.getContent());
-				insert.setTimestamp(loadedItem.getTimeCreated().getTime() / 1000);
-				insert.setReferrer(questionLog.get(loadedItem.getQuestionId()));
-				if(!courseDetails.containsKey(insert.getCourse()))
-				{
-					courseDetails.put(insert.getCourse(), new CourseObject());
-					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-				}
-				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-				
-				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null && insert.getReferrer() != null)
-				{
-					answersLog.put(loadedItem.getId() , insert);
-					loglist.add(insert);
-				}
-			}
-		}
-		for(Comments loadedItem : this.commentsMooc)
-		{
-			CollaborationLog insert = new CollaborationLog();
-			if(loadedItem.getCommentableType().equals("Answer"))
-			{
-				insert.setReferrer(loadedItem.getCommentableId(), answersLog);
-				if(insert.getReferrer() != null)
-				{
-					insert.setLearning(answersLog.get(loadedItem.getCommentableId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
-				}
-			}
-			else if(loadedItem.getCommentableType().equals("Question"))
-			{
-				insert.setReferrer(loadedItem.getCommentableId(), questionLog);
-				if(insert.getReferrer() != null)
-				{
-					insert.setLearning(questionLog.get(loadedItem.getCommentableId()).getLearning().getId(), this.learningObjectMining, this.learningObjectMining);
-				}
-			}
-			
-			if(insert.getReferrer() != null)
-			{
-				insert.setId(loadedItem.getId());
-				
-				insert.setUser(loadedItem.getUserId(), this.userMining, this.oldUserMining);
-				insert.setCourse(insert.getReferrer().getCourse().getId(), this.courseMining, this.oldCourseMining);
-				insert.setAction("Comment");
-				insert.setText(loadedItem.getContent());
-				insert.setTimestamp(loadedItem.getTimeCreated().getTime()/1000);
-				if(!courseDetails.containsKey(insert.getCourse()))
-				{
-					courseDetails.put(insert.getCourse(), new CourseObject());
-					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-				}
-				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-				
-				if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null && insert.getReferrer() != null)
-				{
-					loglist.add(insert);
-				}
-			}
-		}
-		
-		Collections.sort(loglist);
-		for(int i = 0; i < loglist.size(); i++)
-		{
-			CollaborationLog l = loglist.get(i);
-			l.setId(this.collaborationLogMax + i + 1);
-			this.collaborationLogMax++;
-			collaborationLogs.put(l.getId(), l);			
-		}
-		
-		return collaborationLogs;
-	}
-
-	@Override
-	public Map<Long, LearningObject> generateLearningObjs() {
+	public Map<Long, LearningObject> generateLearningObjects() {
 		final HashMap<Long, LearningObject> learningObjs = new HashMap<Long, LearningObject>();
 		
-		for(LearningContext loadedItem : this.courseMining.values())
+		for(LearningContext loadedItem : this.learningContextMining.values())
 		{
 			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("15" + loadedItem.getId()));
 			insert.setName(loadedItem.getName());
-			this.addLearningAttribute(insert, "LearningType", "Course Exam");
+			insert.setType("Course Exam");
 			
 			if(loadedItem.getName() != null)
+			{
 				learningObjs.put(insert.getId(), insert);
+			}
 		}
 		
 
@@ -1111,11 +984,14 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				LearningObject insert = new LearningObject();
 				insert.setId(Long.valueOf("13" + loadedItem.getId()));
 				insert.setName("Forum "  + loadedItem.getTitle());
-				this.addLearningAttribute(insert, "LearningType", "UnitForum");
+				insert.setType("UnitForum");
+				
 				
 				
 				if(loadedItem.getTitle() != null)
+				{
 					learningObjs.put(insert.getId(), insert);
+				}
 			}
 		}
 		
@@ -1124,12 +1000,15 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("14" + loadedItem.getId()));
 			insert.setName(loadedItem.getTitle());
-			this.addLearningAttribute(insert, "LearningType", "Thread");
+			insert.setType("Thread");
+			
 			
 			insert.setParent(Long.valueOf("13" + loadedItem.getSegmentId()), learningObjs, this.oldLearningObjectMining);
 			
 			if(loadedItem.getTitle() != null)
+			{
 				learningObjs.put(insert.getId(), insert);
+			}
 		}
 		
 		for(Assessments loadedItem : this.assessmentMooc)
@@ -1137,10 +1016,13 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("11" + loadedItem.getId()));
 			insert.setName(loadedItem.getTitle());
-			this.addLearningAttribute(insert, "LearningType", loadedItem.getType());
+			insert.setType(loadedItem.getType());
+			
 			
 			if(loadedItem.getTitle() != null)
+			{
 				learningObjs.put(insert.getId(), insert);
+			}
 		}
 		
 		for(Segments loadedItem : this.segmentsMooc)
@@ -1151,7 +1033,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 			if(loadedItem.getType().equals("LessonUnit") || loadedItem.getType().equals("Chapter"))
 			{
-				this.addLearningAttribute(insert, "LearningType", loadedItem.getType());
+				insert.setType(loadedItem.getType());
 			}
 			
 			if(loadedItem.getParent() != null)
@@ -1170,7 +1052,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("12" + loadedItem.getId()));
 			insert.setName(loadedItem.getTitle());
-			this.addLearningAttribute(insert, "LearningType", "Video");
+			insert.setType("Video");
 				
 			if(insert.getType() != null && loadedItem.getTitle() != null)
 			{
@@ -1199,7 +1081,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 	
 	@Override
-	public Map<Long, Person> generateUsers() {
+	public Map<Long, Person> generatePersons() {
 		final HashMap<Long, Person> users = new HashMap<Long, Person>();
 		
 		//Test
@@ -1237,67 +1119,15 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 
 
 	@Override
-	public Map<Long, AssessmentLog> generateAssessmentLogs() {
-		final HashMap<Long, AssessmentLog> assessmentLogs = new HashMap<Long, AssessmentLog>();
+	public Map<Long, LearningContextExt> generateLearningContextExts() {
 		
-		for(AssessmentSessions loadedItem : this.assessmentSessionsMooc)
+		
+		for(LearningContextExt lce : this.courseAttributes.values())
 		{
-			AssessmentLog insert = new AssessmentLog();
-			insert.setId(this.assessmentLogMax + 1 + assessmentLogs.size());
-			insert.setDuration(loadedItem.getDuration());
-			insert.setAction(loadedItem.getState());
-			insert.setTimestamp(loadedItem.getTimeModified().getTime() / 1000);
-			if(insert.getTimestamp() > maxLog)
-			{
-				maxLog = insert.getTimestamp();
-			}
-			insert.setLearning(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.oldLearningObjectMining);
-			
-			CourseUser cu = this.courseUserMining.get(loadedItem.getMembershipId());
-			if(cu == null)
-			{
-				cu = this.oldCourseUserMining.get(loadedItem.getMembershipId());
-			}
-			if(cu != null && insert.getTimestamp() != null)
-			{
-				insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
-				insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
-				
-				if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
-				{
-					courseDetails.put(insert.getCourse(), new CourseObject());
-					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
-					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-					
-				}
-				if(insert.getTimestamp() > maxLog)
-				{
-					maxLog = insert.getTimestamp();
-				}
-				if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
-				{
-					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-				}
-				if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
-				{
-					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-				}
-				
-				if(insert.getCourse() != null && insert.getLearning() != null && insert.getUser() != null)
-					assessmentLogs.put(insert.getId(), insert);
-			}
-
+			lce.setLearningContext(lce.getLearningContext().getId(), this.learningContextMining, this.oldLearningContextMining);
 		}
 		
-
-		return assessmentLogs;
-	}
-
-	@Override
-	public Map<Long, LearningContextExt> generateCourseAttributes() {
-		
-		for(LearningContextExt ca : this.oldCourseAttributeMining.values())
+		for(LearningContextExt ca : this.oldLearningContextExtMining.values())
 		{
 			if(ca.getAttr().equals("CourseLastRequest") && this.courseDetails.get(ca.getLearningContext()) != null && this.courseDetails.get(ca.getLearningContext()).getLastRequest() > Long.valueOf(ca.getValue()))
 			{
@@ -1310,7 +1140,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				this.courseAttributes.put(ca.getId(), ca);
 			}
 		}
-		if(this.oldCourseAttributeMining.isEmpty())
+		if(this.oldLearningContextExtMining.isEmpty())
 		{
 
 			for(CourseObject co :this.courseDetails.values())
@@ -1319,7 +1149,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				ca.setId(this.courseAttributeIdMax + 1);
 				this.courseAttributeIdMax++;
 				ca.setAttr("CourseLastRequest");
-				ca.setLearningContext(this.courseMining.get(co.getId()));
+				ca.setLearningContext(this.learningContextMining.get(co.getId()));
 				ca.setValue(co.getLastRequest().toString());
 				this.courseAttributes.put(ca.getId(), ca);
 				
@@ -1327,7 +1157,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				first.setId(this.courseAttributeIdMax + 1);
 				this.courseAttributeIdMax++;
 				first.setAttr("CourseFirstRequest");
-				first.setLearningContext(this.courseMining.get(co.getId()));
+				first.setLearningContext(this.learningContextMining.get(co.getId()));
 				first.setValue(co.getFirstRequest().toString());
 				this.courseAttributes.put(first.getId(), first);
 			}
@@ -1337,12 +1167,23 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	}
 
 	@Override
-	public Map<Long, PersonExt> generateUserAttributes() {
+	public Map<Long, PersonExt> generatePersonExts() {
+		
+		for(PersonExt lce : this.userAttributes.values())
+		{
+			lce.setPerson(lce.getPerson().getId(), this.personMining, this.oldPersonMining);
+		}
 		return this.userAttributes;
 	}
 
 	@Override
-	public Map<Long, LearningObjectExt> generateLearningAttributes() {
+	public Map<Long, LearningObjectExt> generateLearningObjectExts() {
+		
+		for(LearningObjectExt lce : this.learningAttributes.values())
+		{
+			lce.setLearningObject(lce.getLearningObject().getId(), this.learningObjectMining, this.oldLearningObjectMining);
+		}
+		
 		return this.learningAttributes;
 	}
 }

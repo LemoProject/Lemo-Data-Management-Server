@@ -1,5 +1,7 @@
 package de.lemo.dms.db.mapping;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -48,6 +50,22 @@ public class PersonExt{
 	public void setPerson(Person person) {
 		this.person = person;
 	}
+	
+	public void setPerson(final long person, final Map<Long, Person> persons,
+			final Map<Long, Person> oldPersons) {
+
+		if (persons.get(person) != null)
+		{
+			this.person = persons.get(person);
+			persons.get(person).addPersonExt(this);
+		}
+		if ((this.person == null) && (oldPersons.get(person) != null))
+		{
+			this.person = oldPersons.get(person);
+			oldPersons.get(person).addPersonExt(this);
+		}
+	}
+	
 	/**
 	 * @return the id
 	 */
@@ -72,13 +90,13 @@ public class PersonExt{
 	 * @return the attribute
 	 */
 	@Column(name="attr")
-	public String getAttribute() {
+	public String getAttr() {
 		return attr;
 	}
 	/**
 	 * @param attribute the attribute to set
 	 */
-	public void setAttribute(String attribute) {
+	public void setAttr(String attribute) {
 		this.attr = attribute;
 	}
 	
