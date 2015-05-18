@@ -463,10 +463,7 @@ public abstract class ExtractAndMap {
 			logger.info("Generated " + this.objectContextMining.size()
 					+ " CourseLearningObject entries in " + this.c.getAndReset() + " s. ");
 			this.updates.add(this.objectContextMining.values());
-
-
 		}
-
 		
 		this.personContextMining = generatePersonContexts();
 		objects += this.updates.get(this.updates.size() - 1).size();
@@ -479,11 +476,6 @@ public abstract class ExtractAndMap {
 		logger.info("Generated " + this.personExtMining.size()
 				+ " UserAttribute entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.personExtMining.values());
-
-		
-
-		
-		
 		
 		if (objects > 0)
 		{
@@ -494,35 +486,25 @@ public abstract class ExtractAndMap {
 			updates.clear();
 			session.clear();
 			this.personExtMining.clear();
-			this.personContextMining.clear();
+			//this.personContextMining.clear();
 			this.objectContextMining.clear();
 		}
 		
 		logger.info("\nLog tables:\n");
-
-		//this.updates.add(
-		this.generateLearningActivities();//.values());
-		/*objects += this.updates.get(this.updates.size() - 1).size();
-		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-				+ " AccessLog entries in " + this.c.getAndReset() + " s. ");
-		*/
+		
+		this.generateLearningActivities();
 
 		this.learningObjectExt = this.generateLearningObjectExts();
 		objects += this.learningObjectExt.size();
-		logger.info("Generated " + this.learningObjectExt.size() + " LearningAttribute entries in " + this.c.getAndReset()
-				+ " s. ");
 		this.updates.add(this.learningObjectExt.values());
 		
 		this.learningContextExt = generateLearningContextExts();
 		objects += this.learningContextExt.size();
-		logger.info("Generated " + this.learningContextExt.size()
-				+ " CourseAttribute entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.learningContextExt.values());
 		
 		if (objects > 0)
 		{
 			final Session session = this.dbHandler.getMiningSession();
-			logger.info("Writing everything except logs to DB");
 			this.dbHandler.saveCollectionToDB(session, this.updates);
 		}
 

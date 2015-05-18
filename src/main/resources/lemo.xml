@@ -15,7 +15,7 @@
     </database>
     <connectors>
       <connector platform-id="5" name="mooc" platform-type="Mooc">
-        <course-id-filter>5</course-id-filter>
+        <course-id-filter>6</course-id-filter>
 	<course-login-filter></course-login-filter>        
 	<property name="hibernate.connection.url">jdbc:mysql://localhost/iversity_all?rewriteBatchedStatements=true</property>
         <property name="hibernate.connection.username">lemo</property>

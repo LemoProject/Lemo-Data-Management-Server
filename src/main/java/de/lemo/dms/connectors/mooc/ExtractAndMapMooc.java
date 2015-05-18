@@ -959,6 +959,21 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	public Map<Long, LearningObject> generateLearningObjects() {
 		final HashMap<Long, LearningObject> learningObjs = new HashMap<Long, LearningObject>();
 		
+		Map<Long, Long> videoUnit = new HashMap<Long, Long>();
+		Map<Long, Long> assessmentUnit = new HashMap<Long, Long>();
+		
+		for(UnitResources loadedItem : this.unitResourcesMooc)
+		{
+			if(loadedItem.getAttachableType().equals("Video"))
+			{
+				videoUnit.put(loadedItem.getAttachableId(), loadedItem.getUnitId());
+			}
+			if(loadedItem.getAttachableType().equals("Assessment"))
+			{
+				assessmentUnit.put(loadedItem.getAttachableId(), loadedItem.getUnitId());
+			}
+		}
+		
 		for(LearningContext loadedItem : this.learningContextMining.values())
 		{
 			LearningObject insert = new LearningObject();
@@ -972,8 +987,27 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			}
 		}
 		
+		for(Segments loadedItem : this.segmentsMooc)
+		{
+			LearningObject insert = new LearningObject();
+			insert.setId(Long.valueOf("10" + loadedItem.getId()));
+			insert.setName(loadedItem.getTitle());	
 
-		
+			if(loadedItem.getType().equals("LessonUnit") || loadedItem.getType().equals("Chapter"))
+			{
+				insert.setType(loadedItem.getType());
+			}
+			
+			if(loadedItem.getParent() != null)
+			{
+				insert.setParent(Long.valueOf("10" + loadedItem.getParent()), learningObjs, oldLearningObjectMining);
+			}
+			
+			if(insert.getType() != null)
+			{
+				learningObjs.put(insert.getId(), insert);
+			}
+		}
 		
 		for(Segments loadedItem : this.segmentsMooc)
 		{
@@ -984,9 +1018,11 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				LearningObject insert = new LearningObject();
 				insert.setId(Long.valueOf("13" + loadedItem.getId()));
 				insert.setName("Forum "  + loadedItem.getTitle());
-				insert.setType("UnitForum");
-				
-				
+				insert.setType("UnitForum");	
+				if(loadedItem.getParent() != null)
+				{
+					insert.setParent(Long.valueOf("10" + loadedItem.getParent()), learningObjs, oldLearningObjectMining);
+				}
 				
 				if(loadedItem.getTitle() != null)
 				{
@@ -1018,6 +1054,11 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			insert.setName(loadedItem.getTitle());
 			insert.setType(loadedItem.getType());
 			
+			Long unitId = assessmentUnit.get(loadedItem.getId());
+			
+			insert.setParent(Long.valueOf("10" + unitId), learningObjs, this.oldLearningObjectMining);
+			
+			
 			
 			if(loadedItem.getTitle() != null)
 			{
@@ -1025,27 +1066,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			}
 		}
 		
-		for(Segments loadedItem : this.segmentsMooc)
-		{
-			LearningObject insert = new LearningObject();
-			insert.setId(Long.valueOf("10" + loadedItem.getId()));
-			insert.setName(loadedItem.getTitle());	
 
-			if(loadedItem.getType().equals("LessonUnit") || loadedItem.getType().equals("Chapter"))
-			{
-				insert.setType(loadedItem.getType());
-			}
-			
-			if(loadedItem.getParent() != null)
-			{
-				insert.setParent(Long.valueOf("10" + loadedItem.getParent()), learningObjs, oldLearningObjectMining);
-			}
-			
-			if(insert.getType() != null)
-			{
-				learningObjs.put(insert.getId(), insert);
-			}
-		}
 		
 		for(Videos loadedItem : this.videosMooc)
 		{
@@ -1053,6 +1074,11 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			insert.setId(Long.valueOf("12" + loadedItem.getId()));
 			insert.setName(loadedItem.getTitle());
 			insert.setType("Video");
+			
+			Long unitId = videoUnit.get(loadedItem.getId());
+			
+			insert.setParent(Long.valueOf("10" + unitId), learningObjs, this.oldLearningObjectMining);
+			
 				
 			if(insert.getType() != null && loadedItem.getTitle() != null)
 			{
