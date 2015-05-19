@@ -68,14 +68,7 @@ public enum ESourcePlatform {
         case Moodle_2_7:
             connector = new de.lemo.dms.connectors.moodle_2_7.ConnectorMoodle(config);
             break;
-        case Moodle_2_3:
-        case Moodle_2_4:
-        case Moodle_2_5:
-            connector = new de.lemo.dms.connectors.moodle_2_3.ConnectorMoodle(config);
-            break;
-        case Lemo_0_8:
-            connector = new de.lemo.dms.connectors.lemo_0_8.ConnectorLeMo(config);
-            break;            
+    
         case Mooc:
         	connector = new de.lemo.dms.connectors.mooc.ConnectorMooc(config);
             break;

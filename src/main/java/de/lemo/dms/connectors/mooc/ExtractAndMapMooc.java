@@ -59,6 +59,7 @@ import de.lemo.dms.connectors.mooc.mapping.Segments;
 import de.lemo.dms.connectors.mooc.mapping.UnitResources;
 import de.lemo.dms.connectors.mooc.mapping.Users;
 import de.lemo.dms.connectors.mooc.mapping.Videos;
+import de.lemo.dms.db.CourseObject;
 import de.lemo.dms.db.DBConfigObject;
 import de.lemo.dms.db.mapping.LearningActivity;
 import de.lemo.dms.db.mapping.LearningContext;
@@ -69,7 +70,6 @@ import de.lemo.dms.db.mapping.ObjectContext;
 import de.lemo.dms.db.mapping.Person;
 import de.lemo.dms.db.mapping.PersonContext;
 import de.lemo.dms.db.mapping.PersonExt;
-import de.lemo.dms.processing.resulttype.CourseObject;
 
 /**
  * The main class of the extraction process.
@@ -662,6 +662,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				LearningActivity insert = new LearningActivity();
 				insert.setId(this.accessLogMax + 1);
 				this.accessLogMax++;
+				insert.setTime(loadedItem.getTimestamp().getTime()/1000);
 				insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
 				if(loadedItem.getCourseId() != null)
 				{
@@ -677,7 +678,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 					UnitResources uR = unitResources.get(loadedItem.getUnitResourceId());
 					insert.setLearningObject(Long.valueOf("12" + uR.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);			
 				}
-				insert.setTime(loadedItem.getTimestamp().getTime()/1000);
+			
 				
 				switch(loadedItem.getEvent())
 				{
@@ -770,8 +771,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Questions loadedItem : this.questionsMooc)
 		{
 			LearningActivity insert = new LearningActivity();
-			insert.setLearningObject(Long.valueOf("14" + loadedItem.getSegmentId()), this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setTime(loadedItem.getTimeCreated().getTime()/1000);
+			insert.setLearningObject(Long.valueOf("14" + loadedItem.getSegmentId()), this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
 			insert.setLearningContext(loadedItem.getCourseId(), this.learningContextMining, this.oldLearningContextMining);
 			insert.setAction("Question");				
@@ -821,14 +822,14 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			if(insert.getReference() != null)
 			{
 				insert.setId(loadedItem.getId());
+				insert.setTime(loadedItem.getTimeCreated().getTime() / 1000);
 				insert.setLearningObject(questionLog.get(loadedItem.getQuestionId()).getLearningObject().getId(), this.learningObjectMining, this.learningObjectMining);
 				insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
 				insert.setLearningContext(insert.getReference().getLearningContext().getId(), this.learningContextMining, this.oldLearningContextMining);
 				insert.setAction("Answer");				String com = loadedItem.getContent();
 				if(com != null && com.length() > 255)
 					com = com.substring(0, 254);
-				insert.setInfo(com);
-				insert.setTime(loadedItem.getTimeCreated().getTime() / 1000);
+				insert.setInfo(com);				
 				insert.setReference(questionLog.get(loadedItem.getQuestionId()));
 				if(!courseDetails.containsKey(insert.getLearningContext()))
 				{
@@ -868,7 +869,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			if(insert.getReference() != null)
 			{
 				insert.setId(loadedItem.getId());
-				
 				insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
 				insert.setLearningContext(insert.getReference().getLearningContext().getId(), this.learningContextMining, this.oldLearningContextMining);
 				insert.setAction("Comment");
@@ -922,13 +922,14 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				if(loadedItem.getScore() != null)
 				{
 					insert.setId(this.accessLogMax + 1);
-					this.accessLogMax ++;
+					insert.setTime(loadedItem.getTimeModified().getTime()/1000);
+					this.accessLogMax ++;					
 					insert.setLearningObject(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.oldLearningObjectMining);
 					insert.setLearningContext(cu.getLearningContext().getId(), this.learningContextMining, this.oldLearningContextMining);				
 					insert.setPerson(cu.getPerson().getId(), this.personMining, this.oldPersonMining);
 					insert.setLearningObject(Long.valueOf("11" + loadedItem.getAssessmentId()), this.learningObjectMining, this.learningObjectMining);
 					insert.setInfo(loadedItem.getScore() + "");
-					insert.setTime(loadedItem.getTimeModified().getTime()/1000);
+					
 					insert.setAction("Submit");
 					
 					if(!maxGradeKnown.contains(Long.valueOf("11" + loadedItem.getAssessmentId())) && insert.getLearningObject() != null)
@@ -1128,11 +1129,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 //			{
 			
 			if(loadedItem.getGender() != null && loadedItem.getGender().equals("male"))
-				addUserAttribute(insert, "User Gender", "1");
+				addUserAttribute(insert, "User Gender", "male");
 			if(loadedItem.getGender() != null && loadedItem.getGender().equals("female"))
-				addUserAttribute(insert, "User Gender", "0");
+				addUserAttribute(insert, "User Gender", "female");
 			addUserAttribute(insert, "User Timezone", loadedItem.getTimezone());
-//				addUserAttribute(insert, "UserProgress", uid.get(loadedItem.getId())+"");
 			users.put(insert.getId(), insert);
 //			}
 		}
