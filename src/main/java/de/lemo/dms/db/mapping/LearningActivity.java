@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_learning_activity")
+@Table(name = "lemo_learningActivity")
 public class LearningActivity implements Comparable<LearningActivity>{
 
 	private long id;

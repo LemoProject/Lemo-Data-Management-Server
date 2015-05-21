@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "lemo_learning_context_ext")
+@Table(name = "lemo_learningContextExt")
 public class LearningContextExt{
 
 	private long id;

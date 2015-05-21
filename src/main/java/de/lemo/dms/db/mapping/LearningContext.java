@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 /** This class represents the table lemo_learning_context. */
 @Entity
-@Table(name = "lemo_learning_context")
+@Table(name = "lemo_learningContext")
 public class LearningContext{
 	
 	private long id;

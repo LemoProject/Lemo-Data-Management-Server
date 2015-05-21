@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "lemo_learning_object")
+@Table(name = "lemo_learningObject")
 public class LearningObject{
 
 	private long id;
