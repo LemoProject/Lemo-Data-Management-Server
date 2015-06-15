@@ -1,4 +1,4 @@
-package de.lemo.dms.db.mapping;
+package de.lemo.dms.dp.umed.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,11 +10,11 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "umed_learningContextExt")
-public class LearningContextExt{
+@Table(name = "lemo_learningActivityExt")
+public class LearningActivityExt{
 
 	private long id;
-	private LearningContext learningContext;
+	private LearningActivity learningActivity;
 	private String value;
 	private String attr;
 	
@@ -35,18 +35,18 @@ public class LearningContextExt{
 		this.value = value;
 	}
 	/**
-	 * @return the learningContext
+	 * @return the learningActivity
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="learningContext")
-	public LearningContext getLearningContext() {
-		return learningContext;
+	@JoinColumn(name="learningActivity")
+	public LearningActivity getLearningActivity() {
+		return learningActivity;
 	}
 	/**
-	 * @param learningContext the learningContext to set
+	 * @param learningActivity the learningActivity to set
 	 */
-	public void setLearningContext(LearningContext learningContext) {
-		this.learningContext = learningContext;
+	public void setLearningActivity(LearningActivity learningActivity) {
+		this.learningActivity = learningActivity;
 	}
 	/**
 	 * @return the id
@@ -61,10 +61,10 @@ public class LearningContextExt{
 	public void setId(long id) {
 		this.id = id;
 	}
-	
-	
-	public boolean equals(LearningContextExt o) {
-		if ((o.getId() == this.getId()) && (o instanceof LearningContextExt)) {
+
+
+	public boolean equals(LearningActivityExt o) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningActivityExt)) {
 			return true;
 		}
 		return false;
@@ -77,7 +77,7 @@ public class LearningContextExt{
 		return attr;
 	}
 	/**
-	 * @param attribute the attribute to set
+	 * @param attr the attribute to set
 	 */
 	public void setAttr(String attr) {
 		this.attr = attr;

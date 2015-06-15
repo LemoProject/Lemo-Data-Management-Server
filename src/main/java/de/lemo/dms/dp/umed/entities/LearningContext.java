@@ -1,4 +1,4 @@
-package de.lemo.dms.db.mapping;
+package de.lemo.dms.dp.umed.entities;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,11 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import de.lemo.dms.db.interfaces.IContext;
+import de.lemo.dms.dp.umed.interfaces.IContext;
 
 /** This class represents the table lemo_learning_context. */
 @Entity
-@Table(name = "umed_learningContext")
+@Table(name = "lemo_learningContext")
 public class LearningContext implements IContext{
 	
 	private long id;

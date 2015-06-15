@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "lemo_learningActivityExt")
+@Table(name = "umed_learningActivityExt")
 public class LearningActivityExt{
 
 	private long id;

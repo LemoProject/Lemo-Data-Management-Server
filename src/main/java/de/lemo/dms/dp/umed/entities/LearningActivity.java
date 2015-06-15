@@ -1,4 +1,4 @@
-package de.lemo.dms.db.mapping;
+package de.lemo.dms.dp.umed.entities;
 
 import java.util.Map;
 
@@ -11,14 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import de.lemo.dms.db.interfaces.IActivity;
+import de.lemo.dms.dp.umed.interfaces.IActivity;
 
 /**
  * This class represents the lemo_learning_activity object table.
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "umed_learningActivity")
+@Table(name = "lemo_learningActivity")
 public class LearningActivity implements IActivity{
 
 	private long id;

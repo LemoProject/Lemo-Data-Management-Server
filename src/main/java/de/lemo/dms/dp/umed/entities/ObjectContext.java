@@ -1,4 +1,4 @@
-package de.lemo.dms.db.mapping;
+package de.lemo.dms.dp.umed.entities;
 
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 /** This class represents the relationship between contexts and learningObjects. */
 @Entity
-@Table(name = "umed_object_context")
+@Table(name = "lemo_object_context")
 public class ObjectContext{
 	
 	private long id;

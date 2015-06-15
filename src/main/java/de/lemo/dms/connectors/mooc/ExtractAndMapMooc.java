@@ -495,7 +495,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		{
 			PersonContext insert = new PersonContext();
 			insert.setId( loadedItem.getId());
-			insert.setLearningContext(  loadedItem.getCourseId(), this.learningContextMining, this.oldLearningContextMining);
+			insert.setLearningContext( Long.valueOf("20" + loadedItem.getCourseId()), this.learningContextMining, this.oldLearningContextMining);
 			insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
 			String role = "student";
 			if(loadedItem.getRole().equals("instructor") || loadedItem.getRole().equals("instructor_assistant"))
@@ -518,10 +518,25 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		for(Courses loadedItem : this.coursesMooc)
 		{
 			LearningContext insert = new LearningContext();
-			insert.setId(  loadedItem.getId());
+			insert.setId(Long.valueOf("20" + loadedItem.getId()));
 			insert.setName(loadedItem.getTitle());
 			addCourseAttribute(insert, "Course Description", loadedItem.getDescription());
 			courses.put(insert.getId(), insert);
+		}
+		for(Segments loadedItem : this.segmentsMooc)
+		{
+			if(loadedItem.getType().equals("LessonUnit") || loadedItem.getType().equals("Chapter") || loadedItem.getType().equals("PreviewChapter") || loadedItem.getType().equals("ExamChapter"))
+			{
+				LearningContext insert = new LearningContext();
+				insert.setId(Long.valueOf("21" + loadedItem.getId()));
+				insert.setName(loadedItem.getTitle());	
+
+				if(loadedItem.getParent() != null)
+				{
+					insert.setParent(Long.valueOf("21" + loadedItem.getParent()), courses, this.oldLearningContextMining);
+				}
+				courses.put(insert.getId(), insert);
+			}
 		}
 		return courses;
 	}
@@ -570,7 +585,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		{
 			ObjectContext insert = new ObjectContext();
 			insert.setId(Long.valueOf("10" + loadedItem.getId()));
-			insert.setLearningContext(loadedItem.getCourseId(), this.learningContextMining, this.oldLearningContextMining);
+			insert.setLearningContext(Long.valueOf("20" +loadedItem.getCourseId()), this.learningContextMining, this.oldLearningContextMining);
 			insert.setLearningObject(Long.valueOf("10" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
 			
 			unitCourses.put(loadedItem.getId(), loadedItem.getCourseId());
@@ -585,7 +600,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			{
 				ObjectContext insert = new ObjectContext();
 				insert.setId(Long.valueOf("13" + loadedItem.getId()));
-				insert.setLearningContext(loadedItem.getCourseId(), this.learningContextMining, this.oldLearningContextMining);
+				insert.setLearningContext(Long.valueOf("20" +loadedItem.getCourseId()), this.learningContextMining, this.oldLearningContextMining);
 				insert.setLearningObject(Long.valueOf("13" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
 				
 				courseLearnings.put(insert.getId(), insert);
@@ -600,7 +615,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setId(Long.valueOf("12" + loadedItem.getId()));
 				if(unitCourses.get(loadedItem.getUnitId()) != null)
 				{
-					insert.setLearningContext(unitCourses.get(loadedItem.getUnitId()), this.learningContextMining, this.oldLearningContextMining);
+					insert.setLearningContext(Long.valueOf("21" +loadedItem.getUnitId()), this.learningContextMining, this.oldLearningContextMining);
 				}
 				insert.setLearningObject(Long.valueOf("12" + loadedItem.getAttachableId()), this.learningObjectMining, this.oldLearningObjectMining);
 				
@@ -645,6 +660,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		return courseLearnings;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map<Long, LearningActivity> generateLearningActivities() {
 		
@@ -666,12 +682,10 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
 				if(loadedItem.getCourseId() != null)
 				{
-					insert.setLearningContext(loadedItem.getId(), this.learningContextMining, this.oldLearningContextMining);
+					insert.setLearningContext(Long.valueOf("20" +loadedItem.getCourseId()), this.learningContextMining, this.oldLearningContextMining);
 				}
-				else if (this.segmentsToCourses.get(loadedItem.getSegmentId()) != null)
-				{
-					insert.setLearningContext(this.segmentsToCourses.get(loadedItem.getSegmentId()), this.learningContextMining, this.oldLearningContextMining);
-				}
+				if(insert.getLearningContext() == null)
+					insert.setLearningContext(Long.valueOf("21" +loadedItem.getSegmentId()), this.learningContextMining, this.oldLearningContextMining);
 				
 				if(unitResources.get(loadedItem.getUnitResourceId()) != null && unitResources.get(loadedItem.getUnitResourceId()).getAttachableType().equals("Video"))
 				{
@@ -717,10 +731,8 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				if ((insert.getLearningContext() != null) && (insert.getLearningObject() != null) && (insert.getPerson() != null)) 
 				{
 					learningLogs.put(insert.getId(), insert);
-					if(insert.getTime()== null)
-						System.out.println("Time-out Events");
-				}
-				
+					
+				}				
 			}
 			
 			this.eventsMooc.clear();
@@ -762,7 +774,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		learningLogs.clear();
 		
 		final List<LearningActivity> loglist = new ArrayList<LearningActivity>();
-		final HashMap<Long, LearningActivity> collaborationLogs = new HashMap<Long, LearningActivity>();
 		
 		final Map<Long, LearningActivity> questionLog = new HashMap<Long, LearningActivity>();
 		final Map<Long, LearningActivity> answersLog = new HashMap<Long, LearningActivity>();
@@ -988,27 +999,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			}
 		}
 		
-		for(Segments loadedItem : this.segmentsMooc)
-		{
-			LearningObject insert = new LearningObject();
-			insert.setId(Long.valueOf("10" + loadedItem.getId()));
-			insert.setName(loadedItem.getTitle());	
 
-			if(loadedItem.getType().equals("LessonUnit") || loadedItem.getType().equals("Chapter"))
-			{
-				insert.setType(loadedItem.getType());
-			}
-			
-			if(loadedItem.getParent() != null)
-			{
-				insert.setParent(Long.valueOf("10" + loadedItem.getParent()), learningObjs, oldLearningObjectMining);
-			}
-			
-			if(insert.getType() != null)
-			{
-				learningObjs.put(insert.getId(), insert);
-			}
-		}
 		
 		for(Segments loadedItem : this.segmentsMooc)
 		{

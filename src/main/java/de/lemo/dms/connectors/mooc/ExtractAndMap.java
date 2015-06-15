@@ -435,7 +435,7 @@ public abstract class ExtractAndMap {
 
 			this.learningContextMining = this.generateLearningContexts();
 			objects += this.learningContextMining.size();
-			logger.info("Generated " + this.learningContextMining.size() + " Course entries in "
+			logger.info("Generated " + this.learningContextMining.size() + " LearningContext entries in "
 					+ this.c.getAndReset() + " s. ");
 			this.updates.add(this.learningContextMining.values());
 			
@@ -447,7 +447,7 @@ public abstract class ExtractAndMap {
 
 			this.personMining = this.generatePersons();
 			objects += this.personMining.size();
-			logger.info("Generated " + this.personMining.size() + " User entries in " + this.c.getAndReset()
+			logger.info("Generated " + this.personMining.size() + " Person entries in " + this.c.getAndReset()
 					+ " s. ");
 			this.updates.add(this.personMining.values());
 			
@@ -459,7 +459,7 @@ public abstract class ExtractAndMap {
 			this.objectContextMining = generateObjectContexts();
 			objects += this.objectContextMining.size();
 			logger.info("Generated " + this.objectContextMining.size()
-					+ " CourseLearningObject entries in " + this.c.getAndReset() + " s. ");
+					+ " ObjectContext entries in " + this.c.getAndReset() + " s. ");
 			this.updates.add(this.objectContextMining.values());
 		}
 		
@@ -467,12 +467,12 @@ public abstract class ExtractAndMap {
 		objects += this.updates.get(this.updates.size() - 1).size();
 		this.updates.add(this.personContextMining.values());
 		logger.info("Generated " + this.updates.get(this.updates.size() - 1).size()
-				+ " CourseUser entries in " + this.c.getAndReset() + " s. ");
+				+ " PersonContext entries in " + this.c.getAndReset() + " s. ");
 		
 		this.personExtMining = generatePersonExts();
 		objects += this.personExtMining.size();
 		logger.info("Generated " + this.personExtMining.size()
-				+ " UserAttribute entries in " + this.c.getAndReset() + " s. ");
+				+ " PersonExtension entries in " + this.c.getAndReset() + " s. ");
 		this.updates.add(this.personExtMining.values());
 		
 		if (objects > 0)

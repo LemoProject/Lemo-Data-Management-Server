@@ -1,4 +1,4 @@
-package de.lemo.dms.db.mapping;
+package de.lemo.dms.dp.umed.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "umed_learningContextExt")
+@Table(name = "lemo_learningContextExt")
 public class LearningContextExt{
 
 	private long id;

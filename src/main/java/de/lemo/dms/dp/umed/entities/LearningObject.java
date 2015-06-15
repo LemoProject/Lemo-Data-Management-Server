@@ -1,4 +1,4 @@
-package de.lemo.dms.db.mapping;
+package de.lemo.dms.dp.umed.entities;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -14,14 +14,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import de.lemo.dms.db.interfaces.IObject;
+import de.lemo.dms.dp.umed.interfaces.IObject;
 
 /** 
  * This class represents the table lemo_learning_object. 
  * @author Sebastian Schwarzrock
  */
 @Entity
-@Table(name = "umed_learningObject")
+@Table(name = "lemo_learningObject")
 public class LearningObject implements IObject{
 
 	private long id;

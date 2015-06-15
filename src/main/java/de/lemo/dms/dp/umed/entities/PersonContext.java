@@ -1,4 +1,4 @@
-package de.lemo.dms.db.mapping;
+package de.lemo.dms.dp.umed.entities;
 
 import java.util.Map;
 
@@ -10,12 +10,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import de.lemo.dms.dp.umed.interfaces.IContext;
+
 @Entity
-@Table(name = "umed_person_context")
+@Table(name = "lemo_person_context")
 public class PersonContext{
 	
 	private long id;
-	private LearningContext learningContext;
+	private IContext learningContext;
 	private Person person;
 	private String role;
 	
@@ -51,7 +53,7 @@ public class PersonContext{
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="learningContext")
-	public LearningContext getLearningContext() {
+	public IContext getLearningContext() {
 		return learningContext;
 	}
 

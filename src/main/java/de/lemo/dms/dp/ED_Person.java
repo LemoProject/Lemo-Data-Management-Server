@@ -1,4 +1,5 @@
-package de.lemo.dms.db;
+package de.lemo.dms.dp;
+
 
 public interface ED_Person {
 	

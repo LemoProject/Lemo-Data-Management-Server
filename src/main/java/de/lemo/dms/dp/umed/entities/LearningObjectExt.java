@@ -1,20 +1,21 @@
-package de.lemo.dms.db.mapping;
+package de.lemo.dms.dp.umed.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "umed_learningContextExt")
-public class LearningContextExt{
+@Table(name = "lemo_learningObjectExt")
+public class LearningObjectExt{
 
 	private long id;
-	private LearningContext learningContext;
+	private LearningObject learningObject;
 	private String value;
 	private String attr;
 	
@@ -24,6 +25,7 @@ public class LearningContextExt{
 	/**
 	 * @return the value
 	 */
+	@Lob
 	@Column(name="value")
 	public String getValue() {
 		return value;
@@ -35,19 +37,20 @@ public class LearningContextExt{
 		this.value = value;
 	}
 	/**
-	 * @return the learningContext
+	 * @return the learningId
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="learningContext")
-	public LearningContext getLearningContext() {
-		return learningContext;
+	@JoinColumn(name="learningObject")
+	public LearningObject getLearningObject() {
+		return learningObject;
 	}
 	/**
-	 * @param learningContext the learningContext to set
+	 * @param learningId the learningId to set
 	 */
-	public void setLearningContext(LearningContext learningContext) {
-		this.learningContext = learningContext;
+	public void setLearningObject(LearningObject learningObject) {
+		this.learningObject = learningObject;
 	}
+
 	/**
 	 * @return the id
 	 */
@@ -62,22 +65,21 @@ public class LearningContextExt{
 		this.id = id;
 	}
 	
-	
-	public boolean equals(LearningContextExt o) {
-		if ((o.getId() == this.getId()) && (o instanceof LearningContextExt)) {
+	public boolean equals(LearningObjectExt o) {
+		if ((o.getId() == this.getId()) && (o instanceof LearningObjectExt)) {
 			return true;
 		}
 		return false;
 	}
 	/**
-	 * @return the attribute
+	 * @return the attr
 	 */
 	@Column(name="attr")
 	public String getAttr() {
 		return attr;
 	}
 	/**
-	 * @param attribute the attribute to set
+	 * @param attr the attr to set
 	 */
 	public void setAttr(String attr) {
 		this.attr = attr;

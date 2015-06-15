@@ -1,7 +1,5 @@
 package de.lemo.dms.db.mapping;
 
-import java.util.Map;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +11,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "lemo_learningObjectExt")
+@Table(name = "umed_learningObjectExt")
 public class LearningObjectExt{
 
 	private long id;
@@ -51,21 +49,6 @@ public class LearningObjectExt{
 	 */
 	public void setLearningObject(LearningObject learningObject) {
 		this.learningObject = learningObject;
-	}
-	
-	public void setLearningObject(final long learningObject, final Map<Long, LearningObject> learningObjects,
-			final Map<Long, LearningObject> oldLearningObjects) {
-
-		if (learningObjects.get(learningObject) != null)
-		{
-			this.learningObject = learningObjects.get(learningObject);
-			learningObjects.get(learningObject).addLearningObjectExt(this);
-		}
-		if ((this.learningObject == null) && (oldLearningObjects.get(learningObject) != null))
-		{
-			this.learningObject = oldLearningObjects.get(learningObject);
-			oldLearningObjects.get(learningObject).addLearningObjectExt(this);
-		}
 	}
 
 	/**

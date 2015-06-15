@@ -14,12 +14,12 @@
       
     </database>
     <connectors>
-      <connector platform-id="7" name="moodle27" platform-type="Moodle_2_7">
-	  	<course-id-filter></course-id-filter>
-      	<course-login-filter></course-login-filter>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost/moodle_27</property>
-        <property name="hibernate.connection.username">user</property>
-        <property name="hibernate.connection.password">password</property>
+      <connector platform-id="5" name="mooc" platform-type="Mooc">
+        <course-id-filter>5 6 151</course-id-filter>
+	<course-login-filter></course-login-filter>        
+	<property name="hibernate.connection.url">jdbc:mysql://localhost/iversity_all?rewriteBatchedStatements=true</property>
+        <property name="hibernate.connection.username">lemo</property>
+        <property name="hibernate.connection.password">lemolemo</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.default_schema"></property>
