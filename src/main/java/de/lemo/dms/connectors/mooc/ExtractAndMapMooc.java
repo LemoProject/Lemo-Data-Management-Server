@@ -534,7 +534,12 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				if(loadedItem.getParent() != null)
 				{
 					insert.setParent(Long.valueOf("21" + loadedItem.getParent()), courses, this.oldLearningContextMining);
+					
 				}
+				else
+				{
+					insert.setParent(Long.valueOf("20" + loadedItem.getCourseId()), courses, this.oldLearningContextMining);
+				}				
 				courses.put(insert.getId(), insert);
 			}
 		}
@@ -558,7 +563,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		loe.setId(this.learningAttributeIdMax + 1);
 		this.learningAttributeIdMax++;
 		loe.setPerson(user);
-		loe.setAttr(attribute);
+		loe.setAttribute(attribute);
 		loe.setValue(value);
 		this.userAttributes.put(loe.getId(), loe);
 	}
@@ -783,9 +788,9 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		{
 			LearningActivity insert = new LearningActivity();
 			insert.setTime(loadedItem.getTimeCreated().getTime()/1000);
-			insert.setLearningObject(Long.valueOf("14" + loadedItem.getSegmentId()), this.learningObjectMining, this.oldLearningObjectMining);
+			insert.setLearningObject(Long.valueOf("14" + loadedItem.getId()), this.learningObjectMining, this.oldLearningObjectMining);
 			insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
-			insert.setLearningContext(loadedItem.getCourseId(), this.learningContextMining, this.oldLearningContextMining);
+			insert.setLearningContext(Long.valueOf("20" +loadedItem.getCourseId()), this.learningContextMining, this.oldLearningContextMining);
 			insert.setAction("Question");				
 			String com = loadedItem.getContent();
 			if(com != null && com.length() > 255)
@@ -834,14 +839,13 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			{
 				insert.setId(loadedItem.getId());
 				insert.setTime(loadedItem.getTimeCreated().getTime() / 1000);
-				insert.setLearningObject(questionLog.get(loadedItem.getQuestionId()).getLearningObject().getId(), this.learningObjectMining, this.learningObjectMining);
+				insert.setLearningObject(Long.valueOf("14" + loadedItem.getQuestionId()), this.learningObjectMining, this.learningObjectMining);
 				insert.setPerson(loadedItem.getUserId(), this.personMining, this.oldPersonMining);
 				insert.setLearningContext(insert.getReference().getLearningContext().getId(), this.learningContextMining, this.oldLearningContextMining);
 				insert.setAction("Answer");				String com = loadedItem.getContent();
 				if(com != null && com.length() > 255)
 					com = com.substring(0, 254);
 				insert.setInfo(com);				
-				insert.setReference(questionLog.get(loadedItem.getQuestionId()));
 				if(!courseDetails.containsKey(insert.getLearningContext()))
 				{
 					courseDetails.put(insert.getLearningContext(), new CourseObject());
@@ -1027,8 +1031,11 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		{
 			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("14" + loadedItem.getId()));
-			insert.setName(loadedItem.getTitle());
 			insert.setType("Thread");
+			String com = loadedItem.getContent();
+			if(com != null && com.length() > 255)
+				com = com.substring(0, 254);
+			insert.setName(com);
 			
 			
 			insert.setParent(Long.valueOf("13" + loadedItem.getSegmentId()), learningObjs, this.oldLearningObjectMining);
@@ -1076,16 +1083,14 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 			{
 				learningObjs.put(insert.getId(), insert);
 			}
-		}	
+		}			
 		
-		/*
 		for(Questions loadedItem : this.questionsMooc)
 		{
-			LearningObj insert = new LearningObj();
+			LearningObject insert = new LearningObject();
 			insert.setId(Long.valueOf("14" + loadedItem.getId()));
-			insert.setInteractionType("Assessment");
-			insert.setType(getLearningType("Question"));
-			insert.setTitle(loadedItem.getTitle());
+			insert.setType("Question");
+			insert.setName(loadedItem.getTitle());
 			addLearningAttribute(insert, "Question Content", loadedItem.getContent());
 			
 			if(insert.getType() != null)
@@ -1093,7 +1098,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				learningObjs.put(insert.getId(), insert);
 			}
 		}
-		*/
+		
 		return learningObjs;
 	}
 

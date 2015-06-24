@@ -18,8 +18,6 @@ public class LearningActivityExt{
 	private String value;
 	private String attr;
 	
-
-	
 	
 	/**
 	 * @return the value

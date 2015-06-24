@@ -1,6 +1,7 @@
 package de.lemo.dms.db.mapping;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,12 +14,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import de.lemo.dms.db.interfaces.IContext;
-
 /** This class represents the table lemo_learning_context. */
 @Entity
 @Table(name = "umed_learningContext")
-public class LearningContext implements IContext{
+public class LearningContext{
 	
 	private long id;
 	private String name;
@@ -133,6 +132,22 @@ public class LearningContext implements IContext{
 	 */
 	public void setParent(LearningContext parent) {
 		this.parent = parent;
+	}
+	
+	public void setParent(Long learningContext, Map<Long, LearningContext> learningContexts, Map<Long, LearningContext> oldLearningContexts) {
+		if (learningContexts.get(learningContext) != null)
+		{
+			this.parent = learningContexts.get(learningContext);
+		}
+		if ((this.parent == null) && (oldLearningContexts.get(learningContext) != null))
+		{
+			this.parent = oldLearningContexts.get(learningContext);
+		}
+	}
+	
+	public void addParent()
+	{
+		
 	}
 
 	/**

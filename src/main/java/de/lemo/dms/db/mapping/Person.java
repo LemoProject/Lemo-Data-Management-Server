@@ -9,13 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import de.lemo.dms.db.interfaces.IPerson;
-
 
 /** This class represents the table user. */
 @Entity
 @Table(name = "umed_person")
-public class Person implements IPerson{
+public class Person{
 	
 
 
@@ -24,6 +22,7 @@ public class Person implements IPerson{
 	
 	private Set<LearningActivity> learningActivities= new HashSet<LearningActivity>();
 	private Set<PersonContext> personContexts = new HashSet<PersonContext>();
+	private Set<PersonExt> personExtensions = new HashSet<PersonExt>();
 	
 	
 	/**
@@ -107,6 +106,26 @@ public class Person implements IPerson{
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the personExtensions
+	 */
+	@OneToMany(mappedBy="person")
+	public Set<PersonExt> getPersonExtensions() {
+		return personExtensions;
+	}
+
+	/**
+	 * @param personExtensions the personExtensions to set
+	 */
+	public void setPersonExtensions(Set<PersonExt> personExtensions) {
+		this.personExtensions = personExtensions;
+	}
+	
+	public void addPersonExtension(PersonExt extension)
+	{
+		this.personExtensions.add(extension);
 	}
 
 }

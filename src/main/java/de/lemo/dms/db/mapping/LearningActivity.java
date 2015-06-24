@@ -11,15 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import de.lemo.dms.db.interfaces.IActivity;
-
 /**
  * This class represents the lemo_learning_activity object table.
  * @author Sebastian Schwarzrock
  */
 @Entity
 @Table(name = "umed_learningActivity")
-public class LearningActivity implements IActivity{
+public class LearningActivity implements Comparable<LearningActivity>{
 
 	private long id;
 	private LearningContext learningContext;
@@ -124,7 +122,7 @@ public class LearningActivity implements IActivity{
 	}
 	
 	
-	public void setCourse(final long learningContext, final Map<Long, LearningContext> learningContexts,
+	public void setLearningContext(final long learningContext, final Map<Long, LearningContext> learningContexts,
 			final Map<Long, LearningContext> oldLearningContexts) {
 
 		if (learningContexts.get(learningContext) != null)

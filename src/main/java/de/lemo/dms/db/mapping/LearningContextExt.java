@@ -1,5 +1,7 @@
 package de.lemo.dms.db.mapping;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,6 +49,20 @@ public class LearningContextExt{
 	 */
 	public void setLearningContext(LearningContext learningContext) {
 		this.learningContext = learningContext;
+	}
+	
+	/**
+	 * @param learningContext the learningContext to set
+	 */
+	public void setLearningContext(Long learningContext, Map<Long, LearningContext> learningContexts, Map<Long, LearningContext> oldLearningContexts) {
+		if (learningContexts.get(learningContext) != null)
+		{
+			this.learningContext = learningContexts.get(learningContext);
+		}
+		if ((this.learningContext == null) && (oldLearningContexts.get(learningContext) != null))
+		{
+			this.learningContext = oldLearningContexts.get(learningContext);
+		}
 	}
 	/**
 	 * @return the id

@@ -1,5 +1,7 @@
 package de.lemo.dms.db.mapping;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -83,6 +85,22 @@ public class LearningObjectExt{
 	 */
 	public void setAttr(String attr) {
 		this.attr = attr;
+	}
+	
+	public void setLearningObject(final long learningObject, final Map<Long, LearningObject> learningObjects,
+			final Map<Long, LearningObject> oldLearningObjects) {
+
+		if (learningObjects.get(learningObject) != null)
+		{
+			this.learningObject = learningObjects.get(learningObject);
+			learningObjects.get(learningObject).addLearningObjectExtension(this);
+		}
+		if ((this.learningObject == null) && (oldLearningObjects.get(learningObject) != null))
+		{
+			this.learningObject = oldLearningObjects.get(learningObject);
+			oldLearningObjects.get(learningObject).addLearningObjectExtension(this);
+			
+		}
 	}
 	
 	

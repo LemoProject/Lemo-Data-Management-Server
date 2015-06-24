@@ -14,15 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import de.lemo.dms.db.interfaces.IObject;
-
 /** 
  * This class represents the table lemo_learning_object. 
  * @author Sebastian Schwarzrock
  */
 @Entity
 @Table(name = "umed_learningObject")
-public class LearningObject implements IObject{
+public class LearningObject{
 
 	private long id;
 	private String name;
@@ -149,6 +147,11 @@ public class LearningObject implements IObject{
 	 */
 	public void setLearningObjectExtensions(Set<LearningObjectExt> learningObjectExtensions) {
 		this.learningObjectExtensions = learningObjectExtensions;
+	}
+	
+	public void addLearningObjectExtension(LearningObjectExt ext)
+	{
+		this.learningObjectExtensions.add(ext);
 	}
 
 	/**
