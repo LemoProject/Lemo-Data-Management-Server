@@ -53,7 +53,6 @@ import de.lemo.dms.connectors.mooc.mapping.Comments;
 import de.lemo.dms.connectors.mooc.mapping.Courses;
 import de.lemo.dms.connectors.mooc.mapping.Events;
 import de.lemo.dms.connectors.mooc.mapping.Memberships;
-import de.lemo.dms.connectors.mooc.mapping.Progress;
 import de.lemo.dms.connectors.mooc.mapping.Answers;
 import de.lemo.dms.connectors.mooc.mapping.Questions;
 import de.lemo.dms.connectors.mooc.mapping.Segments;
@@ -95,7 +94,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 	private List<Comments> commentsMooc;
 	private List<Events> eventsMooc;
 	private List<Memberships> membershipsMooc;
-	private List<Progress> progressMooc;
 	private List<Answers> answersMooc;
 	private List<Questions> questionsMooc;
 	private List<Segments> segmentsMooc;
@@ -450,10 +448,6 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.membershipsMooc = criteria.list();
 		
-		criteria = session.createCriteria(Progress.class, "obj");
-		criteria.addOrder(Property.forName("obj.id").asc());
-		this.progressMooc = criteria.list();
-		
 		criteria = session.createCriteria(Questions.class, "obj");
 		criteria.addOrder(Property.forName("obj.id").asc());
 		this.questionsMooc = criteria.list();
@@ -714,7 +708,7 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 						addLearningAttribute(insert.getLearning(), "MaxGrade", loadedItem.getMaxScore()+"");
 						maxGradeKnown.add(Long.valueOf("11" + loadedItem.getAssessmentId()));
 					}
-					if(insert.getLearning() != null)
+					if(insert.getClass() != null && insert.getUser() != null && insert.getLearning() != null)
 						assessmentUsers.put(insert.getId(), insert);
 				}
 			}
@@ -790,13 +784,20 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 					courseDetails.put(insert.getCourse(), new CourseObject());
 					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
-				}
-				if(insert.getCourse() != null)
 					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-				
+					
+				}
 				if(insert.getTimestamp() > maxLog)
 				{
 					maxLog = insert.getTimestamp();
+				}
+				if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+				{
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				}
+				if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+				{
+					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 				}
 				
 				if ((insert.getCourse() != null) && (insert.getLearning() != null) && (insert.getUser() != null)) 
@@ -865,13 +866,26 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setLearning(Long.valueOf("13" + loadedItem.getSegmentId()), learningObjectMining, oldLearningObjectMining);
 			}
 			
-			if(!courseDetails.containsKey(insert.getCourse()))
+			if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
 			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			if(insert.getTimestamp() > maxLog)
+			{
+				maxLog = insert.getTimestamp();
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+			{
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+			{
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+			}
 			
 			if(insert.getLearning() != null && insert.getUser() != null && insert.getCourse() != null)
 			{
@@ -1192,15 +1206,29 @@ public class ExtractAndMapMooc extends ExtractAndMap {
 				insert.setCourse(cu.getCourse().getId(), this.courseMining, this.oldCourseMining);				
 				insert.setUser(cu.getUser().getId(), this.userMining, this.oldUserMining);
 				
-				if(!courseDetails.containsKey(insert.getCourse()))
+				if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
 				{
 					courseDetails.put(insert.getCourse(), new CourseObject());
 					courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+					
 				}
-				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				if(insert.getTimestamp() > maxLog)
+				{
+					maxLog = insert.getTimestamp();
+				}
+				if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+				{
+					courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				}
+				if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+				{
+					courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				}
 				
-				assessmentLogs.put(insert.getId(), insert);
+				if(insert.getCourse() != null && insert.getLearning() != null && insert.getUser() != null)
+					assessmentLogs.put(insert.getId(), insert);
 			}
 
 		}

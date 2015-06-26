@@ -519,16 +519,25 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
-			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
+			if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
+			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			
 			if(insert.getTimestamp() > maxLog)
 			{
 				maxLog = insert.getTimestamp();
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+			{
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+			{
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			
 			usedCourses.add(insert.getCourse().getId());
@@ -549,16 +558,25 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setTimestamp(loadedItem.getTimestamp());
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
-			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
+			if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
+			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			
 			if(insert.getTimestamp() > maxLog)
 			{
 				maxLog = insert.getTimestamp();
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+			{
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+			{
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			
 			usedCourses.add(insert.getCourse().getId());
@@ -580,16 +598,25 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			
 			
-			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
+			if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
+			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			
 			if(insert.getTimestamp() > maxLog)
 			{
 				maxLog = insert.getTimestamp();
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+			{
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+			{
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			
 			usedCourses.add(insert.getCourse().getId());
@@ -719,16 +746,25 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				insert.setText(loadedItem.getMessage());
 			}
 			
-			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
+			if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
+			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			
 			if(insert.getTimestamp() > maxLog)
 			{
 				maxLog = insert.getTimestamp();
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+			{
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+			{
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			
 			usedCourses.add(insert.getCourse().getId());
@@ -755,16 +791,25 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 				insert.setText(loadedItem.getMessage());
 			}
 			
-			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
+			if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
+			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			
 			if(insert.getTimestamp() > maxLog)
 			{
 				maxLog = insert.getTimestamp();
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+			{
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+			{
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			
 			usedCourses.add(insert.getCourse().getId());
@@ -786,16 +831,25 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setAction(loadedItem.getAction());
 			
 			
-			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null){
+			if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
+			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			
 			if(insert.getTimestamp() > maxLog)
 			{
 				maxLog = insert.getTimestamp();
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+			{
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+			{
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			
 			usedCourses.add(insert.getCourse().getId());
@@ -1280,17 +1334,25 @@ public class ExtractAndMapLeMo extends ExtractAndMap {
 			insert.setCourse(cid, this.courseMining, this.oldCourseMining);
 			insert.setAction(loadedItem.getAction());
 			
-			if(!courseDetails.containsKey(insert.getCourse()) && insert.getCourse() != null)
+			if(insert.getCourse() != null && !courseDetails.containsKey(insert.getCourse()))
 			{
 				courseDetails.put(insert.getCourse(), new CourseObject());
 				courseDetails.get(insert.getCourse()).setId(insert.getCourse().getId());
 				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+				
 			}
-			courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
-			
 			if(insert.getTimestamp() > maxLog)
 			{
 				maxLog = insert.getTimestamp();
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() > courseDetails.get(insert.getCourse()).getLastRequest())
+			{
+				courseDetails.get(insert.getCourse()).setLastRequest(insert.getTimestamp());
+			}
+			if(insert.getCourse() != null && insert.getTimestamp() < courseDetails.get(insert.getCourse()).getFirstRequest())
+			{
+				courseDetails.get(insert.getCourse()).setFirstRequest(insert.getTimestamp());
 			}
 			
 			usedCourses.add(insert.getCourse().getId());

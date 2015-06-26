@@ -145,6 +145,7 @@ public class QCourseActivity extends Question {
 				.add(Restrictions.between("log.timestamp", startTime, endTime))
 				.add(Restrictions.in("log.user.id", users));
 		
+		
 		if(!learningObjects.isEmpty())
 		{
 			criteria.add(Restrictions.in("log.learning.id", learningObjects));
@@ -152,6 +153,7 @@ public class QCourseActivity extends Question {
 
 		@SuppressWarnings("unchecked")
 		List<ILog> logs = criteria.list();
+		
 
 		for (ILog log : logs)
 		{
