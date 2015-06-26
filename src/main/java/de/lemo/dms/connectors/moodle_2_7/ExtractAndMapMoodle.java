@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -50,7 +49,6 @@ import de.lemo.dms.connectors.IConnector;
 import de.lemo.dms.connectors.TextHelper;
 import de.lemo.dms.connectors.moodle_2_7.mapping.AssignGradesLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.AssignLMS;
-import de.lemo.dms.connectors.moodle_2_7.mapping.ChatLogLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ChatLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.ContextLMS;
 import de.lemo.dms.connectors.moodle_2_7.mapping.CourseLMS;
@@ -1205,6 +1203,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 			insert.setName(loadedItem.getFullname());
 
 			courseMining.put(insert.getId(), insert);
+			addCourseAttribute(insert, "CourseDescription", loadedItem.getSummary());
 		}
 		return courseMining;
 	}
@@ -1382,7 +1381,7 @@ public class ExtractAndMapMoodle extends ExtractAndMap {
 		loe.setId(this.learningAttributeIdMax + 1);
 		this.learningAttributeIdMax++;
 		loe.setPerson(user);
-		loe.setAttr(attribute);
+		loe.setAttribute(attribute);
 		loe.setValue(value);
 		this.personExtMining.put(loe.getId(), loe);
 	}
